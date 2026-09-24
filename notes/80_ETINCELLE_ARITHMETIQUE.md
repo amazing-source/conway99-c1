@@ -74,3 +74,25 @@ l'inversion conjugue). Produits hermitiens h(z_L,z_M) = 27·Σ_{a_i = b_j} ω^{i
   irrationnel (corps quadratiques Q(√33), Q(√57) sur nos exemples), donc le réseau rotationnel devient un module sur
   un ordre de corps de nombres. C'est l'analogue natif de C1 du ℤ[ω] de C3, sauf qu'il viendrait de la torsion, pas
   d'une symétrie.
+
+## 6. Identité locale « les droites éloignées portent la torsion » (vérifiée)
+Pour un sommet x et une droite ℓ = {x, c, c̄} : le nombre de droites évitant B₁(x) qui rencontrent à la fois N(c) et
+N(c̄) (dans un SRG : droites de Γ₂(x) contenant les deux étiquettes de la classe) est égal à t_ℓ(x), le nombre
+d'étiquettes qui tordent la classe ℓ (= 12 − nombre de prismes contenant ℓ). *Preuve* : ce sont exactement les
+partenaires e = 2 de ℓ dont le point non apparié est x, et dans le 2-facteur autour de ℓ ils correspondent aux arêtes
+de type (côté c, côté c̄) hors triangles, soit Σ des longueurs des cycles non triviaux de σ_ℓ = 12 − fix(σ_ℓ). ∎
+*Contrôle* (`code/twist_carriers_check.py`) : 0 écart sur 3 057 couples (sommet, droite) : trois géométries tordues
+(où l'identité est non triviale) et BvLS. Premier essai avec « droites contenues dans Γ₂(x) » : faux sur les
+géométries tordues (elles ont des points à distance 3) ; la bonne formulation est « évitant B₁(x) ».
+Identité compagne (cadre serré projeté sur V_x) : Σ_{z∈Γ₂(x)} C_{xz}C_{xz}ᵀ = diag(156 + 2t_j) − ρ, où ρ_{jj'} compte
+les paires de τ reliant les classes j et j' (exacte, déduite de Σ_x P_x = (63/4)I).
+
+## 7. Conclusion de cette série : la contradiction doit être un « plafond de torsion »
+- Positivité (Krein, Welch, designs) et arithmétique (genres, Eisenstein) ne pénalisent que **l'ordre** : grilles,
+  prismes, coordonnées Z/3. Une structure très tordue ressemble à une structure générique, et le générique passe tous
+  ces tests (et c'est ce que fait Gewirtz pour q = 2).
+- Avec L16, la non-existence équivaut à : **la torsion moyenne par sommet est < 14,24**, soit Σ_x |W(x)| ≤ 1409.
+  C'est la formulation la plus nette de C1 obtenue : un plafond de torsion local, le complémentaire exact de la
+  frontière SAT (qui, elle, interdit la torsion faible).
+- Un tel plafond doit utiliser la rigidité combinatoire exacte (μ = 2 partout) propre à q = 3, pas des inégalités
+  moyennes : c'est là qu'il faut chercher.
