@@ -143,7 +143,15 @@ def build(K, sources=None, dom_classes=None, per_label=None):
 
 def main():
     t0 = time.time()
-    if sys.argv[1] == 'fano':
+    if sys.argv[1] == 'onegrid':
+        # all tau free, but the grid G_01 exists at x: tau_(0,s) pairs (1,0)-(1,1), tau_(1,r) pairs (0,0)-(0,1)
+        per = {a: [c for c in range(7) if c != a[0]] for a in LABELS}
+        cnf, pool, T = build([], per_label=None, sources=LABELS)
+        for s_ in (0, 1):
+            cnf.append([T[((0, s_), ((1, 0), (1, 1)))]])
+            cnf.append([T[((1, s_), ((0, 0), (0, 1)))]])
+        K = 'onegrid: grid G_01 at x, all other transitions free'
+    elif sys.argv[1] == 'fano':
         # every label tau_a is Fano-coherent: for the 3 Fano lines {i,j,k} through its class i, it pairs the labels
         # of class j with those of class k (2 sign choices per line): 14 x 3 free bits
         FANO = [(0, 1, 3), (1, 2, 4), (2, 3, 5), (3, 4, 6), (4, 5, 0), (5, 6, 1), (6, 0, 2)]
