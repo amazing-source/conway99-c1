@@ -85,3 +85,16 @@ sans cassage de symétrie) indiquent une contradiction plus profonde.
   c : composées non isométriques). Le cas N = ∅ est L7 (a = 3).
 - Tests (`code/hamming_linskel.py`) : le squelette des parties linéaires avec E seul est SAT ; avec C, ou C + E, pas
   de réponse en 5 min. Les translations sont donc nécessaires ; **pas de preuve humaine de L8 cette nuit**.
+
+## Lecture « matrice d'orbites » et portée pour C2
+Avec une involution t = σ_x (point fixe x, point tordu autorisé), la partition de Γ₂(x) en 42 diagonales (orbites de t)
+est équitable. Sa matrice quotient B̄ (42 × 42, symétrique, diagonale nulle car a₁ = 14, sommes de lignes 12) vérifie
+**B̄² + B̄ = 12I + 4J − S**, où S[D, D'] = |P(D) ∩ P(D')| (calcul direct : on compte de deux façons les voisins communs
+de u ∈ D avec les deux points de D'). Modulo 2 : B̄² + B̄ ≡ A_T ⊗ J₂ (A_T : graphe triangulaire T(7) sur les 21 paires).
+- Au point de Hamming, B̄ ≡ (blocs de permutation Π_δ sur les paires disjointes) mod 2. Le bloc (ij, ik) de
+  l'équation donne Σ_R Π_{δ(ij,R)+δ(ik,R)} ≡ J₂, c'est-à-dire exactement la parité impaire de la preuve de L7.
+  **L7 est donc une obstruction modulo 2 sur la matrice d'orbites.**
+- En général, l'équation modulo 2 seule est **toujours soluble** : B = S̄ = A_T ⊗ J₂ convient (S̄² = 0), et les
+  solutions symétriques de diagonale nulle correspondent aux scindements orthogonaux S̄-invariants V₀ ⊥ V₁ avec 1 ∈ V₀
+  (B = S̄ sur V₀, S̄ + 1 sur V₁). Pas d'obstruction de parité pure pour C2 : il faut les contraintes de support des
+  blocs (qui viennent des étiquettes et des τ).

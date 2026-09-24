@@ -157,3 +157,12 @@ notre L1), aux faits locaux (Lou–Murin, Reimbayev) et aux échecs de recherche
 heuristiques). Tout le reste porte sur les automorphismes : Wilbrink 1984, Makhnev–Minakova 2004, Behbahani–Lam 2011,
 Crnković–Maksimović 2020, Cesarz–Woldar 2025. Les deux non-existences récentes de la même taille, (85,14,3,2) et
 (57,14,1,4), utilisent un levier local qui manque à 99 : un graphe local riche, ou un μ plus grand.
+
+### 3.10 Caractérisations des graphes de Hamming (vérifiées, inapplicables)
+- Kivva (JCTB 2021, arXiv:1912.11427), thm 1.4 : graphe distance-régulier géométrique, μ ≥ 2, localement une union
+  disjointe de cliques, avec l'hypothèse **θ₁ ≥ (1 − η)b₁** (seconde valeur propre proche de b₁, comme pour
+  H(d,s) où θ₁ = b₁ − 1) : c'est un graphe de Hamming. À 99, θ₁ = 3 et b₁ = 12 : l'hypothèse spectrale est fausse.
+  (Sans elle, BvLS serait un contre-exemple.)
+- Caractérisation par comptage (μ ∈ {0, 2}, sans diamant ni prisme privé d'une arête, cliques maximales régulières ⇒
+  Hamming) : l'hypothèse « pas de prisme privé d'une arête » est exactement « non tordu ». C'est Makhnev / L1 sous
+  une autre forme.
