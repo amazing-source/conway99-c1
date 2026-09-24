@@ -32,7 +32,7 @@ la configuration (ou la famille) **en tout sommet de tout srg(99,14,1,2)** — d
 - **k = 1** : impossible (à la main : R0 + L12).
 - **k = 2** : les deux étiquettes sont de classes différentes et tordent le même ensemble C, |C| ∈ {2,3,4,5}
   (à la main ; confirmé par énumération : 4 motifs à symétrie près). |C| = 2 : UNSAT (motifs concrets 69 s / 41 s,
-  famille 92 s). **|C| = 3 : UNSAT (19 min).** |C| = 4, 5 : en cours.
+  famille 92 s). **|C| = 3 : UNSAT (19 min). |C| = 4 : UNSAT (45 min).** |C| = 5 : non lancé.
 - **k = 3** : 128 motifs à symétrie près (`wpatterns_direct.py` → `data/k3_patterns.txt` ; 109 avec trois classes
   distinctes, 19 avec deux étiquettes d'une même classe). File séquentielle `data/run_k3_queue.sh` →
   `data/k3_results.txt`. Échelle PC du labo.

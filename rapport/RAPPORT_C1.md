@@ -30,7 +30,7 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   imposer une fermeture en 3-cube est UNSAT (13 s) — Gewirtz est *maximalement* tordu (0/6720 fermetures).
 - **Contre-poids honnête** : dans l'analogue q = 2, le seul SRG tordu connu est tordu au maximum ; la torsion forte
   n'est donc pas, en soi, un argument contre l'existence. Reste l'argument du groupe (|Aut(Gewirtz)| = 80 640,
-  |Aut(Γ)| ≤ 3).
+  |Aut(Γ)| ∈ {1, 2} : ordre 3 exclu par la branche C3, ordres 7 et 11 par Behbahani–Lam ; correction signalée par C2).
 - **Nouvelles identités exactes** : P = 1386 − (1/6)Σ_x|W(x)| et Σ_x|W(x)| = 6048 + Σν³ (L15, via Hodge F21) : la
   torsion totale est un moment spectral ; la borner donnerait des sommets peu tordus, que la frontière exclut.
 - **Correction** : un test de « 3-cycle étiqueté » était trop strict (2 conditions sur 3) ; sans effet sur les modèles

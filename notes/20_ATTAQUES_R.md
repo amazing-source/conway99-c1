@@ -151,8 +151,8 @@ toutes les équations SRG) pour λ = 0, μ = 2 :
 Conséquences : (i) la chaîne « modèle enraciné + SAT + exclusion d'une configuration locale » donne la bonne
 réponse sur un SRG tordu connu, dans les deux sens ; (ii) **contre-poids heuristique** : dans l'analogue q = 2,
 « torsion maximale partout » est exactement ce que fait le seul SRG tordu connu — la torsion forte n'est donc pas
-un argument contre l'existence ; reste l'argument du groupe d'automorphismes (|Aut(Gewirtz)| = 80 640, contre ≤ 3
-pour Γ). (iii) Pour q = 2 le problème enraciné complet se résout en 2 s ; pour 99 il est ~10× plus gros (2 562
+un argument contre l'existence ; reste l'argument du groupe d'automorphismes (|Aut(Gewirtz)| = 80 640, contre |Aut(Γ)| ∈ {1, 2}
+pour Γ : ordre 3 exclu par C3, ordres 7 et 11 par Behbahani–Lam). (iii) Pour q = 2 le problème enraciné complet se résout en 2 s ; pour 99 il est ~10× plus gros (2 562
 inconnues + τ contre 630) et des heures de SAT (ici et ailleurs) n'ont rien trouvé : indice faible de non-existence.
 
 ### F23 — confinement local→global du spectre de Hodge — **TUÉE** (détails : notes/60_HODGE.md)

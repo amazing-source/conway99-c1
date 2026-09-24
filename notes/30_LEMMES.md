@@ -89,6 +89,16 @@ canonique en u₀ + 3 normalisations de signes, validité argumentée dans notes
 *Conséquence (parité).* Si une grille par x manque, au moins deux manquent (si τ_a n'est pas mate sur la classe j,
 il envoie un élément de j dans une autre classe k, et la grille (i,k) tombe aussi). Donc g(x) ∈ [0, 19].
 
+*Remarque (2026-09-24, signalée par la session C2).* La validité du cassage de symétrie utilisé dans les exécutions
+rapides n'est rédigée nulle part (notes/40 ne la contient pas). La conclusion de L8 repose donc sur l'exécution sans
+cassage (UNSAT, 2 114 s), qui reste elle-même à certifier (DRAT) et sans contrôle positif sur BvLS.
+
+## L11. Les torsions ne peuvent pas être confinées à 3 classes.   [calcul exact] [à certifier DRAT]
+*Énoncé (calcul).* Il n'existe pas de sommet x dont toutes les torsions (paires (étiquette, classe) tordues) ne
+font intervenir que 3 classes. *Calcul.* `rooted_family.py K` avec |K| = 3 (τ libre sur les classes de K, au moins une
+torsion, mate ailleurs) : UNSAT en 1,2 s ; contrôle relâché SAT (notes/50). *Non fait* : second encodage, DRAT,
+contrôle positif BvLS. À ne pas utiliser pour élaguer une construction tant que ce n'est pas certifié.
+
 ## L10. Aucun sommet n'est dans exactement 19 grilles : g(x) ≤ 18 pour tout x.   [calcul exact] [P partielle]
 *Énoncé.* À symétrie près, g(x) = 19 n'admet que trois configurations de τ en x (τ_{i±} échangent deux classes j, k,
 tout le reste mate) ; les trois sont réfutées **par simple propagation unitaire** des équations SRG
@@ -137,7 +147,8 @@ ce qui force deux arêtes disjointes, et le sommet {(4,0),(6,0)} reçoit 3 voisi
 Par R0 + L12, si exactement deux étiquettes tordent en x, elles sont dans deux classes différentes et tordent le même
 ensemble C de classes (C disjoint de leurs classes, 2 ≤ |C| ≤ 5). Pour |C| = 2 : les deux motifs concrets à symétrie
 près (échanges préservant/préservant et préservant/renversant) sont UNSAT (69 s et 41 s, modèle d'adjacence exact) ;
-la version « famille » (τ libres sur le domaine C) confirme (92 s). |C| = 3, 4, 5 : en cours.
+la version « famille » (τ libres sur le domaine C) confirme (92 s). |C| = 3 : UNSAT (1 120 s, `data/twolabel_dom234`) ;
+|C| = 4 : UNSAT (2 695 s, `data/twolabel_dom2345`) ; |C| = 5 : non lancé. Aucun certificat DRAT, pas de contrôle positif BvLS.
 
 ## L15. Torsion totale = moment spectral (identité exacte).   [P] [C partiel]
 *Énoncé.* Pour une arête e = xa, soit d(e) le nombre de classes (en x, hors celle de a) que a tord ; d(e) = 6 − m(e)
