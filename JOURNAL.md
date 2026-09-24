@@ -105,3 +105,9 @@
   σ_x ∈ Aut impossible) : décalage diagonal δ additif, le fait C impose une parité impaire sur chacun des 105
   triplets, la somme totale compte chaque δ 12 fois, donc 0 ≡ 1. Vérifié (`hamming_diag.py` : système réduit UNSAT,
   parité incompatible sur F₂). notes/95. L8 général : l'invariant naturel (signature) n'est pas forcé par C.
+- Nuit (01:30). **Akiyama (arXiv:2609.08319, 8 sept. 2026)** : non-existence de srg(266,45,0,9), cas ouvert, par
+  réseaux entiers (repère local serré de rang 11, complétion unimodulaire paire de rang 24, identité de Venkov, racines
+  A₁₁D₇E₆, moments), formalisée en Lean. Lu en entier. Pour 99, repères serrés entiers exacts calculés :
+  L₋₄ = 24I + 2J − 8H − 3S − P' (84 vecteurs de norme 20 en rang 30, constante 56) et L₃ = 60I − 2J + 15H − 4S + P'
+  (norme 50 en rang 40, constante 105). La transposition n'est pas immédiate (repère peu dense, constante paire 56
+  avec la partie 7 = k de L19, complétion en rang ≥ 32 où S₁₈ ≠ 0). Plan écrit. notes/96.
