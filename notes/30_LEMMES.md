@@ -63,16 +63,22 @@ k(x) = rank₇((H − 3I)|_K). Par L2, k(x) = α − 14 est pair et indépendant
 du 70-espace est un invariant global déguisé (α − 14), de parité forcée. Il ne dépend pas de x.
 
 ---------------------------------------------------------------------------------------------------------
-## L7. Un point de Hamming n'est jamais le point fixe d'une involution.   [calcul exact, 2 encodages] [à certifier DRAT]
+## L7. Un point de Hamming n'est jamais le point fixe d'une involution.   [P] (2026-09-25, notes/95) [calcul exact, 2 encodages]
 *Énoncé.* Si x est un sommet de Γ tel que τ = mate en x (x est dans les 21 grilles qui passent par lui), alors la
 réflexion σ_x (x ↦ x, a ↦ ā, ab ↦ āb̄) n'est pas un automorphisme de Γ. Par le lemme de Makhnev (l'involution d'un
 srg(99,14,1,2) fixe un seul sommet x et y agit comme σ_x), **dans la branche C2 le point fixe est tordu**.
-*Preuve (calcul).* Deux encodages indépendants du cas « τ = mate en x + invariance par σ_x », tous deux UNSAT :
+*Preuve humaine (notes/95).* Si σ_x ∈ Aut, chaque bijection φ_{PR} (faits T, A) commute avec les antipodies,
+donc envoie diagonales sur diagonales avec un décalage δ(P,R) ∈ F₂. Le fait C force, pour P = ij, P' = ik, les 6
+images d'un point de Q_P à se répartir 3 + 3 entre les deux diagonales de Q_{P'} : exactement 3 des 6 paires
+R ⊂ [7] ∖ {i,j,k} ont δ(ij,R) + δ(ik,R) = 1, donc Σ_R (δ(ij,R) + δ(ik,R)) ≡ 1. En sommant les 105 équations, chaque
+δ(X,Y) apparaît 12 fois : 0 ≡ 105 ≡ 1. ∎ (Vérifications : le système réduit à 105 bits est UNSAT par Cadical ; sa
+version de parité est incompatible sur F₂, `code/hamming_diag.py`.)
+*Preuve (calcul, antérieure).* Deux encodages indépendants du cas « τ = mate en x + invariance par σ_x », tous deux UNSAT :
 (i) `hamming_point.py --t 6 --sigma` : équations SRG brutes (λ, μ sur toutes les paires) + serrage des grilles (L5),
 UNSAT en 201 s (Cadical 1.5.3) ; (ii) `hamming_phi.py --iso` : modèle en bijections φ (faits B–E, notes/20),
 UNSAT en 34 s ; UNSAT aussi avec seulement trois des quatre groupes de faits (BCD, BCE, BDE, CDE).
 Contrôles : contrôle relâché SAT ; aucune contradiction dans la partie fixe ; le serrage est prouvé (L5).
-*À faire.* Certificat DRAT (images Docker de la branche C3, PC du labo) ; preuve humaine à partir du noyau minimal.
+*À faire.* ~~Preuve humaine~~ faite (ci-dessus). Le certificat DRAT n'est plus nécessaire pour L7.
 
 *Noyau.* Dans le modèle φ isométrique, le fait C seul (μ entre grilles partageant une classe) suffit (UNSAT 3,2 s) ;
 B seul est SAT ; CD, CE, DE sont UNSAT. Amorce de preuve humaine : pour P = ij, P' = ik, les 6 isométries

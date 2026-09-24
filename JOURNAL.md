@@ -100,3 +100,8 @@
   Reimbayev srg(19) : saturation à t = 2, marge énorme à t = 6 ; livre BvM 2022 : état de l'art (Wilbrink 1984 ordre
   11, Behbahani–Lam, Crnković–Maksimović 2020 ordres 6 et 9 ; la preuve de Makhnev pour Moore 3250 est fausse).
   notes/94_NUIT_LITTERATURE.md.
+- Nuit (suite). Littérature complète en texte intégral (Wilbrink 1984 via le navigateur, Cesarz–Woldar 2025, Ishida
+  2026, Shpectorov–Zhao 2025, etc.) : rien pour C1 (notes/94 §3.5–3.9). **Preuve humaine de L7** (point de Hamming +
+  σ_x ∈ Aut impossible) : décalage diagonal δ additif, le fait C impose une parité impaire sur chacun des 105
+  triplets, la somme totale compte chaque δ 12 fois, donc 0 ≡ 1. Vérifié (`hamming_diag.py` : système réduit UNSAT,
+  parité incompatible sur F₂). notes/95. L8 général : l'invariant naturel (signature) n'est pas forcé par C.

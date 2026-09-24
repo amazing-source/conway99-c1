@@ -1,0 +1,63 @@
+# 95 — Preuve humaine de L7 (un point de Hamming n'est pas le point fixe d'une involution)
+
+*2026-09-25, nuit. Jusqu'ici L7 reposait sur deux calculs SAT (201 s et 34 s). Voici une preuve à la main, courte,
+vérifiée par ordinateur à chaque étape (`code/hamming_diag.py`).*
+
+## Énoncé
+Soit x un sommet de Γ = srg(99,14,1,2) qui est un **point de Hamming** : pour tous a, b ∈ Γ(x) non mates, la droite
+par a et le sommet ab est {a, ab, ab̄} (τ = mate en x), c'est-à-dire que les 21 « grilles avortées » en x sont de
+vraies grilles 3×3. Alors la réflexion σ_x (x ↦ x, a ↦ ā, ab ↦ āb̄) **n'est pas** un automorphisme de Γ.
+Conséquence (branche C2) : l'unique point fixe d'une involution (qui agit comme σ_x, lemme de Makhnev) est tordu.
+
+## Notations
+Classes 1,…,7 (les droites par x), étiquettes (i, s), s ∈ F₂ (mate = changer s). Pour une paire P = {i, j}, Q_P est
+l'ensemble des 4 sommets de Γ₂(x) d'étiquettes (i, s_i), (j, s_j), repérés par (s_i, s_j) ∈ F₂². Γ₂(x) = ⊔ Q_P (84).
+Dans Q_P, u ~ u + e_i et u ~ u + e_j (droites par les étiquettes), et u ≁ u + (1,1). Q_P ∪ {x} ∪ (étiquettes de
+P) est la grille G_P. Diagonales de Q_P : D₀ = {s_i = s_j}, D₁ = {s_i ≠ s_j}, c'est-à-dire les paires antipodales.
+
+## Faits utilisés (tous redémontrés ici)
+**(T) Grilles serrées.** Tout sommet hors d'une grille 3×3 G a exactement un voisin dans G. *Preuve* : avec
+n_z = |Γ(z) ∩ G|, on a Σ_z n_z = 9·14 − 2·18 = 90 = |V ∖ G|. Et Σ_z C(n_z, 2) = 0, car toute paire de G a déjà
+tous ses voisins communs dans G (λ = 1 pour les 18 arêtes, μ = 2 pour les 18 non-arêtes d'une grille 3×3).
+Donc n_z ≤ 1 et, par la somme, n_z = 1.
+**Conséquences.** Pour u ∈ Q_P et une paire R : si R ∩ P = ∅, les étiquettes de u ne sont pas dans G_R, donc
+l'unique voisin de u dans G_R est dans Q_R ; si |R ∩ P| = 1, cet unique voisin est l'étiquette commune, donc u n'a
+**aucun voisin dans Q_R**. Les 14 voisins de u sont donc : ses 2 étiquettes, ses 2 voisins dans Q_P, et un voisin dans
+chaque Q_R, R ⊂ [7] ∖ P (10 paires).
+**(A) Bijections.** Pour R ∩ P = ∅, les arêtes entre Q_P et Q_R forment une bijection φ_{PR} : Q_P → Q_R, avec
+φ_{RP} = φ_{PR}⁻¹.
+**(C) μ pour deux grilles partageant une classe.** P = {i, j}, P' = {i, k}, u ∈ Q_P, w ∈ Q_{P'}. On a u ≁ w (pas
+d'arête entre Q_P et Q_{P'}). Leurs voisins communs sont : l'étiquette (i, s) si u et w ont le même signe s en i ; aucun
+sommet de Q_P ni de Q_{P'} ; et un sommet v ∈ Q_R pour chaque R ⊂ [7] ∖ {i, j, k} (6 paires) tel que
+φ_{PR}(u) = φ_{P'R}(w). Comme μ = 2 : **exactement une coïncidence si les signes en i sont égaux, deux sinon.**
+Avec ψ_R = φ_{P'R}⁻¹ ∘ φ_{PR} : Q_P → Q_{P'}, les 6 images ψ_R(u) atteignent donc une fois chacun les deux points de
+Q_{P'} de même signe en i que u, et deux fois chacun les deux points de signe opposé.
+
+## Preuve
+1. σ_x agit sur chaque Q_P comme l'antipodie u ↦ u + (1,1). Il préserve déjà toutes les adjacences sauf peut-être
+   celles entre Q_P et Q_R. Donc σ_x ∈ Aut ⟺ chaque φ_{PR} commute avec les antipodies ⟺ chaque φ_{PR} envoie
+   diagonales sur diagonales. On pose alors δ(P, R) ∈ F₂ : δ = 0 si φ_{PR}(D₀) = D₀, 1 sinon. On a δ(R, P) = δ(P, R), et
+   ψ_R envoie D_ε(P) sur D_{ε + δ(P,R) + δ(P',R)}(P').
+2. Chaque diagonale de Q_{P'} contient un point de chaque signe en i. Par (C), elle reçoit 1 + 2 = 3 des 6 images
+   ψ_R(u). Donc **exactement 3 des 6 paires R ⊂ [7] ∖ {i, j, k} ont δ(ij, R) + δ(ik, R) = 1**. En particulier
+   Σ_R (δ(ij, R) + δ(ik, R)) ≡ 1 (mod 2), pour chacun des 7·15 = 105 triplets (i ; {j, k}).
+3. Sommons ces 105 congruences. Un terme δ(X, Y) (X ∩ Y = ∅) apparaît quand X joue le rôle de ij ou de ik : 2 choix de
+   la classe commune dans X, 3 choix de la troisième classe hors de X ∪ Y. Cela fait 6 fois, et encore 6 fois avec les
+   rôles de X et Y échangés : 12 fois au total. La somme vaut donc 0 à gauche et 105 ≡ 1 à droite. **Contradiction.** ∎
+
+## Contrôles
+- Le système réduit (105 bits δ, « exactement 3 sur 6 ») : UNSAT (Cadical, instantané) ; SAT si on ne l'impose que
+  pour une seule classe i (27 uns sur 105). Sa version de parité (105 équations sur F₂) est de rang 55 et incompatible.
+  `code/hamming_diag.py`.
+- Cohérent avec le calcul antérieur (« le fait C seul suffit », UNSAT 3,2 s dans le modèle isométrique) et avec
+  l'amorce de preuve de 30_LEMMES (nombre pair de ψ « droites ») : l'invariant qui conclut n'est pas l'orientation
+  mais le **décalage diagonal**, additif pour la composition.
+
+## Vers L8 (point de Hamming sans σ_x) : pourquoi l'argument ne passe pas tel quel
+Sans σ_x, les φ_{PR} sont des bijections quelconques de F₂², c'est-à-dire des éléments de AGL(2,2) ≅ S₄. Un invariant
+additif pour la composition serait un morphisme S₄ → F₂, donc la signature. Or le fait C ne fixe pas la parité : sur
+les 58 multi-ensembles de 6 bijections compatibles avec (C), 50 contiennent un nombre pair de permutations impaires et
+8 un nombre impair. Le nombre d'isométries parmi les 6 composées est toujours **pair** (0, 2, 4 ou 6 : 14, 27, 13 et
+4 cas), mais la relation « ψ_R est une isométrie » s'écrit d_{PR} = d_{P'R}, où d_{PR} = L_{PR}(1,1) prend 3 valeurs.
+Ce n'est pas une parité additive. Il faudra combiner (C) avec (B), (D) ou (E) ; les calculs de L8 (UNSAT en 2 114 s
+sans cassage de symétrie) indiquent une contradiction plus profonde.
