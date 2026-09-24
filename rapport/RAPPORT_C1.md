@@ -116,6 +116,9 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - Les sous-matrices principales de A − 3I sur B₁(x) ∪ étoile(a) ne dépendent que de τ_a ; le bloc du moulin est
   inversible mod 7. D'où k ≥ rang₇ du complément de Schur, et le calcul exhaustif (10 395 τ_a) donne
   **rang = 11 − 2·(nombre de cycles pairs du graphe de classes de τ_a)**.
+- **Mise à jour 02 h 40 : k ≥ 10** (L20 bis à la main : k = 6 exclu ; L20 ter, calcul exact petit : k = 8 exclu),
+  via la formule locale exacte k = rank₇(H + 4I + 3S + P' + 5J) et les relations de lignes forcées par les étoiles.
+  Donc rank₇(A − 3I) ∈ {25, 27, …, 45}. La méthode à une étoile s'arrête là.
 - Donc **k ≥ 6** partout ; **k = 6 ⟹ P = 0** (torsion maximale en tout sommet) ; **P ≥ 1 ⟹ k ≥ 8** ; une étiquette
   non tordue ⟹ k ≥ 12. Pas de contradiction (aucune borne supérieure sur k n'est connue), mais c'est la réponse
   partielle à la question « comprendre k » posée en notes/93.
@@ -161,7 +164,7 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 ## 5. Nouveau à ma connaissance (bibliographie vérifiée en texte intégral le 25/09, notes/94)
 - **L1 n'est pas nouveau** : c'est le théorème 2 de Makhnev (1988), avec une autre preuve.
 - La lecture « Γ = H(7,3) replié au rayon 2, obligatoirement tordu », et la torsion comme compression.
-- L7 (preuve humaine par parité des décalages diagonaux), L9' (règle locale nouvelle), L20 (k ≥ 6, lien k–torsion), L16, L18, L19 :
+- L7 (preuve humaine par parité des décalages diagonaux), L9' (règle locale nouvelle), L20 (lien k–torsion, k ≥ 10), L16, L18, L19 :
   aucun équivalent trouvé dans la littérature.
 - Les géométries tordues comme témoins ; la famille tri-incidence (q = 3, 5, 7 ; échec pour q pair).
 - L7–L11 (exclusions locales exactes) ; L9 à la main.
