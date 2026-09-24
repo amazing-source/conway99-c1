@@ -62,3 +62,9 @@
   Σ(18 − e(G)) = 2n₃ − S/2, défaut euclidien |Σ_G p|² = 18(18 − e) ; opérateur de défaut Δ ⪰ 0 sur E₋₄.
   Matrice des réflexions Z (= J − I − A si non tordu ; masse à distance 3 sur les géométries tordues).
   Pas de contradiction. notes/90_SECONDE_VARIABLE.md.
+- Suite : borne de Delsarte locale sur le schéma des étiquettes (B₇, 6 relations) : traces exactes de H par
+  composante irréductible de K, toutes les contraintes automatiquement satisfaites (résultat négatif, vérifié :
+  comptages par relation exacts en chaque sommet des 5 géométries). Piste U_x = (2H+1)σ_x (similitude de norme 49
+  sur K, valeurs propres entières algébriques de norme 49 créées par la torsion) notée, sans contradiction.
+  Lecture du dépôt C3 (étincelle = décomposition Z[C₃] → Z × Z[ω] et matrice d'Eisenstein M² + M = 12I, puis
+  calcul) : repose sur la symétrie, pas transposable tel quel à C1.

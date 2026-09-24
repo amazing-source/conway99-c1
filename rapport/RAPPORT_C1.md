@@ -65,6 +65,22 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   essayées (drapeaux, graphe des droites, conditions locales, tous degrés) vont dans le même sens ; une
   contradiction demanderait une borne *inférieure* sur P, que je n'ai pas.
 
+## 1 quinquies. Nuit du 2026-09-24 : la seconde variable libre, et des résultats négatifs (notes/90)
+- **L18 (nouveau, vérifié par comptage direct)** : dans srg(n,k,1,2), les fréquences d'ordre 7 de Reimbayev
+  dépendent de deux statistiques de torsion, n₃ = ½Σ|W| et **S = nombre de couples (x, E) avec E adjacent à σ_x(E)**
+  (σ_x = réflexion ponctuelle, involution de Bondarenko–Radchenko ; S = nombre de coïncidences τ_a(c) = τ_c(a)).
+  z₁₁ = 4n₃ − 2S, et le polygone d'ordre 7 est exactement 0 ≤ S ≤ n₃. Avec L16 : 705 ≤ n₃ ≤ 4158, 0 ≤ S ≤ n₃.
+- **Grilles avortées** : pour chaque sommet et chaque paire de classes, les 9 points de la grille potentielle ont une
+  projection sur E₋₄ de norme² 18·(nombre d'arêtes manquantes) ; somme totale 2n₃ − S/2. Toute la torsion est dans
+  un opérateur de défaut Δ (entier, nul ssi Γ est non tordu, positif sur E₋₄).
+- **Résultat négatif** : la borne de Delsarte locale sur le schéma des étiquettes (B₇, 6 relations) est triviale ;
+  les traces exactes de H sur les trois composantes irréductibles de K ne plafonnent pas la torsion.
+- **Piste arithmétique propre à C1** : U_x = (2H + 1)σ_x est une similitude entière de norme 49 sur K ; la torsion y
+  crée des valeurs propres qui sont des entiers algébriques de norme 49 (par exemple 3 − 5ω). C'est l'analogue, sans
+  symétrie, de la structure d'Eisenstein de C3. Aucune contradiction obtenue.
+- Lecture de Bondarenko–Radchenko (JCTB 2013) : leur preuve (σ_v automorphismes ⇒ F₃-espace ⇒ n = 3^m) échoue
+  pour 99 parce que g = 44 > k = 14 : il reste 30 dimensions libres par sommet, et c'est là que vit la torsion.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
