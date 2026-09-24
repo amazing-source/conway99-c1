@@ -240,6 +240,13 @@ tr U_x² = 8e_σ(x) − 602. Si k = 0 : U_x/7 est entière d'ordre fini, s(x) �
 de B₁(x) (sur Γ₂(x) ces combinaisons sont additives en étiquettes, et les paires où elles doivent s'annuler
 contiennent assez de triangles pour tout annuler). Le cas k = 0 de L19 est donc vide.
 
+## L20. L'invariant 7-adique k est borné par le type de torsion de chaque étiquette.   [calcul exhaustif exact] (notes/97)
+*Énoncé.* Pour tout sommet x et toute étiquette a : k ≥ 11 − 2e(τ_a), où e(τ_a) est le nombre de cycles pairs du
+multigraphe induit par τ_a sur les 6 autres classes. Donc k ≥ 6 ; k = 6 ⟹ tous les τ_a échangent leurs classes par
+paires ⟹ P = 0 ; P ≥ 1 ⟹ k ≥ 8 ; une étiquette non tordue ⟹ k ≥ 12.
+*Preuve.* Sous-matrice principale de A − 3I sur B₁(x) ∪ étoile(a), déterminée par τ_a ; bloc du moulin inversible
+mod 7 ; k ≥ rang₇ du complément de Schur, calculé pour les 10 395 couplages (`code/star_rank7.py`) ; k pair (L2). ∎
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

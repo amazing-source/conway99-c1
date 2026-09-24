@@ -121,3 +121,8 @@
   ⟨T_P,T_L⟩ = −231·4,5/(28√28), d'où ‖T_L‖² ≥ 0,734 et P ≤ 1151,08. **Correct.** Filtre des 728 motifs confinés à
   3 classes par les règles humaines L9', L12, L13 : 560 survivent (la propagation n'en laissait que 28) ; L11 à la main
   hors de portée cette nuit.
+- Nuit (04:00). **L20** : sous-matrices principales de A − 3I sur B₁(x) ∪ étoile(a) (déterminées par τ_a), bloc du
+  moulin inversible mod 7, d'où k ≥ rang₇ du complément de Schur. Calcul exhaustif sur les 10 395 τ_a :
+  **rang = 11 − 2·(nombre de cycles pairs du graphe de classes de τ_a)**. Donc **k ≥ 6** (au lieu de 2) ; k = 6 ⟹
+  P = 0 ; P ≥ 1 ⟹ k ≥ 8 ; une étiquette non tordue ⟹ k ≥ 12. Premier lien démontré entre k et la torsion
+  (notes/97). Pas de borne supérieure sur k : pas de contradiction.
