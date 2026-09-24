@@ -33,6 +33,14 @@ def tau_case(case):
         swap((0, 0), True); swap((0, 1), True)
     elif case == 'g19AB':
         swap((0, 0), True); swap((0, 1), False)
+    elif case.startswith('spec:'):
+        # spec:LABEL/J/K/P;...  e.g. spec:00/5/6/1;21/5/6/1  (label (0,0) swaps classes 5,6, sign-preserving=1)
+        for item in case[5:].split(';'):
+            lab, j, k, p = item.split('/')
+            a = (int(lab[0]), int(lab[1])); j, k, p = int(j), int(k), int(p)
+            for s_ in (0, 1):
+                b, c = (j, s_), (k, s_ if p else 1 - s_)
+                tau[a][b], tau[a][c] = c, b
     elif case != 'hamming':
         raise ValueError(case)
     for a in LABELS:

@@ -101,6 +101,27 @@ aurait deux voisins communs, contre λ = 1.
 **Lemme local L9 (généralisation).** Si τ_a(c) ≠ c̄, τ_c(a) = ā et τ_ā(c̄) = c, alors au moins une grille
 G_{[c],m}, m ∉ {[a],[c]}, manque en x. (Même preuve.)
 
+## L12. Règle de propagation de la torsion (preuve à la main, valable dans toute géométrie locale).   [P] [C]
+*Énoncé.* En un sommet x, soient a, c des étiquettes de classes différentes avec τ_a(c) ≠ c̄. Alors τ_c(ā) ≠ a, ou il
+existe une étiquette y hors des classes de a et de c avec τ_y(c) ≠ c̄.
+*Preuve.* Supposons τ_c(ā) = a et τ_y(c) = c̄ pour tout y hors de [a] ∪ [c].
+(1) Pour un tel y : c̄ et cy sont à distance 2 (voisin commun c) ; yc̄ est un second voisin commun (yc̄ ∋ c̄, et
+cy ~ yc̄ car τ_y(c) = c̄) ; comme μ = 2, aucun autre sommet contenant c̄ n'est voisin de cy ; en particulier ac̄ ≁ cy.
+(2) c et ac̄ sont à distance 2 (voisin commun c̄) ; le second voisin commun est un voisin de c autre que x, c̄, donc un
+sommet cz de X adjacent à ac̄ : z ≠ a (car τ_a(c) ≠ c̄), z hors de [a] ∪ [c] est exclu par (1), donc z = ā : cā ~ ac̄.
+(3) a et cā sont à distance 2 ; or ā, ac (cā ~ ac car τ_c(ā) = a) et ac̄ (par (2)) sont trois voisins communs,
+contre μ = 2. ∎
+Seuls λ = 1 et « μ = 2 à distance 2 » servent : L12 vaut dans toute géométrie localement (t+1)K₂.
+*Contrôle.* Vérifié sur les géométries tordues (20, 39, 42, 93 sommets) : 0 violation sur 12 828 paires tordues.
+*Provenance.* Extrait automatiquement (`explain_up.py`) : la réfutation par propagation des trois cas g = 19 utilise
+exactement les 12 équations de cette preuve.
+*Conséquences à la main (`l12_closure.py`).* En notant W(a, j) « a tord la classe j » (ne dépend que de la classe ;
+0 ou ≥ 2 classes par étiquette), L12 donne : si W(a, j), chaque étiquette c de j tord [a], ou une étiquette d'une
+troisième classe tord j. D'où, **sans ordinateur** : une étiquette tordue seule est impossible, une seule classe tordue
+aussi. L12 seule permet encore 2 étiquettes (de classes différentes, tordant la même paire de classes) ou un triangle
+de 3 classes — les SAT montrent que ces motifs meurent aussi (L11) ; les règles supplémentaires sont en cours
+d'extraction.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

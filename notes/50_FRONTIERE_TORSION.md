@@ -20,9 +20,20 @@ la configuration (ou la famille) **en tout sommet de tout srg(99,14,1,2)** — d
 | g(x) = 19 (3 configurations) | **UNSAT par propagation** (L10) | 0,0 s | relâché SAT ; aussi sans serrage ; preuve humaine de g19A |
 | torsions confinées à 3 classes | **UNSAT** (L11) | 1,2 s | relâché SAT |
 | une seule étiquette tordue | **UNSAT par propagation** | 0,0 s | relâché SAT |
-| torsions confinées à 4 classes | en cours | | |
-| une classe entière tordue (S = {(0,0),(0,1)}) | en cours | | |
+| une classe entière tordue (S = {(0,0),(0,1)}) | **UNSAT par propagation** | 0,0 s | relâché SAT ; aussi par L12 à la main |
+| torsions confinées à 4 classes | en cours (recherche) | > 20 min | |
+| sources {(0,0),(1,0)} / {(0,0),(1,0),(2,0)} / deux classes | en cours (recherche) | > 20 min | |
+| motif triangle (3 étiquettes, 3 classes), échanges préservant | UNSAT (1 équation : 3-cycle étiqueté) | 0 s | |
+| motif triangle, un échange renversant | UNSAT par propagation (12 équations) | 0 s | |
+| motif « 2 étiquettes tordant la même paire de classes » | non réfuté par propagation | — | demande une recherche |
 | τ aléatoire (0 grille) | non décidé (propagation ne réfute pas) | > 9 min | — |
+
+## Extraction de preuves humaines (`explain_up.py`)
+Quand la propagation unitaire réfute une configuration, on remonte le graphe d'implications jusqu'aux équations SRG
+d'origine. Pour les trois cas g = 19, **12 équations** suffisent, et elles donnent la règle **L12** (30_LEMMES.md),
+prouvée à la main et valable dans toute géométrie locale (vérifiée sur les exemples tordus : 0 violation).
+L12 seule (`l12_closure.py`) redémontre sans ordinateur qu'une étiquette seule ou une classe seule ne peut pas être
+tordue ; elle laisse passer 2 étiquettes (même paire de classes tordue) et le triangle de 3 classes.
 
 ## Lecture
 - Les configurations **presque non tordues** tombent vite, souvent par propagation : la contrainte μ = 2 sur toutes les
