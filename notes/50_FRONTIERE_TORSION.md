@@ -21,8 +21,8 @@ la configuration (ou la famille) **en tout sommet de tout srg(99,14,1,2)** — d
 | torsions confinées à 3 classes | **UNSAT** (L11) | 1,2 s | relâché SAT |
 | une seule étiquette tordue | **UNSAT par propagation** | 0,0 s | relâché SAT |
 | une classe entière tordue (S = {(0,0),(0,1)}) | **UNSAT par propagation** | 0,0 s | relâché SAT ; aussi par L12 à la main |
-| torsions confinées à 4 classes | en cours (recherche) | > 20 min | |
-| sources {(0,0),(1,0)} / {(0,0),(1,0),(2,0)} / deux classes | en cours (recherche) | > 20 min | |
+| torsions confinées à 4 classes | **non décidé** (arrêté à 81 min, pression mémoire du portable) | — | à relancer sur le PC du labo |
+| sources {(0,0),(1,0)} / {(0,0),(1,0),(2,0)} / deux classes | **non décidé** (arrêtés à 73 min, même raison) | — | à relancer sur le PC du labo |
 | motif triangle (3 étiquettes, 3 classes), échanges préservant | UNSAT (1 équation : 3-cycle étiqueté) | 0 s | |
 | motif triangle, un échange renversant | UNSAT par propagation (12 équations) | 0 s | |
 | motif « 2 étiquettes tordant la même paire de classes » | non réfuté par propagation | — | demande une recherche |

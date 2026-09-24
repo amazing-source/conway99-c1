@@ -22,3 +22,7 @@
 - Correction : le serrage des grilles (L5) est propre à 99 (9(k−4) = n−9), pas vrai dans BvLS — la validation du
   modèle « point de Hamming » ne peut pas utiliser BvLS.
 - Lancé : modèle exact « point de Hamming » t = 6 (Cadical, 30 min, plafond 4 Go).
+- 13:57 Mémoire du portable critique pendant une pause : Claude Code a coupé les boucles d'attente. Les 4 modèles
+  « familles » (confined 0123, sources 00,10 / 00,10,20 / 00,01,10,11 ; ~650 Mo chacun, 73–81 min sans verdict)
+  ont été arrêtés volontairement pour libérer la RAM (5,6 Go libres ensuite). À relancer sur le PC du labo.
+  Les 3 recherches tri-circulantes t = 6 (N = 34…45, ~80 Mo chacune) continuent (arrêt automatique à 3 h).
