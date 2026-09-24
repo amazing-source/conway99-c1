@@ -108,6 +108,10 @@ torsion, mate ailleurs) : UNSAT en 1,2 s ; contrôle relâché SAT (notes/50). *
 contrôle positif BvLS. À ne pas utiliser pour élaguer une construction tant que ce n'est pas certifié.
 
 ## L10. Aucun sommet n'est dans exactement 19 grilles : g(x) ≤ 18 pour tout x.   [P] (2026-09-25, via L9') [calcul exact]
+*Portée exacte.* g(x) = 19 : preuve humaine (L9' ; la classification des configurations à 19 grilles se refait à la
+main : deux grilles manquantes G_{ij}, G_{ik}, donc seules les étiquettes de la classe i sont tordues, et elles
+échangent les classes j et k). g(x) = 20 : impossible par parité (une torsion casse deux grilles). g(x) = 21 : c'est
+L8, qui reste **calcul SAT non certifié**. « g(x) ≤ 18 » dépend donc encore de L8.
 *Énoncé.* À symétrie près, g(x) = 19 n'admet que trois configurations de τ en x (τ_{i±} échangent deux classes j, k,
 tout le reste mate) ; les trois sont réfutées **par simple propagation unitaire** des équations SRG
 (`rooted_model.py --case g19A|g19AA|g19AB`), avec ou sans les contraintes de serrage ; le contrôle relâché
