@@ -108,3 +108,9 @@ D'où, pour **tout** sommet x :
 Sur K (Mv = 0, v ⊥ 1) elle agit comme H − 3I, ce qui redonne L4. Sur une étoile elle se réduit à H_τ + P' + J (L20).
 C'est une expression de l'invariant global k par la seule structure de Γ₂(x). Il resterait à la calculer sur des
 modèles, mais aucun modèle de Γ₂(x) n'est connu (c'est le problème).
+
+## Étalonnage sur BvLS (243, 22, 1, 2), où r − s = 9 et le premier concerné est 3
+Calcul direct (sympy, GF(3)) : rank₃(A − 4I) = 67 (borne de van Eijl : min(f, g) + 1 = 111). Le bloc du moulin
+B₁(x) (23 sommets) a un 3-rang de 13 seulement, **pas inversible** : la formule exacte par complément de Schur est donc
+propre à 99, où F − 3I est inversible mod 7. La borne par sous-graphe reste vraie : rang₃ sur B₁(x) ∪ étoile(a)
+(τ_a = mate) = 31 ≤ 67. Pas d'incohérence.
