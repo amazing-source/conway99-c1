@@ -14,6 +14,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 4. `notes/30_LEMMES.md` — ce qui survit, avec preuves.
 5. `notes/40_POINT_DE_HAMMING.md`, `notes/50_FRONTIERE_TORSION.md` — exclusions locales exactes (SAT).
 6. `notes/60_HODGE.md` — route Hodge / Σν³ : réfutation du confinement, identités par blocs, bibliographie.
+6 bis. `notes/70_KREIN_DROITES.md` — **L16 : P ≤ 1151 par une condition de Krein sur les droites (preuve à la main)**.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
 
 ## État (2026-09-24, soir)
@@ -23,6 +24,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 - Lemmes arithmétiques L2–L4 (7-adiques). Exclusions locales exactes L7–L11, L14 (frontière : g(x) ≤ 17, une ou deux
   étiquettes tordues impossibles sauf |C| = 5 à finir, 24/128 motifs à trois étiquettes UNSAT).
 - Identité L15 : P = 1386 − ⅙Σ|W| ; confirmée indépendamment (Reimbayev 2026).
+- **L16 (mathématique pure)** : P ≤ 1151 prismes, donc torsion moyenne ≥ 14,2 par sommet ; seconde preuve que Γ est tordu.
 - Route Hodge / Σν³ **close** : le confinement du spectre est faux pour tout SRG de la famille (BvLS), et borner
   Σν³ revient à majorer la torsion totale, ce qu'aucune méthode connue ne fait (notes/60).
 - Calculs de volume : PC du labo (`LAB_INSTRUCTIONS_C1.md`) ; sur ce portable, un seul calcul lourd à la fois.

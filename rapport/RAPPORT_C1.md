@@ -54,6 +54,17 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - **Bilan.** Borner Σν³ = majorer la torsion totale n₃ ; aucune méthode connue ne le fait ; c'est équivalent à
   « tout SRG PQ(2,t,2) est grid-full », au moins aussi dur que l'unicité de BvLS.
 
+## 1 quater. Nouveau résultat mathématique (sans SAT) : P ≤ 1151 (notes/70, lemme L16)
+- Dans l'espace propre E₋₄ (dimension 44), les 231 droites donnent des vecteurs dont les produits scalaires ne
+  dépendent que de la configuration locale ; les 7 droites par un point y sont **deux à deux orthogonales** (fait
+  propre à 99). La somme des cubes de ces produits est une norme au carré, donc ≥ 0, ce qui donne
+  **12P = 13860 − 64‖Σ_L u_L^{⊗3}‖²**, d'où P ≤ 1155, et P ≤ 1151 en ajoutant les points.
+- Conséquences : Γ est tordu (nouvelle preuve de L1, spectrale) ; torsion moyenne ≥ 14,2 paires par sommet ; au
+  moins 705 paires de droites reliées par 2 arêtes. Démonstration de quelques lignes, vérifiable à la main.
+- Limite honnête : c'est une condition nécessaire, pas une contradiction. Toutes les inégalités de ce type
+  essayées (drapeaux, graphe des droites, conditions locales, tous degrés) vont dans le même sens ; une
+  contradiction demanderait une borne *inférieure* sur P, que je n'ai pas.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet

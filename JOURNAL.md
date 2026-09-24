@@ -39,3 +39,10 @@
   constantes (z₁₇₆ probablement 1/8 et non 1/84, plus un écart B(k+6)) ; à (99,14) la non-négativité ne donne que
   0 ≤ n₃ ≤ 4158. Lou–Murin 2014 (PRIMES) : faits locaux (π(L) ≠ 11). Thakkar–Severini 2026 : CP-SAT, rien de neuf.
 - 17:08 Route Hodge / Σν³ close (notes/60_HODGE.md). Rapport, README, notes 10/20/30 mis à jour.
+- 17:20 L'utilisateur (frustré par le faux espoir, et sans moyens de calcul) demande une voie mathématique, pas du
+  SAT. Nouvelle idée : conditions de Krein pour des configurations dérivées. **L16 : P ≤ 1151** (droites dans E₋₄ ;
+  la somme des cubes des produits scalaires est une norme au carré). Contrôle BvLS exact. Tentatives de
+  renforcement (drapeaux, graphe des droites, Krein locales sur H, degrés ≤ 16) : rien de plus, et aucune borne
+  inférieure sur P. notes/70_KREIN_DROITES.md.
+- Incident mineur : TaskStop n'a pas tué le processus python enfant du venv (il a tourné ~12 min, un cœur) ; tué à
+  la main. Tous les calculs de cette heure sont instantanés (formules), aucun calcul lourd.

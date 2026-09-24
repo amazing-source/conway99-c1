@@ -156,6 +156,17 @@ fréquences d'ordre 7 vaut 3(P_max − P) = ½ Σ_x |W(x)| (via z₃₉ = (n −
 majorer n₃ ; ni Hodge (confinement réfuté : théorème H0) ni le comptage d'ordre ≤ 7 (borne triviale n₃ ≤ 4158) ne
 le font. Identités par blocs H1–H3, dont ||[Q, B_T]||² = 24(P_max − P) = 4Σ|W| : notes/60_HODGE.md.
 
+## L16. Condition de Krein pour les droites : P ≤ 1151.   [P] (preuve à la main, notes/70)
+*Énoncé.* Avec u_L = projection unitaire de 1_L sur E₋₄ (dim 44) : **12P = 13860 − 64‖Σ_L u_L^{⊗3}‖²**, donc
+P ≤ 1155 ; avec les points (Cauchy–Schwarz sur les tenseurs cubiques), **P ≤ 1151**. Équivalents : Σ_x|W(x)| ≥ 1410
+(moyenne ≥ 14,2), n₃ ≥ 705, prismes par droite ≤ 10 en moyenne (grid-full : 12).
+*Preuve.* Dans E₋₄, 7⟨w_L,w_M⟩ = 4 (L = M), 0 (sécantes : les 7 droites par un point sont orthogonales), 1 − e
+(disjointes, e arêtes) ; par droite n₃ = π, n₂ = 36 − 3π, n₁ = 144 + 3π, n₀ = 32 − π ; Σ_M K³ = 60 − 6π(L) ; la somme
+des cubes des produits scalaires est la norme au carré de Σ u^{⊗3}. ∎
+*Contrôle.* BvLS : formules et somme des cubes vérifiées numériquement à 1e-13. Propre à 99 dans la famille.
+*Portée.* Borne supérieure sur les prismes (torsion forte obligatoire), obtenue sans ordinateur ; pas une
+contradiction : il manquerait une borne inférieure sur P.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 
