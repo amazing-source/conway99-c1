@@ -148,14 +148,34 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 | F17 torsion ⇒ plan projectif d'ordre t | ouverte, affaiblie (2e géométrie t = 3 non planaire) ; t = 6 tri-circulant : N = 34 aucune solution, N ≤ 60 en cours |
 | F9, F10, F12, F13, F18 | encodages / non tranchées |
 
-## 5. Nouveau à ma connaissance (à confronter à la bibliographie)
+## 5. Nouveau à ma connaissance (bibliographie vérifiée en texte intégral le 25/09, notes/94)
+- **L1 n'est pas nouveau** : c'est le théorème 2 de Makhnev (1988), avec une autre preuve.
 - La lecture « Γ = H(7,3) replié au rayon 2, obligatoirement tordu », et la torsion comme compression.
+- L7 (preuve humaine par parité des décalages diagonaux), L9' (règle locale nouvelle), k ≥ 2, L16, L18, L19 :
+  aucun équivalent trouvé dans la littérature.
 - Les géométries tordues comme témoins ; la famille tri-incidence (q = 3, 5, 7 ; échec pour q pair).
 - L7–L11 (exclusions locales exactes) ; L9 à la main.
 - L2–L4 (dérivation indépendante ; des énoncés voisins existent peut-être chez Brouwer–van Eijl).
 
 ## 6. Pour le PC du labo
 1. Contrôle positif t = 10 du modèle enraciné (BvLS doit être SAT) — valide le code générique.
-2. Certificats DRAT pour L7, L8, L10, L11.
+2. Certificats DRAT pour L8 et L11 (L7 et L10 ont maintenant des preuves humaines ; L8 est le plus important :
+   c'est le seul appui de « g(x) ≤ 18 » pour g = 21).
 3. Poursuivre la frontière : confined(K), |K| = 4, 5, 6 ; sources(S) croissants ; familles « g(x) ≥ G ».
 4. Tri-circulants t = 6 au-delà de N = 60 ; graphes de Cayley tordus d'ordre 100–200.
+
+## 7. Feuille de route (fin de la nuit du 25/09), par ordre de priorité
+1. **L8 à la main.** Point de départ (notes/95) : règle de transport, triangles de Kneser sans arête non isométrique
+   isolée, image « code de Golay factice » (bijection v ↦ z₁₂(v), cohérence impossible par 10/3). Il manque
+   l'exclusion des configurations incohérentes. Sinon, DRAT sur le PC du labo.
+2. **Méthode d'Akiyama** (notes/96) : forme discriminante des repères serrés L₋₄ (rang 30, constante 56) et L₃
+   (rang 40, constante 105), complétion unimodulaire paire (rang 32 ?), identité thêta harmonique de degré 2 dans
+   S₁₈. D'abord un contrôle sur BvLS. Plusieurs jours de travail, faisable sur le portable.
+3. **Pour la session C2** : L7 a maintenant une preuve humaine de quelques lignes. La lecture « matrice d'orbites
+   modulo 2 » (notes/95) montre que l'obstruction vient du motif de blocs d'un point de Hamming ; tester si des
+   configurations presque de Hamming (quelques grilles manquantes) gardent une parité impaire.
+4. **L11 à la main** : outils `core_extract.py` / `core_family.py` / `explain_up.py`. Le noyau de la famille a 112
+   équations ; il vaut mieux extraire les noyaux des 28 motifs survivant à la propagation, un par un.
+5. Ce qui ne marche pas, à ne pas refaire : second moment de Δ (notes/93), hiérarchie de comptage jusqu'à l'ordre 8
+   et ses positivités (notes/91), Krein et Gegenbauer sur les droites au-delà de L16 (notes/70), méthodes de
+   Wilbrink–Brouwer (57), de Reimbayev (19) et de Shpectorov–Zhao (85) (notes/94), parités d'holonomie (notes/94).
