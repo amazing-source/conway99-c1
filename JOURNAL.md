@@ -82,3 +82,7 @@
   (question de l'utilisateur) : SAT (Keramatipour 2026) et heuristiques (Thakkar–Severini 2026) échouent ; RRR
   jamais appliqué aux SRG à notre connaissance. Message de la session C2 : corrections de rigueur faites (|Aut|,
   L8, L11, deux étiquettes), réponse envoyée. notes/92_CONSTRUCTION.md. Étalonnage long (1 h) en cours.
+- Plafond « 70 % » : score de Thakkar–Severini (4950 contraintes) ; expérience témoin par recuit simulé, 8 min par
+  graphe : 99 → 59 % ; SRG existants : Hoffman–Singleton 83 %, Gewirtz 64 %, BvLS 49 %, M22 42 %, Brouwer–Haemers
+  35 %, Higman–Sims 31 % ; aucun retrouvé. Le plateau est algorithmique, pas un signe de non-existence. Session C2
+  informée (un échec heuristique sur C2 ne serait pas informatif). notes/92 §4.

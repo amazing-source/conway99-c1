@@ -34,3 +34,27 @@ symétrie. L'analogue q = 2 existant (Gewirtz) est tordu au maximum : l'hypothè
 | **Brouwer–Haemers srg(81,20,1,6)** (λ = 1) | **non trouvé** en 10 min (générique, et par droites, 2 graines) |
 Ordre de grandeur : même si Γ existe, la densité des solutions est ~10⁻¹³⁰⁴ contre ~10⁻⁸⁶⁰ pour srg(81,20,1,6).
 Une méthode qui ne trouve pas srg(81,20,1,6) n'a pratiquement aucune chance sur 99 : on étalonne d'abord.
+
+## 4. Le « plafond à 70 % » (question de l'utilisateur) : expérience témoin
+Score de Thakkar–Severini : 4950 contraintes (99 degrés + 4851 paires : λ sur 693 arêtes, μ sur 4158 non-arêtes).
+Leur record : 3501/4950 = 70,73 % (549/693 λ, 2853/4158 μ). Ils n'expliquent pas le plateau (« optimum local strict
+pour nos mouvements 2-opt, pas une borne globale »), sans borne ni témoin. Le seul plafond démontré concerne les
+circulants (68,0 % = 33 classes de distance sur 49). Le recuit de la branche involution (première session) calait à
+une énergie de 1550–1650, mais c'est une somme d'écarts dans le modèle quotient, pas la même mesure.
+**Témoin** (`code/sa_srg.py`, recuit simulé à degrés fixés, même score, 8 min chacun, graine 1, vérification exacte) :
+| graphe | existe ? | score |
+|---|---|---|
+| srg(99,14,1,2) | ? | 59,3 % |
+| Hoffman–Singleton srg(50,7,0,1) | oui | 82,9 % |
+| Gewirtz srg(56,10,0,2) | oui | 64,1 % |
+| BvLS srg(243,22,1,2) (même famille) | oui | 49,2 % |
+| M22 srg(77,16,0,4) | oui | 41,7 % |
+| Brouwer–Haemers srg(81,20,1,6) | oui | 35,1 % |
+| Higman–Sims srg(100,22,0,6) | oui | 30,7 % |
+**Lecture.** Aucun SRG existant de cette taille n'est retrouvé, et la plupart scorent *moins* que 99. Le pourcentage
+reflète surtout la ligne de base fixée par les paramètres (probabilité qu'une paire aléatoire ait le bon nombre de
+voisins communs : ~29 % pour 99, ~13 % pour Higman–Sims, ~37 % pour Hoffman–Singleton), pas l'existence. Le plateau
+est un phénomène d'algorithme (paysage rugueux, bassin de la solution minuscule), pas une propriété de 99. Le
+dépasser ne prouverait rien tant qu'on n'atteint pas 100 % ; ne jamais le dépasser ne prouverait rien non plus,
+puisque les graphes existants de même taille ne sont pas atteints. Seule une borne démontrée (score maximal < 100 %)
+serait une preuve, et elle équivaut à la non-existence.
