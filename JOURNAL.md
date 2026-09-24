@@ -111,3 +111,7 @@
   L₋₄ = 24I + 2J − 8H − 3S − P' (84 vecteurs de norme 20 en rang 30, constante 56) et L₃ = 60I − 2J + 15H − 4S + P'
   (norme 50 en rang 40, constante 105). La transposition n'est pas immédiate (repère peu dense, constante paire 56
   avec la partie 7 = k de L19, complétion en rang ≥ 32 où S₁₈ ≠ 0). Plan écrit. notes/96.
+- Nuit (03:00). Noyaux UNSAT minimaux (`core_extract.py`, `core_family.py`, sélecteurs par équation) : les trois cas
+  g19 ont le **même noyau de 7 contraintes**, d'où un lemme local nouveau **L9'** (τ_a(c) ≠ c̄ et τ_{c̄}(a) = ā ⇒ une
+  grille G_{[c],m} manque) et une **preuve humaine complète de L10** (g(x) ≤ 18). L11 : noyau minimal de 112 équations,
+  trop gros pour la main.

@@ -107,7 +107,7 @@ font intervenir que 3 classes. *Calcul.* `rooted_family.py K` avec |K| = 3 (τ l
 torsion, mate ailleurs) : UNSAT en 1,2 s ; contrôle relâché SAT (notes/50). *Non fait* : second encodage, DRAT,
 contrôle positif BvLS. À ne pas utiliser pour élaguer une construction tant que ce n'est pas certifié.
 
-## L10. Aucun sommet n'est dans exactement 19 grilles : g(x) ≤ 18 pour tout x.   [calcul exact] [P partielle]
+## L10. Aucun sommet n'est dans exactement 19 grilles : g(x) ≤ 18 pour tout x.   [P] (2026-09-25, via L9') [calcul exact]
 *Énoncé.* À symétrie près, g(x) = 19 n'admet que trois configurations de τ en x (τ_{i±} échangent deux classes j, k,
 tout le reste mate) ; les trois sont réfutées **par simple propagation unitaire** des équations SRG
 (`rooted_model.py --case g19A|g19AA|g19AB`), avec ou sans les contraintes de serrage ; le contrôle relâché
@@ -116,6 +116,21 @@ tout le reste mate) ; les trois sont réfutées **par simple propagation unitair
 disjoint de u contient (1,1) ; le serrage de G_{1m}, m ≥ 2, ne laisse que w = {(0,1),(1,1)} ; alors
 z = {(1,0),(0,1)} est voisin de u (via τ_{(1,0)} = mate) et de w (via τ_{(0,1)} = mate), et l'arête étiquetée u–z
 aurait deux voisins communs, contre λ = 1.
+**Lemme local L9' (nouveau, 2026-09-25 ; noyau SAT minimal de 7 contraintes, identique pour g19A, g19AA, g19AB).**
+*Énoncé.* Si τ_a(c) ≠ c̄ et τ_{c̄}(a) = ā, alors au moins une grille G_{[c],m}, m ∉ {[a],[c]}, manque en x.
+*Preuve.* Supposons toutes ces grilles présentes. (i) Serrage : l'unique voisin de z₂ = {a, c} dans G_{[c],m} est
+son étiquette c, donc z₂ n'a aucun voisin dans Q_{[c],m}. (ii) μ(c̄, z₂) = 2 : un voisin commun est c ; l'autre est un
+sommet de Γ₂(x) d'étiquette c̄ voisin de z₂, donc dans Q_{[a],[c]} par (i), c'est-à-dire {a, c̄} ou {ā, c̄}. Or
+{a, c̄} ≁ z₂, car la droite par a et z₂ est {a, z₂, {a, τ_a(c)}} avec τ_a(c) ≠ c̄. Donc z₂ ~ z₁ := {ā, c̄}.
+(iii) a et z₁ ne sont pas adjacents, mais ā (mate de a, étiquette de z₁), {a, c̄} (voisin de z₁ car τ_{c̄}(a) = ā) et
+z₂ (par (ii)) sont trois voisins communs : contradiction avec μ = 2. ∎
+*Preuve humaine complète de L10.* Dans les trois configurations g19A, g19AA, g19AB (a = (0,0) tord la classe 1 vers
+la classe 2 ; les transitions des étiquettes de la classe 1 sont mates ; les grilles G_{1m}, m ≥ 2, sont présentes),
+prendre c = (1,1) : τ_a(c) = (2,·) ≠ c̄ et τ_{c̄}(a) = ā. L9' donne la contradiction. (`code/core_extract.py` :
+noyaux minimaux, tous formés de μ(0a, {0b,1a}), μ(1a, {0a,1b}) et du serrage de {0a,1b} dans G_{12}, …, G_{16}.)
+*Remarque.* L9' seul n'exclut que 24 des 728 configurations tordues confinées à 3 classes (L11). Le noyau minimal de
+L11 compte 112 équations, dont la « partie Hamming » des classes non tordues : pas de preuve courte en vue.
+
 **Lemme local L9 (généralisation).** Si τ_a(c) ≠ c̄, τ_c(a) = ā et τ_ā(c̄) = c, alors au moins une grille
 G_{[c],m}, m ∉ {[a],[c]}, manque en x. (Même preuve.)
 
