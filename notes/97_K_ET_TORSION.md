@@ -114,3 +114,25 @@ Calcul direct (sympy, GF(3)) : rank₃(A − 4I) = 67 (borne de van Eijl : min(f
 B₁(x) (23 sommets) a un 3-rang de 13 seulement, **pas inversible** : la formule exacte par complément de Schur est donc
 propre à 99, où F − 3I est inversible mod 7. La borne par sous-graphe reste vraie : rang₃ sur B₁(x) ∪ étoile(a)
 (τ_a = mate) = 31 ≤ 67. Pas d'incohérence.
+
+## L20 bis : k = 6 est impossible, donc **k ≥ 8** (preuve à la main)
+Par la formule locale exacte, k = rank₇(M_x) avec M_x = H + 4I + 3S + P' + 5J (84 × 84 sur F₇), et pour
+y = {a,b} ∈ étoile(a), z = {ℓ,q} ∌ a : M_x[y,z] = H_{yz} + 3[b ∈ z] + [ā ∈ z] + [b̄ ∈ z] + 5 (vérifié exactement :
+bloc étiquettes de (F − 3I)⁻¹ = −(3/8)I − (1/8)P + J/16 ; correction ≡ 4s + 6p' + 2 mod 7).
+*Preuve.* Supposons k = 6.
+1. Par L20, chaque étoile a un bloc de rang 11 − 2e ≤ 6, donc 5 : τ_a est de type (2,2,2).
+2. Écrivons M_x = VᵀQV avec V de taille 6 × 84 et Q inversible (M_x est symétrique de rang 6). Soit U_a l'espace
+   engendré par les colonnes v_y, y ∈ étoile(a). Comme rang(V_aᵀQV_a) = 5 ≤ dim U_a ≤ 6, et que dim U_a = 6
+   donnerait rang 6 (Q non dégénérée), on a dim U_a = 5 et Q|_{U_a} non dégénérée. **Tout vecteur c du noyau du
+   bloc d'étoile vérifie donc V_a c = 0**, c'est-à-dire Σ_y c_y · (ligne y de M_x) = 0 sur **toutes** les colonnes.
+3. Le bloc d'étoile est H_τ + P' + J. Pour un 4-cycle alterné ℓ₁ –τ– ℓ₂ –mate– ℓ₃ –τ– ℓ₄ –mate– ℓ₁, le vecteur
+   c = e_{ℓ₁} − e_{ℓ₃} est dans ce noyau (somme nulle, et les colonnes ℓ₁, ℓ₃ de H_τ + P' valent toutes deux
+   e_{ℓ₂} + e_{ℓ₄}). Donc la ligne de y = {a,ℓ₁} est égale à celle de y' = {a,ℓ₃}.
+4. Évaluons en z = {ℓ₁, q}, avec q hors des classes de a et de ℓ₁, et q ≠ ℓ₃ (il en reste au moins 8) :
+   M_x[y,z] = H_{yz} + 3 + [q = ā] + 5 et M_x[y',z] = H_{y'z} + [q = ā] + [q = ℓ̄₃] + 5. L'égalité impose
+   H_{yz} − H_{y'z} ≡ [q = ℓ̄₃] − 3 ∈ {4, 5} (mod 7), impossible pour des entrées H ∈ {0, 1}. ∎
+**Donc 8 ≤ k ≤ 30.** (Conséquence : k = 6 et le monde « P = 0 avec tous les τ de type (2,2,2) » disparaissent
+ensemble.) Le même mécanisme se généralise : pour k donné, les vecteurs du noyau d'une étoile qui sont des relations de
+lignes complètes forment un espace de dimension ≥ 12 − k, et chaque colonne z hors de l'étoile impose
+c_{b₁(z)} + c_{b₂(z)} + 3(c_ℓ + c_q) + (c_{ℓ̄} + c_{q̄}) + 5Σc = 0, où {a,b₁}, {a,b₂} sont les deux voisins de z
+dans l'étoile (inconnus). Si aucun choix des voisins n'est compatible, la valeur de k est exclue.

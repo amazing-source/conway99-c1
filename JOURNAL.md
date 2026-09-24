@@ -126,3 +126,7 @@
   **rang = 11 − 2·(nombre de cycles pairs du graphe de classes de τ_a)**. Donc **k ≥ 6** (au lieu de 2) ; k = 6 ⟹
   P = 0 ; P ≥ 1 ⟹ k ≥ 8 ; une étiquette non tordue ⟹ k ≥ 12. Premier lien démontré entre k et la torsion
   (notes/97). Pas de borne supérieure sur k : pas de contradiction.
+- Nuit (02:10). **L20 bis : k ≥ 8.** Formule locale exacte k = rank₇(H + 4I + 3S + P' + 5J) ; si k = 6, les étoiles
+  (type (2,2,2), rang 5 = k − 1) engendrent des hyperplans non dégénérés, donc leurs vecteurs de noyau sont des
+  relations entre lignes complètes : ligne({a,ℓ₁}) = ligne({a,ℓ₃}), et la colonne {ℓ₁,q} donne H − H' ≡ 4 ou 5 mod 7,
+  absurde. Formules de Schur vérifiées exactement (G = −(3/8)I − P/8 + J/16). Crédit du principe : van Eijl 1991.

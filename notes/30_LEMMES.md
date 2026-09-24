@@ -251,6 +251,12 @@ mod 7 ; k ≥ rang₇ du complément de Schur S ≡ H_τ + P' + J (mod 7) ; H_τ
 cycle alterné de longueur 2m par cycle de classes de longueur m, de noyau mod 7 de dimension 2 si m est pair ; J ajoute
 le vecteur 1 au noyau. D'où rang = 11 − 2e ; k pair (L2). ∎ (Aussi vérifié exhaustivement sur les 10 395 couplages.)
 
+## L20 bis. k ≥ 8.   [P] (notes/97)
+*Preuve.* Si k = 6, toutes les étoiles sont de type (2,2,2) et de rang 5 = k − 1 ; les vecteurs du noyau d'un bloc
+d'étoile sont alors des relations entre lignes complètes de la matrice locale M_x = H + 4I + 3S + P' + 5J (F₇), en
+particulier ligne({a,ℓ₁}) = ligne({a,ℓ₃}) pour un 4-cycle alterné. En la colonne {ℓ₁, q}, cela impose
+H − H' ≡ 4 ou 5 (mod 7) avec H, H' ∈ {0, 1}. ∎ Donc 8 ≤ k ≤ 30.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 
