@@ -167,6 +167,16 @@ des cubes des produits scalaires est la norme au carré de Σ u^{⊗3}. ∎
 *Portée.* Borne supérieure sur les prismes (torsion forte obligatoire), obtenue sans ordinateur ; pas une
 contradiction : il manquerait une borne inférieure sur P.
 
+## L17. Le 70-espace local se scinde en 2, 3, 5.   [P] [C sur BvLS]
+*Énoncé.* K = {v ∈ Z^{Γ₂(x)} : sommes nulles par étiquette} est pair, det K = 2²¹·3⁸·5⁶ ; pour p ∈ {2,3,5},
+K ⊗ Z_p = K₃ ⊥ K₋₄ ; tout le 3- et 5-discriminant est dans K₃, tout le 2-discriminant dans K₋₄. Donc K₃ (rang 40) est
+pair, 2-adiquement unimodulaire, det 3⁸·5⁶·7^k, formes 3- et 5-adiques déterminées (antisquare) ; K₋₄ (rang 30) est
+pair, det 2²¹·7^k. Oddité : k/2 ≡ k₇ (mod 2), compatible avec L3.
+*Preuve.* H agit sur disc(K) ≅ disc(K^⊥) par Φ = J − I − M (valeurs propres 12, −2, 0) ; comparaison des actions
+de H (3 sur K₃, −4 sur K₋₄) modulo p. Détails : notes/80. ∎
+*Contrôle.* Mécanisme vérifié sur BvLS en p = 5 (rangs 110 / 76 exactement prédits), 7, 11 (`local_split_check.py`).
+*Portée.* Tout est cohérent au niveau du genre : pas de contradiction sans information plus fine.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

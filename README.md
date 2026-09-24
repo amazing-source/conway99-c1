@@ -14,6 +14,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 4. `notes/30_LEMMES.md` — ce qui survit, avec preuves.
 5. `notes/40_POINT_DE_HAMMING.md`, `notes/50_FRONTIERE_TORSION.md` — exclusions locales exactes (SAT).
 6. `notes/60_HODGE.md` — route Hodge / Σν³ : réfutation du confinement, identités par blocs, bibliographie.
+6 ter. `notes/80_ETINCELLE_ARITHMETIQUE.md` — torsion = moment cubique des droites ; L17 (arithmétique locale) ; structure d'Eisenstein.
 6 bis. `notes/70_KREIN_DROITES.md` — **L16 : P ≤ 1151 par une condition de Krein sur les droites (preuve à la main)**.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
 

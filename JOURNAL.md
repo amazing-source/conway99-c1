@@ -46,3 +46,9 @@
   inférieure sur P. notes/70_KREIN_DROITES.md.
 - Incident mineur : TaskStop n'a pas tué le processus python enfant du venv (il a tourné ~12 min, un cœur) ; tué à
   la main. Tous les calculs de cette heure sont instantanés (formules), aucun calcul lourd.
+- Nuit. L'utilisateur : chercher une « étincelle » à la C3 sans copier C3, et raisonner en supposant que Γ n'existe
+  pas. Posture adoptée : une preuve doit tuer le désordre (torsion forte), or tous nos outils tuent l'ordre.
+  Nouveau : Σ|W| = 1386 + 32‖Σ u_L^{⊗3}‖² (torsion = moment cubique des droites) ; L17 (le 70-espace local se
+  scinde en 2, 3, 5, K₃ pair 2-unimodulaire, formes 3/5-adiques déterminées ; mécanisme vérifié sur BvLS mod 5) ;
+  structure d'Eisenstein des droites orientées (graphe à gains Z/3). Tout est cohérent : pas de contradiction.
+  notes/80_ETINCELLE_ARITHMETIQUE.md.
