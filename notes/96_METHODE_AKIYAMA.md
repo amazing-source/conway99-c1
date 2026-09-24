@@ -72,6 +72,15 @@ d'arêtes entre droites disjointes), valeur propre 21 exactement sur la partie �
 **Λ_L = √7 · E₋₄(N_L Z²³¹)** ⊂ √7 · Λ₋₄^#. Son discriminant dépend donc de la structure 7-adique (k, L19–L20) et de
 l'indice [Z⁹⁹ : N_L Z²³¹] (premiers 2, 3, 5, 7 possibles, puisque det(7I + A) = 21·10⁵⁴·3⁴⁴).
 
+*Esquisse de l'argument en rang 48 (non exécutée).* ΔE₁₄ = ΔE₄²E₆ = q − 48q² + …, donc pour tout P harmonique de
+degré 2 : Σ_{|v|²=4} P(v) = −48 · Σ_{racines} P(r). Si la complétion unimodulaire paire L (rang 48) n'a pas de racine,
+la couche de norme 4 est un 2-design : Σ vvᵀ = (|couche|/12)·I₄₈. Les 231 vecteurs marqués contribuent
+21·Π_{V₄₄} (normalisation de K), nul sur le complément W₄. Les vecteurs non marqués doivent donc fournir
+(|couche|/12)·I − 21·Π_{V₄₄}, qui doit être semi-défini positif, d'où |couche| ≥ 252. Ils doivent aussi avoir des
+composantes dans W₄, donc être des vecteurs de recollement, dont le nombre est contraint par le discriminant. Si la
+complétion a des racines, l'identité les relie à la couche 4. C'est un argument de comptage plausible, mais il dépend
+du discriminant de Λ_L, qui n'est pas déterminé par les paramètres (3-rang et 7-rang de K inconnus, liés à k).
+
 ## 4. Verdict et plan (non exécuté cette nuit)
 C'est la seule méthode **globale et arithmétique** nouvelle rencontrée qui ait tué un cas ouvert récemment, et elle
 s'articule exactement avec nos objets (K₃, K₋₄, L17, L19). Mais les trois leviers qui la font marcher à 266 (repère
