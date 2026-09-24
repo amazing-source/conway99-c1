@@ -166,3 +166,10 @@ Crnković–Maksimović 2020, Cesarz–Woldar 2025. Les deux non-existences réc
 - Caractérisation par comptage (μ ∈ {0, 2}, sans diamant ni prisme privé d'une arête, cliques maximales régulières ⇒
   Hamming) : l'hypothèse « pas de prisme privé d'une arête » est exactement « non tordu ». C'est Makhnev / L1 sous
   une autre forme.
+
+### 3.11 Dernières vérifications
+- Bondarenko–Prymak–Radchenko (76,30,8,14) et Bondarenko–Mellit–Prymak–Radchenko–Viazovska (460,153,32,60) :
+  représentation euclidienne plus borne inférieure sur les 4-cliques. À λ = 1 il n'y a pas de 4-clique : non
+  transposable.
+- Benavides 2025 : famille λ = μ = 2^m, hors sujet.
+- **Akiyama 2026 (266,45,0,9)** : voir notes/96, la seule méthode nouvelle et globale rencontrée.
