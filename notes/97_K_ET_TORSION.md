@@ -3,6 +3,16 @@
 *Nuit du 25/09, vers 04 h. Répond à la direction retenue en notes/93 (« comprendre k ») : premier lien démontré entre
 l'invariant global k = rank₇(A − 3I) − 15 (L4, L19) et la torsion locale.*
 
+## Priorité (vérifiée en texte intégral)
+Le **principe** est classique : C. A. van Eijl, *On the p-rank of the adjacency matrices of strongly regular graphs*,
+mémoire de master, TU Eindhoven, oct. 1991 (dir. A. E. Brouwer), §3.3 « Bounds from subgraphs » :
+r_p(A + τI) ≥ r_p(A' + τI) pour tout sous-graphe induit. Son théorème 3.5(iii) donne la borne supérieure
+rank₇(A − 3I) ≤ min(f, g) + 1 = 45, c'est-à-dire k ≤ 30. Son exemple 3.2 (Gewirtz, 2-rang) utilise un argument « une
+ligne n'est pas somme de lignes locales, sinon μ = 2 est violé », du même type que notre preuve de k ≥ 2 (notes/94).
+**Ce qui est nouveau ici** : l'application à 99, le choix des étoiles (sous-matrice déterminée par τ_a), la formule
+rank₇ = 11 − 2e(τ_a) et ses conséquences (k ≥ 6, k = 6 ⟹ P = 0), et la formule locale exacte de k. Le mémoire ne
+mentionne pas (99,14,1,2).
+
 ## Principe
 Pour un sommet x et Y' ⊂ Γ₂(x) dont la structure interne est connue, la sous-matrice principale de A − 3I sur
 B₁(x) ∪ Y' est entièrement déterminée. Le bloc du moulin, F − 3I, est inversible modulo 7 (det = 2²³). D'où

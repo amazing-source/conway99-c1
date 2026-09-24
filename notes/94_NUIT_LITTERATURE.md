@@ -173,3 +173,9 @@ Crnković–Maksimović 2020, Cesarz–Woldar 2025. Les deux non-existences réc
   transposable.
 - Benavides 2025 : famille λ = μ = 2^m, hors sujet.
 - **Akiyama 2026 (266,45,0,9)** : voir notes/96, la seule méthode nouvelle et globale rencontrée.
+
+### 3.12 van Eijl 1991 (mémoire de master, TU Eindhoven, dir. Brouwer), texte intégral (preprint 361304, 66 p.)
+p-rangs des srg : déterminés par les paramètres sauf si p divise r + τ et s + τ (théorèmes 3.4, 3.5), et dans ce cas
+r_p(A + τI) ≤ min(f, g) + 1. À 99 : rank₇(A − 3I) ≤ 45, c'est-à-dire k ≤ 30 (déjà utilisé). §3.3 : bornes
+inférieures par sous-graphe induit ; exemple Gewirtz avec un argument « μ = 2 ». **C'est la source du principe de L19 bis
+et de L20** (crédité dans notes/97 et 30_LEMMES). Pas de mention de (99,14,1,2).
