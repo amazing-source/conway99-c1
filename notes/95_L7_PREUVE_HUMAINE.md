@@ -98,3 +98,20 @@ de u ∈ D avec les deux points de D'). Modulo 2 : B̄² + B̄ ≡ A_T ⊗ J₂ 
   solutions symétriques de diagonale nulle correspondent aux scindements orthogonaux S̄-invariants V₀ ⊥ V₁ avec 1 ∈ V₀
   (B = S̄ sur V₀, S̄ + 1 sur V₁). Pas d'obstruction de parité pure pour C2 : il faut les contraintes de support des
   blocs (qui viennent des étiquettes et des τ).
+
+### Image « code de Golay factice » au point de Hamming (à la main)
+Identifions x, les étiquettes et Γ₂(x) aux vecteurs de F₃⁷ de poids 0, 1, 2 (un carré Q_{ij} = les 4 vecteurs de
+support {i, j}). Pour un vecteur v de poids 3, de support {i, j, k}, ses trois restrictions de poids 2 deux à deux
+« partagent un signe ». Le fait C donne pour chaque paire un unique voisin commun dans Γ₂(x), noté z₁₂(v), z₁₃(v),
+z₂₃(v), situé dans un carré Q_R avec R ⊂ [7] ∖ {i, j, k}.
+- **Bijection (preuve).** Pour u ∈ Q_{ij}, l'application v ↦ z₁₂(v) (v parmi les 10 voisins de poids 3 de u) est
+  une bijection sur les 10 voisins intérieurs de u. En effet, pour z voisin intérieur de u dans Q_R, le μ entre z et
+  l'étiquette (i, u_i) impose exactement 2 voisins de z de signe u_i dans les carrés Q_{iq}. L'un est u, donc
+  exactement un autre, c'est-à-dire exactement un v tel que z₁₂(v) = z.
+- **Cohérence impossible.** Si z₁₂(v) = z₁₃(v) = z₂₃(v) pour tout v (structure de quotient de H(7,3)), chaque
+  z ∈ Γ₂(x) représenterait 10/3 vecteurs de poids 3 : chaque z porte exactement 10 coïncidences (2 signes × 5
+  classes), et chaque v cohérent en consomme 3. Donc au moins une incohérence en chaque z. C'est la version locale de
+  L1 (99 ne divise pas 3⁷).
+- **Ce qui manque pour L8** : exclure les configurations incohérentes. Le μ entre z et les étiquettes (k, c) montre
+  que la cohérence en v équivaut à « le second voisin de z de signe c en classe k est exactement v|_{jk} ». Rien ne
+  le force localement : c'est là que le SAT travaille 35 minutes.
