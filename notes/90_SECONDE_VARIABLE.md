@@ -82,3 +82,27 @@ grille 3×3 si tout se ferme). Avec e = nombre d'arêtes dans G :
   compatibles. Une contradiction demanderait une relation de plus entre n₃ et S, ou une contrainte sur Δ au-delà de
   sa positivité sur E₋₄. Toutes les identités spectrales moyennes essayées (sur Z, Δ, et les réflexions locales
   tr(P₋₄Σ_x) = −s(x)/7) se réduisent à (n₃, S) et ne contraignent rien.
+
+## 6. Borne de Delsarte locale sur le schéma des étiquettes : triviale (résultat négatif)
+Le groupe hyperoctaédral B₇ agit sur les 84 paires non mates avec 6 orbitales : R₀, R_a (une étiquette commune, les
+deux autres mates ; valence 2), R_σ (1), R_sh (une étiquette commune, autres classes différentes ; 20), R_cl
+(étiquettes disjointes, une classe commune ; 20), R_dj (40). Nombre d'arêtes de H par relation (comptage des
+« créneaux » : chaque u = {a,b} a exactement un voisin contenant ā) :
+  R_a : 84 − W,  R_sh : W,  R_σ : s/2,  R_cl : W − s,  R_dj : 420 − W + s/2    (W = |W(x)|, s = s(x)).
+En particulier **s(x) ≤ |W(x)|** (R_cl ≥ 0). Le module de permutation est sans multiplicité : K^⊥ = 1 + 6 + 7 et
+K = V₁₄ ⊕ V₂₁ ⊕ V₃₅. Traces exactes (`code/label_scheme.py`) :
+  tr(H E₁₄) = 42 − W/2 + s/4,  tr(H E₂₁) = −42 + W/2 + s/4,  tr(H E₃₅) = −s/2
+(les trois composantes de K^⊥ redonnent exactement 12, −12, 0 : contrôle). Avec tr(H E_i) = 3d_i − 7c_i,
+c_i = tr(E_i P₋₄) ∈ [0, min(d_i, 30)] : c₁₄ = (2W − s)/28, c₂₁ = (420 − 2W − s)/28, c₃₅ = 15 + s/14. Toutes les
+contraintes sont automatiquement satisfaites. **Au premier ordre, le spectre local ne plafonne pas la torsion.**
+(Non tordu : V₁₄ ⊂ K₃ exactement ; la torsion fait tourner V₁₄ vers K₋₄.)
+
+## 7. Un objet arithmétique propre à C1 : la similitude de torsion U_x (piste, pas de contradiction)
+U_x = (2H + I)Σ_x, où Σ_x est la matrice de permutation de σ_x sur Γ₂(x). C'est une matrice entière (entrées 0, 1, 2),
+qui préserve le réseau K, et **sur K on a U_xᵀU_x = 49** (car (2H+1)² = 49 sur K) : U_x/7 est orthogonale. Faits
+(dérivés) : sur la totalité de R⁸⁴, UᵀU = 49I + 8J − 4BBᵀ ; tr(U|_K) = 2s(x) ; tr(U²|_K) = 8e_σ − 602 (e_σ = arêtes
+de H préservées par σ_x) ; det(U|_K) = −7⁷⁰. Si σ_x commute avec H, U = ±7. Sinon, U a des valeurs propres 7e^{±iφ}
+qui sont des **entiers algébriques de norme 49**, racines de facteurs t² − mt + 49 (par exemple 3 − 5ω ∈ Z[ω], de
+norme 49). C'est l'analogue, créé par la torsion et non par une symétrie, de la structure d'Eisenstein de C3.
+Pas de contradiction trouvée : les contraintes d'intégralité connues (L4 : rang de (2H+1) mod 7 sur K égal au
+recollement k) sont compatibles avec des angles arbitraires.
