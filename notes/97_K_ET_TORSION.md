@@ -53,8 +53,24 @@ Conséquences :
   mord que pour k petit. Le cas k petit est rejeté vers la torsion maximale (P = 0), que L16 autorise.
 - Il n'y a toujours **aucune borne supérieure sur k** (un Γ générique aurait k = 30). Un argument qui donnerait k ≤ 10,
   par exemple, combiné à L20, forcerait des types de torsion très particuliers en tout sommet.
-- La formule 11 − 2e est vérifiée exhaustivement ; une preuve à la main passerait par la décomposition de
-  τ_a ∪ (mates) en cycles alternés sur les 12 étiquettes (la correction de Schur est une combinaison de I, J et de la
-  matrice des mates). Non rédigée.
+- La formule 11 − 2e a maintenant une **preuve à la main** (section suivante), en plus du calcul exhaustif.
 - Généralisation possible : des Y' plus grands à structure connue (boules de droites, 39 sommets, déterminées par
   l'holonomie) donneraient des bornes plus fortes, mais avec des entrées inconnues à énumérer.
+
+## Preuve à la main de rank₇(S) = 11 − 2e(τ_a)
+1. **Inverse du moulin.** F − 3I = [[−3, 1ᵀ], [1, P − 3I]] (P : involution des mates sur les 14 étiquettes). Le bloc
+   étiquettes de l'inverse est (P − 3I + J/3)⁻¹. Ses valeurs propres sont −4 (antisymétriques), −2 (symétriques
+   ⊥ 1) et 8/3 (sur 1). D'où **G = −(3/8)I − (1/8)P + J/16**.
+2. **Complément de Schur.** Le sommet {a, b} a pour colonne e_a + e_b. Donc C₀[b,c] = G_aa + G_ab + G_ac + G_bc
+   = −1/8 − (3/8)δ_bc − (1/8)P'_bc (P' : mates parmi les 12 étiquettes b). Alors
+   S = H_τ − 3I − C₀ = H_τ + P'/8 − (21/8)I + J/8, et **modulo 7 (8 ≡ 1, 21 ≡ 0) : S ≡ H_τ + P' + J**.
+3. **Cycles alternés.** M = H_τ + P' est la matrice d'adjacence (avec multiplicités) de la réunion de deux couplages
+   parfaits. Une classe non tordue donne une arête double (bloc [[0,2],[2,0]], inversible mod 7). Un cycle du graphe
+   de classes de longueur m donne **un** cycle alterné de longueur 2m : on traverse chaque classe une fois (τ puis
+   mate), et les 2m étiquettes sont épuisées en un tour.
+4. **Noyau d'un cycle C_{2m} mod 7** : v_{i−1} + v_{i+1} = 0 impose v_{i+2} = −v_i, donc une période 4. Il est de
+   dimension 2 si 2m ≡ 0 (mod 4), c'est-à-dire m pair, et nul si m est impair (car 2 est inversible). Donc
+   dim ker₇ M = 2e, et ces vecteurs sont de somme nulle.
+5. **Effet de J.** M1 = 2·1 et (2 + 12) ≡ 0 (mod 7), donc 1 ∈ ker(M + J). Réciproquement, si (M + J)v = 0, alors
+   w = v + (Σv/2)·1 ∈ ker M. D'où ker₇(M + J) = ker₇ M ⊕ ⟨1⟩, de dimension 2e + 1, et **rank₇ S = 11 − 2e**. ∎
+(Cas d'un seul sommet {a, b} : S = −3 − C₀[b,b] = −5/2 ≡ 1 ≢ 0 (mod 7), d'où k ≥ 1, donc k ≥ 2.)
