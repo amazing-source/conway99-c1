@@ -35,6 +35,12 @@ prouvée à la main et valable dans toute géométrie locale (vérifiée sur les
 L12 seule (`l12_closure.py`) redémontre sans ordinateur qu'une étiquette seule ou une classe seule ne peut pas être
 tordue ; elle laisse passer 2 étiquettes (même paire de classes tordue) et le triangle de 3 classes.
 
+**Confinement à 3 classes, motif par motif.** Les 3⁶ − 1 = 728 motifs concrets (chaque τ_a des classes 0,1,2
+restreint aux deux autres classes : mate / échange préservant / échange renversant) testés par propagation sous
+hypothèses dans un seul modèle : **700 réfutés par propagation** (preuve courte extractible), **28 survivent** à la
+propagation (le SAT complet les réfute tous, L11). Exemples de survivants (ordre (0,0),(0,1),(1,0),(1,1),(2,0),(2,1)) :
+m m p r p r ; p p p p r r ; p r m m p r. Ce sont eux qui demandent un argument humain plus long.
+
 ## Lecture
 - Les configurations **presque non tordues** tombent vite, souvent par propagation : la contrainte μ = 2 sur toutes les
   paires (excès nul) punit une torsion isolée. Les configurations **génériquement tordues** ne tombent pas.
