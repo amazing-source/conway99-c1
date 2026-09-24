@@ -89,3 +89,12 @@ un carré mod 7), d'où seulement k ≤ 34, plus faible que k ≤ 30 (cohérent 
 **Cible** : comme k ≥ 6 (L20), toute preuve de k ≤ 4, c'est-à-dire rank₇(A − 3I) ≤ 19, prouverait la non-existence.
 Hors de portée (il faudrait exhiber 26 vecteurs du noyau mod 7 au-delà des 54 rationnels), mais c'est une
 reformulation arithmétique exacte d'une condition suffisante.
+
+## Formule locale exacte pour k
+La même réduction (G ≡ 4I + 6P + 4J mod 7 pour le bloc étiquettes de (F − 3I)⁻¹) donne, pour deux sommets
+y = {a,b}, z = {c,d} de Γ₂(x) : C₀[y,z] ≡ 4s + 6p' + 2 (s : étiquettes communes, p' : couples d'étiquettes mates).
+D'où, pour **tout** sommet x :
+  **k = rank₇( H + 4I + 3S + P' + 5J )** (matrice 84 × 84 sur F₇ ; S = MᵀM, P' = MᵀPM).
+Sur K (Mv = 0, v ⊥ 1) elle agit comme H − 3I, ce qui redonne L4. Sur une étoile elle se réduit à H_τ + P' + J (L20).
+C'est une expression de l'invariant global k par la seule structure de Γ₂(x). Il resterait à la calculer sur des
+modèles, mais aucun modèle de Γ₂(x) n'est connu (c'est le problème).
