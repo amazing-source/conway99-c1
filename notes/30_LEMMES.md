@@ -122,6 +122,23 @@ aussi. L12 seule permet encore 2 étiquettes (de classes différentes, tordant l
 de 3 classes — les SAT montrent que ces motifs meurent aussi (L11) ; les règles supplémentaires sont en cours
 d'extraction.
 
+## L13. Règle d'holonomie : une classe est tordue par 0 ou au moins 2 étiquettes (preuve à la main).   [P]
+*Énoncé.* En x, pour une droite ℓ = {x, a, ā}, l'ensemble Z = {z ∈ N(x)∖ℓ : τ_z(a) ≠ ā} (les étiquettes qui tordent la
+classe de a) est stable par l'holonomie ρ_ℓ, qui n'y a aucun point fixe ; pour z ∈ Z, az ~ ā ρ_ℓ(z) (arête disjointe).
+Donc |Z| ≠ 1.
+*Preuve.* L'ombre σ : étoile(a) → étoile(ā) (az ↦ son unique voisin dans étoile(ā)) est une bijection (μ(a, āy) = 2 avec
+ā pour voisin commun, et symétriquement). σ(az) = āz ⟺ az ~ āz ⟺ τ_z(a) = ā. ρ_ℓ(z) := y si σ(az) = āy ; ρ_ℓ est une
+permutation dont les points fixes sont exactement les z ∉ Z ; elle permute donc Z sans point fixe. ∎
+*Usage.* Avec R0 (une étiquette tord 0 ou ≥ 2 classes), L13 est la règle « transposée ». Elle explique la réfutation
+par propagation du motif « triangle avec un échange renversant » : ρ_ℓ doit échanger les deux seules étiquettes de Z,
+ce qui force deux arêtes disjointes, et le sommet {(4,0),(6,0)} reçoit 3 voisins contenant (5,0) au lieu de 2.
+
+## L14. Deux étiquettes tordues ne suffisent pas (cas |C| = 2).   [calcul exact] [à certifier]
+Par R0 + L12, si exactement deux étiquettes tordent en x, elles sont dans deux classes différentes et tordent le même
+ensemble C de classes (C disjoint de leurs classes, 2 ≤ |C| ≤ 5). Pour |C| = 2 : les deux motifs concrets à symétrie
+près (échanges préservant/préservant et préservant/renversant) sont UNSAT (69 s et 41 s, modèle d'adjacence exact) ;
+la version « famille » (τ libres sur le domaine C) confirme (92 s). |C| = 3, 4, 5 : en cours.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

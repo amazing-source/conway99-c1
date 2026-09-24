@@ -1,4 +1,4 @@
-"""Combinatorial consequences of the hand-proved lemma L12 (valid in every local-axiom graph):
+"""Combinatorial consequences of the hand-proved lemmas L12 and L13a (valid in every local-axiom graph):
   W(a, j) : label a twists class j (tau_a is not the mate matching on the labels of class j).
   (R0) W(a, j) depends only on the class j; a label twists 0 or >= 2 classes; never its own class.
   (L12) if W(a, j), then for EACH label c of class j:  W(c, [a])  or  exists y, [y] not in {[a], j}, with W(y, j).
@@ -32,6 +32,11 @@ def base():
             third = [W(y, j) for y in LABELS if y[0] not in (a[0], j)]
             for c in [(j, 0), (j, 1)]:
                 cnf.append([-W(a, j), W(c, a[0])] + third)
+    # (L13a) holonomy/derangement rule: each class is twisted by 0 or >= 2 labels
+    for j in CL:
+        lits = [W(a, j) for a in LABELS if a[0] != j]
+        for i, l in enumerate(lits):
+            cnf.append([-l] + lits[:i] + lits[i + 1:])
     anyt = [W(a, j) for a in LABELS for j in CL if j != a[0]]
     cnf.append(anyt)
     return pool, cnf, W

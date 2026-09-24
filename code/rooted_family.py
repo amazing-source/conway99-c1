@@ -19,7 +19,7 @@ LABELS = [(c, s) for c in CL for s in (0, 1)]
 mate = lambda l: (l[0], 1 - l[1])
 
 
-def build(K, sources=None):
+def build(K, sources=None, dom_classes=None):
     K = set(K)
     Xv = [frozenset((a, b)) for a, b in itertools.combinations(LABELS, 2) if a[0] != b[0]]
     V = ['x'] + LABELS + Xv
@@ -37,7 +37,7 @@ def build(K, sources=None):
         dom = None
         if sources is not None:
             if a in sources:
-                dom = [b for b in LABELS if b[0] != a[0]]
+                dom = [b for b in LABELS if b[0] != a[0] and (dom_classes is None or b[0] in dom_classes)]
         elif a[0] in K:
             dom = [b for b in LABELS if b[0] in K and b[0] != a[0]]
         if dom is not None:
@@ -48,6 +48,11 @@ def build(K, sources=None):
     # at least one twist
     tw = [tvar(a, b, c) for a in free for b, c in itertools.combinations(free[a], 2) if c != mate(b)]
     cnf.append(tw)
+    if dom_classes is not None:
+        # every class of the domain is twisted by every source label (no mate pair inside the domain)
+        for a in free:
+            for j in dom_classes:
+                cnf.append([-tvar(a, (j, 0), (j, 1))])
     # no 3-cycles in the trail system is implied by lambda; not added.
 
     def dvar(u, w):
@@ -132,8 +137,9 @@ def main():
     t0 = time.time()
     if sys.argv[1] == 'sources':
         src = [(int(p[0]), int(p[1])) for p in sys.argv[2].split(',')]
-        cnf, pool, T = build([], sources=src)
-        K = f'sources {src}'
+        domc = [int(ch) for ch in sys.argv[3]] if len(sys.argv) > 3 else None
+        cnf, pool, T = build([], sources=src, dom_classes=domc)
+        K = f'sources {src} domain {domc}'
     else:
         K = [int(ch) for ch in sys.argv[1]]
         cnf, pool, T = build(K)

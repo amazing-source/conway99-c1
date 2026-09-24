@@ -34,6 +34,15 @@ Statut : P = proposée, T = tuée (voir 20_ATTAQUES_R.md), S = survivante, M = m
 | F17 | **Torsion ⇒ plan projectif d'ordre t** (très risquée) : les géométries tordues trouvées viennent de plans projectifs (t = 3 : PG(2,3), t = 5 : PG(2,5), tri-incidence (S, −2S, S)). Si toute géométrie locale tordue exigeait un plan d'ordre t, alors t = 6 (Bruck–Ryser) n'aurait aucune torsion, et L1 tuerait 99. Même mécanisme pour t = 10 (Lam) ⇒ unicité de BvLS, et t = 55 (Bruck–Ryser) ⇒ 6273 n'existe pas. | radicale | P, falsifiable : un seul exemple tordu t = 6 (non SRG) la tue |
 | F18 | Profil n_min(t) : ordre minimal d'une géométrie locale tordue (t = 2 : 20, t = 3 : 39, t = 5 : ≤ 93) ; 99 = boule ⟺ SRG | expérimentale | P |
 
+## Troisième vague
+
+| # | Idée | Type | Statut |
+|---|------|------|--------|
+| F19 | Mécanisme « plan d'ordre 10 » (Lam) : un code aux poids contraints force des sous-structures, exclues ensuite par recherche locale | transplant | T (pour l'instant) : pas de code autodual binaire/ternaire naturel ; sur F₇ l'auto-orthogonalité ne contraint pas les poids |
+| F20 | « Torsion ⇒ excès > 0 » (forme SRG de F2) | conjecture | équivalente au problème ; non testable à petit t |
+| F21 | **Hodge** : sur le complexe triangles + quadrangles, L₁ = 15I + Q, Q = graphe signé des « arêtes opposées » O (12-régulier sur 693 arêtes) ; les triangles de O sont exactement les prismes ; 6P = 2268 − Σν³ (ν = spectre de Q sur la partie rotationnelle, 595 valeurs, Σν = 84, Σν² = 7056) ; H₁(K;Q) = 0 automatiquement | reformulation spectrale | vérifiée sur srg(9) et BvLS ; pas encore de contrainte |
+| F22 | Calcul de règles locales démontrables à la main (R0, L12, L13, comptes d'étiquettes) extraites des réfutations par propagation (`explain_up.py`) ; objectif : preuves lisibles de la frontière | méthode | en cours |
+
 ## Détail des énoncés testables
 
 **F1.** Pour une arête x–a, l'ombre b ↦ ab est une bijection canonique N(x)∖ℓ → N(a)∖ℓ. Autour de la droite
