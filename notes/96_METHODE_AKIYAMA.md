@@ -52,10 +52,24 @@ est celle de L17 (parties 2, 3, 5 déterminées) et, en 7, de L19 (recollement (
   H(7,3), impossible par L1) donnerait un repère « de type racines ». La torsion le déforme, et c'est cette
   déformation qu'une contrainte de réseau devrait interdire.
 
+## 3 bis. Un meilleur candidat : le réseau des droites Λ_L (notes/70)
+Les 231 droites donnent, dans E₋₄ remis à l'échelle, 231 vecteurs de **norme 4**, de produits 0, ±1, −2 (−2 pour les
+prismes). Leur Gram K = 7·Gram(w_L) vérifie **K² = 21K** (spectre 21⁴⁴, 0¹⁸⁷), c'est-à-dire un repère serré entier de
+rang 44 et de **constante impaire 21** (21Λ^# ⊂ Λ). Par rapport aux repères locaux : normes basses (4, comme les t_y
+d'Akiyama après recollement), 5,25 vecteurs par dimension, discriminant sans partie 2 (seulement 3 et 7). Le
+sur-réseau pair maximal a un discriminant anisotrope (rang ≤ 2 en 3 et en 7), d'où une complétion unimodulaire paire
+de rang 48 (ou 56) avec un petit complément. En rang 48, la série thêta harmonique de degré 2 vit dans
+S₂₆ = ⟨ΔE₄²E₆⟩ : elle relie exactement le second moment de la couche de norme 4, qui contient les 231 vecteurs
+marqués, à celui des racines. Si la complétion n'a pas de racines, la couche de norme 4 est un 2-design sphérique, alors
+que les 231 vecteurs marqués n'occupent qu'un sous-espace de dimension 44 sur 48 : le complément doit compenser
+exactement. C'est la cible la plus prometteuse pour la méthode. Avec P = 0 (torsion maximale, cas k = 6 de L20), les
+produits sont seulement 0, ±1.
+
 ## 4. Verdict et plan (non exécuté cette nuit)
 C'est la seule méthode **globale et arithmétique** nouvelle rencontrée qui ait tué un cas ouvert récemment, et elle
 s'articule exactement avec nos objets (K₃, K₋₄, L17, L19). Mais les trois leviers qui la font marcher à 266 (repère
 très dense, constante impaire, rang 24) manquent à 99. Plan si l'on veut l'essayer :
+0. **Priorité : Λ_L** (§3 bis), plutôt que les repères locaux ci-dessous.
 1. Calculer la forme discriminante de (K₋₄)^#(56) et de (K₃)^#(105) (L17 en donne l'essentiel ; en 7, en fonction
    de k), puis leurs sur-réseaux pairs maximaux (anisotropes, donc de petit rang à chaque premier).
 2. Chercher le plus petit complément donnant un unimodulaire pair (rang 32 ?) et écrire l'identité thêta harmonique de
