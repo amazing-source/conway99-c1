@@ -73,3 +73,15 @@ les 58 multi-ensembles de 6 bijections compatibles avec (C), 50 contiennent un n
 4 cas), mais la relation « ψ_R est une isométrie » s'écrit d_{PR} = d_{P'R}, où d_{PR} = L_{PR}(1,1) prend 3 valeurs.
 Ce n'est pas une parité additive. Il faudra combiner (C) avec (B), (D) ou (E) ; les calculs de L8 (UNSAT en 2 114 s
 sans cassage de symétrie) indiquent une contradiction plus profonde.
+
+### Ce qui est établi pour L8 (faits B + D, sans σ_x)
+- **Règle de transport** (ci-dessus) valable en général : {ψ_R(u)} = {φ(u), φ(u) + 11, φ(u + 11)}.
+- Énumération locale (24 bijections φ) : si φ_{PP'} est une isométrie, les 3 transports ψ_R sont des isométries (9
+  arrangements) ; sinon, ou bien les 3 sont non isométriques (18 arrangements), ou bien exactement 1 l'est (6).
+- **Conséquence** : soit N l'ensemble des arêtes de Kneser dont la bijection n'est pas une isométrie. Tout triangle de
+  Kneser {P, P', R} contient 0, 2 ou 3 arêtes de N, jamais exactement 1. Si aucun triangle n'est entièrement dans N,
+  l'indicatrice de N est un cocycle, donc (H¹ = 0) N est la coupe d'une 2-coloration des 21 paires.
+- Le fait C donne alors, pour P = ij, P' = ik : a = b et c = 6 − 2a (a, b : composées isométriques de décalage 1, 0 ;
+  c : composées non isométriques). Le cas N = ∅ est L7 (a = 3).
+- Tests (`code/hamming_linskel.py`) : le squelette des parties linéaires avec E seul est SAT ; avec C, ou C + E, pas
+  de réponse en 5 min. Les translations sont donc nécessaires ; **pas de preuve humaine de L8 cette nuit**.
