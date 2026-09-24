@@ -74,3 +74,9 @@ Conséquences :
 5. **Effet de J.** M1 = 2·1 et (2 + 12) ≡ 0 (mod 7), donc 1 ∈ ker(M + J). Réciproquement, si (M + J)v = 0, alors
    w = v + (Σv/2)·1 ∈ ker M. D'où ker₇(M + J) = ker₇ M ⊕ ⟨1⟩, de dimension 2e + 1, et **rank₇ S = 11 − 2e**. ∎
 (Cas d'un seul sommet {a, b} : S = −3 − C₀[b,b] = −5/2 ≡ 1 ≢ 0 (mod 7), d'où k ≥ 1, donc k ≥ 2.)
+
+## Test « tous les τ_a de type (2,2,2) en un sommet » (k = 6 ⟹ cela en tout sommet)
+`code/type222.py` (modèle enraciné exact, τ_a parmi les 120 permutations de classes par paires, cassage de symétrie
+valide, τ_(0,0) canonique) : 1,6 M variables, 3,8 M clauses. **Tué au plafond de 4000 Mo après 165 s**, non décidé sur
+le portable. À relancer sur le PC du labo : UNSAT donnerait k ≥ 8. Les règles humaines L9', L12, L13 ne disent rien
+dans ce régime (tout est tordu).
