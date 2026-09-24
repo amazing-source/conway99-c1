@@ -151,6 +151,10 @@ où ν parcourt le spectre du laplacien de Hodge des arêtes, décalé de 15, su
 *Intérêt.* C'est le chaînon manquant identifié : **une majoration de Σν³** bornerait la torsion totale, donc
 forcerait des sommets peu tordus, que la frontière exclut. Le 4ᵉ moment Σν⁴ = 173 880 + 8·S₄ (S₄ = 4-cycles signés du
 graphe O des arêtes opposées, liés aux fermetures en 3-cube) donnerait |Σν³| ≤ √(7056·Σν⁴) — encore trop faible.
+*Mise à jour (soir).* Confirmation indépendante : dans Reimbayev (arXiv:2608.19410), la variable libre n₃ des
+fréquences d'ordre 7 vaut 3(P_max − P) = ½ Σ_x |W(x)| (via z₃₉ = (n − 6k + 15)·P). Majorer Σν³ revient exactement à
+majorer n₃ ; ni Hodge (confinement réfuté : théorème H0) ni le comptage d'ordre ≤ 7 (borne triviale n₃ ≤ 4158) ne
+le font. Identités par blocs H1–H3, dont ||[Q, B_T]||² = 24(P_max − P) = 4Σ|W| : notes/60_HODGE.md.
 
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.

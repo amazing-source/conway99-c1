@@ -29,3 +29,13 @@
 - 16:05 Erreur d'ordonnancement : lancer 2 tests Fano en même temps a fait passer la RAM machine sous 2 Go ; le garde-fou a tué le cas deux étiquettes |C| = 5 (18 min perdues). Famille Fano arrêtée, |C| = 5 relancé (twolabel_dom23456_b). Règle : un seul lancement à la fois, RAM libre vérifiée avant.
 - 16:15 L'utilisateur signale que le portable rame (et une question sur les ventilateurs) : j'avais 4-5 calculs en parallèle. Tout arrêté (0 processus, 6,9 Go libres). État sauvegardé : k=3 24/128 UNSAT ; interrompus : deux étiquettes |C|=5, Fano « first », énumération k=4, spectre de Hodge de BvLS. Règle désormais : un seul calcul lourd à la fois sur le portable ; le volume va au PC du labo.
 - Piste Σν³ poursuivie : spectres rotationnels de Q calculés sur toutes les géométries ; non tordu ⇒ spectre entier = valeurs du gradient ; tordu ⇒ irrationnel, Σν³ > 0. Borner Σν³ ⟺ spectre rotationnel = {3, −4} ⟺ (vraisemblablement) grid-full : c'est la conjecture F2-SRG sous forme spectrale (« laplacien de Hodge à deux valeurs propres »), pas un raccourci.
+- 16:40 (après auto-compaction) L'utilisateur demande de poursuivre la route Σν³, recherches autorisées.
+  Vérification préalable de ma propre affirmation (« confiner le spectre rotationnel dans [−4, 3] par Garland ») :
+  **fausse**. Théorème H0 : confinement ⟹ M = 0 ⟹ grid-full ⟹ M ≠ 0 pour t ≥ 2. `hodge_blocks.py` : identités par
+  blocs H1–H3 exactes sur 6 géométries ; BvLS (24 s, 557 Mo, un seul calcul) : rotationnel
+  {−20^11, −5^660, −2^660, 4^880, 7^220}, exactement la prédiction par théorie des représentations.
+- 17:00 Recherche ciblée : Reimbayev arXiv:2608.19410 (fréquences d'ordre 7, variables libres n₃, z₁₁) ;
+  n₃ = 3(P_max − P) = ½Σ|W| (confirme L15). `reimbayev7.py` : règle de somme OK sur n₃ et z₁₁, échec sur les
+  constantes (z₁₇₆ probablement 1/8 et non 1/84, plus un écart B(k+6)) ; à (99,14) la non-négativité ne donne que
+  0 ≤ n₃ ≤ 4158. Lou–Murin 2014 (PRIMES) : faits locaux (π(L) ≠ 11). Thakkar–Severini 2026 : CP-SAT, rien de neuf.
+- 17:08 Route Hodge / Σν³ close (notes/60_HODGE.md). Rapport, README, notes 10/20/30 mis à jour.

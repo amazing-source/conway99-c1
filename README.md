@@ -12,17 +12,20 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
 4. `notes/30_LEMMES.md` — ce qui survit, avec preuves.
-5. `JOURNAL.md` — journal horodaté.
+5. `notes/40_POINT_DE_HAMMING.md`, `notes/50_FRONTIERE_TORSION.md` — exclusions locales exactes (SAT).
+6. `notes/60_HODGE.md` — route Hodge / Σν³ : réfutation du confinement, identités par blocs, bibliographie.
+7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
 
-## État (2026-09-24)
+## État (2026-09-24, soir)
 - **Γ est nécessairement « tordu »** (L1) : sinon Γ serait un quotient de H(7,3) et 99 | 3⁷.
-- **La torsion est localement possible** : graphes tordus explicites pour t = 2 (20 sommets, graphe des arcs de K₅)
-  et t = 3 (39 sommets). Toute obstruction doit donc être globale (SRG), pas locale.
-- Lemmes arithmétiques : rank₇(A − 3I) impair (L2) ; recollement 7-adique non scindé (L3) ; le recollement du
-  70-espace (piste C) est le même en tout sommet et pair (L4).
-- Tuées : rigidité locale, revêtement universel, entrelacement sur les configurations déterminées par τ,
-  cohérence de Fano, complexe cubique plat, T/Δ (absorbée), Arf (absorbée).
-- En cours : cas « point de Hamming » (x dans les 21 grilles) — modèle exact `code/hamming_point.py`.
+- **La torsion est localement possible** (géométries tordues explicites, t = 2, 3, 5, 7) : toute obstruction doit
+  utiliser μ = 2 partout.
+- Lemmes arithmétiques L2–L4 (7-adiques). Exclusions locales exactes L7–L11, L14 (frontière : g(x) ≤ 17, une ou deux
+  étiquettes tordues impossibles sauf |C| = 5 à finir, 24/128 motifs à trois étiquettes UNSAT).
+- Identité L15 : P = 1386 − ⅙Σ|W| ; confirmée indépendamment (Reimbayev 2026).
+- Route Hodge / Σν³ **close** : le confinement du spectre est faux pour tout SRG de la famille (BvLS), et borner
+  Σν³ revient à majorer la torsion totale, ce qu'aucune méthode connue ne fait (notes/60).
+- Calculs de volume : PC du labo (`LAB_INSTRUCTIONS_C1.md`) ; sur ce portable, un seul calcul lourd à la fois.
 
 ## Code (`code/`, Python 3.14, venv `.venv` : numpy, scipy, sympy, networkx, python-sat)
 - `graphs.py` : témoins (srg 9, BvLS 243, Clebsch, Gewirtz, GQ(2,2), GQ(2,4)), tous vérifiés au chargement.

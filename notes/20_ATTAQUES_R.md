@@ -154,3 +154,15 @@ réponse sur un SRG tordu connu, dans les deux sens ; (ii) **contre-poids heuris
 un argument contre l'existence ; reste l'argument du groupe d'automorphismes (|Aut(Gewirtz)| = 80 640, contre ≤ 3
 pour Γ). (iii) Pour q = 2 le problème enraciné complet se résout en 2 s ; pour 99 il est ~10× plus gros (2 562
 inconnues + τ contre 630) et des heures de SAT (ici et ailleurs) n'ont rien trouvé : indice faible de non-existence.
+
+### F23 — confinement local→global du spectre de Hodge — **TUÉE** (détails : notes/60_HODGE.md)
+- L'identité de Garland localisée aux sommets redonne seulement L₁ = 15 + Q (le lien K₁₄ voit tout sauf les arêtes
+  opposées, c'est-à-dire exactement Q).
+- **Théorème H0** : confinement ⟹ M = Q² + Q − 12 = 0 ⟹ P = P_max ⟹ grid-full ⟹ M ≠ 0 dès que t ≥ 2 (deux
+  2-chemins de même signe dans le revêtement de Hamming). Le confinement est donc faux pour *tout* SRG de la famille
+  avec t ≥ 2 : le démontrer pour 99 revient à démontrer la non-existence, sans gain.
+- Contrôle BvLS (prédiction par théorie des représentations, puis calcul `hodge_blocks.py --big`, 24 s) : spectre
+  rotationnel {−20^11, −5^660, −2^660, 4^880, 7^220} : 231 valeurs hors de [−5, 4], 660 dedans.
+- Mutation F23' (évitement sur curl₀) : équivalente à F2-SRG. Reformulation, pas levier.
+- Recherche bibliographique : Reimbayev 2026 (ordre 7) a pour variable libre n₃ = ½Σ|W| (notre L15) ; la
+  non-négativité des 208 comptages ne donne que 0 ≤ n₃ ≤ 4158 à (99,14). Le comptage ne borne pas la torsion.

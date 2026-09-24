@@ -1,0 +1,42 @@
+== srg9: n=9 k=4 t=1 E=18 O-degrees=[2] n_SRG=9 | lapl check 0.0 | grad identity err 0.0e+00
+   P=6 P_max=6  ||[Q,B_T]||^2=0.0000 vs 24(Pmax-P)=0  ||B||^2=0.0000 vs (4/3)(Pmax-P)=0.0000
+   curl  (dim 10): sum g = 0.0000 vs -2(n-n_SRG) = 0 | outside [-2.000,1.000]: 0 | {-2^2, 1^8}
+   C_T   (dim 6): sum g = 0.0000 vs -||B||^2 = -0.0000 | {-2^2, 1^4}
+   curl0 (dim 4): sum g = 0.0000 vs -||B||^2-2(n-nS) = -0.0000 | strictly inside: 0 | {1^4}
+   (0.0s)
+== H(3,3): n=27 k=6 t=2 E=81 O-degrees=[4] n_SRG=19 | lapl check 0.0 | grad identity err 0.0e+00
+   P=54 P_max=54  ||[Q,B_T]||^2=0.0000 vs 24(Pmax-P)=0  ||B||^2=0.0000 vs (4/3)(Pmax-P)=0.0000
+   curl  (dim 55): sum g = -16.0000 vs -2(n-n_SRG) = -16 | outside [-2.562,1.562]: 31 | {-4^3, -1^24, 2^28}
+   C_T   (dim 27): sum g = 0.0000 vs -||B||^2 = -0.0000 | {-4^3, -1^12, 2^12}
+   curl0 (dim 28): sum g = -16.0000 vs -||B||^2-2(n-nS) = -16.0000 | strictly inside: 12 | {-1^12, 2^16}
+   (0.0s)
+== twist t=2 (20): n=20 k=6 t=2 E=60 O-degrees=[4] n_SRG=19 | lapl check 0.0 | grad identity err 0.0e+00
+   P=0 P_max=40  ||[Q,B_T]||^2=960.0000 vs 24(Pmax-P)=960  ||B||^2=53.3333 vs (4/3)(Pmax-P)=53.3333
+   curl  (dim 41): sum g = -2.0000 vs -2(n-n_SRG) = -2 | outside [-2.562,1.562]: 6 | {-2.37228^5, -2^6, -1^4, 1^20, 3.37228^5, 4^1}
+   C_T   (dim 20): sum g = -53.3333 vs -||B||^2 = -53.3333 | {-1^4, -0.666667^6, -0^5, 1^4, 4^1}
+   curl0 (dim 21): sum g = -55.3333 vs -||B||^2-2(n-nS) = -55.3333 | strictly inside: 21 | {-0.333333^6, 1^15}
+   (0.0s)
+== twist t=3 (39): n=39 k=8 t=3 E=156 O-degrees=[6] n_SRG=33 | lapl check 0.0 | grad identity err 0.0e+00
+   P=39 P_max=156  ||[Q,B_T]||^2=2808.0000 vs 24(Pmax-P)=2808  ||B||^2=156.0000 vs (4/3)(Pmax-P)=156.0000
+   curl  (dim 118): sum g = -12.0000 vs -2(n-n_SRG) = -12 | outside [-3.000,2.000]: 49 | [22 distinct values, min -6.0000, max 3.7063]
+   C_T   (dim 52): sum g = -156.0000 vs -||B||^2 = -156.0000 | {-6^1, -2.66667^2, -1.66838^6, -1.51491^6, -0.691618^6, -0.666667^1, -0.067629^6, 0.292163^6, 1.08852^6, 1.88169^6, 2.68015^6}
+   curl0 (dim 66): sum g = -168.0000 vs -||B||^2-2(n-nS) = -168.0000 | strictly inside: 51 | [13 distinct values, min -2.3333, max 3.0313]
+   (0.0s)
+== twist t=3 (42): n=42 k=8 t=3 E=168 O-degrees=[6] n_SRG=33 | lapl check 0.0 | grad identity err 0.0e+00
+   P=0 P_max=168  ||[Q,B_T]||^2=4032.0000 vs 24(Pmax-P)=4032  ||B||^2=224.0000 vs (4/3)(Pmax-P)=224.0000
+   curl  (dim 127): sum g = -18.0000 vs -2(n-n_SRG) = -18 | outside [-3.000,2.000]: 37 | {-4^6, -3.27492^8, -2^22, -1.37228^7, -1^7, -0^6, 1^41, 2^7, 3^8, 4.27492^8, 4.37228^7}
+   C_T   (dim 56): sum g = -224.0000 vs -||B||^2 = -224.0000 | {-2^7, -1.33333^14, 0^14, 0.666667^7, 2^14}
+   curl0 (dim 71): sum g = -242.0000 vs -||B||^2-2(n-nS) = -242.0000 | strictly inside: 63 | {-1.66667^13, -1^7, 0.333333^8, 1^35, 3^8}
+   (0.0s)
+== tri-inc t=5 (93): n=93 k=12 t=5 E=558 O-degrees=[10] n_SRG=73 | lapl check 0.0 | grad identity err 0.0e+00
+   P=186 P_max=930  ||[Q,B_T]||^2=17856.0000 vs 24(Pmax-P)=17856  ||B||^2=992.0000 vs (4/3)(Pmax-P)=992.0000
+   curl  (dim 466): sum g = -40.0000 vs -2(n-n_SRG) = -40 | outside [-3.702,2.702]: 173 | [83 distinct values, min -10.0000, max 5.3416]
+   C_T   (dim 186): sum g = -992.0000 vs -||B||^2 = -992.0000 | [34 distinct values, min -10.0000, max 4.4968]
+   curl0 (dim 280): sum g = -1032.0000 vs -||B||^2-2(n-nS) = -1032.0000 | strictly inside: 201 | [49 distinct values, min -4.1636, max 5.0000]
+   (0.4s)
+== BvLS: n=243 k=22 t=10 E=2673 O-degrees=[20] n_SRG=243 | lapl check None | grad identity err 0.0e+00
+   P=8910 P_max=8910  ||[Q,B_T]||^2=0.0000 vs 24(Pmax-P)=0  ||B||^2=0.0000 vs (4/3)(Pmax-P)=0.0000
+   curl  (dim 2431): sum g = 0.0000 vs -2(n-n_SRG) = 0 | outside [-5.000,4.000]: 231 | {-20^11, -5^660, -2^660, 4^880, 7^220}
+   C_T   (dim 891): sum g = 0.0000 vs -||B||^2 = -0.0000 | {-20^11, -2^660, 7^220}
+   curl0 (dim 1540): sum g = 0.0000 vs -||B||^2-2(n-nS) = -0.0000 | strictly inside: 0 | {-5^660, 4^880}
+   (23.2s)

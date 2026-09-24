@@ -40,8 +40,10 @@ Statut : P = proposée, T = tuée (voir 20_ATTAQUES_R.md), S = survivante, M = m
 |---|------|------|--------|
 | F19 | Mécanisme « plan d'ordre 10 » (Lam) : un code aux poids contraints force des sous-structures, exclues ensuite par recherche locale | transplant | T (pour l'instant) : pas de code autodual binaire/ternaire naturel ; sur F₇ l'auto-orthogonalité ne contraint pas les poids |
 | F20 | « Torsion ⇒ excès > 0 » (forme SRG de F2) | conjecture | équivalente au problème ; non testable à petit t |
-| F21 | **Hodge** : sur le complexe triangles + quadrangles, L₁ = 15I + Q, Q = graphe signé des « arêtes opposées » O (12-régulier sur 693 arêtes) ; les triangles de O sont exactement les prismes ; 6P = 2268 − Σν³ (ν = spectre de Q sur la partie rotationnelle, 595 valeurs, Σν = 84, Σν² = 7056) ; H₁(K;Q) = 0 automatiquement | reformulation spectrale | vérifiée sur srg(9) et BvLS ; pas encore de contrainte |
+| F21 | **Hodge** : sur le complexe triangles + quadrangles, L₁ = 15I + Q, Q = graphe signé des « arêtes opposées » O (12-régulier sur 693 arêtes) ; les triangles de O sont exactement les prismes ; 6P = 2268 − Σν³ (ν = spectre de Q sur la partie rotationnelle, 595 valeurs, Σν = 84, Σν² = 7056) ; H₁(K;Q) = 0 automatiquement | reformulation spectrale | exacte, sans levier : majorer Σν³ = majorer n₃ = ½Σ\|W\| (notes/60) |
 | F22 | Calcul de règles locales démontrables à la main (R0, L12, L13, comptes d'étiquettes) extraites des réfutations par propagation (`explain_up.py`) ; objectif : preuves lisibles de la frontière | méthode | en cours |
+| F23 | **Confinement local→global** : le lien de chaque sommet est K₁₄ ; Garland / expanseurs de grande dimension confineraient le spectre rotationnel dans [−4, 3] (ou à 0,03 près), ce qui forcerait P ≥ 1255 | transplant | **T** : l'identité de Garland est vide ici, et le confinement est faux pour tout SRG de la famille avec t ≥ 2 (théorème H0 ; BvLS a {−20, −2, 7} hors de [−5, 4]) |
+| F23' | Mutation : sur curl₀ (cochaînes fermées sur les triangles), le spectre comprimé *évite* (−4, 3) | conjecture | vraie pour BvLS ; pour un SRG ⟺ grid-full (lemme H3) : équivalente à F2-SRG, pas un levier |
 
 ## Détail des énoncés testables
 

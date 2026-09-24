@@ -37,6 +37,23 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   SAT (λ exact), il n'avait biaisé que l'échantillonnage des τ aléatoires. Corrigé.
 - Sonde τ aléatoire (14 étiquettes tordues, 0 grille) : pas de verdict en 1 h (difficulté, pas d'information).
 
+## 1 ter. Mise à jour (soir du 2026-09-24) : la route Hodge / Σν³ est close (notes/60)
+- **Correction d'une affirmation antérieure.** J'avais proposé de confiner le spectre rotationnel du laplacien de
+  Hodge dans [−4, 3] par une méthode local→global (Garland). C'est **faux pour tout SRG de la famille avec t ≥ 2**
+  (théorème H0) ; BvLS, qui existe, a 231 valeurs propres rotationnelles hors de l'intervalle analogue [−5, 4]
+  (−20, −2, 7 ; prédites par théorie des représentations et vérifiées par calcul). Et l'identité de Garland est
+  vide ici, le lien K₁₄ ne voyant pas les arêtes opposées.
+- **Ce qui survit** (identités exactes, vérifiées sur 7 géométries) : la torsion est la non-commutation de Q avec
+  l'opérateur des triangles, ||[Q, B_T]||² = 24(P_max − P) = 4Σ_x|W(x)| ; les traces par blocs H3. Une mutation
+  (« évitement » sur les cochaînes fermées sur les triangles) équivaut à F2-SRG : reformulation, pas levier.
+- **Recherche ciblée.** Reimbayev (arXiv:2608.19410, 2026) : les 208 fréquences d'ordre 7 dans srg(n,k,1,2)
+  dépendent de deux variables libres, dont n₃ = ½Σ|W| (confirmation indépendante de L15) ; à (99,14) leur
+  non-négativité ne donne que la borne triviale n₃ ≤ 4158. La liste publiée échoue la règle de somme sur les
+  constantes (au moins deux coquilles), sans effet sur ces conclusions. Lou–Murin (2014) : faits locaux seulement
+  (nombre de prismes par droite ≠ 11).
+- **Bilan.** Borner Σν³ = majorer la torsion totale n₃ ; aucune méthode connue ne le fait ; c'est équivalent à
+  « tout SRG PQ(2,t,2) est grid-full », au moins aussi dur que l'unicité de BvLS.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
