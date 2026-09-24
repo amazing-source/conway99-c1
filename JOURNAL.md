@@ -115,3 +115,9 @@
   g19 ont le **même noyau de 7 contraintes**, d'où un lemme local nouveau **L9'** (τ_a(c) ≠ c̄ et τ_{c̄}(a) = ā ⇒ une
   grille G_{[c],m} manque) et une **preuve humaine complète de L10** (g(x) ≤ 18). L11 : noyau minimal de 112 équations,
   trop gros pour la main.
+- Nuit (03:30). **Audit indépendant de L16** (P ≤ 1151), tout refait à la main : Gram E₋₄ des droites (4, 0, 1 − e),
+  comptes n₀…n₃ en fonction de π(L) (216 arêtes vers les droites disjointes, 36 quadrangles par droite), Σ K = 0,
+  Σ K³ = 60 − 6π, ‖T_L‖² = (13860 − 12P)/64 ; raffinement points-droites : ‖T_P‖² = 99·14868/21952 ≈ 67,05,
+  ⟨T_P,T_L⟩ = −231·4,5/(28√28), d'où ‖T_L‖² ≥ 0,734 et P ≤ 1151,08. **Correct.** Filtre des 728 motifs confinés à
+  3 classes par les règles humaines L9', L12, L13 : 560 survivent (la propagation n'en laissait que 28) ; L11 à la main
+  hors de portée cette nuit.
