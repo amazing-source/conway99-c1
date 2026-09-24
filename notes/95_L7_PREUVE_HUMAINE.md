@@ -84,7 +84,9 @@ sans cassage de symétrie) indiquent une contradiction plus profonde.
 - Le fait C donne alors, pour P = ij, P' = ik : a = b et c = 6 − 2a (a, b : composées isométriques de décalage 1, 0 ;
   c : composées non isométriques). Le cas N = ∅ est L7 (a = 3).
 - Tests (`code/hamming_linskel.py`) : le squelette des parties linéaires avec E seul est SAT ; avec C, ou C + E, pas
-  de réponse en 5 min. Les translations sont donc nécessaires ; **pas de preuve humaine de L8 cette nuit**.
+  de réponse en 5 min ; avec C + E + la condition des triangles de Kneser (T), pas de réponse en 20 min (263 Mo,
+  `data/linskel_CET.runlog`). La contradiction de L8 n'est pas visible rapidement sur les parties linéaires seules ;
+  **pas de preuve humaine de L8 cette nuit**.
 
 ## Lecture « matrice d'orbites » et portée pour C2
 Avec une involution t = σ_x (point fixe x, point tordu autorisé), la partition de Γ₂(x) en 42 diagonales (orbites de t)

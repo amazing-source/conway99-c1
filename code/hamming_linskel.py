@@ -134,7 +134,20 @@ if 'C' in mode:
                         cnf.append([-s] + cl)
             cnf.append(sel)
 
+if 'T' in mode:
+    # Kneser triangles never contain exactly one non-isometric edge (transport rule, facts B + D; notes/95)
+    D_ = ('d',)
+    for P, Q, R in itertools.combinations(pairs, 3):
+        if set(P) & set(Q) or set(P) & set(R) or set(Q) & set(R):
+            continue
+        iso = [X(P, Q, D_, D_), X(P, R, D_, D_), X(Q, R, D_, D_)]
+        for t in range(3):
+            others_ = [iso[u] for u in range(3) if u != t]
+            cnf.append([iso[t], -others_[0], -others_[1]])
 print('allowed linear-part multisets for fact C:', len(allowed))
+import threading
+secs = float(sys.argv[2]) if len(sys.argv) > 2 else 1e9
 with Cadical153(bootstrap_with=cnf.clauses) as s:
-    r = s.solve()
-    print(mode, 'vars', pool.top, 'clauses', len(cnf.clauses), '->', 'SAT' if r else 'UNSAT')
+    tm = threading.Timer(secs, lambda: s.interrupt()); tm.start()
+    r = s.solve_limited(expect_interrupt=True); tm.cancel()
+    print(mode, 'vars', pool.top, 'clauses', len(cnf.clauses), '->', {True: 'SAT', False: 'UNSAT', None: 'UNKNOWN (time limit)'}[r], flush=True)
