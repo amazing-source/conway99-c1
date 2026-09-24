@@ -19,7 +19,7 @@ LABELS = [(c, s) for c in CL for s in (0, 1)]
 mate = lambda l: (l[0], 1 - l[1])
 
 
-def build(K, sources=None, dom_classes=None):
+def build(K, sources=None, dom_classes=None, per_label=None):
     K = set(K)
     Xv = [frozenset((a, b)) for a, b in itertools.combinations(LABELS, 2) if a[0] != b[0]]
     V = ['x'] + LABELS + Xv
@@ -35,7 +35,10 @@ def build(K, sources=None, dom_classes=None):
     free = {}  # a -> list of labels whose partner is free
     for a in LABELS:
         dom = None
-        if sources is not None:
+        if per_label is not None:
+            if a in per_label:
+                dom = [b for b in LABELS if b[0] != a[0] and b[0] in per_label[a]]
+        elif sources is not None:
             if a in sources:
                 dom = [b for b in LABELS if b[0] != a[0] and (dom_classes is None or b[0] in dom_classes)]
         elif a[0] in K:
@@ -52,6 +55,11 @@ def build(K, sources=None, dom_classes=None):
         # every class of the domain is twisted by every source label (no mate pair inside the domain)
         for a in free:
             for j in dom_classes:
+                cnf.append([-tvar(a, (j, 0), (j, 1))])
+    if per_label is not None:
+        # label a twists exactly the classes of per_label[a]: no mate pair inside its domain
+        for a in free:
+            for j in per_label[a]:
                 cnf.append([-tvar(a, (j, 0), (j, 1))])
     # no 3-cycles in the trail system is implied by lambda; not added.
 
@@ -135,7 +143,14 @@ def build(K, sources=None, dom_classes=None):
 
 def main():
     t0 = time.time()
-    if sys.argv[1] == 'sources':
+    if sys.argv[1] == 'spec':
+        per = {}
+        for item in sys.argv[2].split(','):
+            lab, cls = item.split(':')
+            per[(int(lab[0]), int(lab[1]))] = [int(ch) for ch in cls]
+        cnf, pool, T = build([], per_label=per)
+        K = f'spec {sys.argv[2]}'
+    elif sys.argv[1] == 'sources':
         src = [(int(p[0]), int(p[1])) for p in sys.argv[2].split(',')]
         domc = [int(ch) for ch in sys.argv[3]] if len(sys.argv) > 3 else None
         cnf, pool, T = build([], sources=src, dom_classes=domc)

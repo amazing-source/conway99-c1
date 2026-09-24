@@ -28,6 +28,17 @@ la configuration (ou la famille) **en tout sommet de tout srg(99,14,1,2)** — d
 | motif « 2 étiquettes tordant la même paire de classes » | non réfuté par propagation | — | demande une recherche |
 | τ aléatoire (0 grille) | non décidé (propagation ne réfute pas) | > 9 min | — |
 
+## Frontière par nombre d'étiquettes tordues (règles R0, L12, L13 + SAT)
+- **k = 1** : impossible (à la main : R0 + L12).
+- **k = 2** : les deux étiquettes sont de classes différentes et tordent le même ensemble C, |C| ∈ {2,3,4,5}
+  (à la main ; confirmé par énumération : 4 motifs à symétrie près). |C| = 2 : UNSAT (motifs concrets 69 s / 41 s,
+  famille 92 s). **|C| = 3 : UNSAT (19 min).** |C| = 4, 5 : en cours.
+- **k = 3** : 128 motifs à symétrie près (`wpatterns_direct.py` → `data/k3_patterns.txt` ; 109 avec trois classes
+  distinctes, 19 avec deux étiquettes d'une même classe). File séquentielle `data/run_k3_queue.sh` →
+  `data/k3_results.txt`. Échelle PC du labo.
+- Limite de la méthode : le sommet le moins tordu peut, a priori, avoir ses 14 étiquettes tordues ; l'énumération par
+  k ne peut donc pas clore C1 sans un argument global qui borne la torsion minimale.
+
 ## Extraction de preuves humaines (`explain_up.py`)
 Quand la propagation unitaire réfute une configuration, on remonte le graphe d'implications jusqu'aux équations SRG
 d'origine. Pour les trois cas g = 19, **12 équations** suffisent, et elles donnent la règle **L12** (30_LEMMES.md),
