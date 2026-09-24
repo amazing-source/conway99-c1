@@ -147,6 +147,7 @@ def main():
     ap.add_argument('--notight', action='store_true')
     ap.add_argument('--only-local', action='store_true', help='relaxed positive control: degrees + tightness only')
     ap.add_argument('--sigma', action='store_true', help='impose invariance under sigma_x (flip every sign): C2 case')
+    ap.add_argument('--breaksym', action='store_true', help='same symmetry breaking as hamming_phi.py --breaksym')
     a = ap.parse_args()
     t0 = time.time()
     cnf, pool, D, Xv, labels = model(a.t, use_tight=not a.notight, only_local=a.only_local)
@@ -159,6 +160,23 @@ def main():
             if k2 in D and D[k2] != var:
                 cnf.append([-var, D[k2]]); cnf.append([var, -D[k2]]); nsig += 1
         print('sigma-invariance clauses pairs:', nsig, flush=True)
+    if a.breaksym:
+        def dv(u, w):
+            key = tuple(sorted([tuple(sorted(u)), tuple(sorted(w))]))
+            return D[key]
+        X = lambda i, si, j, sj: frozenset(((i, si), (j, sj)))
+        u0 = X(0, 0, 1, 0)
+        Qv = lambda K: [X(K[0], p, K[1], q) for p in (0, 1) for q in (0, 1)]
+        cnf.append([dv(u0, X(2, 0, 3, 0))])
+        cnf.append([dv(u0, X(4, 0, 5, 0))])
+        cnf.append([dv(u0, X(2, 0, 6, 0)), dv(u0, X(2, 1, 6, 0))])
+        NF = {0: [(1, 2), (3, 4)], 1: [(0, 3), (2, 4)], 2: [(0, 4), (1, 3)], 3: [(0, 2), (1, 4)], 4: [(0, 1), (2, 3)]}
+        for d, (e1, e2) in NF.items():
+            K = (e1[0] + 2, e1[1] + 2); M = (e2[0] + 2, e2[1] + 2)
+            for z in Qv(K):
+                for w in Qv(M):
+                    cnf.append([-dv(u0, z), -dv(u0, w), dv(z, w)])
+        print('symmetry breaking added', flush=True)
     print(f't={a.t}: {len(Xv)} X-vertices, {len(D)} unknown disjoint edges, {pool.top} vars, {len(cnf.clauses)} clauses '
           f'(built in {time.time()-t0:.1f}s)', flush=True)
     assumptions = []

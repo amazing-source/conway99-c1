@@ -61,6 +61,46 @@ k(x) = rank₇((H − 3I)|_K). Par L2, k(x) = α − 14 est pair et indépendant
 du 70-espace est un invariant global déguisé (α − 14), de parité forcée. Il ne dépend pas de x.
 
 ---------------------------------------------------------------------------------------------------------
+## L7. Un point de Hamming n'est jamais le point fixe d'une involution.   [calcul exact, 2 encodages] [à certifier DRAT]
+*Énoncé.* Si x est un sommet de Γ tel que τ = mate en x (x est dans les 21 grilles qui passent par lui), alors la
+réflexion σ_x (x ↦ x, a ↦ ā, ab ↦ āb̄) n'est pas un automorphisme de Γ. Par le lemme de Makhnev (l'involution d'un
+srg(99,14,1,2) fixe un seul sommet x et y agit comme σ_x), **dans la branche C2 le point fixe est tordu**.
+*Preuve (calcul).* Deux encodages indépendants du cas « τ = mate en x + invariance par σ_x », tous deux UNSAT :
+(i) `hamming_point.py --t 6 --sigma` : équations SRG brutes (λ, μ sur toutes les paires) + serrage des grilles (L5),
+UNSAT en 201 s (Cadical 1.5.3) ; (ii) `hamming_phi.py --iso` : modèle en bijections φ (faits B–E, notes/20),
+UNSAT en 34 s ; UNSAT aussi avec seulement trois des quatre groupes de faits (BCD, BCE, BDE, CDE).
+Contrôles : contrôle relâché SAT ; aucune contradiction dans la partie fixe ; le serrage est prouvé (L5).
+*À faire.* Certificat DRAT (images Docker de la branche C3, PC du labo) ; preuve humaine à partir du noyau minimal.
+
+*Noyau.* Dans le modèle φ isométrique, le fait C seul (μ entre grilles partageant une classe) suffit (UNSAT 3,2 s) ;
+B seul est SAT ; CD, CE, DE sont UNSAT. Amorce de preuve humaine : pour P = ij, P' = ik, les 6 isométries
+ψ_{P''} = φ_{P'P''}⁻¹∘φ_{PP''} doivent couvrir chaque paire (u,w) de même signe en i une fois et de signes opposés
+deux fois ; cela force (n₀, n₁, c₀, c₁) ∈ {(2,4,0,0), (1,3,1,1), (0,2,2,2)} (droites préservant/renversant le signe
+en i, croisées), donc un nombre **pair ≥ 2** de ψ « droites ». Reste à montrer l'incompatibilité globale de ces
+parités d'orientation.
+
+## L8. Aucun sommet de Γ n'est un point de Hamming.   [calcul exact, 3 exécutions / 2 encodages] [à certifier DRAT]
+*Énoncé.* Pour tout sommet x de srg(99,14,1,2), il existe a, b ∈ N(x) non mates avec τ_a(b) ≠ b̄ ; de façon
+équivalente, x n'est pas dans ses 21 grilles.
+*Preuve (calcul).* Modèle φ sans cassage de symétrie : UNSAT (2 114 s) ; modèle φ avec cassage (quasi-1-factorisation
+canonique en u₀ + 3 normalisations de signes, validité argumentée dans notes/40) : UNSAT (46 s) ; modèle d'adjacence
+(équations SRG brutes) avec le même cassage : UNSAT (100 s). Variante « au moins une φ non isométrique » : UNSAT
+(2 244 s sans cassage, 56 s avec).
+*Conséquence (parité).* Si une grille par x manque, au moins deux manquent (si τ_a n'est pas mate sur la classe j,
+il envoie un élément de j dans une autre classe k, et la grille (i,k) tombe aussi). Donc g(x) ∈ [0, 19].
+
+## L10. Aucun sommet n'est dans exactement 19 grilles : g(x) ≤ 18 pour tout x.   [calcul exact] [P partielle]
+*Énoncé.* À symétrie près, g(x) = 19 n'admet que trois configurations de τ en x (τ_{i±} échangent deux classes j, k,
+tout le reste mate) ; les trois sont réfutées **par simple propagation unitaire** des équations SRG
+(`rooted_model.py --case g19A|g19AA|g19AB`), avec ou sans les contraintes de serrage ; le contrôle relâché
+(degrés + serrage) est SAT ; le même modèle ne réfute pas instantanément le cas Hamming (cohérence).
+*Preuve humaine de g19A.* u = {(0,0),(1,0)} : τ_{(0,0)}((1,0)) = (2,0) ≠ (1,1), donc (compte d'étiquettes) un voisin
+disjoint de u contient (1,1) ; le serrage de G_{1m}, m ≥ 2, ne laisse que w = {(0,1),(1,1)} ; alors
+z = {(1,0),(0,1)} est voisin de u (via τ_{(1,0)} = mate) et de w (via τ_{(0,1)} = mate), et l'arête étiquetée u–z
+aurait deux voisins communs, contre λ = 1.
+**Lemme local L9 (généralisation).** Si τ_a(c) ≠ c̄, τ_c(a) = ā et τ_ā(c̄) = c, alors au moins une grille
+G_{[c],m}, m ∉ {[a],[c]}, manque en x. (Même preuve.)
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

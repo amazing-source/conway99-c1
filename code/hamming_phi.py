@@ -30,7 +30,7 @@ def adj4(s, t):
     return (s[0] != t[0]) + (s[1] != t[1]) == 1
 
 
-def build(iso=False, noniso=False):
+def build(iso=False, noniso=False, use=('B','C','D','E'), breaksym=False):
     pool = IDPool()
     cnf = CNF()
 
@@ -90,9 +90,10 @@ def build(iso=False, noniso=False):
                 cs = [coinc(P, s, Q, t, R) for R in Rs]
                 e = y(P, Q, s, t)
                 # adjacent (e): exactly 1 coincidence ; else: count formula
-                for cl in CardEnc.equals(cs, 1, vpool=pool, encoding=EncType.pairwise).clauses:
-                    cnf.append([-e] + cl)
-                if P < Q:  # D once per unordered pair
+                if 'B' in use:
+                    for cl in CardEnc.equals(cs, 1, vpool=pool, encoding=EncType.pairwise).clauses:
+                        cnf.append([-e] + cl)
+                if P < Q and 'D' in use:  # D once per unordered pair
                     # non-adjacent: [phi^{-1}(t) ~ s] + [phi(s) ~ t] + #cs = 2
                     lits = list(cs)
                     for s2 in SIGNS:
@@ -106,7 +107,7 @@ def build(iso=False, noniso=False):
     # C
     for P, Q in itertools.permutations(PAIRS, 2):
         common = set(P) & set(Q)
-        if len(common) != 1 or P > Q:
+        if len(common) != 1 or P > Q or 'C' not in use:
             continue
         (i,) = common
         Rs = rest_pairs(set(P) | set(Q))
@@ -116,7 +117,7 @@ def build(iso=False, noniso=False):
                 want = 1 if sign_at(P, s, i) == sign_at(Q, t, i) else 2
                 cnf.extend(CardEnc.equals(cs, want, vpool=pool, encoding=EncType.seqcounter).clauses)
     # E
-    for P in PAIRS:
+    for P in (PAIRS if 'E' in use else []):
         free = [c for c in C7 if c not in P]
         for s in SIGNS:
             for m in free:
@@ -131,6 +132,21 @@ def build(iso=False, noniso=False):
                 cnf.extend(CardEnc.equals(lits, 2, vpool=pool, encoding=EncType.seqcounter).clauses)
     # symmetry breaking
     cnf.append([y((0, 1), (2, 3), (0, 0), (0, 0))])
+    if breaksym:
+        # u0 = (0,0) in Q_01. (1) fix the near-1-factorisation of K5 on classes 2..6 realised by the triangles at u0
+        # (all 6 labelled NFs form one S5-orbit); canonical NF on vertices 0..4 (class = vertex + 2):
+        NF = {0: [(1, 2), (3, 4)], 1: [(0, 3), (2, 4)], 2: [(0, 4), (1, 3)], 3: [(0, 2), (1, 4)], 4: [(0, 1), (2, 3)]}
+        u0, P0 = (0, 0), (0, 1)
+        for d, (e1, e2) in NF.items():
+            for ea, eb in ((e1, e2), (e2, e1)):
+                K = tuple(sorted((ea[0] + 2, ea[1] + 2)))
+                M = tuple(sorted((eb[0] + 2, eb[1] + 2)))
+                for z in SIGNS:
+                    for w in SIGNS:
+                        cnf.append([-y(P0, K, u0, z), -y(P0, M, u0, w), y(K, M, z, w)])
+        # (2) sign normalisation by flipping classes 4,5 and 6 (classes 2,3 already used above)
+        cnf.append([y(P0, (4, 5), u0, (0, 0))])
+        cnf.append([y(P0, (2, 6), u0, (0, 0)), y(P0, (2, 6), u0, (1, 0))])
     return cnf, pool, disjoint, y
 
 
@@ -138,9 +154,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--iso', action='store_true')
     ap.add_argument('--noniso', action='store_true')
+    ap.add_argument('--use', default='BCDE')
+    ap.add_argument('--breaksym', action='store_true')
     a = ap.parse_args()
     t0 = time.time()
-    cnf, pool, disjoint, y = build(a.iso, a.noniso)
+    cnf, pool, disjoint, y = build(a.iso, a.noniso, tuple(a.use), a.breaksym)
     print(f'phi model: {len(disjoint)} bijections, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
     S = Cadical153(bootstrap_with=cnf.clauses)
     t1 = time.time()
