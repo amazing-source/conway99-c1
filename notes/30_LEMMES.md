@@ -177,6 +177,17 @@ de H (3 sur K₃, −4 sur K₋₄) modulo p. Détails : notes/80. ∎
 *Contrôle.* Mécanisme vérifié sur BvLS en p = 5 (rangs 110 / 76 exactement prédits), 7, 11 (`local_split_check.py`).
 *Portée.* Tout est cohérent au niveau du genre : pas de contradiction sans information plus fine.
 
+## L18. La seconde variable libre d'ordre 7 est une statistique de torsion.   [P] [C] (notes/90)
+*Énoncé.* σ_x = réflexion ponctuelle en x (mates échangés, étiquette {b,c} ↦ {b̄,c̄}) ; S = #{(x,E) : E ∈ Γ₂(x),
+E ~ σ_x(E)} = nombre de coïncidences τ_a(c) = τ_c(a). Dans toute géométrie aux axiomes locaux : z₂ = S/2,
+z₃ = Σ|W| − 2S, z₁₁ = 2Σ|W| − 2S (z_i = copies induites des graphes Z_i de Reimbayev). Dans un SRG, z₁₁ = 4n₃ − 2S
+et le polygone d'ordre 7 est exactement 0 ≤ S ≤ n₃. Grilles avortées : pour x et une paire de classes, les 9 points
+G vérifient |Σ_G p_v|²_{63E₋₄} = 18(18 − e(G)), et Σ(18 − e) = 2n₃ − S/2.
+*Preuve.* Identification directe de Z₂, analyse de cas pour Z₁₁ et Z₃ (notes/90). ∎
+*Contrôle.* Comptage direct des copies induites sur 3 géométries tordues et srg(9) (`code/z11_identity.py`) ;
+identité des grilles avortées aussi sur BvLS.
+*Portée.* Dictionnaire exact, pas une contradiction : il faudrait une relation supplémentaire entre n₃ et S.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

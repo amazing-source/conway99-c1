@@ -52,3 +52,13 @@
   scinde en 2, 3, 5, K₃ pair 2-unimodulaire, formes 3/5-adiques déterminées ; mécanisme vérifié sur BvLS mod 5) ;
   structure d'Eisenstein des droites orientées (graphe à gains Z/3). Tout est cohérent : pas de contradiction.
   notes/80_ETINCELLE_ARITHMETIQUE.md.
+- Nuit (suite). Lecture de Bondarenko–Radchenko (famille λ = 1, g = k) : leur représentation euclidienne force les
+  réflexions σ_v à être des automorphismes, d'où une structure de F₃-espace (n = 3^m). Pour 99, g = 44 ≠ k : il
+  reste 30 dimensions libres par sommet (W_x^⊥), c'est là que vit la torsion. Lou–Murin : lemme de variance de
+  Wilbrink–Brouwer (local). Thakkar–Severini : constructions partielles, rien d'exploitable.
+- **L18** : identification de la seconde variable libre de Reimbayev (z₁₁) : z₁₁ = 4n₃ − 2S, S = nombre de paires
+  σ-adjacentes (= coïncidences τ_a(c) = τ_c(a)) ; le polygone d'ordre 7 est exactement 0 ≤ S ≤ n₃. Vérifié par
+  comptage direct des sous-graphes induits sur 4 géométries (`code/z11_identity.py`). Grilles avortées :
+  Σ(18 − e(G)) = 2n₃ − S/2, défaut euclidien |Σ_G p|² = 18(18 − e) ; opérateur de défaut Δ ⪰ 0 sur E₋₄.
+  Matrice des réflexions Z (= J − I − A si non tordu ; masse à distance 3 sur les géométries tordues).
+  Pas de contradiction. notes/90_SECONDE_VARIABLE.md.
