@@ -19,7 +19,7 @@ LABELS = [(c, s) for c in CL for s in (0, 1)]
 mate = lambda l: (l[0], 1 - l[1])
 
 
-def build(K):
+def build(K, sources=None):
     K = set(K)
     Xv = [frozenset((a, b)) for a, b in itertools.combinations(LABELS, 2) if a[0] != b[0]]
     V = ['x'] + LABELS + Xv
@@ -34,8 +34,13 @@ def build(K):
         return T[key]
     free = {}  # a -> list of labels whose partner is free
     for a in LABELS:
-        if a[0] in K:
+        dom = None
+        if sources is not None:
+            if a in sources:
+                dom = [b for b in LABELS if b[0] != a[0]]
+        elif a[0] in K:
             dom = [b for b in LABELS if b[0] in K and b[0] != a[0]]
+        if dom is not None:
             free[a] = dom
             for b in dom:
                 lits = [tvar(a, b, c) for c in dom if c != b]
@@ -124,10 +129,15 @@ def build(K):
 
 
 def main():
-    K = [int(ch) for ch in sys.argv[1]]
     t0 = time.time()
-    cnf, pool, T = build(K)
-    print(f'family confined({K}): {len(T)} tau-variables, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
+    if sys.argv[1] == 'sources':
+        src = [(int(p[0]), int(p[1])) for p in sys.argv[2].split(',')]
+        cnf, pool, T = build([], sources=src)
+        K = f'sources {src}'
+    else:
+        K = [int(ch) for ch in sys.argv[1]]
+        cnf, pool, T = build(K)
+    print(f'family {K}: {len(T)} tau-variables, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
     S = Cadical153(bootstrap_with=cnf.clauses)
     t1 = time.time()
     ok = S.solve()

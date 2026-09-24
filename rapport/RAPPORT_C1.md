@@ -2,75 +2,71 @@
 
 *Chercheur F (idées) + chercheur R (attaques), budget non limité. Rien ici ne résout le problème.*
 *Tout résultat utilisé est redérivé ici ; l'ancien repo conway-99-research n'a servi que d'index de noms.*
+*« Obstruction » = preuve par l'absurde : on suppose que Γ existe et on cherche une conséquence impossible.
+Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'est encore contradictoire.*
 
 ## 1. En bref
 
-1. **Γ est forcément « tordu »** (lemme L1, preuve complète) : si τ = mate en tout sommet (toute paire de droites
-   concourantes engendre une grille 3×3), Γ serait un quotient de H(7,3), donc 99 | 3⁷. Donc en au moins un sommet
-   x, un couplage τ_a envoie b ailleurs que sur son mate b̄. Même conclusion pour 6273 et 494019.
-2. **La torsion n'a pas d'obstruction locale.** J'ai construit des géométries tordues explicites (graphes localement
-   (t+1)K₂, λ = 1, μ ∈ {0,2}, non SRG) : t = 2 (20 sommets, graphe des arcs de K₅, **seule** jusqu'à 34 sommets),
-   t = 3 (39 et 42 sommets), t = 5 (93), t = 7 (171). Une famille entière vient des plans projectifs (tri-incidence
-   (S, −2S, S) sur Z_{q²+q+1}, q = 3, 5, 7). **Toute obstruction pour C1 doit donc être globale** (utiliser μ = 2
-   pour *toutes* les paires, c.-à-d. « excès 0 »).
-3. Les trois pistes de ChatGPT : **A absorbée** (la cohérence T/Δ est une condition de fermeture de grille, elle
-   mesure la même torsion) ; **B tuée comme source d'obstruction** (l'holonomie existe et est canonique, mais aucune
-   contrainte spectrale ne la restreint : 0 violation sur 15 765 configurations) ; **C survit sous forme d'un lemme
-   démontré** (L4) : le recollement 7-adique du 70-espace est le même en tout sommet et pair — mais ce n'est pas une
-   contradiction.
-4. Lemmes arithmétiques démontrés : rank₇(A − 3I) est **impair** (L2) ; la forme de recollement 7-adique est
-   **non scindée** (L3) ; k(x) = rank₇(A − 3I) − 15 pour tout x (L4).
-5. Cas spécial « point de Hamming » (x dans ses 21 grilles) : la version où σ_x est un automorphisme est **UNSAT**
-   (modèle φ, 34 s ; contrôle croisé en cours). Le cas général est en calcul.
+1. **Γ est forcément « tordu »** (L1, preuve complète) : sinon Γ serait un quotient de H(7,3), donc 99 | 3⁷.
+   Même conclusion pour 6273 et 494019.
+2. **La torsion n'a pas d'obstruction purement locale** : géométries tordues explicites (non SRG) pour t = 2, 3, 5, 7,
+   dont une famille venant des plans projectifs (tri-incidence (S, −2S, S) sur Z_{q²+q+1}). Toute obstruction doit
+   utiliser μ = 2 pour *toutes* les paires (« excès nul »).
+3. **Mais les sommets presque non tordus sont impossibles** (nouveau, calcul exact + contrôles) :
+   - **L8 : aucun sommet n'est dans ses 21 grilles** (3 exécutions, 2 encodages indépendants) ;
+   - **L7** : même chose avec σ_x automorphisme — dans la branche C2, **le point fixe de l'involution est tordu** ;
+   - **L10 : au plus 18 grilles par sommet** ; **L11** : les torsions d'un sommet touchent au moins 4 classes ;
+     une étiquette tordue seule, ou une seule classe tordue, est impossible (réfuté par simple propagation) ;
+   - **L9 (preuve à la main)** : une torsion entourée de transitions « mate » force l'absence d'une grille voisine.
+4. Les trois pistes de ChatGPT : **A absorbée** (cohérence T/Δ = fermeture de grille) ; **B tuée comme source
+   d'obstruction** (holonomie canonique mais non contrainte : 0 violation sur 15 765 configurations) ; **C survit
+   comme lemme** (L4 : le recollement 7-adique du 70-espace vaut rank₇(A − 3I) − 15, pair, identique en tout sommet).
+5. Arithmétique : rank₇(A − 3I) **impair** (L2) ; recollement 7-adique **non scindé** (L3).
 
-## 2. Méthode
-- Fondations redérivées des axiomes (`notes/00_FONDATIONS.md`).
-- Témoins : srg(9,4,1,2), BvLS srg(243,22,1,2) (les deux **non tordus**, donc aveugles à la torsion), Gewirtz
-  srg(56,10,0,2) (l'analogue q = 2, **tordu et existant** : avertissement contre les arguments de « torsion pure »),
-  Clebsch, GQ(2,2), GQ(2,4) ; puis les géométries tordues construites ici.
-- Chaque idée : énoncé précis → attaque la moins chère (calcul exact, contrôle, contre-exemple) → verdict.
-- Calculs lourds sous plafond mémoire (`run_capped.ps1`), jamais de SAT « gros » sans budget.
+## 2. Piste principale : « frontière de torsion » (notes/50)
+On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
+dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
+de tout srg(99,14,1,2). Résultats : les configurations presque non tordues tombent (souvent par propagation) ; un τ
+générique ne tombe pas. La torsion est donc « étalée » en chaque sommet.
+**Ce qui manque pour une contradiction** : soit pousser la frontière jusqu'au bout (équivaut au problème complet,
+peu probable), soit trouver une identité globale qui limite la torsion totale (prismes, grilles, surface Σ, invariant
+7-adique…) et la confronter à « forte torsion partout ». Aucune n'est trouvée à ce jour.
 
-## 3. Verdicts (détails : `notes/20_ATTAQUES_R.md`)
+## 3. Méthode
+- Fondations redérivées des axiomes (`notes/00`). Idées (`notes/10`), attaques et verdicts (`notes/20`), lemmes
+  (`notes/30`), point de Hamming (`notes/40`), frontière de torsion (`notes/50`).
+- Témoins : srg(9,4,1,2), BvLS (non tordus), Gewirtz (analogue q = 2, tordu et existant : garde-fou contre les arguments
+  de « torsion pure »), puis les géométries tordues construites ici.
+- Chaque UNSAT a un contrôle positif relâché (SAT) ; les résultats importants ont un second encodage indépendant.
+- Calculs sous plafond mémoire (`run_capped.ps1`).
 
-| Idée | Verdict | Raison |
-|---|---|---|
-| A — algèbre T/Δ | absorbée | cohérence ⟺ fermeture des grilles |
-| B — monodromie des 14 transitions | tuée (obstruction) | holonomie ρ_ℓ ∈ S₁₂ canonique, mais aucune contrainte (entrelacement : 0 violation) ; les exemples tordus réalisent des holonomies non triviales |
-| C — 70-espace entier + transitions | **lemme L4** | recollement 7-adique k(x) = α − 14, pair, indépendant de x |
-| F2 rigidité locale q = 3 | tuée | exemples tordus t = 2, 3 |
-| F2' revêtement universel | tuée | H₁ = 0 des géométries tordues |
-| F3 ensembles serrés × τ | tuée | les configurations déterminées par τ sont trop creuses (degré ≤ 4) |
-| F4 torsion de Fano | tuée (locale) | exemple t = 3 non cohérent par classes |
-| F5 genre / oddité | **lemmes L2, L3** | pas d'obstruction |
-| F6 Arf | absorbée par F5 | Arf = classe de det Λ₃ mod 8 |
-| F11 variété plate cubique | tuée | pas de fermetures en 3-cubes dans les exemples tordus |
-| F14 annulation de Krein | tuée | tous les q_ij^k > 0 |
-| F15 point de Hamming | **en cours** | cas σ_x-invariant UNSAT |
-| F16 rigidité ⇒ symétrie (C1 → C2) | ouverte | dépend de F15 et suites |
-| F17 torsion ⇒ plan projectif d'ordre t | ouverte, affaiblie | famille planaire confirmée (q = 3, 5, 7), mais une 2e géométrie t = 3 (42 sommets) n'est pas planaire ; test t = 6 en cours |
-| F9, F10, F12, F13, F18 | encodages / non tranchées | voir notes |
+## 4. Verdicts des idées (détails `notes/20`)
+| Idée | Verdict |
+|---|---|
+| A — algèbre T/Δ | absorbée (= fermeture de grille) |
+| B — monodromie des transitions | tuée comme obstruction ; invariant conservé |
+| C — 70-espace + transitions | lemme L4 |
+| F2 rigidité locale q = 3 | tuée (exemples tordus) ; forme SRG = conjecture « tout PQ(2,t,2) est grid-full » (implique l'unicité de BvLS, ouverte) |
+| F2' revêtement universel | tuée (H₁ = 0 des géométries tordues) |
+| F3 ensembles serrés × τ | tuée |
+| F4 Fano / cohérence de classes | tuée (locale) |
+| F5 genre / oddité | lemmes L2, L3 |
+| F6 Arf | absorbée par F5 |
+| F11 variété plate cubique | tuée |
+| F14 annulation de Krein | tuée |
+| **F15 point de Hamming** | **lemme L8** |
+| F16 rigidité ⇒ symétrie | L7 (côté C2) ; ouverte pour C1 |
+| F17 torsion ⇒ plan projectif d'ordre t | ouverte, affaiblie (2e géométrie t = 3 non planaire) ; t = 6 tri-circulant : N = 34 aucune solution, N ≤ 60 en cours |
+| F9, F10, F12, F13, F18 | encodages / non tranchées |
 
-## 4. Ce qui est nouveau (à ma connaissance, à vérifier en bibliographie)
-- La lecture « Γ = H(7,3) replié jusqu'au rayon 2, obligatoirement tordu » avec une preuve de revêtement complète,
-  et l'observation que la torsion **comprime** (moins de sommets à distance 3) : un SRG est la compression totale.
-- Les **géométries tordues** comme témoins, en particulier la famille tri-incidence (S, −2S, S) : tordue pour
-  q = 3, 5, 7 ; échec pour q pair (2 est alors multiplicateur de l'ensemble de différences).
+## 5. Nouveau à ma connaissance (à confronter à la bibliographie)
+- La lecture « Γ = H(7,3) replié au rayon 2, obligatoirement tordu », et la torsion comme compression.
+- Les géométries tordues comme témoins ; la famille tri-incidence (q = 3, 5, 7 ; échec pour q pair).
+- L7–L11 (exclusions locales exactes) ; L9 à la main.
 - L2–L4 (dérivation indépendante ; des énoncés voisins existent peut-être chez Brouwer–van Eijl).
 
-## 5. Piste principale proposée
-**« Torsion contre excès nul ».** Γ est tordu (L1) ; toutes les géométries tordues connues ont un excès > 0 ; un SRG
-est exactement une géométrie d'excès 0. Programme :
-1. Exclure les types locaux « presque non tordus » : point de Hamming (F15, en cours), puis sommets avec 20, 19, …
-   grilles, par le modèle φ (compact, rapide sur le cas symétrique).
-2. Chercher une identité locale reliant torsion et excès, valable dans toutes les géométries (témoins construits
-   ici), qui forcerait torsion = 0 quand l'excès est nul — ce serait la contradiction avec L1.
-3. En parallèle, falsifier F17 à t = 6 (tri-circulants, Cayley) : si aucune géométrie tordue n'existe à t = 6,
-   c'est même plus fort que Conway ; si une existe, on a enfin un témoin au bon t.
-Honnêteté : le point 2 est l'étape difficile ; rien ne garantit qu'une telle identité existe (Gewirtz montre que
-l'analogue q = 2 est faux à l'ordre 3).
-
-## 6. Calculs en cours / pour le PC du labo
-- Modèle φ du point de Hamming, variantes « générale » et « non isométrique » (Cadical, 2 h).
-- Tri-circulants t = 6, N = 34…60 (6 processus).
-- Recherche tordue générale t = 4 (n ≥ 51) ; zoo t = 3 (n ≤ 52).
+## 6. Pour le PC du labo
+1. Contrôle positif t = 10 du modèle enraciné (BvLS doit être SAT) — valide le code générique.
+2. Certificats DRAT pour L7, L8, L10, L11.
+3. Poursuivre la frontière : confined(K), |K| = 4, 5, 6 ; sources(S) croissants ; familles « g(x) ≥ G ».
+4. Tri-circulants t = 6 au-delà de N = 60 ; graphes de Cayley tordus d'ordre 100–200.
