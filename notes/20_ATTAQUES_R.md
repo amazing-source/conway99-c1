@@ -139,3 +139,18 @@ L'ancien repo (conway-99-research) est un travail amateur assisté par IA, **non
 seulement : il nomme une holonomie de triangle (≈ F1), un signe d'Arf 2-adique (≈ F6/F5), un design de transitions
 (≈ piste B), un code 7-adique non scindé (≈ F8). **Aucune mention** de quotient de Hamming, de revêtement,
 d'exemples tordus, de Gewirtz, de graphe des arcs.
+
+
+### Validation de la méthode enracinée sur l'analogue q = 2 (`q2_rooted.py`) — **RÉUSSIE**
+Même modèle exact (racine, étiquettes, sommets à distance 2 = paires, inconnues = arêtes entre paires disjointes,
+toutes les équations SRG) pour λ = 0, μ = 2 :
+- srg(16,5,0,2) : SAT, solution isomorphe à Clebsch ; avec une fermeture en 3-cube imposée : SAT (Clebsch en a).
+- **srg(56,10,0,2) : SAT en 1,9 s, solution isomorphe au graphe de Gewirtz** (reconstruit de zéro).
+- **Gewirtz + une fermeture en 3-cube imposée : UNSAT (13 s)** — cohérent avec l'unicité de Gewirtz et le fait
+  qu'il n'a **aucune** fermeture en 3-cube (0/6720, mesuré : il est *maximalement* tordu en chaque sommet).
+Conséquences : (i) la chaîne « modèle enraciné + SAT + exclusion d'une configuration locale » donne la bonne
+réponse sur un SRG tordu connu, dans les deux sens ; (ii) **contre-poids heuristique** : dans l'analogue q = 2,
+« torsion maximale partout » est exactement ce que fait le seul SRG tordu connu — la torsion forte n'est donc pas
+un argument contre l'existence ; reste l'argument du groupe d'automorphismes (|Aut(Gewirtz)| = 80 640, contre ≤ 3
+pour Γ). (iii) Pour q = 2 le problème enraciné complet se résout en 2 s ; pour 99 il est ~10× plus gros (2 562
+inconnues + τ contre 630) et des heures de SAT (ici et ailleurs) n'ont rien trouvé : indice faible de non-existence.
