@@ -65,6 +65,13 @@ que les 231 vecteurs marqués n'occupent qu'un sous-espace de dimension 44 sur 4
 exactement. C'est la cible la plus prometteuse pour la méthode. Avec P = 0 (torsion maximale, cas k = 6 de L20), les
 produits sont seulement 0, ±1.
 
+*Identités utiles (vérifiées à la main).* Avec N_L la matrice d'incidence points × droites (99 × 231), on a
+N_L N_Lᵀ = 7I + A. Donc G_L = N_LᵀN_L = 3I + A_droites, de valeurs propres 21, 10⁵⁴, 3⁴⁴, 0¹³², et N_LᵀAN_L =
+G_L² − 7G_L. Il vient **K = 3G_L − N_LᵀAN_L + J = −G_L(G_L − 10I) + J = 3I − A_droites − E + J** (E : nombre
+d'arêtes entre droites disjointes), valeur propre 21 exactement sur la partie « 3 » de G_L. Et
+**Λ_L = √7 · E₋₄(N_L Z²³¹)** ⊂ √7 · Λ₋₄^#. Son discriminant dépend donc de la structure 7-adique (k, L19–L20) et de
+l'indice [Z⁹⁹ : N_L Z²³¹] (premiers 2, 3, 5, 7 possibles, puisque det(7I + A) = 21·10⁵⁴·3⁴⁴).
+
 ## 4. Verdict et plan (non exécuté cette nuit)
 C'est la seule méthode **globale et arithmétique** nouvelle rencontrée qui ait tué un cas ouvert récemment, et elle
 s'articule exactement avec nos objets (K₃, K₋₄, L17, L19). Mais les trois leviers qui la font marcher à 266 (repère
