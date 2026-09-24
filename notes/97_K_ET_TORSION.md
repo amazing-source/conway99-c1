@@ -136,3 +136,26 @@ ensemble.) Le même mécanisme se généralise : pour k donné, les vecteurs du 
 lignes complètes forment un espace de dimension ≥ 12 − k, et chaque colonne z hors de l'étoile impose
 c_{b₁(z)} + c_{b₂(z)} + 3(c_ℓ + c_q) + (c_{ℓ̄} + c_{q̄}) + 5Σc = 0, où {a,b₁}, {a,b₂} sont les deux voisins de z
 dans l'étoile (inconnus). Si aucun choix des voisins n'est compatible, la valeur de k est exclue.
+
+## L20 ter : k = 8 est impossible, donc **k ≥ 10** (calcul exact assisté, petit)
+*Mécanisme* (celui de L20 bis, généralisé). Si k = K, chaque étoile a un rang r_a ≤ K, et ses relations de lignes
+complètes R_a = ker(V_a) forment un sous-espace du noyau du bloc d'étoile de dimension ≥ 12 − K. Chaque colonne z hors
+de l'étoile impose, pour tout c ∈ R_a, f_z(c) = 0 : pour z = {ℓ,q} ∌ a, ā,
+c_{b₁} + c_{b₂} + 3(c_ℓ + c_q) + (c_{ℓ̄} + c_{q̄}) + 5Σc = 0 ; pour z = {ā,q}, c_{b₁} + 3c_q + c_{q̄} + 6Σc = 0.
+Ici {a,b₁}, {a,b₂} sont les voisins inconnus de z dans l'étoile. Donc Ann(R_a), de dimension ≤ dim ker − (12 − K),
+doit rencontrer l'ensemble fini T_z des fonctionnelles possibles pour chaque z.
+*Calcul (`code/kbound_star.py`, `code/kbound_exact.py`).* Pour K = 8, les types de rang ≤ 8 sont (0;2,2,2),
+(0;2,4) et (2;2,2).
+- (0;2,4) et (2;2,2) : aucun sous-espace (dim ≤ 1) ne rencontre tous les T_z. Impossible (algèbre linéaire seule).
+- (0;2,2,2) : il y a exactement **32** sous-espaces de dimension 3 qui rencontrent tous les T_z (énumération
+  complète, les colonnes dont T_z contient 0 étant écartées). Pour chacun, le modèle exact ajoute les contraintes
+  (deg) chaque {a,b} a 10 voisins génériques et 1 dans étoile(ā), et (étiquette) {a,ℓ} ~ {ℓ,q} ⟺ τ_ℓ(a) = q, donc
+  une seule colonne contenant ℓ. Il est **UNSAT dans les 32 cas, par simple propagation unitaire**.
+  Contrôles : sans la condition linéaire → SAT ; sans la contrainte d'étiquette → SAT.
+- Un bogue d'énumération (colonnes dont T_z contient 0, non écartées) a été trouvé et corrigé en cours de route ;
+  la liste corrigée est identique (32 sous-espaces).
+**Donc k ≠ 8, et k ≥ 10**, c'est-à-dire rank₇(A − 3I) ≥ 25. Pour K = 10, le même test exclut encore les types
+(1;2,3) et (4;2), mais (0;2,4), (2;2,2), (0;6) et (2;4) restent possibles : **la méthode à une étoile s'arrête à
+k ≥ 10**. Pour aller plus loin, il faudrait coupler plusieurs étoiles, ou la structure globale.
+*Statut* : formule locale et lemme d'algèbre linéaire prouvés à la main ; énumération exacte sur F₇ et 32 petites
+instances SAT réfutées par propagation. Donc vérifiable, et certifiable facilement (DRAT trivial).

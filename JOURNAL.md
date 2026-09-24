@@ -130,3 +130,8 @@
   (type (2,2,2), rang 5 = k − 1) engendrent des hyperplans non dégénérés, donc leurs vecteurs de noyau sont des
   relations entre lignes complètes : ligne({a,ℓ₁}) = ligne({a,ℓ₃}), et la colonne {ℓ₁,q} donne H − H' ≡ 4 ou 5 mod 7,
   absurde. Formules de Schur vérifiées exactement (G = −(3/8)I − P/8 + J/16). Crédit du principe : van Eijl 1991.
+- Nuit (02:40). **L20 ter : k ≥ 10.** Généralisation de L20 bis par énumération exacte des annulateurs possibles des
+  relations d'étoile, plus un modèle SAT petit (degrés, contrainte d'étiquette τ_ℓ(a) unique) : k = 8 exclu (32 cas
+  UNSAT par propagation, contrôles SAT sans la condition linéaire ou sans la contrainte d'étiquette). Bogue
+  d'énumération (colonnes à fonctionnelle nulle) trouvé et corrigé ; résultat inchangé. Pour k = 10, la méthode à une
+  étoile n'exclut plus rien de décisif.
