@@ -8,7 +8,8 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 ## 1. En bref
 
 1. **Γ est forcément « tordu »** (L1, preuve complète) : sinon Γ serait un quotient de H(7,3), donc 99 | 3⁷.
-   Même conclusion pour 6273 et 494019.
+   Même conclusion pour 6273 et 494019. **Résultat déjà connu pour 99 : Makhnev (1988), Mat. Zametki 44(5),
+   théorème 2**, par une autre preuve (notes/94 §3.1) ; notre argument par revêtement reste indépendant.
 2. **La torsion n'a pas d'obstruction purement locale** : géométries tordues explicites (non SRG) pour t = 2, 3, 5, 7,
    dont une famille venant des plans projectifs (tri-incidence (S, −2S, S) sur Z_{q²+q+1}). Toute obstruction doit
    utiliser μ = 2 pour *toutes* les paires (« excès nul »).
@@ -90,6 +91,16 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   qui mordent redonnent exactement P ≤ 1151,08 (L16), par trois familles indépendantes. L'information locale
   jusqu'à 8 points est entièrement contenue dans L16 et L18 : si Γ n'existe pas, la contradiction est globale ou
   d'ordre bien plus élevé.
+
+## 1 septies. Nuit du 24 au 25/09 : L19, k ≥ 2, littérature en texte intégral (notes/93, notes/94)
+- **L19** : en chaque sommet, la similitude de torsion U_x = (2H + I)σ_x a pour forme de Smith 7-adique (1^k, 7^{70−2k},
+  49^k), avec k = rank₇(A − 3I) − 15 global ; si k = 0, congruences en chaque sommet. **L19 bis : k ≥ 2** (preuve à la
+  main), donc ce cas favorable est vide.
+- Parités d'holonomie des droites : aucune loi sur les géométries disponibles.
+- Littérature (textes complets) : **L1 est le théorème 2 de Makhnev (1988)** ; la méthode de Wilbrink–Brouwer (57)
+  repose sur un prisme tendu, une coclique de Hoffman et un design local non trivial, et aucun des trois n'existe à 99 ;
+  l'argument de Reimbayev (19) sature à t = 2 mais pas à t = 6. Tous les autres résultats connus sur 99 (Wilbrink 1984,
+  Behbahani–Lam 2011, Crnković–Maksimović 2020) portent sur les automorphismes : pour C1, rien.
 
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG

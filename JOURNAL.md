@@ -92,3 +92,11 @@
   Hypothèse « la géométrie à 42 sommets vient du plan de Fano » testée : fausse (non isomorphe). **L19** : forme de
   Smith 7-adique de U_x = (1^k, 7^{70−2k}, 49^k) avec k global ; valeurs propres = 7·racines de l'unité sauf un déficit
   ≤ k ; si k = 0, congruences s(x) ≡ 0 (7), e_σ(x) ≡ 14 (49). Direction retenue : comprendre k. notes/93.
+- Nuit (8 h autonomes demandées). **L19 bis : k ≥ 2** (à la main : sur Γ₂(x) les combinaisons des lignes de B₁(x) sont
+  additives en étiquettes ; les paires où elles doivent s'annuler contiennent des triangles, d'où tout nul). Programme D
+  (parités d'holonomie des droites, `parity_probe.py`) : pas de loi. Littérature en texte intégral : Makhnev 1988
+  (mathnet, PDF via getFT + cookies) = **notre L1 (déjà connu)** ; Wilbrink–Brouwer 57 (rapport CWI) : la méthode ne
+  passe pas (prisme non tendu à 99, c = 30 ; coclique de Hoffman non forcée ; design local trivial pour μ = 2) ;
+  Reimbayev srg(19) : saturation à t = 2, marge énorme à t = 6 ; livre BvM 2022 : état de l'art (Wilbrink 1984 ordre
+  11, Behbahani–Lam, Crnković–Maksimović 2020 ordres 6 et 9 ; la preuve de Makhnev pour Moore 3250 est fausse).
+  notes/94_NUIT_LITTERATURE.md.

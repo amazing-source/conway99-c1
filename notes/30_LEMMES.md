@@ -5,6 +5,8 @@ Statut : [P] preuve écrite ici ; [C] contrôlé par calcul sur les témoins ; [
 
 ---------------------------------------------------------------------------------------------------------
 ## L1. Γ est tordu : il existe un sommet x et a, b ∈ N(x) avec τ_a(b) ≠ b̄.   [P] [C]
+*Priorité.* **Résultat connu : Makhnev (1988), Mat. Zametki 44(5), théorème 2** (condition (∗) = non tordu ; preuve
+différente, par un srg(33,12,1,6) dérivé). Notre preuve ci-dessous est indépendante (notes/94 §3.1).
 
 *Preuve.* Supposons τ = mate en tout sommet (« grid-full »). Pour une arête x–a et une droite {x,b,b̄} ≠ {x,a,ā},
 ab et ab̄ sont colinéaires avec a : {x,b,b̄} et {a,ab,ab̄} forment un prisme. On transporte ainsi les droites le
@@ -206,6 +208,9 @@ un « déficit 7-adique » total ≤ k (au plus k rotations quadratiques irratio
 tr U_x² = 8e_σ(x) − 602. Si k = 0 : U_x/7 est entière d'ordre fini, s(x) ≡ 0 (mod 7), e_σ(x) ≡ 14 (mod 49) partout.
 *Preuve.* U*U = 49 sur K₇ unimodulaire (forme de Smith symétrique autour de 7), Newton au-dessus de Hodge, Kronecker. ∎
 *Portée.* Seul lien connu entre la torsion en chaque sommet et un invariant global ; presque vide si k est grand.
+*Complément (notes/94 §1).* **k ≥ 2** : la ligne d'un sommet y ∈ Γ₂(x) n'est jamais combinaison mod 7 des 15 lignes
+de B₁(x) (sur Γ₂(x) ces combinaisons sont additives en étiquettes, et les paires où elles doivent s'annuler
+contiennent assez de triangles pour tout annuler). Le cas k = 0 de L19 est donc vide.
 
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.

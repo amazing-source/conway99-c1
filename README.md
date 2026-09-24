@@ -19,10 +19,14 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6 quinquies. `notes/91_HIERARCHIE_ORDRE8.md` — hiérarchie exacte d'ordre 8 (comptages + positivité euclidienne et de drapeaux) : tout bute sur L16.
 6 quater. `notes/90_SECONDE_VARIABLE.md` — L18 : la seconde variable libre d'ordre 7 (Reimbayev) = nombre S de paires
    σ-adjacentes ; grilles avortées et opérateur de défaut Δ.
+6 sexies. `notes/92_CONSTRUCTION.md` — tentative de construction (RRR, étalonnage), expérience témoin sur le plafond « 70 % ».
+6 septies. `notes/93_NON_EXISTENCE_V2.md` — retour à la non-existence ; L19 (forme de Smith 7-adique de la similitude de torsion).
+6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
+   intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
 
 ## État (2026-09-24, soir)
-- **Γ est nécessairement « tordu »** (L1) : sinon Γ serait un quotient de H(7,3) et 99 | 3⁷.
+- **Γ est nécessairement « tordu »** (L1) : sinon Γ serait un quotient de H(7,3) et 99 | 3⁷. (Déjà connu : Makhnev 1988.)
 - **La torsion est localement possible** (géométries tordues explicites, t = 2, 3, 5, 7) : toute obstruction doit
   utiliser μ = 2 partout.
 - Lemmes arithmétiques L2–L4 (7-adiques). Exclusions locales exactes L7–L11, L14 (frontière : g(x) ≤ 17, une ou deux
