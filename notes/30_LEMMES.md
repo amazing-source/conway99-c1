@@ -199,6 +199,14 @@ G vérifient |Σ_G p_v|²_{63E₋₄} = 18(18 − e(G)), et Σ(18 − e) = 2n₃
 identité des grilles avortées aussi sur BvLS.
 *Portée.* Dictionnaire exact, pas une contradiction : il faudrait une relation supplémentaire entre n₃ et S.
 
+## L19. Structure 7-adique de la similitude de torsion U_x = (2H + I)Σ_x.   [P] (notes/93)
+*Énoncé.* Sur le réseau local K (unimodulaire en 7), U_x a pour diviseurs élémentaires 7-adiques 1^k, 7^{70−2k}, 49^k,
+où k = rank₇(A − 3I) − 15 est le même en tout sommet (L4). Les valeurs propres de U_x sont 7ζ (ζ racine de l'unité) sauf
+un « déficit 7-adique » total ≤ k (au plus k rotations quadratiques irrationnelles t² − mt + 49, 7 ∤ m). tr U_x = 2s(x),
+tr U_x² = 8e_σ(x) − 602. Si k = 0 : U_x/7 est entière d'ordre fini, s(x) ≡ 0 (mod 7), e_σ(x) ≡ 14 (mod 49) partout.
+*Preuve.* U*U = 49 sur K₇ unimodulaire (forme de Smith symétrique autour de 7), Newton au-dessus de Hodge, Kronecker. ∎
+*Portée.* Seul lien connu entre la torsion en chaque sommet et un invariant global ; presque vide si k est grand.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

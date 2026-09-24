@@ -86,3 +86,9 @@
   graphe : 99 → 59 % ; SRG existants : Hoffman–Singleton 83 %, Gewirtz 64 %, BvLS 49 %, M22 42 %, Brouwer–Haemers
   35 %, Higman–Sims 31 % ; aucun retrouvé. Le plateau est algorithmique, pas un signe de non-existence. Session C2
   informée (un échec heuristique sur C2 ne serait pas informatif). notes/92 §4.
+- Nouvelle posture (non-existence, prompt ChatGPT lu avec recul, sans agents). Cadrage « six unités » réfuté (il
+  faut une borne supérieure sur la torsion, qui n'existe pas). Programme B (tr Δ²) : échec expliqué (trace linéaire,
+  Frobenius quadratique). F17 naïve réfutée par les produits cartésiens (géométries tordues t = 6 sans plan d'ordre 6).
+  Hypothèse « la géométrie à 42 sommets vient du plan de Fano » testée : fausse (non isomorphe). **L19** : forme de
+  Smith 7-adique de U_x = (1^k, 7^{70−2k}, 49^k) avec k global ; valeurs propres = 7·racines de l'unité sauf un déficit
+  ≤ k ; si k = 0, congruences s(x) ≡ 0 (7), e_σ(x) ≡ 14 (49). Direction retenue : comprendre k. notes/93.
