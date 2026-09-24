@@ -30,7 +30,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 ## État (2026-09-25, fin de nuit)
 - **Nuit du 25/09** (notes/94–96) : littérature pour 99 lue **en texte intégral** et close (rien pour C1 hors
   Makhnev 1988) ; **L7 a une preuve humaine** (point de Hamming + σ_x impossible : parité des décalages diagonaux,
-  notes/95) ; **k ≥ 2** (L19 bis) ; méthode des réseaux d'Akiyama (sept. 2026, srg(266,45,0,9)) analysée : repères
+  notes/95) ; **k ≥ 6** (L19 bis puis L20) ; méthode des réseaux d'Akiyama (sept. 2026, srg(266,45,0,9)) analysée : repères
   serrés entiers exacts pour 99 (L₋₄ rang 30, L₃ rang 40), transposition non immédiate (notes/96). L8 : structure
   partielle seulement. **L20** : k ≥ 11 − 2·(cycles pairs du type de τ_a) en toute étiquette, d'où k ≥ 6, et
   k = 6 ⟹ P = 0 (notes/97). L10 : seconde preuve humaine (L9'). L16 audité.

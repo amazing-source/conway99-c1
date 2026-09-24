@@ -236,7 +236,7 @@ un « déficit 7-adique » total ≤ k (au plus k rotations quadratiques irratio
 tr U_x² = 8e_σ(x) − 602. Si k = 0 : U_x/7 est entière d'ordre fini, s(x) ≡ 0 (mod 7), e_σ(x) ≡ 14 (mod 49) partout.
 *Preuve.* U*U = 49 sur K₇ unimodulaire (forme de Smith symétrique autour de 7), Newton au-dessus de Hodge, Kronecker. ∎
 *Portée.* Seul lien connu entre la torsion en chaque sommet et un invariant global ; presque vide si k est grand.
-*Complément (notes/94 §1).* **k ≥ 2** : la ligne d'un sommet y ∈ Γ₂(x) n'est jamais combinaison mod 7 des 15 lignes
+*Complément (notes/94 §1, amélioré par L20 : k ≥ 6).* **k ≥ 2** : la ligne d'un sommet y ∈ Γ₂(x) n'est jamais combinaison mod 7 des 15 lignes
 de B₁(x) (sur Γ₂(x) ces combinaisons sont additives en étiquettes, et les paires où elles doivent s'annuler
 contiennent assez de triangles pour tout annuler). Le cas k = 0 de L19 est donc vide.
 

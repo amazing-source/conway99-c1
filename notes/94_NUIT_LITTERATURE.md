@@ -3,7 +3,7 @@
 *Consigne : 8 h de travail autonome, non-existence, recherche bibliographique en largeur et en profondeur (textes
 complets, pas des résumés). Rien de lourd sur le portable, pas d'agents.*
 
-## 1. L19 bis : k ≥ 2 (preuve à la main)
+## 1. L19 bis : k ≥ 2 (preuve à la main) — *amélioré plus tard dans la nuit en k ≥ 6 (L20, notes/97)*
 **Énoncé.** rank₇(A − 3I) ≥ 16 ; donc k = rank₇(A − 3I) − 15 ≥ 1 et, k étant pair (L2/L4), **k ≥ 2**. Le cas
 favorable de L19 (k = 0 : U_x/7 d'ordre fini, congruences en chaque sommet) n'arrive jamais.
 

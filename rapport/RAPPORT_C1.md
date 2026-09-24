@@ -94,7 +94,7 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 
 ## 1 septies. Nuit du 24 au 25/09 : L19, k ≥ 2, littérature en texte intégral (notes/93, notes/94)
 - **L19** : en chaque sommet, la similitude de torsion U_x = (2H + I)σ_x a pour forme de Smith 7-adique (1^k, 7^{70−2k},
-  49^k), avec k = rank₇(A − 3I) − 15 global ; si k = 0, congruences en chaque sommet. **L19 bis : k ≥ 2** (preuve à la
+  49^k), avec k = rank₇(A − 3I) − 15 global ; si k = 0, congruences en chaque sommet. **L19 bis : k ≥ 2**, puis **k ≥ 6** (L20) (preuve à la
   main), donc ce cas favorable est vide.
 - Parités d'holonomie des droites : aucune loi sur les géométries disponibles.
 - Littérature (textes complets) : **L1 est le théorème 2 de Makhnev (1988)** ; la méthode de Wilbrink–Brouwer (57)
@@ -161,7 +161,7 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 ## 5. Nouveau à ma connaissance (bibliographie vérifiée en texte intégral le 25/09, notes/94)
 - **L1 n'est pas nouveau** : c'est le théorème 2 de Makhnev (1988), avec une autre preuve.
 - La lecture « Γ = H(7,3) replié au rayon 2, obligatoirement tordu », et la torsion comme compression.
-- L7 (preuve humaine par parité des décalages diagonaux), L9' (règle locale nouvelle), k ≥ 2, L16, L18, L19 :
+- L7 (preuve humaine par parité des décalages diagonaux), L9' (règle locale nouvelle), L20 (k ≥ 6, lien k–torsion), L16, L18, L19 :
   aucun équivalent trouvé dans la littérature.
 - Les géométries tordues comme témoins ; la famille tri-incidence (q = 3, 5, 7 ; échec pour q pair).
 - L7–L11 (exclusions locales exactes) ; L9 à la main.

@@ -80,3 +80,12 @@ Conséquences :
 valide, τ_(0,0) canonique) : 1,6 M variables, 3,8 M clauses. **Tué au plafond de 4000 Mo après 165 s**, non décidé sur
 le portable. À relancer sur le PC du labo : UNSAT donnerait k ≥ 8. Les règles humaines L9', L12, L13 ne disent rien
 dans ce régime (tout est tordu).
+
+## Remarque : lecture isotrope modulo 7, et une cible nette
+Modulo 7, N = A − 3I vérifie N² = 2J, et N1 = 4·1. Sur W = 1^⊥ (dimension 98, forme standard non dégénérée de
+discriminant 1/99 ≡ 1), N est donc de **carré nul**. Son image I est **totalement isotrope**, de dimension 14 + k
+(c'est l'intersection des réductions de Λ₃ et Λ₋₄, recollement de L2–L4). L'indice de Witt de W est 48 (−1 n'est pas
+un carré mod 7), d'où seulement k ≤ 34, plus faible que k ≤ 30 (cohérent avec L3 : recollement non scindé).
+**Cible** : comme k ≥ 6 (L20), toute preuve de k ≤ 4, c'est-à-dire rank₇(A − 3I) ≤ 19, prouverait la non-existence.
+Hors de portée (il faudrait exhiber 26 vecteurs du noyau mod 7 au-delà des 54 rationnels), mais c'est une
+reformulation arithmétique exacte d'une condition suffisante.
