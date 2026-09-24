@@ -102,6 +102,16 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   l'argument de Reimbayev (19) sature à t = 2 mais pas à t = 6. Tous les autres résultats connus sur 99 (Wilbrink 1984,
   Behbahani–Lam 2011, Crnković–Maksimović 2020) portent sur les automorphismes : pour C1, rien.
 
+## 1 octies. Nuit du 25/09 : **preuve humaine de L7** (notes/95)
+- L7 (un point de Hamming n'est pas le point fixe d'une involution, donc le point fixe de la branche C2 est tordu)
+  reposait sur deux calculs SAT. **Il a maintenant une preuve à la main de quelques lignes** : si σ_x ∈ Aut, les
+  bijections entre carrés de Γ₂(x) respectent les diagonales, d'où des décalages δ ∈ F₂. Le fait C (μ = 2 entre carrés
+  partageant une classe) impose une somme impaire sur chacun des 105 triplets (i ; {j,k}), et chaque δ apparaît 12
+  fois : 0 ≡ 1. Seconde preuve : les faits B + D font de δ un cocycle sur les triangles de Kneser K(7,2), dont
+  H¹(F₂) = 0. Vérifications par ordinateur à chaque étape.
+- L8 (point de Hamming sans symétrie) : structure partielle (règle de transport ; un triangle de Kneser n'a jamais
+  exactement une arête non isométrique), pas encore de preuve humaine ; il repose toujours sur le calcul SAT non certifié.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
