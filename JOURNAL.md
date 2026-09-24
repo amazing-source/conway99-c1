@@ -76,3 +76,9 @@
   drapeaux (erreur 0 sur srg(9), Petersen). Contrôle BvLS cohérent (P = 8910 admis). Résultat : tout bute sur
   P ≤ 1151,08 (L16) ou ne contraint rien ; aucune borne inférieure sur P. notes/91_HIERARCHIE_ORDRE8.md.
   Tous les calculs sous plafond mémoire (max ~3,2 Go), un à la fois.
+- Nuit (tard). L'utilisateur : « prouve qu'il existe » (tentative de construction, C1). Méthode RRR d'Elser
+  (projections : 0/1 ∩ spectre), trois formulations (générique, enracinée avec structure forcée, par droites) ;
+  étalonnage : trouve Hoffman–Singleton et Gewirtz, pas srg(81,20,1,6) en 10 min. Littérature vérifiée après coup
+  (question de l'utilisateur) : SAT (Keramatipour 2026) et heuristiques (Thakkar–Severini 2026) échouent ; RRR
+  jamais appliqué aux SRG à notre connaissance. Message de la session C2 : corrections de rigueur faites (|Aut|,
+  L8, L11, deux étiquettes), réponse envoyée. notes/92_CONSTRUCTION.md. Étalonnage long (1 h) en cours.
