@@ -156,10 +156,13 @@ def main():
     ap.add_argument('--noniso', action='store_true')
     ap.add_argument('--use', default='BCDE')
     ap.add_argument('--breaksym', action='store_true')
+    ap.add_argument('--dimacs', default=None)
     a = ap.parse_args()
     t0 = time.time()
     cnf, pool, disjoint, y = build(a.iso, a.noniso, tuple(a.use), a.breaksym)
     print(f'phi model: {len(disjoint)} bijections, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
+    if a.dimacs:
+        cnf.to_file(a.dimacs); print('written', a.dimacs, flush=True); return
     S = Cadical153(bootstrap_with=cnf.clauses)
     t1 = time.time()
     ok = S.solve()

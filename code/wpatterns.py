@@ -48,12 +48,17 @@ def graph_of(pat):
 
 
 def classes_up_to_symmetry(pats):
+    buckets = {}
     reps = []
+    nm = categorical_node_match('kind', None)
+    em = lambda e1, e2: e1['kind'] == e2['kind']
     for p in pats:
         G = graph_of(p)
-        if any(nx.is_isomorphic(G, graph_of(r), node_match=categorical_node_match('kind', None),
-                                edge_match=lambda e1, e2: e1['kind'] == e2['kind']) for r in reps):
+        h = nx.weisfeiler_lehman_graph_hash(G, node_attr='kind', edge_attr='kind', iterations=4)
+        lst = buckets.setdefault(h, [])
+        if any(nx.is_isomorphic(G, H, node_match=nm, edge_match=em) for H in lst):
             continue
+        lst.append(G)
         reps.append(p)
     return reps
 

@@ -144,6 +144,9 @@ def main():
         K = [int(ch) for ch in sys.argv[1]]
         cnf, pool, T = build(K)
     print(f'family {K}: {len(T)} tau-variables, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
+    import os
+    if os.environ.get('DIMACS'):
+        cnf.to_file(os.environ['DIMACS']); print('written', os.environ['DIMACS']); return
     S = Cadical153(bootstrap_with=cnf.clauses)
     t1 = time.time()
     ok = S.solve()

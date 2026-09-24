@@ -158,12 +158,15 @@ def main():
     ap.add_argument('--case', default='g19A')
     ap.add_argument('--notight', action='store_true')
     ap.add_argument('--nosrg', action='store_true', help='relaxed positive control: degrees + tightness only')
+    ap.add_argument('--dimacs', default=None)
     a = ap.parse_args()
     tau = tau_case(a.case)
     t0 = time.time()
     cnf, pool, D, grids, bad = build(tau, tight=not a.notight, srg=not a.nosrg)
     print(f'case {a.case}: grids through x = {len(grids)}, fixed-part contradictions = {bad}, '
           f'{len(D)} unknowns, {pool.top} vars, {len(cnf.clauses)} clauses ({time.time()-t0:.1f}s)', flush=True)
+    if a.dimacs:
+        cnf.to_file(a.dimacs); print('written', a.dimacs, flush=True); return
     S = Cadical153(bootstrap_with=cnf.clauses)
     t1 = time.time()
     ok = S.solve()
