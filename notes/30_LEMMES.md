@@ -128,7 +128,10 @@ sommet de Γ₂(x) d'étiquette c̄ voisin de z₂, donc dans Q_{[a],[c]} par (i
 {a, c̄} ≁ z₂, car la droite par a et z₂ est {a, z₂, {a, τ_a(c)}} avec τ_a(c) ≠ c̄. Donc z₂ ~ z₁ := {ā, c̄}.
 (iii) a et z₁ ne sont pas adjacents, mais ā (mate de a, étiquette de z₁), {a, c̄} (voisin de z₁ car τ_{c̄}(a) = ā) et
 z₂ (par (ii)) sont trois voisins communs : contradiction avec μ = 2. ∎
-*Preuve humaine complète de L10.* Dans les trois configurations g19A, g19AA, g19AB (a = (0,0) tord la classe 1 vers
+*Priorité.* L10 était déjà démontrable à la main par **L12** (même session antérieure : pour a = (0,0), c = (1,1),
+τ_c(ā) = a et τ_y(c) = c̄ hors des classes 0, 1, donc contradiction) ; l'entrée « P partielle » ne l'écrivait pas.
+L9' en donne une seconde preuve, par une règle différente (hypothèses de grilles au lieu de transitions).
+*Seconde preuve humaine de L10.* Dans les trois configurations g19A, g19AA, g19AB (a = (0,0) tord la classe 1 vers
 la classe 2 ; les transitions des étiquettes de la classe 1 sont mates ; les grilles G_{1m}, m ≥ 2, sont présentes),
 prendre c = (1,1) : τ_a(c) = (2,·) ≠ c̄ et τ_{c̄}(a) = ā. L9' donne la contradiction. (`code/core_extract.py` :
 noyaux minimaux, tous formés de μ(0a, {0b,1a}), μ(1a, {0a,1b}) et du serrage de {0a,1b} dans G_{12}, …, G_{16}.)
