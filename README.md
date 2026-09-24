@@ -16,6 +16,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6. `notes/60_HODGE.md` — route Hodge / Σν³ : réfutation du confinement, identités par blocs, bibliographie.
 6 ter. `notes/80_ETINCELLE_ARITHMETIQUE.md` — torsion = moment cubique des droites ; L17 (arithmétique locale) ; structure d'Eisenstein.
 6 bis. `notes/70_KREIN_DROITES.md` — **L16 : P ≤ 1151 par une condition de Krein sur les droites (preuve à la main)**.
+6 quinquies. `notes/91_HIERARCHIE_ORDRE8.md` — hiérarchie exacte d'ordre 8 (comptages + positivité euclidienne et de drapeaux) : tout bute sur L16.
 6 quater. `notes/90_SECONDE_VARIABLE.md` — L18 : la seconde variable libre d'ordre 7 (Reimbayev) = nombre S de paires
    σ-adjacentes ; grilles avortées et opérateur de défaut Δ.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.

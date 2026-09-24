@@ -68,3 +68,11 @@
   sur K, valeurs propres entières algébriques de norme 49 créées par la torsion) notée, sans contradiction.
   Lecture du dépôt C3 (étincelle = décomposition Z[C₃] → Z × Z[ω] et matrice d'Eisenstein M² + M = 12I, puis
   calcul) : repose sur la symétrie, pas transposable tel quel à C1.
+- Nuit (fin). L'utilisateur : « décortique le problème, pose-toi des questions, tu peux utiliser du calcul ».
+  Construit une hiérarchie exacte : équations de comptage des sous-graphes induits (validées sur 4 SRG), résolution
+  exacte (ordre 7 : 208 types, variables libres 3P et S/2 = Reimbayev ; HiGHS flottant disait « infaisable » à
+  tort, artefact d'échelle), ordre 8 (916 types) ; positivité euclidienne (degrés 1–4, témoins, E₋₄/E₃,
+  harmonique, enracinée ; validée à 1e-15 contre les vrais vecteurs propres de srg(9) et Petersen) ; positivité de
+  drapeaux (erreur 0 sur srg(9), Petersen). Contrôle BvLS cohérent (P = 8910 admis). Résultat : tout bute sur
+  P ≤ 1151,08 (L16) ou ne contraint rien ; aucune borne inférieure sur P. notes/91_HIERARCHIE_ORDRE8.md.
+  Tous les calculs sous plafond mémoire (max ~3,2 Go), un à la fois.

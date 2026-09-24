@@ -81,6 +81,16 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - Lecture de Bondarenko–Radchenko (JCTB 2013) : leur preuve (σ_v automorphismes ⇒ F₃-espace ⇒ n = 3^m) échoue
   pour 99 parce que g = 44 > k = 14 : il reste 30 dimensions libres par sommet, et c'est là que vit la torsion.
 
+## 1 sexies. Hiérarchie exacte d'ordre 8 (notes/91) : tout bute sur L16
+- Machinerie nouvelle, validée sur des SRG connus : équations exactes de comptage des sous-graphes induits
+  (reproduit Reimbayev à l'ordre 7 : 208 types, variables libres 3P et S/2), 916 types à l'ordre 8, positivité
+  euclidienne (tenseurs de configurations ≤ 4 points, degrés 1 à 4, noyaux E₋₄ et E₃, harmonique, enracinée) et
+  positivité de drapeaux (Razborov en comptages exacts). Contrôle BvLS cohérent.
+- **Résultat** : aucune de ces relaxations ne donne de borne inférieure sur P ni de contrainte sur S ; les seules
+  qui mordent redonnent exactement P ≤ 1151,08 (L16), par trois familles indépendantes. L'information locale
+  jusqu'à 8 points est entièrement contenue dans L16 et L18 : si Γ n'existe pas, la contradiction est globale ou
+  d'ordre bien plus élevé.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
