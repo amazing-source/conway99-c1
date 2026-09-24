@@ -21,6 +21,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
    σ-adjacentes ; grilles avortées et opérateur de défaut Δ.
 6 sexies. `notes/92_CONSTRUCTION.md` — tentative de construction (RRR, étalonnage), expérience témoin sur le plafond « 70 % ».
 6 septies. `notes/93_NON_EXISTENCE_V2.md` — retour à la non-existence ; L19 (forme de Smith 7-adique de la similitude de torsion).
+6 nonies. `notes/95_L7_PREUVE_HUMAINE.md` (L7 à la main, structure pour L8), `notes/96_METHODE_AKIYAMA.md` (réseaux,
+   sept. 2026), `notes/97_K_ET_TORSION.md` (L20).
 6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
    intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
@@ -30,7 +32,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
   Makhnev 1988) ; **L7 a une preuve humaine** (point de Hamming + σ_x impossible : parité des décalages diagonaux,
   notes/95) ; **k ≥ 2** (L19 bis) ; méthode des réseaux d'Akiyama (sept. 2026, srg(266,45,0,9)) analysée : repères
   serrés entiers exacts pour 99 (L₋₄ rang 30, L₃ rang 40), transposition non immédiate (notes/96). L8 : structure
-  partielle seulement.
+  partielle seulement. **L20** : k ≥ 11 − 2·(cycles pairs du type de τ_a) en toute étiquette, d'où k ≥ 6, et
+  k = 6 ⟹ P = 0 (notes/97). L10 : seconde preuve humaine (L9'). L16 audité.
 ## État (2026-09-24, soir)
 - **Γ est nécessairement « tordu »** (L1) : sinon Γ serait un quotient de H(7,3) et 99 | 3⁷. (Déjà connu : Makhnev 1988.)
 - **La torsion est localement possible** (géométries tordues explicites, t = 2, 3, 5, 7) : toute obstruction doit

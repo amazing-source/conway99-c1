@@ -112,6 +112,16 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - L8 (point de Hamming sans symétrie) : structure partielle (règle de transport ; un triangle de Kneser n'a jamais
   exactement une arête non isométrique), pas encore de preuve humaine ; il repose toujours sur le calcul SAT non certifié.
 
+## 1 nonies. Nuit du 25/09 (04 h) : **L20, premier lien entre k et la torsion** (notes/97)
+- Les sous-matrices principales de A − 3I sur B₁(x) ∪ étoile(a) ne dépendent que de τ_a ; le bloc du moulin est
+  inversible mod 7. D'où k ≥ rang₇ du complément de Schur, et le calcul exhaustif (10 395 τ_a) donne
+  **rang = 11 − 2·(nombre de cycles pairs du graphe de classes de τ_a)**.
+- Donc **k ≥ 6** partout ; **k = 6 ⟹ P = 0** (torsion maximale en tout sommet) ; **P ≥ 1 ⟹ k ≥ 8** ; une étiquette
+  non tordue ⟹ k ≥ 12. Pas de contradiction (aucune borne supérieure sur k n'est connue), mais c'est la réponse
+  partielle à la question « comprendre k » posée en notes/93.
+- L10 : seconde preuve humaine par une règle locale nouvelle L9' (noyaux UNSAT minimaux de 7 contraintes) ; L16
+  audité indépendamment (correct).
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
