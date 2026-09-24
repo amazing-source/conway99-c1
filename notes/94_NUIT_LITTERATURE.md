@@ -93,3 +93,67 @@ Le livre signale que la « preuve » de Makhnev pour le graphe de Moore (3250, 5
 **Lecture.** Tout ce qui est connu sur 99, hors Makhnev 1988, porte sur les symétries. Pour C1 (groupe trivial), la
 littérature ne contient que Makhnev 1988 (non tordu exclu) et des faits locaux (Lou–Murin, Reimbayev). C1 est
 essentiellement le problème entier.
+
+### 3.5 Cesarz–Woldar 2025 (Algebraic Combinatorics 8(2), 379–398, accès libre)
+*On the automorphism group of a putative Conway 99-graph.* Preuves **sans ordinateur** : si 2 divise |G| alors |G|
+divise 6 (pas d'élément d'ordre 14, par partitions en orbites et valences), et si 7 divise |G| alors G = Z₇ (Frob(21)
+exclu). Ils s'appuient sur Makhnev (J. Math. Sci. 166, 2010, cor. 2.4) et Makhnev–Minakova (Diskret. Mat. 16, 2004 :
+|G| divise 2·3³·7·11 ; srg(v,k,1,2) ⇒ k = u² + u + 2, u ∈ {1, 3, 4, 10, 31}). Rien pour C1 ; pour C2, rien de plus que
+Makhnev.
+
+### 3.6 Ishida 2026, « No involutions in the missing Moore graph » (arXiv:2606.29183 v2)
+Outil nouveau : **identité trace–rang** par le quotient de Brauer des réseaux de p-permutation. Si t est un
+automorphisme d'ordre premier p de points fixes F et E un idempotent p-entier qui commute avec t, alors
+tr(t | E) = rang_p(E[F]). Justification vérifiée : restreint à ⟨t⟩, un réseau de p-permutation est un réseau de
+permutation, et Br(E) = E[F] mod p. Contrôles à la main sur la grille 3×3 (involution à 1 point fixe : trace 0 =
+rang 0 ; involution fixant une droite : trace 2 = rang₂(K₃) = 2).
+**Application à 99 (faite ici).** E₃ ≡ A et E₋₄ ≡ A + I + J (mod 2), tous deux 2-entiers. Pour une involution t :
+(4f + a₁ − 18)/7 = rang₂(A_F), qui est pair (matrice alternée). Si f = 1, on obtient a₁ = 14 : t retourne les 7 droites
+en son point fixe (t = σ_x). La congruence classique (a₁ ≡ 0 mod 7, 2 ≤ a₁ ≤ 14) le donnait déjà. Avec un idempotent
+local (partie « impaire » du spectre de H, 3⁴⁰, 2-entière), on retrouve la même chose : H sur K^⊥ se scinde en blocs
+symétriques et antisymétriques, de trace nulle. **Rien de nouveau pour C2 si f = 1**, et rien pour C1 (pas
+d'automorphisme). Si une droite est fixe (f = 3), l'identité donne Σ_w φ_w = 10 retournements, sans exclure le cas.
+
+### 3.7 Shpectorov–Zhao 2025, srg(85,14,3,2) n'existe pas (arXiv:2504.02449)
+Énumération exhaustive (GAP, 96 cœurs pendant 14 mois) du voisinage d'une 3-clique maximale, que la représentation
+euclidienne élimine (Gram semi-définie positive dès 30 sommets, rang ≤ 34 à 38 sommets). Le levier est un graphe local
+riche (graphes cubiques à 14 sommets) et un espace propre de petite dimension (34). À 99, le graphe local est 7K₂
+(trivial) et les dimensions sont 44/54. **Vérifié ici** : pour la boule d'une droite (39 sommets), la positivité de
+Gram est automatique, quelle que soit l'holonomie. Les vecteurs de sommes nulles par classe voient le graphe cubique
+H₃₆, de spectre dans [−3, 3] ; le quotient à 6 classes a pour valeurs propres {6, −1, 3², (−4)²}. Le rang ne mord
+qu'au-delà de 44 sommets, donc en faisant intervenir W (60 points lointains), c'est-à-dire toute la torsion.
+**Non transposable à coût raisonnable.**
+
+### 3.8 Wilbrink 1984, *On the (99,14,1,2) strongly regular graph* (texte intégral obtenu)
+Dans *Papers dedicated to J. J. Seidel*, EUT Report 84-WSK-03, p. 342–355 (volume complet de 393 pages récupéré via
+research.tue.nl, derrière un défi Cloudflare, par le navigateur ; fichier pure.tue.nl/ws/portalfiles/portal/2449333/
+256699.pdf). Contenu :
+- Thm 1 (entrelacement de Haemers) : |Fix(g)| ≤ max(λ, μ)·n/(k − r), et ≤ n/(k − r) si g est d'ordre premier
+  p > max(λ, μ). À 99 : ≤ 18 points fixes pour une involution, ≤ 9 sinon.
+- Thm 2 (Brouwer, non publié) : un graphe à λ, μ > 0 constants est régulier, ou bien μ = 1 et c'est un moulin.
+  Corollaire : pour p > max(λ, μ), le sous-graphe fixe est vide, un point, une (λ + 2)-clique, ou un srg de mêmes λ, μ.
+- Thm 4 : conditions sur la matrice d'orbites (C² + (μ − λ)C + (μ − k)I = μNJ, valeurs propres, tr C ≡ k + s(t − 1)
+  mod (r − s)).
+- À 99 : premiers possibles 2, 3, 5, 7, 11 ; ordre 7 ⇒ un seul point fixe ; ordre 11 ⇒ aucun point fixe. Il signale
+  un cas intéressant d'ordre 10, dont le sous-graphe fixe serait une grille 3×3 L₂(3).
+- **Thm 5 : pas d'automorphisme d'ordre 11** (7 types de lignes pour la matrice d'orbites 9×9, élimination à la main
+  et « 6 heures de calculatrice programmable »). Il remarque dès 1984 que Γ est une géométrie semi-partielle
+  (Debroey–Thas) et un quadrangle partiel (Cameron).
+Rien pour C1.
+
+### 3.9 Autres lectures (texte intégral, rien d'utilisable)
+- Brouwer–Neumaier 1988 (Combinatorica 8) : borne pour les espaces linéaires partiels de maille 5, appliquée au premier
+  sous-constituant des srg à μ = 2. Ici Γ(x) = 7K₂, c'est-à-dire λ = 1 : la borne k ≥ λ(λ + 3)/2 = 2 est triviale.
+- Mohammadian–Tayfeh-Rezaie 2013 (arXiv:1303.0473) : PQ(2, (n³ + 3n² − 2)/2, n² + n), c'est-à-dire la famille
+  9 / 81 / 729 (Bondarenko–Radchenko), pas la nôtre (μ = 2 fixé).
+- Reichard 2014 (arXiv:1401.6816) : condition des 7 sommets, graphes de rang 3 ; hors sujet.
+- DeLeo 2024 (arXiv:2409.00268) : structures de voisinage partagé uniformes ; pour λ = 1 c'est un point, trivial.
+- Reimbayev 2024 (arXiv:2409.10620, hexagones ; conjecture équivalente à Makhnev), 2025 (arXiv:2508.03377,
+  sous-graphes d'ordre 6) : contenus dans notre hiérarchie exacte (ordres 6–8).
+- Zehavi–de Oliveira 2017 (arXiv:1707.08047) : une autre lecture de l'énoncé de Conway, résolue ; hors sujet.
+
+**Bilan de la bibliographie.** Pour C1 (groupe trivial), la littérature se réduit à Makhnev 1988 (non tordu exclu, =
+notre L1), aux faits locaux (Lou–Murin, Reimbayev) et aux échecs de recherche (Keramatipour : SAT ; Thakkar–Severini :
+heuristiques). Tout le reste porte sur les automorphismes : Wilbrink 1984, Makhnev–Minakova 2004, Behbahani–Lam 2011,
+Crnković–Maksimović 2020, Cesarz–Woldar 2025. Les deux non-existences récentes de la même taille, (85,14,3,2) et
+(57,14,1,4), utilisent un levier local qui manque à 99 : un graphe local riche, ou un μ plus grand.
