@@ -32,6 +32,9 @@ classe non tordue (ses deux étiquettes appariées entre elles), sinon des cycle
 | (6 ; —) (non tordu) | 1 | 11 |
 
 Dans tous les cas, **rank₇(S) = 11 − 2·e(τ_a)**.
+*Contre-vérification indépendante* : rang sur GF(7) de la sous-matrice principale complète 27 × 27, calculé par
+sympy (DomainMatrix sur GF(7), sans complément de Schur) pour un représentant de chaque type : 15 + 11 − 2e dans
+les 11 cas. Le rang ne dépend que du type (calcul exhaustif ci-dessus).
 
 ## Lemme L20
 Pour tout sommet x et toute étiquette a ∈ Γ(x) : **k ≥ 11 − 2e(τ_a)**, donc (k pair) **k ≥ 12 − 2e(τ_a)**.
