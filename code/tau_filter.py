@@ -26,10 +26,12 @@ def random_matching(rng, a):
 
 
 def has_3cycle(tau):
+    """genuine labelled 3-cycle of the transition system: X-vertices ab, ac, bc pairwise joined by labelled edges,
+    i.e. tau_a(b) = c, tau_c(a) = b and tau_b(c) = a (a triangle inside X made of labelled edges: violates lambda = 1).
+    (Corrected 2026-09-24: the first version only tested the first two conditions, which is NOT a contradiction.)"""
     for a in LABELS:
         for b, c in tau[a].items():
-            # trail b -a- c ; 3-cycle iff tau[c][a] == b
-            if tau[c][a] == b:
+            if tau[c].get(a) == b and tau[b].get(c) == a:
                 return True
     return False
 

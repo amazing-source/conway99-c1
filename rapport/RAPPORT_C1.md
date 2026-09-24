@@ -23,6 +23,20 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
    comme lemme** (L4 : le recollement 7-adique du 70-espace vaut rank₇(A − 3I) − 15, pair, identique en tout sommet).
 5. Arithmétique : rank₇(A − 3I) **impair** (L2) ; recollement 7-adique **non scindé** (L3).
 
+## 1 bis. Mise à jour (après-midi du 2026-09-24)
+- **Frontière par nombre d'étiquettes tordues** : 1 et 2 étiquettes impossibles (|C| = 2, 3, 4 exclus ; |C| = 5 en
+  cours) ; 3 étiquettes : 128 motifs à symétrie près, 24 traités, tous UNSAT (≤ 73 s).
+- **Validation de toute la méthode sur l'analogue q = 2** : le modèle enraciné reconstruit Gewirtz en 1,9 s, et
+  imposer une fermeture en 3-cube est UNSAT (13 s) — Gewirtz est *maximalement* tordu (0/6720 fermetures).
+- **Contre-poids honnête** : dans l'analogue q = 2, le seul SRG tordu connu est tordu au maximum ; la torsion forte
+  n'est donc pas, en soi, un argument contre l'existence. Reste l'argument du groupe (|Aut(Gewirtz)| = 80 640,
+  |Aut(Γ)| ≤ 3).
+- **Nouvelles identités exactes** : P = 1386 − (1/6)Σ_x|W(x)| et Σ_x|W(x)| = 6048 + Σν³ (L15, via Hodge F21) : la
+  torsion totale est un moment spectral ; la borner donnerait des sommets peu tordus, que la frontière exclut.
+- **Correction** : un test de « 3-cycle étiqueté » était trop strict (2 conditions sur 3) ; sans effet sur les modèles
+  SAT (λ exact), il n'avait biaisé que l'échantillonnage des τ aléatoires. Corrigé.
+- Sonde τ aléatoire (14 étiquettes tordues, 0 grille) : pas de verdict en 1 h (difficulté, pas d'information).
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet

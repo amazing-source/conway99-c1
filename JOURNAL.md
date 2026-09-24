@@ -26,3 +26,4 @@
   « familles » (confined 0123, sources 00,10 / 00,10,20 / 00,01,10,11 ; ~650 Mo chacun, 73–81 min sans verdict)
   ont été arrêtés volontairement pour libérer la RAM (5,6 Go libres ensuite). À relancer sur le PC du labo.
   Les 3 recherches tri-circulantes t = 6 (N = 34…45, ~80 Mo chacune) continuent (arrêt automatique à 3 h).
+- 16:05 Erreur d'ordonnancement : lancer 2 tests Fano en même temps a fait passer la RAM machine sous 2 Go ; le garde-fou a tué le cas deux étiquettes |C| = 5 (18 min perdues). Famille Fano arrêtée, |C| = 5 relancé (twolabel_dom23456_b). Règle : un seul lancement à la fois, RAM libre vérifiée avant.

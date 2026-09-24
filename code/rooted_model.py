@@ -41,6 +41,27 @@ def tau_case(case):
             for s_ in (0, 1):
                 b, c = (j, s_), (k, s_ if p else 1 - s_)
                 tau[a][b], tau[a][c] = c, b
+    elif case.startswith('fano'):
+        # Fano-twisted tau: classes = points of PG(2,2); tau_(i,s) maps class j to k where {i,j,k} is a Fano line,
+        # sign rule (k, r ^ s ^ c(i, line)); c symmetric in j,k so that tau is an involution.
+        FANO = [(0, 1, 3), (1, 2, 4), (2, 3, 5), (3, 4, 6), (4, 5, 0), (5, 6, 1), (6, 0, 2)]
+        variant = case[4:] or '0'
+        for (i, s) in LABELS:
+            for L in FANO:
+                if i not in L:
+                    continue
+                j, k = [c for c in L if c != i]
+                if variant == '0':
+                    cc = 0
+                elif variant == '1':
+                    cc = 1
+                elif variant == 'first':
+                    cc = 1 if i == L[0] else 0
+                else:
+                    raise ValueError(case)
+                for r in (0, 1):
+                    tau[(i, s)][(j, r)] = (k, r ^ s ^ cc)
+                    tau[(i, s)][(k, r ^ s ^ cc)] = (j, r)
     elif case != 'hamming':
         raise ValueError(case)
     for a in LABELS:

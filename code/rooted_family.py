@@ -143,7 +143,23 @@ def build(K, sources=None, dom_classes=None, per_label=None):
 
 def main():
     t0 = time.time()
-    if sys.argv[1] == 'spec':
+    if sys.argv[1] == 'fano':
+        # every label tau_a is Fano-coherent: for the 3 Fano lines {i,j,k} through its class i, it pairs the labels
+        # of class j with those of class k (2 sign choices per line): 14 x 3 free bits
+        FANO = [(0, 1, 3), (1, 2, 4), (2, 3, 5), (3, 4, 6), (4, 5, 0), (5, 6, 1), (6, 0, 2)]
+        per = {a: [c for c in range(7) if c != a[0]] for a in LABELS}
+        cnf, pool, T = build([], per_label=per)
+        partner = {}
+        for L in FANO:
+            for i in L:
+                j, k = [c for c in L if c != i]
+                partner[(i, j)] = k; partner[(i, k)] = j
+        for (a, pair), v in T.items():
+            b, c = pair
+            if not (b[0] != c[0] and partner.get((a[0], b[0])) == c[0]):
+                cnf.append([-v])
+        K = 'fano-coherent tau (42 free sign bits)'
+    elif sys.argv[1] == 'spec':
         per = {}
         for item in sys.argv[2].split(','):
             lab, cls = item.split(':')

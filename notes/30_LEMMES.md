@@ -139,6 +139,19 @@ ensemble C de classes (C disjoint de leurs classes, 2 ≤ |C| ≤ 5). Pour |C| =
 près (échanges préservant/préservant et préservant/renversant) sont UNSAT (69 s et 41 s, modèle d'adjacence exact) ;
 la version « famille » (τ libres sur le domaine C) confirme (92 s). |C| = 3, 4, 5 : en cours.
 
+## L15. Torsion totale = moment spectral (identité exacte).   [P] [C partiel]
+*Énoncé.* Pour une arête e = xa, soit d(e) le nombre de classes (en x, hors celle de a) que a tord ; d(e) = 6 − m(e)
+où m(e) = nombre de prismes de barreau e, donc d est symétrique. Avec |W(x)| = Σ_{a~x} d(xa) (paires étiquette-classe
+tordues en x) et P le nombre de prismes :
+  **P = 1386 − (1/6) Σ_x |W(x)|**   et, avec F21 (6P = 2268 − Σν³),   **Σ_x |W(x)| = 6048 + Σ_curl ν³**,
+où ν parcourt le spectre du laplacien de Hodge des arêtes, décalé de 15, sur la partie rotationnelle (595 valeurs,
+Σν = 84, Σν² = 7056).
+*Preuve.* 3P = Σ_e m(e) (chaque prisme a 3 barreaux) = Σ_e (6 − d(e)) = 4158 − ½ Σ_x Σ_{a~x} d(xa). Puis F21. ∎
+*Contrôle.* F21 vérifié sur srg(9) (P = 6) et BvLS (P = 8 910) ; m(e) et d(e) = 6 − m(e) vérifiés sur les exemples.
+*Intérêt.* C'est le chaînon manquant identifié : **une majoration de Σν³** bornerait la torsion totale, donc
+forcerait des sommets peu tordus, que la frontière exclut. Le 4ᵉ moment Σν⁴ = 173 880 + 8·S₄ (S₄ = 4-cycles signés du
+graphe O des arêtes opposées, liés aux fermetures en 3-cube) donnerait |Σν³| ≤ √(7056·Σν⁴) — encore trop faible.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 
