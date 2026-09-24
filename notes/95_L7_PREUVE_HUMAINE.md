@@ -53,6 +53,18 @@ Q_{P'} de même signe en i que u, et deux fois chacun les deux points de signe o
   l'amorce de preuve de 30_LEMMES (nombre pair de ψ « droites ») : l'invariant qui conclut n'est pas l'orientation
   mais le **décalage diagonal**, additif pour la composition.
 
+## Remarque : seconde preuve, et règle de transport (faits B + D)
+Pour P ∩ P' = ∅, φ = φ_{PP'} et u ∈ Q_P, notons w₃ = φ(u) + (1,1). Le calcul des voisins communs de u et w (fait D :
+[φ⁻¹(w) voisin de u dans Q_P] + [φ(u) voisin de w dans Q_{P'}] + coïncidences sur les 3 paires R du complémentaire
+de P ∪ P' = 2), joint au fait B, donne la **règle de transport** : pour tout u, les trois transports
+ψ_R(u) = φ_{P'R}⁻¹(φ_{PR}(u)) valent, en multi-ensemble, {φ(u), φ(u) + (1,1), φ(u + (1,1))}.
+Dans le cas isométrique, φ(u + 11) = φ(u) + 11 et chaque ψ_R coïncide avec φ ou φ + 11 sur chaque diagonale. Donc
+δ(P,R) + δ(R,P') = δ(P,P') : **δ est un cocycle sur les triangles du graphe de Kneser K(7,2)**. Or le complexe
+(21 sommets, 105 arêtes, 105 triangles) a H¹(F₂) = 0 (calcul : dim Z¹ = dim B¹ = 20). Donc δ = df, et
+δ(ij,R) + δ(ik,R) = f(ij) + f(ik) ne dépend pas de R : le compte du fait C vaut 0 ou 6, jamais 3. Contradiction.
+La première preuve n'utilise que C ; celle-ci utilise B, C et D, mais explique la structure : σ_x-invariance
+⇒ δ trivialisable ⇒ C impossible.
+
 ## Vers L8 (point de Hamming sans σ_x) : pourquoi l'argument ne passe pas tel quel
 Sans σ_x, les φ_{PR} sont des bijections quelconques de F₂², c'est-à-dire des éléments de AGL(2,2) ≅ S₄. Un invariant
 additif pour la composition serait un morphisme S₄ → F₂, donc la signature. Or le fait C ne fixe pas la parité : sur
