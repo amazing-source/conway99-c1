@@ -148,3 +148,58 @@ non isométriques N(x, y) (A(P) ↦ π_x, π_y ↦ A(P′)) ont tous la même pa
   Pour conclure, il faudra les parties de translation : les relations (Cδ), et la règle de transport aux arêtes
   traversant la coupe (3 transports non isométriques de Σδ ≡ 1 + δ). Pas de recherche par solveur : ce sera une
   analyse du cas « coupe », puis du cas avec triangles entièrement non isométriques.
+
+## 8. Recherches annexes (25/09, après-midi), nouvelle planche, et le pont
+**Littérature (rien sur cette configuration précise).**
+- La famille srg(1 + 2m², 2m, 1, 2) n'existe que pour m = 2 (réseau 3 × 3), m = 11 (BvLS = graphe des classes du code
+  de Golay ternaire) et éventuellement m = 7, 56, 497
+  ([Makhnev, automorphismes λ = 1, μ = 2](https://www.degruyterbrill.com/document/doi/10.1515/156939204872374/html?lang=en)).
+  **Un point de Hamming est une image locale « Golay factice » de H(7,3)** (notes/95). Globalement, cela demanderait un
+  code parfait de longueur 7, qui n'existe pas (Tietäväinen–van Lint ; 3⁷/99 non entier : L1). L8 en est la version
+  locale.
+- [Brouwer–Neumaier 1988](https://link.springer.com/article/10.1007/BF02122552) (espaces linéaires partiels de
+  maille 5, μ = 2) passe par le premier sous-constituant ; ici il vaut 7K₂, donc c'est sans prise.
+- Pas de recouvrement avec [Keramatipour 2026 (SAT)](https://arxiv.org/pdf/2604.23037) ni avec
+  [Lou–Murin 2014](https://math.mit.edu/research/highschool/primes/materials/2014/Lou-Murin.pdf).
+- **Outils classiques repérés.**
+  - En un point de Hamming, les 5 droites par un sommet de Q_P forment une quasi-1-factorisation de K₅, c'est-à-dire
+    un « total » de Sylvester de K₆ (6 possibilités, automorphisme extérieur de S₆,
+    [réf.](https://en.wikipedia.org/wiki/Automorphisms_of_the_symmetric_and_alternating_groups)).
+  - Le sous-cas « holonomies sans transposition » mène à des familles de 1-factorisations, voisines des grands
+    ensembles de plans de Fano (qui n'existent pas sur 7 points ; [STS](https://www.win.tue.nl/~aeb/graphs/STS.html)).
+  - Pour les signatures à deux valeurs propres
+    ([problème ouvert en général](https://arxiv.org/pdf/1907.04349)), notre cas se règle par H¹ = 0 : une signature de
+    K(7,2) équilibrée sur tous les triangles est commutable en la signature triviale, de spectre {10, 1, −4} ≠ {5, −2}.
+    C'est une preuve en une ligne de l'étape de C2.
+
+**Nouvelle planche : la parité S₃ du fait C** (`code/factC_s3_types.py`).
+- *Énoncé.* Lus dans S₃ (action sur les trois partitions), les 6 transports ont tous leurs types de même parité : ou
+  bien chacun des 6 éléments de S₃ exactement une fois, ou bien tous les nombres pairs.
+- *Conséquence (T).* Pour toutes partitions X de P et Y de P′, #{R : γ_R(X) = Y} est pair. En identifiant les
+  partitions aux vecteurs non nuls de F₂² (A ↔ 11), γ_R devient L_{P′R}⁻¹L_{PR} ∈ GL(2,2), et
+  **Σ_{R ⊂ F} L_{P′R}⁻¹ L_{PR} = 0** dans M₂(F₂).
+- *Conséquence (Z), linéaire.* Avec [u = v] = 1 + ω(u, v) (ω symplectique), la condition « μ avec les étiquettes »
+  devient **Σ_{R ∋ m} L_{PR}ᵀ Ω e_m(R) = 0**. Elle est linéaire en les parties linéaires, que l'arête soit
+  isométrique ou non. Le cas « aucune isométrie » du §6 en est le cas particulier X = A.
+- La seule non-linéarité restante est (T). C'est elle que les parties de translation doivent régler.
+
+**Le pont.**
+- *Planches posées.*
+  - Cas tout isométrique et cas rien d'isométrique, avec versions locales.
+  - Parité S₃.
+  - Encadrement 18 ≤ k ≤ 26.
+- *Planches suivantes (dans l'ordre).*
+  1. Les parties de translation. Pour les isométries, le décalage additif δ ; pour le reste, les relations de
+     transport Σδ(ψ_R) ≡ δ(φ) + [φ ∈ N].
+  2. Le cas coupe.
+  3. Les triangles entièrement non isométriques. Ils forment un 2-cycle mod 2, car une arête non isométrique est dans
+     0 ou 2 d'entre eux.
+- *La rive d'en face.* Chaque ingrédient utilisé (μ avec les étiquettes, fait C, règle de transport) est une condition
+  SRG **universelle**. Le point de Hamming sert seulement à rendre les blocs calculables (des bijections). La
+  contradiction de L7 vient d'une arithmétique propre à m = 7 : 3 = C(4,2)/2 est impair, et 105 = 7·15 triplets
+  aussi. Pour m = 11, on a C(8,2)/2 = 14, pair, et BvLS survit : c'est la règle de cohérence de C2.
+  La fin du pont, pour C1 tout entier, est donc **un comptage modulo 2 sur les 105 triplets (i ; j, k) d'un sommet
+  quelconque**. Sa partie constante vaudrait 105·3 ≡ 1, et ses parties variables (blocs génériques 4 × 4 quelconques)
+  s'annuleraient par double comptage. Il reste à établir que les corrections dues à la torsion (arêtes τ et
+  d'holonomie) sont paires. **Discipline adoptée** : tout lemme général est testé sur BvLS (m = 11), où il doit
+  rester vrai.
