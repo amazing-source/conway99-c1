@@ -23,6 +23,19 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > les comptages du premier et du second ordre sont des tautologies, et l'objet d'holonomie de L8 ne se transporte pas
 > (2 doubles par sommet en moyenne, notes/109). Le verrou est inchangé : il manque un plafond (P ≥ 1152).
 
+> **Mise à jour (nuit du 25/09, notes/110–111).**
+> - **L14 pour |C| = 2 est démontré à la main** (relu indépendamment par la session « structures »). C'est le premier
+>   contrôle manuel de « doubles » (arêtes génériques non bijectives) : trois doubles sont forcés par μ, et un bloc
+>   tordu × tordu reçoit 4 voisins communs pour une demande ≥ 5.
+> - Pour tout |C|, les deux torsions ont le même graphe de classes. |C| = 3, 4 restent au SAT ; |C| = 5 est ouvert,
+>   avec des bilans exacts sans jeu, mais cohérents.
+> - **Deux routes de plafond fermées** : Minkowski sur Λ₃, Λ₋₄ (la paire de Petersen passe tout) et Akiyama sur le
+>   réseau des droites (rang 48, S₂₆ ≠ 0).
+> - Nouveau lemme sans contradiction : les codes p-aires des droites contiennent leur dual (p = 2, 3, 5).
+> - Contrôle : Gewirtz, qui existe et est tordu au maximum dans la famille (0, 2), est lui aussi sous la borne de
+>   p-rang. La 7-spécialité exigée par L22 n'est donc pas anormale.
+> - Le verrou reste le même : aucun mécanisme de plafond.
+
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
   P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.
