@@ -179,3 +179,13 @@
   - Correction de notes/95 : une arête non isométrique a 0 ou 2 transports isométriques, pas 0 ou 1.
   - Reste le cas mixte : une coupe (paires de {1,2,3,4} contre le reste) passe toutes les contraintes locales. Il
     faudra les parties de translation.
+- 25/09, après-midi. **L8, cas mixte : recherche annexe et nouvelles planches** (notes/103 §8-11).
+  - Littérature : rien sur cette configuration. Les outils classiques repérés sont le code de Golay (BvLS, m = 11),
+    les totaux de Sylvester, les plans de Fano, et H¹ = 0 pour les signatures de K(7,2).
+  - Parité S₃ du fait C : tous les types ont la même parité, et μ avec les étiquettes devient linéaire.
+  - Relations à constante impaire : L8 se ramène à la parité de 21 quantités locales Q_R, de somme 105. BvLS montre
+    qu'elles ne sont pas paires en général : il faudrait la rigidité propre à m = 7.
+  - Livres et carrés : jamais de carré 3-cycle.
+  - Le modèle local exact autour d'un triangle de classes a 1 522 solutions : la contradiction est globale.
+  - L7 local généralisé (pages à images antipodales uniformes : impossible).
+  - Pas de δ étendu à défaut linéaire ; pas de certificat de parité de degré 2 (fait C + μ + signes).
