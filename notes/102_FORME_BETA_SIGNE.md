@@ -94,7 +94,8 @@ toujours impair, donc jamais extrême. L'outil n'ajoute rien à L20.
   déterminé, (Z/11)⁵³ ⊕ (Z/2)⁴⁴ ⊕ (Z/9)⁴³ ; preuve élémentaire par 7-rang de la non-existence de srg(28,9,0,4)
   (rang déterminé + vecteurs locaux du noyau). La méthode ne se transpose pas : les différences de colonnes
   n'engendrent que im(N)|_W.
-- [Brouwer–van Eijl, *p-rank of adjacency matrices of SRGs*](https://www.win.tue.nl/~aeb/preprints/361304.pdf) :
+- [van Eijl, mémoire de master (1991), *On the p-rank of the adjacency matrices of SRGs*](https://www.win.tue.nl/~aeb/preprints/361304.pdf)
+  (version article : Brouwer–van Eijl, J. Algebraic Combin. 1, 1992) :
   r_p ≤ min(f, g) + 1 ; aucun argument de genre ni de signe.
 - [Fukshansky et al., *Lattices from tight frames*](https://arxiv.org/pdf/1902.02862),
   [Chvátal, *Comparison of two techniques*](https://arxiv.org/abs/0906.5389),

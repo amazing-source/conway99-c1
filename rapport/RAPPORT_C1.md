@@ -51,8 +51,9 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - **Recherche ciblée.** Reimbayev (arXiv:2608.19410, 2026) : les 208 fréquences d'ordre 7 dans srg(n,k,1,2)
   dépendent de deux variables libres, dont n₃ = ½Σ|W| (confirmation indépendante de L15) ; à (99,14) leur
   non-négativité ne donne que la borne triviale n₃ ≤ 4158. La liste publiée échoue la règle de somme sur les
-  constantes (au moins deux coquilles), sans effet sur ces conclusions. Lou–Murin (2014) : faits locaux seulement
-  (nombre de prismes par droite ≠ 11).
+  constantes (au moins deux coquilles), sans effet sur ces conclusions. Lou–Murin (MIT PRIMES 2014) : grille moins une
+  arête ⟹ grille (§2), étiquetages par les plans de Fano autour d'un sommet (§3, tentatives de construction), graphe
+  des 231 triangles et comptes par triangle (§5, nombre de prismes par droite ≠ 11 ; 12 partout exclu).
 - **Bilan.** Borner Σν³ = majorer la torsion totale n₃ ; aucune méthode connue ne le fait ; c'est équivalent à
   « tout SRG PQ(2,t,2) est grid-full », au moins aussi dur que l'unicité de BvLS.
 
@@ -101,7 +102,8 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - Littérature (textes complets) : **L1 est le théorème 2 de Makhnev (1988)** ; la méthode de Wilbrink–Brouwer (57)
   repose sur un prisme tendu, une coclique de Hoffman et un design local non trivial, et aucun des trois n'existe à 99 ;
   l'argument de Reimbayev (19) sature à t = 2 mais pas à t = 6. Tous les autres résultats connus sur 99 (Wilbrink 1984,
-  Behbahani–Lam 2011, Crnković–Maksimović 2020) portent sur les automorphismes : pour C1, rien.
+  EUT Report 84-WSK-03, pas d'automorphisme d'ordre 11 ; Behbahani–Lam 2011 ; Crnković–Maksimović 2020 ; Cesarz–Woldar,
+  *Algebraic Combinatorics* 8(2) (2025) 379–398) portent sur les automorphismes : pour C1, rien.
 
 ## 1 octies. Nuit du 25/09 : **preuve humaine de L7** (notes/95)
 - L7 (un point de Hamming n'est pas le point fixe d'une involution, donc le point fixe de la branche C2 est tordu)
@@ -216,6 +218,12 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 - Les géométries tordues comme témoins ; la famille tri-incidence (q = 3, 5, 7 ; échec pour q pair).
 - L7–L11 (exclusions locales exactes) ; L9 à la main.
 - L2–L4 (dérivation indépendante ; des énoncés voisins existent peut-être chez Brouwer–van Eijl).
+- **L8** (notes/105) : la chaîne de preuve (Hamming en un sommet ⟹ profils de Petersen ⟹ squelette de Fano forcé ⟹
+  35 transports exclus). **Pas** les 30 plans de Fano étiquetés eux-mêmes (Lou–Murin 2014, §3).
+- L11 et g(x) ≤ 17 par le comptage des fentes (notes/108) ; L14 pour |C| = 2 à la main (notes/111).
+- *Classique, non revendiqué* : la reformulation PQ(2,6,2) (Cameron 1975) ; les grilles comme ensembles « intrigants »
+  de taille 9 (Bamberg–De Clerck–Durante 2011) ; l'étiquetage 1 + 14 + 84 (Cesarz–Woldar) ; grille moins une arête ⟹
+  grille et graphe des 231 triangles (Lou–Murin 2014).
 
 ## 6. Pour le PC du labo
 **Gelé le 25/09 (décision de l'utilisateur) : plus de campagnes de solveurs, ni ici ni ailleurs** ; liste gardée
@@ -229,7 +237,8 @@ pour archive. Seules restent possibles de petites vérifications exactes d'un ar
 1. ~~**L8 à la main.**~~ **Fait (notes/105, squelette de Fano).** Point de départ historique (notes/95) : règle de transport, triangles de Kneser sans arête non isométrique
    isolée, image « code de Golay factice » (bijection v ↦ z₁₂(v), cohérence impossible par 10/3). Il manque
    l'exclusion des configurations incohérentes. Sinon, DRAT sur le PC du labo.
-2. **Méthode d'Akiyama** (notes/96) : forme discriminante des repères serrés L₋₄ (rang 30, constante 56) et L₃
+2. ~~**Méthode d'Akiyama**~~ **Examinée et close le 25/09 (notes/110 §2)** : pas de repère dense de rang ≤ 24, pas
+   d'annulation de Venkov au rang 48, pas d'isolement des racines. Ancien plan (notes/96) : forme discriminante des repères serrés L₋₄ (rang 30, constante 56) et L₃
    (rang 40, constante 105), complétion unimodulaire paire (rang 32 ?), identité thêta harmonique de degré 2 dans
    S₁₈. D'abord un contrôle sur BvLS. Plusieurs jours de travail, faisable sur le portable.
 3. **Pour la session C2** : L7 a maintenant une preuve humaine de quelques lignes. La lecture « matrice d'orbites

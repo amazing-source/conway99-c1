@@ -46,9 +46,10 @@ nulle ; la formule d'oddité impose de plus qu'elle ne soit **jamais hyperboliqu
   (2²¹ | 7) = +1 donnent la même contradiction.
 
 ## 4. Priorité
-Brouwer–van Eijl, *On the p-rank of the adjacency matrices of strongly regular graphs* (J. Algebraic Combin. 1,
-1992 ; preprint lu : win.tue.nl/~aeb/preprints/361304.pdf), théorème 3.5(iii) : r_p(A + τI) ≤ min(f, g) + 1 (ici 45).
-Leur remarque (idempotent c₁E₁ avec p | c₁₀, p | c₁₂, p ∤ c₁₁) ne s'applique pas à 99 : 63E₋₄ = 28I − 8A + B, et
+C. A. van Eijl, *On the p-rank of the adjacency matrices of strongly regular graphs*, mémoire de master, TU Eindhoven,
+1991 (dir. A. E. Brouwer ; texte lu : win.tue.nl/~aeb/preprints/361304.pdf), théorème 3.5(iii) : r_p(A + τI) ≤ min(f, g) + 1
+(ici 45). Version article : A. E. Brouwer, C. A. van Eijl, J. Algebraic Combin. 1 (1992). *(Correction du 25/09 : le
+fichier 361304.pdf est le mémoire, pas l'article.)* La remarque du mémoire (idempotent c₁E₁ avec p | c₁₀, p | c₁₂, p ∤ c₁₁) ne s'applique pas à 99 : 63E₋₄ = 28I − 8A + B, et
 7 ∤ c₁₂ = 1. Aucun argument de genre ni d'oddité dans ce texte. **Le raffinement semble nouveau** ; la méthode (symboles
 de Conway–Sloane, formule d'oddité) est classique.
 

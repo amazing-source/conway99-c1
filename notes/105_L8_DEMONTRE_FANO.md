@@ -176,3 +176,17 @@ L'exemple de coupe de notes/103 §7 (paires de {1,2,3,4}) viole déjà (T2).
    Γ₂(x) restent 5 par point. Le nombre de droites au-dessus d'une configuration de classes est encore un nombre de
    points fixes d'holonomie. Candidats immédiats : L11 et L14 (encore « SAT non certifié »), dont les sommets sont
    presque de Hamming.
+
+## 9. Priorité (audit indépendant d'Astra, 25/09 ; texte de Lou–Murin relu ici)
+- **Lou–Murin**, *On the strongly regular graph of parameters (99,14,1,2)* (MIT PRIMES, 2014) :
+  - §2 : un sous-graphe « grille moins une arête » force la grille induite ;
+  - §3 : étiquetage d'un sommet et de ses 14 voisins par les 15 plans de Fano d'une des deux classes (sur 30), et des
+    84 points de Γ₂(x) par des couples (plan, droite). Ce sont des tentatives de construction, toutes infructueuses ;
+  - §5 : le graphe T des 231 triangles et les comptes α, β, γ par triangle (γ ≠ 11 ; γ = 12 partout est exclu).
+- **Nous ne revendiquons donc pas les 30 plans de Fano étiquetés**, ni l'étiquetage 1 + 14 + 84 (déjà chez
+  Cesarz–Woldar), ni la reformulation PQ(2,6,2) (Cameron 1975).
+- **Ce qui est nouveau ici, c'est la chaîne de preuve de L8** : hypothèse de Hamming en un seul sommet ⟹ profils de
+  Petersen A/B ⟹ squelette ℓ forcé, égal à une fonction de Fano ⟹ section X, lemme B/C ⟹ exclusion des 35 transports.
+  Chez Lou–Murin, les plans de Fano sont un outil d'étiquetage. Ici, ils sont la seule solution d'un système forcé.
+- **Frontière d'hypothèse.** La parallélité de X n'est établie que le long des 84 arêtes hors faisceaux (§4.2), et
+  c'est la seule qu'utilisent le lemme B/C et le §5. Rien n'est affirmé le long des arêtes de faisceau.
