@@ -11,8 +11,8 @@ dire tout de suite si un premier geste est vide. Tous les énoncés sont prouvé
 | en torsion maximale générique : 2 doubles par sommet en moyenne, donc pas de bijections de Kneser | preuve | **l'holonomie de L8 ne se transporte pas** |
 | budget par paire de classes : Σ_w C(n_R(w), 2) = 8 − s_R − a_R − i_R | preuve (C2, « structures ») | même tautologie, paire par paire |
 | identités du second ordre Σ_v d_P d_R = 32 − e, 24 − e, 64 − 2e | preuve | vides : elles ne tuent même pas L14 |
-| **schéma des droites à P = 0** : Y = X₂ − X₀ vérifie (Y − 4)(Y + 17) = 0 | preuve | identité d'ordre 9 (au-delà de notes/91) |
-| forme locale de l'identité Y pour deux droites sécantes | preuve (torsion maximale générique) | à exploiter |
+| schéma des droites à P = 0 : Y = X₂ − X₀ vérifie (Y − 4)(Y + 17) = 0 | preuve | **déjà dans notes/99 §4** (triplets de droites, négatif : P ∈ [0, 1155]) |
+| forme locale de l'identité Y pour deux droites sécantes ; réseau L_Y pair et 21-élémentaire | preuve | sans prise (critère 3, relecture « structures ») |
 
 ## 1. Structure en torsion maximale
 Torsion maximale en x : chaque τ_a sans boucle (jamais c ↦ c̄), chaque ρ_α sans point fixe (L13 : tout le monde tord
@@ -73,11 +73,18 @@ En torsion maximale générique (une paire de mates par droite de mates), pour c
 - n₀₀(α, β) est le nombre de droites de mates qui évitent exactement {α, β}.
 - La somme sur β de ces équations est automatique : 24 = 24. Il reste **14 équations indépendantes par sommet**. Elles
   lient les statistiques de paires τ aux positions des troisièmes points des droites de mates.
-- **Statut.** C'est une identité d'ordre 9 (trois droites), hors de la hiérarchie d'ordre 8 de notes/91. Elle est vraie
-  dans tout Γ. Reste à savoir si elle mord, ou si elle suit des fentes et de (K) : non fait.
+- **Statut (corrigé le soir même).** L'identité globale n'est pas nouvelle. C'est le modèle exact des triplets de droites
+  de notes/99 §4 (ordre 9 par les droites), déjà négatif : il redonne P ∈ [0, 1155], soit L16. Seule la forme locale en
+  un sommet, qui relie τ aux droites de mates, est nouvelle ; elle n'a pas été exploitée.
+- **Réseau des droites.** On pose w_L = √7·E₋₄1_L. Son Gram vaut 4I − Y_P (normes 4, produits 0, ±1 et −2 pour un
+  prisme), et WWᵀ = 21·I₄₄. Le réseau L_Y engendré est pair et 21-élémentaire, pour tout P, avec L_Y ⊆ √7·Λ₋₄^#.
+  Relecture de la session « structures » :
+  - l'oddité est automatique, puisque L_Y vit dans le même espace rationnel que Λ₋₄ ;
+  - seuls les coranges (a, b) mod 3 et mod 7 portent de l'information : a est pair et b ≥ 30 − k (esquisse : b = 30 − k) ;
+  - cela reproduit L22. La piste n'est pas vide, mais elle est sans prise, sauf si une formule forçait a.
 
 ## 5. Bilan honnête
 - Le mécanisme de L8 (bijections, holonomie, parité, squelette rigide) est propre au voisinage des grilles complètes.
 - En torsion maximale, tous les comptages du premier et du second ordre sont des tautologies.
-- La seule piste nouvelle de cette séance est l'identité du schéma des droites (§4). Elle est d'ordre 9 et sa forme
-  locale relie τ aux droites de mates. Elle n'est pas encore exploitée.
+- L'identité du schéma des droites (§4) était déjà connue globalement (notes/99 §4, négatif). Sa forme locale et le
+  réseau L_Y n'apportent pas de prise nouvelle en l'état.
