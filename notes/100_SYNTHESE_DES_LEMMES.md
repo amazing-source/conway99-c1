@@ -1,0 +1,100 @@
+# 100 — Synthèse des 21 lemmes : ce qu'ils donnent ensemble
+
+*25/09, 06 h. Question de l'utilisateur : « T'as 21 lemmes, tu les as jamais mis ensemble pour arriver à une
+conclusion ? » Réponse honnête : ils avaient été combinés au coup par coup (L15 + L16, L20 + L20 bis/ter, L21 ⊃ L20),
+jamais systématiquement. Voici la synthèse complète. Conclusion en §4 : **aucune combinaison des 21 lemmes ne peut
+donner de contradiction, et cela se démontre** ; la raison est précise, et elle dit quel lemme manque.*
+
+## 1. Les quantités en jeu
+- **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
+  P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.
+- **Arithmétique** : k = rank₇(A − 3I) − 15 (même en tout sommet), signes 7-adiques.
+- **Statistiques d'ordre 7** : P et S (L18).
+
+## 2. Le tableau : chaque lemme, ce qu'il contraint, dans quel sens
+| lemme | contrainte | sens | statut |
+|---|---|---|---|
+| L1 (Makhnev 1988) | Γ n'est pas grid-full : Σ|W| > 0 | **plancher de torsion** | preuve |
+| L7 | un point de Hamming n'est pas fixé par une involution | plancher (branche C2) | preuve |
+| L8 | aucun point de Hamming : |W(x)| > 0 en tout x | **plancher** | SAT non certifié |
+| L9, L9' | torsion + transitions mates ⟹ une grille manque | règle locale (plancher) | preuve |
+| L10 | g(x) ≤ 18 | **plancher** (g = 21 via L8) | preuve + SAT |
+| L11 | les torsions touchent ≥ 4 classes | **plancher** | SAT non certifié |
+| L12 | propagation : une étiquette ou une classe tordue seule est impossible | **plancher** | preuve |
+| L13 | une classe est tordue par 0 ou ≥ 2 étiquettes | règle locale | preuve |
+| L14 | deux étiquettes tordues ne suffisent pas (|C| ≤ 4) | **plancher** | SAT non certifié |
+| L15 | P = 1386 − Σ|W|/6 ; Σ|W| = 6048 + Σν³ | identité | preuve |
+| L16 | P ≤ 1151, c'est-à-dire Σ|W| ≥ 1410 | **plancher** (global) | preuve |
+| L18 | 0 ≤ S ≤ n₃, dictionnaire d'ordre 7 | identité + encadrement | preuve |
+| L5, L6 | grilles serrées ; comptages enracinés ; surface Σ, χ = 3P − 4158 | identités (Σ a un bord : aucune borne) | preuve |
+| L2, L4 | k pair, le même en tout sommet, k ≤ 30 | arithmétique | preuve |
+| L3, L17 | signes 7-adiques fixés par k (oddité) | arithmétique, compatible pour tout k pair | preuve |
+| L19 | U_x : diviseurs 1^k 7^{70−2k} 49^k, déficit ≤ k | lien k–torsion, vide si k grand | preuve |
+| L20 | k ≥ 11 − 2e(τ_a) : peu de torsion en une étiquette ⟹ k grand | **plancher de k** | preuve |
+| L20 bis/ter, L19 bis | k ≥ 10 | **plancher de k** | preuve + calcul exact |
+| L21 | k ≥ 23 − d(L) ; droite générique ⟹ k ≥ 22 | **plancher de k** | preuve |
+
+**Aucune ligne n'est un plafond de torsion** (une borne inférieure sur P) **ni un plafond de k** (autre que k ≤ 30).
+
+## 3. Ce que les combinaisons donnent réellement (corollaires nouveaux)
+**C1 (L20 + L20 ter + L15). Si k = 10, alors pour toute arête e : m(e) ∈ {0, 2}.** Donc |W(x)| ≥ 56 en tout sommet,
+et P est pair avec P ≤ 462.
+*Preuve.* À k = 10, chaque étoile a un rang 11 − 2e ≤ 10, donc e(τ_a) ≥ 1 (L20). Le calcul exact de L20 ter pour
+k = 10 (refait ce jour, `kbound_exact.py 10`) exclut (1;2,3) et (4;2). Il laisse (0;2,2,2), (0;2,4), (0;6), (2;2,2)
+et (2;4), qui ont 0 ou 2 classes non tordues. Or m(e) est le nombre de classes non tordues. Donc m(e) ∈ {0, 2},
+d(e) ≥ 4, |W(x)| ≥ 14·4, et 3P = Σ_e m(e) ≤ 693·2, pair. ∎
+**C2 (L21). Si k ≤ 20, toutes les droites sont 7-dégénérées** (G(L) non connexe, ou 7 divise le nombre d'arbres
+couvrants de G(L)). **Si k = 10, chaque droite a d(L) ≥ 13**, alors que le maximum trouvé numériquement est 9 :
+k = 10 est exclu numériquement, pas encore démontré (il manque la preuve de d ≤ 12).
+**C3 (L12 + L13 + L14 + L11). Plancher local** : en tout sommet, au moins 3 étiquettes tordues (ou 2 avec |C| = 5,
+non traité), au moins 4 classes touchées, donc |W(x)| ≥ 6. Plus faible que la moyenne imposée par L16 (14,2).
+**C4 (L5 + L10 + L16).** g_tot ≤ P/6 ≤ 191 (chaque grille contient 6 prismes, chaque prisme est dans au plus une
+grille), donc la moyenne de g(x) est ≤ 17,4. C'est à peine mieux que L10.
+**C5 (L3 + L17 + L2).** Compatibles pour tout k pair (déjà noté en L3 et L17) : pas de contradiction de genre.
+**C6 (L6).** χ(Σ) = 3P − 4158 ≤ −705 : Σ est une surface à bord très négative, ce qui ne contraint rien.
+
+## 4. La conclusion : les 21 lemmes ne peuvent pas se contredire
+**Proposition (cohérence).** Le profil suivant satisfait simultanément les énoncés de L1 à L21 :
+- toutes les transitions τ_a sans boucle en tout sommet (« torsion maximale »), donc m(e) = 0, P = 0, |W(x)| = 84 ;
+- aucune grille (g ≡ 0) ;
+- k = 30 (et les signes 7-adiques que L3 et L17 associent à k = 30) ;
+- S quelconque dans [0, 4158].
+*Vérification, lemme par lemme.*
+- **Planchers de torsion.** L1, L7, L8, L10, L11, L12, L14, L16 excluent seulement la torsion faible, et le profil est
+  à torsion maximale.
+- **Règles locales.** L9 et L9' ont pour hypothèse une transition non tordue τ_{c̄}(a) = ā : elles sont vides ici.
+  L12 est satisfait, car toute étiquette tord toute classe. L13 aussi : chaque classe est tordue par 12 étiquettes.
+- **Identités.** L5, L6, L15, L18 sont satisfaites (P = 0, g = 0, S ≤ n₃ = 4158).
+- **Arithmétique de k.** L2 et L4 : k pair. L3 et L17 sont des conditions de signe compatibles pour tout k pair. L19 :
+  70 − 2k = 10 ≥ 0. L20, L20 bis/ter, L21 : 30 ≥ 11 − 2e, 30 ≥ 10, 30 ≥ 23 − d(L).
+
+Tout raisonnement qui combine ces énoncés, et seulement eux, reste vrai dans ce profil. **Aucune contradiction ne peut
+donc sortir de L1–L21.** Ce n'est pas une preuve d'existence de Γ : c'est une limite de ce corpus de lemmes.
+
+*Remarque.* Le profil « tordu générique » (τ comme des couplages aléatoires : P ≈ 126, k ≈ 30) passe aussi, ainsi que
+tous les relâchements calculés (ordre ≤ 8, triplets de droites, notes/91 et 99).
+
+## 5. Ce que cela dit du programme
+1. **Le corpus est unilatéral.** Tous les lemmes locaux excluent la torsion faible (le côté Hamming). L16, seul lemme
+   global sur P, pousse dans le même sens. Les lemmes arithmétiques minorent k. Le côté « torsion forte », là où vivrait
+   un Γ générique, n'est touché par **aucun** lemme.
+2. **La pièce manquante est un plafond.** Une contradiction exige au moins un énoncé qui exclut la torsion forte. Soit
+   un plafond local (un sommet ne peut pas être trop tordu), soit une borne inférieure globale sur P, soit une
+   majoration globale de k. Rien de ce qui a été essayé n'en fournit un ; toutes les méthodes par moyennes ou par
+   positivité sont faisables à P ≈ 0–126.
+3. **Candidats, par coût.**
+   - (a) *Frontière miroir.* Tester par SAT si un sommet entièrement tordu est possible (les 14 τ sans boucle en x).
+     C'est le symétrique de L8. Le test « tous de type (2,2,2) » a été tué à 4 Go sur le portable. PC du labo
+     seulement ; et même un succès ne donnerait qu'un plafond faible (au moins un prisme par sommet).
+   - (b) *Plafond arithmétique.* Une majoration de k par un argument global (des vecteurs du noyau mod 7 au-delà des
+     54 rationnels). Aucun mécanisme connu ; heuristiquement k ≈ 30.
+   - (c) *Méthode globale nouvelle* (réseau des droites et formes modulaires, notes/96) : plusieurs jours, issue
+     incertaine.
+   - (d) *Resserrer k par combinaison* (C2 : prouver d ≤ 12, d'où k ≥ 12) : faisable, mais ce n'est encore qu'un
+     plancher de k, sans effet sur le verrou.
+
+## 6. Réponse courte
+Mis ensemble, les 21 lemmes donnent un portrait cohérent : Γ serait **fortement tordu** (torsion moyenne ≥ 14,2 et
+torsion en tout sommet), avec **k ≥ 10 pair** (et k = 10 imposerait m(e) ∈ {0, 2} partout et P ≤ 462). Ils ne peuvent
+pas se contredire, parce que tous poussent dans la même direction et que le régime de torsion maximale les satisfait
+tous. Pour conclure, il faut un résultat d'un autre type, un plafond, qu'aucun des 21 n'est.

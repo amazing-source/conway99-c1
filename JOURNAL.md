@@ -149,3 +149,8 @@
     faisable avec μ_L ∈ [0, 18] ; une droite entièrement tordue n'est exclue par rien. Négatif.
   - Bilan : la voie 7-adique ne fait que minorer k (heuristiquement k ≈ 30) ; la positivité s'étend aux 9 points des
     triplets de droites sans rien donner. Verrou entier.
+- 25/09, 06 h. **Synthèse des 21 lemmes** (question de l'utilisateur), notes/100. Tableau quantité/sens/statut ;
+  tous sont des planchers (torsion faible exclue, k minoré), aucun plafond ; le profil de torsion maximale (P = 0,
+  g = 0, k = 30) satisfait tous les énoncés, donc aucune contradiction possible à partir d'eux seuls. Corollaires :
+  k = 10 ⟹ m(e) ∈ {0, 2}, |W(x)| ≥ 56, P ≤ 462 pair (L20 + L20 ter refait pour k = 10 + L15) ; k ≤ 20 ⟹ droites
+  7-dégénérées ; g_tot ≤ 191. La pièce manquante est un plafond.

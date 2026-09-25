@@ -125,6 +125,14 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - L10 : seconde preuve humaine par une règle locale nouvelle L9' (noyaux UNSAT minimaux de 7 contraintes) ; L16
   audité indépendamment (correct).
 
+## 1 undecies. 25/09, 06 h : synthèse des 21 lemmes (notes/100)
+- Tableau complet : chaque lemme est un plancher de torsion, une identité, ou une minoration/condition de signe sur k.
+  **Aucun plafond.** Le profil de torsion maximale (P = 0, g = 0, k = 30) satisfait les 21 énoncés, donc aucune
+  combinaison ne peut produire de contradiction : il faut un résultat d'un autre type (plafond local, borne
+  inférieure globale sur P, ou majoration de k).
+- Corollaires nouveaux des combinaisons : **k = 10 ⟹ m(e) ∈ {0, 2} pour toute arête, |W(x)| ≥ 56, P ≤ 462 pair**
+  (L20 + L20 ter + L15) ; k ≤ 20 ⟹ toutes les droites 7-dégénérées (L21) ; g_tot ≤ 191 (L5 + L16).
+
 ## 1 decies. 25/09, 05 h 30 : le verrou principal, trois essais (notes/99)
 - **L21 (nouveau, preuve à la main)** : pour toute droite L, rang₇(A − 3I) sur la boule L ∪ N(L) (39 points) vaut
   2 + rang₇(A_{G(L)} − 3I), où G(L) est le graphe **cubique** induit sur les 36 voisins de L. Donc k ≥ 23 − d(L), avec

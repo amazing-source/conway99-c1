@@ -2,6 +2,7 @@
 
 Γ = srg(99,14,1,2) hypothétique. E_θ = projecteur spectral, Λ_θ = E_θ ∩ Z⁹⁹ (réseau propre, primitif).
 Statut : [P] preuve écrite ici ; [C] contrôlé par calcul sur les témoins ; [?] à confronter à la littérature.
+**Synthèse (tableau, corollaires, cohérence de l'ensemble) : notes/100_SYNTHESE_DES_LEMMES.md.**
 
 ---------------------------------------------------------------------------------------------------------
 ## L1. Γ est tordu : il existe un sommet x et a, b ∈ N(x) avec τ_a(b) ≠ b̄.   [P] [C]

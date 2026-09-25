@@ -8,7 +8,8 @@ des conséquences obligatoires nouvelles et vérifiées.
 conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 
 ## Par où commencer
-0. **`notes/98_BILAN_NUIT_25_09.md` — bilan de la nuit du 25/09 (à lire en premier)**, puis
+0. **`notes/100_SYNTHESE_DES_LEMMES.md` — les 21 lemmes mis ensemble : tableau, corollaires, et pourquoi ils ne
+   peuvent pas se contredire (à lire en premier).** Puis `notes/98_BILAN_NUIT_25_09.md` (bilan de la nuit) et
    **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
@@ -28,6 +29,12 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
    intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
+
+## État (2026-09-25, 06 h) — synthèse (notes/100)
+- Les 21 lemmes sont tous des **planchers** (torsion faible exclue, k minoré) ; aucun n'est un plafond. Le profil
+  « torsion maximale » (P = 0, aucune grille, k = 30) les satisfait tous : **aucune combinaison ne peut donner de
+  contradiction**. Corollaires nouveaux : k = 10 ⟹ m(e) ∈ {0, 2} partout, |W(x)| ≥ 56, P ≤ 462 pair ; k ≤ 20 ⟹
+  toutes les droites 7-dégénérées. La pièce manquante est un plafond de torsion (ou une majoration de k).
 
 ## État (2026-09-25, 05 h 30)
 - **L21** (boule d'une droite) : k ≥ 23 − d(L), où d(L) = composantes + 7-rang du tas de sable du graphe cubique induit
