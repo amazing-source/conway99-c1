@@ -112,7 +112,9 @@ il envoie un élément de j dans une autre classe k, et la grille (i,k) tombe au
 rapides n'est rédigée nulle part (notes/40 ne la contient pas). La conclusion de L8 repose donc sur l'exécution sans
 cassage (UNSAT, 2 114 s), qui reste elle-même à certifier (DRAT) et sans contrôle positif sur BvLS.
 
-## L11. Les torsions ne peuvent pas être confinées à 3 classes.   [calcul exact] [à certifier DRAT]
+## L11. Les torsions ne peuvent pas être confinées à 3 classes.   [P] (2026-09-25, notes/108, lemme D1) [ancien : calcul exact]
+*Preuve humaine (notes/108).* Les grilles incomplètes seraient dans un triangle de paires de classes, donc deux à
+deux sécantes, ce que le lemme D1 interdit (comptage des fentes : un sommet tordu n'a plus de place pour ses ombres).
 *Énoncé (calcul).* Il n'existe pas de sommet x dont toutes les torsions (paires (étiquette, classe) tordues) ne
 font intervenir que 3 classes. *Calcul.* `rooted_family.py K` avec |K| = 3 (τ libre sur les classes de K, au moins une
 torsion, mate ailleurs) : UNSAT en 1,2 s ; contrôle relâché SAT (notes/50). *Non fait* : second encodage, DRAT,

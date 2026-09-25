@@ -209,3 +209,10 @@
     14 étoiles, exclues par notes/103 §6, et 21 quadrilatères, tués par deux μ-parités en chemin P₃ et la règle (i).
   - En chemin : lemme spectral (S_I − 5)(S_I + 2) = −KKᵀ (quatrième preuve de L7) et lemme des composantes.
     Correction de l'affirmation « NNN = 2-cycle ».
+- 25/09, fin d'après-midi. **Comptage des fentes (notes/108) : L11 démontré, g(x) ≤ 17.**
+  - Autour des grilles complètes, μ avec les étiquettes force des couplages parfaits (unicité des fentes sur K₅ tant
+    que les défauts voisins sont sécants).
+  - Un sommet tordu n'a alors plus de place pour ses ombres. Lemme D1 : les grilles incomplètes ne sont jamais deux à
+    deux sécantes. Lemme D2 : la configuration chemin est impossible.
+  - Donc L11 (sans SAT), le cas g = 19 de L10 redémontré, et g(x) ≤ 17 (ancienne frontière de L10).
+  - Recontrôle indépendant des énumérations de L8 : identique.
