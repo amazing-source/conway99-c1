@@ -1,7 +1,7 @@
 # 115 — Lemme du triangle : première contrainte exacte active en torsion maximale
 
-*25/09, nuit. Labo c1_experimental (notes/114), note E2. Points 1 et 2 recalculés indépendamment par « structures »
-(sympy, rationnels exacts, `c99_structures_lab/scripts/verify_c1_triangle.py`).*
+*25/09, nuit. Labo c1_experimental (notes/114), note E2. Points 1 à 3 recalculés indépendamment par « structures »
+(sympy, rationnels exacts, `c99_structures_lab/scripts/verify_c1_triangle.py` et `verify_c1_cert3.py`).*
 
 ## 0. Résumé
 | résultat | statut | portée |
@@ -9,7 +9,7 @@
 | **Lemme du triangle** : T ⪯ 3I − P_∂ pour toute famille triangle | DÉRIVÉ, recalcul indépendant | vaut en torsion maximale |
 | corollaire : e ≤ 12 arêtes internes | DÉRIVÉ, recalcul indépendant | version par blocs (analogue de C2 §25) |
 | cas tendu e = 12 : vecteur propre de valeur 3 explicite, T 2-régulier, comptes exacts 1 et 3 | DÉRIVÉ, recalcul indépendant | rigidité |
-| effet en torsion maximale : 22 % des configurations localement admissibles tuées | OBSERVÉ (échantillon) | pas encore un plafond |
+| effet en torsion maximale : 22 % des configurations localement admissibles tuées | OBSERVÉ (échantillon) ; un certificat explicite recalculé indépendamment | pas encore un plafond |
 | modèle de Fano : forcé au régime tendu, toute σ-arête interne le tue | DÉRIVÉ | |
 | Fano tendu : comptes génériques exacts et contrainte κ_ℓ'(e) ≠ M_m(κ_ℓ(f)) | DÉRIVÉ | aucune contradiction pour l'instant |
 
@@ -57,8 +57,12 @@ c'est faible.
 - **Échantillon.** Sur 20 000 configurations aléatoires en torsion maximale, 103 sont localement admissibles (λ ≤ 1
   et μ ≤ 2 dans tous les supports). **23 sont tuées par le lemme.** Les supports étoiles (boules de droites) ne
   violent jamais : 0 sur 1 877.
-- **Certificats.** Ils sont exacts. Un exemple explicite (triangle {0,1,6}, 10 arêtes de T,
-  λ_max(T − (3I − P_∂)) = 0,0543) est en cours de recalcul indépendant par « structures ».
+- **Certificats.** Ils sont exacts. Exemple explicite (`x14h_export_violation.py`) : triangle de classes {0,1,6},
+  10 arêtes de T, λ_max(T − (3I − P_∂)) ≈ 0,0543.
+  - « Structures » l'a recalculé avec son propre code. Le polynôme caractéristique exact de T − (3I − P_∂), de
+    degré 12, a **exactement une racine > 0** (comptage de Sturm), ≈ 0,0543278. **CONFIRMÉ.**
+  - Dans W = {x} ∪ Γ(x) ∪ Q, le support vérifie λ ≤ 1 et μ ≤ 2 : 0 violation. Il passe donc tous les tests
+    locaux, et **seul le lemme le tue**.
 - **Ce que le lemme ne fait pas.** Les violations viennent de familles denses : 8 à 10 arêtes internes, contre 4,8
   en moyenne. Les configurations aux transitions étalées passent. **Ce n'est donc pas encore un plafond.**
 
