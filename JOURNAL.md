@@ -157,3 +157,7 @@
 - 25/09, 06 h 15. **Décision de l'utilisateur : plus de solveurs** (« ça n'en vaut jamais la peine »), après la
   branche C2 (SAT de 8 h, cassage de symétrie, cube-and-conquer, générateur : rien). LAB_INSTRUCTIONS et §6 du
   rapport gelés. La suite se fait en mathématiques pures (notes/100 : il manque un plafond de torsion).
+- 25/09, 08 h. **L22 : k ≤ 28** (notes/101). Route A, argument de genre : Λ₋₄ pair, rang 44, det 9·7^{14+k},
+  partie 3 = Z/9 ; à k = 30, U = 0 force ε₇ = (9|7) = +1 alors que l'oddité exige −1. Conventions testées (A₂…E₈,
+  2300 réseaux aléatoires, 0 échec) ; schéma validé sur Petersen, T(7), T(8), srg(9). Brouwer–van Eijl 1992 lu :
+  seulement ≤ 45, pas de genre. notes/100 corrigée (profil de cohérence à k = 28). Premier plafond du corpus.

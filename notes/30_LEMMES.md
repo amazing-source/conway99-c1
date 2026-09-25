@@ -279,6 +279,15 @@ configurations admissibles (0 exception). Maximum de d trouvé par recuit : 9, d
 *Portée.* Minoration seulement : la voie 7-adique pousse k vers le haut (k ≥ 22 dès qu'une droite est générique) et
 ne peut pas donner le verrou sans une majoration globale de k.
 
+## L22. Le genre de Λ₋₄ interdit k = 30 : 10 ≤ k ≤ 28.   [P] [C sur Petersen, T(7), T(8), srg(9)] (notes/101)
+*Énoncé.* rank₇(A − 3I) ≤ 43 (au lieu de 45) ; la partie 7-unimodulaire de Λ₋₄ (rang 30 − k) est non nulle et
+jamais hyperbolique sur F₇.
+*Preuve.* Λ₋₄ est pair, de rang 44 et de déterminant 9·7^{14+k}, avec une partie 3 cyclique Z/9 (3-excès 8 ≡ 0). Sur
+Z₇, Λ₋₄ = U ⊥ 7V et (det U|7)(det V|7) = (9|7) = +1. L'oddité donne 44 + 8 + 6(14 + k) + 4δ_V ≡ 0 (mod 8), d'où
+δ_V ≡ k/2. À k = 30, U = 0 force δ_V = 0, alors que k/2 = 15 est impair. ∎
+*Portée.* Premier plafond de k. Il exclut le profil 7-générique (k = 30) : en chaque sommet, la matrice locale M_x
+est 7-dégénérée d'au moins deux dimensions. Il reste à relier cette dégénérescence à la torsion.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

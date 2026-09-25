@@ -10,7 +10,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 ## Par où commencer
 0. **`notes/100_SYNTHESE_DES_LEMMES.md` — les 21 lemmes mis ensemble : tableau, corollaires, et pourquoi ils ne
    peuvent pas se contredire (à lire en premier).** Puis `notes/98_BILAN_NUIT_25_09.md` (bilan de la nuit) et
-   **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou).
+   **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou), et
+   **`notes/101_GENRE_K_MAJORE.md`** (L22 : k ≤ 28, premier plafond).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
@@ -29,6 +30,11 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
    intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
+
+## État (2026-09-25, 08 h) — L22 : premier plafond (notes/101)
+- **k ≤ 28** (au lieu de 30) : le réseau Λ₋₄ (pair, rang 44, det 9·7^{14+k}) n'a pas de genre possible à k = 30, car
+  (9|7) = +1 force le signe que la formule d'oddité interdit. Méthode validée sur Petersen, T(7), T(8), srg(9).
+  Premier plafond du corpus ; le profil 7-générique est exclu : chaque matrice locale M_x est 7-dégénérée.
 
 ## État (2026-09-25, 06 h) — synthèse (notes/100)
 - Les 21 lemmes sont tous des **planchers** (torsion faible exclue, k minoré) ; aucun n'est un plafond. Le profil

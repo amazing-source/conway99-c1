@@ -125,6 +125,14 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - L10 : seconde preuve humaine par une règle locale nouvelle L9' (noyaux UNSAT minimaux de 7 contraintes) ; L16
   audité indépendamment (correct).
 
+## 1 duodecies. 25/09, 08 h : L22, premier plafond (notes/101)
+- **k ≤ 28**, donc rank₇(A − 3I) ≤ 43 (borne de van Eijl : 45). Λ₋₄ est pair, de rang 44, de déterminant
+  9·7^{14+k}, avec une partie 3 cyclique Z/9. À k = 30 sa partie 7-adique est entièrement d'échelle 7, de signe forcé
+  (9|7) = +1, alors que la formule d'oddité exige −1. Contrôles : conventions testées sur 2300 réseaux ; schéma
+  validé sur Petersen et T(7), où le cas « partie p pleine » existe grâce à une partie unité non carrée.
+- Conséquence : la structure 7-générique est interdite ; chaque sommet a une matrice locale 7-dégénérée. Le verrou
+  devient : montrer qu'en un sommet la torsion forte force rank₇ M_x ≥ 29.
+
 ## 1 undecies. 25/09, 06 h : synthèse des 21 lemmes (notes/100)
 - Tableau complet : chaque lemme est un plancher de torsion, une identité, ou une minoration/condition de signe sur k.
   **Aucun plafond.** Le profil de torsion maximale (P = 0, g = 0, k = 30) satisfait les 21 énoncés, donc aucune

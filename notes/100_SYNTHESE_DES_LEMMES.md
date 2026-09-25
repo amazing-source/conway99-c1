@@ -5,6 +5,10 @@ conclusion ? » Réponse honnête : ils avaient été combinés au coup par coup
 jamais systématiquement. Voici la synthèse complète. Conclusion en §4 : **aucune combinaison des 21 lemmes ne peut
 donner de contradiction, et cela se démontre** ; la raison est précise, et elle dit quel lemme manque.*
 
+> **Mise à jour (08 h, notes/101) : L22 exclut k = 30, donc k ≤ 28.** La proposition de cohérence du §4 reste vraie
+> avec **k = 28** à la place de k = 30 (L22 n'est pas contredit : 28 ≤ 28 et les signes 7-adiques associés sont
+> satisfiables). Mais le corpus contient désormais un **plafond** (sur k), et le profil 7-générique est interdit.
+
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
   P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.
@@ -57,7 +61,7 @@ grille), donc la moyenne de g(x) est ≤ 17,4. C'est à peine mieux que L10.
 **Proposition (cohérence).** Le profil suivant satisfait simultanément les énoncés de L1 à L21 :
 - toutes les transitions τ_a sans boucle en tout sommet (« torsion maximale »), donc m(e) = 0, P = 0, |W(x)| = 84 ;
 - aucune grille (g ≡ 0) ;
-- k = 30 (et les signes 7-adiques que L3 et L17 associent à k = 30) ;
+- k = 28 (et les signes 7-adiques associés ; k = 30 est exclu par L22, notes/101) ;
 - S quelconque dans [0, 4158].
 *Vérification, lemme par lemme.*
 - **Planchers de torsion.** L1, L7, L8, L10, L11, L12, L14, L16 excluent seulement la torsion faible, et le profil est
@@ -66,7 +70,7 @@ grille), donc la moyenne de g(x) est ≤ 17,4. C'est à peine mieux que L10.
   L12 est satisfait, car toute étiquette tord toute classe. L13 aussi : chaque classe est tordue par 12 étiquettes.
 - **Identités.** L5, L6, L15, L18 sont satisfaites (P = 0, g = 0, S ≤ n₃ = 4158).
 - **Arithmétique de k.** L2 et L4 : k pair. L3 et L17 sont des conditions de signe compatibles pour tout k pair. L19 :
-  70 − 2k = 10 ≥ 0. L20, L20 bis/ter, L21 : 30 ≥ 11 − 2e, 30 ≥ 10, 30 ≥ 23 − d(L).
+  70 − 2k = 14 ≥ 0. L20, L20 bis/ter, L21, L22 : 28 ≥ 11 − 2e, 28 ≥ 10, 28 ≥ 23 − d(L), 28 ≤ 28.
 
 Tout raisonnement qui combine ces énoncés, et seulement eux, reste vrai dans ce profil. **Aucune contradiction ne peut
 donc sortir de L1–L21.** Ce n'est pas une preuve d'existence de Γ : c'est une limite de ce corpus de lemmes.
