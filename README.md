@@ -8,7 +8,8 @@ des conséquences obligatoires nouvelles et vérifiées.
 conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 
 ## Par où commencer
-0. **`notes/98_BILAN_NUIT_25_09.md` — bilan de la nuit du 25/09 (à lire en premier).**
+0. **`notes/98_BILAN_NUIT_25_09.md` — bilan de la nuit du 25/09 (à lire en premier)**, puis
+   **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
@@ -27,6 +28,15 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
    intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
+
+## État (2026-09-25, 05 h 30)
+- **L21** (boule d'une droite) : k ≥ 23 − d(L), où d(L) = composantes + 7-rang du tas de sable du graphe cubique induit
+  sur les 36 voisins de L. Une seule droite « générique » donne **k ≥ 22** ; L20 en est le cas particulier. Maximum de
+  d trouvé : 9 (conjecture k ≥ 14). La voie 7-adique ne fait que minorer k : elle ne donnera pas le verrou.
+- **Triplets de droites** (configurations à 9 points, repère de dimension 132 invisible depuis les points) : modèle
+  exact validé sur BvLS ; le relâchement donne P ∈ [0, 1155] (= L16 côté droites). **Négatif.**
+- Fonctions F₃ de somme nulle sur les droites : présentes dans les géométries tordues. **Négatif.**
+- **Le verrou principal (borne inférieure sur P) reste entier** ; notes/99 §6 dit ce qu'il faudrait.
 
 ## État (2026-09-25, fin de nuit)
 - **Nuit du 25/09** (notes/94–96) : littérature pour 99 lue **en texte intégral** et close (rien pour C1 hors

@@ -125,6 +125,22 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - L10 : seconde preuve humaine par une règle locale nouvelle L9' (noyaux UNSAT minimaux de 7 contraintes) ; L16
   audité indépendamment (correct).
 
+## 1 decies. 25/09, 05 h 30 : le verrou principal, trois essais (notes/99)
+- **L21 (nouveau, preuve à la main)** : pour toute droite L, rang₇(A − 3I) sur la boule L ∪ N(L) (39 points) vaut
+  2 + rang₇(A_{G(L)} − 3I), où G(L) est le graphe **cubique** induit sur les 36 voisins de L. Donc k ≥ 23 − d(L), avec
+  d(L) = composantes + 7-rang du groupe du tas de sable de G(L). Une droite dont G(L) est connexe et dont le nombre
+  d'arbres couvrants n'est pas divisible par 7 donne **k ≥ 22**. L20 est le cas « deux points de L ». Numérique : d = 1
+  dans 85 % des configurations aléatoires admissibles, maximum trouvé 9 (conjecture k ≥ 14).
+- **Conséquence** : toutes les bornes 7-adiques locales sont des minorations et elles montent ; un Γ générique aurait
+  k ≈ 30. Les stratégies qui demandent k petit (L19, « k ≤ 4 ») ne sont pas réalistes.
+- **Triplets de droites (ordre 9)** : l'espace des droites a quatre repères propres (dimensions 1, 54, 44, 132) ; le
+  repère de dimension 132 (combinaisons de droites nulles en chaque point) échappe à toute matrice de Gram de points.
+  Modèle exact des comptages de triplets, validé sur BvLS (0 écart). Relâchement semi-défini jusqu'aux produits de
+  Hadamard de degré 4 : **P ∈ [0, 1155]**, c'est-à-dire L16 côté droites, rien de plus.
+- Fonctions F₃ de somme nulle sur les droites : les géométries tordues en ont (2 à 7 dimensions). Rien.
+- Heuristique : un Γ tordu « générique » aurait P ≈ 126 ; prouver P ≥ 1152 reviendrait à prouver que Γ est presque
+  un quotient de Hamming, ce qu'aucune méthode par moyennes ne peut faire.
+
 ## 2. Piste principale : « frontière de torsion » (notes/50)
 On fixe ou on libère partiellement le système de transitions τ en un sommet et on impose toutes les équations SRG
 dans le modèle enraciné exact (99 sommets). Chaque UNSAT exclut une famille de configurations locales en tout sommet
@@ -189,14 +205,16 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
    configurations presque de Hamming (quelques grilles manquantes) gardent une parité impaire.
 4. **L11 à la main** : outils `core_extract.py` / `core_family.py` / `explain_up.py`. Le noyau de la famille a 112
    équations ; il vaut mieux extraire les noyaux des 28 motifs survivant à la propagation, un par un.
-5. **Invariant k (notes/97)** : k ≥ 10 est acquis. Suites possibles :
-   - prouver min rank₇(S₂₄) ≥ 11 sur deux étoiles couplées, ce qui donnerait k ≥ 12 (énumération des holonomies
-     avec symétrie, PC du labo) ;
+5. **Invariant k (notes/97, notes/99)** : k ≥ 10 est acquis ; L21 ramène les deux étoiles au graphe cubique G(L)
+   (rang du bloc = 23 − d(L)). Suites possibles :
+   - prouver d(L) ≤ 9 (maximum trouvé par recuit), d'où k ≥ 14 ; ou d ≤ 12, d'où k ≥ 12 (piste : un vecteur de
+     ker(M + T₁) ∩ ker(M + 3 + Σᵀ) est nécessaire, ce qui contraint fortement l'holonomie σ) ;
    - relations de lignes sur plusieurs étoiles simultanément (L20 ter généralisé) ;
    - utiliser la formule locale k = rank₇(H + 4I + 3S + P' + 5J) ≤ 30 comme contrainte d'élagage dans les modèles de
      la frontière, où elle n'est qu'implicite.
    Les blocs entièrement connus plafonnent à k ≥ 24 : une contradiction par cette voie demanderait la technique des
    relations, pas seulement des rangs de sous-matrices.
 6. Ce qui ne marche pas, à ne pas refaire : second moment de Δ (notes/93), hiérarchie de comptage jusqu'à l'ordre 8
-   et ses positivités (notes/91), Krein et Gegenbauer sur les droites au-delà de L16 (notes/70), méthodes de
+   et ses positivités (notes/91), relâchement semi-défini sur les triplets de droites avec les quatre repères de
+   l'espace des droites (notes/99 : P ∈ [0, 1155]), fonctions F₃ de somme nulle sur les droites (notes/99), Krein et Gegenbauer sur les droites au-delà de L16 (notes/70), méthodes de
    Wilbrink–Brouwer (57), de Reimbayev (19) et de Shpectorov–Zhao (85) (notes/94), parités d'holonomie (notes/94).

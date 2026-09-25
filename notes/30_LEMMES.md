@@ -262,6 +262,22 @@ d'étoile sont alors des relations entre lignes complètes de la matrice locale 
 particulier ligne({a,ℓ₁}) = ligne({a,ℓ₃}) pour un 4-cycle alterné. En la colonne {ℓ₁, q}, cela impose
 H − H' ≡ 4 ou 5 (mod 7) avec H, H' ∈ {0, 1}. ∎ Donc 8 ≤ k ≤ 30.
 
+## L21. Boule d'une droite : k ≥ 23 − d(L).   [P] [C numérique] (notes/99)
+*Énoncé.* Pour une droite L, soit G(L) le graphe induit sur les 36 points adjacents à exactement un point de L. Il
+est cubique (un couplage par point de L, plus le 2-facteur de Lou–Murin). On a
+rang₇ (A − 3I)[L ∪ N(L)] = 2 + rang₇(A_{G(L)} − 3I), donc **k ≥ 23 − d(L)** avec
+d(L) = dim ker₇(A_{G(L)} − 3I) = c(L) + r₇(K(G(L))) (composantes + 7-rang du groupe du tas de sable).
+En particulier, si G(L) est connexe et que 7 ne divise pas son nombre d'arbres couvrants, alors **k ≥ 22**.
+*Preuve.* Complément de Schur par rapport au bloc J₃ − 4I₃ de L (inversible mod 7, inverse −(I + J)/4) :
+S ≡ A_G − 3I + 2D + 2J. On décompose selon U = ⟨indicatrices des trois parties⟩ et U^⊥. Sur U^⊥, S = A_G − 3I ; sur
+U, A_G − 3I a rang 2 et S rang 1. Laplacien 3I − A_G et forme de Smith pour le tas de sable. ∎
+*Cas particuliers.* Avec deux points de L seulement (27 points, graphe 2-régulier), on retrouve L20 (11 − 2e). Le rang
+du bloc « deux étoiles » de notes/97 vaut 23 − d(L).
+*Contrôles.* Identité vérifiée sur 700 configurations (τ_a, τ_ā, σ) aléatoires ; d = 1 ⟺ 7 ∤ τ(G) sur 317
+configurations admissibles (0 exception). Maximum de d trouvé par recuit : 9, d'où la conjecture k ≥ 14.
+*Portée.* Minoration seulement : la voie 7-adique pousse k vers le haut (k ≥ 22 dès qu'une droite est générique) et
+ne peut pas donner le verrou sans une majoration globale de k.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

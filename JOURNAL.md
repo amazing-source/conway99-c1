@@ -135,3 +135,15 @@
   UNSAT par propagation, contrôles SAT sans la condition linéaire ou sans la contrainte d'étiquette). Bogue
   d'énumération (colonnes à fonctionnelle nulle) trouvé et corrigé ; résultat inchangé. Pour k = 10, la méthode à une
   étoile n'exclut plus rien de décisif.
+- 25/09, 03 h – 05 h 30. **Verrou principal** (consigne « continue sur le verrou principal »), notes/99.
+  - **L21 (nouveau, à la main)** : rang₇(A − 3I) sur la boule d'une droite = 2 + rang₇(A_{G(L)} − 3I), G(L) cubique
+    sur les 36 voisins de L ; d'où k ≥ 23 − d(L), d = composantes + 7-rang du tas de sable. Une droite générique donne
+    k ≥ 22 ; L20 = cas « deux points de L » ; le rang « deux étoiles » de notes/97 = 23 − d(L). Identité vérifiée sur
+    700 configurations, critère d = 1 ⟺ 7 ∤ τ(G) sur 317 (0 exception). Recuit : max d = 9 (conjecture k ≥ 14).
+  - **Triplets de droites (ordre 9)** : quatre repères de l'espace des droites (dim 1, 54, 44, 132 ; le dernier est
+    invisible depuis les points), comptages exacts de triplets (validés sur BvLS : 0 écart, 0 équation violée, Gram
+    positives). Relâchement jusqu'au degré 4 de Hadamard : P ∈ [0, 1155]. Négatif. Incident : un premier calcul mal
+    mis à l'échelle annonçait P ≤ 178 ; artefact, corrigé par remise à l'échelle.
+  - Fonctions F₃ de somme nulle sur les droites : 2 à 7 dimensions dans les géométries tordues. Négatif.
+  - Bilan : la voie 7-adique ne fait que minorer k (heuristiquement k ≈ 30) ; la positivité s'étend aux 9 points des
+    triplets de droites sans rien donner. Verrou entier.
