@@ -95,3 +95,33 @@ chemin (réunion d'étoiles d'au moins 2 paires). Toutes sont exclues.
      demande que les budgets de C2, avec les grilles complètes pour quadrangles parfaits.
 2. **Ce que ce n'est pas.** Ce sont encore des planchers : le comptage a besoin de grilles complètes, et le profil de
    torsion maximale n'en a aucune (notes/100 §4).
+
+## 5. Où s'arrête le comptage des fentes (calcul exact, `code/slot_calculus.py`, `slot_lp.py`, `slot_tests.py`)
+On encode seulement les conditions du §1 :
+- voisins spéciaux donnés par (τ, ρ) ;
+- fentes par classe ;
+- n_R ≤ 1 vers les paires complètes ;
+- cohérence des arêtes entre paires.
+
+On résout par propagation d'intervalles, puis par la relaxation linéaire. Une infaisabilité est certifiée par un
+vecteur de Farkas rationnel vérifié exactement ; une faisabilité flottante ne prouve rien.
+
+| configuration | réfutée ? |
+|---|---|
+| point de Hamming | non (contrôle : les fentes seules ne suffisent pas, il faut L8) |
+| étoiles \|C\| = 2, 3 | oui, toutes (4 et 64 variantes de τ, ρ) |
+| chemin (D2) | oui, les 16 variantes |
+| L14, \|C\| = 2 et 3 | **non** : la relaxation linéaire est réalisable |
+
+Pour L14, \|C\| = 2, la propagation force un couplage parfait sur 91 des 105 paires de Kneser. Elle laisse libres :
+- les paires entre {45, 46, 56} et les quatre paires incomplètes ;
+- 02–13 et 03–12.
+
+Entre Q₀₂ et Q₁₃, seules les moitiés non tordues sont couplées.
+
+**Conclusion.** Au-delà de |𝒩| = 3, il faut l'ordre deux :
+- (K) sur les arêtes de Kneser, avec ces couplages ;
+- des coïncidences de type fait C. Par exemple, pour y = {0⁺, u} ∈ Q₀₂ et w = {1⁺, v} ∈ Q₁₃ :
+  [τ_{0⁺}(u) = v̄] + [τ_{1⁺}(v) = ū] + #{R ∈ {45, 46, 56} : φ_R(y) = φ_R(w)} = 2.
+
+C'est l'analyse de L8 avec défauts. Elle est faisable mais longue, et ce sont encore des planchers.
