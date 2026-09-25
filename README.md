@@ -8,6 +8,7 @@ des conséquences obligatoires nouvelles et vérifiées.
 conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 
 ## Par où commencer
+0. **`notes/98_BILAN_NUIT_25_09.md` — bilan de la nuit du 25/09 (à lire en premier).**
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
