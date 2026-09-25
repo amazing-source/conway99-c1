@@ -57,6 +57,26 @@ Pour y ∈ {A, B} et w ∈ {E, F}, on a y ≁ w (§2.1), donc exactement 2 voisi
 **Donc L14 est démontré à la main pour |C| = 2**, dans les deux motifs (P et R), sans utiliser le couplage B₀₂,₁₃ entre
 les moitiés non tordues.
 
+## 4 bis. Pour tout |C| : les deux torsions ont le même graphe de classes
+Soit m = |C| (2 ≤ m ≤ 5). Le graphe de classes de τ_{0⁺} sur C a pour sommets les classes de C, et une arête c – c′
+par étiquette ℓ ∈ c avec τ_{0⁺}(ℓ) ∈ c′. C'est un multigraphe 2-régulier sans boucle. Soit e₀(c, c′) le nombre de ses
+arêtes entre c et c′, et e₁(c, c′) de même pour τ_{1⁺}.
+
+**Lemme.** e₀(c, c′) = e₁(c, c′) pour tous c ≠ c′ dans C.
+
+*Preuve.* On compte les arêtes entre Q₀c et Q₁c′, qui sont disjointes, de deux façons.
+- Par les fentes, comme au §2.1 : en A_c = 0⁺c⁺, l'équation de la classe 1 donne Σ_{c″∈C∖c} n₁c″ = m − 2. Celle de chaque
+  classe c″ donne n₁c″ ≥ 1 − [c″ = classe de τ_{0⁺}(c⁺)]. Donc A_c a un voisin dans Q₁c′ si c′ n'est pas la classe de
+  τ_{0⁺}(c⁺), et aucun sinon. Les sommets non tordus 0⁻c^± en ont exactement un.
+- Du côté de Q₀c, on obtient e(Q₀c, Q₁c′) = 4 − e₀(c, c′). Du côté de Q₁c′, on obtient 4 − e₁(c, c′). ∎
+
+Conséquences :
+- m = 3 : les deux graphes sont des triangles, ce qui est automatique.
+- m = 4 : même 4-cycle, ou mêmes deux 2-cycles. m = 5 : même 5-cycle, ou même partition en 2-cycle et 3-cycle.
+- Si le graphe commun a un 2-cycle {c, c′}, le bloc {A_c, B_c} × {E_{c′}, F_{c′}} est **étanche** comme au §4 : aucune
+  arête, aucun terme de couplage, et exactement 4 voisins communs disponibles. La contradiction suit dès que les trois
+  doubles de Q₀c s'apparient à Q₁c′. Cet appariement est automatique pour m = 2 ; pour m ≥ 4, il reste à prouver.
+
 ## 5. Contrôle et portée
 - `code/l14_c2_check.py` recalcule, à partir de τ et ρ seuls, les voisins communs spéciaux de tous les couples
   (y, w) ∈ Q₀₂ × Q₁₃, pour les deux cas et les deux couplages B₀₂,₁₃ possibles. Il retrouve les tableaux du §4 et
