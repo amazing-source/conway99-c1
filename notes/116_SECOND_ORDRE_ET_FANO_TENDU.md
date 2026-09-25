@@ -2,15 +2,16 @@
 
 *25/09, nuit. Labo c1_experimental, note E3 (détails et scripts). DÉRIVÉ = preuve écrite ; OBSERVÉ = calcul. Les
 solveurs (HiGHS via scipy) n'ont servi qu'à tester la faisabilité de systèmes linéaires dérivés à la main, au plus
-37 s par appel, avec contrôles. Vérification indépendante des points 1 à 3 demandée à « structures ».*
+37 s par appel, avec contrôles. Points 1 à 3 recalculés indépendamment par « structures » : TIENNENT (NOTE_S12 de son
+labo, commit 3186d7b, `scripts/verify_c1_p2_far.py` ; contrôles exacts sur Paley 9 et BvLS).*
 
 ## 0. Résumé
 | résultat | statut | portée |
 |---|---|---|
 | A_Δ² + A_Δ − 12I = 2J − ∂ᵀ∂ ; sur ker ∂, seules les valeurs propres 3 et −4 | DÉRIVÉ (classique) | tout sommet |
-| (P2) : identités de second ordre par blocs ; Σ_z cnt(cnt − 1) = 16 par bloc | DÉRIVÉ | tout sommet |
-| critère lointain (U)/(L), formes closes pour 99 | DÉRIVÉ | toute droite |
-| Fano tendu : comptes exacts, κ, équilibre étiquette, (F5) par variance nulle | DÉRIVÉ | modèle de Fano |
+| (P2) : identités de second ordre par blocs ; Σ_z cnt(cnt − 1) = 16 − 2e(R) par bloc | DÉRIVÉ, recalcul indépendant | tout sommet |
+| critère lointain (U)/(L), formes closes pour 99 | DÉRIVÉ, recalcul indépendant (contrôle BvLS) | toute droite |
+| Fano tendu : comptes exacts, κ, équilibre étiquette, (F5) par variance nulle | DÉRIVÉ, table des g et F5 recalculées | modèle de Fano |
 | **Fano tendu : un témoin passe tous les tests de niveau bloc** | OBSERVÉ | route de plafond fermée |
 
 ## 1. Le second sous-constituant
@@ -25,8 +26,10 @@ On encadre l'identité par des indicatrices de blocs (cnt(z,R) = nombre de voisi
 
   **Σ_z cnt(z,R)·cnt(z,R') = 12|R ∩ R'| − N(R,R') + Σ_{y∈R, w∈R'} (2 − |y ∩ w|).**
 
-En torsion maximale : Σ_z cnt(z,R) = 48 et **Σ_z cnt(z,R)(cnt(z,R) − 1) = 16** pour tout bloc R, soit
-n₂ + 3n₃ + 6n₄ = 8. Ce sont des sommes de conditions λ/μ, valables en torsion quelconque.
+Diagonale, en torsion quelconque : Σ_z cnt(z,R) = 48 et **Σ_z cnt(z,R)(cnt(z,R) − 1) = 16 − 2e(R)**, où e(R) est le
+nombre d'arêtes internes au bloc (précision de « structures »). En torsion maximale, e(R) = 0 : la somme vaut 16,
+soit n₂ + 3n₃ + 6n₄ = 8. Contrôle BvLS : e(R) = 4 et diagonale 8 sur ses 55 blocs. Ce sont des sommes de conditions
+λ/μ.
 
 ## 3. Critère lointain
 On part du projecteur caché A_F = B₀ − 7Π₋₄ = B₁ + 7Π₃ (notes/114). Pour 99, Y + 7P = (A_G + 4)⁻¹ sur U^⊥. Soit S un
