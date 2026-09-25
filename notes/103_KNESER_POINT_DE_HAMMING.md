@@ -203,3 +203,29 @@ non isométriques N(x, y) (A(P) ↦ π_x, π_y ↦ A(P′)) ont tous la même pa
   s'annuleraient par double comptage. Il reste à établir que les corrections dues à la torsion (arêtes τ et
   d'holonomie) sont paires. **Discipline adoptée** : tout lemme général est testé sur BvLS (m = 11), où il doit
   rester vrai.
+
+## 9. Relations à constante impaire, et réduction à une parité locale (`code/factC_affine_relations.py`)
+- **Fonctions à parité constante.** Considérons les f : AGL(2,2) → F₂ dont la somme Σ_R f(ψ_R) a la même parité dans
+  les 58 solutions du fait C. Elles forment un espace de dimension 10. **Certaines ont la constante 1** : par exemple
+  f = [ψ(u) = z] pour u, z de même étiquette en i. C'est le fait C lui-même (exactement un R), valable pour **tous**
+  les mélanges.
+- **Somme globale.** Dans une jauge donnée (une étiquette « 0 » par classe), on prend u = 0_P et z = 0_{P′} pour chaque
+  triplet. On somme sur les 105 triplets et on regroupe par l'intermédiaire R. On obtient **Σ_R Q_R = 105 (impair)**,
+  avec Q_R = Σ_{m ∉ R} #{paires d'arêtes {e, e′} ∋ m de K₅([7] ∖ R) telles que t_{eR} = t_{e′R}}. Ici t_{eR} est la
+  partie de translation de φ_{eR} ; de façon équivalente, 0_e et 0_{e′} ont un voisin commun dans Q_R.
+  **Si chaque Q_R était pair, L8 serait démontré** (21 nombres pairs de somme 105).
+- **Structure de Q_R.** Pour chaque arête e, w ↦ φ_{Re}(w) est une bijection. Les ensembles N_w = {e : w voisin de 0_e}
+  (w ∈ Q_R) partitionnent donc les 10 arêtes de K₅. En chaque sommet m, μ(w, a_m⁰) = 2 fait des 4 arêtes en m un graphe
+  2-régulier sur Q_R (un 4-cycle ou deux digones). On a alors Q_R ≡ #{m : répartition (2, 1, 1, 0)} (mod 2).
+- **Limites.**
+  1. Q_R dépend de la jauge : changer l'étiquette « 0 » d'une classe n modifie Q_R, et sa parité change d'une façon
+     qui dépend de la configuration.
+  2. Pour m = 11 (BvLS, où tout sommet est un point de Hamming), la même somme vaut 11·C(10,2) = 495, impaire, et BvLS
+     existe. La parité de Q_R n'est donc **pas** un lemme général : elle devrait venir de la rigidité propre à m = 7 (un
+     voisin par paire disjointe, qui fait des N_w une partition). C'est la règle de cohérence de C2.
+  3. Aucune f de constante 1 n'est additive (f(φ′⁻¹φ) = g(φ) + g(φ′)) : le seul homomorphisme S₄ → F₂ est la
+     signature, et elle n'est pas à parité constante (notes/95). Dans L7, c'est l'additivité de δ sur les isométries
+     qui rendait Q_R automatiquement pair.
+- **Prochaine planche.** Trouver une combinaison des relations du fait C (dans l'espace de dimension 10), éventuellement
+  moyennée sur les jauges, dont la partie locale en R soit additive modulo les contraintes en R. Contraintes en R :
+  μ exact avec les étiquettes, règle de transport sur les triangles (R, e, e′), classes d'holonomie.
