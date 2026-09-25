@@ -102,3 +102,36 @@ toujours impair, donc jamais extrême. L'outil n'ajoute rien à L20.
   [Akiyama (266)](https://arxiv.org/pdf/2609.08319) : aucun n'utilise le genre, l'oddité ou le signe mod p des réseaux
   propres. **L22 et L23 paraissent nouveaux** ; la méthode (symboles de Conway–Sloane, formes quadratiques sur F_p)
   est classique.
+
+## 7. Reformulation par la matrice de Seidel (deux-graphe)
+- **Mod 7, Q = A − 3I + 3J ≡ 3S**, où S = J − I − 2A est la matrice de Seidel de Γ (−6 ≡ 1). En général Q ∝ S mod p
+  dès que 2r + 1 ≡ 0 (mod p) : 99 (r = 3, p = 7), Petersen (r = 1, p = 3).
+- S a pour valeurs propres 70, −7 (×54), 7 (×44), donc **S² = 49(I + J)**. Au passage, Γ équivaut à 99 droites
+  équiangulaires de R⁴⁵ d'angle arccos(1/7) (Gram I + S/7, de rang 45).
+- **Forme de Smith de S sur Z₇ : 1^{14+k} 7^{71−2k} 49^{14+k}** (S⁻¹ = S(I + J)⁻¹/49 rend la suite symétrique ; version
+  globale de L19). Les formes de Jordan vérifient W_S ≅ U_S⁻¹ et, via det S = 10·7⁹⁹, le signe de la 7-composante
+  vaut −1. L'oddité de S (forme paire, indéfinie, de signature −9) est vérifiée pour tout k pair : pas de contrainte.
+- **Énoncé Seidel de L23.** Pour tout ensemble I de sommets : rang₇ S(Γ[I]) ≤ 14 + k. Si |I| = 14 + k, alors
+  det S(Γ[I]) ≡ 0 ou (det S(Γ[I]) | 7) = (−1)^{k/2}. Si |I| > 14 + k, det S(Γ[I]) ≡ 0. *Preuve :* S ≅ D ⊥ 0 et, par
+  Cauchy–Binet, det S_II = det D · det(P_I)². C'est invariant par commutation de Seidel : **une propriété du
+  deux-graphe de Γ**.
+- **Critère.** Un sous-graphe induit à 43 sommets de déterminant de Seidel premier à 7 contredit L22. Un sous-graphe
+  à 42 sommets de déterminant non carré mod 7 contredit k = 28 ; à 40 sommets, de déterminant carré non nul, il
+  contredit k = 26 ; etc.
+- *Contrôle (`code/seidel_check.py`, Petersen, p = 3) :* S² = 9I, rang₃ S = 4 = α. Les 4-mineurs principaux non nuls
+  ont tous le caractère −1, celui de la partie non dégénérée. Forme de Smith 1⁴3²9⁴.
+
+## 8. Au-delà d'une droite générique : ce qui est forcé, ce qui ne l'est pas
+- Le complément de Schur de la boule dans Q est une matrice R_L sur les 60 sommets lointains (à distance 2 de toute
+  la droite), **de rang k − 22**. Pour w lointain, soit N_w ses 6 voisins dans N(L), deux par partie. Alors
+  R_L[w,w'] = Q_ww' − 6 + 1_{N_w}ᵀ L_G⁺ 1_{N_w'}, où L_G⁺ est la fonction de Green, mod 7, du graphe cubique G(L).
+- **À k = 22, R_L = 0 : tout Γ est déterminé mod 7 par une boule générique et les N_w.** On a
+  1_{N_w}ᵀL_G⁺1_{N_w} ≡ 6 pour chaque w, et 1_{N_w}ᵀL_G⁺1_{N_w'} ≡ 3 − A_ww' pour w ≠ w'.
+- *Identité (négative).* Soit F la matrice des voisins lointains communs. Elle est fixée par λ et μ :
+  F = 12I − A_G + 2J − A_G² − D. Alors trace(L_G⁺F) = −trace L_G − trace(L_G⁺D) ≡ −108 − 8 ≡ 3, et donc
+  **trace R_L ≡ 0 toujours**. Le premier moment est automatique ; seuls les moments supérieurs font intervenir le
+  graphe lointain inconnu.
+- À k = 28, G_L = E_L^⊥ est de dimension 6, scindé ssi (τ(G(L)) | 7) = −1. Les 60 sommets lointains y donnent 60
+  vecteurs de Gram R_L, et R_L est de rang ≤ 6 alors que ses 1 770 entrées hors diagonale ne prennent que deux valeurs
+  chacune (3 + A_ww' − 6 + Green). C'est très contraint, mais cela passe par les arêtes génériques : c'est la même
+  frontière que la technique des relations sur quatre étoiles (piste (b) de notes/101).
