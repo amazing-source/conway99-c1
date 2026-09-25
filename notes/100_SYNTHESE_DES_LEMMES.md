@@ -40,7 +40,7 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 | L11 | les torsions touchent ≥ 4 classes | **plancher** | SAT non certifié |
 | L12 | propagation : une étiquette ou une classe tordue seule est impossible | **plancher** | preuve |
 | L13 | une classe est tordue par 0 ou ≥ 2 étiquettes | règle locale | preuve |
-| L14 | deux étiquettes tordues ne suffisent pas (|C| ≤ 4) | **plancher** | SAT non certifié |
+| L14 | deux étiquettes tordues ne suffisent pas (|C| ≤ 4) | **plancher** | \|C\| = 2 : preuve (notes/111) ; \|C\| = 3, 4 : SAT non certifié |
 | L15 | P = 1386 − Σ|W|/6 ; Σ|W| = 6048 + Σν³ | identité | preuve |
 | L16 | P ≤ 1151, c'est-à-dire Σ|W| ≥ 1410 | **plancher** (global) | preuve |
 | L18 | 0 ≤ S ≤ n₃, dictionnaire d'ordre 7 | identité + encadrement | preuve |

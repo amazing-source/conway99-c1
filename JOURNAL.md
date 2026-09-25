@@ -216,3 +216,12 @@
     deux sécantes. Lemme D2 : la configuration chemin est impossible.
   - Donc L11 (sans SAT), le cas g = 19 de L10 redémontré, et g(x) ≤ 17 (ancienne frontière de L10).
   - Recontrôle indépendant des énumérations de L8 : identique.
+- 25/09, nuit. **Routes closes, codes des droites, L14 (|C| = 2) à la main** (notes/110, 111).
+  - Minkowski sur Λ₃, Λ₋₄ : vecteurs courts forcés (≤ 36, ≤ 44), mais la paire de Petersen passe tous les comptages ;
+    classification infaisable, route close. Akiyama sur Λ_L : ni Venkov (rang 48, S₂₆ ≠ 0), ni isolement des racines,
+    ni repère dense de rang ≤ 24 ; route close.
+  - Les codes p-aires des droites contiennent leur dual (p = 2, 3, 5) : rang₂ N = 72 + ½ rang₂(NᵀAN) ≥ 72,
+    77 ≤ rang₃ N ≤ 98. Contrôle BvLS. Invariants nouveaux, sans contradiction.
+  - **L14 pour |C| = 2 démontré à la main** : fentes, trois doubles forcés par μ, puis 4 voisins communs disponibles
+    contre 5 exigés dans le bloc tordu × tordu. |C| ≥ 3 reste au SAT.
+  - Correction de notes/102 §9 (les arêtes d'ombre sont sur des droites intérieures non pures).

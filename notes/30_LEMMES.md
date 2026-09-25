@@ -186,7 +186,11 @@ permutation dont les points fixes sont exactement les z ∉ Z ; elle permute don
 par propagation du motif « triangle avec un échange renversant » : ρ_ℓ doit échanger les deux seules étiquettes de Z,
 ce qui force deux arêtes disjointes, et le sommet {(4,0),(6,0)} reçoit 3 voisins contenant (5,0) au lieu de 2.
 
-## L14. Deux étiquettes tordues ne suffisent pas (cas |C| = 2).   [calcul exact] [à certifier]
+## L14. Deux étiquettes tordues ne suffisent pas (cas |C| = 2).   [P pour |C| = 2 (2026-09-25, notes/111)] [|C| = 3, 4 : calcul exact, à certifier]
+*Preuve à la main pour |C| = 2 (notes/111).* Les fentes forcent n₁₃ = 0 sur la moitié tordue de Q₀₂. μ impose trois
+« doubles » (voisins génériques communs de AB, AD, BC) dans Q₄₅ ∪ Q₄₆ ∪ Q₅₆, qui sont aussi les trois doubles de Q₁₃.
+Dans le bloc {A, B} × {E, F}, 4 voisins communs sont disponibles et au moins 5 sont exigés. Contrôle :
+`code/l14_c2_check.py` (tableaux de voisins communs recalculés, 3! = 6 affectations, aucune recherche).
 Par R0 + L12, si exactement deux étiquettes tordent en x, elles sont dans deux classes différentes et tordent le même
 ensemble C de classes (C disjoint de leurs classes, 2 ≤ |C| ≤ 5). Pour |C| = 2 : les deux motifs concrets à symétrie
 près (échanges préservant/préservant et préservant/renversant) sont UNSAT (69 s et 41 s, modèle d'adjacence exact) ;
