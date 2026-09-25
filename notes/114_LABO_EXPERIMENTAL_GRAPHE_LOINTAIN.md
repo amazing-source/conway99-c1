@@ -19,8 +19,12 @@ Z_q (mod q^E, entiers 64 bits). Un calcul qui prenait plus de 20 min en Python e
 ## 1. Le graphe lointain d'une droite
 Soit L = {x, a, ā}, N(L) = X_x ∪ X_a ∪ X_ā, et F les 60 points à distance 2 de toute la droite.
 - **Chaque lointain a exactement 2 voisins dans chaque X_p.** Les lointains sont donc en bijection avec les 60 paires
-  non partenaires de X_p, pour chaque p ∈ L (sinon μ ≥ 3 pour une paire). Conséquence : un point de X_a a au plus un
-  voisin dans X_x.
+  non partenaires de X_p, pour chaque p ∈ L (sinon μ ≥ 3 pour une paire). Conséquence : le second voisin commun de
+  deux points non partenaires de X_p est toujours lointain, jamais dans X_a ∪ X_ā. C'est cohérent avec le fait que
+  chaque point de X_a a exactement un voisin dans X_p (μ avec p, puisque G(L) est cubique).
+- **Contrôle aux petits premiers** (`code/x1c_small_primes.py` dans le labo) : 315 boules connexes. Les 2-rangs et
+  3-rangs de K(G(L)) valent au plus 3 et 5 ; ceux de coker(A_G + 4I), au plus 6 et 3 ; ceux de la torsion de
+  coker(MMᵀ), au plus 8 et 5. La borne de rang 8 de K₋₄(L) ne mord pas non plus en 2 ni en 3.
 - Avec M = A[N(L), F] : A_F Mᵀ = Mᵀ(J/3 − A_G − I), et (A_F − 3)(A_F + 4) = 0 sur ker M. D'où
   **spec(F_L) = {8} ∪ {−α − 1 : α ∈ spec(A_G) ∖ {3, 0, 0}} ∪ {3¹⁸, (−4)⁸}** pour G(L) connexe. Le nombre de droites
   contenues dans F_L vaut 32 − t_G, ce qui recoupe n₀ = 32 − π de L16.
