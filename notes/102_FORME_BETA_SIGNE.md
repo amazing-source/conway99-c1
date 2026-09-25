@@ -102,6 +102,13 @@ toujours impair, donc jamais extrême. L'outil n'ajoute rien à L20.
   [Akiyama (266)](https://arxiv.org/pdf/2609.08319) : aucun n'utilise le genre, l'oddité ou le signe mod p des réseaux
   propres. **L22 et L23 paraissent nouveaux** ; la méthode (symboles de Conway–Sloane, formes quadratiques sur F_p)
   est classique.
+- Vérification du 25/09 (recherche « 99-graph 2026 ») : [*A Forced-Structure Reduction and Verifiable Bounds for
+  Conway's 99-Graph*, arXiv 2608.11211 (août 2026)](https://arxiv.org/abs/2608.11211) : réduction à un graphe
+  12-régulier contraint sur 84 sommets (notre Γ₂(x)), borne circulante 68,0 %, recherche CP-SAT et tabou (70,7 %).
+  **Aucun p-rang, réseau, genre ni matrice de Seidel.** Le problème reste ouvert
+  ([Epoch AI](https://epoch.ai/frontiermath/open-problems/conway-99-graph)). Côté droites équiangulaires, la
+  correspondance générale Seidel ↔ droites est classique
+  ([Greaves, mini-cours](https://grwgrvs.github.io/talks/Montreal_Lectures.pdf)), mais rien sur le cas 99 / angle 1/7.
 
 ## 7. Reformulation par la matrice de Seidel (deux-graphe)
 - **Mod 7, Q = A − 3I + 3J ≡ 3S**, où S = J − I − 2A est la matrice de Seidel de Γ (−6 ≡ 1). En général Q ∝ S mod p
