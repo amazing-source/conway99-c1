@@ -288,6 +288,19 @@ Z₇, Λ₋₄ = U ⊥ 7V et (det U|7)(det V|7) = (9|7) = +1. L'oddité donne 44
 *Portée.* Premier plafond de k. Il exclut le profil 7-générique (k = 30) : en chaque sommet, la matrice locale M_x
 est 7-dégénérée d'au moins deux dimensions. Il reste à relier cette dégénérescence à la torsion.
 
+## L23. Signe de la boule d'une droite : (τ(G(L)) | 7) = +1 ⟹ k ≥ 24.   [P] [C : 300 configurations, 5 SRG] (notes/102)
+*Énoncé.* Q = A − 3I + 3J (mod 7) est le Gram de la forme β, non dégénérée et **non scindée** sur G = N(W), de
+dim 14 + k. Pour tout S ⊆ V : rang₇ Q_SS ≤ 14 + k, et en cas d'égalité la partie non dégénérée de Q_SS est non scindée.
+Pour la boule d'une droite (39 points) : rang = 37 − d(L), et si d(L) = 1 le discriminant est τ(G(L)) (arbres
+couvrants). Donc k = 22 impose (τ(G(L)) | 7) = −1 pour toute droite générique, et une droite τ-carrée force k ≥ 24.
+*Preuve.* N = A − 3I vérifie N² ≡ 2J, donc N² = 0 sur W = 1^⊥. β(Nv, Nv') = v·Nv' est la 7-partie de la forme
+discriminante de Λ₋₄, de signe (−1)^{k/2} (L22) : non scindée. Pour la boule : F³⁹ = (F^L ⊕ U) ⊥ U^⊥, où la partie fixe
+T a rang 3 et disc carré, et −L_G|_{U^⊥} a disc −3⁻¹τ (théorème des arbres). ∎
+*Compléments.* Localement, la forme de M_x est hyperbolique (G = G_x ⊥ W_x, W_x non scindé fixé par le moulin) et
+M_x² ≡ 0. Les blocs d'arête (L20) ont un rang Q impair : le signe n'y ajoute rien.
+*Portée.* La torsion entre par le signe. Heuristique : k ∈ {24, 26, 28}. Critère de non-existence : un S avec
+rang₇ Q_SS ≥ 43, ou = 42 et scindé.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

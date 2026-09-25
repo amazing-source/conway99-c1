@@ -8,6 +8,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > **Mise à jour (08 h, notes/101) : L22 exclut k = 30, donc k ≤ 28.** La proposition de cohérence du §4 reste vraie
 > avec **k = 28** à la place de k = 30 (L22 n'est pas contredit : 28 ≤ 28 et les signes 7-adiques associés sont
 > satisfiables). Mais le corpus contient désormais un **plafond** (sur k), et le profil 7-générique est interdit.
+>
+> **Mise à jour (fin de matinée, notes/102) : L23.** Le signe mod 7 des blocs extrêmes s'ajoute au rang. Une droite
+> dont τ(G(L)) est un carré non nul mod 7 force k ≥ 24. Fenêtre heuristique : k ∈ {24, 26, 28}. Le profil de la
+> proposition (torsion maximale, k = 28) reste cohérent.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
@@ -37,6 +41,8 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 | L20 | k ≥ 11 − 2e(τ_a) : peu de torsion en une étiquette ⟹ k grand | **plancher de k** | preuve |
 | L20 bis/ter, L19 bis | k ≥ 10 | **plancher de k** | preuve + calcul exact |
 | L21 | k ≥ 23 − d(L) ; droite générique ⟹ k ≥ 22 | **plancher de k** | preuve |
+| L22 | k ≤ 28 (genre de Λ₋₄) | **plafond de k** | preuve (notes/101) |
+| L23 | τ(G(L)) carré non nul mod 7 ⟹ k ≥ 24 (signe des blocs extrêmes) | plancher de k, **par la torsion** | preuve (notes/102) |
 
 **Aucune ligne n'est un plafond de torsion** (une borne inférieure sur P) **ni un plafond de k** (autre que k ≤ 30).
 

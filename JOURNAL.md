@@ -161,3 +161,9 @@
   partie 3 = Z/9 ; à k = 30, U = 0 force ε₇ = (9|7) = +1 alors que l'oddité exige −1. Conventions testées (A₂…E₈,
   2300 réseaux aléatoires, 0 échec) ; schéma validé sur Petersen, T(7), T(8), srg(9). Brouwer–van Eijl 1992 lu :
   seulement ≤ 45, pas de genre. notes/100 corrigée (profil de cohérence à k = 28). Premier plafond du corpus.
+- 25/09, 09 h. **L23 et structure 7-adique complète** (notes/102). Recherches : Ducey et al. (groupe critique du 99,
+  7-rang pour srg(28,9,0,4)), Brouwer–van Eijl, Chvátal, familles 2025, Akiyama : personne n'utilise genre, oddité ou
+  signe des réseaux propres. Maths : N² ≡ 2J ⟹ N de carré nul sur 1^⊥ ; β non scindée (signe de L22) ; M_x² ≡ 0 et
+  forme de M_x hyperbolique (moulin : rang 14, disc 1). Outil : un bloc extrême (rang Q = 14 + k) est non scindé.
+  Boule de droite : disc = τ(G(L)) si d = 1, d'où **(τ | 7) = +1 ⟹ k ≥ 24**. Contrôles : 5 SRG (beta_form_check,
+  gq33_check), 300 boules (ball_sign_check), 0 échec. Négatif : blocs d'arête de rang Q impair (edge_block_sign, 10 395 τ).

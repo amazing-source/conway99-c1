@@ -125,6 +125,18 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
 - L10 : seconde preuve humaine par une règle locale nouvelle L9' (noyaux UNSAT minimaux de 7 contraintes) ; L16
   audité indépendamment (correct).
 
+## 1 terdecies. 25/09, 09 h : L23, le signe relie k à la torsion (notes/102)
+- **Structure 7-adique complète.** N = A − 3I vérifie N² ≡ 2J (mod 7), donc N est de carré nul sur W = 1^⊥. La forme
+  β(Nv, Nv') = v·Nv' sur G = N(W) (dim 14 + k, Gram Q = A − 3I + 3J) est la 7-partie de la forme discriminante de
+  Λ₋₄ : elle est **non scindée** (signe de L22). En chaque sommet : M_x² ≡ 0 et la forme de M_x est **hyperbolique**
+  (G = G_x ⊥ W_x, où W_x, fixé par le moulin, est non scindé de dim 14). Vérifié sur Petersen, T(7), T(8), T(9), GQ(3,3).
+- **L23.** Un bloc Q_SS de rang extrême 14 + k est non scindé. Pour la boule d'une droite (39 points), le rang est
+  37 − d(L) et, si d(L) = 1, le discriminant est τ(G(L)) (arbres couvrants du graphe cubique). Donc **une droite
+  dont τ(G(L)) est un carré non nul mod 7 force k ≥ 24.** Contrôle : 300 configurations, 0 échec. Heuristique :
+  fenêtre k ∈ {24, 26, 28}.
+- Limite : les blocs entièrement connus ont ≤ 39 points ; atteindre rang 43 (contradiction) demande des blocs avec
+  arêtes génériques.
+
 ## 1 duodecies. 25/09, 08 h : L22, premier plafond (notes/101)
 - **k ≤ 28**, donc rank₇(A − 3I) ≤ 43 (borne de van Eijl : 45). Λ₋₄ est pair, de rang 44, de déterminant
   9·7^{14+k}, avec une partie 3 cyclique Z/9. À k = 30 sa partie 7-adique est entièrement d'échelle 7, de signe forcé

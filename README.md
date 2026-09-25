@@ -11,7 +11,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 0. **`notes/100_SYNTHESE_DES_LEMMES.md` — les 21 lemmes mis ensemble : tableau, corollaires, et pourquoi ils ne
    peuvent pas se contredire (à lire en premier).** Puis `notes/98_BILAN_NUIT_25_09.md` (bilan de la nuit) et
    **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou), et
-   **`notes/101_GENRE_K_MAJORE.md`** (L22 : k ≤ 28, premier plafond).
+   **`notes/101_GENRE_K_MAJORE.md`** (L22 : k ≤ 28, premier plafond), puis **`notes/102_FORME_BETA_SIGNE.md`**
+   (structure 7-adique complète ; L23 : le signe mod 7 relie k à la torsion).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
@@ -30,6 +31,14 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 6 octies. `notes/94_NUIT_LITTERATURE.md` — k ≥ 2 (L19 bis), parités d'holonomie (pas de loi), littérature lue en texte
    intégral : **L1 = Makhnev 1988**, Wilbrink–Brouwer (57) et pourquoi la méthode ne passe pas, Reimbayev (19), BvM 2022.
 7. `rapport/RAPPORT_C1.md` — synthèse ; `JOURNAL.md` — journal horodaté ; `LAB_INSTRUCTIONS_C1.md` — PC du labo.
+
+## État (2026-09-25, 09 h) — L23 : la torsion entre par le signe (notes/102)
+- Structure 7-adique complète : N = A − 3I est de carré nul sur 1^⊥ (mod 7) ; la forme β(Nv, Nv') = v·Nv' sur
+  G = N(W) (Gram Q = A − 3I + 3J) est **non scindée** ; en chaque sommet, la forme de M_x est **hyperbolique** et
+  M_x² ≡ 0. Vérifié sur 5 SRG existants.
+- **L23** : un bloc de rang extrême 14 + k doit être non scindé. Pour la boule d'une droite, le signe est
+  (τ(G(L)) | 7), τ = nombre d'arbres couvrants : **une droite τ-carrée force k ≥ 24.** Heuristique : k ∈ {24, 26, 28}.
+- Littérature relue : genre, oddité et signe des réseaux propres ne sont utilisés nulle part (L22, L23 nouveaux).
 
 ## État (2026-09-25, 08 h) — L22 : premier plafond (notes/101)
 - **k ≤ 28** (au lieu de 30) : le réseau Λ₋₄ (pair, rang 44, det 9·7^{14+k}) n'a pas de genre possible à k = 30, car
