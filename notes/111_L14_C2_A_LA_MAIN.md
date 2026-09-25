@@ -100,6 +100,18 @@ Conséquences :
   - les doubles de Q₀c peuvent s'apparier avec des Q₁c′ différents.
   - Pour |C| = 3, le graphe de classes de τ_{0⁺} sur C est nécessairement un triangle (pas de boucle), donc sans le
     2-cycle qui rend le bloc {A, B} × {E, F} étanche.
+- **|C| = 5 (jamais lancé en SAT) : bilans exacts, sans contradiction** (preuve, même méthode). Les seuls quadrangles
+  qui portent des voisins communs génériques des sommets de Q₀c ∪ Q₁c sont les Q_R avec R ⊆ C ∖ c : 24 sommets, dont
+  chacun a exactement deux voisins dans Q₀c ∪ Q₁c.
+  - Les déficits μ/λ de Q₀c ∪ Q₁c totalisent exactement 24 : 3 doubles de Q₀c, 3 de Q₁c, et 18 unités croisées (2 pour
+    CH et DG, 1 pour les 14 autres paires ou arêtes croisées). Il n'y a **aucun jeu** : chaque sommet externe comble
+    exactement un déficit, et aucun voisin commun « mixte » n'existe (les T_{0⁺}(A_c) sont fermés à c).
+  - Pour c ≠ c′, le bilan des 16 paires de Kneser Q₀c × Q₁c′ donne Σ_{z ∈ Q_R, R ⊆ C∖{c,c′}} n₀c(z)·n₀c′(z) =
+    12 − 3e₀(c, c′).
+  - Sur les 40 sommets de type Hamming des Q_R (R ⊆ C), (n₀c) vaut (1,1,1) pour 25 d'entre eux et une permutation de
+    (2,1,0) pour 15.
+  - Tout cela est cohérent (Σ sur les 10 paires : 80 + 25 = 120 − 3·5). Il faut un argument plus fin : la structure de
+    Petersen des Q_R, R ⊆ C, et μ entre classes différentes.
 - **Méthode.** C'est la première fois que les doubles (arêtes génériques non bijectives) sont contrôlés à la main. Le
   mécanisme : μ entre deux sommets d'un même quadrangle force un double, qui consomme du μ ailleurs. Le bilan est local
   (bloc {A, B} × {E, F}) : l'offre vaut 8 moins les voisins spéciaux, la demande au moins 5.
