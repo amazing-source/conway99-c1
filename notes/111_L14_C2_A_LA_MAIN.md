@@ -23,8 +23,12 @@ même ensemble C = {2, 3}. Les classes 4, 5, 6 ne sont tordues par personne, et 
    - Les classes 4, 5, 6 donnent n_R(A) = 1 pour les 9 paires complètes disjointes de 02, puis **n₁₃(A) = 0**.
    - De même pour B, et symétriquement pour E, F (n₀₂(E) = n₀₂(F) = 0).
    - C et D ont exactement un voisin dans chacune des 10 paires disjointes de 02.
-2. **Paires 14, 15, 16, 34, 35, 36.** Un sommet z de Q₁₄ vérifie n₀₂ + n₀₃ = 2, n₀₂ + n₂₃ = 2, n₀₃ + n₂₃ = 2, avec
-   n₂₃ ≤ 1 ; donc n₀₂(z) = 1. Même chose pour les cinq autres paires.
+2. **Paires 14, 15, 16, 34, 35, 36.** Soit z ∈ Q₁₄ ; z est de type Hamming, donc tous ses s_m sont nuls.
+   - Les classes 5 et 6 ont chacune 4 paires, toutes complètes. D'où n₀₅ = n₂₅ = n₃₅ = n₅₆ = 1 et
+     n₀₆ = n₂₆ = n₃₆ = n₅₆ = 1.
+   - Les classes 0, 2, 3 donnent ensuite n₀₂ + n₀₃ = 2, n₀₂ + n₂₃ = 2 et n₀₃ + n₂₃ = 2. Avec n₂₃ ≤ 1, on obtient
+     n₀₂(z) = n₀₃(z) = n₂₃(z) = 1.
+   - Même chose pour les cinq autres paires.
 3. **Paires 45, 46, 56.** Q₀₁ et Q₂₃ sont complètes et couplées parfaitement à Q_R, donc n₀₁(z) = n₂₃(z) = 1. Les
    fentes des classes 0, 1, 2, 3 donnent alors **n₀₂(z) = n₁₃(z) = p_z** et **n₀₃(z) = n₁₂(z) = 2 − p_z**, avec
    p_z ∈ {0, 1, 2}.
@@ -78,6 +82,14 @@ Conséquences :
   doubles de Q₀c s'apparient à Q₁c′. Cet appariement est automatique pour m = 2 ; pour m ≥ 4, il reste à prouver.
 
 ## 5. Contrôle et portée
+- **Relecture indépendante** (session « structures », 25/09, sur l'état eb7a40f). Les quatre points délicats ont été
+  refaits à la main, dans les cas P et R :
+  - les fentes (§2.3 par le lemme U avec I = ∅ en 01 et 23) ;
+  - l'absence d'autre voisin commun spécial dans Q₀₂ et Q₁₃ ;
+  - les tableaux du bloc et la vacuité des termes de couplage ;
+  - la demande ≥ 5.
+  Dépendances : R0, L12, L13 et notes/108. La réduction initiale (même C, ρ₂ et ρ₃ échangeant 0⁺ et 1⁺) n'a pas été
+  refaite par le relecteur.
 - `code/l14_c2_check.py` recalcule, à partir de τ et ρ seuls, les voisins communs spéciaux de tous les couples
   (y, w) ∈ Q₀₂ × Q₁₃, pour les deux cas et les deux couplages B₀₂,₁₃ possibles. Il retrouve les tableaux du §4 et
   vérifie qu'aucune affectation des trois doubles n'est compatible (0 sur 6 dans chacun des 4 cas).
