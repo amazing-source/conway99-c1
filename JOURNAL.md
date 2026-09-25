@@ -167,3 +167,7 @@
   forme de M_x hyperbolique (moulin : rang 14, disc 1). Outil : un bloc extrême (rang Q = 14 + k) est non scindé.
   Boule de droite : disc = τ(G(L)) si d = 1, d'où **(τ | 7) = +1 ⟹ k ≥ 24**. Contrôles : 5 SRG (beta_form_check,
   gq33_check), 300 boules (ball_sign_check), 0 échec. Négatif : blocs d'arête de rang Q impair (edge_block_sign, 10 395 τ).
+- 25/09, 11 h. **Structure de Kneser en un point de Hamming** (notes/103, consigne : attaquer la structure générique
+  en maths pures, en lisant le Théorème D de C2). Réduction exacte de L8 à une S₄-connexion sur K(7,2) ; régime « tout
+  A » réfuté (triangles équilibrés + couples complémentaires) ; classification des holonomies autour d'une arête
+  (énumération exhaustive) ; point de Hamming ⟹ 18 ≤ k ≤ 26 (grilles complètes dans U′). Régime mixte ouvert.

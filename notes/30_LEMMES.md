@@ -301,6 +301,16 @@ M_x² ≡ 0. Les blocs d'arête (L20) ont un rang Q impair : le signe n'y ajoute
 *Portée.* La torsion entre par le signe. Heuristique : k ∈ {24, 26, 28}. Critère de non-existence : un S avec
 rang₇ Q_SS ≥ 43, ou = 42 et scindé.
 
+## L24. Point de Hamming : réduction de Kneser et 18 ≤ k ≤ 26.   [P] [C] (notes/103)
+*Énoncé.* En un point de Hamming x, H = ⊕ C₄ + couplages parfaits entre paires de classes disjointes : une
+S₄-connexion sur K(7,2) soumise aux équations (K), (T). Si tous les couplages préservent les paires antipodales,
+contradiction (transposition du Théorème D de la branche C2). Dans tous les cas, 18 ≤ k ≤ 26.
+*Preuve.* Siblings adjacents, λ = 1 et μ = 2 ⟹ au plus un voisin par paire disjointe, et 10 = C(5,2). Régime A :
+signature A_χ avec A_χ² = 3A_χ + 10, triangles équilibrés, couples complémentaires ⟹ somme ≠ 0. Pour k : lignes en
+configuration grille (d = 6, L21) ; les 21 grilles complètes donnent η_P = 11·1_G − 1 ∈ Λ₃, de Gram de rang 14 mod 7,
+de radical ⟨Σ_{v∈L} f_v⟩ ⊂ G, donc 14 ≤ 40 − k. ∎
+*Portée.* Régime mixte ouvert : L8 n'est pas encore démontré à la main.
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

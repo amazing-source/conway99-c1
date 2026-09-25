@@ -13,6 +13,7 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
    **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou), et
    **`notes/101_GENRE_K_MAJORE.md`** (L22 : k ≤ 28, premier plafond), puis **`notes/102_FORME_BETA_SIGNE.md`**
    (structure 7-adique complète ; L23 : le signe mod 7 relie k à la torsion).
+   Puis **`notes/103_KNESER_POINT_DE_HAMMING.md`** (L24 : réduction de L8 à une S₄-connexion sur K(7,2)).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
