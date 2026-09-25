@@ -145,5 +145,7 @@
     positives). Relâchement jusqu'au degré 4 de Hadamard : P ∈ [0, 1155]. Négatif. Incident : un premier calcul mal
     mis à l'échelle annonçait P ≤ 178 ; artefact, corrigé par remise à l'échelle.
   - Fonctions F₃ de somme nulle sur les droites : 2 à 7 dimensions dans les géométries tordues. Négatif.
+  - Enraciné en une droite (même modèle vu d'une droite, structure locale exacte, validé sur BvLS) : π(L) = 0
+    faisable avec μ_L ∈ [0, 18] ; une droite entièrement tordue n'est exclue par rien. Négatif.
   - Bilan : la voie 7-adique ne fait que minorer k (heuristiquement k ≈ 30) ; la positivité s'étend aux 9 points des
     triplets de droites sans rien donner. Verrou entier.

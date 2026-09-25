@@ -12,6 +12,7 @@ résultats négatifs sont donnés comme tels.*
 | explication | le rang du bloc « deux étoiles » de notes/97 vaut rang₇(A_{G(L)} − 3I) − 13 ; L20 est le cas « deux points de L » | preuve à la main |
 | numérique | d(L) = 1 dans 85 % des configurations admissibles aléatoires, 2 dans 14 %, 3 dans 0,6 % (Cohen–Lenstra : 16 %) ; maximum trouvé par recuit : **d = 9** (deux étoiles (0;2,2,2), holonomie à 6 points fixes) | conjecture : d ≤ 9, donc k ≥ 14 |
 | triplets de droites | modèle exact des comptages de triplets de droites (configurations à 9 points), 4 repères de l'espace des droites dont un (dim 132) invisible depuis les points ; validé sur BvLS | **négatif** : P ∈ [0, 1155] (retrouve L16 côté droites, rien de plus) |
+| enraciné en une droite | même modèle vu d'une droite, avec la structure locale exacte ; validé sur BvLS | **négatif** : une droite sans prisme ni barreau de prisme est permise |
 | F₃ | fonctions à valeurs dans F₃ de somme nulle sur chaque droite : les géométries tordues en ont (2, 5, 7) | **négatif** |
 | heuristique | un Γ « tordu générique » aurait P ≈ 126 et k ≈ 30 | explique pourquoi aucune moyenne ne peut donner P ≥ 1152 |
 
@@ -104,7 +105,22 @@ matrices de Gram (y compris les produits de Hadamard jusqu'au degré 3) semi-dé
 libres). Le relâchement impose déjà Q₂ ≥ 4P²/231 (Cauchy–Schwarz) et Q₂ ≤ 24P, rien d'autre.
 *Incident* : un premier calcul mal mis à l'échelle annonçait P ≤ 178 (statut « inaccurate »). Mise à l'échelle
 corrigée : artefact. Noté ici pour mémoire.
-*Version enracinée en une droite* : (§4 bis, ci-dessous).
+*Version enracinée en une droite* : §4 bis.
+
+## 4 bis. Enraciné en une droite : une droite sans prisme est-elle possible ? (négatif)
+*Idée.* Si une petite valeur de π(L) était impossible, toutes les droites porteraient beaucoup de prismes, d'où une
+borne inférieure sur P. Plus finement : avec μ_L = Σ_{e ⊂ L} m(e) (prismes dont un barreau est sur L), on a
+Σ_L μ_L = 3P et Σ_L π(L) = 2P ; si le couple (π, μ) = (0, 0) était exclu, P = 0 le serait aussi.
+*Modèle* (`code/line_rooted_sdp.py`). Pour une droite L fixée, y[r₁,r₂,r₃] = #{(M,N) : rel(L,M) = r₁,
+rel(L,N) = r₂, rel(M,N) = r₃}. Exact : marges n_r(π), structure des droites par un point de L (y[m,m,·] en fonction
+de μ_L ; y[m,e,m] = e·n_e ; y[m,3,·] = 15π en e' = 1), identités par droite tirées de (Π²)_{LN} = Π_{LN},
+positivité des Gram enracinés pour tous les produits de Hadamard jusqu'au degré 3. Version fine : décomposition exacte
+de y[m,e,·] selon le type local du point de L relativement à N (par exemple y[m,2,3] = y[m,0,3] = 0,
+y[m,2,2] = y[m,2,0] = 2n₂ + A₂, y[m,1,3] = nombre de N de type A), avec 4 paramètres auxiliaires bornés.
+*Validation* : droite de BvLS, contraintes vérifiées au point réel (écart 9·10⁻¹¹), versions grossière et fine.
+*Résultats pour 99* : version grossière, π(L) = 0, 1, …, 7 tous faisables ; version fine, **π(L) = 0 faisable avec
+μ_L ∈ [0, 18]**, c'est-à-dire tout l'intervalle. Une droite entièrement tordue (ni prisme, ni barreau de prisme) n'est
+exclue par rien de ce qui précède. Aucune borne inférieure sur P. Calcul arrêté après ce cas, qui tranche la question.
 
 ## 5. Autres pistes examinées ce jour
 - **Fonctions F₃ de somme nulle sur les droites** (colorations où chaque droite est monochrome ou arc-en-ciel). Idée :
@@ -113,8 +129,9 @@ corrigée : artefact. Noté ici pour mémoire.
   pas. Abandonné.
 - **Heuristique du Γ tordu générique.** Si les τ_a se comportaient comme des couplages aléatoires, chaque arête serait
   barreau de 6/11 prisme en moyenne, d'où P ≈ 693·(6/11)/3 ≈ 126, loin sous 1151 ; k ≈ 30. Une borne inférieure
-  P ≥ 1152 reviendrait à prouver que Γ est presque un quotient de Hamming (une version « stable » de L1). Aucune
-  méthode par moyennes ou positivité ne peut le faire, puisque la structure générique satisfait toutes les moyennes.
+  P ≥ 1152 reviendrait à prouver que Γ est presque un quotient de Hamming (une version « stable » de L1). Tous les
+  relâchements essayés (ordre ≤ 8, triplets de droites) restent faisables autour de P ≈ 126 ; une méthode par
+  moyennes ou par positivité ne distingue pas ce régime d'un vrai SRG.
 - **Orientation cohérente des droites** (cocycle ±1 sur les paires d'arêtes opposées, droites orientées
   cycliquement). Vérifié à la main : un prisme ne crée aucune frustration (le triangle des trois barreaux a un produit
   de signes +1, et les trois liens entre ses deux droites ont le même signe). Lien avec la torsion non établi ; idée

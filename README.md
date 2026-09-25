@@ -34,7 +34,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
   sur les 36 voisins de L. Une seule droite « générique » donne **k ≥ 22** ; L20 en est le cas particulier. Maximum de
   d trouvé : 9 (conjecture k ≥ 14). La voie 7-adique ne fait que minorer k : elle ne donnera pas le verrou.
 - **Triplets de droites** (configurations à 9 points, repère de dimension 132 invisible depuis les points) : modèle
-  exact validé sur BvLS ; le relâchement donne P ∈ [0, 1155] (= L16 côté droites). **Négatif.**
+  exact validé sur BvLS ; le relâchement donne P ∈ [0, 1155] (= L16 côté droites) ; vu d'une seule droite, une
+  droite sans prisme ni barreau de prisme reste permise. **Négatif.**
 - Fonctions F₃ de somme nulle sur les droites : présentes dans les géométries tordues. **Négatif.**
 - **Le verrou principal (borne inférieure sur P) reste entier** ; notes/99 §6 dit ce qu'il faudrait.
 
