@@ -57,6 +57,11 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   - En torsion maximale, il tue 22 % des configurations localement admissibles.
 >   - Il force le modèle de Fano au régime tendu : toute σ-arête interne le tue.
 >   - Pas encore un plafond : les configurations aux transitions étalées passent.
+> - **notes/116 : second ordre exact ; le Fano tendu survit au niveau des blocs.**
+>   - Outils généraux : A_Δ² + A_Δ − 12I = 2J − ∂ᵀ∂ ; identités de second ordre par blocs, avec
+>     Σ_z cnt(z,R)(cnt(z,R) − 1) = 16 ; critère lointain (U)/(L) en formes closes.
+>   - Au Fano tendu : comptes exacts et variance nulle (F5). Pourtant un témoin passe tous les tests de niveau bloc
+>     (admissibilité, 231 identités, toutes les compressions de Rayleigh). Route de plafond fermée.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

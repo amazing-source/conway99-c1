@@ -250,3 +250,10 @@
     forcé au cas tendu.
   - Aussi dans le labo : projecteur caché d'une droite (A_F = B₀ − 7Π₋₄, rang 8) et outil de certificats de Rayleigh
     pour les branches à M partiel (`code/hidden_projector.py`, validé sur BvLS).
+- 25/09, nuit (suite). **Second ordre exact et Fano tendu (notes/116).**
+  - Le point 3 du lemme du triangle est recalculé par « structures » : CONFIRMÉ (commit 6119697).
+  - Outils généraux : A_Δ² + A_Δ − 12I = 2J − ∂ᵀ∂ (sur ker ∂, seules les valeurs propres 3 et −4) ; identités (P2) de
+    second ordre par blocs ; critère lointain (U)/(L), formes closes du projecteur caché pour 99.
+  - Au Fano tendu : comptes génériques exacts, κ, équilibre étiquette, (F5) par variance nulle. Tous les systèmes
+    dérivés sont faisables (HiGHS, au plus 37 s, avec contrôles). Un témoin passe tous les tests de niveau bloc.
+  - Le Fano tendu n'est donc pas une route de plafond. Deux fausses violations venaient d'identités non imposées.
