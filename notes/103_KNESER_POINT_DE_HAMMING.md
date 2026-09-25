@@ -3,14 +3,16 @@
 *25/09, fin de matinée. Consigne de l'utilisateur : attaquer en maths pures la structure générique (graphe de Kneser),
 en s'inspirant du Théorème D de la branche C2 (`conway99-involution/notes/MATH_C2_PROGRAMME.md`, autre machine ; lu,
 aucun message envoyé à C2). Cible naturelle : **L8 (aucun point de Hamming)**, aujourd'hui établi seulement par SAT
-non certifié. Statut : réduction exacte, un des deux régimes réfuté (transposition du Théorème D de C2), classification
-locale, et un encadrement 7-adique nouveau. Le régime mixte reste ouvert.*
+non certifié. **Antériorité interne (corrigé à 11 h 15)** : le modèle en bijections φ, la règle de transport et le cas
+isométrique (= L7, deux preuves à la main) sont déjà dans notes/20 et notes/95. Ce qui est nouveau ici : la forme
+compacte (§1.5), une troisième preuve du cas isométrique par le graphe de Kneser signé (argument de C2, §2), les classes
+d'holonomie des triangles (§3) et l'encadrement 7-adique 18 ≤ k ≤ 26 (§4). Le régime mixte (= L8) reste ouvert.*
 
 ## 0. Résumé
 | résultat | énoncé | statut |
 |---|---|---|
-| réduction | en un point de Hamming x, H = ⊕_P C₄ + (couplages parfaits entre paires de classes disjointes) ; le problème équivaut à une **S₄-connexion sur K(7,2)** soumise aux équations (K), (T) | preuve |
-| régime « tout A » | si tous les couplages préservent les paires antipodales : contradiction (triangles équilibrés, couples complémentaires) | preuve (transposition de C2, Théorème D) |
+| réduction | en un point de Hamming x, H = ⊕_P C₄ + (couplages parfaits entre paires de classes disjointes) : une **S₄-connexion sur K(7,2)** soumise aux équations (K), (T) | preuve (déjà notes/20, 95 ; forme compacte nouvelle) |
+| régime « tout A » | si tous les couplages préservent les paires antipodales : contradiction | = L7 (notes/95) ; 3ᵉ preuve par le Kneser signé de C2 |
 | classification locale | autour d'une arête de Kneser, les 3 holonomies de triangle sont {id, dt, dt}, {tr, tr, dt} ou {id, 4c, 4c} | preuve + énumération exhaustive |
 | encadrement 7-adique | **un point de Hamming force 18 ≤ k ≤ 26** | preuve + calcul exact |
 | régime mixte | ouvert | — |
@@ -39,7 +41,7 @@ locale, et un encadrement 7-adique nouveau. Le régime mixte reste ouvert.*
    engendré par les 7 vecteurs « étiquette m » Z_m (et M Z_m = 0). M est l'adjacence d'un revêtement triple signé de
    K(7,2).
 
-## 2. Régime « tout A » : impossible (transposition du Théorème D de C2)
+## 2. Régime « tout A » (= cas isométrique de L7) : troisième preuve, par le Kneser signé de C2
 Supposons que chaque φ_{PQ} envoie les paires antipodales de P sur celles de Q. Alors l'espace A des caractères
 antipodaux (21 dimensions) est M-invariant, et M|_A = A_χ est une signature de K(7,2). Comme S_lab et J s'annulent sur A,
 on a (A_χ − 2)² + (A_χ − 2) = 12, donc **A_χ² = 3A_χ + 10I**.
@@ -51,7 +53,8 @@ on a (A_χ − 2)² + (A_χ − 2) = 12, donc **A_χ² = 3A_χ + 10I**.
 
 *Mise en garde.* J'avais d'abord cru que les arêtes A se propagent (« une arête A ⟹ toutes les arêtes A ») ; c'est
 faux. Dans (K), une route P → R → P′ peut envoyer A sur A en passant par une partition-étiquette de R. Les régimes
-mixtes existent donc a priori.
+mixtes existent donc a priori. (notes/95 le disait déjà : un triangle de Kneser contient 0, 2 ou 3 arêtes non
+isométriques, jamais 1.)
 
 ## 3. Classification locale autour d'une arête (preuve + `code/kneser_edge_holonomy.py`)
 θ_R = holonomie du triangle P → R → P′ → P. En composant (K) avec Π_{P′P} :
@@ -60,7 +63,7 @@ mixtes existent donc a priori.
 - Arête non-A : cible I + M_c + M_A (chaque point reste une fois, va une fois vers son partenaire π_c, une fois vers
   son antipode ; jamais vers le partenaire π_{c′}). Solutions : {id, dt, dt}, {tr, tr, dt} (deux façons) ou
   {id, 4c, 4c}.
-Jamais de 3-cycle. |Fix θ_T| = ℓ(T) = nombre de droites de Γ de triple de paires T : 4 (id), 2 (tr), 0 (dt, 4c).
+Jamais de 3-cycle. (Raffinement des « 9 / 18 / 6 arrangements » de notes/95.) |Fix θ_T| = ℓ(T) = nombre de droites de Γ de triple de paires T : 4 (id), 2 (tr), 0 (dt, 4c).
 Contraintes de comptage : pour chaque arête, et pour chaque (P, classe m ∉ P), les trois triangles concernés ont des ℓ
 de profil {4, 0, 0} ou {2, 2, 0} ; Σ ℓ = 140. Les contrôles de trace (tr M³ = 210, tr M⁴) sont automatiquement
 satisfaits : **la contradiction, si elle existe, est combinatoire et non spectrale.** En effet, le régime « aucune

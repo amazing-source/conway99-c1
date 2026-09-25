@@ -303,8 +303,9 @@ rang₇ Q_SS ≥ 43, ou = 42 et scindé.
 
 ## L24. Point de Hamming : réduction de Kneser et 18 ≤ k ≤ 26.   [P] [C] (notes/103)
 *Énoncé.* En un point de Hamming x, H = ⊕ C₄ + couplages parfaits entre paires de classes disjointes : une
-S₄-connexion sur K(7,2) soumise aux équations (K), (T). Si tous les couplages préservent les paires antipodales,
-contradiction (transposition du Théorème D de la branche C2). Dans tous les cas, 18 ≤ k ≤ 26.
+S₄-connexion sur K(7,2) soumise aux équations (K), (T) (modèle φ de notes/20, 95). Si tous les couplages préservent
+les paires antipodales, contradiction (c'est L7 ; troisième preuve par le Kneser signé de C2). **Dans tous les cas,
+18 ≤ k ≤ 26** (nouveau).
 *Preuve.* Siblings adjacents, λ = 1 et μ = 2 ⟹ au plus un voisin par paire disjointe, et 10 = C(5,2). Régime A :
 signature A_χ avec A_χ² = 3A_χ + 10, triangles équilibrés, couples complémentaires ⟹ somme ≠ 0. Pour k : lignes en
 configuration grille (d = 6, L21) ; les 21 grilles complètes donnent η_P = 11·1_G − 1 ∈ Λ₃, de Gram de rang 14 mod 7,
