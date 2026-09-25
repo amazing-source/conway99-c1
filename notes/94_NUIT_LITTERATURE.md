@@ -150,6 +150,10 @@ Rien pour C1.
 - DeLeo 2024 (arXiv:2409.00268) : structures de voisinage partagé uniformes ; pour λ = 1 c'est un point, trivial.
 - Reimbayev 2024 (arXiv:2409.10620, hexagones ; conjecture équivalente à Makhnev), 2025 (arXiv:2508.03377,
   sous-graphes d'ordre 6) : contenus dans notre hiérarchie exacte (ordres 6–8).
+- Reimbayev, 9 nov. 2025 : deux articles distincts déposés le même jour. arXiv:2511.06569 (srg(19,6,1,2), §3.3 ci-dessus)
+  et arXiv:2511.06572, *Hamiltonian Subgraphs of Order Seven in srg(n,k,1,2)* (bornes sur les 7-cycles). Le second est
+  signalé par l'audit d'Astra (25/09) pour comparer nos statistiques de petits sous-graphes (ordre 7 : notes/91, L18).
+  Pas encore lu en texte intégral.
 - Zehavi–de Oliveira 2017 (arXiv:1707.08047) : une autre lecture de l'énoncé de Conway, résolue ; hors sujet.
 
 **Bilan de la bibliographie.** Pour C1 (groupe trivial), la littérature se réduit à Makhnev 1988 (non tordu exclu, =
