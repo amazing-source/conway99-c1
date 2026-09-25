@@ -197,3 +197,15 @@
     β − α/2 ≤ 2 (weave_grid_traces.py, 72 automorphismes) ⟹ contradiction. **L25.**
   - Régime général (bijections ni iso ni anti) : identités Π, Y² + 3Y + X² = 10 avec [X,Y] = 0 ; spectralement
     invisible. Ouvert. Annexe : spectre du sous-graphe à 77 sommets hors d'une coclique de Hoffman.
+- 25/09, après-midi. **L8 démontré** (notes/105 ; aucun solveur, quatre vérifications finies de quelques secondes).
+  - Intégralité d'ordre 8 (p-adique, 6 032 équations) : aucune condition. En un point de Hamming, k = rang₇(N − 3I)
+    sur Z^⊥ exactement.
+  - Cas coupe impossible : seules 28 coupes passent μ avec les étiquettes ; une seule orbite reste après notes/103 §6,
+    et un tournoi y force toutes les classes à être des sources.
+  - **Squelette de Fano.** Chaque point de Q_P est sur 5 droites formant un couplage parfait de Petersen. Le nombre de
+    droites au-dessus d'un triangle de Kneser est pair (pas de 3-cycle). Les seules fonctions cohérentes sont les 30
+    plans de Fano sur les classes : ℓ = 4 sur les faisceaux, 2 sans droite, 0 avec une droite.
+  - Section X parallèle hors faisceaux ; C = {X ≠ A} indépendant ; C = ∅ ramène à L7. Il reste 35 configurations :
+    14 étoiles, exclues par notes/103 §6, et 21 quadrilatères, tués par deux μ-parités en chemin P₃ et la règle (i).
+  - En chemin : lemme spectral (S_I − 5)(S_I + 2) = −KKᵀ (quatrième preuve de L7) et lemme des composantes.
+    Correction de l'affirmation « NNN = 2-cycle ».

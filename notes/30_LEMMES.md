@@ -88,10 +88,20 @@ deux fois ; cela force (n₀, n₁, c₀, c₁) ∈ {(2,4,0,0), (1,3,1,1), (0,2,
 en i, croisées), donc un nombre **pair ≥ 2** de ψ « droites ». Reste à montrer l'incompatibilité globale de ces
 parités d'orientation.
 
-## L8. Aucun sommet de Γ n'est un point de Hamming.   [calcul exact, 3 exécutions / 2 encodages] [à certifier DRAT]
+## L8. Aucun sommet de Γ n'est un point de Hamming.   [P] (2026-09-25, notes/105) [+ 4 vérifications finies exhaustives, sans solveur]
 *Énoncé.* Pour tout sommet x de srg(99,14,1,2), il existe a, b ∈ N(x) non mates avec τ_a(b) ≠ b̄ ; de façon
 équivalente, x n'est pas dans ses 21 grilles.
-*Preuve (calcul).* Modèle φ sans cassage de symétrie : UNSAT (2 114 s) ; modèle φ avec cassage (quasi-1-factorisation
+*Preuve humaine (notes/105).*
+1. Les droites de Γ₂(x) au-dessus des triangles de Kneser sont en nombre ℓ(t) = |Fix θ_t| ∈ {0, 2, 4}. En chaque
+   paire, les couplages de Petersen F(y) sont de type A ou B.
+2. Seules les 30 fonctions de Fano sont cohérentes : ℓ = 4 sur les faisceaux d'un plan de Fano des classes.
+3. La partition X_P (points utilisant M ou M′) est parallèle hors faisceaux. C = {X ≠ A} est indépendant dans le
+   graphe hors faisceaux, et C = ∅ ramène à L7.
+4. Il reste 35 configurations. Les étoiles sont exclues par notes/103 §6. Les quadrilatères meurent par deux (Z_A) en
+   chemin P₃ et la règle (i).
+
+Un cas coupe indépendant se trouve en notes/105 §6.
+*Ancienne preuve (calcul, conservée pour mémoire).* Modèle φ sans cassage de symétrie : UNSAT (2 114 s) ; modèle φ avec cassage (quasi-1-factorisation
 canonique en u₀ + 3 normalisations de signes, validité argumentée dans notes/40) : UNSAT (46 s) ; modèle d'adjacence
 (équations SRG brutes) avec le même cassage : UNSAT (100 s). Variante « au moins une φ non isométrique » : UNSAT
 (2 244 s sans cassage, 56 s avec).
@@ -112,7 +122,7 @@ contrôle positif BvLS. À ne pas utiliser pour élaguer une construction tant q
 *Portée exacte.* g(x) = 19 : preuve humaine (L9' ; la classification des configurations à 19 grilles se refait à la
 main : deux grilles manquantes G_{ij}, G_{ik}, donc seules les étiquettes de la classe i sont tordues, et elles
 échangent les classes j et k). g(x) = 20 : impossible par parité (une torsion casse deux grilles). g(x) = 21 : c'est
-L8, qui reste **calcul SAT non certifié**. « g(x) ≤ 18 » dépend donc encore de L8.
+L8, **démontré à la main depuis notes/105** : « g(x) ≤ 18 » ne dépend plus d'aucun SAT pour g = 21.
 *Énoncé.* À symétrie près, g(x) = 19 n'admet que trois configurations de τ en x (τ_{i±} échangent deux classes j, k,
 tout le reste mate) ; les trois sont réfutées **par simple propagation unitaire** des équations SRG
 (`rooted_model.py --case g19A|g19AA|g19AB`), avec ou sans les contraintes de serrage ; le contrôle relâché
@@ -310,7 +320,7 @@ les paires antipodales, contradiction (c'est L7 ; troisième preuve par le Knese
 signature A_χ avec A_χ² = 3A_χ + 10, triangles équilibrés, couples complémentaires ⟹ somme ≠ 0. Pour k : lignes en
 configuration grille (d = 6, L21) ; les 21 grilles complètes donnent η_P = 11·1_G − 1 ∈ Λ₃, de Gram de rang 14 mod 7,
 de radical ⟨Σ_{v∈L} f_v⟩ ⊂ G, donc 14 ≤ 40 − k. ∎
-*Portée.* Régime mixte ouvert : L8 n'est pas encore démontré à la main.
+*Portée.* Le régime mixte est résolu en notes/105 : L8 est démontré (squelette de Fano).
 
 ## L25. Pas de tissu de 11 grilles à couplages purs.   [P] [C : 72 automorphismes, PG(2,4)] (notes/104)
 *Énoncé.* Aucun srg(99,14,1,2) n'est partitionné en 11 grilles induites dont chaque couplage inter-grilles M_ij est

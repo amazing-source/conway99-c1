@@ -8,6 +8,12 @@ isométrique (= L7, deux preuves à la main) sont déjà dans notes/20 et notes/
 compacte (§1.5), une troisième preuve du cas isométrique par le graphe de Kneser signé (argument de C2, §2), les classes
 d'holonomie des triangles (§3) et l'encadrement 7-adique 18 ≤ k ≤ 26 (§4). Le régime mixte (= L8) reste ouvert.*
 
+> **Mise à jour (après-midi) : L8 est démontré en notes/105.** Les droites au-dessus des triangles de Kneser forcent
+> un plan de Fano sur les classes ; le régime mixte se clôt ensuite. Deux corrections à cette note :
+> - l'exemple de coupe du §7 viole déjà μ avec les étiquettes (notes/105 §6) ;
+> - l'affirmation du §8 « les triangles NNN forment un 2-cycle » n'est pas établie (notes/105 §7). Elle n'a servi
+>   nulle part.
+
 ## 0. Résumé
 | résultat | énoncé | statut |
 |---|---|---|

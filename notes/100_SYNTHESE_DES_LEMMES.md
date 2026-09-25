@@ -13,6 +13,11 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > dont τ(G(L)) est un carré non nul mod 7 force k ≥ 24. Fenêtre heuristique : k ∈ {24, 26, 28}. Le profil de la
 > proposition (torsion maximale, k = 28) reste cohérent.
 
+> **Mise à jour (après-midi, notes/105) : L8 est démontré** (un point de Hamming impose un plan de Fano sur les
+> classes, puis une contradiction ; aucune exécution SAT). Cela ne change pas la conclusion du §4 : L8 est un
+> plancher, et le profil de torsion maximale le satisfait. La méthode (droites au-dessus des triangles de Kneser)
+> est en revanche la première qui contrôle les arêtes génériques de Γ₂(x).
+
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
   P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.
@@ -24,9 +29,9 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 |---|---|---|---|
 | L1 (Makhnev 1988) | Γ n'est pas grid-full : Σ|W| > 0 | **plancher de torsion** | preuve |
 | L7 | un point de Hamming n'est pas fixé par une involution | plancher (branche C2) | preuve |
-| L8 | aucun point de Hamming : |W(x)| > 0 en tout x | **plancher** | SAT non certifié |
+| L8 | aucun point de Hamming : |W(x)| > 0 en tout x | **plancher** | **preuve (notes/105, squelette de Fano)** |
 | L9, L9' | torsion + transitions mates ⟹ une grille manque | règle locale (plancher) | preuve |
-| L10 | g(x) ≤ 18 | **plancher** (g = 21 via L8) | preuve + SAT |
+| L10 | g(x) ≤ 18 | **plancher** (g = 21 via L8) | preuve (g = 21 : L8 démontré) |
 | L11 | les torsions touchent ≥ 4 classes | **plancher** | SAT non certifié |
 | L12 | propagation : une étiquette ou une classe tordue seule est impossible | **plancher** | preuve |
 | L13 | une classe est tordue par 0 ou ≥ 2 étiquettes | règle locale | preuve |

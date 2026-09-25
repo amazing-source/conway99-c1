@@ -14,7 +14,8 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
    dont une famille venant des plans projectifs (tri-incidence (S, −2S, S) sur Z_{q²+q+1}). Toute obstruction doit
    utiliser μ = 2 pour *toutes* les paires (« excès nul »).
 3. **Mais les sommets presque non tordus sont impossibles** (nouveau, calcul exact + contrôles) :
-   - **L8 : aucun sommet n'est dans ses 21 grilles** (3 exécutions, 2 encodages indépendants) ;
+   - **L8 : aucun sommet n'est dans ses 21 grilles** (**démontré à la main le 25/09, notes/105** : squelette de Fano ;
+     auparavant 3 exécutions SAT, 2 encodages) ;
    - **L7** : même chose avec σ_x automorphisme — dans la branche C2, **le point fixe de l'involution est tordu** ;
    - **L10 : au plus 18 grilles par sommet** ; **L11** : les torsions d'un sommet touchent au moins 4 classes ;
      une étiquette tordue seule, ou une seule classe tordue, est impossible (réfuté par simple propagation) ;
@@ -109,8 +110,9 @@ Les lemmes ci-dessous sont des conséquences obligatoires prouvées ; aucune n'e
   partageant une classe) impose une somme impaire sur chacun des 105 triplets (i ; {j,k}), et chaque δ apparaît 12
   fois : 0 ≡ 1. Seconde preuve : les faits B + D font de δ un cocycle sur les triangles de Kneser K(7,2), dont
   H¹(F₂) = 0. Vérifications par ordinateur à chaque étape.
-- L8 (point de Hamming sans symétrie) : structure partielle (règle de transport ; un triangle de Kneser n'a jamais
-  exactement une arête non isométrique), pas encore de preuve humaine ; il repose toujours sur le calcul SAT non certifié.
+- L8 (point de Hamming sans symétrie) : **démontré** (notes/105). Les droites de Γ₂(x) au-dessus des triangles de
+  Kneser sont en nombre pair ; cela force un plan de Fano sur les classes, une partition X parallèle hors faisceaux,
+  puis 35 configurations finales, toutes contradictoires (μ avec les étiquettes + règle des triangles).
 
 ## 1 nonies. Nuit du 25/09 (04 h) : **L20, premier lien entre k et la torsion** (notes/97)
 - Les sous-matrices principales de A − 3I sur B₁(x) ∪ étoile(a) ne dépendent que de τ_a ; le bloc du moulin est
@@ -200,7 +202,7 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 | F6 Arf | absorbée par F5 |
 | F11 variété plate cubique | tuée |
 | F14 annulation de Krein | tuée |
-| **F15 point de Hamming** | **lemme L8** |
+| **F15 point de Hamming** | **lemme L8 (démontré, notes/105)** |
 | F16 rigidité ⇒ symétrie | L7 (côté C2) ; ouverte pour C1 |
 | F17 torsion ⇒ plan projectif d'ordre t | ouverte, affaiblie (2e géométrie t = 3 non planaire) ; t = 6 tri-circulant : N = 34 aucune solution, N ≤ 60 en cours |
 | F10 tissu de 11 grilles | régime pur exclu (L25, notes/104 : anti ⟹ PG(2,10), iso ⟹ 7 ∤ 220) ; régime mixte ouvert |
@@ -219,13 +221,12 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 **Gelé le 25/09 (décision de l'utilisateur) : plus de campagnes de solveurs, ni ici ni ailleurs** ; liste gardée
 pour archive. Seules restent possibles de petites vérifications exactes d'un argument écrit à la main.
 1. Contrôle positif t = 10 du modèle enraciné (BvLS doit être SAT) — valide le code générique.
-2. Certificats DRAT pour L8 et L11 (L7 et L10 ont maintenant des preuves humaines ; L8 est le plus important :
-   c'est le seul appui de « g(x) ≤ 18 » pour g = 21).
+2. Certificat DRAT pour L11 (L7, L8 et L10 ont maintenant des preuves humaines ; L8 depuis notes/105).
 3. Poursuivre la frontière : confined(K), |K| = 4, 5, 6 ; sources(S) croissants ; familles « g(x) ≥ G ».
 4. Tri-circulants t = 6 au-delà de N = 60 ; graphes de Cayley tordus d'ordre 100–200.
 
 ## 7. Feuille de route (fin de la nuit du 25/09), par ordre de priorité
-1. **L8 à la main.** Point de départ (notes/95) : règle de transport, triangles de Kneser sans arête non isométrique
+1. ~~**L8 à la main.**~~ **Fait (notes/105, squelette de Fano).** Point de départ historique (notes/95) : règle de transport, triangles de Kneser sans arête non isométrique
    isolée, image « code de Golay factice » (bijection v ↦ z₁₂(v), cohérence impossible par 10/3). Il manque
    l'exclusion des configurations incohérentes. Sinon, DRAT sur le PC du labo.
 2. **Méthode d'Akiyama** (notes/96) : forme discriminante des repères serrés L₋₄ (rang 30, constante 56) et L₃
