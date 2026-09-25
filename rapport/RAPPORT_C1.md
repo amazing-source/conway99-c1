@@ -189,6 +189,14 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
    configurations presque de Hamming (quelques grilles manquantes) gardent une parité impaire.
 4. **L11 à la main** : outils `core_extract.py` / `core_family.py` / `explain_up.py`. Le noyau de la famille a 112
    équations ; il vaut mieux extraire les noyaux des 28 motifs survivant à la propagation, un par un.
-5. Ce qui ne marche pas, à ne pas refaire : second moment de Δ (notes/93), hiérarchie de comptage jusqu'à l'ordre 8
+5. **Invariant k (notes/97)** : k ≥ 10 est acquis. Suites possibles :
+   - prouver min rank₇(S₂₄) ≥ 11 sur deux étoiles couplées, ce qui donnerait k ≥ 12 (énumération des holonomies
+     avec symétrie, PC du labo) ;
+   - relations de lignes sur plusieurs étoiles simultanément (L20 ter généralisé) ;
+   - utiliser la formule locale k = rank₇(H + 4I + 3S + P' + 5J) ≤ 30 comme contrainte d'élagage dans les modèles de
+     la frontière, où elle n'est qu'implicite.
+   Les blocs entièrement connus plafonnent à k ≥ 24 : une contradiction par cette voie demanderait la technique des
+   relations, pas seulement des rangs de sous-matrices.
+6. Ce qui ne marche pas, à ne pas refaire : second moment de Δ (notes/93), hiérarchie de comptage jusqu'à l'ordre 8
    et ses positivités (notes/91), Krein et Gegenbauer sur les droites au-delà de L16 (notes/70), méthodes de
    Wilbrink–Brouwer (57), de Reimbayev (19) et de Shpectorov–Zhao (85) (notes/94), parités d'holonomie (notes/94).
