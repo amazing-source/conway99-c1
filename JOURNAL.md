@@ -216,7 +216,7 @@
     deux sécantes. Lemme D2 : la configuration chemin est impossible.
   - Donc L11 (sans SAT), le cas g = 19 de L10 redémontré, et g(x) ≤ 17 (ancienne frontière de L10).
   - Recontrôle indépendant des énumérations de L8 : identique.
-- 25/09, nuit. **Routes closes, codes des droites, L14 (|C| = 2) à la main** (notes/110, 111).
+- 25/09, soir. **Routes closes, codes des droites, L14 (|C| = 2) à la main** (notes/110, 111).
   - Minkowski sur Λ₃, Λ₋₄ : vecteurs courts forcés (≤ 36, ≤ 44), mais la paire de Petersen passe tous les comptages ;
     classification infaisable, route close. Akiyama sur Λ_L : ni Venkov (rang 48, S₂₆ ≠ 0), ni isolement des racines,
     ni repère dense de rang ≤ 24 ; route close.

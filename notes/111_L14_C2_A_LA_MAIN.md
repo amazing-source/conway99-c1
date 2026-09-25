@@ -1,6 +1,6 @@
 # 111 — L14 pour |C| = 2 démontré à la main : 4 voisins communs disponibles, 5 exigés
 
-*25/09, nuit. L14 (« deux étiquettes tordues ne suffisent pas ») ne reposait que sur du SAT non certifié (notes/30).
+*25/09, soir. L14 (« deux étiquettes tordues ne suffisent pas ») ne reposait que sur du SAT non certifié (notes/30).
 Pour |C| = 2, voici une preuve courte : le comptage des fentes (notes/108), les « doubles » imposés par μ, puis un
 comptage de voisins communs. La seule vérification machine (`code/l14_c2_check.py`) recalcule les tableaux de voisins
 communs, sans aucune recherche.*

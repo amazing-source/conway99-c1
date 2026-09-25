@@ -1,6 +1,6 @@
 # 110 — Deux routes closes (Minkowski, Akiyama sur Λ_L) ; les codes des droites contiennent leur dual
 
-*25/09, nuit. Attaque du plafond après notes/109. Deux routes examinées puis fermées, avec la raison. Un petit lemme
+*25/09, soir. Attaque du plafond après notes/109. Deux routes examinées puis fermées, avec la raison. Un petit lemme
 nouveau sur les codes p-aires des droites, sans contradiction. Une imprécision de notes/102 §9 corrigée.*
 
 ## 0. Résumé

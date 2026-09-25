@@ -23,7 +23,7 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > les comptages du premier et du second ordre sont des tautologies, et l'objet d'holonomie de L8 ne se transporte pas
 > (2 doubles par sommet en moyenne, notes/109). Le verrou est inchangé : il manque un plafond (P ≥ 1152).
 
-> **Mise à jour (nuit du 25/09, notes/110–111).**
+> **Mise à jour (soir du 25/09, notes/110–111).**
 > - **L14 pour |C| = 2 est démontré à la main** (relu indépendamment par la session « structures »). C'est le premier
 >   contrôle manuel de « doubles » (arêtes génériques non bijectives) : trois doubles sont forcés par μ, et un bloc
 >   tordu × tordu reçoit 4 voisins communs pour une demande ≥ 5.
@@ -50,7 +50,7 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 | L8 | aucun point de Hamming : |W(x)| > 0 en tout x | **plancher** | **preuve (notes/105, squelette de Fano)** |
 | L9, L9' | torsion + transitions mates ⟹ une grille manque | règle locale (plancher) | preuve |
 | L10 | g(x) ≤ 18 | **plancher** (g = 21 via L8) | preuve (g = 21 : L8 démontré) |
-| L11 | les torsions touchent ≥ 4 classes | **plancher** | SAT non certifié |
+| L11 | les torsions touchent ≥ 4 classes | **plancher** | preuve (notes/108, lemme D1) |
 | L12 | propagation : une étiquette ou une classe tordue seule est impossible | **plancher** | preuve |
 | L13 | une classe est tordue par 0 ou ≥ 2 étiquettes | règle locale | preuve |
 | L14 | deux étiquettes tordues ne suffisent pas (|C| ≤ 4) | **plancher** | \|C\| = 2 : preuve (notes/111) ; \|C\| = 3, 4 : SAT non certifié |
