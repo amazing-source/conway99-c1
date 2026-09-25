@@ -124,3 +124,27 @@ conséquence qu'en tirait notes/95 (un triangle n'a jamais exactement une arête
 découle déjà du cas isométrique.
 *Profil fin du fait C* (58 solutions) : autant d'isométries de décalage 0 que de décalage 1 ; les quatre types
 non isométriques N(x, y) (A(P) ↦ π_x, π_y ↦ A(P′)) ont tous la même parité.
+
+## 7. Version locale du cas isométrique, et ce qui manque pour le cas mixte
+- **L7 local (nouveau).** Pour tout triplet de classes {i, j, k}, les 18 arêtes de Kneser entre {ij, ik, jk} et les
+  6 paires de F = [7] ∖ {i, j, k} ne sont pas toutes isométriques. *Preuve.* Les trois équations de décalage de L7
+  (triplets (i ; j, k), (j ; i, k), (k ; i, j)) portent sur les mêmes 6 paires R ⊂ F. Chacune donne
+  Σ_R (δ(P, R) + δ(P′, R)) ≡ 1. Leur somme vaut 2Σ_R (δ(ij, R) + δ(ik, R) + δ(jk, R)) ≡ 0 à gauche et 3 ≡ 1 à droite. ∎
+- **Décalage étendu** (`code/shift_extension.py`). Pour une application non isométrique d'image antipodale a, on pose
+  δ = la coordonnée de translation complémentaire de a. Dans une arête non isométrique, deux transports concordants
+  (N, N) composent alors en une isométrie de décalage δ(P, R) + δ(Q, R). La règle de transport donne, uniformément :
+  **Σ_R δ(ψ_R) ≡ δ(φ_{PQ}) + [φ_{PQ} non isométrique]**. Mais δ étendu **n'est pas additif** : le défaut de
+  composition dépend de la partie linéaire complète, et aucune extension à défaut « linéaire » n'existe (δ n'est pas
+  S₃-invariant sur les translations). Les deux arguments (décalage de L7, tournois du §6) ne s'unifient donc pas
+  directement.
+- **Le cas mixte n'est pas exclu par les contraintes combinatoires seules.** Exemple de coupe : V₀ = les 6 paires
+  incluses dans {1, 2, 3, 4}, V₁ = les 15 autres ; arêtes isométriques = arêtes internes à V₀ ou à V₁. Il vérifie :
+  - la règle des triangles ;
+  - L7 local ;
+  - la version locale du §6 ;
+  - le calcul de parité du §6 (le terme correctif ζ des arêtes isométriques le rend cohérent, vérifié à la main pour
+    i = 1 et i = 5).
+
+  Pour conclure, il faudra les parties de translation : les relations (Cδ), et la règle de transport aux arêtes
+  traversant la coupe (3 transports non isométriques de Σδ ≡ 1 + δ). Pas de recherche par solveur : ce sera une
+  analyse du cas « coupe », puis du cas avec triangles entièrement non isométriques.
