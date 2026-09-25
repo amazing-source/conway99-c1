@@ -15,6 +15,7 @@ d'holonomie des triangles (§3) et l'encadrement 7-adique 18 ≤ k ≤ 26 (§4).
 | régime « tout A » | si tous les couplages préservent les paires antipodales : contradiction | = L7 (notes/95) ; 3ᵉ preuve par le Kneser signé de C2 |
 | classification locale | autour d'une arête de Kneser, les 3 holonomies de triangle sont {id, dt, dt}, {tr, tr, dt} ou {id, 4c, 4c} | preuve + énumération exhaustive |
 | encadrement 7-adique | **un point de Hamming force 18 ≤ k ≤ 26** | preuve + calcul exact |
+| **régime « aucune arête isométrique »** | impossible ; version locale : pour toute classe i, au plus 2 des 6 paires ∋ i ont leurs 10 arêtes de Kneser non isométriques | **preuve (nouvelle)** + 2 énumérations exactes |
 | régime mixte | ouvert | — |
 
 ## 1. Réduction (preuve)
@@ -89,3 +90,37 @@ Ce n'est pas une contradiction (18 ≤ 26), mais c'est le premier plafond de k t
   de classe i », non nul. Donc aucune paire (T) n'a ses 6 triangles concernés tous d'holonomie triviale.
 - Piste : généraliser l'argument des couples complémentaires. Remplacer la signature (représentation de signe sur A)
   par l'holonomie complète dans S₄, en utilisant les deux triangles (P, R, R̄) et (P′, R, R̄) de chaque couple.
+
+## 6. Le régime « aucune arête isométrique » est impossible (nouveau, 25/09 midi)
+*Données.* Pour une arête de Kneser non isométrique (P, R), φ_{PR} envoie la partition antipodale A(P) sur une
+partition-étiquette π_κ(R), avec κ = κ(P→R) ∈ R. Si toutes les arêtes issues de P sont non isométriques, orienter
+chaque arête R de K₅([7] ∖ P) vers κ(P→R) définit un **tournoi T_P** sur les 5 classes hors de P.
+*Deux ingrédients, tous deux vérifiés.*
+- **(Z_A) Degrés entrants pairs.** μ(y, a_m) = 2 pour y ∈ Q_P et une étiquette a_m (m ∉ P) : parmi les 4 paires
+  {m, n} disjointes de P, exactement 2 voisins de y contiennent a_m. En caractères, c'est M Z_m = 0 ; sa composante
+  antipodale en P dit que le nombre de Q ∋ m avec κ(P→Q) = m est pair. **Dans T_P, chaque sommet a un degré entrant
+  pair.**
+- **(C′) Nombre pair d'isométries.** Soient P = {i,j}, P′ = {i,k}. Parmi les 6 transports ψ_R = φ_{P′R}⁻¹∘φ_{PR}, pour
+  R ⊂ F = [7] ∖ {i,j,k}, le fait C impose un nombre **pair** d'isométries. (Énumération exhaustive : 58
+  multi-ensembles compatibles, avec 0, 2, 4 ou 6 isométries, `code/factC_parity_check.py`. Même résultat que notes/95.)
+  Si les deux arêtes sont non isométriques, ψ_R est une isométrie ssi κ(P→R) = κ(P′→R), c'est-à-dire si T_P et T_{P′}
+  orientent R de la même façon. **T_P et T_{P′} s'accordent donc sur un nombre pair des 6 arêtes de K₄(F).**
+*Preuve.* Soit D_P l'ensemble des arêtes que T_P oriente vers leur plus petite extrémité, et n(P) = |D_P| mod 2. Un
+calcul de degré donne deg_{D_P}(v) ≡ in_{T_P}(v) + rang_P(v). Ici rang_P(v) est le nombre de classes de [7] ∖ P
+inférieures à v. Avec (Z_A), cela donne deg_{D_P}(v) ≡ rang_P(v). Or |D_P ∩ E(F)| = |D_P| − deg_{D_P}(k), puisque
+F = ([7] ∖ P) ∖ {k}. Par (C′), |D_P ∩ E(F)| ≡ |D_{P′} ∩ E(F)|, d'où
+  **n({i,j}) + n({i,k}) ≡ rang_{ij}(k) + rang_{ik}(j) ≡ (j + [i<j]) + (k + [i<k]) + 1 (mod 2).**
+Pour i fixé et trois classes j, k, l, on somme les trois relations (paires jk, kl, jl). À gauche, 0 ; à droite,
+2(…) + 3 ≡ 1. **Contradiction.** ∎
+*Version locale (même preuve).* L'argument n'utilise que les trois paires {i,j}, {i,k}, {i,l} et leurs 30 arêtes de
+Kneser. **Pour toute classe i, au plus deux des six paires contenant i ont toutes leurs arêtes non isométriques.**
+*Bilan pour L8.* Les deux régimes extrêmes sont exclus : tout isométrique (L7) et rien d'isométrique (ci-dessus).
+Il reste les mélanges, qui sont contraints par :
+- la règle des triangles : 0, 2 ou 3 arêtes non isométriques par triangle ;
+- la version locale ci-dessus.
+*Correction de notes/95.* En une arête non isométrique, le nombre de transports isométriques vaut **0 ou 2**, et non
+« 0 ou 1 (6 arrangements) » (`code/transport_rule_check.py` : trois triplets sans isométrie, un avec deux). La
+conséquence qu'en tirait notes/95 (un triangle n'a jamais exactement une arête non isométrique) reste vraie : elle
+découle déjà du cas isométrique.
+*Profil fin du fait C* (58 solutions) : autant d'isométries de décalage 0 que de décalage 1 ; les quatre types
+non isométriques N(x, y) (A(P) ↦ π_x, π_y ↦ A(P′)) ont tous la même parité.

@@ -78,6 +78,8 @@ sans cassage de symétrie) indiquent une contradiction plus profonde.
 - **Règle de transport** (ci-dessus) valable en général : {ψ_R(u)} = {φ(u), φ(u) + 11, φ(u + 11)}.
 - Énumération locale (24 bijections φ) : si φ_{PP'} est une isométrie, les 3 transports ψ_R sont des isométries (9
   arrangements) ; sinon, ou bien les 3 sont non isométriques (18 arrangements), ou bien exactement 1 l'est (6).
+  **[Corrigé le 25/09, notes/103 §6 : c'est « exactement 2 », pas « exactement 1 » ; la conséquence ci-dessous reste
+  vraie.]**
 - **Conséquence** : soit N l'ensemble des arêtes de Kneser dont la bijection n'est pas une isométrie. Tout triangle de
   Kneser {P, P', R} contient 0, 2 ou 3 arêtes de N, jamais exactement 1. Si aucun triangle n'est entièrement dans N,
   l'indicatrice de N est un cocycle, donc (H¹ = 0) N est la coupe d'une 2-coloration des 21 paires.
