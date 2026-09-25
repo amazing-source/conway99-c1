@@ -14,6 +14,8 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
    **`notes/101_GENRE_K_MAJORE.md`** (L22 : k ≤ 28, premier plafond), puis **`notes/102_FORME_BETA_SIGNE.md`**
    (structure 7-adique complète ; L23 : le signe mod 7 relie k à la torsion).
    Puis **`notes/103_KNESER_POINT_DE_HAMMING.md`** (L24 : réduction de L8 à une S₄-connexion sur K(7,2)).
+   Puis **`notes/104_TISSU_DE_GRILLES.md`** (F10 : un tissu de 11 grilles à couplages anti donnerait un plan projectif
+   d'ordre 10 ; L25 : pas de tissu à couplages purs ; régime mixte ouvert).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.

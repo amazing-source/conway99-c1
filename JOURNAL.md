@@ -189,3 +189,11 @@
   - Le modèle local exact autour d'un triangle de classes a 1 522 solutions : la contradiction est globale.
   - L7 local généralisé (pages à images antipodales uniformes : impossible).
   - Pas de δ étendu à défaut linéaire ; pas de certificat de parité de degré 2 (fait C + μ + signes).
+- 25/09, 12 h 30. **F10 attaquée : tissu de 11 grilles** (notes/104, session « approche par les structures »).
+  - Réduction exacte à 55 permutations M_ij (équation (E), analogue de (K) de notes/103).
+  - Couplages tous anti ⟹ Σ_k M_ik M_kj = J ⟹ **plan projectif d'ordre 10** avec polarité (droite absolue, Baer) :
+    exclu par Lam. Contrôle inverse à l'ordre 4 : PG(2,4) + polarité + K₃ donne srg(15,6,1,3) (weave_pg4_control.py).
+  - Tous iso : 7 ∤ 220 (congruence des sous-espaces invariants). Pur mixte : deux classes, mod 7 ⟹ {2,9}, puis
+    β − α/2 ≤ 2 (weave_grid_traces.py, 72 automorphismes) ⟹ contradiction. **L25.**
+  - Régime général (bijections ni iso ni anti) : identités Π, Y² + 3Y + X² = 10 avec [X,Y] = 0 ; spectralement
+    invisible. Ouvert. Annexe : spectre du sous-graphe à 77 sommets hors d'une coclique de Hoffman.

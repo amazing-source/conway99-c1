@@ -203,7 +203,8 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 | **F15 point de Hamming** | **lemme L8** |
 | F16 rigidité ⇒ symétrie | L7 (côté C2) ; ouverte pour C1 |
 | F17 torsion ⇒ plan projectif d'ordre t | ouverte, affaiblie (2e géométrie t = 3 non planaire) ; t = 6 tri-circulant : N = 34 aucune solution, N ≤ 60 en cours |
-| F9, F10, F12, F13, F18 | encodages / non tranchées |
+| F10 tissu de 11 grilles | régime pur exclu (L25, notes/104 : anti ⟹ PG(2,10), iso ⟹ 7 ∤ 220) ; régime mixte ouvert |
+| F9, F12, F13, F18 | encodages / non tranchées |
 
 ## 5. Nouveau à ma connaissance (bibliographie vérifiée en texte intégral le 25/09, notes/94)
 - **L1 n'est pas nouveau** : c'est le théorème 2 de Makhnev (1988), avec une autre preuve.

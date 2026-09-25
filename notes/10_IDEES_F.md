@@ -19,7 +19,7 @@ Statut : P = proposée, T = tuée (voir 20_ATTAQUES_R.md), S = survivante, M = m
 | F7 | Algèbre T/Δ (piste A) : points W(C,·) de chaque quadrangle ; cohérence ⟺ grille | A | P |
 | F8 | Réseau de transition (piste C) : ker B ∩ Z⁸⁴ comme Z[H]/(H²+H−12)-module, indice de recollement 7^k, opérateur de défaut D = T − PB | C | P |
 | F9 | Complexe triangles + quadrangles : incidence angles–quadrangles (2079 + 2079, 4-régulière), composantes = « grilles tordues fermées », homologie | topologique | P |
-| F10 | **Tissu de 11 grilles** (99 = 11 × 9) : partition en 11 grilles serrées, chaque point a 1 voisin dans chaque autre grille, 2-(11,3,9) sur les droites transverses | très risquée, ansatz | P |
+| F10 | **Tissu de 11 grilles** (99 = 11 × 9) : partition en 11 grilles serrées, chaque point a 1 voisin dans chaque autre grille, 2-(11,3,9) sur les droites transverses | très risquée, ansatz | **M** (notes/104) : régime anti ⟹ PG(2,10) ; régime pur exclu (L25) ; régime mixte ouvert |
 | F11 | Complexe cubique / variété plate : si toutes les fermetures 3-cubes existent, Γ = 1-squelette d'une cubulation d'une 7-variété plate R⁷/π, 99 sommets exigent une holonomie non triviale | risquée | P |
 | F12 | Réflexions ponctuelles σ_x (flip canonique en x) comme automorphismes approchés ; défaut d(x) ; lien direct avec la branche C2 | mixte | P |
 | F13 | Algèbre de Terwilliger relative à une droite (code complètement régulier ℓ) × holonomie ρ_ℓ : composantes du graphe cubique Γ₁(ℓ) équilibrées | mixte | P |

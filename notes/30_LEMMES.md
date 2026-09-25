@@ -312,6 +312,16 @@ configuration grille (d = 6, L21) ; les 21 grilles complètes donnent η_P = 11�
 de radical ⟨Σ_{v∈L} f_v⟩ ⊂ G, donc 14 ≤ 40 − k. ∎
 *Portée.* Régime mixte ouvert : L8 n'est pas encore démontré à la main.
 
+## L25. Pas de tissu de 11 grilles à couplages purs.   [P] [C : 72 automorphismes, PG(2,4)] (notes/104)
+*Énoncé.* Aucun srg(99,14,1,2) n'est partitionné en 11 grilles induites dont chaque couplage inter-grilles M_ij est
+un isomorphisme ou un anti-isomorphisme de la grille.
+*Preuve.* Le tissu équivaut à (E) : Σ_k M_ik M_kj = 2J − M_ij − R M_ij − M_ij R. Tout anti ⟹ Σ_k M_ik M_kj = J ⟹ plan
+projectif d'ordre 10 (les B(w) = voisins externes, complétés par P et q₁…q₁₁ ; polarité à droite absolue), exclu par
+Lam. Tout iso ⟹ U⁺ = ⊕V_i⁺ invariant, 7m₃ = 220, absurde. Mixte pur ⟹ deux classes de signes (|K⁻| ∈ {0,9}) ; mod 7 :
+tailles {2,9} ; inégalité β − α/2 ≤ 2 sur les automorphismes de la grille, saturée sur chaque paire iso, contredite
+par les paires anti (72 ≠ 9). ∎
+*Portée.* Ne dit rien des bijections ni iso ni anti, ni de l'existence d'un tissu (non forcée).
+
 ## L5. Grilles serrées.   [P] [C]
 Tout point hors d'une grille G a exactement un voisin dans G ; si g(x) = #grilles par x : (A − 3I)g = g_tot·1.
 

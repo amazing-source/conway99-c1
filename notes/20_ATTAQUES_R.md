@@ -84,7 +84,10 @@ Aucune contrainte trouvée sur P.
 Les exemples tordus n'ont pas les fermetures en 3-cubes : 40/160 (t = 2), 0/1248 (t = 3), contre 100 % pour
 H(3,3) et BvLS. Les structures tordues ne sont pas des quotients de cubulations plates.
 
-### F10, F12 — non encore attaquées (voir 10_IDEES_F.md).
+### F10 — attaquée le 25/09 (notes/104) : régime anti ⟹ plan projectif d'ordre 10 (Lam) ; régime iso : 7 ∤ 220 ;
+régime pur à deux classes : mod 7 puis inégalité d'holonomie. **L25.** Régime mixte ouvert.
+
+### F12 — non encore attaquée (voir 10_IDEES_F.md).
 
 ### F14 — annulation de Krein — **TUÉE**
 Paramètres de Krein de srg(99,14,1,2) : q₁₁¹ = 1629/49, q₁₁² = 1188/49, q₁₂¹ = 968/49, q₁₂² = 1458/49,
