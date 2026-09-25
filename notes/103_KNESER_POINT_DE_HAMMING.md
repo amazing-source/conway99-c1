@@ -229,3 +229,43 @@ non isométriques N(x, y) (A(P) ↦ π_x, π_y ↦ A(P′)) ont tous la même pa
 - **Prochaine planche.** Trouver une combinaison des relations du fait C (dans l'espace de dimension 10), éventuellement
   moyennée sur les jauges, dont la partie locale en R soit additive modulo les contraintes en R. Contraintes en R :
   μ exact avec les étiquettes, règle de transport sur les triangles (R, e, e′), classes d'holonomie.
+
+## 10. Livres, carrés, et un L7 local généralisé (`code/factC_squares.py`, `code/class_triangle_local.py`)
+- **Livres.** Une arête de Kneser R–R̄ (le « dos ») porte les trois triangles (P, R, R̄), P parcourant les trois paires
+  du complémentaire à 3 classes (les « pages »). La règle de transport au dos fixe les holonomies des pages ; leurs
+  rapports sont les holonomies de carrés du fait C.
+  - Classes de carrés par livre : {id, dt, dt}, {dt, tr, tr}, {dt, dt, dt} ou {dt, 4c, 4c}.
+  - **Jamais de carré 3-cycle**, alors que le fait C seul en autorise.
+  - Un triangle de classes {i, j, k} correspond aux 3 livres dont les dos sont les 3 couples de F. Les 105 arêtes sont
+    ainsi réparties en 35 triplets de livres.
+- **Modèle local exact autour d'un triangle de classes.** Il comprend 12 bijections a_R, b_R, les 3 faits C et les
+  3 règles de dos. Il admet **1 522 solutions** (sur 1 578 multi-ensembles compatibles avec les trois faits C) : il n'y
+  a **pas** d'obstruction locale. La contradiction de L8 est globale, ce qui cadre avec le SAT de 2 114 s (CDCL gère
+  mal la parité).
+- **L7 local généralisé (preuve).** Supposons que, pour chaque R ⊂ F, les trois nervures ij–R, ik–R, jk–R soient
+  toutes isométriques, ou toutes non isométriques avec la même image antipodale dans Q_R. Alors les 18 transports sont
+  des isométries, dont les décalages sont additifs (δ ordinaire, ou δ_a = la coordonnée de translation complémentaire de
+  a). Le calcul du §7 donne 0 ≡ 3 : **contradiction**. Dans tout triangle de classes, les images antipodales des trois
+  pages sont donc non uniformes sur au moins une paire de F.
+
+## 11. Certificats de parité : ce qui n'existe pas (`code/delta_cocycle.py`, `code/parity_certificate*.py`)
+- **Pas de δ étendu à défaut « linéaire ».** Aucune extension δ(f) = ⟨w(L), t⟩ n'a un défaut de composition fonction
+  des seules parties linéaires. La covariance forcerait w(L) = L⁻ᵀw(I) et w(I) = 0, alors que w = 11 sur les
+  isométries.
+- **𝓛² = 𝓛 sur F₂** : les parties linéaires forment un opérateur idempotent. Cela redit A² ≡ A (mod 2) : c'est
+  automatique.
+- **Pas de certificat de degré 2.** On somme le fait C sur les 105 paires avec f à parité constante (10 fonctions,
+  certaines de constante 1), puis on regroupe par (X, m), les « cerises » X–A, X–B où A, B partagent la classe m. On
+  demande que μ(w, a_m⁰) = 2 force la parité de chaque groupe à une constante d ≠ c_f. **Aucune solution**, même avec :
+  - des corrections h dépendant du rôle ;
+  - la relation globale de signe Σ_e sgn(φ_e) ≡ 0 (chaque arête est dans 0 ou 2 triangles impairs).
+
+  Conclusion : la contradiction de L8 utilise **les règles de transport en profondeur**, et pas seulement leurs signes.
+  Les deux cas prouvés le confirment. L7 exploite les isométries, où δ devient additif ; le cas II exploite des
+  orientations binaires, où l'accord devient linéaire.
+- **Planches suivantes possibles.**
+  - (a) Certificat au niveau des holonomies de triangles et de carrés, de degré 3–4 : les triangles sont partagés par
+    3 livres.
+  - (b) Reformulation « code de Golay factice » dans F₃⁷ (notes/95), où des bornes classiques sur les codes ternaires de
+    longueur 7 pourraient mordre.
+  - (c) Analyse par régions (isométrique et non isométrique) avec interfaces, c'est-à-dire le cas coupe.
