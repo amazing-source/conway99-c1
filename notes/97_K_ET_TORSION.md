@@ -159,3 +159,14 @@ doit rencontrer l'ensemble fini T_z des fonctionnelles possibles pour chaque z.
 k ≥ 10**. Pour aller plus loin, il faudrait coupler plusieurs étoiles, ou la structure globale.
 *Statut* : formule locale et lemme d'algèbre linéaire prouvés à la main ; énumération exacte sur F₇ et 32 petites
 instances SAT réfutées par propagation. Donc vérifiable, et certifiable facilement (DRAT trivial).
+
+## Observation (non démontrée) : deux étoiles couplées
+Le bloc de M_x sur étoile(a) ∪ étoile(ā) (24 sommets) est **entièrement déterminé** par (τ_a, τ_ā, π), où π est
+l'holonomie de la droite {x, a, ā} (couplage entre les deux étoiles) :
+S₂₄ = [[H_{τa} + P' + J, X], [Xᵀ, H_{τā} + P' + J]] avec X = Π + 3I + P' − J (mod 7). Donc k ≥ rank₇(S₂₄).
+Échantillonnage (75 000 π aléatoires, 25 paires de types) : rang presque toujours 22, jamais moins de 18. Recherche
+locale : minimum trouvé 14, pour deux étoiles (2,2,2). Le bloc X seul descend à 8 (inutile).
+**Si le minimum réel sur toutes les holonomies est ≥ 11, alors k ≥ 12.** Mais ce n'est pas prouvé : il faudrait une
+énumération exhaustive sur 12! holonomies (avec la symétrie), ou un argument de structure. Plafond de cette voie :
+k ≥ 24 au mieux (rang d'un bloc 24 × 24). Les blocs entièrement connus ne peuvent donc jamais dépasser k ≤ 30 : **pas
+de contradiction possible par cette seule voie**.
