@@ -142,3 +142,20 @@ toujours impair, donc jamais extrême. L'outil n'ajoute rien à L20.
   vecteurs de Gram R_L, et R_L est de rang ≤ 6 alors que ses 1 770 entrées hors diagonale ne prennent que deux valeurs
   chacune (3 + A_ww' − 6 + Green). C'est très contraint, mais cela passe par les arêtes génériques : c'est la même
   frontière que la technique des relations sur quatre étoiles (piste (b) de notes/101).
+
+## 9. Conclusion d'étape : ce que la voie 7-adique locale peut et ne peut pas faire
+- **Tout est cohérent localement pour chaque k pair ≤ 28.** Les formes locales (M_x hyperbolique, K̄ non scindé, U_x ≅ U
+  non scindé, U′_x scindé) et globales (β non scindée, Smith 1^{14+k}7^{71−2k}49^{14+k}) sont forcées par les
+  paramètres et k seul. Aucune contradiction ne peut venir du genre (la seule, k = 30, est L22).
+- **Le signe n'agit qu'aux blocs extrêmes.** Les blocs entièrement connus ont au plus 39 sommets (boules de droites,
+  rang Q ≤ 37). Ils ne peuvent être extrêmes que pour k ≤ 22. **La meilleure borne inférieure possible par cette voie
+  est donc k ≥ 24** (L23), et elle est conditionnelle à l'existence d'une droite générique τ-carrée.
+- **k = 28 est invisible localement.** Heuristique de Cohen–Lenstra symétrique : si Γ existait, k = 28 serait la
+  valeur la plus probable (déficit minimal 2, imposé par L22). À k = 28 aucun bloc connu n'est extrême. Toute
+  contradiction doit donc utiliser des blocs de rang ≥ 42, c'est-à-dire les arêtes génériques de Γ₂(x) (le graphe
+  12-régulier sur 84 sommets où s'arrête aussi arXiv 2608.11211).
+- **Structure générique (pour la suite).** Dans le régime de torsion maximale (aucune coïncidence τ/σ), chaque
+  y = {a, b} ∈ Γ₂(x) a exactement 8 voisins génériques {c, d} (c, d dans les 5 autres classes). Pour chaque étiquette c,
+  le nombre de ces voisins contenant c vaut 2 − #{τ_a(b), τ_b(a), σ_a(b), σ_b(a) égaux à c} : **les degrés sont
+  prescrits par les données de torsion.** Les trois points d'une droite contenue dans Γ₂(x) sont des paires deux à deux
+  disjointes. Et y ↦ h_y (colonne de M_x) donne 84 vecteurs de norme 1 dans un espace scindé de dimension k, de Gram M_x.

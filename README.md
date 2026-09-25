@@ -39,6 +39,9 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 - **L23** : un bloc de rang extrême 14 + k doit être non scindé. Pour la boule d'une droite, le signe est
   (τ(G(L)) | 7), τ = nombre d'arbres couvrants : **une droite τ-carrée force k ≥ 24.** Heuristique : k ∈ {24, 26, 28}.
 - Littérature relue : genre, oddité et signe des réseaux propres ne sont utilisés nulle part (L22, L23 nouveaux).
+- Forme Seidel : mod 7, Q ≡ 3S (S = J − I − 2A) ; tout sous-graphe induit à 14 + k sommets a un déterminant de Seidel
+  nul ou de caractère (−1)^{k/2}. **Conclusion d'étape (notes/102 §9)** : k = 28, la valeur la plus probable, est
+  invisible localement (blocs connus de rang ≤ 37 < 42) ; la suite passe par les arêtes génériques de Γ₂(x).
 
 ## État (2026-09-25, 08 h) — L22 : premier plafond (notes/101)
 - **k ≤ 28** (au lieu de 30) : le réseau Λ₋₄ (pair, rang 44, det 9·7^{14+k}) n'a pas de genre possible à k = 30, car
