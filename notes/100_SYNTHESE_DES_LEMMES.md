@@ -18,6 +18,11 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > plancher, et le profil de torsion maximale le satisfait. La méthode (droites au-dessus des triangles de Kneser)
 > est en revanche la première qui contrôle les arêtes génériques de Γ₂(x).
 
+> **Mise à jour (soir, notes/108–109).** L11 démontré et g(x) ≤ 17 (comptage des fentes). Le côté peu tordu est
+> désormais fermé à la main jusqu'à L14 exclu. Le profil de torsion maximale du §4 reste cohérent : en torsion maximale,
+> les comptages du premier et du second ordre sont des tautologies, et l'objet d'holonomie de L8 ne se transporte pas
+> (2 doubles par sommet en moyenne, notes/109). Le verrou est inchangé : il manque un plafond (P ≥ 1152).
+
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
   P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.

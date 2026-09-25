@@ -18,6 +18,9 @@ conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
    d'ordre 10 ; L25 : pas de tissu à couplages purs ; régime mixte ouvert).
    Puis **`notes/105_L8_DEMONTRE_FANO.md`** (**L8 démontré** : un point de Hamming impose un plan de Fano sur les
    classes, puis une contradiction ; cas coupe, lemme spectral, lemme des composantes).
+   Puis **`notes/108_DEFAUTS_ET_COMPTAGE_DES_FENTES.md`** (**L11 démontré**, g(x) ≤ 17 : comptage des fentes autour des
+   grilles complètes) et **`notes/109_COEUR_TORSION_MAXIMALE.md`** (le cœur : pourquoi l'holonomie de L8 ne se
+   transporte pas en torsion maximale ; identité du schéma des droites à P = 0).
 1. `notes/00_FONDATIONS.md` — faits redérivés des axiomes (structure enracinée, transitions τ, spectre de H, …).
 2. `notes/10_IDEES_F.md` — les idées (chercheur F), avec leur statut.
 3. `notes/20_ATTAQUES_R.md` — les attaques (chercheur R) et les verdicts, avec les calculs.
