@@ -75,8 +75,9 @@ grille), donc la moyenne de g(x) est ≤ 17,4. C'est à peine mieux que L10.
 Tout raisonnement qui combine ces énoncés, et seulement eux, reste vrai dans ce profil. **Aucune contradiction ne peut
 donc sortir de L1–L21.** Ce n'est pas une preuve d'existence de Γ : c'est une limite de ce corpus de lemmes.
 
-*Remarque.* Le profil « tordu générique » (τ comme des couplages aléatoires : P ≈ 126, k ≈ 30) passe aussi, ainsi que
-tous les relâchements calculés (ordre ≤ 8, triplets de droites, notes/91 et 99).
+*Remarque (corrigée à 08 h).* Le profil « tordu générique » (τ comme des couplages aléatoires : P ≈ 126) passe les
+relâchements calculés (ordre ≤ 8, triplets de droites), **mais pas L22** : une structure 7-générique aurait k = 30,
+exclu. Un Γ doit donc être 7-spécial en chaque sommet (rank₇ M_x ≤ 28).
 
 ## 5. Ce que cela dit du programme
 1. **Le corpus est unilatéral.** Tous les lemmes locaux excluent la torsion faible (le côté Hamming). L16, seul lemme
@@ -87,11 +88,11 @@ tous les relâchements calculés (ordre ≤ 8, triplets de droites, notes/91 et 
    majoration globale de k. Rien de ce qui a été essayé n'en fournit un ; toutes les méthodes par moyennes ou par
    positivité sont faisables à P ≈ 0–126.
 3. **Candidats, par coût.**
-   - (a) *Frontière miroir.* Tester par SAT si un sommet entièrement tordu est possible (les 14 τ sans boucle en x).
+   - (a) *Frontière miroir (gelée : plus de solveurs, décision du 25/09).* Tester par SAT si un sommet entièrement tordu est possible (les 14 τ sans boucle en x).
      C'est le symétrique de L8. Le test « tous de type (2,2,2) » a été tué à 4 Go sur le portable. PC du labo
      seulement ; et même un succès ne donnerait qu'un plafond faible (au moins un prisme par sommet).
-   - (b) *Plafond arithmétique.* Une majoration de k par un argument global (des vecteurs du noyau mod 7 au-delà des
-     54 rationnels). Aucun mécanisme connu ; heuristiquement k ≈ 30.
+   - (b) *Plafond arithmétique.* Une majoration de k par un argument global. **Obtenu à 08 h : L22, k ≤ 28, par le
+     genre de Λ₋₄ (notes/101).** Reste à le relier à la torsion.
    - (c) *Méthode globale nouvelle* (réseau des droites et formes modulaires, notes/96) : plusieurs jours, issue
      incertaine.
    - (d) *Resserrer k par combinaison* (C2 : prouver d ≤ 12, d'où k ≥ 12) : faisable, mais ce n'est encore qu'un
