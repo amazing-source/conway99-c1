@@ -101,3 +101,18 @@ maximale**.
   Troisième dérivation : M_x·Mᵀ = Mᵀ(35I + 7P + 35J) ≡ 0 (mod 7), vérifié exactement (sympy). Donc M_x = 0 ⊕ (H + 4I)|_K.
 - Y = X_int² − 4X_int − 17I − J est notes/96 §3 bis (K = −G_L(G_L − 10I) + J). C'est pourquoi l'identité
   (Y − 4)(Y + 17) = 0 de notes/109 §4 n'a aucune prise : elle découle du seul spectre de X_int.
+
+## 6. Contrôle : la « 7-spécialité » exigée par L22 n'a rien d'anormal
+p-rangs de A − rI aux premiers p | r − s, pour les graphes existants des familles (λ, μ) = (0, 2) et (1, 2)
+(`code/prank_family.py`), comparés à la borne de van Eijl min(f, g) + 1 :
+
+| graphe | torsion | borne | p-rang |
+|---|---|---|---|
+| Clebsch (16,5,0,2) | non tordu (5-cube replié) | 6 | 6 (p = 2) |
+| Gewirtz (56,10,0,2) | tordu au maximum | 21 | 20 (p = 2 et p = 3) |
+| srg(9,4,1,2) | non tordu | 5 | 4 (p = 3) |
+| BvLS (243,22,1,2) | non tordu | 111 | 67 (p = 3) |
+
+Pour 99, la borne vaut 45. Le rang est impair (L2) et ≤ 43 (L22), donc au moins 2 sous la borne. Gewirtz, qui existe
+et qui est tordu au maximum, est 1 sous la sienne. La contrainte de L22 est donc du même ordre que ce que réalisent
+les graphes existants : pas un indice de non-existence.
