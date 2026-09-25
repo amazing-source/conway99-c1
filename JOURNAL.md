@@ -225,3 +225,20 @@
   - **L14 pour |C| = 2 démontré à la main** : fentes, trois doubles forcés par μ, puis 4 voisins communs disponibles
     contre 5 exigés dans le bloc tordu × tordu. |C| ≥ 3 reste au SAT.
   - Correction de notes/102 §9 (les arêtes d'ombre sont sur des droites intérieures non pures).
+- 25/09, nuit. **Démarche expérimentale de C3, labo séparé** (notes/113, 114 ; `Desktop/c1_experimental`).
+  - Demande de l'utilisateur : faire travailler les trois sessions avec la méthode de C3, pas avec son contenu.
+    Registre de pistes noté P/C ; énoncés généraux testés sur de vrais graphes avec contrôles négatifs.
+  - Contenu de C3 : clos par « structures » (notes/113), avec C2.
+  - Outillage : Go 1.27 et GCC 16.1 installés à la demande de l'utilisateur. `code/padic.c` : Smith et noyaux sur Z_q
+    en C. Le calcul X1 sur BvLS passe de plus de 20 min à 4,5 s.
+  - Résultats :
+    - graphe lointain d'une droite (spectre fixé par G(L), réseaux de rang 18 et 8, Nikulin sans prise) ;
+    - graphes réels de valeurs propres {3, −4}, jamais utilisés : srg(49,24,11,12) et srg(50,21,8,9), ce dernier par
+      commutation trouvée à la main. L22 y est sain ;
+    - équilibre de C2 re-dérivé, principe de variance nulle (égalité de Rayleigh), lemme E, exclusion de Fano si σ
+      respecte l'appariement ;
+    - droites équiangulaires fermées (borne 540).
+  - En parallèle : « structures » démontre S5 (critère mod 4 sur det Λ_θ ; 35 ensembles ouverts exclus, 0 faux positif
+    sur 1183 graphes connus), puis rejoue L21 et L23 sur de vrais graphes (ils tiennent). C2 ferme ses
+    configurations ancrées.
+  - Aucun plafond pour l'instant.

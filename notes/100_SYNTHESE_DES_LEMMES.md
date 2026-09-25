@@ -36,6 +36,22 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   p-rang. La 7-spécialité exigée par L22 n'est donc pas anormale.
 > - Le verrou reste le même : aucun mécanisme de plafond.
 
+> **Mise à jour (nuit du 25/09, notes/112–114).**
+> - **notes/112 : vers g(x) ≤ 16.** 𝒩 est un 4-cycle (lemme du degré minimal), plus les lemmes A et B et le contrôle de
+>   blocs du second ordre. Il reste 20 configurations, qui demandent le troisième ordre.
+> - **notes/113 (« structures ») : le contenu de C3 ne se transpose pas** (no-go : il faut une symétrie d'ordre impair).
+>   Genre local et global cohérent en 7 et en 11 ; la somme de Gauss de l'Arf retombe sur L17.
+> - **notes/114 : labo expérimental** (méthode C3, `Desktop/c1_experimental`).
+>   - Le graphe lointain d'une droite a un spectre fixé par G(L) ; ses réseaux sont de rang 18 et 8. Nikulin ne mord
+>     jamais.
+>   - Les graphes réels de valeurs propres {3, −4} (Paley(49), réseaux d'AG(2,7), srg(50,21,8,9)) confirment que L22
+>     est sain.
+>   - Équilibre d'une droite (C2) et lemme E : le modèle de Fano est exclu si σ respecte l'appariement.
+>   - Droites équiangulaires : fermé (borne 540).
+>   - **Tout cela est côté plancher ou cohérent : le plafond manque toujours.** Cadre utile (« structures ») : une
+>     contradiction en torsion maximale exigerait un sous-graphe induit forcé de spectre local hors de [−4, 3], ou
+>     une égalité de Rayleigh forcée.
+
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
   P = nombre de prismes = 1386 − Σ_x|W(x)|/6 (L15) ; g(x) = grilles par x.
