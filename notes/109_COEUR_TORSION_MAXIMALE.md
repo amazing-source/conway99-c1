@@ -46,7 +46,7 @@ de Fano Φ des classes. Les deux partenaires τ de y ∈ Q_ij tombent alors dans
 - Avec σ, le budget par paire est 4 : c'est ce qui tue le modèle chez C2 (8 doubles contre 4). **Sans σ, le budget
   est 8** : la contradiction ne se transporte pas telle quelle.
 
-## 4. Nouveau : le schéma des droites à P = 0
+## 4. Le schéma des droites à P = 0 (global : déjà notes/99 §4 ; local : nouveau, sans prise)
 Relations entre droites : sécantes (degré 18), puis, pour deux droites disjointes, e = 0, 1, 2 arêtes (e = 3 serait un
 prisme, absent à P = 0). Avec 𝓔 = NᵀAN et la projection E₋₄, on a 7NᵀE₋₄N = 9I + 3A_dual − 𝓔 + J. D'où, à P = 0 :
 
