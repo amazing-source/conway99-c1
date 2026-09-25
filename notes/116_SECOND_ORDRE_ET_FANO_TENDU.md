@@ -27,8 +27,10 @@ On encadre l'identité par des indicatrices de blocs (cnt(z,R) = nombre de voisi
   **Σ_z cnt(z,R)·cnt(z,R') = 12|R ∩ R'| − N(R,R') + Σ_{y∈R, w∈R'} (2 − |y ∩ w|).**
 
 Diagonale, en torsion quelconque : Σ_z cnt(z,R) = 48 et **Σ_z cnt(z,R)(cnt(z,R) − 1) = 16 − 2e(R)**, où e(R) est le
-nombre d'arêtes internes au bloc (précision de « structures »). En torsion maximale, e(R) = 0 : la somme vaut 16,
-soit n₂ + 3n₃ + 6n₄ = 8. Contrôle BvLS : e(R) = 4 et diagonale 8 sur ses 55 blocs. Ce sont des sommes de conditions
+nombre d'arêtes internes au bloc (précision de « structures »). En torsion maximale, les seules arêtes internes
+possibles sont les σ-arêtes σ_c(v) = v̄ (coïncidences S de L18, non exclues par la torsion maximale). Sans elles,
+e(R) = 0 et la somme vaut 16, soit n₂ + 3n₃ + 6n₄ = 8. C'est le cas au Fano tendu, où une telle arête serait interne
+à une droite tendue. Contrôle BvLS : e(R) = 4 et diagonale 8 sur ses 55 blocs. Ce sont des sommes de conditions
 λ/μ.
 
 ## 3. Critère lointain

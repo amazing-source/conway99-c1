@@ -52,11 +52,16 @@ c'est faible.
   Aux étiquettes et en x, l'équation est automatiquement vérifiée.
 
 ## 4. En torsion maximale (OBSERVÉ, vérifications seulement)
-- **Répartition des arêtes spéciales.** Chaque arête spéciale (τ ou σ) de Δ_x tombe dans exactement une famille
-  triangle. Il y en a 168 pour 35 triangles, soit e = 4,8 en moyenne. **Le lemme interdit les concentrations.**
-- **Échantillon.** Sur 20 000 configurations aléatoires en torsion maximale, 103 sont localement admissibles (λ ≤ 1
-  et μ ≤ 2 dans tous les supports). **23 sont tuées par le lemme.** Les supports étoiles (boules de droites) ne
-  violent jamais : 0 sur 1 877.
+- **Répartition des arêtes spéciales.** On suppose en plus qu'aucune σ-arête n'est interne à un bloc
+  (σ_c(v) ≠ v̄, c'est-à-dire aucune coïncidence S de L18 en x). Alors chaque arête spéciale (τ ou σ) de Δ_x tombe
+  dans exactement une famille triangle : 168 arêtes pour 35 triangles, soit e = 4,8 en moyenne. **Le lemme interdit
+  les concentrations.**
+  - *Correction du 25/09 (nuit).* La torsion maximale ne porte que sur τ. Elle n'exclut pas σ_c(v) = v̄. Une telle
+    arête est interne au bloc {c, classe v} et compte dans les 5 familles qui le contiennent. L18 laisse S libre en
+    torsion maximale.
+- **Échantillon (même hypothèse σ_c(v) ∉ {v, v̄}).** Sur 20 000 configurations aléatoires en torsion maximale,
+  103 sont localement admissibles (λ ≤ 1 et μ ≤ 2 dans tous les supports). **23 sont tuées par le lemme.** Les
+  supports étoiles (boules de droites) ne violent jamais : 0 sur 1 877.
 - **Certificats.** Ils sont exacts. Exemple explicite (`x14h_export_violation.py`) : triangle de classes {0,1,6},
   10 arêtes de T, λ_max(T − (3I − P_∂)) ≈ 0,0543.
   - « Structures » l'a recalculé avec son propre code. Le polynôme caractéristique exact de T − (3I − P_∂), de
