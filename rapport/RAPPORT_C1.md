@@ -195,6 +195,8 @@ peu probable), soit trouver une identité globale qui limite la torsion totale (
 - L2–L4 (dérivation indépendante ; des énoncés voisins existent peut-être chez Brouwer–van Eijl).
 
 ## 6. Pour le PC du labo
+**Gelé le 25/09 (décision de l'utilisateur) : plus de campagnes de solveurs, ni ici ni ailleurs** ; liste gardée
+pour archive. Seules restent possibles de petites vérifications exactes d'un argument écrit à la main.
 1. Contrôle positif t = 10 du modèle enraciné (BvLS doit être SAT) — valide le code générique.
 2. Certificats DRAT pour L8 et L11 (L7 et L10 ont maintenant des preuves humaines ; L8 est le plus important :
    c'est le seul appui de « g(x) ≤ 18 » pour g = 21).

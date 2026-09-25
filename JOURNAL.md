@@ -154,3 +154,6 @@
   g = 0, k = 30) satisfait tous les énoncés, donc aucune contradiction possible à partir d'eux seuls. Corollaires :
   k = 10 ⟹ m(e) ∈ {0, 2}, |W(x)| ≥ 56, P ≤ 462 pair (L20 + L20 ter refait pour k = 10 + L15) ; k ≤ 20 ⟹ droites
   7-dégénérées ; g_tot ≤ 191. La pièce manquante est un plafond.
+- 25/09, 06 h 15. **Décision de l'utilisateur : plus de solveurs** (« ça n'en vaut jamais la peine »), après la
+  branche C2 (SAT de 8 h, cassage de symétrie, cube-and-conquer, générateur : rien). LAB_INSTRUCTIONS et §6 du
+  rapport gelés. La suite se fait en mathématiques pures (notes/100 : il manque un plafond de torsion).
