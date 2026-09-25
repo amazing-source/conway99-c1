@@ -51,6 +51,12 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   - **Tout cela est côté plancher ou cohérent : le plafond manque toujours.** Cadre utile (« structures ») : une
 >     contradiction en torsion maximale exigerait un sous-graphe induit forcé de spectre local hors de [−4, 3], ou
 >     une égalité de Rayleigh forcée.
+> - **notes/115 : lemme du triangle (première contrainte exacte active en torsion maximale).** Pour tout sommet et
+>   toutes trois classes, T ⪯ 3I − P_∂ (T : transitions internes aux 12 paires ; recalcul indépendant par
+>   « structures »). D'où e ≤ 12 ; au cas tendu, un vecteur propre de valeur 3 et des comptes exacts.
+>   - En torsion maximale, il tue 22 % des configurations localement admissibles.
+>   - Il force le modèle de Fano au régime tendu : toute σ-arête interne le tue.
+>   - Pas encore un plafond : les configurations aux transitions étalées passent.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

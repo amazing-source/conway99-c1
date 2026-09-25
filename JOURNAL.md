@@ -242,3 +242,11 @@
     sur 1183 graphes connus), puis rejoue L21 et L23 sur de vrais graphes (ils tiennent). C2 ferme ses
     configurations ancrées.
   - Aucun plafond pour l'instant.
+- 25/09, nuit (suite). **Lemme du triangle (notes/115).**
+  - Principe de Rayleigh (A ⪯ 3I + (11/99)J) sur le support entièrement déterminé x + étiquettes + 12 paires de trois
+    classes. Complément de Schur sur le moulin : T ⪯ 3I − P_∂ exactement. Recalcul indépendant par « structures ».
+  - Corollaires : e ≤ 12 ; au cas tendu, Aq = 3q avec des comptes exacts 1 et 3.
+  - Premier outil exact actif en torsion maximale : 22 % des configurations admissibles tuées ; le modèle de Fano est
+    forcé au cas tendu.
+  - Aussi dans le labo : projecteur caché d'une droite (A_F = B₀ − 7Π₋₄, rang 8) et outil de certificats de Rayleigh
+    pour les branches à M partiel (`code/hidden_projector.py`, validé sur BvLS).
