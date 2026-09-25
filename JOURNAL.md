@@ -171,3 +171,11 @@
   en maths pures, en lisant le Théorème D de C2). Réduction exacte de L8 à une S₄-connexion sur K(7,2) ; régime « tout
   A » réfuté (triangles équilibrés + couples complémentaires) ; classification des holonomies autour d'une arête
   (énumération exhaustive) ; point de Hamming ⟹ 18 ≤ k ≤ 26 (grilles complètes dans U′). Régime mixte ouvert.
+- 25/09, midi. **L8 : les deux régimes extrêmes sont exclus à la main** (notes/103 §6-7).
+  - Aucune arête isométrique : les images antipodales forment 21 tournois à degrés entrants pairs (μ avec les
+    étiquettes). Le fait C impose un accord pair sur chaque K₄ commun, et la parité donne 0 ≡ 1 sur tout triangle de
+    classes. Version locale : trois paires par une même classe ne peuvent pas être entièrement non isométriques.
+  - L7 local : les 18 arêtes autour d'un triangle de classes ne sont pas toutes isométriques.
+  - Correction de notes/95 : une arête non isométrique a 0 ou 2 transports isométriques, pas 0 ou 1.
+  - Reste le cas mixte : une coupe (paires de {1,2,3,4} contre le reste) passe toutes les contraintes locales. Il
+    faudra les parties de translation.
