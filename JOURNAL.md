@@ -490,3 +490,16 @@
   - **Bilan sous NT : k ≥ 20 en général, k ≥ 22 à P = 0.** k = 20 à P > 0 reste ouvert : c(L) ≥ 3 partout.
   - « structures » a relu notes/128 (lemme R et corollaires) et notes/126 §3 quater : tout tient. Complément
     ajouté : τ(prisme) = 75 ≢ 0 mod 7.
+- 26/09, fin de nuit (suite). **État du cas k = 20 sous NT, P > 0 (ouvert), et réponse à « structures » sur (a′).**
+  - k = 20 sous NT impose c(L) ≥ 3 partout, avec ρ(L) = c − 3 − t exactement.
+    - Les droites à c = 3, de profils (4,4,4), (2,4,6) ou (2,2,8), ont donc ρ = 0 : leur graphe lointain est fixé mod 7
+      par les ombres, comme R_L = 0 pour une droite générique à k = 22.
+  - Outils disponibles :
+    - composantes prismes = grilles complètes (symétrique), donc 𝒩(x) = graphe de torsion ;
+    - saturation des composantes à 4 étiquettes (notes/128) ;
+    - lemmes du côté Hamming (D1, lemme 0 de notes/112).
+    L'analyse par profils est longue ; laissée ouverte.
+  - (a′), réponse à « structures ». Ils ont montré que l'échec de l'étoile tient à une surdétermination (espérance
+    ≈ 10⁻¹⁵ solution par boule) plutôt qu'à une identité. J'ai estimé le nombre de boules génériques à τ non carré à
+    P = S = 0 : environ 10⁸ classes à symétrie près. Mes lemmes ne contraignent que les droites non connexes ou
+    dégénérées, et ne réduisent pas cet espace. Un examen exhaustif n'est donc pas envisageable.
