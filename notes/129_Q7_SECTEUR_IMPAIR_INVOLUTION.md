@@ -174,3 +174,11 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - Type (3,3) : t = 4, donc torsion équilibrée exigée.
   - Types (4,2) et (2,2,2) : det ≡ 2 et 1, des carrés, donc g⁻ = 20 forcé.
   - Identité entière : Σ_z (s̃_z·φ)² = 49|φ − σφ|²/2 pour φ entier de ker Q.
+- **Test de la torsion équilibrée sur A111111 de type (3,3)** (méthode de notes/126 §3 bis ; `code/x36f`, `x36g`).
+  - G(L_c) y a deux composantes (6,6), isomorphes, avec dim E_C = 2 chacune.
+  - Multiplicités exactes : far(n, n′) = [n ~ n′ ? 1 : 2] − [même couche] − #voisins communs dans G. La maille est ici 4.
+  - **Torsion portée par une seule composante : jamais équilibrée.** Aucun Y ne passe la couverture ; au mieux,
+    36 paires sont en défaut.
+  - **Torsion mixte** Y₁ + Y₂ : le test de couverture sur les 6-ensembles admissibles t₁ ∪ t₂ passe pour 375 des
+    384 classes. Il est donc non concluant : il faudrait la contrainte exacte (i)–(iii) de C2, c'est-à-dire un vrai
+    plan de couverture, pas seulement l'existence de 6-ensembles de somme nulle.
