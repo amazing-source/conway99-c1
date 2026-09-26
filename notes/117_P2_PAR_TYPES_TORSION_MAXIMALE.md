@@ -13,6 +13,7 @@ exacte. Un certificat a été revérifié indépendamment par « structures ».*
 | un certificat revérifié indépendamment (types, 735 seconds membres, valeur exacte 5,9916) | recalcul « structures » |
 | environ 40 % survivent ; le lemme du triangle en tue 1 sur 11 ; le raffinement V/P, 0 sur 3 | OBSERVÉ |
 | niveau paires (466 000 colonnes) : hors de la règle des 5 minutes sur le portable | non fait |
+| (P2) ⟺ repère ajusté Σ_z ξ_zξ_zᵀ = 196·P_{E₋₂} dans l'espace de Johnson de dimension 14 | DÉRIVÉ, contrôle exact |
 
 ## 1. Le modèle (en un sommet x, données locales (τ, σ) fixées)
 - **Type d'une paire z** : le multigraphe de classes de son graphe de voisins génériques G_z, c'est-à-dire
@@ -44,6 +45,27 @@ exacte. Un certificat a été revérifié indépendamment par « structures ».*
   - le lemme du triangle en tue 1 sur 11 ;
   - le raffinement V/P de la diagonale (sommets en V et arêtes parallèles comptés séparément dans chaque bloc,
     identités exactes) ne tue aucun des 3 premiers.
+
+## 2 bis. Lecture de (P2) : un repère ajusté dans un espace de dimension 14 (DÉRIVÉ)
+- On part de A_Δ² + A_Δ − 12I = 2J − ∂ᵀ∂ (notes/116) et on complète le carré : **(2A_Δ + I)² = 49I + 8J − 4∂ᵀ∂**.
+- Pour un bloc R, soit w_R = (2A_Δ + I)1_R, c'est-à-dire w_R(z) = 2·cnt(z,R) + [z ∈ R], un vecteur entier. Alors :
+  - **Gram(w_R) = 128J + 132I − 32A_J**, où A_J relie les blocs qui partagent une classe (graphe de Johnson J(7,2)).
+    Sa diagonale vaut 260, et ses entrées 96 (classe commune) ou 128 (blocs disjoints). Ses valeurs propres sont
+    **50², 6², 14²**, sur les espaces de Johnson E₁₀ (dim 1), E₃ (dim 6) et E₋₂ (dim 14) ;
+  - pour toute paire z, Σ_R w_R(z) = 25 ;
+  - les sommes par classe de w(z) = (w_R(z))_R valent 8 hors des classes de z et 5 sur elles (fentes). Les parties
+    E₁₀ ⊕ E₃ de w(z) ne dépendent donc que du bloc de z, et les identités correspondantes sont automatiques.
+- **Tout le contenu de (P2) est dans E₋₂.** Soit ξ_z la projection de w(z) sur E₋₂. Alors (P2) équivaut à :
+  **Σ_z ξ_z ξ_zᵀ = 196·P_{E₋₂}**. Les 84 vecteurs ξ_z forment un repère ajusté (« tight frame ») de constante 196
+  dans R¹⁴, de trace 2744 (moyenne ‖ξ_z‖² = 98/3). S'y ajoutent des conditions croisées linéaires (moments
+  d'ordre 1 par bloc).
+- Valable en tout sommet de tout srg(99,14,1,2), quelle que soit la torsion. Contrôle exact sur le témoin de Fano :
+  Gram, repère et sommes 25 vérifiés sans écart.
+- **Lecture des morts.** Les parties spéciales des ξ_z sont fixées par (τ, σ) ; leurs parties génériques parcourent
+  des types en nombre fini. Une configuration meurt quand aucun choix de types ne rend le repère isotrope. Une
+  preuve à la main passerait par une direction f ∈ E₋₂ où Σ_z ⟨ξ_z, f⟩² = 196‖f‖² est impossible. Le lien avec L19 :
+  (2A_Δ + I)/7 est la réflexion R de notes/93 sur ker ∂, et (P2) dit que R est une isométrie sur les 14 dimensions
+  des fonctions constantes par blocs de ker ∂.
 
 ## 3. Portée (à lire telle quelle)
 - **Chaque certificat réfute une configuration (τ, σ).** « 19 sur 31 » est un énoncé d'échantillon, pas un théorème.
