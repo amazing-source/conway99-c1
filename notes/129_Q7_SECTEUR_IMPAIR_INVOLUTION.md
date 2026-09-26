@@ -107,6 +107,19 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - Comme en notes/126 §2, Σ_f (s̃_f·φ)² ≡ 0 est automatique pour φ ∈ ker Q_c, car Σ_f s̃_f s̃_fᵀ = −(Q_c + 2J)² ≡ −Q_c² − J.
     L'équilibre est une condition de plus (30 équations).
   - La torsion impaire est un cas de la torsion de C1 : 7 | det L_G⁻ ⟹ 7 | τ(G(L_c)).
+- **Borne exhaustive : dim ker Q_c ≤ 4, donc g⁻ ≥ 14.**
+  - Borne de boule : rang Q_c − 1 = 11 − t_c ≤ rang M_R = g − 7, soit g ≥ 18 − t_c pour tout bloc c.
+  - Énumération de tous les couples (τ, η) d'involutions sans point fixe sur X_c (`code/x36c_q7_qc_nullity.py`) :
+    - 11 classes de τ à Aut(X_c, π) près, et les 10 395 η pour chacune ;
+    - **t_c ≤ 4**, et t_c = 4 n'arrive que si π ∪ τ_c a au moins 2 digones (types (2⁶), (2⁴,4), (2²,4²)) ;
+    - un digone au bloc d signifie τ_c(d+) = d−, c'est-à-dire une arête sœur de type m en c (ou une paire frère).
+  - Donc **g⁻ ∈ {14, 16, 18, 20}**, ce qui améliore le g⁻ ≥ 12 d'Astra (dossier 6, par Blichfeldt).
+  - **Cas de réserve** (tous les Q_c singuliers) : g = 18 + t_c − 2r₀_c + ρ_c.
+    - g = 16 impose t_c ≥ 2 et r₀_c ≥ 1 + t_c/2 en tout bloc : au moins 2 vecteurs de torsion impaire équilibrés
+      partout.
+    - g = 14 impose t_c = 4 et r₀_c = 4 en tout bloc (torsion maximale, entièrement équilibrée), donc au moins
+      2 digones en chaque bloc : 2|Σ| + #{n_s = 1} ≥ 14.
+    - « NT impair » tuerait les deux.
 - **Mineurs principaux (version Seidel, cf. notes/102 §7).** Pour tout ensemble I d'orbites :
   - rang₇ (S − 3I)_II ≤ g ≤ 20. Donc **det (S − 3I)_II ≡ 0 dès que |I| ≥ 21** ;
   - pour |I| = 20, det ≡ 0 ou un carré non nul (β⁻ scindée de dim 20) ;

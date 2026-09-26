@@ -537,3 +537,19 @@
   - **Suite** :
     - C1, à la main : l'étoile complète impaire à g = 18, puis K_c à g = 20.
     - « structures » et C2 : le filtre N_II sur les squelettes à Q entier.
+- 26/09, soir (suite). **q:7 : g⁻ ≥ 14 par énumération locale exhaustive ; retour d'Astra (dossier 6).**
+  - Astra (relu par « structures ») :
+    - min Λ₋₄⁻ ≥ 8 et det L_T = 2¹²·7^{g⁻−7} ;
+    - Blichfeldt exclut g⁻ = 8 et 10 ;
+    - réserve : exclure 18 et 20 ne suffit que si un Q_c est inversible.
+  - C1 : dim ker Q_c ≤ 4 sur TOUS les (τ, η) (11 classes de τ × 10 395 η, code/x36c). Avec g ≥ 18 − t_c, on obtient
+    **g⁻ ∈ {14, 16, 18, 20}**.
+    - t_c = 4 exige au moins 2 digones de π ∪ τ_c (arêtes sœurs de type m en c).
+    - Cas de réserve : à g = 16, au moins 2 vecteurs de torsion impaire équilibrés en chaque bloc ; à g = 14,
+      t_c = r₀_c = 4 partout.
+  - Envoyé à « structures » (avant cela : filtre des mineurs, L21 impair raffiné, ker T = ⟨b_c⟩, identités impaires
+    autour des paires frères, recollement local surdéterminé de 22 à 112). « structures » note que les identités (sint) de
+    C2 (note 19) couvrent déjà une partie des identités impaires pour les paires frères partageantes.
+  - Le recollement (7 étoiles dans un espace quadratique de dim ≤ 13) est heuristiquement surdéterminé, mais n'est pas
+    certifiable à la main : aucun mineur 14 × 14 n'est entièrement connu, et les seuls zéros connus sont des sœurs à
+    n_s ∈ {0, 2}.
