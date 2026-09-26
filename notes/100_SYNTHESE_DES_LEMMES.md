@@ -75,6 +75,12 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >     des retournements bien choisis l'annulent. Les 21 systèmes « cellules par bloc » échouent dans 16 à 19 blocs de
 >     chaque configuration testée ; le lemme uniforme n'est pas fait.
 >   - Strate des σ internes : 1 survivant « blocs + cellules » sur 24, indéterminé en paire × bloc sous 5 minutes.
+>
+> - **notes/119 : lemme P-Ψ (mathématiques pures).** Au Fano tendu, pairblk combiné à Ψ donne une condition par paire :
+>   θ(z_X(y)) + θ(z_Y(y)) = 0. Démontré, et relu à la main par « structures ».
+>   - Droite par droite, c'est un système affine sur F₂ en les retournements.
+>   - Chacun des 9 σ tendus testés a des droites sans aucune solution : ils sont morts pour tout τ Fano.
+>   - Le lemme « aucun sommet de Fano tendu » reste à conclure par un argument global.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

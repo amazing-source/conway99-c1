@@ -274,3 +274,8 @@
   - Strate des σ internes : un survivant indéterminé.
   - Auto-attaques : un statut « limite de temps » n'est pas une mort ; les spéciaux sont dédoublonnés quand une arête
     σ est interne ; les morts d'un tirage aléatoire ne valent pas pour un choix adverse.
+- 26/09, fin de matinée. **Retour aux mathématiques pures (demande de l'utilisateur) ; lemme P-Ψ (notes/119).**
+  - pairblk combiné à Ψ donne, au Fano tendu, une condition exacte par paire, relue à la main par « structures ».
+  - Elle se lit comme un système F₂ par droite en les retournements. Les 9 σ testés sont morts pour tout τ.
+  - Il reste l'argument global.
+
