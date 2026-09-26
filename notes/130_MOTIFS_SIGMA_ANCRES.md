@@ -10,7 +10,8 @@ contrôle exhaustif d'un lemme démontré à la main (`c1_experimental/motifs/`)
 | Famille ancrée d'un motif : blocs non puits de degré sortant ≥ 3, puits deux à deux frères | DÉRIVÉ |
 | **Ancrés P₅ et 2P₃ : impossibles** (règle de la queue seule ; preuve à la main pour P₅) | DÉRIVÉ + exhaustif |
 | **Ancrés P₃ et P₄ : impossibles** (T⁺ avec graphes D et partitions de Out) | exhaustif, un cas refait à la main |
-| Ancrés restants : P₃+K₂ (4 orientations), K₃ (8), 3K₂ (44), 2K₂ (72), K₂ (144) ; ils passent les tests à une racine | exhaustif ; ouvert |
+| Ancré P₃+K₂ : impossible (modèle couplé de « structures » étendu aux paires frères, §6) | exhaustif |
+| Ancrés restants : K₃ (une classe), 3K₂ (2 orientations), 2K₂ (24), K₂ (en cours) | exhaustif ; ouvert |
 
 ## 1. Cadre
 - Motif Σ = ensemble exact des paires frères, σ_k = degré de k dans Σ (≤ 2, lemme des étoiles de C2).
