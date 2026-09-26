@@ -592,3 +592,7 @@
   - 12 preuves se font par substitution directe (φ = −1 ou 0 = 1).
   - 251 et 263 ont un certificat linéaire pur : (1) − (2) + (3) − (4) + (5) + (6) − (7) donne 0 = 2. L'intégralité
     n'est pas nécessaire.
+- 26/09, nuit (suite). **Test q:7 du graphe lointain** (notes/129 §8), et lecture de la note 23 de C2 :
+  - équilibre, (iv), (v), condition (N, F) ;
+  - spectre de S[19] : C2 avait déjà les valeurs propres 3 et −4 de la boule impaire sur R.
+  - K₃ : autour du triangle, rien n'est contradictoire (types z₁₂, z₁₃, z₂₃ = (sint) de C2). J'attends les squelettes.

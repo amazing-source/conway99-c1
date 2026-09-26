@@ -191,3 +191,9 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - En moyenne c'est compatible : Σ_f n_fᵀ(3I − S_B)⁺n_f = tr((4I + S_B)|_{z_c^⊥}) = 62 sur 30 orbites, soit 2,07 ≤ 3,
     via XXᵀ = (3I − S_B)(4I + S_B).
   - Même principe côté pair (boule paire plus une paire {v, σv}, avec v ≁ σv connu).
+- **Test q:7 du graphe lointain** (proposé à C2 et « structures » ; absent de RSF(star(c))).
+  - Pour une solution locale donnée (μ, τ, Φ) au bloc c : Z := 3I + 5B_FᵀB_F + S̃ᵀQ_c⁻¹S̃ (mod 7).
+  - Alors T_FF − Z ≡ R_c, avec R_c² = 0, X R_c = 0 et rang R_c = g⁻ − 18 ≤ 2.
+  - g = 18 : T_FF ≡ Z, donc les entrées de Z sont dans {0, 1, 6} et sa diagonale est nulle.
+  - g = 20 : R_c = K r Kᵀ, avec k_f ∈ F₇² sur la conique r(k,k) = −Z_ff, r(k_f, k_f′) + Z_ff′ ∈ {0, ±1}, Σ k_f k_fᵀ = 0
+    et XK = 0. C'est un petit problème exact par solution locale.
