@@ -115,6 +115,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >     sous-espace de dimension 7 + c.
 >   - Mod 7, rang R_L = k − 22 ≤ 6 (formule de notes/102 §8, revérifiée exactement).
 >   - C'est la cible du dossier n° 5 d'Astra.
+>
+> - **notes/125 : cycles courts des graphes de droites.**
+>   - Σ_L c₄(G(L)) = S + 3P et Σ_L c₃ = 2P. À P = 0, S compte les 4-cycles des 231 graphes de droites.
+>   - À P = S = 0 : maille ≥ 5 partout. Les profils (4,4,4) et (4,8) sont exclus (lemme de Klein) ; reste (6,6).
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

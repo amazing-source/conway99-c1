@@ -24,8 +24,13 @@ Soit L = T = {x, y, z} une droite, B = T ∪ N₁(T) sa boule (39 sommets) et F 
   - Sur les vecteurs de somme nulle : x² + x − 12 = 0, soit **3 et −4, chacune deux fois**.
 - Sur les vecteurs de N₁(T) de somme nulle par couche, A_B agit comme M_T. Chaque composante de M_T au-delà de la
   première ajoute une valeur propre 3.
-- Donc rang_Q(A_B − 3I) = 38 − c. À comparer avec rang₇ Q_BB = 37 − d(L) (notes/102) : mod 7, les valeurs propres
-  −4 ≡ 3 du quotient s'ajoutent au noyau.
+- Donc rang_Q(A_B − 3I) = 38 − c. À comparer avec rang₇ Q_BB = 37 − d(L) (notes/102).
+  - *Erratum (26/09, nuit, notes/125).* Une version précédente disait que mod 7, les valeurs propres −4 ≡ 3 du quotient
+    « s'ajoutent au noyau ». C'est faux. Mod 7, les vecteurs propres 3 et −4 du quotient coïncident (a = θb), et la
+    partie de somme nulle du quotient est un bloc de Jordan : rang₇(A_B − 3I) = 37 pour d(L) = 1.
+  - La chute à 36 vient du terme 3J : **1_L − 1_{N(L)} ∈ ker₇ Q_BB**.
+  - ker₇ Q_BB est donc engendré par les deux vecteurs propres 3 du quotient et par 1_L − 1_{N(L)}.
+  - Contrôle exact : 8 boules aléatoires avec d = 1.
 - Les deux vecteurs propres 3 du quotient sont des vecteurs propres de Γ portés par la boule : chaque lointain voit
   2 points par couche, donc la somme nulle par couche passe.
 

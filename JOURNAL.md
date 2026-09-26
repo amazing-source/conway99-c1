@@ -392,3 +392,19 @@
     - les incidences d'ombre se bouclent exactement (80 = 32 × 1 + 24 × 2).
   - La strate est donc très rigide, mais cohérente aux niveaux 1 et 2. Il faudrait le niveau paire × bloc (doubles,
     bornes ordonnées) pour conclure. Mise en attente.
+- 26/09, nuit (suite). **Cycles courts des graphes de droites (notes/125).**
+  - Les 4-cycles de G(L) sont de deux types : un Z₂ centré en un point de L (deux événements S), ou le carré d'un
+    prisme dont un barreau est une arête de L. D'où **Σ_L c₄(G(L)) = S + 3P**, et Σ_L c₃(G(L)) = 2P.
+  - Contrôle exact sur les 3 géométries tordues : 120 = 120, 117 = 3·39 et 336 = 336.
+  - À P = 0, S est donc le nombre total de 4-cycles des 231 graphes de droites. Avec S ≤ n₃ (L18) : Σ_L c₄ ≤ 4158.
+  - Critère exact de maille ≥ 5 par composante : σ_U évite id, mate, τ_u et τ_ū, plus la condition (c). Énumération :
+    96/96 et 46 080/46 080.
+  - **Lemme de Klein** : une composante à 4 étiquettes par couche a toujours un cycle de longueur ≤ 4.
+  - À P = S = 0 : maille ≥ 5 partout, **profils (4,4,4) et (4,8) exclus**. Reste (6,6), avec 15 types de composantes
+    à maille ≥ 5.
+  - **Corrections.**
+    - La correction b231c36 était elle-même fausse. S est global (L18), et les 4-cycles d'holonomie invoqués sont des
+      événements S en u ou en ū. À P = S = 0, la maille ≥ 5 est vraie.
+    - La strate (4,4,4) de d7cd060 est vide à S = 0 global. Chaque r_v ∈ P_u ∪ P_ū est un événement S.
+    - notes/124 §1 : l'explication de rang₇ Q_BB = 37 − d(L) était fausse. Le quotient donne un bloc de Jordan, et
+      c'est 1_L − 1_{N(L)} qui entre dans ker₇ Q_BB. Les nombres étaient justes (contrôle sur 8 boules).
