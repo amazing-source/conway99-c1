@@ -382,3 +382,13 @@
     l'égalité, avec rang Q_BB = 36 = 37 − d(L).
   - Dans un vrai srg(99,14,1,2), cela donne rang R_L = 14 + k − 36 = k − 22 pour d(L) = 1.
   - Script : code/x29e_schur_line_check.py.
+- 26/09, nuit (fin). **Strate (4,4,4) de G(L) à P = 0, S = 0** (pas de contradiction pour l'instant).
+  - Par partie X_j, il y a 8 configurations locales admissibles pour (τ_u, τ_ū, σ_U) (énumération, code/x29g).
+  - Dans toutes, pour tout v ∉ U, le second voisin commun r_v de {u,v} et {ū,v} est une u-paire ou une ū-paire,
+    jamais un lointain. σ_U coïncide partiellement avec τ_u ou τ_ū sur chaque partie.
+  - Par l'équilibre (2 points d'ombre par composante) :
+    - pour s ∈ X_j, τ_s(u^±) ∉ X_j et σ_S(u^±) ∉ X_j ;
+    - chaque u-paire {u,v} a 4 voisins lointains de type 1 (une étiquette dans X_j) et 6 de type 0 ;
+    - les incidences d'ombre se bouclent exactement (80 = 32 × 1 + 24 × 2).
+  - La strate est donc très rigide, mais cohérente aux niveaux 1 et 2. Il faudrait le niveau paire × bloc (doubles,
+    bornes ordonnées) pour conclure. Mise en attente.
