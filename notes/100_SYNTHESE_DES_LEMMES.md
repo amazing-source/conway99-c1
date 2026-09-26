@@ -126,6 +126,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >
 > - **notes/127 : carte du programme 7-adique** (coordination) : quels lemmes ferment quels k ; verrous NT (droites
 >   connexes), (a′) uniforme, « k = 22 sans générique », k = 24 à 28.
+>
+> - **notes/128 : rigidité (4,4,4).** À P = 0, si les 7 droites par x sont (4,4,4), tous les σ en x sont des réflexions
+>   de mates (S(x) = 84). Deux tels sommets ne sont jamais voisins, donc « (4,4,4) partout » est impossible.
+>   **Sous NT, à P = 0, k ≥ 22.** Sans NT : k ≤ 20 à P = 0 impose au moins 26 droites à torsion équilibrée.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

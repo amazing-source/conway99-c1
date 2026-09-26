@@ -474,3 +474,11 @@
   - « Toute droite non connexe » est donc une question locale : compatibilité, en chaque sommet, des 7 partitions P_U
     avec les τ (τ_a préserve P_A) et les lemmes E de chaque droite. Au niveau des classes, les contraintes laissent de
     la place, car les évènements génériques comblent les « plus ». Il faut le niveau paire × bloc. Non tranché.
+- 26/09, fin de nuit. **Rigidité (4,4,4) (notes/128).** À P = 0, si les 7 droites par x sont (4,4,4), alors pour
+  c ∈ C et d ∈ D, W = Π_C(D) : {c, τ_c d} est une W-paire dans la composante de c de G(L_W). L'équilibre (2 points par
+  composante) interdit alors que le partenaire σ_C de {c, d} soit une W-paire, d'où σ_C(d) = d̄.
+  - Tous les σ en x sont donc des réflexions de mates, et S(x) = 84.
+  - Deux tels sommets voisins se contredisent : aucun événement S en u n'est porté par L_U, alors que tous le seraient.
+  - Conséquences : V₄₄₄ est indépendant (au plus 22 sommets) ; « (4,4,4) partout » est impossible ; **sous NT, k ≥ 22
+    à P = 0** ; sans NT, k ≤ 20 à P = 0 impose au moins 26 droites à torsion équilibrée.
+  - notes/127 (carte du programme 7-adique) est aussi au corpus.
