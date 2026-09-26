@@ -63,6 +63,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >     « structures » (contrôles Paley 9 et BvLS).
 >   - Au Fano tendu : comptes exacts et variance nulle (F5). Pourtant un témoin passe tous les tests de niveau bloc
 >     (admissibilité, 231 identités, toutes les compressions de Rayleigh). Route de plafond fermée.
+> - **notes/117 : (P2) linéarisé par types (méthode de C2).** En torsion maximale générique, 19 configurations locales
+>   admissibles sur 31 sont impossibles, chacune avec un certificat de Farkas exact ; l'un d'eux a été revérifié par
+>   « structures ». Premier outil qui mord massivement sur le cœur. Énoncé d'échantillon : environ 40 % survivent,
+>   et il reste à les caractériser.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

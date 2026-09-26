@@ -257,3 +257,10 @@
   - Au Fano tendu : comptes génériques exacts, κ, équilibre étiquette, (F5) par variance nulle. Tous les systèmes
     dérivés sont faisables (HiGHS, au plus 37 s, avec contrôles). Un témoin passe tous les tests de niveau bloc.
   - Le Fano tendu n'est donc pas une route de plafond. Deux fausses violations venaient d'identités non imposées.
+- 26/09. **(P2) par types en torsion maximale (notes/117).** Méthode de C2 (H-β tué) transposée au cœur C1 : types de
+  paires (multigraphes de classes de G_z), lignes linéaires, dont les 231 identités (P2).
+  - 19 configurations locales admissibles aléatoires sur 31 sont infaisables, chacune certifiée par un Farkas exact ;
+    un certificat a été revérifié par « structures ».
+  - Environ 40 % survivent, dont le témoin de Fano.
+  - Aussi : aide à C2, qui a tué H-β ; le certificat se lit comme une seule identité circulante demi-entière sur son
+    squelette le plus symétrique.
