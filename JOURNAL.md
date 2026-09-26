@@ -319,3 +319,32 @@
       et par B, L, P2) ;
     - l'identité (A + I)Aψ_R = 12ψ_R − 30ζ_R (pairblk dans la direction Ψ_R, utilisable pour les paires hors de R) ;
     - la question décisive : F5 + KBLDP + P-Ψ + admissibilité a-t-il une solution ?
+- 26/09, nuit. **Rapport d'Astra sur le dossier n° 3** (via l'utilisateur et « structures » ; résultats d'Astra, vérifiés
+  par « structures », non refaits par C1) :
+  - **Q2 : P-Ψ + admissibilité + identités de bloc ont une solution.** Témoin explicite dans la branche « rang 8 » :
+    tous les retournements valent 1, T = C12 sur chaque droite, rang M_β = 8. P-Ψ n'est donc pas un lemme de Fano
+    complet.
+  - Ce témoin meurt au niveau paire × bloc par une **borne ordonnée** (6 > 5 pour y = {0.0, 2.0}, R = {0,1}), pour
+    tout τ admissible. Toute la famille « deux factorisations de Heawood affectées par parité » est exclue
+    (PGL(3,2) doublement transitif sur les 8 factorisations).
+  - Outil général (bornes ordonnées) : si y a g_y(B) voisins génériques dans le bloc B, et si les comptes c_z(R)
+    des z ∈ B sont triés a_{B,1} ≤ … ≤ a_{B,4}, alors
+    Σ_B Σ_{i≤g_y(B)} a_{B,i} ≤ t_y(R) ≤ Σ_B Σ_{i>4−g_y(B)} a_{B,i}.
+    Utilisable dès que les comptes sont fixés, hors du Fano aussi.
+  - Pour I_x : un revêtement de K₇ avec λ = 1, μ ≤ 2 et sans prisme est de degré ≥ 5. Au Fano tendu, le graphe
+    auxiliaire H (6-régulier, λ_H = 1) a au plus 2 composantes à P = 0.
+  - Q3 : les parités r_i et e_i sont redondantes.
+- 26/09, nuit. **C1, porte I_x à P = 0 : premières explorations** (DÉRIVÉ, contrôles exacts sur BvLS). Rien de tout
+  ceci n'est un plafond, ce sont des conséquences automatiques de A² = 12I − A + 2J :
+  - holonomie d'un triangle T : les prismes sur T sont les points fixes de σ_T (composée des trois couplages
+    croisés). On a P(x) = Σ_{T∋x} fix(σ_T), et F_T contient 32 − fix(σ_T) triangles (recoupe notes/114) ;
+  - **hexagones induits : H + 3P = 213444** (formule de Reimbayev 2024, retrouvée par classement des 6-cycles selon
+    leurs cordes ; contrôle exact sur BvLS : 4 980 690). Le plafond P ≥ 1152 équivaut à H ≤ 209988 ;
+  - graphe signé des triangles A_Σ = N₀ − N₂ − 2N₃ : **A_Σ² = 13A_Σ + 68I** (BᵀE₋₄B est un multiple d'un projecteur
+    de rang 44 ; contrôle BvLS : BᵀE₋₅B a pour valeurs propres {0, 6}). À P = 0 : graphe signé {0, ±1}, 68-régulier,
+    de valeurs propres 17 (×44) et −4 (×187) ;
+  - ombres : pour toute étiquette u, q ↦ (ses deux voisins contenant u) est une bijection des 60 paires évitant U
+    sur les arêtes de K₁₂ − τ_u. P(u) = 0 dit que l'appariement des droites internes en {u,v} évite τ_u. À P = 0
+    (et S = 0), par classe U : 12 droites uūQ, 48 uQQ, 48 ūQQ, 32 QQQ ;
+  - fixées localement : les 21 identités de troisième ordre (X²)_{T_U T_U′} = 0 en x (nouvelles coupes possibles pour
+    les modèles de paires, sans contradiction à la main).
