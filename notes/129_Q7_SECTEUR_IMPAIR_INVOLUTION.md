@@ -157,3 +157,19 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
 - Limite honnête : tout S entier avec S² + S = 12I et la structure locale donne automatiquement g ≤ 20. Une borne
   g ≥ 21 doit donc s'appuyer sur une partie seulement des contraintes (locales plus un morceau du lointain). C'est la
   même frontière que (a′) et R_L de notes/102 §8.
+
+## 8. Lien avec le lemme de l'étoile libre de C2 (note 20 du labo C2)
+- **Dictionnaire.** Le μ de C2 est notre τ (mates dans U) et son τ notre η ; σ = π. Les ombres de C2 s'écrivent
+  s_z = 1_{Φ(z)} − 1_{Φ(−z)}, et s̃_z = v_z − v_{−z}, avec v_z = 1_{Φ(z)} + 2·1_z. Le problème local RSF(star(c))
+  détermine donc t_c et r₀_c.
+- **Contrainte q:7 locale** (elle vient du genre, pas de λ/μ) : t_c − 2r₀_c ≤ 2. Un bloc à t_c ≥ 3 exige un
+  φ ∈ ker Q_c avec F(z) := φ(Φ(z)) + 2φ(z) σ-invariant mod 7 sur les 30 orbites lointaines. Les combinaisons
+  agrégées Σ_{z∋a} sont automatiques pour φ ∈ ker Q_c : ce sont les équations individuelles qui comptent.
+- **Table par cube** (`code/x36e_q7_cube_table.py`, tous les η libres). A111111 (μ = σ) n'a jamais t = 0 avec
+  det non carré.
+- **A111111 en forme close.** Q = −(I + P_σ + P_τ) sur des cycles alternés de longueur 2ℓ, de valeurs propres
+  −(1 + ζ + ζ⁻¹). On a t = 2·#{orbites avec 3 | ℓ}.
+  - Type (6) : t = 2.
+  - Type (3,3) : t = 4, donc torsion équilibrée exigée.
+  - Types (4,2) et (2,2,2) : det ≡ 2 et 1, des carrés, donc g⁻ = 20 forcé.
+  - Identité entière : Σ_z (s̃_z·φ)² = 49|φ − σφ|²/2 pour φ entier de ker Q.

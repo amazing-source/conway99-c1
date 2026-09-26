@@ -558,3 +558,10 @@
   - La cohérence entre étoiles (h(c,d) = m(d,c)) interdit alors t_c = 4 dans les 7 blocs.
   - Donc g⁻ ∈ {16, 18, 20}. g = 16 demande de la torsion impaire équilibrée dans les 7 blocs ; elle n'y est jamais
     rationnelle.
+- 26/09, soir (suite). **q:7 et le lemme de l'étoile libre de C2** (notes/129 §8).
+  - Le problème local de C2 détermine t_c et r₀_c, et q:7 y ajoute t_c − 2r₀_c ≤ 2.
+  - Table des invariants par cube (code/x36e). A111111 est entièrement explicite :
+    - type (3,3) : torsion équilibrée exigée ;
+    - type (6) : t = 2 ;
+    - types (4,2) et (2,2,2) : g⁻ = 20 forcé.
+  - Envoyé à « structures » pour C2.
