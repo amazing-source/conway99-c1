@@ -22,7 +22,10 @@ import sys, types, itertools
 from collections import defaultdict
 import numpy as np
 
-C2_SCRIPTS = r"C:/home/researcher/Desktop/c2_experimental_ro/scripts"
+import os
+# C2's scripts/: env C2_SCRIPTS, else ./scripts (run from C2's repo root), else C1's read-only clone
+C2_SCRIPTS = os.environ.get('C2_SCRIPTS') or (os.path.abspath('scripts') if os.path.isdir('scripts') else
+                                              r"C:/home/researcher/Desktop/c2_experimental_ro/scripts")
 if C2_SCRIPTS not in sys.path:
     sys.path.insert(0, C2_SCRIPTS)
 N = 7
