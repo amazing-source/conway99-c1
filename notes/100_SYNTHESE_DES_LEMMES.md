@@ -88,6 +88,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   - Au Fano tendu (transposition du Théorème F de C2), les doubles d'un bloc viennent de ses deux parallèles, avec des
 >     règles rigides cerise/antipode (deux cas par triade). Le budget vaut 8 et il est saturé : pas de contradiction
 >     directe.
+>
+> - **notes/121 : point d'étape du 26/09.** Tableau de ce qui est démontré, observé, fermé et ouvert. Les outils locaux
+>   tuent chaque configuration testée, mais aucun argument uniforme n'est encore trouvé. Le verrou est reformulé, pas
+>   levé.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
