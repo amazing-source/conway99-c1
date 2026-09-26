@@ -596,3 +596,12 @@
   - équilibre, (iv), (v), condition (N, F) ;
   - spectre de S[19] : C2 avait déjà les valeurs propres 3 et −4 de la boule impaire sur R.
   - K₃ : autour du triangle, rien n'est contradictoire (types z₁₂, z₁₃, z₂₃ = (sint) de C2). J'attends les squelettes.
+- 26/09, nuit. **Motifs Σ ≠ ∅ (ma pièce, note 42 de C2) : la famille ancrée** (notes/130).
+  - Le lemme de la queue de C2 (25.1) et T⁺ valent en présence de paires frères : les partenaires frères sont des
+    prismes, donc Out(k) reste une réunion de composantes.
+  - Conséquences : un bloc non puits a o ≥ 3, et les puits forment une clique de Σ.
+  - **Ancrés P₅, 2P₃, P₄ et P₃ : impossibles.** P₅ à la main ; les autres par contrôle exhaustif (code/motifs/), avec un
+    cas de P₃ refait à la main.
+  - Restent : P₃+K₂ (4 orientations), K₃ (8), 3K₂ (44), 2K₂ (72) et K₂ (144). Ils demandent le couplage de
+    « structures ».
+  - Contrôle Σ = ∅ : 0 survivant, c'est le Th. 25.3 de C2.
