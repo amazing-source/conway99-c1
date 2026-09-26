@@ -182,3 +182,12 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - **Torsion mixte** Y₁ + Y₂ : le test de couverture sur les 6-ensembles admissibles t₁ ∪ t₂ passe pour 375 des
     384 classes. Il est donc non concluant : il faudrait la contrainte exacte (i)–(iii) de C2, c'est-à-dire un vrai
     plan de couverture, pas seulement l'existence de 6-ensembles de somme nulle.
+- **Entrelacement à une ombre** (contrainte locale nouvelle pour le problème de C2 ; `code/x36i`).
+  - La sous-matrice principale de S sur la boule impaire plus UNE orbite lointaine f, soit [[S_B, n_f],[n_fᵀ, 0]],
+    doit avoir son spectre dans [−4, 3]. L'entrée diagonale vaut 0, car v ≁ σv.
+  - Comme n_f ⊥ z_c (l'ombre est de somme nulle), cela revient à **n_fᵀ(3I − S_B)⁺n_f ≤ 3** (et à la borne analogue
+    en −4). L'entrelacement de la boule seule est automatique (x36h), mais pas celui-ci : sur des boules aléatoires,
+    11 à 30 % des ombres a priori le violent.
+  - En moyenne c'est compatible : Σ_f n_fᵀ(3I − S_B)⁺n_f = tr((4I + S_B)|_{z_c^⊥}) = 62 sur 30 orbites, soit 2,07 ≤ 3,
+    via XXᵀ = (3I − S_B)(4I + S_B).
+  - Même principe côté pair (boule paire plus une paire {v, σv}, avec v ≁ σv connu).
