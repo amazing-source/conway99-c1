@@ -31,7 +31,9 @@ def specials(y, tau, sigma, sinv):
     for u, v in ((e, f), (f, e)):
         c = u[0]
         w = sigma[c][v] if u[1] == 0 else sinv[c][v]
-        out.append(frozenset({mate(u), w}))
+        sp = frozenset({mate(u), w})
+        if sp not in out:              # an in-block sigma edge is both sigma-specials of its ends: count it once
+            out.append(sp)
     return out
 
 

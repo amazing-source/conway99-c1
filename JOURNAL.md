@@ -264,3 +264,13 @@
   - Environ 40 % survivent, dont le témoin de Fano.
   - Aussi : aide à C2, qui a tué H-β ; le certificat se lit comme une seule identité circulante demi-entière sur son
     squelette le plus symétrique.
+- 26/09, matin. **Niveau paire × bloc et obstruction Ψ (notes/118).**
+  - Les 3 survivants de l'échantillon S = 0 meurent au niveau paire × bloc. « Structures » a revérifié les
+    2 certificats exacts et les 19 certificats de cellules.
+  - L'ablation désigne cellcross comme la famille qui tue.
+  - Au Fano tendu, cellcross se découple par bloc. Il en sort une fonctionnelle universelle Ψ_R, reproduite par
+    « structures ». Mais 480 choix de retournements l'annulent pour σ du témoin. Les systèmes « cellules par bloc »
+    échouent dans 16 à 19 blocs sur 21.
+  - Strate des σ internes : un survivant indéterminé.
+  - Auto-attaques : un statut « limite de temps » n'est pas une mort ; les spéciaux sont dédoublonnés quand une arête
+    σ est interne ; les morts d'un tirage aléatoire ne valent pas pour un choix adverse.

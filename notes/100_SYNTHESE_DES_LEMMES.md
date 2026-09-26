@@ -67,6 +67,14 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   admissibles sur 31 sont impossibles, chacune avec un certificat de Farkas exact ; l'un d'eux a été revérifié par
 >   « structures ». Premier outil qui mord massivement sur le cœur. Énoncé d'échantillon : environ 40 % survivent,
 >   et il reste à les caractériser.
+> - **notes/118 : niveau paire × bloc et obstruction Ψ au Fano tendu.**
+>   - Les 3 survivants « blocs + cellules » de l'échantillon S = 0 meurent au niveau paire × bloc (2 certificats
+>     revérifiés par « structures », le 3ᵉ en flottants) ; 19 certificats de cellules sur 19 revérifiés.
+>   - La famille qui tue est cellcross : Σ_z δ_R(z)c_R′(z) = −Σ_{y∈R} ε(y)c_R′(y).
+>   - Au Fano tendu, fonctionnelle universelle explicite Ψ_R et forme close (reproduites par « structures »). Mais
+>     des retournements bien choisis l'annulent. Les 21 systèmes « cellules par bloc » échouent dans 16 à 19 blocs de
+>     chaque configuration testée ; le lemme uniforme n'est pas fait.
+>   - Strate des σ internes : 1 survivant « blocs + cellules » sur 24, indéterminé en paire × bloc sous 5 minutes.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
