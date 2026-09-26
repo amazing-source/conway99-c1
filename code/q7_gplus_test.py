@@ -12,8 +12,9 @@ Unary filters on the options (Phi(z), Phi(sigma z)) of each far orbit, via its e
   balance: x+ orthogonal to (trivial kernel +) the required balanced torsion subspace;
   rigid diagonal (full balance and rho+ = 0): x+^T P^- x+ = N+_ff = 2 Q_ff + 1 + 5 = 6 (mod 7).
 Then the local model (i)+(ii)+(iii) (+ pointwise filters with Q7_POINTWISE=1) on the surviving options."""
-import sys, itertools, time, json
+import sys, itertools, time, json, os
 import numpy as np
+ILP_TL = float(os.environ.get('Q7_ILP_TL', '60'))
 from q7_g16_test import (classes_t_ge, congruence_diag, kernel_mod, rank_mod, ginv_sym, orbit_options, K2, FAR, P7, L)
 from q7_g18_regimes import local_ilp
 
@@ -126,7 +127,7 @@ def run(gplus, tcap=270):
         verdicts = []
         for kind, rigid in choices:
             if kind == 'full':
-                st = local_ilp(tau, eta, filtered(tau, eta, K, rigid), tl=60)
+                st = local_ilp(tau, eta, filtered(tau, eta, K, rigid), tl=ILP_TL)
                 verdicts.append(st)
             else:
                 # balanced subspace = a hyperplane of the kernel CONTAINING the trivial part (automatically balanced):
@@ -145,7 +146,7 @@ def run(gplus, tcap=270):
                     # subspace {c : a.c = 0}: basis = rows of the nullspace of a
                     B = kernel_mod([list(a)])               # (n-1) x n coefficient basis
                     Ksub = (np.array(B) @ K) % P7
-                    st = local_ilp(tau, eta, filtered(tau, eta, Ksub, False), tl=30)
+                    st = local_ilp(tau, eta, filtered(tau, eta, Ksub, False), tl=ILP_TL / 2)
                     if st not in ('dead-unary', 'dead-local'):
                         alive = True; break
                 verdicts.append('some hyperplane alive' if alive else 'all hyperplanes dead')
@@ -155,6 +156,8 @@ def run(gplus, tcap=270):
                                              time.time() - t0), flush=True)
     from collections import Counter
     print('g+ = %d: ' % gplus, Counter(o[3] if not o[3].startswith('ALIVE') else 'ALIVE' for o in out))
+    json.dump([{'tau': list(o[0]), 'eta': list(o[1]), 't_plus': o[2], 'verdict': o[3]} for o in out],
+              open('gplus_%d_results.json' % gplus, 'w'), indent=1)
     return out
 
 
