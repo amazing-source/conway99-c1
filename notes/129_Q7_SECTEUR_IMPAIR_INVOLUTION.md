@@ -96,6 +96,23 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - Les vecteurs de K_c sont des vecteurs propres 3 de T mod 7, portés hors de l'étoile de c et équilibrés contre les
     ombres (Σ u_f s_f = 0). C'est l'analogue impair de la « torsion équilibrée ».
 
+## 5 bis. Torsion impaire et mineurs principaux
+- **L21 impair raffiné (tout bloc c).** Soient t_c = dim ker Q_c (torsion impaire de la boule ; noyau de la boule =
+  ⟨z_c⟩ ⊕ relevés de ker Q_c) et r₀_c la dimension de la torsion **équilibrée** : φ ∈ ker Q_c avec s̃_f·φ = 0 pour les
+  30 orbites lointaines f. La congruence par blocs de notes/126 donne :
+  **g = 18 + t_c − 2r₀_c + ρ_c**, avec ρ_c ≥ 0.
+  - Avec g ≤ 20 : t_c − 2r₀_c + ρ_c ≤ 2 pour tout c.
+  - **Sous « NT impair » (r₀_c = 0) : un bloc avec dim ker Q_c ≥ 3 tue l'involution** ; dim ker Q_c ∈ {1, 2} force
+    g = 20.
+  - Comme en notes/126 §2, Σ_f (s̃_f·φ)² ≡ 0 est automatique pour φ ∈ ker Q_c, car Σ_f s̃_f s̃_fᵀ = −(Q_c + 2J)² ≡ −Q_c² − J.
+    L'équilibre est une condition de plus (30 équations).
+  - La torsion impaire est un cas de la torsion de C1 : 7 | det L_G⁻ ⟹ 7 | τ(G(L_c)).
+- **Mineurs principaux (version Seidel, cf. notes/102 §7).** Pour tout ensemble I d'orbites :
+  - rang₇ (S − 3I)_II ≤ g ≤ 20. Donc **det (S − 3I)_II ≡ 0 dès que |I| ≥ 21** ;
+  - pour |I| = 20, det ≡ 0 ou un carré non nul (β⁻ scindée de dim 20) ;
+  - à g = 18, les mineurs d'ordre 19 et 20 sont nuls et ceux d'ordre 18 sont nuls ou non carrés.
+  - Même énoncé avec Σ⁻ = −I − 2S, puisque S − 3I ≡ 3Σ⁻ (mod 7) et que 3²⁰ est un carré.
+
 ## 6. Reformulations
 - **Λ₋₄⁻ ⊗ Z₇ = ⟨w_c⟩ ⊥ Λ_{T,−4}**, avec Λ_{T,−4} = {r ∈ Z⁴² : Br = 0, Tr = −4r}, de rang 15. Le recollement des
   w_c (projections −a_c/4) est 2-primaire. ⟨w_c⟩ ≅ ⟨28⟩⁷ = 7·⟨4⟩⁷.
