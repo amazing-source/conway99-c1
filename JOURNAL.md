@@ -565,3 +565,18 @@
     - type (6) : t = 2 ;
     - types (4,2) et (2,2,2) : g⁻ = 20 forcé.
   - Envoyé à « structures » pour C2.
+- 26/09, nuit. **Bilan q:7 local, et lien avec l'étoile libre de C2.**
+  - Un bloc A111111 libre a ses 12 racines D-appariées en dis (n_s = 1 partout, m en c). Il relève donc de la famille
+    dis de « structures ».
+  - Les familles « tout un bloc » n'ont aucun digone : A222, A42, A33 ou A6, avec t ≤ 2.
+  - Torsion équilibrée sur A111111 de type (3,3) (code/x36f, x36g) :
+    - portée par une seule composante : jamais ;
+    - mixte : le test de couverture ne conclut pas.
+  - Entrelacement : les boules paire et impaire ont toujours leur spectre dans [−4, 3] (code/x36h, 16 335 cas). La
+    positivité locale est automatique ; elle ne mord qu'avec les ombres.
+  - J'ai revérifié à la main la preuve d'Astra, min Λ₋₄⁻ ≥ 8 (cas des entrées ±1) :
+    - on a D1 = A₊1 + 4·1, avec D symétrique ;
+    - Σ C(d_j, 2) ≤ 2C(m, 2) force m = 7, D² = 2I + 2J et tr D = 4 ;
+    - l'équation en bloc exige ≥ 3 racines par bloc, soit 12 incidences, contre ≤ 6.
+  - Le reste (g ∈ {18, 20}) demande de l'information globale. Le problème local de C2 (réaliser K = MMᵀ par des ombres
+    σ-équivariantes) reste le cœur.
