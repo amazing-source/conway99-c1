@@ -157,3 +157,23 @@ tuerait d'un coup K₃, K₂ et 2K₂ ancrés.
   - l'anisotropie de K_c (disc K_c ≡ det Q_c, et β⁻ scindée à g = 20) ;
   - les conventions de signes (B, δ, représentants) dans le code ;
   - l'étape 1 (forçage par MILP, à certifier en exact).
+
+### 7 bis. Étape 1 fermée (26/09, fin de nuit) : 24 certificats exacts + 24 cas tués par q:7
+- **Certificats de C2** (certify.py de « structures », Farkas exact revérifié par check ; c2-experimental 8cb71a0) : les
+  24 cas « paire frère X sur les blocs du groupe PRÉCÉDENT » sont morts au niveau paires. Le cycle est A → B → C → A, avec
+  A = {0,4}, B = {1,3}, C = {5,6} ; le précédent de A est C.
+- **Les 24 autres cas** (X sur le groupe SUIVANT) résistent à certify.py : le PL est trop faible, HiGHS conclut par ses coupes.
+  On les tue par q:7, sans l'étape 1 (`code/q7_3k2_ext.py`) :
+  - une orbite frère de type (2,0) sur le groupe suivant a les deux étiquettes d'un bloc m. Alors Z_uu ≡ s_{m+}s_{m−} = ±1 :
+    elle n'est pas rigide, et k_u est sur le cercle de norme −Z_uu (r = I, anisotrope) ;
+  - la sœur occupe les étiquettes complémentaires, donc est aussi de type (2,0) ; on impose T_{uū} = Z_{uū} + k_u·k_ū ≡ 0 ;
+  - options par paire frère : 1 664 (dont 1 280 non rigides), contre 384 en type perm seul ;
+  - entre deux paires frères, 8.1 impose une permutation signée pour Z + k·k. **Aucune option (2,0) n'est compatible avec
+    aucune option de la paire frère suivante** : il reste exactement les 2 048 couples perm–perm par couple de paires, donc
+    les mêmes 512 affectations, toutes tuées par les orbites croisées (§7).
+  - Mécanisme observé : la ligne de l'orbite (2,0) contre les deux orbites de la paire suivante a toujours un résidu hors
+    de {0, ±1}, ou deux entrées non nulles.
+- **Contrôles** :
+  - en mode « perm seul », le code étendu redonne exactement 384, 2 048, 512 et 0 survivant ;
+  - version scalaire contre version vectorisée : 0 écart sur 9 000 tirages.
+- **Donc l'étape 1 tient en entier, et 3K2_or14 est impossible**, sous réserve d'une relecture indépendante de q7_3k2_ext.py.

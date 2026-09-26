@@ -277,7 +277,8 @@ K2_or12 1.
     entrée non encore certifiée exactement : 48 MILP (sib model + Alt), tous infaisables selon HiGHS. Les modèles sont exportés
     (`data/k3k2_step1_models/`, script `code/motifs/export_k3k2_step1.py`), et C2 les certifie avec certify.py de « structures »
     sur le PC du labo.
-- **Bilan : toute la famille ancrée des motifs Σ ≠ ∅ est morte**, sous réserve du certificat exact de l'étape 1 de 3K₂.
+- **Mise à jour : étape 1 fermée** (notes/131 §7 bis). 24 cas sont certifiés exactement par C2 ; les 24 cas « groupe suivant » sont tués par q:7, car aucune ombre (2,0) n'admet la permutation signée 8.1 avec la paire frère suivante.
+- **Bilan : toute la famille ancrée des motifs Σ ≠ ∅ est morte**, sous réserve de la relecture de q7_3k2_ext.py.
 - **Restent** :
   - les familles tordue et dis des motifs (v6 de C2, avec le lemme de la queue 25.1 réactivé grâce au §10) ;
   - le cœur étoile libre.
