@@ -99,3 +99,71 @@ au niveau paires (zéros de pivot, zéros ancrés, F1, équilibre sur chaque com
   - 2K₂ : 24 vivants sur 84.
   - K₂ : balayage partiel, beaucoup de vivants.
 - Bilan de la famille ancrée : **P₅, 2P₃, P₄, P₃ et P₃+K₂ sont morts** ; restent K₃ (une classe), 3K₂, 2K₂ et K₂.
+
+## 7. Identités Alt entre paires frères (C1, 26/09 nuit) — une contrainte absente du modèle par paires
+**Cadre.** Q = (q_UW) est la matrice des orbites (42 × 42) ; Q² + Q = 12I + 4J − B⁺ᵀB⁺ (secteur pair).
+- Base de C2 (carnet §8) : s_P = (e_P₀ + e_P₁)/√2 et a_P = (e_P₀ − e_P₁)/√2. On pose
+  Q_S = sᵀQs, K = sᵀQa, Q_A = aᵀQa.
+- J et B⁺ᵀB⁺ n'ont pas de partie Alt. D'où, exactement :
+  - Q_A² + Q_A + KᵀK = 12I ;
+  - Q_S K + K Q_A + K = 0.
+- Q_S et K sont entièrement « niveau paires » :
+  - (Q_S)_YX = (φ_Y₀(X) + φ_Y₁(X))/2 ;
+  - K_YX = (φ_X₀(Y) − φ_X₁(Y))/2.
+  Seule Q_A porte des signes d'orbite.
+
+**Paire frère P** (8.1 : toute racine disjointe de P a exactement un voisin dans P ; aucune racine qui rencontre P n'en a).
+- (Q_A)_PP = −2 ; (Q_A)_PR = K_RP = 0 si R rencontre P.
+- Pour R disjointe, le bloc 2 × 2 est :
+  - une permutation, avec (Q_A)_PR = ±1 et K_RP = 0 ;
+  - ou de type (2,0), avec K_RP = φ_P₀(R) − 1 = ±1 et (Q_A)_PR = 0.
+
+**Identité (P, P′).** Si P = ta et P′ = tb sont frères (ils partagent t), l'entrée (P, P′) de Q_A² + Q_A + KᵀK = 12I s'écrit
+  Σ_{R ⊂ [7] ∖ {t,a,b}} [(Q_A)_PR (Q_A)_P′R + K_RP K_RP′] = 0   (6 paires R).
+- C'est l'étape du Théorème D de C2, sans supposer les R frères.
+
+**Forme au niveau orbite.** Soit P₀ une orbite de la paire frère P, et A_P l'ensemble des orbites lointaines voisines de P₀ (q = 1).
+- q_P₀Z + q_P₁Z = 1 pour Z disjointe de P.
+- (Q² + Q)_{P₀,W} donne :
+  - (E1) Σ_{Z ∈ A_P} q_ZW = 3 si W rencontre P en un bloc ;
+  - (E2) Σ_{Z ∈ A_P} q_ZW = 2 + q_P₀W si W est disjointe de P.
+- (E1) avec W = P′₀ redonne l'identité (P, P′) : |A_P ∩ A_P′| = 3 sur les 12 orbites de [7] ∖ {t,a,b}.
+- En sommant (E1)/(E2) sur W ∈ Y :
+  Σ_{Z ∈ A_P} φ_Z(Y) = 6 (Y rencontre P en un bloc), ou 4 + φ_P₀(Y) (Y disjointe).
+  C'est bilinéaire : le choix de l'orbite de X qui est dans A_P quand φ_P₀(X) = 1 multiplie des φ.
+- **Version impaire** : Σ_{Z ∈ A_P} T_P₀Z T_ZW = −B_{t,P₀} B_{t,W} si W rencontre P en t. Par exemple, pour K₃, parmi les 3 orbites de
+  A_P ∩ A_P′, exactement une a T_P₀Z T_ZP′₀ = +1.
+
+**Au niveau paires, l'identité (P, P′) se lit ainsi.** Pour chaque R, le type (perm/(2,0)) et le signe K sont des données de paires ; le signe
+perm est libre.
+- Conséquence minimale : le nombre de R où P et P′ ont le même type est pair.
+- Modèle : `c1_experimental/motifs/alt_sib.py` (un one-hot à 4 états par (P, R) et un one-hot joint par (P, P′, R)), ajouté à
+  sib_model.
+
+## 8. Bloc « plein » (toute orbite par c y pivote ou est frère) : q:7 force g⁻ = 20
+- τ_c = η_c, donc Q_c = −2P_π − I, avec det = (−3)⁶ ≡ 1 (un carré) et t_c = 0. Avec notes/129 §4–5 :
+  - **g⁻ = 20**, ρ_c = 2 ;
+  - K_c est un plan anisotrope (disc carré).
+- Sont concernés : les puits de toute configuration ancrée d'un motif, et le bloc A (d = 6) des configurations AD.
+- Identités locales au bloc plein (RSF de C2 avec μ = τ) :
+  - n(σa, b) = n(a, b), d'où **Σ_{z ∋ a} s_z = 0 pour toute étiquette a** (s_z = 1_{Φ(z)} − 1_{Φ(−z)}) ;
+  - Σ_f s_f s_fᵀ = 11I − J + P_σ (indépendant de μ).
+- Test lointain diagonal : Z_ff ≡ 4(s_f·δ_f + s_f·πs_f) (mod 7), avec δ_f = 1_z − 1_{−z}.
+  - Comme K_c est anisotrope, k_f = 0 ⟺ Z_ff ≡ 0.
+  - Σ_f Z_ff ≡ 0 est automatique (trace d'un nilpotent).
+- Deux blocs pleins c, d : sur étoile(d) ∖ étoile(c), T = 0. La matrice Z^(c) (10 × 10) y est donc de rang ≤ 2. C'est une
+  condition sur les ombres de RSF(star(c)) seules, qu'on ne peut évaluer sans solution locale (aucune n'est connue à m = 7).
+
+## 9. K₃ ancré : état
+- Sur les 216 choix de graphes D aux puits :
+  - **tout puits à deux digones meurt** (niveau paires ; certificat PL avec dichotomie de 45, environ 97 groupes) ;
+  - il reste les 27 choix où chaque puits porte un C₄.
+- **L'identité (P, P′) tue les 6 choix où les trois puits portent trois C₄ différents.** Il en reste 21. Il faut l'intégralité
+  (le PL relâché est faisable) et la dichotomie. Script : `k3_alt_test.py`.
+- Structure utile (à la main) : pour la racine u de 13, les équilibres aux blocs 2, 4, 6, 7 et au puits 5 donnent
+  φ_u(24) = a, φ_u(27) = 2 − a, φ_u(46) = c, φ_u(47) = 2 − c, φ_u(26) = e, φ_u(67) = 2 − e, avec
+  φ_u(57) = a + c + e − 2 ∈ [0, 2].
+  - Les 6 paires de {2,4,6,7} vont donc par couples {24,27}, {46,47}, {26,67}, groupés par les digones aux blocs 2, 4, 6.
+  - Le type est constant dans un couple, et le signe K y est opposé.
+  - Même chose pour 15 et 35.
+- L'identité Sym × Alt (bilinéaire) n'est pas décidée par le MILP linéarisé en 240 s. Je n'insiste pas (règle des 5 minutes).
