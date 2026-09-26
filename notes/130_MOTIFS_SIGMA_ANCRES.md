@@ -167,3 +167,22 @@ perm est libre.
   - Le type est constant dans un couple, et le signe K y est opposé.
   - Même chose pour 15 et 35.
 - L'identité Sym × Alt (bilinéaire) n'est pas décidée par le MILP linéarisé en 240 s. Je n'insiste pas (règle des 5 minutes).
+
+## 10. État au 26/09, fin de nuit, et coordination
+- **K₂ ancré : 144/144 orientations vivantes dans sib_model.** Le niveau paires ne mord pas du tout.
+  - Profils w : 120 en (0,2,2,3,3,6,6), qui ont une étoile totalement libre.
+  - 24 en (2,2,2,2,2,6,6), qui n'en ont pas : 5 blocs à digone D plus 4 étiquettes libres.
+- **Profils des autres survivants.**
+  - 3K₂ : les 2 survivants sont (3,3,3,3,3,3,6), sans étoile libre.
+  - 2K₂ : 36 en (0,2,3,3,3,6,6) et 48 en (1,2,2,3,3,6,6). Le bloc w = 1 n'a pas de pivot mais porte une paire frère.
+  - K₃ : la classe survivante est (0,2,2,2,6,6,6).
+- **Transmis à C2 pour son modèle d'orbite U** (colonnes frères, lignes I complètes) : les 27 orientations K₃ + 3K₂ + 2K₂, au
+  format ptype (`data/ptype_anchored_C1.json`, script `code/motifs/export_ptype.py`). Résultats attendus dans
+  `logs/run_U_sibanch.out` de C2.
+- **Lemme de queue et Σ ≠ ∅.** Le lemme 25.1 de C2, sous sa forme générale, vaut tel quel quand Σ ≠ ∅. L'équilibre porte sur
+  toute réunion de composantes ; un partenaire frère est une composante singleton ; ik n'est jamais frère quand D(X) ⊂ ik.
+  - Son filtre v6 l'avait désactivé pour les motifs, d'où l'explosion de la famille Σ tordue (K₃ : 212 classes d'orientations,
+    3K₂ : 625, 2K₂ : 4 078, K₂ : 5 720).
+  - « structures » a relu et confirmé ; C2 le rebranche.
+- (★) de C2 (équilibre général pour tout S, avec budget d'écart), ajouté en forme linéaire à sib_model
+  (`c1_experimental/motifs/star_budget.py`) : 31 000 lignes, non résolu en 60 s sur K₃. Laissé au pipeline de « structures ».
