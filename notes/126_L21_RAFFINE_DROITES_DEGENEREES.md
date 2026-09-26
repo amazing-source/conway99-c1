@@ -84,6 +84,26 @@ Pour d = 1, on retrouve L21 et rang R_L = k − 22 (notes/102 §8).
   torsion en majorité équilibrée). Pour les droites connexes (36 points, ombres de 6 points), le même test par paires
   serait trop faible : la question reste ouverte.
 
+## 3 ter. Le résidu ρ(L) et ce qu'il dit à k = 22, 24
+- Par le théorème, **ρ(L) = k − 23 + d(L) − 2r(L)**. Pour une droite générique, ρ = rang R_L = k − 22.
+- **Droite connexe de torsion t** : ρ = (k − 22) + t − 2r = (k − 22) + r₀ − r.
+  - À k = 22, ρ = r₀ − r ≥ 0. S'il n'y a pas de torsion équilibrée (r₀ = 0), alors r = t = 0 : **à k = 22, toute
+    droite connexe sans torsion équilibrée est générique**, donc soumise à l'obstruction de l'étoile d'Astra.
+  - À k = 24, ρ = 2 + r₀ − r, donc t ≤ 2 sans équilibre.
+- **Droite (6,6) à P = S = 0** : ρ ≤ k − 21 − |t₁ − t₂|. À k = 22, ρ ≤ 1 : le graphe lointain est fixé mod 7 par les
+  ombres, à un terme de rang ≤ 1 près. C'est une situation voisine de R_L = 0, où l'étoile d'Astra pourrait
+  s'appliquer.
+- **Réduction à P = S = 0, k = 22.** Supposons (i) aucune torsion équilibrée sur les droites connexes et (ii)
+  l'obstruction de l'étoile uniforme pour les droites génériques. Alors les 231 droites sont (6,6), avec
+  |t₁ − t₂| ≤ 1 et ρ ≤ 1. Il resterait à exclure « (6,6) partout ».
+- **Pour k = 20 à P = 0.** Sans torsion équilibrée, la seule source de vecteurs équilibrés est la différence de
+  composantes (au plus 2, profil (4,4,4)). Donc k ≥ 20, et k = 20 impose « (4,4,4) partout ».
+  - Coût en S : une composante à 4 étiquettes a exactement 4 ou 6 quatre-cycles à P = 0 (énumération exacte,
+    `code/x33_comp44_c4.py`). « (4,4,4) partout » donne donc 2772 ≤ S ≤ 4158 = n₃, sans contradiction.
+  - Au niveau des classes, en x : chaque U apparie les 6 autres classes (Π_U), τ_a envoie B sur Π_A(B), et le lemme E
+    impose Π_C(Π_U(C)) ≠ U. Le plan de Fano est exclu par là. Un système cyclique sur Z₇ ({1,2},{3,5},{4,6}
+    translatés) satisfait cette condition. Non tranché.
+
 ## 4. Portée
 - La question (c′) devient : **la torsion locale mod 7 d'une droite peut-elle être équilibrée ?** C'est-à-dire : existe-t-il
   φ ≠ 0 constant sur aucune réunion de composantes, avec L_G φ = 0 et Σ_{ombre(y)} φ = 0 pour les 60 lointains y ?
