@@ -553,3 +553,8 @@
   - Le recollement (7 étoiles dans un espace quadratique de dim ≤ 13) est heuristiquement surdéterminé, mais n'est pas
     certifiable à la main : aucun mineur 14 × 14 n'est entièrement connu, et les seuls zéros connus sont des sœurs à
     n_s ∈ {0, 2}.
+- 26/09, soir (suite). **g⁻ = 14 exclu** (notes/129 §5 bis).
+  - t_c = 4 force η_c sans digone (exhaustif, code/x36d).
+  - La cohérence entre étoiles (h(c,d) = m(d,c)) interdit alors t_c = 4 dans les 7 blocs.
+  - Donc g⁻ ∈ {16, 18, 20}. g = 16 demande de la torsion impaire équilibrée dans les 7 blocs ; elle n'y est jamais
+    rationnelle.

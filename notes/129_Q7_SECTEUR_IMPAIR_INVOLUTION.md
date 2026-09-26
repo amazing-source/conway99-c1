@@ -120,6 +120,17 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
     - g = 14 impose t_c = 4 et r₀_c = 4 en tout bloc (torsion maximale, entièrement équilibrée), donc au moins
       2 digones en chaque bloc : 2|Σ| + #{n_s = 1} ≥ 14.
     - « NT impair » tuerait les deux.
+  - **g = 14 est exclu** (DÉRIVÉ + exhaustif, `code/x36d_q7_t4_patterns.py`).
+    - Si t_c = 4, alors η_c n'a aucun digone et τ_c en a 2, 4 ou 6 (motifs (2,0,0), (4,0,0), (6,0,0) seulement).
+    - Or « η_c a un digone en d » et « τ_d a un digone en c » disent tous deux {c+, d+} ~ {c−, d+}. C'est le
+      « m en un bout, π en l'autre » de C2.
+    - À g = 14, t_c = 4 dans les 7 blocs. Un digone de τ_c en d donne un digone de η_d en c, donc t_d < 4.
+      Contradiction.
+    - **Donc g⁻ ∈ {16, 18, 20}.**
+  - **g = 16** : t_c ≥ 2 dans les 7 blocs et r₀_c = 1 + (t_c + ρ_c)/2.
+    - La cohérence des digones ne l'exclut pas : t = 2 existe sans aucun digone.
+    - La torsion impaire n'est jamais rationnelle, car toute composante de G(L_c) est σ-invariante (les mates d± de X_c
+      sont adjacents). L'équilibre est donc une vraie condition 7-adique.
 - **Mineurs principaux (version Seidel, cf. notes/102 §7).** Pour tout ensemble I d'orbites :
   - rang₇ (S − 3I)_II ≤ g ≤ 20. Donc **det (S − 3I)_II ≡ 0 dès que |I| ≥ 21** ;
   - pour |I| = 20, det ≡ 0 ou un carré non nul (β⁻ scindée de dim 20) ;
