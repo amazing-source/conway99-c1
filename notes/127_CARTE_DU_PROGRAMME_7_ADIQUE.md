@@ -18,8 +18,8 @@ NOTE_S24 et S26.*
 | k | droites génériques (d = 1) | droites dégénérées | état |
 |---|---|---|---|
 | ≤ 16 | impossibles (L21) | r₀ ≥ 6 + r partout ; sous NT, impossible (c(L) ≤ 6) | **fermé sous NT** |
-| 18 | impossibles | sous NT : motif (2,…,2) sur des cycles de classes en tout sommet, P ∈ [924, 1122] | sous NT, côté Hamming (notes/112) |
-| 20 | impossibles | sous NT : c(L) ≥ 3 partout ; à P = 0, (4,4,4) partout | ouvert |
+| 18 | impossibles | sous NT : motif (2,…,2) sur des cycles ; **exclu par saturation** (notes/128 §3 bis, relu) | **fermé sous NT** |
+| 20 | impossibles | sous NT : c(L) ≥ 3 partout. **À P = 0 : (4,4,4) partout, exclu par le lemme R** (notes/128) ; à P > 0 : profils (2,2,8), (2,4,6), (4,4,4), (2,2,2,6), (2,2,4,4), (2,2,2,2,4), (2⁶), avec ρ = c − 3 − t | **fermé sous NT à P = 0** ; ouvert à P > 0 |
 | 22 | R_L = 0, construction complète (Astra §2) ; τ non carré (L23) ; **étoile complète morte 42/42** | ρ = r₀ − r : torsion équilibrée ou non connexe | (a′) chez Astra ; « sans générique » chez C1 |
 | 24 | rang R_L = 2, construction complète (Astra §3 + MR = 0) ; τ carré ⟺ R anisotrope ; ≥ 8 mauvaises ombres | ρ = 2 + r₀ − r | (b′) chez Astra |
 | 26, 28 | rang 4, 6 ; signe χ(disc R) = (−1)^{k/2} χ(τ) | — | ouverts |
@@ -38,7 +38,8 @@ NOTE_S24 et S26.*
    - Heuristique : la torsion aléatoire n'est jamais équilibrée (environ 20 conditions indépendantes).
    - Aucun test local n'est assez fort (ombres de 6 points). Reformulation : un couple (z₃ ∈ Λ₃, V ∈ Λ₋₄) entier qui
      coïncide hors de N(L).
-   - NT ferme k ≤ 16, et réduit k = 18 et k = 20 à des motifs rigides.
+   - NT ferme k ≤ 18 pour tout P, et k = 20 à P = 0 (notes/128). Il réduit k = 20 à P > 0 à des profils rigides.
+   - Sans NT, à P = 0 : k ≤ 20 impose au moins 26 droites à torsion équilibrée.
 2. **(a′) uniforme** : l'étoile complète est impossible pour toute boule générique à k = 22. Obstruction purement
    algébrique (ablation de « structures »), qui demande tout le couplage 4K₂ + 2K₁.
 3. **k = 22 sans droite générique** : sous NT, toutes les droites sont non connexes. La question est locale :
@@ -49,3 +50,7 @@ NOTE_S24 et S26.*
 ## 5. Chaîne possible vers k ≠ 22
 (a′) uniforme ⟹ pas de droite générique à k = 22. Avec NT, toute droite est alors non connexe. Exclure « toute droite
 non connexe » (question locale) ferme k = 22.
+
+## 6. Mise à jour (fin de nuit)
+Sous NT, le programme 7-adique se réduit à **k ∈ {20 (seulement si P > 0), 22, 24, 26, 28}**. À P = 0, il se réduit à
+k ∈ {22, 24, 26, 28}.
