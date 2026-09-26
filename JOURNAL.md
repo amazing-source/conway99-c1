@@ -278,4 +278,10 @@
   - pairblk combiné à Ψ donne, au Fano tendu, une condition exacte par paire, relue à la main par « structures ».
   - Elle se lit comme un système F₂ par droite en les retournements. Les 9 σ testés sont morts pour tout τ.
   - Il reste l'argument global.
+- 26/09, après-midi. **Vecteurs propres cellulaires forcés, triades (notes/120).**
+  - Dimension forcée ≥ 5 (Q) et ≥ 7 (mod 7) de fonctions cellulaires propres pour 3 ; refaite à la main par
+    « structures ».
+  - C2 a transmis son Théorème F. Sa transposition en C1 donne des règles de triades rigides, mais pas de contradiction :
+    le budget vaut 8 et il est saturé.
+  - P-Ψ reste un filtre exact, pas un lemme.
 

@@ -81,6 +81,13 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   - Droite par droite, c'est un système affine sur F₂ en les retournements.
 >   - Chacun des 9 σ tendus testés a des droites sans aucune solution : ils sont morts pour tout τ Fano.
 >   - Le lemme « aucun sommet de Fano tendu » reste à conclure par un argument global.
+>
+> - **notes/120 : vecteurs propres cellulaires forcés ; triades au Fano tendu.**
+>   - En tout sommet, au moins 5 fonctions constantes sur les cellules sont vecteurs propres de A_Δ pour 3 (dimension :
+>     35 + 40 > 70) ; mod 7, au moins 35 − k ≥ 7 (L19, L22). C'est une contrainte non linéaire, invisible aux PL.
+>   - Au Fano tendu (transposition du Théorème F de C2), les doubles d'un bloc viennent de ses deux parallèles, avec des
+>     règles rigides cerise/antipode (deux cas par triade). Le budget vaut 8 et il est saturé : pas de contradiction
+>     directe.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
