@@ -348,3 +348,7 @@
     (et S = 0), par classe U : 12 droites uūQ, 48 uQQ, 48 ūQQ, 32 QQQ ;
   - fixées localement : les 21 identités de troisième ordre (X²)_{T_U T_U′} = 0 en x (nouvelles coupes possibles pour
     les modèles de paires, sans contradiction à la main).
+- 26/09, nuit (correction). notes/123 réécrite après relecture du corpus. Holonomie et prismes (F1, notes/99),
+  bijection d'ombre (notes/114 §1) et schéma des droites (Y − 4)(Y + 17) = 0 avec sa forme locale (notes/99 §4,
+  notes/109 §4) étaient **déjà connus**. H + 3P = 213 444 est le théorème de Reimbayev. Seul apport nouveau : à P = 0,
+  S = 0, H(x) = 12 936 en tout sommet. Leçon : relire 99/109/114 avant d'annoncer une identité sur les droites.
