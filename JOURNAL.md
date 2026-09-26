@@ -435,3 +435,12 @@
     équilibrée.
   - Tables de τ des composantes (6,6) à maille ≥ 5 (notes/125 §5) : 7 | τ pour σ de type [2,2,2] non biparti et [2,4],
     avec une nullité jusqu'à 4. Le graphe de Pappus en fait partie (τ ≡ 6).
+- 26/09, nuit (suite). **À P = S = 0, une droite (6,6) force k ≥ 22** (notes/126 §3 bis).
+  - Lemme : aucune torsion mod 7 portée par une seule composante (6,6) n'est équilibrée. Chaque lointain rencontre la
+    composante en un triplet admissible, et les paires y sont couvertes exactement λ fois. Test exact : pour chaque
+    φ ≠ 0, au moins 20 (dim 1) ou 12 (dim 3) paires sont en défaut, sur les 168 composantes étiquetées avec torsion.
+  - Les équilibrés mixtes forment le graphe d'une injection E_{C₁} ⊇ D → E_{C₂}, donc r₀ ≤ 1 + min(t₁, t₂). D'où
+    k ≥ 21 + |t₁ − t₂|, donc k ≥ 22.
+  - Bilan : P = S = 0 et k ≤ 20 imposent que toutes les droites soient connexes, avec une torsion en majorité
+    équilibrée (r₀ ≥ 1 + t/2).
+  - Coquille de notes/126 §3 corrigée (signalée par « structures ») : pour une droite connexe, k ≥ 22 + t − 2r₀.

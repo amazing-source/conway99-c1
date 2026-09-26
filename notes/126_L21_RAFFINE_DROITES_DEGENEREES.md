@@ -48,8 +48,10 @@ Pour d = 1, on retrouve L21 et rang R_L = k − 22 (notes/102 §8).
   mod 7 équilibrés, et chaque vecteur de torsion non équilibré doit être compensé par un équilibré de plus.
   - Avant (L21 brut) : k ≤ 20 demandait seulement d(L) ≥ 3, c'est-à-dire 7-rang ≥ 2 du groupe critique ou G(L) non
     connexe.
-- **Une torsion non équilibrée fait MONTER la borne.** Pour une droite connexe de torsion t, toute non équilibrée :
-  k ≥ 21 + t.
+- **Une torsion non équilibrée fait MONTER la borne.** Pour une droite connexe de torsion t, on a E_L = torsion, de
+  dimension t (1 ∉ U^⊥), et d = 1 + t. D'où k ≥ 22 + t − 2r₀, soit **k ≥ 22 + t si toute la torsion est non
+  équilibrée**. *(Coquille corrigée, signalée par « structures » : la première version écrivait 21 + t.)* Par exemple,
+  7 | τ une fois (t = 1) sans équilibre force k ≥ 23, donc k ≥ 24.
 - **Cas connus.**
   - (4,4,4) sans torsion (Astra : τ = 8640 ou 8100) : d = 3, r₀ = 2, r = 0, donc k ≥ 20 (inchangé).
   - (6,6) à P = S = 0 (notes/125 §5, torsion t ∈ {0, 1, 3} par composante) : d = 2 + t₁ + t₂ et
@@ -60,6 +62,27 @@ Pour d = 1, on retrouve L21 et rang R_L = k − 22 (notes/102 §8).
 - **Signe.** La partie non dégénérée de Q est β_B ⊥ H^r ⊥ (résidu). Au cas extrême ρ = 0, donc
   k = 23 − d + 2r, Witt donne : β non scindée ⟺ β_B non scindée. C'est la condition de L23 et du « cas d impair ≥ 3 »
   de notes/102, transportée à ce nouvel extrême.
+
+## 3 bis. À P = S = 0, une droite (6,6) force k ≥ 22
+- **Lemme (aucune torsion équilibrée sur une composante (6,6)).** Soit C une composante (6,6) à maille ≥ 5, avec
+  E_C = {φ portée par C : L_G φ = 0, sommes par couche nulles} ≠ 0. Aucun φ ∈ E_C ∖ 0 n'est équilibré.
+  - Preuve. Chaque lointain rencontre C en exactement 3 points (équilibre sur Q). La restriction à C de son ombre est
+    donc un triplet admissible : pas trois points dans une même couche, pas de paire de partenaires, au plus une arête
+    de G. Deux lointains distincts donnent des triplets distincts (λ, μ ≤ 2).
+  - Une paire {n, n′} de C est dans exactement λ(n, n′) = K[n, n′] triplets : 0 pour des partenaires ; 1 pour la
+    même couche, adjacents ou distance 2 ; 2 pour des couches différentes à distance ≥ 3.
+  - Si φ est équilibré, chacun de ces triplets est de φ-somme nulle. Il faut donc, pour chaque paire, au moins λ
+    triplets admissibles de φ-somme nulle qui la contiennent.
+  - Contrôle exact (`code/x32_balanced_66.py`) : pour chacune des 168 composantes étiquetées avec torsion (144 de
+    dim E_C = 1, 24 de dim 3) et chaque φ ≠ 0 à scalaire près, au moins 20 (resp. 12) paires sont en défaut. ∎
+- **Conséquence.** Pour une droite (6,6), E_L = ⟨1_{C₁} − 1_{C₂}⟩ ⊕ E_{C₁} ⊕ E_{C₂}.
+  - Les vecteurs équilibrés de E_{C₁} ⊕ E_{C₂} ne rencontrent ni E_{C₁} ni E_{C₂}. Ils forment donc le graphe d'une
+    application injective, de dimension ≤ min(t₁, t₂).
+  - D'où r₀ ≤ 1 + min(t₁, t₂), puis k ≥ 22 + r − r₀ ≥ 21 + |t₁ − t₂|.
+  - Par parité, **k ≥ 22**.
+- **Bilan à P = S = 0.** k ≤ 20 impose : aucune droite (6,6), et toute droite connexe avec r₀ ≥ 1 + t/2 (une
+  torsion en majorité équilibrée). Pour les droites connexes (36 points, ombres de 6 points), le même test par paires
+  serait trop faible : la question reste ouverte.
 
 ## 4. Portée
 - La question (c′) devient : **la torsion locale mod 7 d'une droite peut-elle être équilibrée ?** C'est-à-dire : existe-t-il
