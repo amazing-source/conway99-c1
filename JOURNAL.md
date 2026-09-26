@@ -374,3 +374,11 @@
   - **Contrainte 7-adique par droite** (rappel, notes/114 §1) : pour d(L) = 1, le rang de recollement de F_L vaut k − 22 ≤ 6
     < 8. Chaque graphe lointain doit donc être 7-spécial. C'est la contrainte connue la plus forte sur les arêtes
     génériques, et elle n'est pas exploitée.
+- 26/09, nuit (suite). **Contrôle exact de la formule de notes/102 §8** (demandé avant l'envoi du dossier n° 5 à Astra) :
+  rang₇ Q = rang₇ Q_BB + rang₇ R_L, avec R_L[w,w′] = Q_ww′ − 6 + 1_{N_w}ᵀL_G⁺1_{N_w′} et L_G⁺ le pseudo-inverse de
+  3I − M_T mod 7 sur 1^⊥.
+  - Le test : boule construite à partir d'une donnée locale aléatoire (C, τ_u, τ_ū, σ_U), partie lointaine
+    entièrement aléatoire (ombres à 2 points par couche, adjacence lointaine quelconque). 6 tirages sur 6 vérifient
+    l'égalité, avec rang Q_BB = 36 = 37 − d(L).
+  - Dans un vrai srg(99,14,1,2), cela donne rang R_L = 14 + k − 36 = k − 22 pour d(L) = 1.
+  - Script : code/x29e_schur_line_check.py.
