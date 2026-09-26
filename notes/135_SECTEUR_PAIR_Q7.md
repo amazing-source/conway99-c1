@@ -55,3 +55,18 @@
     C'est le cas doublement rigide : en tout bloc générique scindé des deux côtés, Q_FF et T_FF sont fixés par les données
     locales, donc toute l'adjacence lointaine aussi.
 - Un bloc plein 6-cycle (non scindé, t⁺ = 0) laisse g⁺ = 18 possible. 2+4 et 3+3 imposent ρ⁺ impair ≥ 1.
+
+## 4. Lignes rigides paires à g⁺ = 20 (Witt inversé)
+- À g⁺ = 20, un bloc avec t⁺ = 0 a ρ⁺ = 2. On a im N⁺ = W_c ⊥ K⁺_c, et classe(K⁺_c) = classe(β⁺) − classe(W_c). Comme β⁺ est non
+  scindée :
+  - **boule paire SCINDÉE** : K⁺_c est la forme binaire non scindée, donc **anisotrope** ;
+  - boule non scindée : K⁺_c est hyperbolique.
+  - C'est l'inverse du secteur impair, où c'est « det carré ⟹ anisotrope ».
+- **Conséquence** (mécanisme de notes/131 §7, côté pair) : en un bloc t⁺ = 0 scindé à g⁺ = 20, une orbite lointaine f telle que
+  x_f⁺ᵀP⁺⁻x_f⁺ ≡ 6 a k⁺_f = 0.
+  - Sa ligne paire est alors entièrement fixée : **Q_fg ≡ 4(x_f⁺ᵀP⁺⁻x_g⁺ − 5) (mod 7), donc exactement dans {0, 1, 2}**.
+  - C'est une condition sur Q seul (visible dans U), bilinéaire entre les colonnes de f et de g.
+- La boule paire ne dépend que du graphe union U_c = τ_c ∪ η_c, soit Q restreint à l'étoile de c. Après branchement sur g⁺ et
+  sur U_c en un bloc, on obtient des filtres par colonne (la diagonale ≡ 6) et des post-filtres sur les points entiers.
+- Chez C2 (grands T), le levier principal reste l'infaisabilité du système local sur les types d'étoile libre. Ce schéma par
+  branchement vient après.
