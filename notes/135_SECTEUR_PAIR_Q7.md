@@ -9,7 +9,8 @@
 | Le noyau trivial (dimension 2) de la boule paire est automatiquement équilibré | contrôlé sur les options |
 | Régimes pairs : g⁺ = (18 − t⁺) + 2(t⁺ − r₀⁺) + ρ⁺, et **ρ⁺ ≥ 2 si la boule paire réduite est SCINDÉE** (n pair) | DÉRIVÉ |
 | Recensement pair des 3 308 types (§2) | calcul exact |
-| g⁺ ∈ {14, 16} : test par types lancé ; ILP locaux inconnus à 60 s sur le portable, donc au cloud | en cours |
+| **g⁺ ≠ 14** : les 6 types à t⁺ ≥ 4 sont morts (4 par le modèle local, 1 par Witt, le dernier, t⁺ = 5 avec τ = η = π, par le modèle local en 185 s) | calcul (HiGHS), à certifier |
+| g⁺ = 16 : 228 types à t⁺ ≥ 2, au cloud (c2-compute, tâche gp) | en cours |
 
 ## 1. Cadre
 - On pose Q = A − 3I + 3J (notes/126). Le terme J ne vit que dans le secteur pair. rang₇ Q = 14 + k, et 14 + k = g⁻ + g⁺ en
