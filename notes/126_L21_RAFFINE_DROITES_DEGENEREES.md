@@ -83,6 +83,20 @@ Pour d = 1, on retrouve L21 et rang R_L = k − 22 (notes/102 §8).
 - **Bilan à P = S = 0.** k ≤ 20 impose : aucune droite (6,6), et toute droite connexe avec r₀ ≥ 1 + t/2 (une
   torsion en majorité équilibrée). Pour les droites connexes (36 points, ombres de 6 points), le même test par paires
   serait trop faible : la question reste ouverte.
+- **Extension à P = 0, S quelconque** (`code/x34_small_components_torsion.py`, `code/x34b_balanced_66_P0.py`).
+  - On énumère toutes les composantes à 4 et 6 étiquettes, pour tout P. Filtres : cubique, connexe, λ ≤ 1 et μ ≤ 2
+    dans la boule. On obtient 122 composantes à 4 étiquettes et 102 952 à 6.
+  - **Une composante à 4 étiquettes n'a de 7-torsion que si elle a des triangles (P > 0).** Même alors, une torsion
+    portée par elle seule n'est jamais équilibrée : chaque lointain la rencontre en une paire, et le graphe des paires
+    (K > 0) contient des cycles impairs, d'où φ = −φ = 0.
+  - Composantes à 6 étiquettes sans triangle (P = 0) avec torsion : 6672 (6024 de dim 1, 624 de dim 2, 24 de dim 3).
+    **Aucune n'admet de torsion équilibrée** : test par paires, avec les multiplicités K corrigées pour les 4-cycles.
+  - **Donc, à P = 0 (S quelconque) :** une droite (4,4,4) donne exactement k ≥ 20 (d = 3, r₀ = 2, r = 0) ; une
+    droite (6,6) force k ≥ 22 ; une droite (4,8) force k ≥ 22, sauf si sa composante à 8 étiquettes porte une torsion
+    équilibrée (non testé : l'énumération est trop grosse pour un contrôle court). Les droites connexes restent
+    ouvertes.
+  - **À P = 0, k ≤ 18** impose donc à chaque droite au moins 3 ou 4 vecteurs de torsion équilibrés (profil (4,8) ou
+    connexe). **k = 20** impose que chaque droite soit (4,4,4), ou porte de la torsion équilibrée.
 
 ## 3 ter. Le résidu ρ(L) et ce qu'il dit à k = 22, 24
 - Par le théorème, **ρ(L) = k − 23 + d(L) − 2r(L)**. Pour une droite générique, ρ = rang R_L = k − 22.
