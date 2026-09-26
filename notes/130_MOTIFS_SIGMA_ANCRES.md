@@ -218,3 +218,22 @@ perm est libre.
 - Le cas a = 1 reste ouvert à la main. C'est le travail du modèle U de C2.
 - Ingrédients : équilibre (notes/23 §8 de C2), dichotomie, (E2) sommée, c'est-à-dire l'identité Sym × Alt de §7 (absente de
   sib_model).
+
+### 11 bis. K2_or12 : squelette unique et identités de paires (suite)
+- **Graphes D.** Sur les 289 choix de graphes D aux puits qui passent T⁺, un seul est faisable dans sib_model : le 5-cycle
+  consécutif 0-1-2-3-4 aux deux puits. Le squelette est alors **entièrement invariant par Z₅**.
+  - Le point faisable trouvé par le MILP a bien a = 1 (cohérent avec §11).
+  - Les autres classes ancrées sont presque aussi rigides : 3K2_or14 a 1 choix D, 2K2_or15 1 (sur 4), K2_or0 2 (sur 8), K3_or0 21.
+  - Les 26 squelettes à D fixé sont dans `data/fixedD_anchored_C1.json`, transmis à C2 pour U.
+- **Orbites puits** F_m = {5, m} : pivot 5, avec F_m⁺ ↔ F_{m+1}⁻.
+  - Équilibres en Z₅ et au puits 6, puis symétries e(S1_k, F_j) et e(S2_k, F_j), avec a = 1.
+  - Les **deux** orbites de F_m vérifient φ(S1_m) = 1, φ(S1_{m+1}) = 0, φ(S2_m) = 1, φ(S2_{m−1}) = 0 ; de même au puits 6.
+  - Il reste, pour F_m⁺ : C = φ(S1_{m+2}) ∈ {1, 2} et D = φ(S1_{m+3}) ≥ C − 1. Pour F_m⁻ : C ∈ {0, 1} et D ≥ C − 1.
+  - Contrainte commune : C⁺ + C⁻ + D⁺ + D⁻ = 4.
+  - Toutes les autres valeurs de φ s'en déduisent : φ(S2_{m+1}) = 2 − C, φ(S2_{m+2}) = 2 − D, et les φ(G_j) par les équilibres.
+- **Dichotomies.**
+  - Pour S1_j : #{W ∈ S1_{j−3} : x_W = 0} + #{Z ∈ F_{j−2} : C_Z = 2} + #{Z ∈ F_{j−3} : D_Z = 2} + (termes du puits 6) = 2.
+  - Pour S2_j : #{W ∈ S1_{j−2} : x_W = 2} + #{Z ∈ F_{j−1} : C_Z = 0} + #{Z ∈ F_{j−2} : D_Z = 0} + (puits 6) = 2.
+  - Ici x_W = φ_W(S2_{k+2}) pour W ∈ S1_k, avec Σ_{W∈S1_k} x_W = 2.
+- **État.** Il reste de la liberté au niveau paires, ce qui est cohérent avec sib_model. La suite est au niveau orbite (U de C2), puis
+  au secteur impair (modèle signé), puisque U n'a pas de signes.
