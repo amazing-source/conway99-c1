@@ -104,6 +104,44 @@ Pour d = 1, on retrouve L21 et rang R_L = k − 22 (notes/102 §8).
     impose Π_C(Π_U(C)) ≠ U. Le plan de Fano est exclu par là. Un système cyclique sur Z₇ ({1,2},{3,5},{4,6}
     translatés) satisfait cette condition. Non tranché.
 
+## 3 quater. Théorème conditionnel : sans torsion équilibrée, k ≥ 18
+**Hypothèse (NT).** Pour toute droite, les vecteurs équilibrés de E_L sont les seules différences de composantes.
+Cela revient à r₀(L) = c(L) − 1, où c(L) est le nombre de composantes de G(L).
+- **Composantes à 2 étiquettes par couche.** Ce sont exactement les **composantes prismes**, et chacune porte 2 points
+  fixes de l'holonomie.
+  - Preuve : τ_u(v) = τ_ū(v) = v̄ et σ préserve {v, v̄}.
+  - Si σ(v) = v̄, la composante est K₃,₃, donc μ = 3 : exclu.
+  - Donc σ(v) = v et σ(v̄) = v̄ : deux triangles de G(L), et la composante est un prisme.
+- **Borne.** Les autres composantes ont au moins 4 étiquettes par couche. D'où c(L) ≤ 3 + p_c/2 ≤ 6, avec p_c le nombre
+  de composantes prismes, et fix(σ_L) ≥ 2p_c.
+- **Sous (NT)**, on a k ≥ 22 + r − r₀ ≥ 23 − c(L) pour chaque droite. Donc :
+  - **k ≥ 17, soit k ≥ 18** (au lieu de k ≥ 10 : L20 bis/ter) ;
+  - **k = 18** ⟹ c(L) ≥ 5 pour toute droite. Il y a donc au moins 4 composantes prismes par droite, fix(σ_L) ≥ 8 et
+    P ≥ 924. En tout sommet, P(x) ≥ 56, donc |W(x)| ≤ 28. Enfin r = 0 : aucune 7-torsion, puisqu'une torsion non
+    équilibrée ferait monter la borne ;
+  - **k = 20** ⟹ c(L) ≥ 3 pour toute droite. À P = 0, c'est « (4,4,4) partout » (§3 ter).
+- Le régime k = 18 est un régime de **torsion faible** (P ∈ [924, 1151] par L16), c'est-à-dire le côté où les
+  planchers du corpus (L8 à L14) mordent. À confronter à ces lemmes.
+- (NT) n'est pas démontrée. Elle est démontrée pour les composantes (6,6) à P = S = 0 (§3 bis). La torsion aléatoire
+  n'est jamais équilibrée (§1).
+- **Structure forcée à k = 18 (sous NT), en tout sommet x.** Chaque droite par x est soit **non tordue** (6 prismes,
+  σ_U = id), soit **tordue** (4 prismes et une composante à 4 étiquettes π(U) = {A, B}). Soit T_x l'ensemble des
+  classes tordues.
+  - *Seules les classes de T_x sont tordues.* Si A ∉ T_x, alors σ_A = id, donc l'holonomie ρ de L13 est l'identité et
+    personne ne tord A.
+  - *La relation est symétrique.* Les tordeuses de U sont stables par ρ_U = σ_U, sans point fixe, et σ_U fixe les
+    étiquettes hors de π(U). Donc « u tord A » ⟺ A ∈ π(U) ⟺ U ∈ π(A).
+  - Le graphe des paires tordues est donc **2-régulier sur T_x**, c'est-à-dire une réunion de cycles. Toute étiquette
+    d'une classe de T_x tord exactement ses deux voisines : c'est le motif (2, …, 2).
+  - L11 exclut le triangle seul, donc |T_x| ≥ 4. On a g(x) = 21 − |T_x| ∈ [14, 17], P(x) = 84 − 4|T_x| et
+    |W(x)| = 4|T_x|.
+  - Pour |T_x| = 4, c'est le motif **(2,2,2,2) du 4-cycle de notes/112**, où il reste 12 configurations à l'ordre
+    deux. Les cycles plus longs (C₅, C₆, C₇, C₃ + C₃, C₃ + C₄) n'ont pas été étudiés.
+  - Condition globale : « tordue » est une propriété de la droite. Chaque droite tordue a, en chacun de ses trois
+    sommets, deux voisines tordues dans le cycle local.
+  - **Piste concrète** : exclure ce régime par la machinerie « côté Hamming » (notes/108, 111, 112). k = 18 tomberait
+    alors sous (NT).
+
 ## 4. Portée
 - La question (c′) devient : **la torsion locale mod 7 d'une droite peut-elle être équilibrée ?** C'est-à-dire : existe-t-il
   φ ≠ 0 constant sur aucune réunion de composantes, avec L_G φ = 0 et Σ_{ombre(y)} φ = 0 pour les 60 lointains y ?

@@ -444,3 +444,11 @@
   - Bilan : P = S = 0 et k ≤ 20 imposent que toutes les droites soient connexes, avec une torsion en majorité
     équilibrée (r₀ ≥ 1 + t/2).
   - Coquille de notes/126 §3 corrigée (signalée par « structures ») : pour une droite connexe, k ≥ 22 + t − 2r₀.
+- 26/09, nuit (suite). **Théorème conditionnel (notes/126 §3 quater) : sans torsion équilibrée (NT), k ≥ 18.**
+  - Les composantes à 2 étiquettes sont des prismes, car σ(v) = v̄ donnerait K₃,₃. D'où c(L) ≤ 6, et sous NT
+    k ≥ 23 − c(L).
+  - k = 18 force, en tout sommet, un motif de torsion (2,…,2) sur une réunion de cycles de classes, avec |T_x| ≥ 4
+    (L11). Toutes les autres droites sont non tordues (6 prismes). P ∈ [924, 1122] et g(x) ∈ [14, 17].
+  - |T_x| = 4, c'est le motif (2,2,2,2) de notes/112 (12 survivants à l'ordre deux). C'est le côté Hamming, où le
+    corpus mord : piste pour tuer k = 18.
+  - k = 20 force c(L) ≥ 3 sur toute droite. À P = 0, c'est « (4,4,4) partout ».
