@@ -122,3 +122,38 @@ tuerait d'un coup K₃, K₂ et 2K₂ ancrés.
 - Le DFS exhaustif naïf (`code/q7_twosink_exhaust.py`) ne finit pas en 5 min.
 - Il faut exploiter la symétrie B₅ × transposition et la dichotomie, ou, par configuration, fixer |Σ| au niveau paires : il ne
   reste alors que les signes.
+
+## 7. Orbites lointaines rigides en un bloc plein, et mort de 3K2_or14 par q:7 (à relire)
+**Mécanisme (DÉRIVÉ).** Soit c un bloc plein. Alors t_c = 0 et det Q_c ≡ 1, d'où g⁻ = 20 ; de plus R_c = K r Kᵀ avec r
+**anisotrope**.
+- Pour toute orbite lointaine f, r(k_f, k_f) = T_ff − Z_ff = −Z_ff. Donc **Z_ff ≡ 0 ⟺ k_f = 0**.
+- Dans ce cas la ligne de f dans R_c est nulle, et **T_{f,f′} ≡ Z_{f,f′} (mod 7) pour toutes les orbites lointaines f′**. La ligne de
+  f est entièrement fixée par les ombres au bloc c. On dit que f est **rigide**.
+- En un bloc plein, Z_{f,f′} = 3δ + 5(BᵀB) + s̃_fᵀ(5I + 4P_π)s̃_{f′}, avec s̃ = s + 2δ.
+- Pour une orbite frère u disjointe de c : Z_uu ≡ 4 s_u·πs_u. **u est rigide ⟺ son ombre n'a pas deux étiquettes d'un même bloc**
+  (ou en a deux paires de produits opposés).
+
+**Application à 3K2_or14.** Puits 2 plein, de profil (4,4,4) ; paires frères A = {0,4}, B = {1,3}, C = {5,6}. C'est l'unique choix D.
+1. **(MILP, niveau paires : sib_model + identités Alt, 48 cas, `code/motifs/k3k2_types.py`)** Chaque orbite frère a φ = 1 sur
+   chacune des 4 paires puits {2, m} hors de sa paire. Imposer φ ∈ {0, 2} est infaisable dans les 48 combinaisons.
+   - Donc chaque ombre frère sur étoile(2) a une étiquette par bloc, et les **6 orbites frères sont rigides**.
+   - Par 8.1, l'ombre de la sœur occupe les étiquettes complémentaires.
+2. **(À la main)** Contraintes sur les lignes frères :
+   - sœurs : T = 0 (paire D), donc Z_{uu′} ≡ 0 ;
+   - entre deux paires frères : T est une permutation signée (8.1), donc Z ≡ ±1 sur la permutation et 0 ailleurs.
+   - Énumération : 384 couples d'ombres sœurs par paire frère, et **512 affectations complètes** des 6 ombres.
+3. **(Énumération, `code/q7_3k2_sibrows.py`)** Orbites croisées f, c'est-à-dire des paires A–B, B–C et C–A (24 orbites).
+   - Équilibre au puits : l'ombre de f sur étoile(2) a 1 étiquette dans chacun des deux groupes que f rencontre et 2 dans le
+     troisième, avec deux +1 et deux −1 (576 options).
+   - Par 8.1, T_{u,f} = 0 pour les deux orbites de chaque paire frère que f rencontre, et T = ±1 pour exactement une des deux
+     orbites de l'autre paire frère.
+   - Lignes rigides : ces valeurs doivent être ≡ Z_{u,f}.
+   - **Pour chacune des 512 affectations, AUCUNE orbite croisée n'a d'ombre admissible** (0 option sur 576, pour les 24 orbites).
+     La cause principale : Z_{u,f} ≢ 0 là où 8.1 impose T = 0.
+- **Conclusion (sous réserve de relecture) : 3K2_or14 est impossible.** Le modèle U de C2 (secteur pair seul) le trouvait
+  faisable : c'est l'information 7-adique impaire qui tue.
+- Points à relire indépendamment :
+  - la formule de Z (notes/129 §8, re-dérivée ici par élimination par blocs) ;
+  - l'anisotropie de K_c (disc K_c ≡ det Q_c, et β⁻ scindée à g = 20) ;
+  - les conventions de signes (B, δ, représentants) dans le code ;
+  - l'étape 1 (forçage par MILP, à certifier en exact).
