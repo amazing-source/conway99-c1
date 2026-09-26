@@ -109,6 +109,12 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >     à H ≤ 209 988.
 >   - Nouveau : à P = 0 et S = 0, H(x) = 12 936 en tout sommet. Le troisième ordre est localement constant en torsion
 >     maximale ; le plafond doit venir des arêtes génériques effectives.
+>
+> - **notes/124 : le lointain d'une droite, complément de Schur exact.**
+>   - Sur Q, Φ_F = −7·Π_{K₋₄(L)} (contrôle BvLS : −9Π). Le graphe lointain est donc fixé par les ombres et par un
+>     sous-espace de dimension 7 + c.
+>   - Mod 7, rang R_L = k − 22 ≤ 6 (formule de notes/102 §8, revérifiée exactement).
+>   - C'est la cible du dossier n° 5 d'Astra.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
