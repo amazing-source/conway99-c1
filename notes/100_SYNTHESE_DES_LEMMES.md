@@ -119,6 +119,10 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > - **notes/125 : cycles courts des graphes de droites.**
 >   - Σ_L c₄(G(L)) = S + 3P et Σ_L c₃ = 2P. À P = 0, S compte les 4-cycles des 231 graphes de droites.
 >   - À P = S = 0 : maille ≥ 5 partout. Les profils (4,4,4) et (4,8) sont exclus (lemme de Klein) ; reste (6,6).
+>
+> - **notes/126 : L21 raffiné.** k ≥ 23 − d(L) + 2r(L), où r(L) est le rang de Mᵀ sur le noyau local supplémentaire.
+>   - Une droite dégénérée ne fait baisser la borne que par ses vecteurs propres mod 7 **équilibrés** portés par N(L).
+>   - Donc k ≤ 20 impose à chaque droite au moins deux tels vecteurs.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

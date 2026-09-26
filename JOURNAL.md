@@ -422,3 +422,16 @@
     tranché, le résultat ne toucherait que la strate P = S = 0.
   - Piste notée : les vecteurs 1_{C_i} − 1_{C_j} sont des vecteurs courts de Λ₃ (normes 24 et 36, contre 42 pour
     (A + 4I)(e_p − e_q)). Un minorant combinatoire de min Λ₃ exclurait les profils non connexes sans hypothèse sur S.
+- 26/09, nuit (suite). **L21 raffiné (notes/126), tâche (c′).**
+  - 14 + k = (37 − d(L)) + 2r(L) + ρ(L), où r(L) = rang₇ de Mᵀ sur E_L = {φ : couches nulles, L_G φ = 0}. D'où
+    **k ≥ 23 − d + 2r = 22 + r − r₀**.
+  - Preuve par congruence par blocs : un vecteur du radical de Q_BB qui se couple au lointain apporte un plan
+    hyperbolique. Le radical trivial (quotient et 1_L − 1_{N(L)}) est tué par Q_FB.
+  - r₀(L) est la dimension des vecteurs propres 3 mod 7 de Γ portés par N(L). Sur Q, ce sont les différences de
+    composantes (équilibre par positivité). Mod 7, un vecteur de torsion doit de plus vérifier Mᵀφ = 0.
+  - Conséquence : k ≤ 20 impose r₀ ≥ 2 + r sur chaque droite. À P = S = 0, chaque droite doit porter une torsion mod 7
+    équilibrée.
+  - Contrôle exact : 10 boules dégénérées aléatoires. On trouve r = 1 à chaque fois : la torsion aléatoire n'est jamais
+    équilibrée.
+  - Tables de τ des composantes (6,6) à maille ≥ 5 (notes/125 §5) : 7 | τ pour σ de type [2,2,2] non biparti et [2,4],
+    avec une nullité jusqu'à 4. Le graphe de Pappus en fait partie (τ ≡ 6).
