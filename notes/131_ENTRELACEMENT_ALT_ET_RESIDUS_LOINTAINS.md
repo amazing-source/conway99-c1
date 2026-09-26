@@ -52,3 +52,27 @@
 - Dans le cube A111111 de type (2,2,2), G(L_c) a trois composantes à 4 étiquettes, comme les droites (4,4,4) de notes/128.
   - Le lemme R de notes/128 ne s'y transpose pas directement : il suppose P = 0, alors qu'ici τ_c = π est le cas P maximal.
   - L'argument d'équilibre qu'il utilise (celui du lemme de la queue) reste disponible.
+
+## 4. Carte : où q:7 donne un filtre orbite par orbite sur une solution locale (μ, τ, Φ)
+On part de g = 18 + t_c − 2r₀ + ρ, avec g⁻ ∈ {16, 18, 20} (notes/129).
+- « Filtre Z » : T_FF ≡ Z, donc Z_ff ≡ 0 pour les 30 orbites lointaines, et Z_ff′ ∈ {0, ±1}.
+- « Filtre torsion » : un φ ≠ 0 de ker Q_c vérifie s̃_f·φ ≡ 0 pour les 30 orbites. Pour φ fixé, c'est linéaire en Φ.
+
+| t_c | g⁻ = 16 | g⁻ = 18 | g⁻ = 20 |
+|---|---|---|---|
+| 0, det carré | impossible | impossible (L23 dédoublé) | ρ = 2 : **pas de filtre** (seulement l'existence de K, rang 2 anisotrope) |
+| 0, det non carré | impossible | ρ = 0 : **filtre Z** | ρ = 2 : pas de filtre (K hyperbolique) |
+| 1 | impossible | r₀ = 1 : **filtre torsion** | ρ = 1 + 2r₀ : pas de filtre |
+| 2 | r₀ = 2 : torsion totale | r₀ ≥ 1 : **filtre torsion** | r₀ = 0 et ρ = 0 (**filtre Z**, forme à torsion) ou r₀ = 1 (**filtre torsion**) |
+| 3 | r₀ = 3 | r₀ ≥ 2 | r₀ ≥ 1 : **filtre torsion** |
+| 4 | r₀ ≥ 3 | r₀ ≥ 2 | r₀ ≥ 1 : **filtre torsion** |
+
+**Conséquences.**
+- Les types à t_c ≥ 3 ont toujours un filtre torsion. Premier test proposé à « structures » : A111111 de type (3,3), t = 4, 17 orbites
+  de φ projectifs dont 14 mixtes (`data/A33_torsion_reps.json`). Si l'ILP RSF + filtre est infaisable pour tous les φ, un tel bloc
+  est impossible.
+- Le cas dominant chez les ÉTL (t = 0, det carré : 52 % des couples) force g⁻ = 20 et ne donne **aucun** filtre orbite par orbite.
+  Il ne reste que l'existence du plan anisotrope K_c : environ 42 équations quadratiques (diagonale, paires D lointaines,
+  isotropie) pour environ 24 inconnues. On ne peut l'évaluer qu'avec une vraie solution locale, et aucune n'est connue à m = 7.
+- Dès qu'un bloc force g⁻ = 20 (bloc plein, ou ÉTL à det carré), les blocs à t = 2 sans torsion équilibrée deviennent rigides
+  (ρ = 0).
