@@ -92,6 +92,13 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > - **notes/121 : point d'étape du 26/09.** Tableau de ce qui est démontré, observé, fermé et ouvert. Les outils locaux
 >   tuent chaque configuration testée, mais aucun argument uniforme n'est encore trouvé. Le verrou est reformulé, pas
 >   levé.
+>
+> - **notes/122 : Fano tendu, différences de retournement.**
+>   - Lemme démontré, relu par « structures » : T(L) est sans triangle ssi poids(d(L)) ≠ 1, et T(L) = C6+C6 ssi
+>     d(L) = (1,1,1).
+>   - Identité des parités de branche.
+>   - Forme réduite de P-Ψ : les droites tout-CM sont toujours résolubles, et τ y est déterminé par σ.
+>   - Cadre commun avec la contrainte τ–σ d'Astra.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
