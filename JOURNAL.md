@@ -360,8 +360,12 @@
     linéaire uniforme à ces niveaux : il faut du non convexe (intégralité au niveau paire, rang 7-adique, dimension
     forcée des supports).
   - **Strates rigides à P = 0, S = 0.**
-    - G(L) = M_T est cubique de maille ≥ 5 : ses seuls 4-cycles seraient de type prisme ou de type S. Chaque composante
-      a donc au moins 12 sommets.
+    - G(L) = M_T est cubique, et ses composantes sont fermées par les appariements internes. Une composante qui ne
+      contiendrait qu'une classe par couche forcerait une boucle de τ_u. Chaque composante a donc au moins 12 sommets.
+      *(Correction : une version précédente de cette ligne invoquait une « maille ≥ 5 ». C'est faux. À P = 0 et S = 0,
+      M_T peut encore avoir des 4-cycles d'holonomie dont l'arête interne est dans la couche de u ou de ū, soit
+      σ_U(τ_u(v)) = v ou τ_ū(v) = σ_U(v). Ces coïncidences sont permises : c'est le cas où le second voisin commun de
+      {u,v} et {ū,v} est une u-paire ou une ū-paire.)*
     - Profils possibles : connexe, (6,6), (4,8) ou (4,4,4) étiquettes par couche.
     - Cas (4,4,4) : τ_u, τ_ū sont de type D³ à couplage commun des 6 classes, et σ_U préserve chaque paire de classes.
     - Cas (6,6) : type C₃C₃.
