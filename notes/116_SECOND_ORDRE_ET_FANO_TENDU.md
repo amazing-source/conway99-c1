@@ -12,7 +12,7 @@ labo, commit 3186d7b, `scripts/verify_c1_p2_far.py` ; contrôles exacts sur Pale
 | (P2) : identités de second ordre par blocs ; Σ_z cnt(cnt − 1) = 16 − 2e(R) par bloc | DÉRIVÉ, recalcul indépendant | tout sommet |
 | critère lointain (U)/(L), formes closes pour 99 | DÉRIVÉ, recalcul indépendant (contrôle BvLS) | toute droite |
 | Fano tendu : comptes exacts, κ, équilibre étiquette, (F5) par variance nulle | DÉRIVÉ, table des g et F5 recalculées | modèle de Fano |
-| **Fano tendu : un témoin passe tous les tests de niveau bloc** | OBSERVÉ | route de plafond fermée |
+| **Fano tendu : un témoin passe tous les tests de niveau bloc** | OBSERVÉ | *corrigé le 26/09 : ce témoin meurt au niveau des cellules (notes/117 §2 ter)* |
 
 ## 1. Le second sous-constituant
 - On a A_Δχ_u = 2·1 − χ_u − χ_ū (équations de fentes), où χ_u est l'ensemble des paires contenant u. Donc im ∂ᵀ est
@@ -63,6 +63,10 @@ Version par blocs : 7·Gram(Π₋₄1_R) est ⪰ 0 et de rang ≤ 8, et 7·Gram(
   - le critère lointain, avec 𝒰 de rang 3 ≤ 8.
 - **Conséquence.** Au niveau des blocs, le Fano tendu est cohérent. Il ne peut mourir que sur les arêtes génériques
   effectives, au niveau des paires. **Ce n'est donc pas une route de plafond.**
+- **Correction (26/09, notes/117 §2 ter).** Cette conclusion était prématurée. Le raffinement par cellules
+  antipodales (proposé par « structures », issu de C2) tue ce témoin. Le certificat de Farkas est exact, et
+  « structures » l'a revérifié indépendamment (`verify_c1_cells.py`). La question « tout sommet de Fano tendu
+  meurt-il au niveau des cellules ? » est ouverte : un seul témoin a été tué.
 - **Auto-attaque.** Deux fausses violations de Rayleigh venaient d'identités exactes non encore imposées :
   l'équilibre étiquette, puis (P2). Sur un modèle partiel, une violation signale d'abord une identité manquante.
 

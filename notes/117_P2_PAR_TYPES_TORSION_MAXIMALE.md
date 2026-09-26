@@ -14,6 +14,7 @@ exacte. Un certificat a été revérifié indépendamment par « structures ».*
 | environ 40 % survivent ; le lemme du triangle en tue 1 sur 11 ; le raffinement V/P, 0 sur 3 | OBSERVÉ |
 | niveau paires (466 000 colonnes) : hors de la règle des 5 minutes sur le portable | non fait |
 | (P2) ⟺ repère ajusté Σ_z ξ_zξ_zᵀ = 196·P_{E₋₂} dans l'espace de Johnson de dimension 14 | DÉRIVÉ, contrôle exact |
+| cellules antipodales : le témoin de Fano tendu meurt (Farkas exact, revérifié) ; environ 7 % des configurations passent blocs et cellules | certifié pour le témoin ; échantillon en flottants pour le reste |
 
 ## 1. Le modèle (en un sommet x, données locales (τ, σ) fixées)
 - **Type d'une paire z** : le multigraphe de classes de son graphe de voisins génériques G_z, c'est-à-dire
@@ -73,6 +74,35 @@ exacte. Un certificat a été revérifié indépendamment par « structures ».*
   preuve à la main passerait par une direction f ∈ E₋₂ où Σ_z ⟨ξ_z, f⟩² = 196‖f‖² est impossible. Le lien avec L19 :
   (2A_Δ + I)/7 est la réflexion R de notes/93 sur ker ∂, et (P2) dit que R est une isométrie sur les 14 dimensions
   des fonctions constantes par blocs de ker ∂.
+
+## 2 ter. Cellules antipodales (raffinement proposé par « structures », issu de C2)
+- **Cellules.** Dans le bloc {c < d} : A = {c_s d_t : s = t}, B = {s ≠ t}.
+- **Identité** (même dérivation que (P2), pour toute partition) :
+  Σ_z c_z(C)·c_z(C′) = 12|C∩C′| + 2|C||C′| − e(C,C′) − L(C,C′), avec L(C,C′) = Σ_{w∈C, w′∈C′} |w ∩ w′|.
+  - La partie nouvelle est portée par les 21 vecteurs signés ε_R (+1 sur A, −1 sur B), qui sont dans ker ∂. Les
+    u_R = (2A_Δ + I)ε_R ont un Gram égal à 196·I et sont orthogonaux aux w_R′.
+- **Relaxation désagrégée** (`c1_experimental/scripts/x19i_cells.py`) : chaque type de classes x[z,t] est
+  découpé en variables s[z,t,R,(k_A,k_B)], avec Σ_k s = x.
+  - Lignes imposées :
+    - cellule signée de R contre le bloc R′ (tous R, R′) ;
+    - cellules d'un même bloc ;
+    - e(C,C′) = e(C′,C) ;
+    - Σ_{y∋u} c_y(C) = 4.
+  - Les produits de cellules de deux blocs différents ne sont pas imposés (il faudrait des découpages conjoints),
+    ce qui ne fait qu'affaiblir la relaxation.
+- **Résultats.**
+  - **Le témoin de Fano tendu de notes/116 est infaisable.** Farkas exact, 75 381 256 à l'échelle 10⁶, sur
+    29 652 lignes et 66 948 colonnes.
+    - **Vérification indépendante par « structures »** (`verify_c1_cells.py`, code séparé, entiers seuls) :
+      spéciaux, types (4 872 colonnes x), découpages (62 076 colonnes s, tous présents), puis les 29 652 lignes
+      reconstruites depuis leurs noms, avec 0 écart sur A et b. La valeur de Farkas est identique.
+  - **Survivants du niveau blocs** (points intérieurs, en flottants ; certificats exacts non encore extraits) :
+    - 10 sur 11 infaisables (graine 11) ;
+    - 10 sur 12 infaisables (graine 21, échantillon neuf).
+    - **Au total, 3 configurations sur 45 passent blocs et cellules**, soit environ 7 %.
+  - **Profil des survivants** (petits effectifs) : les plus « équirépartis ». τ est surtout en 6-cycles, et les
+    comptes e des familles triangle sont les plus uniformes. Les filtres tuent les irrégularités. Le cœur restant
+    n'est pas une classe spéciale.
 
 ## 3. Portée (à lire telle quelle)
 - **Chaque certificat réfute une configuration (τ, σ).** « 19 sur 31 » est un énoncé d'échantillon, pas un théorème.
