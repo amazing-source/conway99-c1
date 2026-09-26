@@ -109,5 +109,14 @@ des 12 étiquettes.** Cela fait au moins 12 quatre-cycles dans G(L).
 - Pour S > 0, rien n'est exclu ici. À P = 0, une droite seule donne S ≥ c₄(G(L)), puisque S(L) = 2c₄(G(L)) et
   2S = Σ_L S(L). Une droite (4,4,4) coûte donc au moins 3 à S (un 4-cycle par composante), et au moins 12 si S est nul
   en x.
-- À vérifier : les échantillons « S = 0 » de notes/117-118 imposaient-ils les conditions 2 en u et en ū
-  (σ_U(v) ≠ τ_u(v), τ_ū(v)), ou seulement σ_U(v) ≠ v̄ ?
+- **Échantillons « S = 0 » de notes/117-118 (réponse de « structures »).** Ils n'imposaient que σ_U(v) ≠ v̄.
+  - Compte fait sur les fichiers x19*.json : chaque échantillon aléatoire a de 1 à 13 événements σ = τ_u et de 2 à 12
+    événements σ = τ_ū. **Aucun n'est donc à S = 0 au sens de L18.**
+  - Seul le témoin de Fano (x19k) l'est entièrement.
+  - Les certificats restent valables pour ces configurations. Seule l'étiquette « S = 0 » était impropre.
+
+## 8. Relecture
+« structures » a refait à la main les §1, §2 et §4 : **tout tient**. Contrôle positif sur de vrais membres de la
+famille, avec S calculé par la définition :
+- H(2,3) : P = 6, S = 0, Σ c₃ = 12 = 2P et Σ c₄ = 18 = 3P ;
+- BvLS : P = 8910, S = 0, Σ c₃ = 17 820 = 2P et Σ c₄ = 26 730 = 3P (chaque G(L) y est formé de 10 prismes).
