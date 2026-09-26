@@ -61,6 +61,13 @@ exacte. Un certificat a été revérifié indépendamment par « structures ».*
   d'ordre 1 par bloc).
 - Valable en tout sommet de tout srg(99,14,1,2), quelle que soit la torsion. Contrôle exact sur le témoin de Fano :
   Gram, repère et sommes 25 vérifiés sans écart.
+- **Forme concrète : l'identité du 4-cycle alterné.** E₋₂ est engendré par les 4-cycles alternés de classes
+  f = (+1, −1, +1, −1) sur ab, bc, cd, da. On pose δ(z) = cnt(z,ab) − cnt(z,bc) + cnt(z,cd) − cnt(z,da). Alors :
+  **Σ_z δ(z)² + 2N(ab,cd) + 2N(bc,da) − [e-internes] = 192 + 2[N(ab,bc) + N(bc,cd) + N(cd,da) + N(da,ab)]**,
+  où [e-internes] = N(ab,ab) + N(bc,bc) + N(cd,cd) + N(da,da), nul sans σ-arête interne.
+  - À droite, N(ab,bc) etc. sont des arêtes σ par la classe commune, connues depuis (τ, σ).
+  - À gauche, N(ab,cd) et N(bc,da) comptent des arêtes génériques.
+  - On en a 105, une par 4-cycle de classes, plus les identités croisées. Toutes vérifiées sur le témoin de Fano.
 - **Lecture des morts.** Les parties spéciales des ξ_z sont fixées par (τ, σ) ; leurs parties génériques parcourent
   des types en nombre fini. Une configuration meurt quand aucun choix de types ne rend le repère isotrope. Une
   preuve à la main passerait par une direction f ∈ E₋₂ où Σ_z ⟨ξ_z, f⟩² = 196‖f‖² est impossible. Le lien avec L19 :
