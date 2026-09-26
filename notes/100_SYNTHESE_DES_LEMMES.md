@@ -99,6 +99,18 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   - Identité des parités de branche.
 >   - Forme réduite de P-Ψ : les droites tout-CM sont toujours résolubles, et τ y est déterminé par σ.
 >   - Cadre commun avec la contrainte τ–σ d'Astra.
+>   - *Suite (Astra, dossier n° 3) : P-Ψ + admissibilité a une solution, donc P-Ψ n'est pas un lemme de Fano complet.
+>     Le témoin meurt au niveau paire × bloc par des bornes ordonnées. Le Fano tendu est désormais le chantier d'Astra.*
+>
+> - **notes/123 : porte I_x en torsion maximale (P = 0).**
+>   - Les prismes sur un triangle sont les points fixes de son holonomie.
+>   - **H + 3P = 213 444** (hexagones induits ; formule de Reimbayev, contrôlée sur BvLS). Le plafond P ≥ 1152 équivaut à
+>     H ≤ 209 988.
+>   - À P = 0 et S = 0 : H(x) = 12 936 en tout sommet.
+>   - Triangles : A_Σ² = 13A_Σ + 68I.
+>   - Bijections d'ombre Q_U ≅ E(K₁₂ − τ_u).
+>   - Tout est automatique : le troisième ordre est localement constant en torsion maximale. Le plafond doit venir des
+>     arêtes génériques effectives.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
