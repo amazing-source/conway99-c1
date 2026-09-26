@@ -123,6 +123,9 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > - **notes/126 : L21 raffiné.** k ≥ 23 − d(L) + 2r(L), où r(L) est le rang de Mᵀ sur le noyau local supplémentaire.
 >   - Une droite dégénérée ne fait baisser la borne que par ses vecteurs propres mod 7 **équilibrés** portés par N(L).
 >   - Donc k ≤ 20 impose à chaque droite au moins deux tels vecteurs.
+>
+> - **notes/127 : carte du programme 7-adique** (coordination) : quels lemmes ferment quels k ; verrous NT (droites
+>   connexes), (a′) uniforme, « k = 22 sans générique », k = 24 à 28.
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;
