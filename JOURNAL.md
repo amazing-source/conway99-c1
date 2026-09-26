@@ -295,3 +295,27 @@
     par l'arête uū (cohérent avec L13 et P = 0).
   - Aucun de nos PL ne modélise les droites internes.
 
+- 26/09, soir. **Différences de retournement, parités de branche, P-Ψ réduite (notes/122).**
+  - Lemme des différences de retournement (refait à la main par « structures ») : T(L) est sans triangle ssi
+    poids(d(L)) ≠ 1, et T(L) = C6+C6 ssi d(L) = (1,1,1).
+  - Identité des parités de branche. P-Ψ se réduit à trois inconnues par droite ; sur une droite tout-CM, τ est
+    déterminé par σ.
+- 26/09, soir (suite). **Rapport d'Astra sur le dossier n° 2** (transmis par l'utilisateur via « structures » ; résultats
+  d'Astra, non refaits par C1) :
+  - il y a exactement un revêtement de degré 4 de K₇ à λ = 1 (non régulier, 28 sommets, monodromie S₄, 8 prismes).
+    Construction et prismes prouvés à la main par Astra ; unicité par deux énumérations exactes indépendantes ;
+  - d'où la branche « factorisation de Heawood » du Fano tendu force P ≥ 24 : **exclue à P = 0** ;
+  - le σ du témoin meurt par P-Ψ pour tout τ, avec un certificat sur une seule paire (revérifié par « structures ») ;
+  - la contrainte τ–σ d'Astra est **redondante** : elle découle de P-Ψ, de la réciprocité de σ et de la symétrie des
+    comptes de blocs. Elle ne compte donc plus parmi les ingrédients de notes/122 §4 ;
+  - définitions de β, e, d, r et identités r₀ = r₁ = r₂, e_i = d_j + d_k (non refaites ici).
+- 26/09, soir (suite). **Dossier n° 3 (demande de l'utilisateur), partage sans recouvrement** :
+  - Astra : Fano tendu général (tâche principale), généralisation de sa classification en contrainte (tâche secondaire) ;
+  - C1 : cas général, porte I_x à P = 0 ; C1 ne touche plus au Fano tendu ;
+  - « structures » : vérifications, pont entre les conditions locales de C1 et les comptes d'Astra, soutien à C2.
+  - Transmis à Astra par C1 :
+    - la reformulation par droite (les 24 atterrissages dans C4(L) ≅ vecteurs pairs de F₂^L ; F5 et P-Ψ sont des
+      conditions « ≠ » sur deux coordonnées différentes ; le seul couplage entre droites passe par les bijections σ_U
+      et par B, L, P2) ;
+    - l'identité (A + I)Aψ_R = 12ψ_R − 30ζ_R (pairblk dans la direction Ψ_R, utilisable pour les paires hors de R) ;
+    - la question décisive : F5 + KBLDP + P-Ψ + admissibilité a-t-il une solution ?
