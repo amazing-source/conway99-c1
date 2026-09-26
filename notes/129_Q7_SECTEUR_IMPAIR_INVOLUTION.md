@@ -6,7 +6,8 @@ des boules abstraites (`c1_experimental/q7/`). DÉRIVÉ = preuve écrite ; CONTR
 ## 0. Énoncés
 | énoncé | statut |
 |---|---|
-| g := rang₇(S − 3I) est pair, 8 ≤ g ≤ 20 ; β⁻ est hyperbolique | C2 (Th. B, B′) + « structures » (g ≠ 22) ; rederivé |
+| g := rang₇(S − 3I) est pair, g ≤ 20 ; β⁻ est hyperbolique | C2 (Th. B, B′) + « structures » (g ≠ 22) ; rederivé |
+| **g ∈ {16, 18, 20}** : dim ker Q_c ≤ 4 (exhaustif) donne g ≥ 14, et la cohérence des digones exclut 14 (§5 bis) | DÉRIVÉ + exhaustif |
 | **g = rang₇(T − 3I)**, T = bloc racines × racines (42 × 42) seul | DÉRIVÉ |
 | **Boule impaire d'une droite-bloc : rang = 6 + rang₇ Q_c**, Q_c = P_τ − P_η − 2P_π − I | DÉRIVÉ, CONTRÔLÉ 3000/3000 |
 | disc(boule impaire) ≡ det Q_c ≡ det L_G⁻ (partie impaire du laplacien de G(L_c)) | DÉRIVÉ, CONTRÔLÉ |
