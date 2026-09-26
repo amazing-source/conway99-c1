@@ -352,3 +352,21 @@
   bijection d'ombre (notes/114 §1) et schéma des droites (Y − 4)(Y + 17) = 0 avec sa forme locale (notes/99 §4,
   notes/109 §4) étaient **déjà connus**. H + 3P = 213 444 est le théorème de Reimbayev. Seul apport nouveau : à P = 0,
   S = 0, H(x) = 12 936 en tout sommet. Leçon : relire 99/109/114 avant d'annoncer une identité sur les droites.
+- 26/09, nuit (suite). **Porte I_x à P = 0 : où chercher la prise** (bilan de C1, mathématiques pures).
+  - **La fermeture est essentielle.** Les géométries locales « tordues au maximum » existent hors SRG : le graphe des
+    arcs de K₅ (t = 2, 20 sommets) et la géométrie t = 3 à 42 sommets ont P(x) = 0 en tout sommet et aucun prisme
+    (contrôle exact sur data/). Tout plafond doit donc utiliser que Δ_x est fermé (99 = 1 + 14 + 84).
+  - Les relaxations symétriques jusqu'à l'ordre 8 sont faisables à P = 0 (notes/91). Il n'existe donc pas de certificat
+    linéaire uniforme à ces niveaux : il faut du non convexe (intégralité au niveau paire, rang 7-adique, dimension
+    forcée des supports).
+  - **Strates rigides à P = 0, S = 0.**
+    - G(L) = M_T est cubique de maille ≥ 5 : ses seuls 4-cycles seraient de type prisme ou de type S. Chaque composante
+      a donc au moins 12 sommets.
+    - Profils possibles : connexe, (6,6), (4,8) ou (4,4,4) étiquettes par couche.
+    - Cas (4,4,4) : τ_u, τ_ū sont de type D³ à couplage commun des 6 classes, et σ_U préserve chaque paire de classes.
+    - Cas (6,6) : type C₃C₃.
+    - Dans les trois cas non connexes, l'équilibre (notes/114 §3) fixe la répartition des ombres de chaque lointain :
+      les bornes ordonnées d'Astra y deviennent applicables.
+  - **Contrainte 7-adique par droite** (rappel, notes/114 §1) : pour d(L) = 1, le rang de recollement de F_L vaut k − 22 ≤ 6
+    < 8. Chaque graphe lointain doit donc être 7-spécial. C'est la contrainte connue la plus forte sur les arêtes
+    génériques, et elle n'est pas exploitée.
