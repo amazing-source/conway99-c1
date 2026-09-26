@@ -186,3 +186,35 @@ perm est libre.
   - « structures » a relu et confirmé ; C2 le rebranche.
 - (★) de C2 (équilibre général pour tout S, avec budget d'écart), ajouté en forme linéaire à sib_model
   (`c1_experimental/motifs/star_budget.py`) : 31 000 lignes, non résolu en 60 s sur K₃. Laissé au pipeline de « structures ».
+
+## 11. K₂ ancré, classe « tournoi régulier sur Z₅ » (K2_or12) : la paire frère est de type perm partout (à la main)
+**Cadre** (indices 0 à 6).
+- Blocs Z₅ = {0,…,4} ; puits 5 et 6, avec la paire frère 56.
+- Arcs i → i+1 et i → i+2. Donc S1_k := {k, k+1} est ancrée en k+1 et S2_k := {k, k+2} en k+2.
+- En j, digone D entre S1_{j−1} et S2_{j−2}, soit In(j) = {j−1, j−2}. Composantes de G_j : {j−1, j−2} (fermée) et
+  Out(j) = {j+1, j+2, 5, 6}.
+- u et ū sont les racines des orbites frères 56/0 et 56/1. Par 8.1, φ_u(R) + φ_ū(R) = 2 pour toute paire R de Z₅.
+
+**Étape 1 (équilibres de u).**
+- En j ∈ Z₅, sur {j−1, j−2} : φ_u(S1_{j−1}) + φ_u(S2_{j−2}) = 2. Sur Out(j) : φ_u(S1_j) + φ_u(S2_j) = 2 (u a ses deux
+  intérieurs dans Out(j), et φ_u(j5) = φ_u(j6) = 0).
+- On en tire a := φ_u(S1_k), **constant en k**, et φ_u(S2_k) = 2 − a.
+- a ∈ {0, 2} veut dire que 56 est de type (2,0) sur les 10 paires ; a = 1, de type perm sur les 10.
+
+**Étape 2 : a = 2 est impossible** (a = 0 l'est aussi, par échange de u et ū).
+- A_{P₀} (les orbites lointaines voisines de u) est l'ensemble des 10 orbites S1.
+- (E2) sommée sur les deux orbites d'une paire S2 = Y : Σ_{Z∈S1} φ_Z(Y) = 4 + φ_u(Y) = 4. Les deux partenaires D des orbites de
+  Y sont des orbites S1 (digone à l'ancre de Y) et comptent déjà 2 + 2.
+- **Aucune arête q = 1 ne relie donc S1 et S2.**
+- Soit W une orbite de S1_k (pivot k+1, D(W) ⊂ S2_{k−1}). Équilibre en k+4 sur {k+2, k+3} : φ_W(S2_{k+2}) + φ_W(S1_{k+3}) = 2.
+  Le premier terme est nul (S2_{k+2} ≠ S2_{k−1}), donc φ_W(S1_{k+3}) = 2, et ce pour **les deux** orbites de S1_k.
+- Dichotomie de S1_{k+3} (paire ancrée, n_s = 0, partenaires D dans S2_{k+2}) : il y a au moins 3 orbites non partenaires à
+  φ = 2 (les deux orbites de S1_k et u), alors que la dichotomie en autorise au plus 2. **Contradiction.** ∎
+
+**Conséquence.** Dans K2_or12, u touche exactement une orbite de chaque paire de Z₅.
+- Pour W ∈ S1_k : φ_W(S1_{k+2}) = 1 et φ_W(S2_{k+2}) + φ_W(S1_{k+3}) = 2. Ses voisins dans les orbites Z₅ totalisent 5 (partenaire
+  compris), ce qui est cohérent avec (E2).
+- Pour W′ ∈ S2_k : φ(S1_k) + φ(S2_{k+4}) = 1, φ(S2_{k+1}) = φ(S1_{k+3}) = 1, et φ(S1_{k+1}) = 2 (partenaire).
+- Le cas a = 1 reste ouvert à la main. C'est le travail du modèle U de C2.
+- Ingrédients : équilibre (notes/23 §8 de C2), dichotomie, (E2) sommée, c'est-à-dire l'identité Sym × Alt de §7 (absente de
+  sib_model).
