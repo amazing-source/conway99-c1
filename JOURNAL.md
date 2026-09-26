@@ -452,3 +452,13 @@
   - |T_x| = 4, c'est le motif (2,2,2,2) de notes/112 (12 survivants à l'ordre deux). C'est le côté Hamming, où le
     corpus mord : piste pour tuer k = 18.
   - k = 20 force c(L) ≥ 3 sur toute droite. À P = 0, c'est « (4,4,4) partout ».
+- 26/09, nuit (suite). **Pistes négatives pour (NT) et (c′)** (exploration, pas une preuve).
+  - Sur 3000 boules connexes aléatoires à maille ≥ 5 (P = S = 0), 7 | τ(G(L)) dans 14,9 % des cas. Ce taux est le même
+    pour tous les types de cycles de σ (12 à 22 %), c'est-à-dire le taux de Cohen–Lenstra. La 7-dégénérescence d'une
+    droite ne se lit donc pas sur l'holonomie : « toutes les droites dégénérées » ne se ramène pas à une statistique
+    de σ (`code/x35_tau_vs_holonomy.py`).
+  - Reformulations de (NT), sans prise. Une torsion équilibrée φ équivaut à un couple (z₃ ∈ Λ₃, V ∈ Λ₋₄) de vecteurs
+    entiers qui coïncident hors de N(L). Explicitement, V = (0, −L_Gφ̃/7, Mᵀφ̃/7) après normalisation. On a aussi
+    rang₇ M = 34 − r₀ pour une droite connexe.
+  - Tous les tests locaux par paires sont trop faibles pour des ombres de 6 points : (NT) connexe demande un argument
+    global.
