@@ -580,3 +580,15 @@
     - l'équation en bloc exige ≥ 3 racines par bloc, soit 12 incidences, contre ≤ 6.
   - Le reste (g ∈ {18, 20}) demande de l'information globale. Le problème local de C2 (réaliser K = MMᵀ par des ombres
     σ-équivariantes) reste le cœur.
+- 26/09, nuit. **Relecture croisée des 14 preuves AD2 à une racine de « structures »** (labo structures, ad/proofs_ad2.py,
+  commit 097d493), demandée par C2. **Toutes correctes.**
+  - Faits employés :
+    - F1 ;
+    - pivot : les deux voisins t-étiquetés de w sont D(W) ;
+    - zéro ancré : w ∈ D(R) forcerait le pivot de W en t ;
+    - équilibre de C1 sur des réunions de composantes de G(L_k).
+  - La fermeture des classes ancrées en k est à écrire explicitement : pour m ∈ In[k], τ_k(m±) et h_k(m±) restent dans
+    In[k].
+  - 12 preuves se font par substitution directe (φ = −1 ou 0 = 1).
+  - 251 et 263 ont un certificat linéaire pur : (1) − (2) + (3) − (4) + (5) + (6) − (7) donne 0 = 2. L'intégralité
+    n'est pas nécessaire.
