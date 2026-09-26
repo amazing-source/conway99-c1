@@ -197,3 +197,11 @@ Droite-bloc entièrement générique (d(L_c) = 1, donc Q_c inversible et 7 ∤ �
   - g = 18 : T_FF ≡ Z, donc les entrées de Z sont dans {0, 1, 6} et sa diagonale est nulle.
   - g = 20 : R_c = K r Kᵀ, avec k_f ∈ F₇² sur la conique r(k,k) = −Z_ff, r(k_f, k_f′) + Z_ff′ ∈ {0, ±1}, Σ k_f k_fᵀ = 0
     et XK = 0. C'est un petit problème exact par solution locale.
+- **Comptage du recollement, vérifié numériquement** (`code/x36j`). Sur Sym²(B^⊥) (dim 630), les 483 entrées proches
+  donnent **399 fonctionnelles indépendantes**.
+  - Complétion de rang 13 (g = 20) : dimension attendue 377 − 399 = −22 ; rang 11 (g = 18) : −69.
+  - **Sous-configurations** : la sous-matrice principale sur les racines qui rencontrent s blocs doit déjà être de
+    rang ≤ g − 7. Excès : à g = 18, **21 dès s = 4 étoiles** ; à g = 20, **3 dès s = 5**, et 21 pour s = 6.
+  - Ce n'est une preuve que pour des données proches génériques. Les vraies données (τ_c, η_c) sont discrètes et
+    structurées, et devraient vérifier environ 22 identités mod 7. Aucun mineur entièrement connu ne certifie : il faut
+    un calcul par configuration.
