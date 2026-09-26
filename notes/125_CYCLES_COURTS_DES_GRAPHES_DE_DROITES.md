@@ -91,7 +91,21 @@ des 12 étiquettes.** Cela fait au moins 12 quatre-cycles dans G(L).
   préservent les mates (`code/x30c_comp66_girth5_orbits.py`).
   - Les σ ont pour types de cycles [3,3], [6], [2,2,2] ou [2,4].
   - Dans 8 types, τ_ū = τ_u ; dans 4 types, ils ont 2 arêtes communes ; dans 3 types, aucune.
-  - Un type a maille 6 (graphe cubique à 18 sommets).
+  - Un type a maille 6 : c'est le **graphe de Pappus** (biparti, |Aut| = 216).
+  - **7-dégénérescence** (`code/x30e_comp66_tau.py`, calcul exact de τ et de la nullité mod 7 du laplacien) :
+
+    | τ(G[C]) | τ mod 7 | nullité₇ | types (σ, nombre d'étiquetés) |
+    |---|---|---|---|
+    | 1 134 225 | 1 | 1 | [3,3] (16) |
+    | 1 166 400 | 4 | 1 | [3,3] (3 × 8) |
+    | 1 202 688 | 4 | 1 | [6] (3 × 24) |
+    | 1 259 712 | 6 | 1 | Pappus, [2,2,2] (8) |
+    | 1 197 504 | 0 | 2 | [2,2,2] non biparti (3 × 24) |
+    | 1 233 792 | 0 | 2 | [2,4] (3 × 24) |
+    | 1 185 408 = 7³·3456 | 0 | **4** | [2,4] (24) |
+
+  - Une droite (6,6) a donc d(L) = 2 + r₇(C₁) + r₇(C₂), soit **entre 2 et 8**. À P = S = 0, les droites (6,6) peuvent
+    être très dégénérées. C'est une donnée pour la tâche (c′) (« toutes les droites dégénérées »).
   - Non exclu : il faut l'analyse du lointain (équilibre : chaque lointain voit 3 points de chaque composante ; lemme E :
     chaque lointain intra-composante y a exactement un voisin de plus).
 
