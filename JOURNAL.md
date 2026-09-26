@@ -503,3 +503,18 @@
     ≈ 10⁻¹⁵ solution par boule) plutôt qu'à une identité. J'ai estimé le nombre de boules génériques à τ non carré à
     P = S = 0 : environ 10⁸ classes à symétrie près. Mes lemmes ne contraignent que les droites non connexes ou
     dégénérées, et ne réduisent pas cet espace. Un examen exhaustif n'est donc pas envisageable.
+- 26/09, fin de nuit. **Pause du programme 7-adique** (décision de l'utilisateur, relayée par « structures ») : C1 et
+  « structures » passent à fond sur la branche de C2 (involution), pour obtenir avec C3 le théorème Aut(Γ) = 1.
+  - **État à la reprise** (carte : notes/127) :
+    - sous NT, k ≥ 20, et k ≥ 22 à P = 0 (notes/128) ;
+    - dernier cas sous 22 : **k = 20 à P > 0** ;
+    - verrous : NT pour les droites connexes, (a′) (surdétermination), k = 24 à 28, et « k = 22 sans générique ».
+  - **k = 20 à P > 0 (sous NT).**
+    - Toute droite a c(L) ≥ 3, avec un profil parmi (2,2,8), (2,4,6), (4,4,4), (2,2,2,6), (2,2,4,4), (2,2,2,2,4)
+      et (2⁶). On a ρ = c − 3 − t, donc les droites à c = 3 sont construction-complètes mod 7.
+    - Les structures dont toutes les droites sont (2,2,2,2,4) ou (2⁶) tombent déjà : c'est l'argument de k = 18.
+    - Outils : relation prisme symétrique (composantes prismes = grilles complètes, 𝒩(x) = graphe de torsion),
+      règle 1 (propagation), saturation des composantes à 4 étiquettes, mécanisme « événements S en u », lemmes du côté
+      Hamming.
+    - Σ_L p_L = (2/3)Σ_x g(x) ≤ P ≤ 1151.
+    - À faire : combiner les profils à c ∈ {3, 4}.
