@@ -86,3 +86,39 @@ On part de g = 18 + t_c − 2r₀ + ρ, avec g⁻ ∈ {16, 18, 20} (notes/129).
   - d(L_c) = m exactement, t_c = 0, et les différences de composantes sont équilibrées ;
   - **g⁻ = 20 et g⁺ = 19 − m + ρ⁺** ; en particulier ρ⁺ ≥ m − 1 dès qu'un bloc générique a g⁺ = 18 + ρ⁺_b.
 - Aucune contradiction : q:7 n'apporte rien de plus en un bloc plein, sauf à le combiner avec des données lointaines (plan K_c).
+
+## 6. Deux blocs pleins formant une paire frère : une obstruction q:7 sur le bloc croisé (candidate)
+**Cadre.** c et d sont deux blocs pleins (τ = η), et cd est une paire frère. C'est le cas des puits de K₃ ancré (trois puits deux
+à deux frères), de K₂ ancré (puits 5, 6) et de 2K₂ ancré. Le puits de 3K₂ est seul, donc non concerné.
+
+**Réduction exacte.**
+- c plein ⟹ g⁻ = 20, t_c = 0 et ρ_c = 2 : le résidu R_c = K r Kᵀ est de rang 2, avec r anisotrope (det Q_c ≡ 1).
+- d plein ⟹ T = 0 sur D := étoile(d) ∖ étoile(c) (10 orbites (d, y), y ∈ R = les 10 étiquettes des 5 autres blocs). Donc
+  (R_c)_DD = −Z^(c)_DD.
+- Avec Q_c⁻¹ = 5I + 4P_π et des ombres nulles sur d± (T passe par d, où il est nul), on trouve
+  **M_D := Z_DD ≡ I − J + 2P_π + Rmᵀ(5I + 4P_π)Rm (mod 7)**, où Rm = Σ + 2(I − P_π).
+- Ici Σ_{w,y} = T_{(c,w),(d,y)} est le **bloc croisé** : entrées 0/±1, **deux +1 et deux −1 par ligne et par colonne** (ombres
+  à 4 entrées non nulles).
+- Conditions nécessaires :
+  - (a) rang₇ M_D ≤ 2 et M_D = −K_D r K_Dᵀ ; donc (M_D)_yy ≡ 0 impose que la ligne y de M_D soit nulle ;
+  - (b) version réelle : G_D := 3I − (Z_R)_DD, avec 4G_D = 11I − J + P_π − W_Dᵀ M_c⁺ W_D, est PSD de rang ≤ 4 (bloc principal
+    de 7P₄). On a toujours G_D·1 = 0, calcul exact ;
+  - (c) les mêmes conditions en d (Σ transposée) ;
+  - (d) dichotomie de la paire {d, Y} : au plus 2 lignes w où les colonnes sœurs y+ et y− sont toutes deux non nulles. De même
+    pour les lignes sœurs.
+
+**Indices (calculs, pas une preuve).**
+- 20 000 Σ tirées au hasard avec le bon motif de lignes et de colonnes : rang₇ M_D ∈ {7, 8, 9}, jamais ≤ 2.
+- Recuit avec des échanges qui conservent les comptes : minimum trouvé rang₇ M_D = 6 (deux graines), et rang(M_D) + rang(M_C) ≥ 12.
+- G_D n'est **jamais PSD** sur 3 000 Σ aléatoires (valeur propre minimale entre −3,6 et −0,36). La direction négative est
+  surtout impaire : G_D restreint aux vecteurs impairs n'est pas PSD dans 97 % des cas.
+- Mécanisme probable : sur les vecteurs impairs,
+  4vᵀG_Dv = 10|v|² − (4/3)|Π_eΣv|² − (1/10)|4Π_oΣv + 2v|².
+  - La positivité exige des colonnes sœurs presque égales (Σv petit pour v impair).
+  - La dichotomie (d) interdit justement le recouvrement des colonnes sœurs : au plus 2 lignes communes.
+
+**Énoncé candidat.** Aucun bloc croisé Σ ne satisfait (a)–(d). Donc **deux blocs pleins ne forment jamais une paire frère**, ce qui
+tuerait d'un coup K₃, K₂ et 2K₂ ancrés.
+- Le DFS exhaustif naïf (`code/q7_twosink_exhaust.py`) ne finit pas en 5 min.
+- Il faut exploiter la symétrie B₅ × transposition et la dichotomie, ou, par configuration, fixer |Σ| au niveau paires : il ne
+  reste alors que les signes.
