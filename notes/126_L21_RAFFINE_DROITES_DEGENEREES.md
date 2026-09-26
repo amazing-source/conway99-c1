@@ -132,7 +132,8 @@ Cela revient à r₀(L) = c(L) − 1, où c(L) est le nombre de composantes de G
   - **k ≥ 17, soit k ≥ 18** (au lieu de k ≥ 10 : L20 bis/ter) ;
   - **k = 18** ⟹ c(L) ≥ 5 pour toute droite. Il y a donc au moins 4 composantes prismes par droite, fix(σ_L) ≥ 8 et
     P ≥ 924. En tout sommet, P(x) ≥ 56, donc |W(x)| ≤ 28. Enfin r = 0 : aucune 7-torsion, puisqu'une torsion non
-    équilibrée ferait monter la borne ;
+    équilibrée ferait monter la borne. *(Complément de « structures » : pour c = 6, six prismes, la borne ne donne que
+    r ≤ 1. Mais τ(prisme) = 75 ≡ 5 mod 7, donc un prisme n'a pas de 7-torsion, et r = 0.)*
   - **k = 20** ⟹ c(L) ≥ 3 pour toute droite. À P = 0, c'est « (4,4,4) partout » (§3 ter).
 - Le régime k = 18 est un régime de **torsion faible** (P ∈ [924, 1151] par L16), c'est-à-dire le côté où les
   planchers du corpus (L8 à L14) mordent. À confronter à ces lemmes.

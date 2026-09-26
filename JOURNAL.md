@@ -482,3 +482,11 @@
   - Conséquences : V₄₄₄ est indépendant (au plus 22 sommets) ; « (4,4,4) partout » est impossible ; **sous NT, k ≥ 22
     à P = 0** ; sans NT, k ≤ 20 à P = 0 impose au moins 26 droites à torsion équilibrée.
   - notes/127 (carte du programme 7-adique) est aussi au corpus.
+- 26/09, fin de nuit (suite). **k = 18 exclu sous NT (notes/128 §3 bis), pour tout P.**
+  - Dans le motif (2,…,2) de k = 18, c tord D vers W ; la composante à 4 étiquettes {C, W*} de L_W sature y = {c, d}.
+  - Un 3-cycle est exclu (d serait un 3ᵉ point).
+  - Sinon σ_C = mate sur π(C) en tout sommet. En un voisin u, cela contredit les événements S que la même droite y
+    impose (même mécanisme que le corollaire 1).
+  - **Bilan sous NT : k ≥ 20 en général, k ≥ 22 à P = 0.** k = 20 à P > 0 reste ouvert : c(L) ≥ 3 partout.
+  - « structures » a relu notes/128 (lemme R et corollaires) et notes/126 §3 quater : tout tient. Complément
+    ajouté : τ(prisme) = 75 ≢ 0 mod 7.
