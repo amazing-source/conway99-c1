@@ -408,3 +408,17 @@
     - La strate (4,4,4) de d7cd060 est vide à S = 0 global. Chaque r_v ∈ P_u ∪ P_ū est un événement S.
     - notes/124 §1 : l'explication de rang₇ Q_BB = 37 − d(L) était fausse. Le quotient donne un bloc de Jordan, et
       c'est 1_L − 1_{N(L)} qui entre dans ker₇ Q_BB. Les nombres étaient justes (contrôle sur 8 boules).
+- 26/09, nuit (suite). **(6,6) à P = S = 0 : exploration, non tranché** (mathématiques pures).
+  - Équilibre : chaque lointain voit 3 points de chaque composante. Types de colonnes pour C₁ : (1,1,1), au nombre de 24,
+    et les 6 permutations de (2,1,0).
+  - Lemme E (version |O| = 6) : un lointain intra-couche p a exactement un voisin « de plus » dans la composante.
+  - **Orientation.** On compte les « plus » situés dans la couche suivante du cycle x → u → ū → x. Ils sont en même
+    nombre t dans chaque couche (a = d = e = t, b = c = f = 12 − t). Pour les deux composantes, **t₁ + t₂ = 12**.
+  - Par u-sommet z de C₁ : a_z + f_z + g_z = 6, c_z = 2 − a_z + f_z, d_z = 2 + a_z − f_z, avec |a_z − f_z| ≤ 2.
+  - Le type de maille 6 (τ_ū = τ_u, σ involutif, mate ∪ τ ∪ σ = 1-factorisation de K₃,₃) est biparti.
+    Mᵀh (h = ±1 par bipartition) est un vecteur propre 2 de A_F, de norme 108. Exactement 6 lointains ont leurs
+    3 points de C₁ du même côté.
+  - Tous ces comptes sont cohérents. Conclure demande le graphe générique, niveau paire × bloc. **Laissé ouvert.** Même
+    tranché, le résultat ne toucherait que la strate P = S = 0.
+  - Piste notée : les vecteurs 1_{C_i} − 1_{C_j} sont des vecteurs courts de Λ₃ (normes 24 et 36, contre 42 pour
+    (A + 4I)(e_p − e_q)). Un minorant combinatoire de min Λ₃ exclurait les profils non connexes sans hypothèse sur S.
