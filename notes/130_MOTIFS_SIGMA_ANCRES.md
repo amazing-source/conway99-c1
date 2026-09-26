@@ -237,3 +237,18 @@ perm est libre.
   - Ici x_W = φ_W(S2_{k+2}) pour W ∈ S1_k, avec Σ_{W∈S1_k} x_W = 2.
 - **État.** Il reste de la liberté au niveau paires, ce qui est cohérent avec sib_model. La suite est au niveau orbite (U de C2), puis
   au secteur impair (modèle signé), puisque U n'a pas de signes.
+
+## 12. Résultats du modèle d'orbite U de C2 sur les squelettes à D fixé (26/09, nuit)
+Modèle U : secteur pair seul, colonnes frères, D fixé. Certificats revérifiés par orbit_verify_U, étendu aux frères et au filtre 8.1.
+- **2K2_or15 (a0) : MORT.** Écart de Farkas 103,7. C'était l'unique classe et l'unique choix D : **toute la famille ancrée de 2K₂
+  est morte.**
+- **K2_or12 (a0), tournoi régulier sur Z₅ : MORT.** Écart 157,2.
+- **3K2_or14 (a0) : FAISABLE** dans U (112 512 colonnes, solution PL sauvée). C'est la cible pour le secteur impair et q:7.
+  Structure :
+  - un seul puits, le bloc 2, plein, de profil (4,4,4) : ses digones D apparient {0,4}, {1,3}, {5,6}, exactement comme les paires
+    frères ;
+  - chaque autre bloc a son frère, un digone venu d'une autre paire frère (cycle A → B → C → A) et 3 blocs libres.
+- En cours chez C2 : K2_or0 (a0, a1) et la DFS des puits de K₃ (au bloc 0, la double digone {16, 35} et le C₄ 1-5-3-6 sont morts).
+- Les deux classes tuées ont deux puits pleins frères. La mort vient déjà du secteur pair, sans les signes. Le certificat (dual
+  d'IPM, dense) ne se concentre pas sur le bloc croisé de notes/131 §6. C2 extraira un certificat à support minimal pour K2_or12,
+  en vue d'une preuve à la main.
