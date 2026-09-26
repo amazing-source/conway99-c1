@@ -284,4 +284,14 @@
   - C2 a transmis son Théorème F. Sa transposition en C1 donne des règles de triades rigides, mais pas de contradiction :
     le budget vaut 8 et il est saturé.
   - P-Ψ reste un filtre exact, pas un lemme.
+- 26/09, après-midi (suite). **Portes relues, Fano tendu mis en pause.**
+  - Le dérangement cerise/σ, idée de « structures », est clos : le compte T ≡ 1 est faux au témoin (14 cas sur 42 seulement).
+  - La voie 7-adique par sous-matrices déterminées est close : il faudrait un support déterminé de rang₇ ≥ 45, et le
+    maximum connu est de 39 points (L21 donne au mieux k ≥ 22).
+  - Porte proposée : la géométrie interne I_x (140 droites internes) à P = 0. La torsion maximale aux étiquettes
+    u ∈ N(x) s'y lit comme une contrainte exacte sur les droites internes : pour y = {u,v} et une droite interne
+    {y, p, p′}, τ_u(w_p) ≠ w_{p′}, où {u, w_p} est le second u-voisin de p.
+  - Au passage, la torsion en u pour l'étiquette ū équivaut à « ρ_α sans point fixe », et un point fixe est un prisme
+    par l'arête uū (cohérent avec L13 et P = 0).
+  - Aucun de nos PL ne modélise les droites internes.
 
