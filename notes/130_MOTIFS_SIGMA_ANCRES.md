@@ -81,3 +81,20 @@ au niveau paires (zéros de pivot, zéros ancrés, F1, équilibre sur chaque com
   comme pour Σ = ∅.
 - Suite proposée à « structures » : le modèle par paires avec couplage sur les survivants ancrés, puis l'extension aux
   paires tordues et dis. La règle de la queue et T⁺ valent pour tout carré « un bloc », tordu compris.
+
+## 6. Modèle couplé de « structures » étendu aux paires frères (ad/sib_model.py, écrit par C1 dans leur labo)
+- Ajouts :
+  - pivot 'sib' ;
+  - prismes {m} aux deux bouts (8.1 par l'équilibre) ;
+  - zéros aux deux blocs ;
+  - (S3) ;
+  - dichotomie de constante 0 pour une paire frère : (Q²)[U,U′] = 4 − Sh − n_s = 0.
+- Contrôles : verdicts identiques à ceux de general_model sur 8 feuilles mortes et 3 faisables (Σ = ∅, M1 n = 6 job 12).
+- **Résultats sur les survivants ancrés** (`code/motifs/run_sib_anchored.py`, tous les choix de graphe D) :
+  - **P₃+K₂ : 12/12 morts.**
+  - **K₃ : 8 vivants sur 80, une seule classe à symétrie près.** Les puits sont le triangle {1,3,5}, avec In = {2,4,6,7}
+    partout ; sur {2,4,6,7}, une source (o = 6) et un 3-cycle.
+  - 3K₂ : 2 vivants sur 44 (le bloc libre 3 est le puits).
+  - 2K₂ : 24 vivants sur 84.
+  - K₂ : balayage partiel, beaucoup de vivants.
+- Bilan de la famille ancrée : **P₅, 2P₃, P₄, P₃ et P₃+K₂ sont morts** ; restent K₃ (une classe), 3K₂, 2K₂ et K₂.
