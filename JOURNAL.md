@@ -462,3 +462,15 @@
     rang₇ M = 34 − r₀ pour une droite connexe.
   - Tous les tests locaux par paires sont trop faibles pour des ombres de 6 points : (NT) connexe demande un argument
     global.
+- 26/09, nuit (suite). **k = 22 sans droite générique** (tâche proposée par « structures », complément de (a′)).
+  - Réduction : à k = 22, on a ρ(L) = r₀ − r ≥ 0 sur toute droite. Une droite connexe dégénérée exige donc de la
+    torsion équilibrée ; une droite non connexe exige t ≤ c − 1 + 2b.
+  - **Sous NT, k = 22 sans générique ⟹ toute droite est non connexe.** À P = 0, chaque droite est (4,4,4), (6,6) avec
+    t₁ + t₂ ≤ 1, ou (4,8) avec t ≤ 1. À P = S = 0, c'est (6,6) partout.
+  - Piste « trame dans V₃ » : chaque droite non connexe donne ses différences de composantes dans V₃. En (6,6)
+    partout, F = Σ f_L f_Lᵀ = 154·E₃ + T, avec F[v,w] = 18 forcé sur les arêtes (6 + 12 droites).
+    **Mais c'est automatique** : chaque W_L ⊆ V₃ par l'équilibre, donc F·V₋₄ = 0 et Σ_{arêtes} F = 3·tr F valent
+    droite par droite. Pas de contrainte globale de ce côté.
+  - « Toute droite non connexe » est donc une question locale : compatibilité, en chaque sommet, des 7 partitions P_U
+    avec les τ (τ_a préserve P_A) et les lemmes E de chaque droite. Au niveau des classes, les contraintes laissent de
+    la place, car les évènements génériques comblent les « plus ». Il faut le niveau paire × bloc. Non tranché.
