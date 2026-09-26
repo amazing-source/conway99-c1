@@ -130,6 +130,13 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 > - **notes/128 : rigidité (4,4,4).** À P = 0, si les 7 droites par x sont (4,4,4), tous les σ en x sont des réflexions
 >   de mates (S(x) = 84). Deux tels sommets ne sont jamais voisins, donc « (4,4,4) partout » est impossible.
 >   **Sous NT, à P = 0, k ≥ 22.** Sans NT : k ≤ 20 à P = 0 impose au moins 26 droites à torsion équilibrée.
+>
+> - **notes/129 : q:7, secteur impair d'une involution** (branche de C2, avec « structures »). g = rang₇(S − 3I) est
+>   pair et vaut au plus 20 ; il est égal à rang₇(T − 3I), où T est le bloc racines × racines.
+>   - Boule impaire d'une droite-bloc : rang = 6 + rang₇ Q_c, avec Q_c = P_τ − P_η − 2P_π − I, et disc ≡ det Q_c.
+>   - **L23 dédoublé** : g⁻ = 18 ⟹ det Q_c non carré ; g⁺ = 18 ⟹ τ(G(L_c)/σ) carré.
+>   - Résidu lointain : R² = 0 et XR = 0.
+>   - **L'involution meurt ssi Λ_{T,−4} est 7-isotrope.**
 
 ## 1. Les quantités en jeu
 - **Torsion** : |W(x)| = nombre de paires (étiquette, classe) tordues en x ; m(e) = 6 − d(e) = prismes de barreau e ;

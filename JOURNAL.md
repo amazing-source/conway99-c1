@@ -518,3 +518,22 @@
       Hamming.
     - Σ_L p_L = (2/3)Σ_x g(x) ≤ P ≤ 1151.
     - À faire : combiner les profils à c ∈ {3, 4}.
+- 26/09, soir. **q:7 dans le cadre de C2 (tâche principale, décision de l'utilisateur relayée par « structures » :
+  « fini la vérification, place aux paris et aux percées »).** Note : notes/129.
+  - Partage : « structures » fait le genre (NOTE_S27) ; C1 fait les minorants de g et les signes locaux.
+  - **Côté « structures » (relu et rederivé)** :
+    - g = rang₇(S − 3I) est pair et vaut au plus 20 ; g = 22 est exclu par le signe (déterminant exact 7²²) ;
+    - g⁺ est pair et au moins 2, et g⁺ + g⁻ = 14 + k.
+    - Mon E₋ vaut 42 + M dans leur jauge. Contrôle Paley(9).
+    - C2 avait déjà « g pair, forme hyperbolique » (Th. B, B′).
+  - **Côté C1 (nouveau)** :
+    - g = rang₇(T − 3I), où T est le seul bloc racines × racines.
+    - Boule impaire d'une droite-bloc : rang = 6 + rang Q_c, avec Q_c = P_τ − P_η − 2P_π − I ; disc ≡ det Q_c ≡ det L_G⁻.
+      Kirchhoff du revêtement double : τ(G) = τ(H)·det L_G⁻/2.
+    - L23 dédoublé : g⁻ = 18 ⟹ det Q_c non carré ; g⁺ = 18 ⟹ τ(H_c) carré.
+    - Résidu lointain impair : R² = 0, XR = 0 ; structure W_c ⊥ K_c à g = 20.
+    - Critère : l'involution meurt ssi Λ_{T,−4} est 7-isotrope.
+    - Contrôles exacts sur 3000 boules abstraites (c1_experimental/q7/).
+  - **Suite** :
+    - C1, à la main : l'étoile complète impaire à g = 18, puis K_c à g = 20.
+    - « structures » et C2 : le filtre N_II sur les squelettes à Q entier.
