@@ -76,3 +76,13 @@ On part de g = 18 + t_c − 2r₀ + ρ, avec g⁻ ∈ {16, 18, 20} (notes/129).
   isotropie) pour environ 24 inconnues. On ne peut l'évaluer qu'avec une vraie solution locale, et aucune n'est connue à m = 7.
 - Dès qu'un bloc force g⁻ = 20 (bloc plein, ou ÉTL à det carré), les blocs à t = 2 sans torsion équilibrée deviennent rigides
   (ρ = 0).
+
+## 5. Composantes canoniques d'un bloc plein : aucune torsion 7 (calcul exact)
+- À un bloc plein (τ_c = η_c), un D-cycle de longueur ℓ donne une composante canonique de G(L_c) : 6ℓ sommets, cubique, avec
+  les étiquettes sur un cycle alterné π/μ. Pour ℓ = 1, c'est le prisme frère.
+- Calcul exact (`code/q7_fullpivot_components.py`), pour ℓ = 1 à 6 : **le noyau mod 7 du laplacien est réduit aux constantes**
+  (pair : 1, impair : 0). Il n'y a donc aucune torsion 7, ni paire ni impaire.
+- Conséquences en un bloc plein à m composantes :
+  - d(L_c) = m exactement, t_c = 0, et les différences de composantes sont équilibrées ;
+  - **g⁻ = 20 et g⁺ = 19 − m + ρ⁺** ; en particulier ρ⁺ ≥ m − 1 dès qu'un bloc générique a g⁺ = 18 + ρ⁺_b.
+- Aucune contradiction : q:7 n'apporte rien de plus en un bloc plein, sauf à le combiner avec des données lointaines (plan K_c).
