@@ -11,7 +11,9 @@ contrôle exhaustif d'un lemme démontré à la main (`c1_experimental/motifs/`)
 | **Ancrés P₅ et 2P₃ : impossibles** (règle de la queue seule ; preuve à la main pour P₅) | DÉRIVÉ + exhaustif |
 | **Ancrés P₃ et P₄ : impossibles** (T⁺ avec graphes D et partitions de Out) | exhaustif, un cas refait à la main |
 | Ancré P₃+K₂ : impossible (modèle couplé de « structures » étendu aux paires frères, §6) | exhaustif |
-| Ancrés restants : K₃ (une classe), 3K₂ (2 orientations), 2K₂ (24), K₂ (en cours) | exhaustif ; ouvert |
+| Ancrés K₃, 2K₂, K₂ (K2_or12, K2_or0) : impossibles (modèle d'orbite U de C2, secteur pair, §12–13) | certificats U |
+| **Ancré 3K₂ : impossible par le secteur impair** (orbites rigides q:7, notes/131 §7 ; relu par « structures ») | DÉRIVÉ + exhaustif ; étape 1 en certification exacte |
+| **Toute la famille ancrée des motifs Σ ≠ ∅ est morte** (sous réserve du certificat exact de l'étape 1 de 3K₂, §13) | |
 
 ## 1. Cadre
 - Motif Σ = ensemble exact des paires frères, σ_k = degré de k dans Σ (≤ 2, lemme des étoiles de C2).
@@ -252,3 +254,32 @@ Modèle U : secteur pair seul, colonnes frères, D fixé. Certificats revérifi�
 - Les deux classes tuées ont deux puits pleins frères. La mort vient déjà du secteur pair, sans les signes. Le certificat (dual
   d'IPM, dense) ne se concentre pas sur le bloc croisé de notes/131 §6. C2 extraira un certificat à support minimal pour K2_or12,
   en vue d'une preuve à la main.
+
+## 13. Bilan : la famille ancrée est close (26/09, fin de nuit)
+Rappel : les survivants du niveau paires se réduisent à 26 squelettes à D fixé (§11 bis) : K₃ 21, 3K₂ 1, 2K₂ 1, K2_or0 2,
+K2_or12 1.
+- **K₃ ancré : MORT** (modèle U de C2, certificats sibfix). Au puits 0, les 6 graphes D possibles sur F = {2, 4, 6, 7} (3 doubles
+  digones, 3 C₄) sont tous morts. Les 21 choix C₄ de §9 tombent donc tous.
+- **K₂ ancré : MORT** : K2_or12 (§12) et K2_or0 (a0 et a1), certificats U.
+- **2K₂ ancré : MORT** (§12).
+- **3K₂ ancré (3K2_or14, l'unique squelette) : MORT par le secteur impair** (notes/131 §7), alors que U le trouve faisable. C'est la
+  première mort venue de q:7 que le secteur pair ne voit pas.
+  - Mécanisme : le puits 2 est un bloc plein (τ = η), d'où Q_c⁻¹ = 5I + 4P_π, g⁻ = 20 et K_c anisotrope. Une orbite frère u dont
+    l'ombre sur étoile(2) a une étiquette par bloc vérifie Z_uu ≡ 0. Donc k_u = 0 et toute la ligne T de u est forcée mod 7.
+    Les 6 lignes frères rigides n'admettent aucune affectation où chaque orbite croisée trouve une ombre : 512 affectations, 0 survivante.
+  - **Relecture indépendante de « structures »** :
+    - (i) formule de Z vérifiée par élimination exacte mod 7 contre 5BᵀB + s̃ᵀ(5I + 4P_π)s̃ (300 tirages, 0 écart) ;
+    - (ii) anisotropie : disc(V) carré à g⁻ = 20 et disc(N_c) carré (signe local +1 d'un bloc plein), donc K_c anisotrope ;
+      Z_uu = 49 ≡ 0 refait à la main ;
+    - (iii) réimplémentation écrite à partir de l'énoncé (`c99_structures_lab/review/q7_3k2_independent.py`) : mêmes nombres
+      (384 couples sœurs par paire, 512 affectations, toutes tuées).
+  - **Étape 1** : φ = 1 pour chaque orbite frère sur chaque paire du puits 2, c'est-à-dire une étiquette par bloc. C'est la seule
+    entrée non encore certifiée exactement : 48 MILP (sib model + Alt), tous infaisables selon HiGHS. Les modèles sont exportés
+    (`data/k3k2_step1_models/`, script `code/motifs/export_k3k2_step1.py`), et C2 les certifie avec certify.py de « structures »
+    sur le PC du labo.
+- **Bilan : toute la famille ancrée des motifs Σ ≠ ∅ est morte**, sous réserve du certificat exact de l'étape 1 de 3K₂.
+- **Restent** :
+  - les familles tordue et dis des motifs (v6 de C2, avec le lemme de la queue 25.1 réactivé grâce au §10) ;
+  - le cœur étoile libre.
+- **Suite naturelle** : le mécanisme des lignes rigides s'applique à tout bloc plein. « structures » le branche sur les résidus AD,
+  qui ont tous un bloc A plein. Pour une orbite dd rigide, Z_{f,D(f)} ≡ 0 est une condition sur les seules ombres.
