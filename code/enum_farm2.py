@@ -25,6 +25,14 @@ RC = r'C:\Users\RESEARCHER\.claude\tools\run_capped.ps1'
 STATUS = os.path.join(RUNS, 'enum_farm2.status.jsonl')
 ADD = os.path.join(RUNS, 'farm2_add_ids.txt')                        # ids appended to the queue while running
 TABLE = {L['id']: str(L['group']) for L in json.load(open(os.path.join(ROOT, 'data', 'borcherds_odd24.json')))}
+NROOTS = {L['id']: int(L['nroots']) for L in json.load(open(os.path.join(ROOT, 'data', 'borcherds_odd24.json')))}
+# observed pairs per y1 orbit against the root count (finished lists, 27/09 night); used to project a lattice's list size
+RATIO = [(368, 5), (288, 20), (272, 35), (240, 50), (224, 50), (216, 65), (208, 107), (192, 120), (176, 245), (144, 489),
+         (128, 759), (96, 2070)]
+
+
+def projected_pairs(i, y1):
+    return y1 * min(RATIO, key=lambda t: abs(t[0] - NROOTS[i]))[1]
 FINAL = os.path.join(ROOT, 'data', 'finishC', 'ypairs', 'gpairs_%03d.json')
 
 
@@ -182,6 +190,7 @@ def main():
     MINFREE, CAP0 = arg('--min-free-mb', 5000.0), arg('--cap', 1500)
     PER, NMAX, MAXCAP = arg('--per-chunk', 30), arg('--max-chunks', 32), arg('--max-cap', 8000)
     PLANS = arg('--plan-threads', 2)
+    MAXPAIRS = arg('--max-pairs', 150000)
     adopt = set(int(x) for x in arg('--adopt', '').split(',') if x)
     queue, nchunks, pending, waiting = [], {}, {}, set()
     for i in ids:
@@ -205,6 +214,11 @@ def main():
         nchunks[t.i] = n
         pending[t.i] = set(range(n))
         lv = pl['plan'].get('label_vectors', 1)
+        proj = projected_pairs(t.i, y1)
+        if proj > MAXPAIRS:                                           # no multi-GB lists: left to the streaming route
+            log({'event': 'too-big', 'id': t.i, 'y1_orbits': y1, 'projected_pairs': proj})
+            pending.pop(t.i, None)
+            return True
         for k in range(n):
             if (read_json(chunk_path(t.i, k, n)) or {}).get('stats', {}).get('complete'):
                 pending[t.i].discard(k); continue
