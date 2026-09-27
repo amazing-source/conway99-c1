@@ -99,8 +99,17 @@ class Y2Engine:
         return [c[d['idx']] for d in self.data]
 
     def pairs_for(self, y1f, t0=None, max_seconds=600, max_out=10 ** 6):
+        """y2 candidates for a dominant y1. Batched exact version (27/09 night): the DP carries integer norms and (y1, y2)
+        scaled by D = lcm of the component denominators (they were Fractions); the leaves of the walk are processed in
+        batches (one integer matrix product for the H-lattice part); a 1-dim rootless part runs the same interval test as
+        enum_shift inline; higher dims use enum_shift with a Cholesky factor computed once. The candidates come out in the
+        same order as before, so the lists are identical."""
         rank, e = self.rank, self.e
         d1 = self.labels_of(y1f)
+        D = 1
+        for dd in self.data:
+            D = D * dd['den'] // math.gcd(D, dd['den'])
+        SEVEN = 7 * D
         per = []
         for dd, lam in zip(self.data, d1):
             C = dd['C']
@@ -114,25 +123,26 @@ class Y2Engine:
                 ok &= ~(np.abs(dd['KC'][:, two]) == 2).any(axis=1)
             ipD = C @ (dd['AinvD'] @ lam)
             idx = np.nonzero(ok)[0]
-            per.append({'nrm': [F(int(v), dd['den']) for v in dd['nrmD'][idx]],
-                        'ip': [F(int(v), dd['den']) for v in ipD[idx]],
+            sc = D // dd['den']
+            per.append({'nrm': [int(v) * sc for v in dd['nrmD'][idx]],
+                        'ip': [int(v) * sc for v in ipD[idx]],
                         'cls': [tuple(int(x) for x in row) for row in dd['cls'][idx]], 'C': C[idx]})
         zero = tuple([0] * rank)
         add = lambda a, b: tuple((x + y) % e for x, y in zip(a, b))
         full_rank = self.K is None
-        Fs = [{(zero, F(0), F(0))}]
+        Fs = [{(zero, 0, 0)}]
         for p in per:
             nxt = set()
             for (cl, nr, ip) in Fs[-1]:
                 for k in range(len(p['C'])):
                     t = nr + p['nrm'][k]
-                    if t <= 7:
+                    if t <= SEVEN:
                         nxt.add((add(cl, p['cls'][k]), t, ip + p['ip'][k]))
             Fs.append(nxt)
             if len(nxt) > 3_000_000:
                 raise RuntimeError('DP too large')
         if full_rank:
-            goodF = {s for s in Fs[-1] if s[0] == zero and s[1] == 7 and s[2] == 0}
+            goodF = {s for s in Fs[-1] if s[0] == zero and s[1] == SEVEN and s[2] == 0}
         else:
             goodF = {s for s in Fs[-1] if s[0] == zero}
         good = [goodF]
@@ -142,7 +152,7 @@ class Y2Engine:
             for (cl, nr, ip) in Fs[k]:
                 for j in range(len(p['C'])):
                     t = nr + p['nrm'][j]
-                    if t <= 7 and (add(cl, p['cls'][j]), t, ip + p['ip'][j]) in good[0]:
+                    if t <= SEVEN and (add(cl, p['cls'][j]), t, ip + p['ip'][j]) in good[0]:
                         cur.add((cl, nr, ip)); break
             good.insert(0, cur)
         Fs = None
@@ -179,34 +189,83 @@ class Y2Engine:
             stats['after_roots'] += int(keep.sum())
             kept.extend(Y2[keep])
 
-        def emit(choice):
-            if not rank:                                                 # no roots: the class part is empty
-                return emit_a0(np.zeros(24, dtype=np.int64))
-            cvec = np.zeros(rank, dtype=self.HinvE_np.dtype)
-            for dd, p, j in zip(self.data, per, choice):
-                cvec[dd['idx']] = p['C'][j]
-            num = cvec @ self.HinvE_np                                   # = e * (c . H^-1), exact integers
-            if any(int(v) % e for v in num):                             # never expected (class condition); exact old path
-                b1 = [sum(F(int(cvec[jj])) * Hinv[jj][k] for jj in range(rank)) for k in range(rank)]
-                b1i = np.array([int(v) for v in b1], dtype=self.V_np.dtype)
-            else:
-                b1i = np.array([int(v) // e for v in num], dtype=self.V_np.dtype)
-            return emit_a0(np.array([int(v) for v in (b1i @ self.V_np)], dtype=np.int64))
+        ncomp = len(per)
+        Kdim = 0 if self.K is None else len(self.K)
+        if Kdim:
+            Lc = np.linalg.cholesky(np.array(self.GK.tolist(), dtype=float))   # as in enum_shift, computed once
+            dK = [float(Lc[i, i] ** 2) for i in range(Kdim)]
+            QK = [[float(Lc[j, i] / Lc[i, i]) if j > i else 0.0 for j in range(Kdim)] for i in range(Kdim)]
+        buf = []
 
-        def emit_a0(a0):
-            y0 = a0.astype(float) @ Bf
+        def rootless(A0):
+            """the old emit_a0 on a batch of a0 rows, same order of the output"""
             if self.K is None:
-                out.append(a0)
+                for a0 in A0:
+                    out.append(a0)
+                    if len(out) >= 20000:
+                        flush()
+                return
+            Y0 = A0.astype(float) @ Bf
+            TT = np.linalg.solve(self.GKf, (Y0 @ self.Kf.T).T).T               # rows: tt = GK^-1 Kf y0
+            BND = 7 - np.einsum('ij,ij->i', Y0, Y0) + np.einsum('ij,jk,ik->i', TT, self.GKf, TT)
+            eps = 1e-7
+            if Kdim == 1:
+                k0 = self.Kf[0]
+                d0 = dK[0]
+                for r in range(len(A0)):
+                    bound = float(BND[r])
+                    if bound < -1e-9:
+                        continue
+                    rem = bound + eps
+                    mid = float(-TT[r, 0])
+                    sp = math.sqrt(max(rem, 0.0) / d0) + eps
+                    y0 = Y0[r]
+                    for xi in range(math.ceil(mid - sp), math.floor(mid + sp) + 1):
+                        if rem - d0 * (xi - mid) ** 2 < -eps:
+                            continue
+                        v = y0 + float(xi) * k0
+                        if abs(v @ v - 7) < 1e-6:
+                            a = A0[r] + xi * self.K[0]
+                            if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
+                                out.append(a)
+                    if len(out) >= 20000:
+                        flush()
+                return
+            for r in range(len(A0)):
+                bound = float(BND[r])
+                if bound < -1e-9:
+                    continue
+                for x in _enum_shift_pre(dK, QK, Kdim, -TT[r], bound, Y0[r], self.Kf):
+                    a = A0[r] + np.array(x, dtype=np.int64) @ self.K
+                    if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
+                        out.append(a)
                 if len(out) >= 20000:
                     flush()
+
+        def process():
+            if not buf:
                 return
-            tt = np.linalg.solve(self.GKf, self.Kf @ y0)
-            for x in enum_shift(self.GK.tolist(), -tt, 7 - float(y0 @ y0) + float(tt @ self.GKf @ tt), y0, self.Kf):
-                a = a0 + np.array(x, dtype=np.int64) @ self.K
-                if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
-                    out.append(a)
-            if len(out) >= 20000:
-                flush()
+            ch = np.array(buf, dtype=np.int64).reshape(len(buf), ncomp)
+            buf.clear()
+            nb = len(ch)
+            if not rank:
+                return rootless(np.zeros((nb, 24), dtype=np.int64))
+            cvec = np.zeros((nb, rank), dtype=self.HinvE_np.dtype)
+            for ci, (dd, p) in enumerate(zip(self.data, per)):
+                cvec[:, dd['idx']] = p['C'][ch[:, ci]]
+            num = cvec @ self.HinvE_np                                       # = e * (c . H^-1), exact integers
+            if num.dtype == object:
+                bad = np.array([any(int(v) % e for v in row) for row in num], dtype=bool)
+                b1 = np.array([[int(v) // e for v in row] for row in num], dtype=object)
+            else:
+                bad = (num % e != 0).any(axis=1)
+                b1 = num // e
+            for r in np.nonzero(bad)[0]:                                     # never expected; the exact old path
+                b1[r] = [int(sum(F(int(cvec[r, jj])) * Hinv[jj][k] for jj in range(rank))) for k in range(rank)]
+            A0 = b1 @ self.V_np
+            if A0.dtype == object:
+                A0 = np.array([[int(v) for v in row] for row in A0], dtype=np.int64)
+            rootless(A0.astype(np.int64))
 
         def walk(k, cl, nr, ip, choice):
             if stop[0]:
@@ -214,20 +273,51 @@ class Y2Engine:
             if len(kept) >= max_out or (t0 is not None and time.time() - t0 > max_seconds):
                 stop[0] = True
                 return
-            if k == len(per):
-                emit(choice)
+            if k == ncomp:
+                buf.append(choice)
+                if len(buf) >= 4096:
+                    process()
                 return
             p = per[k]
+            g = good[k + 1]
+            pn, pi, pc = p['nrm'], p['ip'], p['cls']
             for j in range(len(p['C'])):
-                t = nr + p['nrm'][j]
-                if t > 7:
+                t = nr + pn[j]
+                if t > SEVEN:
                     continue
-                s2 = (add(cl, p['cls'][j]), t, ip + p['ip'][j])
-                if s2 in good[k + 1]:
+                s2 = (add(cl, pc[j]), t, ip + pi[j])
+                if s2 in g:
                     walk(k + 1, s2[0], t, s2[2], choice + [j])
-        walk(0, zero, F(0), F(0), [])
+        walk(0, zero, 0, 0, [])
+        process()
         flush()
         info = dict(stats)
         info['truncated'] = stop[0]
         Y2k = np.array(kept, dtype=np.int64).reshape(-1, 24)
         return Y2k, info
+
+
+def _enum_shift_pre(d, Q, n, center, bound, y0, Kf):
+    """y_pairs.enum_shift with the Cholesky data (d, Q) of GK precomputed (same arithmetic, same order of the output)"""
+    out, x, eps = [], [0] * n, 1e-7
+
+    def rec(k, rem):
+        s = sum(Q[k][j] * (x[j] - center[j]) for j in range(k + 1, n))
+        mid = center[k] - s
+        sp = math.sqrt(max(rem, 0.0) / d[k]) + eps
+        for xi in range(math.ceil(mid - sp), math.floor(mid + sp) + 1):
+            r2 = rem - d[k] * (xi - mid) ** 2
+            if r2 < -eps:
+                continue
+            x[k] = xi
+            if k == 0:
+                v = y0 + np.array(x, dtype=float) @ Kf
+                if abs(v @ v - 7) < 1e-6:
+                    out.append(list(x))
+            else:
+                rec(k - 1, r2)
+        x[k] = 0
+    if bound < -1e-9:
+        return []
+    rec(n - 1, bound + eps)
+    return out

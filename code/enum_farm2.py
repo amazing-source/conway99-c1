@@ -1,6 +1,7 @@
 r"""Enumeration farm v2 (C1, 27/09 night): y_pairs_gamma.py on a queue of envelopes, each lattice split into chunks, under a
 machine-wide governor shared with the other sessions on this PC.
-Governor (what Task Manager shows): CPU = max(% Processor Utility, Win32_Processor LoadPercentage), averaged over 3 samples;
+Governor (what Task Manager shows): CPU = % Processor Utility (Task Manager's CPU number), averaged over 3 samples; the legacy
+Win32_Processor LoadPercentage is logged but not used (27/09 22:03: it read 93% while Task Manager read 69%, 6 pegged threads);
 RAM = % of physical memory in use. A job (1 thread) starts only below --cpu / --ram and with at most --threads jobs of ours;
 above --shed-cpu / --shed-ram the NEWEST job is killed and re-queued.
 Per lattice: plan (the y1 stage; writes the y1 representatives) -> n chunks (--from-plan, --chunk k/n) -> merge -> commit + push.
@@ -39,10 +40,7 @@ def machine():
           "[math]::Round(100*($o.TotalVisibleMemorySize-$o.FreePhysicalMemory)/$o.TotalVisibleMemorySize), "
           "[math]::Round($o.FreePhysicalMemory/1024))")
     out = subprocess.run(['powershell', '-NoProfile', '-Command', ps], capture_output=True, text=True).stdout.split()
-    try:
-        return max(float(out[0]), float(out[1])), float(out[2]), float(out[3])
-    except (ValueError, IndexError):                                  # LoadPercentage can come back empty
-        return float(out[0]), float(out[-2]), float(out[-1])
+    return float(out[0]), float(out[-2]), float(out[-1])               # utility, RAM %, free MB
 
 
 def machine_avg(n=3):
