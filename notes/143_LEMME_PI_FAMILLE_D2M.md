@@ -185,3 +185,27 @@ Toutes ces valeurs sont non nulles. **Donc tout bloc à |κ| = 1 meurt dans 132.
 - lemme s = 4 : AᵀB = Ψ, avec 4 SI dont les I₁ tombent sur l'autre bloc, et couverture p = [H∖O], q ≡ 0 ;
 - torsion à κ = 0 (π constant par moitié, ou π de ExE à e₁ = e₂), sans coïncidence ;
 - couverture (E1) avec parité des I₁ par moitié.
+
+### 7.1 Deux nouveaux outils (132 ; valables pour toute la famille)
+**Lemme H (s = 4, bloc dont TOUTES les paires sont touchées une fois).** C'est le cas E=E disjoints avec O₁ ∪ O₂ = H.
+- **Colonnes.** On note c_x = (σ_i(x))_{i=1..4} ∈ {±1}⁴ et on renormalise : ρ_a = −ι(a) c_a sur H, t̃_b = φ₁(b) c_b sur H′.
+- **Lemme Z par moitié** (Σh/2 ∈ U, avec P_X(U) ⊂ D_m* = ℤ^m ∪ (ℤ^m + ½)) : la parité de ∏_i c_x(i) est constante sur chaque moitié. (E2) donne ρ·t̃ = ±2, donc les parités des deux moitiés sont opposées. Quitte à changer le signe d'un S, t̃_b = s_b e_{k(b)}, où e₀..e₃ sont les lignes de Hadamard ±{1111, −−++, −+−+, −++−}. On écrit ρ_a = ½ Σ_k θ_a(k) e_k, avec ∏θ = 1.
+- **Contraintes.** (E2) devient θ_a(k(b)) s_b = 1 (a ∈ O₁) et = λ(b) := φ₁φ₂(b) (a ∈ O₂).
+  - Si chaque k apparaît : θ ≡ s sur O₁ et θ ≡ λ∘s sur O₂.
+  - La Gram (h_i,h_j) = K_ij (coïncidences des I₁ sur l'autre bloc) s'écrit, dans la base ê_k = e_k/2 :
+    **4 diag(n_k) + Σ_a θ_aθ_aᵀ = 12 I + 4 K̂**, où n_k = #{b : k(b) = k}.
+- **E₂=E₄ disjoints** : hors diagonale, s_ks_l(2 + 4λ_kλ_l) = 4K̂_kl ∈ {0, ±2}. Il faut donc λ_kλ_l = −1 pour TOUS k ≠ l : impossible sur 4 indices.
+  - La couverture de l'autre bloc force des coïncidences de type (2,1,1) ou (3,1). Dans le cas (3,1), 4K̂_kl ∈ {0, ±2, ±4, ±8, ±10} ne contient jamais ±6 : même contradiction.
+  - **E₂=E₄ | F₁=O et E₂=E₄ | F₁xO : 24 paires mortes.**
+- Cas K = 0 : la diagonale donne n_k = 3/2. Un bloc de s = 4 entièrement touché exige donc un nombre IMPAIR de paires coïncidentes.
+
+**Lemme T₀ (κ = 0, sans coïncidence).**
+- Pour tout y : (h, y|_{Π_g}) = −(ε₁y_{x₁} + gε₂y_{x₂})/2 et (h, y|_{Π_{−g}}) = −(ε₁y_{x₁} − gε₂y_{x₂})/2.
+- Les deux valeurs sont bornées par max |y| sur les positions extérieures.
+- **E₄xE₄ | O=O et E₄xE₄ | OxO** : l'alignement donne (h, y₁|_{Π_g}) = −3τ/2. Mais |y₁| ≤ ½ sur le bloc O. **4 paires mortes.**
+
+**Bilan 132 : 258/304 à la main.** Restent 46 paires :
+- E₁=E₁ | E₃=E₃ et variantes croisées (20) ;
+- E₂=E₂ | F₁=F₁ et E₂xE₂ | F₁=F₁ (12) ;
+- E₂=E₂ | E₂=E₂ et variantes (10) ;
+- F₁=F₁ | F₁=F₁ (4). Ce dernier cas est possible sans aucun S : il faudra les cellules (u) ou la parité des I.
