@@ -267,4 +267,4 @@ def far_K_search(Z, X, S, det_square, g=20, node_cap=10 ** 6):
 
     dfs(0)
     status = 'alive' if sols else ('dead' if stats['nodes'] <= node_cap else 'unknown')
-    return status, dict(stats=stats, n_solutions=len(sols))
+    return status, dict(stats=stats, n_solutions=len(sols), solutions=sols[:200], r=rr)
