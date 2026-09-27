@@ -167,7 +167,7 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms):
     X3p = X3[(np.abs(X3 @ y1) < 1e-9) & (np.abs(X3 @ y2) < 1e-9)]
     IP3 = np.rint(X3p @ Hh.T).astype(np.int8)
     M = len(Hh)
-    bits = lambda row: int.from_bytes(np.packbits(row[::-1].astype(np.uint8)).tobytes(), 'big')
+    bits = lambda row: int.from_bytes(np.packbits(np.asarray(row, dtype=np.uint8), bitorder='little').tobytes(), 'little')  # bit i = row[i]
     item_c = [bits(cov[:, b]) for b in range(NI)]
     orth = [bits(np.abs(Hh @ Hh[i]) < 1e-9) for i in range(M)]
     parm = {}

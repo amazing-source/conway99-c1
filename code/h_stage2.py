@@ -100,7 +100,7 @@ def run(gens, max_seconds=600, max_solutions=10 ** 6, verbose=True):
         print(info, flush=True)
     # bitsets
     def bits(boolrow):
-        return int.from_bytes(np.packbits(boolrow[::-1].astype(np.uint8)).tobytes(), 'big')
+        return int.from_bytes(np.packbits(np.asarray(boolrow, dtype=np.uint8), bitorder='little').tobytes(), 'little')  # bit i = boolrow[i]
     item_c = [bits(cov[:, b]) for b in range(NI)]                 # candidates covering item b
     orth = []
     for a in range(0, M, 2000):
