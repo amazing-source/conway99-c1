@@ -1,0 +1,46 @@
+273c273
+<     FILE *coreFile = fopen (S->coreStr, "w");
+---
+>     FILE *coreFile = fopen (S->coreStr, "wb");
+334c334
+<     FILE *lemmaFile = fopen (S->lemmaStr, "w");
+---
+>     FILE *lemmaFile = fopen (S->lemmaStr, "wb");
+731c731
+<         FILE *coreFile = fopen (S->coreStr, "w");
+---
+>         FILE *coreFile = fopen (S->coreStr, "wb");
+735c735
+<         FILE *lemmaFile = fopen (S->lemmaStr, "w");
+---
+>         FILE *lemmaFile = fopen (S->lemmaStr, "wb");
+743c743
+<         FILE *coreFile = fopen (S->coreStr, "w");
+---
+>         FILE *coreFile = fopen (S->coreStr, "wb");
+747c747
+<         FILE *lemmaFile = fopen (S->lemmaStr, "w");
+---
+>         FILE *lemmaFile = fopen (S->lemmaStr, "wb");
+1401c1401
+<       else if (argv[i][1] == 'a') S.activeFile = fopen (argv[++i], "w");
+---
+>       else if (argv[i][1] == 'a') S.activeFile = fopen (argv[++i], "wb");
+1403,1404c1403,1404
+<       else if (argv[i][1] == 'L') S.lratFile   = fopen (argv[++i], "w");
+<       else if (argv[i][1] == 'r') S.traceFile  = fopen (argv[++i], "w");
+---
+>       else if (argv[i][1] == 'L') S.lratFile   = fopen (argv[++i], "wb");
+>       else if (argv[i][1] == 'r') S.traceFile  = fopen (argv[++i], "wb");
+1425c1425
+<         S.inputFile = fopen (argv[1], "r");
+---
+>         S.inputFile = fopen (argv[1], "rb");
+1430c1430
+<         S.proofFile = fopen (argv[2], "r");
+---
+>         S.proofFile = fopen (argv[2], "rb");
+1459c1459
+<         S.proofFile = fopen (argv[2], "r");
+---
+>         S.proofFile = fopen (argv[2], "rb");
