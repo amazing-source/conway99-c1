@@ -11,6 +11,7 @@ serait infaisable en tout type de bloc à m = 7 (≈ 10⁻¹⁰ solution attendu
 | Moments d'ordre 2 (niveau blocs et niveau étiquettes) : PSD, noyau = équilibre par D-cycle (blocs), trivial (étiquettes) | calcul exact |
 | Reformulation de (i)+(ii) en quasi-2-facteurs G_a et R_b | DÉRIVÉ |
 | Farkas globaux (ι #0, #1, #3 du 6-cycle) : pas de motif uniforme | calcul |
+| **Extension (§6)** : en tout type, pour p ancré en c et non frère, a₃ + 3a₄ + Σ_{S_p}(k − 1)⁺ + #{Q ∉ S_p : k = 0} = 1 − [dg]. Digone ancré ⟹ équilibre (v) ; bloc chemin ⟹ exactement un excès | DÉRIVÉ, coupes relues et codées |
 
 ## 1. Cadre (« structures »)
 - Bloc plein c : μ = τ = m, un couplage des 12 étiquettes entre blocs voisins du graphe D.
@@ -65,3 +66,39 @@ Soit S_p les 10 quadruplets sur les paires de blocs passant par p, et k_Q = |Q �
 - ι #0, #1, #3 : IIS de 81 à 84 contraintes sur les 6 blocs (12 propres, 12 m, 42 à 47 reste, 11 à 13 lignes Q, 1 à 3 lignes bp).
 - Leurs poids de Farkas, classés par relation (propre / m / reste à distance cyclique 1, 2, 3), sont dispersés dans [−1, 1] :
   aucun motif uniforme.
+
+## 6. Extension à tout type : blocs ancrés non frères (27/09 matin)
+*Avec « structures » : l'énoncé en coupe est dans NOTE_S29 §9, relu par C1. L'égalité et ses deux conséquences sont de C1 ;
+« structures » a refait la preuve du digone (lab 59c3449).*
+- **Cadre.** Un bloc c de type quelconque. Un bloc p est ancré en c si p± sont des pivots (μp± = τp±). On le suppose **non
+  frère** : μp+ ≠ p−. On pose Sp = {p±, μp±}.
+  - Les μp± sont aussi des pivots, car τμp+ = ττp+ = p+ = μμp+.
+  - Donc K3[b,b] = 2 − 2[μb = τb] = 0 sur Sp : aucun quadruplet sécant n'est centré dans Sp, et k compte les étiquettes avec
+    leur multiplicité.
+  - Pour un bloc frère, Sp = {p±} et la couverture est nulle : l'énoncé est vide.
+- **Couverture.** c_p(b) = 4 − 2[b ∈ p±] − [b ∈ μp±] − [b ∈ τp±], ce qui vaut 2 sur Sp et 4 ailleurs. Donc
+  #{Q ∈ S_p : k = 0} = 2 + Σ_{S_p}(k − 1)⁺.
+- **Inclusion–exclusion.** Σλ(Sp) = 2 + 1 + 1 + 3 + 3 + 3 − [dg], avec [dg] = 1 si μp+ et μp− sont dans un même bloc q (digone
+  {p, q}). Donc a₀ = 3 − [dg] − a₃ − 3a₄.
+- **Égalité** (on combine les deux) : **a₃ + 3a₄ + Σ_{Q∈S_p}(k_Q − 1)⁺ + #{Q ∉ S_p : k_Q = 0} = 1 − [dg].**
+  - Elle n'utilise que (i), (ii) sommée sur p et (iii) sur Sp × Sp.
+  - La coupe codée par « structures » (--cuts) en retient a₄ = 0 et a₃ ≤ 1 − [dg].
+- **Digone ancré {p, q}, dans tout type : k_Q = 2 − |β(Q) ∩ {p, q}| pour chaque σ-paire.** C'est l'équilibre (v) du bloc plein,
+  étendu.
+  - Preuve : Sp_q = Sp_p, et le membre de droite vaut 0 pour p comme pour q. Donc k ≤ 1 sur S_p ∪ S_q, et k ≥ 1 hors de S_p
+    comme hors de S_q.
+  - Σ_{S_p} k = 8 force k = 1 sur S_p \ S_q (qui est hors de S_q), puis k = 0 sur les 2 σ-paires de {p, q}.
+  - Σ_Q k = 40, avec a₃ = a₄ = 0, force k = 2 sur les 12 σ-paires restantes.
+  - Codé par « structures » : --digon, dans les deux encodages.
+- **Bloc chemin ([dg] = 0) : il y a exactement UN excès.** Exactement un des trois événements suivants a lieu, une seule fois :
+  - une σ-paire hors de S_p à k = 3 ;
+  - une σ-paire de S_p à k = 2 ;
+  - une σ-paire hors de S_p à k = 0.
+  - Jamais k = 4, jamais k ≥ 3 sur S_p.
+- **Contrôles.**
+  - Les hypothèses tiennent sur les 1 521 classes à pivots : 405 blocs ancrés non frères (243 chemins, 162 digones) et 501 frères.
+  - lemma_cuts coïncide avec une génération indépendante faite depuis l'énoncé (0 écart).
+  - L'identité a₀ = 3 − [dg] − a₃ − 3a₄ tient sur des ι de l'étape 1 (tier8_rel 0, 1, 3, 5 et 6). L'ι du type 5 meurt par la coupe.
+  - L'égalité n'est testée ni en calcul ni en SAT : aucune solution complète n'est connue à m = 7.
+- **Portée.** Le digone touche 21 des 79 types pertinents (25 paires digones), dont tier8_0, la sonde restée inconnue après 1 h
+  chez C2.

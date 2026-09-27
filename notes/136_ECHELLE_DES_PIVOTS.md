@@ -47,7 +47,9 @@ Soit un bloc c de profil donné dans une configuration (Γ, σ). Sa structure lo
 - valide (K2, K3 ≥ 0, qui sont des comptes) ;
 - dont le motif de pivots par bloc est une permutation du profil.
 `classes_t_ge` énumère tous ces couples à B₆ près (recompte direct contrôlé), et B₆ préserve le motif à permutation près. Le
-système local (i)–(iii) + L1/S1/S2 est nécessaire en tout bloc (validé sur BvLS par « structures ») et B₆-invariant. Donc :
+système local (i)–(iii) + L1/S1/S2 est nécessaire en tout bloc et B₆-invariant. La nécessité repose sur la dérivation de K2 et
+K3, refaite à la main deux fois (C1 et « structures », c'est bien τπ). Le contrôle BvLS n'est que partiel : il est dégénéré,
+avec μ = τ = π en tout bloc, donc tous les blocs frères et P_τπ = P_τμ = P_μτ = I. Donc :
 **si tous les types d'un profil sont UNSAT, aucun bloc de ce profil n'existe, quelle que soit la structure D.**
 
 ## 4. Les listes (`data/`, `code/pivot_types.py`)
