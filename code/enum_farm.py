@@ -6,7 +6,8 @@ machine-wide governor:
     BLAS pinned to one thread.
 Finished lists with "complete": true are committed and pushed to conway99-c1 one at a time. Incomplete ones are renamed
 *.INCOMPLETE.json and never used.
-Usage: python enum_farm.py <ids, comma-separated> [--workers 9] [--cpu 70] [--ram 75] [--max-seconds 86400]"""
+Usage: python enum_farm.py <ids, comma-separated> [--workers 6] [--cpu 65] [--ram 75] [--shed-cpu 78] [--shed-ram 77] [--max-seconds 86400]
+SHED rule: if the machine goes over --shed-cpu / --shed-ram (Task Manager metrics), the NEWEST job is killed and re-queued."""
 import json, os, subprocess, sys, time
 
 ROOT = r'C:\Users\RESEARCHER\Desktop\c1_recherche'
@@ -46,6 +47,9 @@ def gamma_file(i):
     g = os.path.join(ROOT, 'data', 'finishC', 'gamma', 'gamma_%03d.json' % i)
     if os.path.exists(g):
         return g, 'gamma'
+    g = 'C:/home/researcher/Desktop/c2_experimental_ro/data/finishC/gamma_c2/gamma_%03d.json' % i
+    if os.path.exists(g):
+        return g, 'gamma_c2(conway99-c2-experimental 89592e2)'
     g = os.path.join(ROOT, 'data', 'finishC', 'gamma_trivial', 'gamma_%03d.json' % i)
     return (g, 'gamma_trivial') if os.path.exists(g) else (None, None)
 
@@ -90,6 +94,7 @@ def finalize(i, out):
 def main():
     ids = [int(x) for x in sys.argv[1].split(',')]
     W, CPU, RAM, MS = arg('--workers', 9), arg('--cpu', 70.0), arg('--ram', 75.0), arg('--max-seconds', 86400)
+    SHED_CPU, SHED_RAM = arg('--shed-cpu', 78.0), arg('--shed-ram', 77.0)
     queue = []
     for i in ids:
         out = os.path.join(ROOT, 'data', 'finishC', 'ypairs', 'gpairs_%03d.json' % i)
@@ -100,15 +105,22 @@ def main():
         queue.append(i)
     running = {}
     log({'event': 'farm-start', 'queue': queue, 'workers': W, 'cpu_max': CPU, 'ram_max': RAM})
+    order = []                                   # launch order, newest last (shed newest first)
     while queue or running:
         for i, (p, out) in list(running.items()):
             if p.poll() is not None:
-                finalize(i, out); del running[i]
-        if queue and len(running) < W:
-            cpu, ram = machine_avg()
-            if cpu < CPU and ram < RAM:
-                i = queue.pop(0); running[i] = launch(i, MS); time.sleep(25); continue
-            log({'event': 'hold', 'cpu': round(cpu), 'ram': ram, 'running': len(running), 'queued': len(queue)})
+                finalize(i, out); del running[i]; order.remove(i)
+        cpu, ram = machine_avg()
+        if running and (cpu > SHED_CPU or ram > SHED_RAM):
+            i = order.pop(); p, out = running.pop(i)
+            subprocess.run(['taskkill', '/T', '/F', '/PID', str(p.pid)], capture_output=True)
+            if os.path.exists(out):
+                os.remove(out)
+            queue.insert(0, i)
+            log({'event': 'SHED', 'id': i, 'cpu': round(cpu), 'ram': ram, 'running': len(running)})
+            time.sleep(120); continue
+        if queue and len(running) < W and cpu < CPU and ram < RAM:
+            i = queue.pop(0); running[i] = launch(i, MS); order.append(i); time.sleep(30); continue
         time.sleep(60)
     log({'event': 'farm-end'})
 
