@@ -27,7 +27,7 @@ mécanisme local.
 - *Lemme conservé* (preuve dans 30_LEMMES.md, L1) : grid-full ⇒ revêtement par H(7,3) ⇒ 99 | 3⁷, absurde.
   **Γ est donc nécessairement tordu.**
 - *Mutation F2'* (revêtement universel du 2-complexe triangles + quadrangles, argument de divisibilité) —
-  **TUÉE** : `complex_homology.py` donne H₁ = 0 sur F₂, F₃, F₅, F₇, Q pour les deux exemples tordus
+  **TUÉE HORS DIAMÈTRE 2 (témoins de diamètre 3), OUVERTE pour le SRG** *[RE-SCOPED 27/09: the basis only satisfies part of the hypotheses of the target (srg(99,14,1,2), diameter 2); see involution_lab_c1/audit_refutations.md]* : `complex_homology.py` donne H₁ = 0 sur F₂, F₃, F₅, F₇, Q pour les deux exemples tordus
   (comme pour H(2,3), H(3,3)). Les géométries tordues sont déjà « universelles » ; aucun quotient à exploiter.
 - Observation : la torsion *comprime* : à racine fixée, nombre de sommets à distance 3 : H(3,3) 8 vs tordu 1 ;
   H(4,3) 32 vs tordu 6. Le SRG (0 sommet à distance 3) est l'extrême de cette compression.
@@ -40,7 +40,7 @@ Raison de fond : les configurations entièrement déterminées par τ sont de de
 automatiquement ; l'entrelacement ne mord que sur des configurations denses, qui dépendent des triangles disjoints.
 - Conservé : les grilles sont serrées ; (A − 3I)g = g_tot·1.
 
-### F1 / F13 — holonomie de droite ρ_ℓ et entrelacement autour d'une droite — **TUÉE (entrelacement)**
+### F1 / F13 — holonomie de droite ρ_ℓ et entrelacement autour d'une droite — **HEURISTIQUE : aucune violation sur 20 000 tirages (entrelacement) ; non réfutée** *[RE-SCOPED 27/09: the basis only satisfies part of the hypotheses of the target (srg(99,14,1,2), diameter 2); see involution_lab_c1/audit_refutations.md]*
 `line_config.py` : ℓ ∪ Γ₁(ℓ) (39 sommets) est déterminé par (τ_a, τ_ā, ρ_ℓ). 20 000 tirages, 15 765 localement
 valides, **0 violation** de λ₂ ≤ 3 / λ_min ≥ −4, tous types d'holonomie (12), (11,1), (9,2,1), …
 Les exemples tordus montrent aussi des holonomies non triviales réalisées.
@@ -80,7 +80,7 @@ Pas de contradiction : les formules d'oddité de K₃ = K ∩ E₃(H) et K₋₄
 prisme correspondant existe. χ(Σ) = 3P − 4158 (P = nombre de prismes). Grid-full : P = 1386, χ = 0 (231 tores).
 Aucune contrainte trouvée sur P.
 
-### F11 — complexe cubique / variété plate — **TUÉE**
+### F11 — complexe cubique / variété plate — **TUÉE HORS DIAMÈTRE 2 (témoins de diamètre 3) ; OUVERTE pour le SRG (H(3,3) et BvLS, de diamètre 2, ont les fermetures)** *[RE-SCOPED 27/09: the basis only satisfies part of the hypotheses of the target (srg(99,14,1,2), diameter 2); see involution_lab_c1/audit_refutations.md]*
 Les exemples tordus n'ont pas les fermetures en 3-cubes : 40/160 (t = 2), 0/1248 (t = 3), contre 100 % pour
 H(3,3) et BvLS. Les structures tordues ne sont pas des quotients de cubulations plates.
 

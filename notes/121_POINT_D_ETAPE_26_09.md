@@ -41,7 +41,7 @@ DÉRIVÉ = preuve écrite ; OBSERVÉ = calcul (contrôle exact ou PL certifié).
 - **7-adique par sous-matrices déterminées.** L21 donne k ≥ 22 au mieux. Contredire k ≤ 28 exigerait un support
   déterminé de rang₇ ≥ 45, et les plus grands connus ont 39 points.
 - **Fano tendu par budget de doubles (Théorème F de C2).** Le budget vaut 8 et il est saturé par les blocs parallèles :
-  pas de dépassement. Le dérangement cerise/σ échoue aussi, car T ≡ 1 est faux au témoin.
+  pas de dépassement. Le dérangement cerise/σ : T ≡ 1 est faux au témoin, mais ce témoin est une configuration partielle déjà morte ; la route reste OUVERTE (re-scopé 27/09).
 - **Dimension forcée au Fano tendu.** La tension crée elle-même 6 vecteurs propres par blocs : le test est vide.
 
 ## 5. Portes ouvertes (avec l'obstacle)

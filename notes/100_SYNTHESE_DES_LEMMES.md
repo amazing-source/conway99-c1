@@ -29,7 +29,7 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >   tordu × tordu reçoit 4 voisins communs pour une demande ≥ 5.
 > - Pour tout |C|, les deux torsions ont le même graphe de classes. |C| = 3, 4 restent au SAT ; |C| = 5 est ouvert,
 >   avec des bilans exacts sans jeu, mais cohérents.
-> - **Deux routes de plafond fermées** : Minkowski sur Λ₃, Λ₋₄ (la paire de Petersen passe tout) et Akiyama sur le
+> - **Deux routes de plafond fermées** : Minkowski sur Λ₃, Λ₋₄ (la paire de Petersen passe les comptages, cf. 110:35 ; re-scopé 27/09 : route non close au-delà des comptages) et Akiyama sur le
 >   réseau des droites (rang 48, S₂₆ ≠ 0).
 > - Nouveau lemme sans contradiction : les codes p-aires des droites contiennent leur dual (p = 2, 3, 5).
 > - Contrôle : Gewirtz, qui existe et est tordu au maximum dans la famille (0, 2), est lui aussi sous la borne de
@@ -62,7 +62,7 @@ donner de contradiction, et cela se démontre** ; la raison est précise, et ell
 >     Σ_z cnt(z,R)(cnt(z,R) − 1) = 16 − 2e(R) ; critère lointain (U)/(L) en formes closes. Recalcul indépendant par
 >     « structures » (contrôles Paley 9 et BvLS).
 >   - Au Fano tendu : comptes exacts et variance nulle (F5). Pourtant un témoin passe tous les tests de niveau bloc
->     (admissibilité, 231 identités, toutes les compressions de Rayleigh). Route de plafond fermée.
+>     (admissibilité, 231 identités, toutes les compressions de Rayleigh). [Re-scopé 27/09 : ce témoin meurt au niveau des cellules (116:66-69) ; la route n'est PAS fermée.]
 > - **notes/117 : (P2) linéarisé par types (méthode de C2).** En torsion maximale générique, 19 configurations locales
 >   admissibles sur 31 sont impossibles, chacune avec un certificat de Farkas exact ; l'un d'eux a été revérifié par
 >   « structures ». Premier outil qui mord massivement sur le cœur. Énoncé d'échantillon : environ 40 % survivent,

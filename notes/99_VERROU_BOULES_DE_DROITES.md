@@ -126,7 +126,7 @@ exclue par rien de ce qui précède. Aucune borne inférieure sur P. Calcul arr�
 - **Fonctions F₃ de somme nulle sur les droites** (colorations où chaque droite est monochrome ou arc-en-ciel). Idée :
   la torsion les tuerait, et une raison globale les imposerait. Calcul (`k3` sur les exemples) : srg(9) 4, H(3,3) 8,
   tordue t=2 (20) : 5, tordue t=3 (39) : 2, (42) : 7, tri-incidence t=5 (93) : 2, BvLS : 12. La torsion ne les tue
-  pas. Abandonné.
+  pas sur ces exemples. Abandonné pour ces exemples, NON TESTÉ en diamètre 2 (re-scopé 27/09).
 - **Heuristique du Γ tordu générique.** Si les τ_a se comportaient comme des couplages aléatoires, chaque arête serait
   barreau de 6/11 prisme en moyenne, d'où P ≈ 693·(6/11)/3 ≈ 126, loin sous 1151 ; k ≈ 30. Une borne inférieure
   P ≥ 1152 reviendrait à prouver que Γ est presque un quotient de Hamming (une version « stable » de L1). Tous les
