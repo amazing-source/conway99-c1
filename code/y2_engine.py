@@ -76,7 +76,8 @@ class Y2Engine:
             orb = orbit_level2(cd['A'], cd['marks'])
             if len(orb) > max_orbit:
                 raise RuntimeError('orbit too large %d' % len(orb))
-            C = np.array(sorted(orb), dtype=np.int64)
+            C = np.array(sorted(orb), dtype=np.int8)                          # labels are small: 8x less memory than int64
+            assert np.array_equal(C.astype(np.int64), np.array(sorted(orb), dtype=np.int64))
             den = 1
             for row in cd['Ainv']:
                 for x in row:
@@ -93,6 +94,18 @@ class Y2Engine:
             self.GK = self.K @ np.array(Gi, dtype=np.int64) @ self.K.T
             self.Kf = self.K.astype(float) @ Bf
             self.GKf = self.GK.astype(float)
+            # exact data for the rootless part (27/09 night): w = (k_i, y0) are integers, t = GK^-1 w = mf / den with
+            # mf = adj w; the solutions depend only on (mf mod den, den * bound), so they are cached per lattice
+            GKinv = inverse_exact([[int(v) for v in row] for row in self.GK.tolist()])
+            den = 1
+            for row in GKinv:
+                for x in row:
+                    den = den * x.denominator // math.gcd(den, x.denominator)
+            self.Kden = den
+            self.GKadj = np.array([[int(x * den) for x in row] for row in GKinv], dtype=np.int64)
+            self.KG = self.K @ np.array(Gi, dtype=np.int64)
+            self.Gint = np.array(Gi, dtype=np.int64)
+            self._zcache = {}
 
     def labels_of(self, yf):
         c = np.rint(self.Sroots @ yf).astype(np.int64)
@@ -158,6 +171,8 @@ class Y2Engine:
         Fs = None
         out = []
         kept = []
+        # flush size: the filters build (rows x |X3|) and (rows x |new roots|) float matrices; keep them near 32 MB
+        FL = int(max(500, min(20000, 4_000_000 // max(1, len(self.X3), len(self.Snew)))))
         stats = {'raw': 0, 'after_newroots': 0, 'after_norm3': 0, 'after_roots': 0}
         stop = [False]
         Bf, V, Hinv = self.Bf, self.V, self.Hinv
@@ -202,7 +217,7 @@ class Y2Engine:
             if self.K is None:
                 for a0 in A0:
                     out.append(a0)
-                    if len(out) >= 20000:
+                    if len(out) >= FL:
                         flush()
                 return
             Y0 = A0.astype(float) @ Bf
@@ -228,18 +243,33 @@ class Y2Engine:
                             a = A0[r] + xi * self.K[0]
                             if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
                                 out.append(a)
-                    if len(out) >= 20000:
+                    if len(out) >= FL:
                         flush()
                 return
+            den, cache = self.Kden, self._zcache
+            Wm = A0 @ self.KG.T                                                # (k_i, y0), exact
+            MF = Wm @ self.GKadj.T                                             # den * t
+            Y0N = np.einsum('ij,jk,ik->i', A0, self.Gint, A0)                  # |y0|^2, exact
+            BN = 7 * den - Y0N * den + np.einsum('ij,ij->i', Wm, MF)           # den * bound, exact
             for r in range(len(A0)):
-                bound = float(BND[r])
-                if bound < -1e-9:
+                bn = int(BN[r])
+                if bn < 0:
                     continue
-                for x in _enum_shift_pre(dK, QK, Kdim, -TT[r], bound, Y0[r], self.Kf):
-                    a = A0[r] + np.array(x, dtype=np.int64) @ self.K
+                mf = MF[r]
+                m = mf % den
+                nsh = (mf - m) // den                                          # t = nsh + m / den
+                key = (m.tobytes(), bn)
+                zs = cache.get(key)
+                if zs is None:
+                    if len(cache) > 300000:
+                        cache.clear()
+                    zs = _enum_z(dK, QK, Kdim, -m / den, bn / den, m, den, bn, self.GK)
+                    cache[key] = zs
+                for z in zs:
+                    a = A0[r] + (z - nsh) @ self.K
                     if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
                         out.append(a)
-                if len(out) >= 20000:
+                if len(out) >= FL:
                     flush()
 
         def process():
@@ -252,7 +282,7 @@ class Y2Engine:
                 return rootless(np.zeros((nb, 24), dtype=np.int64))
             cvec = np.zeros((nb, rank), dtype=self.HinvE_np.dtype)
             for ci, (dd, p) in enumerate(zip(self.data, per)):
-                cvec[:, dd['idx']] = p['C'][ch[:, ci]]
+                cvec[:, dd['idx']] = p['C'][ch[:, ci]].astype(np.int64)
             num = cvec @ self.HinvE_np                                       # = e * (c . H^-1), exact integers
             if num.dtype == object:
                 bad = np.array([any(int(v) % e for v in row) for row in num], dtype=bool)
@@ -319,5 +349,33 @@ def _enum_shift_pre(d, Q, n, center, bound, y0, Kf):
         x[k] = 0
     if bound < -1e-9:
         return []
+    rec(n - 1, bound + eps)
+    return out
+
+
+def _enum_z(d, Q, n, center, bound, m, den, bn, GK):
+    """integer z with (den z + m) GK (den z + m)^T == den * bn exactly (i.e. |z + m/den|^2_GK = bn/den): the Fincke-Pohst
+    walk of enum_shift around center = -m/den (same order), with the final test in exact integers. Returns int64 rows."""
+    out, x, eps = [], [0] * n, 1e-7
+    target = den * bn
+
+    def rec(k, rem):
+        s = sum(Q[k][j] * (x[j] - center[j]) for j in range(k + 1, n))
+        mid = center[k] - s
+        sp = math.sqrt(max(rem, 0.0) / d[k]) + eps
+        for xi in range(math.ceil(mid - sp), math.floor(mid + sp) + 1):
+            r2 = rem - d[k] * (xi - mid) ** 2
+            if r2 < -eps:
+                continue
+            x[k] = xi
+            if k == 0:
+                v = den * np.array(x, dtype=np.int64) + m
+                if int(v @ GK @ v) == target:
+                    out.append(np.array(x, dtype=np.int64))
+            else:
+                rec(k - 1, r2)
+        x[k] = 0
+    if bound < -1e-9:
+        return out
     rec(n - 1, bound + eps)
     return out

@@ -36,16 +36,18 @@ def machine():
     ps = ("$p=Get-CimInstance Win32_PerfFormattedData_Counters_ProcessorInformation -Filter \"Name='_Total'\";"
           "$l=(Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average;"
           "$o=Get-CimInstance Win32_OperatingSystem;"
-          "Write-Output ('{0} {1} {2} {3}' -f $p.PercentProcessorUtility, $l, "
+          "$m=(Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | Where-Object { $_.CommandLine -match 'y_pairs_gamma' } | "
+          "ForEach-Object { (Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue).WorkingSet64 } | Measure-Object -Sum).Sum;"
+          "Write-Output ('{0} {1} {2} {3} {4}' -f $p.PercentProcessorUtility, $l, [math]::Round($m/1MB), "
           "[math]::Round(100*($o.TotalVisibleMemorySize-$o.FreePhysicalMemory)/$o.TotalVisibleMemorySize), "
           "[math]::Round($o.FreePhysicalMemory/1024))")
     out = subprocess.run(['powershell', '-NoProfile', '-Command', ps], capture_output=True, text=True).stdout.split()
-    return float(out[0]), float(out[-2]), float(out[-1])               # utility, RAM %, free MB
+    return float(out[0]), float(out[-2]), float(out[-1]), float(out[-3])   # utility, RAM %, free MB, our jobs' RAM MB
 
 
 def machine_avg(n=3):
     s = [machine() for _ in range(n)]
-    return sum(a for a, _, _ in s) / n, max(b for _, b, _ in s), min(c for _, _, c in s)   # cpu, ram %, free MB
+    return sum(x[0] for x in s) / n, max(x[1] for x in s), min(x[2] for x in s), max(x[3] for x in s)
 
 
 def log(obj):
@@ -206,7 +208,8 @@ def main():
         for k in range(n):
             if (read_json(chunk_path(t.i, k, n)) or {}).get('stats', {}).get('complete'):
                 pending[t.i].discard(k); continue
-            queue.append(Task('chunk', t.i, k, n, cap=t.cap, prio=y1 * lv / n))
+            queue.append(Task('chunk', t.i, k, n, cap=t.cap, prio=-float(y1) * lv))   # cheapest lattices first (27/09 22:40:
+            # finished lists feed C2's h-stage; the root-poor ones wait for the per-coset rootless cache)
         log({'event': 'planned', 'id': t.i, 'y1_orbits': y1, 'label_vectors': lv, 'chunks': n,
              'plan_seconds': pl['plan'].get('seconds')})
         if not pending[t.i]:
@@ -258,15 +261,19 @@ def main():
                 elif why == 'machine':
                     queue.append(t)
                 log({'event': 'FAILED', 'task': name, 'why': why, 'requeued': t in queue, 'cap': t.cap})
-        cpu, ram, free = machine_avg()
-        if running and (cpu > SHED_CPU or ram > SHED_RAM or free < MINFREE):
+        cpu, ram, free, ours = machine_avg()
+        # shed only when it helps: our jobs hold >= 300 MB, or the machine is really low (27/09 22:20: our chunks were
+        # ~60 MB each while free RAM hovered at 5 GB because of other programs; killing them freed nothing)
+        low = free < MINFREE and (ours >= 300 or free < MINFREE - 1000)
+        if running and (cpu > SHED_CPU or low):
             name = order.pop(); t, p = running.pop(name)
             subprocess.run(['taskkill', '/T', '/F', '/PID', str(p.pid)], capture_output=True)
             queue.append(t)
-            log({'event': 'SHED', 'task': name, 'cpu': round(cpu), 'ram': ram, 'free_mb': free, 'running': len(running)})
+            log({'event': 'SHED', 'task': name, 'cpu': round(cpu), 'ram': ram, 'free_mb': free, 'ours_mb': ours,
+                 'running': len(running)})
             time.sleep(90); continue
         launched = 0
-        while queue and len(running) < TH and cpu < CPU and ram < RAM and free - 600 * (launched + 1) >= MINFREE and launched < 2:
+        while queue and len(running) < TH and cpu < CPU and free - 300 * (launched + 1) >= MINFREE and launched < 2:
             queue.sort(key=lambda t: -t.prio)
             fit = [t for t in queue if t.cap <= CAP0 or free - t.cap >= MINFREE]
             if sum(1 for t, _ in running.values() if t.kind == 'plan') >= PLANS:
