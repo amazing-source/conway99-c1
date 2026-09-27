@@ -55,6 +55,7 @@ def gamma_in_basis(gam, B, Gi, Bf, R):
     A file that carries its basis ('basis', rows as fraction strings) is converted exactly: with P = B Bg^-1 (unimodular),
     M' = P M P^-1. Every matrix must preserve the Gram matrix and permute the simple roots (= fix the chamber); else abort."""
     mats = [np.array(M, dtype=np.int64) for M in gam['matrices']]
+    gens = [np.array(M, dtype=np.int64) for M in gam.get('generator_matrices', [])]
     conv = False
     if 'basis' in gam:
         Bg = [[F(x) for x in row] for row in gam['basis']]
@@ -67,16 +68,20 @@ def gamma_in_basis(gam, B, Gi, Bf, R):
             P = np.array([[int(x) for x in row] for row in P], dtype=object)
             Pi = np.array([[int(x) for x in row] for row in Pi], dtype=object)
             mats = [np.array((P.dot(M.astype(object))).dot(Pi), dtype=np.int64) for M in mats]
+            gens = [np.array((P.dot(M.astype(object))).dot(Pi), dtype=np.int64) for M in gens]
             conv = True
     G = np.array(Gi, dtype=np.int64)
     S = root_system(R)[0]
     Sc = np.rint(S @ np.linalg.inv(Bf)).astype(np.int64)
     simp = {tuple(r) for r in Sc.tolist()}
-    for M in mats:
+    for M in mats + gens:
         if not (np.array_equal(M @ G @ M.T, G) and all(tuple((sv @ M).tolist()) in simp for sv in Sc)):
             raise SystemExit('ABORT: a Gamma matrix is not a chamber-preserving isometry in this basis '
                              '(Gamma file from another machine without its basis?)')
-    return mats, conv
+    if gens:                                                           # generators must generate exactly the listed group
+        keys = {M.tobytes() for M in mats}
+        assert all((X @ M).tobytes() in keys for X in mats[:50] for M in gens), 'generators outside the listed Gamma'
+    return mats, gens, conv
 
 
 def main():
@@ -89,7 +94,7 @@ def main():
     t0 = time.time()
     B, Gi, Bf, R, X3, Snew = setup(rec_['gens'])
     bsha = basis_sha(B)
-    mats, converted = gamma_in_basis(gam, B, Gi, Bf, R)
+    mats, gens, converted = gamma_in_basis(gam, B, Gi, Bf, R)
     if '--from-plan' in sys.argv:
         pl = json.load(open(sys.argv[sys.argv.index('--from-plan') + 1]))
         assert pl['id'] == rec_['id'] and pl['plan']['gamma'] == len(mats) and pl['gamma_sha'] == gsha
@@ -100,7 +105,7 @@ def main():
         reps1 = list(range(len(Y)))
     else:
         Y, Yf, info = dominant_y1(B, Gi, Bf, R, X3, Snew)
-        reps1, sizes1 = orbit_reps(Y, mats)
+        reps1, sizes1 = orbit_reps(Y, gens if gens else mats)          # Y is Gamma-invariant: generators suffice
         info.update(id=rec_['id'], roots=rec_['roots'], gamma=len(mats), y1_orbits=len(reps1), gamma_verified=True,
                     gamma_converted=converted)
     print(json.dumps(info), flush=True)

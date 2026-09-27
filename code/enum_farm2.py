@@ -22,6 +22,8 @@ WORK = os.path.join(RUNS, 'farm2')
 PY = r'C:\Users\RESEARCHER\AppData\Local\Python\pythoncore-3.14-64\python.exe'
 RC = r'C:\Users\RESEARCHER\.claude\tools\run_capped.ps1'
 STATUS = os.path.join(RUNS, 'enum_farm2.status.jsonl')
+ADD = os.path.join(RUNS, 'farm2_add_ids.txt')                        # ids appended to the queue while running
+TABLE = {L['id']: str(L['group']) for L in json.load(open(os.path.join(ROOT, 'data', 'borcherds_odd24.json')))}
 FINAL = os.path.join(ROOT, 'data', 'finishC', 'ypairs', 'gpairs_%03d.json')
 
 
@@ -58,10 +60,13 @@ def log(obj):
 def gamma_file(i):
     """laptop Gamma files only: gamma/ (made on this laptop), then gamma_ps/ (basis-carrying, converted and verified by
     y_pairs_gamma), then the identity. NEVER gamma_c2 (made in the lab PC's LLL basis: not isometries here, 27/09 night)."""
-    for sub, kind in (('gamma', 'gamma'), ('gamma_ps', 'gamma_ps'), ('gamma_trivial', 'gamma_trivial')):
+    for sub, kind in (('gamma', 'gamma'), ('gamma_ps', 'gamma_ps')):
         g = os.path.join(ROOT, 'data', 'finishC', sub, 'gamma_%03d.json' % i)
         if os.path.exists(g):
             return g, kind
+    g = os.path.join(ROOT, 'data', 'finishC', 'gamma_trivial', 'gamma_%03d.json' % i)
+    if os.path.exists(g) and TABLE.get(i) == '1':                     # identity only when Gamma really is trivial
+        return g, 'gamma_trivial'
     return None, None
 
 
@@ -178,13 +183,15 @@ def main():
     PER, NMAX, MAXCAP = arg('--per-chunk', 30), arg('--max-chunks', 32), arg('--max-cap', 8000)
     PLANS = arg('--plan-threads', 2)
     adopt = set(int(x) for x in arg('--adopt', '').split(',') if x)
-    queue, nchunks, pending = [], {}, {}
+    queue, nchunks, pending, waiting = [], {}, {}, set()
     for i in ids:
         if os.path.exists(FINAL % i) or i in adopt:
             log({'event': 'skip-exists-or-adopted', 'id': i}); continue
         if gamma_file(i)[0] is None:
-            log({'event': 'skip-nogamma', 'id': i}); continue
+            waiting.add(i); continue                                  # queued when its Gamma file appears
         queue.append(Task('plan', i, cap=CAP0, prio=1e9 + i))           # plans first (they size the work), big root systems first
+    if waiting:
+        log({'event': 'waiting-for-gamma', 'ids': sorted(waiting)})
     running = {}                                              # name -> (task, popen)
     order = []
     log({'event': 'farm2-start', 'plans': len(queue), 'threads': TH, 'cpu_max': CPU, 'ram_max': RAM, 'adopt': sorted(adopt)})
@@ -213,7 +220,21 @@ def main():
         if pl and 'y1_reps' in pl and pl.get('basis_sha') and pl.get('gamma_sha') == sha16(gamma_file(t.i)[0]):
             queue.remove(t)
             on_plan_done(t)
-    while queue or running or adopt:
+    while queue or running or adopt or waiting:
+        if os.path.exists(ADD):
+            try:
+                extra = [int(x) for x in open(ADD).read().replace(',', ' ').split()]
+                os.remove(ADD)
+            except Exception:
+                extra = []
+            for i in extra:
+                if not os.path.exists(FINAL % i) and i not in waiting and i not in nchunks and                         not any(t.i == i for t in queue) and not any(t.i == i for t, _ in running.values()):
+                    waiting.add(i)
+            log({'event': 'added', 'ids': extra})
+        for i in sorted(waiting):
+            if gamma_file(i)[0] is not None:
+                waiting.discard(i); queue.append(Task('plan', i, cap=CAP0, prio=1e9 + i))
+                log({'event': 'gamma-ready', 'id': i, 'gamma': gamma_file(i)[1]})
         for i in list(adopt):
             d = read_json(FINAL % i) if os.path.exists(FINAL % i) else None
             if d and d.get('stats', {}).get('complete'):
@@ -246,15 +267,19 @@ def main():
             queue.append(t)
             log({'event': 'SHED', 'task': name, 'cpu': round(cpu), 'ram': ram, 'free_mb': free, 'running': len(running)})
             time.sleep(90); continue
-        if queue and len(running) < TH and cpu < CPU and ram < RAM and free - 600 >= MINFREE:
+        launched = 0
+        while queue and len(running) < TH and cpu < CPU and ram < RAM and free - 600 * (launched + 1) >= MINFREE and launched < 2:
             queue.sort(key=lambda t: -t.prio)
             fit = [t for t in queue if t.cap <= CAP0 or free - t.cap >= MINFREE]
             if sum(1 for t, _ in running.values() if t.kind == 'plan') >= PLANS:
                 fit = [t for t in fit if t.kind == 'chunk']         # at most PLANS threads on plans (some plans are long)
-            if fit:
-                t = fit[0]; queue.remove(t)
-                running[t.name()] = (t, launch(t, MS)); order.append(t.name())
-                time.sleep(3 if t.kind == 'plan' else 12); continue
+            if not fit:
+                break
+            t = fit[0]; queue.remove(t)
+            running[t.name()] = (t, launch(t, MS)); order.append(t.name())
+            launched += 1
+        if launched:
+            time.sleep(4); continue
         time.sleep(15)
     log({'event': 'farm2-end'})
 
