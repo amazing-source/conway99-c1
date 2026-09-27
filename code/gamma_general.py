@@ -170,7 +170,13 @@ def main():
         Hh = hnf_rows(rows)
         Kc = np.array([row[rank:] for row in Hh if not any(row[:rank])], dtype=np.int64)   # d x 24 coefficients
         assert len(Kc) == d_perp
-        GK = Kc @ np.array(Gi, dtype=np.int64) @ Kc.T                  # integer Gram of U cap V_perp
+        # LLL-reduce the rootless sublattice (the HNF basis has large norms: the short-vector search below would explode)
+        from envelope_trap import lll as _lll
+        Kq = [[sum(F(int(Kc[i][k])) * B[k][t] for k in range(24)) for t in range(24)] for i in range(d_perp)]
+        Kr = _lll(Kq)
+        Kc = np.rint(np.array([[float(v) for v in row] for row in Kr]) @ np.linalg.inv(Bf)).astype(np.int64)
+        GK = Kc @ np.array(Gi, dtype=np.int64) @ Kc.T                  # integer Gram of U cap V_perp (reduced basis)
+        assert round(abs(np.linalg.det(GK.astype(float)))) == round(abs(np.linalg.det((np.array([[float(v) for v in row] for row in Kq]) @ np.array([[float(v) for v in row] for row in Kq]).T))))
         Kv = Kc.astype(float) @ Bf                                      # d x 24 vectors
         Kp = Kv @ Wp.T                                                  # d x d coordinates in Wp
         maxn = int(np.max(np.diag(GK)))
