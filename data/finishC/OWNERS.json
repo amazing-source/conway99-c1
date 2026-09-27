@@ -1,0 +1,165 @@
+{
+ "protocol": "C2 proposal 27/09 ~21:40, agreed by C1 and structures. (1) Only basis-free artifacts cross machines (pair lists, vectors, certificates in ambient Q^24); anything in a reduced basis (Gamma matrices, plans) carries its basis B or never leaves its machine; producing machine recorded. (2) The consumer verifies on load and aborts on mismatch: Gamma: M G M^T = G + simple roots permuted; pair lists: norm 7, y1 perp y2, stats.complete; a pair failing a check is MISSING, never EXCLUDED. (3) One owner per (lattice, stage), written here BEFORE starting; each session edits only its own rows (structures' rows are written by C1 on request). (4) Every result records machine, code commit, input sha256s, Gamma source + sha.",
+ "lanes": {
+  "enumeration (y-pairs)": "C1, laptop, enum_farm2.py; Gamma from data/finishC/gamma (laptop) or data/finishC/gamma_ps (basis-carrying), never gamma_c2 (lab-PC basis)",
+  "h-stage": "C2, lab PC, for every list the farm pushes",
+  "O24 (id 0)": "C2, lab PC, 47 classes",
+  "Golay family (1, 2, 4, 10)": "structures, laptop, y-pairs + frame LP + h-stage, frame golay-a (a in Z^24, norm a.a/8, basis stored in each file; NOT the build156 frame of U/00N.json)",
+  "lemma lab": "shared (structures: making the JOINT star-sum constraint bite early on root-poor lattices, laptop <= 2 threads)"
+ },
+ "rows": {
+  "1": {
+   "stage": "y-pairs + frame LP + h-stage",
+   "owner": "structures",
+   "machine": "laptop",
+   "frame": "golay-a",
+   "status": "frame LP on c00s: 179/819 pairs done, 137 EXCLUDED with certificates, 42 LP-feasible; stopped by the low-memory guard 27/09 ~21:20, not resumed without the user's go-ahead"
+  },
+  "2": {
+   "stage": "y-pairs + frame LP + h-stage",
+   "owner": "structures",
+   "machine": "laptop",
+   "frame": "golay-a",
+   "status": "not started"
+  },
+  "4": {
+   "stage": "y-pairs + frame LP + h-stage",
+   "owner": "structures",
+   "machine": "laptop",
+   "frame": "golay-a",
+   "status": "not started"
+  },
+  "10": {
+   "stage": "y-pairs + frame LP + h-stage",
+   "owner": "structures",
+   "machine": "laptop",
+   "frame": "golay-a",
+   "status": "not started"
+  },
+  "0": {
+   "stage": "all",
+   "owner": "C2",
+   "machine": "lab PC"
+  },
+  "19": {
+   "stage": "enumeration",
+   "owner": "C2",
+   "machine": "lab PC",
+   "gamma": "trivial ({I})"
+  },
+  "34": {
+   "stage": "enumeration",
+   "owner": "C2",
+   "machine": "lab PC",
+   "gamma": "trivial ({I})"
+  },
+  "87": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "106": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "111": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "115": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "122": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "123": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "124": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "125": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "126": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "131": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "132": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "135": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "137": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "138": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "139": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "140": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "141": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  },
+  "149": {
+   "stage": "enumeration done (list committed) -> h-stage C2",
+   "owner": "C1",
+   "machine": "laptop",
+   "gamma": "data/finishC/gamma (laptop)"
+  }
+ }
+}
