@@ -85,6 +85,9 @@ def y_stage(ctx, hsol, max_pairs=10 ** 6):
         info['y_pairs_exact_B1'] = len(good)
     info['verdict'] = 'dead (no y pair)' if not good else 'y pairs survive'
     info['pairs'] = good[:50]
+    Binv = np.linalg.inv(Bf)
+    info['pair_vecs'] = [(np.rint(Y[a] @ Binv).astype(np.int64), np.rint(Y[b] @ Binv).astype(np.int64)) for a, b in good[:200]]
+    info['B1_idx'] = sorted(B1)
     return info
 
 

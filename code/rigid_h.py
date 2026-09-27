@@ -10,6 +10,8 @@ import json, os, sys, time
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from h_stage2 import setup
+from frame_pipeline import y_stage
+from u_stage import u_stage
 
 
 def main():
@@ -29,8 +31,12 @@ def main():
     X3c_int = np.rint(X3 @ np.linalg.inv(Bf)).astype(np.int64)      # integer coordinates of norm-3 vectors
     Hc_int = Hc.astype(np.int64)
     print({'roots': 2 * len(R), 'items': NI, 'h_cands': M, 'setup_s': round(time.time() - t0, 1)}, flush=True)
-    stats = {'nodes': 0, 'full': 0, 'wZ_ok': 0, 'cells_ok': 0, 'star_ok': 0, 'timeout': False}
+    Gi = [[int(round(v)) for v in row] for row in (Bf @ Bf.T)]
+    m3 = (np.abs(np.abs(X3 @ S.T) - 1.5) < 1e-6).sum(axis=1)
+    ctx = {'Bq': B, 'Gi': Gi, 'Bf': Bf, 'R': R, 'X3': X3, 'H': H, 'Hc': Hc, 'S': S, 'HS': HS[ok], 'm3': m3}
+    stats = {'nodes': 0, 'full': 0, 'wZ_ok': 0, 'cells_ok': 0, 'star_ok': 0, 'y_ok': 0, 'timeout': False}
     survivors = []
+    prev_free = [False]
 
     def dominant_ok(i, rootmask):
         """h_i (or -h_i) dominant for the positive roots selected by rootmask."""
@@ -101,7 +107,22 @@ def main():
             if so is False:
                 return
             stats['star_ok'] += 1
-            survivors.append({'h': [int(i) for i in chosen], 'star': 'feasible' if so else 'unknown'})
+            yi = y_stage(ctx, list(chosen))
+            if not yi.get('verdict', '').endswith('survive'):
+                return
+            stats['y_ok'] += 1
+            X3c = np.rint(X3 @ np.linalg.inv(Bf)).astype(np.int64)
+            ures = []
+            for (a1, a2) in yi['pair_vecs']:
+                st, det = u_stage(B, Gi, X3, X3c, [Hc[i] for i in chosen], [a1, a2], S, yi['B1_idx'], time_limit=60)
+                ures.append(st)
+                if st != 'INFEASIBLE':
+                    break
+            if all(st == 'INFEASIBLE' for st in ures) and len(ures) == len(yi['pair_vecs']) and yi.get('y_pairs', 0) <= 200:
+                stats['u_dead'] = stats.get('u_dead', 0) + 1
+                return
+            survivors.append({'h': [int(i) for i in chosen], 'star': 'feasible' if so else 'unknown',
+                              'y_pairs': yi.get('y_pairs'), 'u': ures[-1] if ures else None})
             print('SURVIVOR', survivors[-1], flush=True)
             return
         # every item with w = 0 must still be coverable: crude bound
@@ -111,7 +132,11 @@ def main():
                 return
             if not cov[cand][:, zero].any(axis=0).all():
                 return
+        free_order = not rootmask.any()                 # no root orthogonal to the chosen h: no symmetry left,
+        last = chosen[-1] if chosen else -1              # the remaining h form an unordered set: increasing indices
         for i in cand:
+            if free_order and prev_free[0] and i <= last:
+                continue
             if not dominant_ok(i, rootmask):
                 continue
             nw = w + cov[i]
@@ -123,7 +148,10 @@ def main():
             nc = cand[(np.abs(H[cand] @ H[i]) < 1e-9)]
             nc = nc[nc != i]
             nrm = rootmask & (np.abs(HR[i]) < 1e-9)
+            saved = prev_free[0]
+            prev_free[0] = free_order
             rec(ch, nc, nw, nrm)
+            prev_free[0] = saved
             if stats['timeout']:
                 return
 
