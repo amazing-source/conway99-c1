@@ -102,3 +102,17 @@ Soit S_p les 10 quadruplets sur les paires de blocs passant par p, et k_Q = |Q �
   - L'égalité n'est testée ni en calcul ni en SAT : aucune solution complète n'est connue à m = 7.
 - **Portée.** Le digone touche 21 des 79 types pertinents (25 paires digones), dont tier8_0, la sonde restée inconnue après 1 h
   chez C2.
+
+## 7. Blocs tordus : l'identité à trois excès (27/09 matin, pour les 7 types (0,6))
+- **Cadre.** Un bloc p est tordu en c : une seule étiquette pivot p*, avec μp* = τp* = q* dans un autre bloc, et p° non pivot.
+  On pose S = {p*, p°, q*}. k_Q compte les places de Q dans S **avec multiplicité** : K3[b,b] = 2 − 2[b pivot], donc p° est le
+  centre sécant d'exactement un quadruplet, et p*, q* d'aucun.
+- **Couverture.** c_p vaut 2 sur S, 3 sur μp° et τp°, 4 ailleurs. Donc #{Q ∈ S_p : k = 0} = 4 + Σ_{S_p}(k − 1)⁺.
+- **Inclusion–exclusion.** Σλ(S) = λ(p*,p°) + λ(p*,q*) + λ(p°,q*) + λ(p°,p°) = 2 + 1 + 3 + 1 = 7, avec k ≤ 4, donc
+  a₀ = 7 − a₃ − 3a₄.
+- **Égalité : a₃ + 3a₄ + Σ_{Q∈S_p}(k_Q − 1)⁺ + #{Q ∉ S_p : k_Q = 0} = 3.** Un type (0,6) en porte 6.
+- **Bonus (0,6)**, de (i) et (iii) seuls : Σ_Q (k_P(Q) − 2)² = 18, où k_P est le nombre d'étiquettes pivots de Q.
+- **Contrôles.**
+  - La couverture et Σλ = 7 tiennent sur les 2 812 blocs tordus des 1 521 classes à pivots (iota_design.K2K3), avec 0 écart.
+  - a₀ = 7 − a₃ − 3a₄ et le bonus tiennent exactement sur des ι de l'étape 1 de deux types (0,6), soit 12 blocs, avec a₀ = 6 ou 7.
+- Proposé à « structures » et C2 comme option --twist des encodages.
