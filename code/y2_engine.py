@@ -141,8 +141,37 @@ class Y2Engine:
             good.insert(0, cur)
         Fs = None
         out = []
+        kept = []
+        stats = {'raw': 0, 'after_newroots': 0, 'after_norm3': 0, 'after_roots': 0}
         stop = [False]
         Bf, V, Hinv = self.Bf, self.V, self.Hinv
+        S = self.Snew
+        P1 = np.abs(S @ y1f) if len(S) else None
+        Q1 = np.abs(self.X3 @ y1f)
+        A1 = self.R @ y1f if len(self.R) else None
+
+        def flush():
+            if not out:
+                return
+            Y2 = np.array(out, dtype=np.int64).reshape(-1, 24)
+            out.clear()
+            stats['raw'] += len(Y2)
+            Y2f = Y2.astype(float) @ Bf
+            keep = (np.abs(np.einsum('ij,ij->i', Y2f, Y2f) - 7) < 1e-6) & (np.abs(Y2f @ y1f) < 1e-6)
+            if len(S):
+                P2 = np.abs(Y2f @ S.T)
+                keep &= (P2 <= 1.5 + 1e-9).all(axis=1)
+                keep &= ~((P2 > 1.4) & (P1[None, :] > 1.4)).any(axis=1)
+            stats['after_newroots'] += int(keep.sum())
+            Q2 = np.abs(Y2f @ self.X3.T)
+            keep &= (Q2 <= 3 + 1e-9).all(axis=1)
+            keep &= ~((Q2 > 2.9) & (Q1[None, :] > 2.9)).any(axis=1)
+            stats['after_norm3'] += int(keep.sum())
+            if A1 is not None:
+                A2 = Y2f @ self.R.T
+                keep &= ((A1[None, :] ** 2 + A2 ** 2) <= 6 + 1e-9).all(axis=1)
+            stats['after_roots'] += int(keep.sum())
+            kept.extend(Y2[keep])
 
         def emit(choice):
             cvec = [0] * rank
@@ -154,17 +183,21 @@ class Y2Engine:
             y0 = a0.astype(float) @ Bf
             if self.K is None:
                 out.append(a0)
+                if len(out) >= 20000:
+                    flush()
                 return
             tt = np.linalg.solve(self.GKf, self.Kf @ y0)
             for x in enum_shift(self.GK.tolist(), -tt, 7 - float(y0 @ y0) + float(tt @ self.GKf @ tt), y0, self.Kf):
                 a = a0 + np.array(x, dtype=np.int64) @ self.K
                 if abs((a.astype(float) @ Bf) @ y1f) < 1e-6:
                     out.append(a)
+            if len(out) >= 20000:
+                flush()
 
         def walk(k, cl, nr, ip, choice):
             if stop[0]:
                 return
-            if len(out) >= max_out or (t0 is not None and time.time() - t0 > max_seconds):
+            if len(kept) >= max_out or (t0 is not None and time.time() - t0 > max_seconds):
                 stop[0] = True
                 return
             if k == len(per):
@@ -179,27 +212,8 @@ class Y2Engine:
                 if s2 in good[k + 1]:
                     walk(k + 1, s2[0], t, s2[2], choice + [j])
         walk(0, zero, F(0), F(0), [])
-        Y2 = np.array(out, dtype=np.int64).reshape(-1, 24)
-        info = {'raw': int(len(Y2)), 'truncated': stop[0]}
-        if len(Y2) == 0:
-            return Y2, info
-        Y2f = Y2.astype(float) @ Bf
-        keep = (np.abs(np.einsum('ij,ij->i', Y2f, Y2f) - 7) < 1e-6) & (np.abs(Y2f @ y1f) < 1e-6)
-        S = self.Snew
-        if len(S):
-            P1 = np.abs(S @ y1f)
-            P2 = np.abs(Y2f @ S.T)
-            keep &= (P2 <= 1.5 + 1e-9).all(axis=1)
-            keep &= ~((P2 > 1.4) & (P1[None, :] > 1.4)).any(axis=1)
-        info['after_newroots'] = int(keep.sum())
-        Q1 = np.abs(self.X3 @ y1f)
-        Q2 = np.abs(Y2f @ self.X3.T)
-        keep &= (Q2 <= 3 + 1e-9).all(axis=1)
-        keep &= ~((Q2 > 2.9) & (Q1[None, :] > 2.9)).any(axis=1)
-        info['after_norm3'] = int(keep.sum())
-        if len(self.R):
-            A1 = self.R @ y1f
-            A2 = Y2f @ self.R.T
-            keep &= ((A1[None, :] ** 2 + A2 ** 2) <= 6 + 1e-9).all(axis=1)
-        info['after_roots'] = int(keep.sum())
-        return Y2[keep], info
+        flush()
+        info = dict(stats)
+        info['truncated'] = stop[0]
+        Y2k = np.array(kept, dtype=np.int64).reshape(-1, 24)
+        return Y2k, info

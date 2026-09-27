@@ -154,8 +154,10 @@ def trap_ok(B, a1, a2, Gi):
     return len(sv) == 0
 
 
-def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms):
-    """DLX for 7 h orthogonal to y1, y2 with w = 1 on yhits, w = 3 elsewhere (rigid) or w in {1,3} (general)."""
+def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
+    """DLX for 7 h orthogonal to y1, y2 with w = 1 on yhits; elsewhere w = 3 (rigid), or w in {1,3} (general), or, if a mask
+    `hittable` is given (new roots hit at 3/2 by some norm-3 vector orthogonal to y1, y2), w in {1,3} on hittable roots and w = 3
+    on the others (a root met once by the h is hit by exactly one odd frame vector, and a u hitting it must be such a vector)."""
     ok = (np.abs(H @ y1) < 1e-9) & (np.abs(H @ y2) < 1e-9)
     idx = np.nonzero(ok)[0]
     if len(idx) < 7:
@@ -187,32 +189,38 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms):
                     return False
         return True
 
-    # allowed final values: {1} on y-hits; {3} elsewhere if rigid, else {1,3}
-    fin_one = yhits.copy()
+    # kind: 1 = exactly 1 (y-hit); 3 = exactly 3; 13 = 1 or 3
+    kind = np.full(NI, 13 if (not rigid and hittable is None) else 3, dtype=np.int64)
+    if hittable is not None and not rigid:
+        kind[np.asarray(hittable, bool)] = 13
+    kind[np.asarray(yhits, bool)] = 1
+    k1, k3, k13 = kind == 1, kind == 3, kind == 13
+
     def rec(ch, allowed, w, parity):
         if found or time.time() - t0 > ms:
             return
         k = len(ch)
         if k == 7:
-            good = np.all(w[fin_one] == 1) and (np.all(w[~fin_one] == 3) if rigid else np.all((w[~fin_one] == 1) | (w[~fin_one] == 3)))
+            good = np.all(w[k1] == 1) and np.all(w[k3] == 3) and np.all((w[k13] == 1) | (w[k13] == 3))
             if good and parity == 0:
                 found.append(list(ch))
             return
         best, bc = None, None
         for b in range(NI):
             wb = w[b]
-            if fin_one[b]:
+            kb = kind[b]
+            if kb == 1:
                 if wb >= 1:
                     continue
                 need = 1
-            elif rigid:
+            elif kb == 3:
                 if wb >= 3:
                     continue
                 need = 3 - wb
             else:
                 if wb in (1, 3):
                     continue
-                need = 1                                  # w = 0 or 2: at least one more
+                need = 1
             if need > 7 - k:
                 return
             cnt = (allowed & item_c[b]).bit_count()
@@ -221,9 +229,9 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms):
             if best is None or cnt < bc:
                 best, bc = b, cnt
         if best is None:
-            if rigid:
+            if not k13.any():
                 return                                     # all targets met with k < 7: an extra h would overshoot
-            cand = allowed                                 # general: extra h may lift some w from 1 to 3 via 2
+            cand = allowed                                 # extra h may lift some 13-items from 1 to 3 via 2
         else:
             cand = allowed & item_c[best]
         if k == 6:
@@ -232,13 +240,13 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms):
         while cand:
             low = cand & -cand; i = low.bit_length() - 1; cand ^= low
             nw = w + cov[i]
-            if (nw[fin_one] > 1).any() or (nw > 3).any() or (rigid and (nw[~fin_one] > 3).any()):
+            if (nw[k1] > 1).any() or (nw > 3).any():
                 rest &= ~low; continue
             chn = ch + [i]
             if len(chn) >= 2 and not cells_ok(chn):
                 rest &= ~low; continue
             na = rest & orth[i] & ~low
-            closed = (fin_one & (nw >= 1)) | (nw >= 3)
+            closed = (k1 & (nw >= 1)) | (nw >= 3)
             for b in np.nonzero(closed)[0]:
                 na &= ~item_c[b]
             rec(chn, na, nw, parity ^ pr[i])

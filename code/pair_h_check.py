@@ -1,6 +1,7 @@
 r"""Finish line (C), C1 27/09: for each (y1, y2) pair of a pairs_NNN.json file, the exact h-stage with PRESCRIBED coverage.
 RIGID lattices (no norm-3 vector hits a new root at 3/2): w(beta) = 1 exactly on hits(y1) u hits(y2), w = 3 elsewhere.
-General lattices: w = 1 on the y-hits, w in {1,3} elsewhere.  Plus: h orthogonal to y1, y2 and pairwise, |(h,beta)| <= 1,
+General lattices: w = 1 on the y-hits; w in {1,3} on the new roots hit at 3/2 by some norm-3 vector orthogonal to y1, y2;
+w = 3 on all other new roots.  Plus: h orthogonal to y1, y2 and pairwise, |(h,beta)| <= 1,
 Lemma Z (sum h in 2U), cells with norm-3 x orthogonal to y1, y2 (both signs for every pair of blocks).
 A pair with no h-configuration is EXCLUDED (all conditions proven, notes/140-141).
 Usage: python pair_h_check.py <envelope.json> <pairs_NNN.json> <out.jsonl> [--from K] [--to K] [--max-seconds S]"""
@@ -36,7 +37,11 @@ def main():
         y2 = np.array([float(F(x)) for x in pairs[k][1]])
         yh = ((np.abs(np.abs(S @ y1) - 1.5) < 1e-6) | (np.abs(np.abs(S @ y2) - 1.5) < 1e-6))
         t0 = time.time()
-        res = h_exact(y1, y2, yh, rigid, H, Hc, HSb, par, X3, S, t0, ms)
+        hittable = None
+        if not rigid:
+            perp = (np.abs(X3 @ y1) < 1e-9) & (np.abs(X3 @ y2) < 1e-9)
+            hittable = (np.abs(np.abs(X3[perp] @ S.T) - 1.5) < 1e-6).any(axis=0)
+        res = h_exact(y1, y2, yh, rigid, H, Hc, HSb, par, X3, S, t0, ms, hittable=hittable)
         sec = time.time() - t0
         row = {'k': k, 'rigid': rigid, 'h_found': res is not None, 'timeout': (res is None and sec >= ms - 0.5),
                'seconds': round(sec, 2)}
