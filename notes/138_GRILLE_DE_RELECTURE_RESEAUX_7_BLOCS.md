@@ -34,6 +34,11 @@ réductions globales ; « structures » = correspondance avec le cadre et contr�
 ## 3. Le contrôle décisif : m = 7 doit servir quelque part
 Les graphes srg(1 + 2m², 2m, 1, 2) à m = 2 (Paley 9) et m = 11 (BvLS) EXISTENT, avec une involution à un point fixe.
 - **Toute étape qui n'utilise pas m = 7 doit être VRAIE sur eux.** « structures » la teste sur BvLS, x ↦ −x.
+- **Le premier change avec m.** Les valeurs propres sont (−1 ± t)/2 avec t = √(8m − 7), donc t = 3 (m = 2), t = 7 (m = 7) et
+  t = 9 (m = 11). L'analogue de « N = S − 3I mod 7 » est N = S − I mod 3 (Paley 9) et N = S − 4I mod 3 (BvLS) ; dans les deux
+  cas N² ≡ 0.
+  - BvLS a t = 9 = 3². Un énoncé qui utilise « t premier » peut donc légitimement y échouer. Paley 9 (t = 3) est alors le bon
+    témoin.
 - Un argument valide doit utiliser quelque chose de propre à m = 7. Par exemple 7 | k, t = 7, ou 2m − 4 = C(m − 2, 2) (qui sert
   dans le Théorème D).
 - Sinon, il prouve trop, donc il est faux.
