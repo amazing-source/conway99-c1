@@ -51,6 +51,16 @@ recalculé par C1.*
   - **Chacun a une composante dont toutes les classes de norme 3 sont vectorielles.** Ses 8 axes tombent donc dans N⊥ par (P).
     Contradiction.
 
+## 3 bis. Trois exclusions nouvelles (C1), par (M) + (P) + (E), sur les seules données de racines
+- **Critère.** Aucun u ne peut avoir de projection spinorielle sur une composante D_n dès que n(n − 1)/2 > h₁ + h₂ − 2. Plus
+  finement, en rang 24, dès que n(n − 1)/2 + (3 − n/4)·min_{j≠i} h_j > h₁ + h₂ − 2.
+  - Les n axes de D_n sont alors entiers sur les 42 u, donc ils tombent dans N⊥, qui est de dimension 2. Contradiction pour n ≥ 3.
+- **117 d₈d₄⁴** : 28 > 26. **134 d₉a₇²** : 36 > 32. **142 d₁₀d₆²a₁²** : 45 > 38. Le critère retrouve aussi 151 et 155.
+  - Sur les seules données de racines, même raffiné (coût du reste ≥ (3 − |ω|²)·min h_j), il ne tue rien d'autre.
+- **Contrôle des théorèmes thêta de Sol sur U = D12⁺ ⊕ D12⁺** (id 153). Les caractéristiques minimales de D12⁺ sont ±2eₖ, donc
+  #χ₈ = 576 = 48 + r (r = 528), et Σχχᵀ = 192I = (16 + 528)I − 8·44I ✓. O₂₄ vérifie aussi : 48 vecteurs, 16I.
+- **(C) : 9/156** (3 en attente d'un second lecteur), 2 partiels, 145 ouverts.
+
 ## 4. Suite
 - Appliquer (M) + (P) + (E) enveloppe par enveloppe : les candidats u sont les x de norme 3 admissibles pour (E), et leurs
   classes doivent recouvrir les duaux courts, sauf dans un plan. Il faut les glues explicites (« structures » construit les 156).
