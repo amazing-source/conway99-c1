@@ -115,4 +115,23 @@ Soit S_p les 10 quadruplets sur les paires de blocs passant par p, et k_Q = |Q �
 - **Contrôles.**
   - La couverture et Σλ = 7 tiennent sur les 2 812 blocs tordus des 1 521 classes à pivots (iota_design.K2K3), avec 0 écart.
   - a₀ = 7 − a₃ − 3a₄ et le bonus tiennent exactement sur des ι de l'étape 1 de deux types (0,6), soit 12 blocs, avec a₀ = 6 ou 7.
-- Proposé à « structures » et C2 comme option --twist des encodages.
+- Proposé à « structures » et C2 comme option --twist des encodages ; relu et codé par « structures ». Sur une sonde à deux
+  blocs de T = K₇, twist + CROSS donne UNSAT en 0,4 s.
+
+## 8. L'identité générale et son balayage (`code/ident_scan.py`, `data/ident_tight.json`)
+- **Énoncé.** Pour tout ensemble d'étiquettes S, places comptées avec multiplicité, et tout bloc p :
+  **a₃ + 3a₄ + Σ_{Q∈S_p}(k_Q − 1)⁺ + #{Q ∉ S_p : k_Q = 0} = 20 − 10|S| + Λ(S) + C_p(S)**, avec
+  Λ(S) = Σ_{b<d∈S}([non-μ] + K3[b,d]) + Σ_{b∈S} K3[b,b]/2 et C_p(S) = Σ_{b∈S}(K2[p+,b] + K2[p−,b]).
+- **Preuve.** Pour k ≤ 4 : 1 − k + C(k,2) = [k=0] + [k=3] + 3[k=4]. On l'utilise avec Σk = 10|S|, ΣC(k,2) = Λ(S) et la
+  couverture en p.
+- §2, §6 et §7 en sont des cas particuliers : Sp ancré donne 1 − [dg] ; S₃ tordu donne 3.
+- **Balayage des 3 308 classes, tous S et tous p.**
+  - Aucun second membre négatif : aucune identité mono-bloc ne tue un type à elle seule.
+  - 971 classes ont une identité de second membre ≤ 1.
+  - Pour (0,6), le minimum vaut 3 : c'est S₃.
+- **Famille nouvelle : le carré π.** C'est le cas d'un bloc p non pivot où μ(p+) = p− et où les τ-images t± forment une
+  μ-arête : un 4-cycle de μ ∪ τ. Avec S = p± ∪ τ(p±), le second membre vaut 4 − 3[μt+ = t−] − [t− = πt+]. Il vaut donc 0 si
+  les deux μ-arêtes sont des arêtes π. On a la même chose en échangeant μ et τ.
+  - Dans les 79 types pertinents : 8 identités à 0 et 6 à 1.
+  - Dans les étoiles libres : 243 types sur 1 787.
+  - Aucune dans les 441 types P = 0 de Sol, où le minimum est ≥ 3.
