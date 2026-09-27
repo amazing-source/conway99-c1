@@ -3,8 +3,12 @@ y1: W-dominant (y_pairs.dominant_y1), then one representative per Gamma-orbit (G
 y2: W(R cap y1-perp)-dominant candidates (y2_engine), then one representative per orbit of Stab_Gamma(y1) x {+-1}
 (Stab_Gamma(y1) preserves R cap y1-perp and its positive system, hence the candidate set; -y2 is merged when it is a candidate).
 Complete up to Aut(U) x {signs}: every frame pair is Aut(U)-equivalent to a listed one (up to the order of y1, y2).
-Usage: python y_pairs_gamma.py <envelope.json> <gamma.json> <out.json> [--max-seconds S]"""
-import json, os, sys, time
+Usage: python y_pairs_gamma.py <envelope.json> <gamma.json> <out.json> [--max-seconds S] [--plan] [--chunk k/n]
+--plan: stop after the y1 stage and write its stats (y1_orbits = number of y1 tasks).
+--chunk k/n: only the y1 representatives reps1[k::n]; the n chunk files together give exactly the full list
+(the y2 reduction is done per y1 representative, so the union of the chunks is the single-run list).
+--from-plan plan.json: take the y1 representatives from a --plan file (same envelope and Gamma) instead of recomputing them."""
+import hashlib, json, os, sys, time
 from fractions import Fraction as F
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -47,12 +51,30 @@ def main():
     ms = float(sys.argv[sys.argv.index('--max-seconds') + 1]) if '--max-seconds' in sys.argv else 3600
     assert gam['id'] == rec_['id']
     mats = [np.array(M, dtype=np.int64) for M in gam['matrices']]
+    gsha = hashlib.sha256(open(sys.argv[2], 'rb').read()).hexdigest()[:16]
     t0 = time.time()
     B, Gi, Bf, R, X3, Snew = setup(rec_['gens'])
-    Y, Yf, info = dominant_y1(B, Gi, Bf, R, X3, Snew)
-    reps1, sizes1 = orbit_reps(Y, mats)
-    info.update(id=rec_['id'], roots=rec_['roots'], gamma=len(mats), y1_orbits=len(reps1))
+    if '--from-plan' in sys.argv:
+        pl = json.load(open(sys.argv[sys.argv.index('--from-plan') + 1]))
+        assert pl['id'] == rec_['id'] and pl['plan']['gamma'] == len(mats) and pl['gamma_sha'] == gsha
+        Y = np.array(pl['y1_reps'], dtype=np.int64).reshape(-1, 24)
+        Yf = Y.astype(float) @ Bf
+        info = dict(pl['plan'])
+        reps1 = list(range(len(Y)))
+    else:
+        Y, Yf, info = dominant_y1(B, Gi, Bf, R, X3, Snew)
+        reps1, sizes1 = orbit_reps(Y, mats)
+        info.update(id=rec_['id'], roots=rec_['roots'], gamma=len(mats), y1_orbits=len(reps1))
     print(json.dumps(info), flush=True)
+    if '--plan' in sys.argv:
+        info['seconds'] = round(time.time() - t0, 1)
+        json.dump({'id': rec_['id'], 'plan': info, 'gamma_sha': gsha, 'y1_reps': [[int(x) for x in Y[r]] for r in reps1]},
+                  open(outp, 'w'))
+        return
+    if '--chunk' in sys.argv:
+        k, n = map(int, sys.argv[sys.argv.index('--chunk') + 1].split('/'))
+        reps1 = reps1[k::n]
+        info.update(chunk=[k, n], y1_orbits_chunk=len(reps1))
     eng = Y2Engine(B, Gi, Bf, R, X3, Snew)
     pairs = []
     tot = {'y2_candidates': 0, 'y2_orbits': 0, 'truncated': 0}

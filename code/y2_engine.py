@@ -65,6 +65,12 @@ class Y2Engine:
                 e = e * x.denominator // math.gcd(e, x.denominator)
         self.e = e
         HinvE = [[int(x * e) for x in row] for row in self.Hinv]
+        # fast exact path for emit (C1 27/09): integer numpy instead of Fraction sums (the Fraction sums were ~90% of the runtime)
+        big = (max((abs(v) for row in HinvE for v in row), default=0) * max(rank, 1) * 64 > 2 ** 55 or
+               max((abs(v) for row in self.V[:rank] for v in row), default=0) > 2 ** 40)
+        dt = object if big else np.int64
+        self.HinvE_np = np.array(HinvE, dtype=dt) if rank else None
+        self.V_np = np.array([list(r) for r in self.V[:rank]], dtype=dt) if rank else None
         self.data = []
         for cd in comps:
             orb = orbit_level2(cd['A'], cd['marks'])
@@ -174,12 +180,20 @@ class Y2Engine:
             kept.extend(Y2[keep])
 
         def emit(choice):
-            cvec = [0] * rank
+            if not rank:                                                 # no roots: the class part is empty
+                return emit_a0(np.zeros(24, dtype=np.int64))
+            cvec = np.zeros(rank, dtype=self.HinvE_np.dtype)
             for dd, p, j in zip(self.data, per, choice):
-                for a, jj in enumerate(dd['idx']):
-                    cvec[jj] = int(p['C'][j][a])
-            b1 = [sum(F(cvec[j]) * Hinv[j][k] for j in range(rank)) for k in range(rank)]
-            a0 = np.array([sum(int(b1[k]) * V[k][t] for k in range(rank)) for t in range(24)], dtype=np.int64)
+                cvec[dd['idx']] = p['C'][j]
+            num = cvec @ self.HinvE_np                                   # = e * (c . H^-1), exact integers
+            if any(int(v) % e for v in num):                             # never expected (class condition); exact old path
+                b1 = [sum(F(int(cvec[jj])) * Hinv[jj][k] for jj in range(rank)) for k in range(rank)]
+                b1i = np.array([int(v) for v in b1], dtype=self.V_np.dtype)
+            else:
+                b1i = np.array([int(v) // e for v in num], dtype=self.V_np.dtype)
+            return emit_a0(np.array([int(v) for v in (b1i @ self.V_np)], dtype=np.int64))
+
+        def emit_a0(a0):
             y0 = a0.astype(float) @ Bf
             if self.K is None:
                 out.append(a0)

@@ -68,3 +68,33 @@ qui ont le motif D₇.
 
 L'étage h actuel n'utilise PAS ce lemme : il ne demande qu'un x ⊥ y quelconque. C'est le candidat naturel pour rendre
 la recherche non rigide petite.
+
+## Lemme U+ (forme forte) et résultat (27/09, ~18:00-18:10)
+**Lemme U+.**
+- Un u ne touche QUE des nouvelles racines qui finissent à w = 1 et qui ne sont pas des hits y. La raison est le packing :
+  une racine touchée l'est par exactement un vecteur impair.
+- **Un candidat x est donc valide à un nœud** si :
+  1. |(x,h)| ≤ 1 pour les h choisis, avec au plus deux valeurs non nulles ;
+  2. x ne touche aucun hit y ;
+  3. x ne touche AUCUNE racine dont la couverture courante vaut w ≥ 2.
+- Les cellules ne se vérifient que sur les candidats valides.
+- Un point flexible à w = 1 sans candidat valide doit monter à 3.
+- Toutes ces conditions sont monotones le long de la recherche.
+
+**Mesures sur 124.**
+
+| paires | outil | mode | budget | mortes | timeouts | h trouvés |
+|---|---|---|---|---|---|---|
+| 40 | Python (pair_h_check) | général nu | 60 s | 11 | 29 | 0 |
+| 25 | Python (pair_h_check) | U+ | 120 s | 19 | 6 | 0 |
+| 40 | numba (frame_dfs de C2) | U+ | — | **40** | 0 | 0 |
+
+- Les deux lectures sont cohérentes : aucune contradiction. Le surcoût de mon Python par nœud dépasse souvent le gain, mais
+  l'élagage est réel : la paire 7 passe de plus de 60 s à 0,4 s.
+- **frame_dfs avec U+ :** médiane 1,6 s, max 5,7 s, profondeur de mort ≤ 4. La paire 0 passe de 152 s à 1,9 s.
+- **Contrôle d'identité (C2) :** sur le rigide 87 en mode général forcé, les comptes de nœuds sont identiques avec et sans U+.
+  Pas de régression.
+- **Pas de contrôle positif naturel.** Aucun vrai repère n'existe. D'où la double implémentation, le contrôle d'identité et la
+  vérification directe des conditions du lemme.
+- **Conséquence (à confirmer sur 102, 111, 126, trois autres familles, en cours).** Si le mécanisme se généralise, la ligne (C)
+  devient calculable sur toute la masse non rigide. Le coût serait dominé par l'énumération des paires y (259 s pour 124).
