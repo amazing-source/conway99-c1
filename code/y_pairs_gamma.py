@@ -7,8 +7,13 @@ Usage: python y_pairs_gamma.py <envelope.json> <gamma.json> <out.json> [--max-se
 --plan: stop after the y1 stage and write its stats (y1_orbits = number of y1 tasks).
 --chunk k/n: only the y1 representatives reps1[k::n]; the n chunk files together give exactly the full list
 (the y2 reduction is done per y1 representative, so the union of the chunks is the single-run list).
---from-plan plan.json: take the y1 representatives from a --plan file (same envelope and Gamma) instead of recomputing them."""
-import hashlib, json, os, sys, time
+--from-plan plan.json: take the y1 representatives from a --plan file (same envelope and Gamma) instead of recomputing them.
+--stream PATH ('-' = stdout): write the pairs as JSON lines {"o": y1 orbit index, "y1": [24], "y2": [24]} (AMBIENT
+coordinates, exact fraction strings, grouped by y1 orbit) as they are found, instead of holding them; the last line is
+{"end": true, "chunk": [k, n], "pairs": N, "complete": bool, "sha256": sha256 of all the pair lines (each with its '
+')}.
+out.json then gets the stats only (pairs = [], "streamed": N, "sha256")."""
+import hashlib, json, math, os, sys, time
 from fractions import Fraction as F
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -119,6 +124,24 @@ def main():
         reps1 = reps1[k::n]
         info.update(chunk=[k, n], y1_orbits_chunk=len(reps1))
     eng = Y2Engine(B, Gi, Bf, R, X3, Snew)
+    # exact ambient coordinates by integer arithmetic (same strings as str(Fraction)): v = a @ (d B) / d
+    dB = 1
+    for row in B:
+        for x in row:
+            dB = dB * F(x).denominator // math.gcd(dB, F(x).denominator)
+    BI = np.array([[int(F(x) * dB) for x in row] for row in B], dtype=object)
+
+    def q24(a):
+        num = np.array([int(v) for v in a], dtype=object).dot(BI)
+        out_ = []
+        for v in num:
+            v = int(v); g = math.gcd(v, dB); nn, dd = v // g, dB // g
+            out_.append(str(nn) if dd == 1 else '%d/%d' % (nn, dd))
+        return out_
+    stream = sys.argv[sys.argv.index('--stream') + 1] if '--stream' in sys.argv else None
+    sfh = (sys.stdout if stream == '-' else open(stream, 'w', newline=chr(10))) if stream else None
+    shash = hashlib.sha256()
+    nstream = 0
     pairs = []
     tot = {'y2_candidates': 0, 'y2_orbits': 0, 'truncated': 0}
     for r in reps1:
@@ -134,16 +157,27 @@ def main():
             continue
         reps2, _ = orbit_reps(Y2, stab, sign=True)
         tot['y2_orbits'] += len(reps2)
+        if sfh is not None:
+            y1s = q24(y1c)
+            for k in reps2:
+                line = json.dumps({'o': int(r), 'y1': y1s, 'y2': q24(Y2[k])}) + chr(10)
+                sfh.write(line); shash.update(line.encode()); nstream += 1
+            sfh.flush()
+            continue
         for k in reps2:
             pairs.append((y1c, Y2[k]))
     info.update(tot)
-    info['pairs'] = len(pairs)
+    info['pairs'] = len(pairs) if sfh is None else nstream
     info['complete'] = not info.get('timeout') and tot['truncated'] == 0
     info['seconds'] = round(time.time() - t0, 1)
-    print(json.dumps(info), flush=True)
-
-    def q24(a):
-        return [str(sum(F(int(a[i])) * B[i][k] for i in range(24))) for k in range(24)]
+    if sfh is not None:
+        info.update(streamed=nstream, sha256=shash.hexdigest())
+        sfh.write(json.dumps({'end': True, 'id': rec_['id'], 'chunk': info.get('chunk', [0, 1]), 'pairs': nstream,
+                              'complete': info['complete'], 'sha256': shash.hexdigest()}) + chr(10))
+        sfh.flush()
+        if sfh is not sys.stdout:
+            sfh.close()
+    print(json.dumps(info), flush=True, file=sys.stderr if stream == '-' else sys.stdout)
     json.dump({'id': rec_['id'], 'pairs': [[q24(a), q24(b)] for a, b in pairs], 'stats': info,
                'note': 'complete up to Aut(U) x signs (Gamma from gamma_fullrank.py, |Gamma| checked against the table)'},
               open(outp, 'w'))
