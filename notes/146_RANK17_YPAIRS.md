@@ -65,6 +65,6 @@ Aut(core) = W ⋊ Γ, where:
 | D8²⁺ + ℤ | 319 | 302 | 20 |
 | A11E6⁺ | 310 | 310 (no units) | 18 |
 
-With ℤ¹⁷ (8), the whole rank-17 search has 1272 (V, y-pair) starting points (1030 when U is rootless), against ~10⁷ root-poor pairs
+With ℤ¹⁷ (8), the whole rank-17 search has 1272 (V, y-pair) starting points (1142 when U is rootless: 1138 + the 4 of Z17), against ~10⁷ root-poor pairs
 in route (C). Each starting point then needs the rank-15 search (structures' lane): 21 pairs (a, b) with norms (5,5)/(3,7),
 7 star equations, Σ(aaᵀ + bbᵀ) = 14 P_W.
