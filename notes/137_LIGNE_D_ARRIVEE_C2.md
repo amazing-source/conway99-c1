@@ -52,6 +52,27 @@ Soit v une étiquette de c, avec b = bloc(v), et O_v l'orbite de u = (c+, v) (σ
   - Un certificat SANS SEC d'un type τ vaut pour I(τ), puisque I(τ) a plus de contraintes.
   - Les certificats AVEC SEC partout ne prouvent que l'étage n_dis = 0. Ils sont à refaire sous la forme β.
 
+## 3 bis. Raffinements (27/09, fin de matinée ; vérifiés par C2 et « structures »)
+- **Bris d'égalité.** On prend pour bloc lourd l'argmax de (w_c, #piv_c) dans l'ordre lexicographique. Si c'est une étoile libre,
+  la configuration est TOUT-DIS : n_dis = 21, Σ = ∅, et les 7 blocs sont des étoiles libres à d = 12.
+  - *Preuve.* Tous les w sont ≤ 12, et Σw = 84 + 4|Σ| ≥ 84 force w ≡ 12 et |Σ| = 0. Un bloc à pivots aurait alors w = 12 avec plus
+    de pivots, et il gagnerait le bris d'égalité. ∎
+- **La ligne d'arrivée devient :**
+  - **(A)** les I(τ) des types à pivots ;
+  - **(B)** la seule famille globale tout-dis : D est un 2-facteur de KG(7,2), avec SEC-dis partout.
+  - Les 1 787 instances d'étoiles libres ne sont plus nécessaires une par une.
+- **Réduction de (A) par Σ.** Avec Σ ≠ ∅, seuls 9 motifs survivent (K₂, P₃, 2K₂, K₃, P₄, P₃+K₂, 3K₂, P₅, 2P₃), tous de degré ≤ 2.
+  Les 14 types à ≥ 3 paires frères au bloc sortent donc de (A), dont le tout-frère μ = τ = π. Celui-ci est inconnu à 240 s et
+  probablement SAT : c'est la structure de BvLS.
+  - Dépendances : notes 18–19 de C2 (RSF, relaxations exactes, DRAT) et carnet §7, §11–§13. C1 a relu et confirmé qu'ils traitent
+    les carrés dis explicitement.
+  - **(A) = 1 507 types.**
+- **(B) en cours.** PL d'orbites symétrisé par G = S₇ ⋉ Z₂⁷ (transitif sur les 42 orbites) : faisable ⟺ solution invariante.
+  Secours : sat_whole.py (« structures »), avec les adjacences en variables, λ/μ exacts, le type du bloc 0 fixé et des clauses
+  tout-dis.
+- **Unités π-arête ⟹ dis** : une étiquette non pivot v avec μv = πv ou τv = πv a β_v = β_{πv} = 1. C'est le 39.3 de C2,
+  localisé.
+
 ## 4. Risque et mesure
 - Étoile libre + SEC-dis sur les 12 étiquettes : inconnu à 40 s (glucose, portable), sur 2 types.
 - Mesure décidée au PC du labo : environ 20 étoiles libres en tout-SEC-dis, à 1 h chacune, dès que --beta est codé.
