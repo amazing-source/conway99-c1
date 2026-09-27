@@ -3,6 +3,11 @@
 *27/09, nuit. C1, avec C2 (décompte des 42 pivots en « tout un bloc ») et « structures » (système local, SAT). DÉRIVÉ = preuve
 écrite ; les listes sont des calculs exacts. Les conclusions sont CONDITIONNELLES aux verdicts SAT (campagne cloud en cours).*
 
+**Relu et VÉRIFIÉ par « structures »** : formule, parité, impossibilité de 10 pivots, « arête π ⟺ paire frère » dans les deux
+sens. **Recompte indépendant** (involution/recount_pivots.py) : 0 : 1787, 2 : 958, 4 : 407, 6 : 106, 8 : 39, 12 : 11 ; pertinentes
+pour Σ = ∅ : 2 : 759, 4 : 278, 6 : 56, 8 : 19, 12 : 4, soit 79 à ≥ 6. Identique aux listes de C1. Énoncé et preuve modulo les 79 :
+notes/45 du labo de C2. Indice : 3 des 9 types (2,4) pertinents, chaque ι trouvé meurt en étape 2 (2 au PL, 1 en PLNE).
+
 ## 0. Énoncés
 | énoncé | statut |
 |---|---|
