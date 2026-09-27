@@ -4,7 +4,7 @@ General lattices: w = 1 on the y-hits; w in {1,3} on the new roots hit at 3/2 by
 w = 3 on all other new roots.  Plus: h orthogonal to y1, y2 and pairwise, |(h,beta)| <= 1,
 Lemma Z (sum h in 2U), cells with norm-3 x orthogonal to y1, y2 (both signs for every pair of blocks).
 A pair with no h-configuration is EXCLUDED (all conditions proven, notes/140-141).
-Usage: python pair_h_check.py <envelope.json> <pairs_NNN.json> <out.jsonl> [--from K] [--to K] [--max-seconds S]"""
+Usage: python pair_h_check.py <envelope.json> <pairs_NNN.json> <out.jsonl> [--from K] [--to K] [--max-seconds S] [--lemma-u | --lemma-u-strong]"""
 import json, os, sys, time
 from fractions import Fraction as F
 import numpy as np
@@ -20,6 +20,7 @@ def main():
     k0 = int(sys.argv[sys.argv.index('--from') + 1]) if '--from' in sys.argv else 0
     k1 = int(sys.argv[sys.argv.index('--to') + 1]) if '--to' in sys.argv else len(pairs)
     ms = float(sys.argv[sys.argv.index('--max-seconds') + 1]) if '--max-seconds' in sys.argv else 60
+    lemma_u = 2 if '--lemma-u-strong' in sys.argv else ('--lemma-u' in sys.argv)   # notes/145 Lemma U / U+ (general lattices)
     B, Bf, R, X3, X4c, X4, S = setup(rec_['gens'])
     HS = np.rint(X4 @ S.T).astype(np.int64)
     ok = np.abs(HS).max(axis=1) <= 1
@@ -41,10 +42,10 @@ def main():
         if not rigid:
             perp = (np.abs(X3 @ y1) < 1e-9) & (np.abs(X3 @ y2) < 1e-9)
             hittable = (np.abs(np.abs(X3[perp] @ S.T) - 1.5) < 1e-6).any(axis=0)
-        res = h_exact(y1, y2, yh, rigid, H, Hc, HSb, par, X3, S, t0, ms, hittable=hittable)
+        res = h_exact(y1, y2, yh, rigid, H, Hc, HSb, par, X3, S, t0, ms, hittable=hittable, lemma_u=lemma_u)
         sec = time.time() - t0
         row = {'k': k, 'rigid': rigid, 'h_found': res is not None, 'timeout': (res is None and sec >= ms - 0.5),
-               'seconds': round(sec, 2)}
+               'seconds': round(sec, 2), 'lemma_u': lemma_u}
         if res is not None:
             row['h'] = [int(i) for i in res]
         with open(outp, 'a') as f:

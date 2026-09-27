@@ -154,7 +154,7 @@ def trap_ok(B, a1, a2, Gi):
     return len(sv) == 0
 
 
-def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
+def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None, lemma_u=False):
     """DLX for 7 h orthogonal to y1, y2 with w = 1 on yhits; elsewhere w = 3 (rigid), or w in {1,3} (general), or, if a mask
     `hittable` is given (new roots hit at 3/2 by some norm-3 vector orthogonal to y1, y2), w in {1,3} on hittable roots and w = 3
     on the others (a root met once by the h is hit by exactly one odd frame vector, and a u hitting it must be such a vector)."""
@@ -177,8 +177,9 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
         parm[p] = parm.get(p, 0) | (1 << i)
     found = []
 
-    def cells_ok(ch):
-        cols = IP3[:, ch].astype(np.int16); nz = cols != 0; cnt = nz.sum(axis=1)
+    def cells_ok(ch, rows=None):
+        cols = IP3[:, ch].astype(np.int16) if rows is None else IP3[rows][:, ch].astype(np.int16)
+        nz = cols != 0; cnt = nz.sum(axis=1)
         for a in range(len(ch)):
             for b in range(a + 1, len(ch)):
                 sel = (cnt == 2) & nz[:, a] & nz[:, b] & (np.abs(cols[:, a]) == 1) & (np.abs(cols[:, b]) == 1)
@@ -195,6 +196,25 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
         kind[np.asarray(hittable, bool)] = 13
     kind[np.asarray(yhits, bool)] = 1
     k1, k3, k13 = kind == 1, kind == 3, kind == 13
+    # Lemma U (notes/145): a 13-root left at w = 1 is hit by a u, i.e. by a norm-3 x orthogonal to y1, y2 with |(x,beta)| = 3/2 and
+    # (x,h_c) in {0,+-1}, exactly two nonzero over the 7 h (on a partial choice: |.| <= 1 and at most two nonzero; monotone).
+    use_u = bool(lemma_u) and not rigid
+    strong = use_u and lemma_u == 2
+    if use_u:
+        HIT = np.abs(np.abs(X3p @ S.T) - 1.5) < 1e-6                      # x hits root b at 3/2
+        hitters = {int(b): np.nonzero(HIT[:, b])[0] for b in np.nonzero(k13)[0]}
+        # strong (U+): a u hits only roots that end at w = 1 and are not y-hits (packing), hence never a 1- or 3-kind root
+        xstat = ~HIT[:, k1 | k3].any(axis=1) if strong else np.ones(len(X3p), bool)
+
+    def valid_mask(ch, exact, w=None):
+        m = xstat.copy()
+        if ch:
+            cols = IP3[:, ch]
+            nz = (cols != 0).sum(axis=1)
+            m &= (np.abs(cols) <= 1).all(axis=1) & ((nz == 2) if exact else (nz <= 2))
+        if strong and w is not None:
+            m &= ~HIT[:, (w != 1) if exact else (w >= 2)].any(axis=1)
+        return m
 
     def rec(ch, allowed, w, parity):
         if found or time.time() - t0 > ms:
@@ -202,10 +222,16 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
         k = len(ch)
         if k == 7:
             good = np.all(w[k1] == 1) and np.all(w[k3] == 3) and np.all((w[k13] == 1) | (w[k13] == 3))
+            if good and use_u:
+                vm = valid_mask(ch, True, w)
+                good = all(vm[hitters[int(b)]].any() for b in np.nonzero(k13 & (w == 1))[0])
+                if good and strong:
+                    good = cells_ok(ch, np.nonzero(vm)[0])
             if good and parity == 0:
                 found.append(list(ch))
             return
         best, bc = None, None
+        vm = valid_mask(ch, False, w) if use_u else None
         for b in range(NI):
             wb = w[b]
             kb = kind[b]
@@ -218,9 +244,14 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
                     continue
                 need = 3 - wb
             else:
-                if wb in (1, 3):
+                if wb == 3:
                     continue
-                need = 1
+                if use_u and wb in (0, 1) and not vm[hitters[b]].any():
+                    need = 3 - wb                              # no admissible u can hit it: it must end at w = 3
+                elif wb == 1:
+                    continue
+                else:
+                    need = 1
             if need > 7 - k:
                 return
             cnt = (allowed & item_c[b]).bit_count()
@@ -243,7 +274,7 @@ def h_exact(y1, y2, yhits, rigid, H, Hc, HS, par, X3, S, t0, ms, hittable=None):
             if (nw[k1] > 1).any() or (nw > 3).any():
                 rest &= ~low; continue
             chn = ch + [i]
-            if len(chn) >= 2 and not cells_ok(chn):
+            if len(chn) >= 2 and not cells_ok(chn, np.nonzero(valid_mask(chn, False, nw))[0] if strong else None):
                 rest &= ~low; continue
             na = rest & orth[i] & ~low
             closed = (k1 & (nw >= 1)) | (nw >= 3)
