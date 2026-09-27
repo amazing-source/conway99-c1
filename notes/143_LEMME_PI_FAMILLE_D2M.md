@@ -209,3 +209,19 @@ Toutes ces valeurs sont non nulles. **Donc tout bloc à |κ| = 1 meurt dans 132.
 - E₂=E₂ | F₁=F₁ et E₂xE₂ | F₁=F₁ (12) ;
 - E₂=E₂ | E₂=E₂ et variantes (10) ;
 - F₁=F₁ | F₁=F₁ (4). Ce dernier cas est possible sans aucun S : il faudra les cellules (u) ou la parité des I.
+
+### 7.2 Lemme Z⁺ (structures, 27/09 soir ; preuve C1 en trois lignes)
+**Énoncé.** U ∩ span(h) = ⟨h⟩ ∪ (⟨h⟩ + Σh/2). Autrement dit, (Σ_T h)/2 ∉ U pour 1 ≤ |T| ≤ 6.
+
+**Preuve.**
+1. Soit v = Σ a_c h_c ∈ U. Chaque u est une racine ±e_c ± e_d de D₇, et (u, h_c) = −C_{cu}.
+2. Pour toute paire {c,d}, les deux u de signes C_cC_d = ±1 donnent a_c + a_d ∈ ℤ et a_c − a_d ∈ ℤ.
+3. Donc 2a ∈ ℤ⁷, et tous les a_c sont congrus mod 1.
+
+La condition ne dépend que des h : elle est valable dès l'étage h, puisque les u doivent exister.
+
+**Corollaire.** La demi-somme de deux h n'est jamais un vecteur de U, en particulier jamais une racine de U. Par exemple :
+- **deux I₄ de même support** sur une moitié sont exclus : leur demi-somme est une racine de D_m ;
+- deux I₂I₂ de mêmes supports, dont les signes sont d'accord sur un bloc et opposés sur l'autre, sont exclus.
+
+Cela donne un raccourci pour R1 (§7.1) : les deux I₄ de support identique sur X′_B sont exclus immédiatement.
