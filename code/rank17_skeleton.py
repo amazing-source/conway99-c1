@@ -86,14 +86,45 @@ def short_duals(GK):
     return out
 
 
-def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None):
+def root_orbits(GK, classes):
+    """orbits of H = <reflections in the roots of K> on the given classes of K/2K (H fixes y1, y2, so every filter and the
+    vector level are H-equivariant). Action mod 2K: sigma -> sigma + (sigma, r)[r]. Returns {class: orbit min}."""
+    X, nrm = short_vectors_chunked(GK.tolist(), 2)
+    R = X[nrm == 2].astype(np.int64)
+    G2 = (GK % 2).astype(np.int64)
+    rc = [int(((r & 1) << np.arange(15)).sum()) for r in R]
+    rf = [int((((r & 1) @ G2) % 2 << np.arange(15)).sum()) for r in R]          # functional sigma -> (sigma, r) mod 2
+    cls = set(int(c) for c in classes)
+    orb = {}
+    for c in sorted(cls):
+        if c in orb:
+            continue
+        comp, fr = {c}, [c]
+        while fr:
+            nf = []
+            for x in fr:
+                for a, f in zip(rc, rf):
+                    y = x ^ a if bin(x & f).count('1') & 1 else x
+                    if y not in comp:
+                        comp.add(y); nf.append(y)
+            fr = nf
+        mn = min(comp)
+        for x in comp:
+            orb[x] = mn
+    return orb
+
+
+def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, on_leaf=None, orbits=None):
     """search g_2..g_7 (classes as 15-bit ints): pairwise odd forms, independent, all 21 classes usable, with the
     short-dual (parity energy) rules and the unit rule; M1 (oriented cell usability) is checked on each full skeleton,
     and the search goes on when it fails. v5 (28/09 night): candidate sets are Python-int bitsets.
     Rules (o / z = numbers of chosen g with odd / even pairing with kappa): kmax 0: o = 0; kmax 1: o <= 1 or z = 0;
     kmax 2: o <= 2 or z <= 1 (i.e. min(o, z + 1) <= kmax at depth 6); unit rule at depth 6: o >= 1.
     Returns (skeleton or None, nodes, leaves_rejected_by_M1)."""
-    U = np.array(sorted(usable), dtype=np.int64)
+    if orbits is not None:                                            # order by (orbit min, class): H-reduction
+        U = np.array(sorted(usable, key=lambda x: (orbits[x], x)), dtype=np.int64)
+    else:
+        U = np.array(sorted(usable), dtype=np.int64)
     if len(duals):
         k0 = [x for x, km, _ in duals if km == 0]
         if k0:
@@ -158,6 +189,8 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None):
             x = Ul[i]
             if x in span:
                 continue
+            if depth == 0 and orbits is not None and orbits[x] != x:
+                continue                                                  # the smallest element must be an orbit min
             if nd:
                 fk = FK[i]
                 o2 = tuple(a + b for a, b in zip(o, fk))
@@ -181,7 +214,9 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None):
                     continue
                 G = [Ul[t] for t in chosen] + [x]
                 if m1_full(G):
-                    return G
+                    if on_leaf is None or on_leaf(G):
+                        return G
+                    continue
                 rejected[0] += 1
                 continue
             c2 = cand & nbr[i]
@@ -194,6 +229,22 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None):
     allc = (1 << n) - 1
     r = rec([], {0}, allc, tuple([0] * nd), tuple([0] * nu))
     return r, nodes[0], rejected[0]
+
+
+def all_skeletons(usable, GK, duals=(), units=(), masks=None, max_count=200, limit=10 ** 8, orbits=None):
+    """every skeleton passing the class-level filters and M1, up to max_count; exhaustive flag"""
+    out = []
+
+    def leaf(G):
+        out.append(list(G))
+        return len(out) >= max_count
+    try:
+        r, nodes, rej = skeleton_exists(usable, GK, limit=limit, duals=duals, units=units, masks=masks, on_leaf=leaf,
+                                        orbits=orbits)
+        exhaustive = r is None
+    except TimeoutError:
+        exhaustive = False
+    return {'list': out, 'exhaustive': exhaustive and len(out) < max_count}
 
 
 def main(tag, first=None, ids=None, limit=10 ** 8):
