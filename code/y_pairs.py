@@ -145,30 +145,67 @@ def dominant_y1(B, Gi, Bf, R, X3, Snew, verbose=True):
                     cur.add((cl, nr)); break
         good.insert(0, cur)
     Fs = None
-    cands = []
+    # Memory-lean (27/09 night; lattice 8 reached 4 GB storing every norm-7 candidate before filtering): candidates are
+    # filtered in bounded batches as they are produced (same filters, same order of the survivors), and only survivors kept.
+    kept, buf, nbuf = [], [], [0]
+    nX3 = max(1, len(X3))
+    BATCH = int(max(256, min(20000, 3 * 10 ** 6 // nX3)))          # batch x |X3| floats stays ~ 24 MB
+
+    def flush():
+        if not buf:
+            return
+        Ab = np.vstack(buf)
+        buf.clear(); nbuf[0] = 0
+        Yb = Ab.astype(float) @ Bf
+        keep = np.abs(np.einsum('ij,ij->i', Yb, Yb) - 7) < 1e-6
+        if len(R):
+            keep &= np.abs(Yb @ R.T).max(axis=1) <= 2 + 1e-9
+        if len(Snew) and keep.any():
+            idx = np.nonzero(keep)[0]
+            keep[idx] = np.abs(Yb[idx] @ Snew.T).max(axis=1) <= 1.5 + 1e-9
+        if keep.any():
+            idx = np.nonzero(keep)[0]
+            keep[idx] = np.abs(Yb[idx] @ X3.T).max(axis=1) <= 3 + 1e-9
+        if keep.any():
+            kept.append(Ab[keep])
+
+    def push(A2):
+        buf.append(A2); nbuf[0] += len(A2)
+        if nbuf[0] >= BATCH:
+            flush()
     K = np.array(Vk, dtype=np.int64) if len(Vk) else None
     if K is not None:
         GK = K @ np.array(Gi, dtype=np.int64) @ K.T
         Kf = K.astype(float) @ Bf
         GKf = GK.astype(float)
     counter = [0]
+    HinvE_o = np.array(HinvE, dtype=object) if rank else None      # exact integer path (was Fraction sums)
+    V_o = np.array([list(r) for r in V[:rank]], dtype=object) if rank else None
 
     def emit(partial, nr):
         counter[0] += 1
-        cvec = [0] * rank
-        for cmp, lab in zip(comp, partial):
-            for a, j in enumerate(cmp):
-                cvec[j] = lab[a]
-        b1 = [sum(F(cvec[j]) * Hinv[j][k] for j in range(rank)) for k in range(rank)]
-        a0 = [sum(int(b1[k]) * V[k][t] for k in range(rank)) for t in range(24)]
-        y0 = np.array(a0, dtype=float) @ Bf
+        if rank:
+            cvec = np.zeros(rank, dtype=object)
+            for cmp, lab in zip(comp, partial):
+                for a, j in enumerate(cmp):
+                    cvec[j] = lab[a]
+            num = cvec.dot(HinvE_o)                                     # = e * (c . H^-1)
+            if any(int(v) % e for v in num):                            # exact old path (never expected)
+                b1 = [int(sum(F(int(cvec[j])) * Hinv[j][k] for j in range(rank))) for k in range(rank)]
+            else:
+                b1 = [int(v) // e for v in num]
+            a0 = np.array([int(v) for v in np.array(b1, dtype=object).dot(V_o)], dtype=np.int64)
+        else:
+            a0 = np.zeros(24, dtype=np.int64)
+        y0 = a0.astype(float) @ Bf
         if K is None:
             if nr == 7:
-                cands.append(np.array(a0, dtype=np.int64))
+                push(a0[None, :])
             return
         t = np.linalg.solve(GKf, Kf @ y0)
-        for x in enum_shift(GK.tolist(), -t, 7 - float(y0 @ y0) + float(t @ GKf @ t), y0, Kf):
-            cands.append(np.array(a0, dtype=np.int64) + np.array(x, dtype=np.int64) @ K)
+        xs = enum_shift(GK.tolist(), -t, 7 - float(y0 @ y0) + float(t @ GKf @ t), y0, Kf)
+        for s0 in range(0, len(xs), 4096):
+            push(a0[None, :] + np.array(xs[s0:s0 + 4096], dtype=np.int64) @ K)
 
     def walk(k, cl, nr, partial):
         if k == len(comp):
@@ -182,16 +219,11 @@ def dominant_y1(B, Gi, Bf, R, X3, Snew, verbose=True):
             if (c2, t) in good[k + 1]:
                 walk(k + 1, c2, t, partial + (lab,))
     walk(0, zero, F(0), ())
-    Y = np.array(cands, dtype=np.int64).reshape(-1, 24)
+    flush()
+    Y = np.vstack(kept) if kept else np.zeros((0, 24), dtype=np.int64)
     if len(Y) == 0:
         return Y, np.zeros((0, 24)), {'rank': rank, 'components': len(comp), 'dominant_y1': 0}
     Yf = Y.astype(float) @ Bf
-    keep = np.abs(np.einsum('ij,ij->i', Yf, Yf) - 7) < 1e-6
-    keep &= np.abs(Yf @ Snew.T).max(axis=1) <= 1.5 + 1e-9 if len(Snew) else keep
-    keep &= np.abs(Yf @ X3.T).max(axis=1) <= 3 + 1e-9
-    if len(R):
-        keep &= np.abs(Yf @ R.T).max(axis=1) <= 2 + 1e-9
-    Y, Yf = Y[keep], Yf[keep]
     info = {'rank': rank, 'components': len(comp), 'label_vectors': counter[0], 'dominant_y1': len(Y)}
     return Y, Yf, info
 

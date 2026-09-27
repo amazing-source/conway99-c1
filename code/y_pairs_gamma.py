@@ -12,7 +12,8 @@ import hashlib, json, os, sys, time
 from fractions import Fraction as F
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from y_pairs import setup, dominant_y1
+from y_pairs import setup, dominant_y1, root_system
+from envelope_trap import inverse_exact
 from y2_engine import Y2Engine
 
 
@@ -44,19 +45,55 @@ def orbit_reps(vectors, mats, sign=False):
     return reps, sizes
 
 
+def basis_sha(B):
+    return hashlib.sha256(json.dumps([[str(x) for x in row] for row in B]).encode()).hexdigest()[:16]
+
+
+def gamma_in_basis(gam, B, Gi, Bf, R):
+    """Gamma matrices in THIS run's LLL basis B (a -> a @ M), each one VERIFIED (27/09 night: the LLL basis of setup() differs
+    between the lab PC and this laptop, and a Gamma file made on the other machine is then a set of non-isometries).
+    A file that carries its basis ('basis', rows as fraction strings) is converted exactly: with P = B Bg^-1 (unimodular),
+    M' = P M P^-1. Every matrix must preserve the Gram matrix and permute the simple roots (= fix the chamber); else abort."""
+    mats = [np.array(M, dtype=np.int64) for M in gam['matrices']]
+    conv = False
+    if 'basis' in gam:
+        Bg = [[F(x) for x in row] for row in gam['basis']]
+        Bq = [[F(x) for x in row] for row in B]
+        if Bg != Bq:
+            Bgi, Bqi = inverse_exact(Bg), inverse_exact(Bq)
+            mul = lambda X, Y: [[sum(X[i][k] * Y[k][j] for k in range(24)) for j in range(24)] for i in range(24)]
+            P, Pi = mul(Bq, Bgi), mul(Bg, Bqi)
+            assert all(x.denominator == 1 for row in P + Pi for x in row), 'Gamma basis is not a basis of this lattice'
+            P = np.array([[int(x) for x in row] for row in P], dtype=object)
+            Pi = np.array([[int(x) for x in row] for row in Pi], dtype=object)
+            mats = [np.array((P.dot(M.astype(object))).dot(Pi), dtype=np.int64) for M in mats]
+            conv = True
+    G = np.array(Gi, dtype=np.int64)
+    S = root_system(R)[0]
+    Sc = np.rint(S @ np.linalg.inv(Bf)).astype(np.int64)
+    simp = {tuple(r) for r in Sc.tolist()}
+    for M in mats:
+        if not (np.array_equal(M @ G @ M.T, G) and all(tuple((sv @ M).tolist()) in simp for sv in Sc)):
+            raise SystemExit('ABORT: a Gamma matrix is not a chamber-preserving isometry in this basis '
+                             '(Gamma file from another machine without its basis?)')
+    return mats, conv
+
+
 def main():
     rec_ = json.load(open(sys.argv[1]))
     gam = json.load(open(sys.argv[2]))
     outp = sys.argv[3]
     ms = float(sys.argv[sys.argv.index('--max-seconds') + 1]) if '--max-seconds' in sys.argv else 3600
     assert gam['id'] == rec_['id']
-    mats = [np.array(M, dtype=np.int64) for M in gam['matrices']]
     gsha = hashlib.sha256(open(sys.argv[2], 'rb').read()).hexdigest()[:16]
     t0 = time.time()
     B, Gi, Bf, R, X3, Snew = setup(rec_['gens'])
+    bsha = basis_sha(B)
+    mats, converted = gamma_in_basis(gam, B, Gi, Bf, R)
     if '--from-plan' in sys.argv:
         pl = json.load(open(sys.argv[sys.argv.index('--from-plan') + 1]))
         assert pl['id'] == rec_['id'] and pl['plan']['gamma'] == len(mats) and pl['gamma_sha'] == gsha
+        assert pl.get('basis_sha') == bsha, 'plan made in another LLL basis'
         Y = np.array(pl['y1_reps'], dtype=np.int64).reshape(-1, 24)
         Yf = Y.astype(float) @ Bf
         info = dict(pl['plan'])
@@ -64,12 +101,13 @@ def main():
     else:
         Y, Yf, info = dominant_y1(B, Gi, Bf, R, X3, Snew)
         reps1, sizes1 = orbit_reps(Y, mats)
-        info.update(id=rec_['id'], roots=rec_['roots'], gamma=len(mats), y1_orbits=len(reps1))
+        info.update(id=rec_['id'], roots=rec_['roots'], gamma=len(mats), y1_orbits=len(reps1), gamma_verified=True,
+                    gamma_converted=converted)
     print(json.dumps(info), flush=True)
     if '--plan' in sys.argv:
         info['seconds'] = round(time.time() - t0, 1)
-        json.dump({'id': rec_['id'], 'plan': info, 'gamma_sha': gsha, 'y1_reps': [[int(x) for x in Y[r]] for r in reps1]},
-                  open(outp, 'w'))
+        json.dump({'id': rec_['id'], 'plan': info, 'gamma_sha': gsha, 'basis_sha': bsha,
+                   'y1_reps': [[int(x) for x in Y[r]] for r in reps1]}, open(outp, 'w'))
         return
     if '--chunk' in sys.argv:
         k, n = map(int, sys.argv[sys.argv.index('--chunk') + 1].split('/'))
