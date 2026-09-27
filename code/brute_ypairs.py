@@ -13,7 +13,7 @@ from y_pairs import setup, dominant_y1, root_system
 from y2_engine import Y2Engine
 
 
-def stream_norm(Gi, bound, cb, chunk=100000):
+def stream_norm(Gi, bound, cb, chunk=10000):
     n = len(Gi)
     L = np.linalg.cholesky(np.array(Gi, dtype=float))
     d = [float(L[i, i] ** 2) for i in range(n)]
