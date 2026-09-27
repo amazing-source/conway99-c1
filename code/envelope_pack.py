@@ -131,32 +131,37 @@ def pack_verdict(gens, want_trap=True):
     res['admissible'] = 2 * int(adm.sum())
     if not want_trap:
         return res
-    A = [list(X3c[i]) for i in np.nonzero(adm)[0]]
-    if not A:
-        res['verdict'] = 'EXCLUDED (no admissible norm-3 vector)'
+    # CONNECTIVITY (C1 27/09): T^2 + T = 12I - C^T C with T_AB = 0 forces (C^T C)_AB = 0, i.e. the block pairs of A-orbits and
+    # B-orbits are disjoint or equal; in K7 this is impossible unless A or B is empty.  So the 42 u are connected under
+    # |(u,u')| = 1, hence lie in ONE component of that graph on the (packing-admissible) norm-3 vectors; N <= span(component).
+    idx = np.nonzero(adm)[0]
+    res['admissible'] = 2 * len(idx)
+    if len(idx) < 42:
+        res['verdict'] = 'EXCLUDED (fewer than 42 admissible norm-3 classes)'
         return res
-    rank, dim_short, nshort = trap_on(A, B)
-    res.update(rank_Ladm=rank, short_dual=nshort, dim_short=dim_short, codim=24 - rank)
-    if rank < 22:
-        res['verdict'] = 'EXCLUDED (admissible span has rank < 22, cannot contain N)'
-        return res
-    if dim_short + (24 - rank) > 2:
-        res['verdict'] = 'EXCLUDED (packing-admissible trap: %d short dual dims + %d orthogonal > 2)' % (dim_short, 24 - rank)
-        return res
-    # free vectors (m = 0) and the number K of u's that can be non-free (disjoint 3/2-sets inside new_min)
-    free = [list(X3c[i]) for i in np.nonzero(m[:, 0] == 0)[0]]
-    pos = np.sort(m[m[:, 0] > 0, 0])
-    K = int(np.searchsorted(np.cumsum(pos), nmin, side='right')) if len(pos) else 0
-    res['free'] = 2 * len(free)
-    res['K_nonfree_max'] = K
-    if free:
-        rF, dF, nF = trap_on(free, B)
-        res.update(rank_free=rF, short_dual_free=nF, dim_short_free=dF)
-        if K == 0 and (rF < 22 or dF + (24 - rF) > 2):
-            res['verdict'] = 'EXCLUDED (all u free (K = 0) and the free span fails the trap)'
-            return res
-    elif K < 42:
-        res['verdict'] = 'EXCLUDED (no free vector and at most %d non-free u fit)' % K
+    from scipy.sparse import csr_matrix
+    from scipy.sparse.csgraph import connected_components
+    Xa = X3[idx]
+    Pa = Xa @ Xa.T
+    adj = np.abs(np.abs(Pa) - 1.0) < 1e-6
+    ncomp, lab = connected_components(csr_matrix(adj), directed=False)
+    comps = []
+    viable = []
+    for k in range(ncomp):
+        mem = idx[lab == k]
+        if len(mem) < 42:
+            comps.append({'size': 2 * len(mem), 'viable': False, 'why': '<42'})
+            continue
+        if not want_trap:
+            comps.append({'size': 2 * len(mem)}); viable.append(k); continue
+        rank, dim_short, nshort = trap_on([list(X3c[i]) for i in mem], B)
+        ok = rank >= 22 and dim_short + (24 - rank) <= 2
+        comps.append({'size': 2 * len(mem), 'rank': rank, 'dim_short': dim_short, 'short_dual': nshort, 'viable': ok})
+        if ok:
+            viable.append(k)
+    res['components'] = comps
+    if not viable:
+        res['verdict'] = 'EXCLUDED (connectivity: no component of the |(x,y)| = 1 graph on admissible norm-3 vectors hosts N)'
         return res
     res['verdict'] = 'survives'
     return res
