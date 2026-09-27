@@ -177,13 +177,24 @@ def main():
         X, nrm = short_vectors_fast(GK.tolist(), maxn)
         vecs = [(x, int(n_)) for x, n_ in zip(X, nrm)] + [(-x, int(n_)) for x, n_ in zip(X, nrm)]
         psis = []
-        from itertools import product as _prod
-        pools = [[x for x, n_ in vecs if n_ == int(GK[i, i])] for i in range(d_perp)]
-        for imgs in _prod(*pools):
-            Am = np.array(imgs, dtype=np.int64)                         # rows: images of the kernel basis (coefficients)
-            if np.array_equal(Am @ GK @ Am.T, GK) and abs(round(np.linalg.det(Am.astype(float)))) == 1:
-                Psi = np.linalg.solve(Kp, Am.astype(float) @ Kp)        # p -> p @ Psi
-                psis.append(Psi)
+        # backtracking over the images of the kernel basis, checking inner products incrementally
+        byn = {}
+        for x, n_ in vecs:
+            byn.setdefault(n_, []).append(np.array(x, dtype=np.int64))
+        imgs = [None] * d_perp
+
+        def bt(i):
+            if i == d_perp:
+                Am = np.array(imgs, dtype=np.int64)
+                if abs(round(np.linalg.det(Am.astype(float)))) == 1:
+                    psis.append(np.linalg.solve(Kp, Am.astype(float) @ Kp))
+                return
+            for x in byn.get(int(GK[i, i]), []):
+                if all(int(x @ GK @ imgs[j]) == int(GK[i, j]) for j in range(i)):
+                    imgs[i] = x
+                    bt(i + 1)
+            imgs[i] = None
+        bt(0)
     else:
         Wp = np.zeros((0, 24)); psis = [np.zeros((0, 0))]
     mats = []
