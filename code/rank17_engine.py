@@ -61,15 +61,16 @@ class Case:
         for r in self.roots:
             rk2.setdefault(((r % 2) << np.arange(self.nB)).sum(), []).append(r)
         self.roots_mod2 = rk2
-        # skeleton-level data
-        self.usable, self.info, self.masks = sk.usable_classes(self.GK, self.Kv, self.rootkeys4)
+        # skeleton-level data (the norm-10 shell is enumerated once; int16 storage)
+        Xk, nk = short_vectors_chunked(self.GK.tolist(), 10)
+        W = Xk[nk == 10].astype(np.int16)
+        del Xk, nk
+        self.usable, self.info, self.masks = sk.usable_classes(self.GK, self.Kv, self.rootkeys4, W10=W)
         self.duals = sk.short_duals(self.GK)
         KG = self.Kv @ self.Gv
         self.units = [KG[:, self.nB - m + j].copy() for j in range(m)]
-        Xk, nk = short_vectors_chunked(self.GK.tolist(), 10)
-        W = Xk[nk == 10].astype(np.int64)
         self.W = W
-        self.cls = ((W & 1) << np.arange(15)).sum(axis=1)
+        self.cls = ((W.astype(np.int64) & 1) << np.arange(15)).sum(axis=1)
 
     def pvec(self, x_v, gvecs):
         """p(x) = ((x, g_e))_e mod 2 for x in V coordinates, g_e class representatives in V coordinates"""
@@ -82,8 +83,11 @@ class Case:
         if not hasattr(self, '_cd'):
             self._cd = {}
         if C in self._cd:
-            return self._cd[C]
-        Wc = self.W[self.cls == C] @ self.Kv                                 # V coordinates, up to sign
+            d = self._cd.pop(C); self._cd[C] = d                            # LRU order
+            return d
+        while len(self._cd) >= 64:                                          # memory: keep at most 64 classes
+            self._cd.pop(next(iter(self._cd)))
+        Wc = self.W[self.cls == C].astype(np.int64) @ self.Kv               # V coordinates, up to sign
         n = len(Wc)
         ip = Wc @ self.Gv @ Wc.T
         iu = np.triu_indices(n, 1)
@@ -152,15 +156,32 @@ class Case:
         return doms
 
 
-def run_case(tag, pid, max_skel=200, cap=10 ** 7):
+def run_case(tag, pid, max_skel=200, cap=10 ** 7, sample=0):
+    """sample = 0: skeletons enumerated exhaustively (H-reduced) up to max_skel; sample = N > 0: N random skeletons
+    (randomised DFS order, one per seed), PATTERN mode"""
     os.makedirs(WORK, exist_ok=True)
     t0 = time.time()
     case = Case(tag, pid)
-    out = {'V': case.V, 'pair': pid, 'usable': len(case.usable)}
-    orbits = sk.root_orbits(case.GK, list(case.usable.keys()))
-    out['class_orbits'] = len(set(orbits.values()))
-    sks = sk.all_skeletons(case.usable, case.GK, duals=case.duals, units=case.units, masks=case.masks, max_count=max_skel,
-                           orbits=orbits)
+    out = {'V': case.V, 'pair': pid, 'usable': len(case.usable), 'mode': 'sample %d' % sample if sample else 'exhaustive'}
+    if sample:
+        lst, none_exhaustive = [], False
+        for seed in range(sample):
+            try:
+                r, nodes, rej = sk.skeleton_exists(case.usable, case.GK, limit=2 * 10 ** 6, duals=case.duals,
+                                                   units=case.units, masks=case.masks, perm_seed=seed)
+            except TimeoutError:
+                continue                                                    # this random order hit the node cap
+            if r is None:
+                none_exhaustive = True                                      # a complete search found no skeleton
+                break
+            if r not in lst:
+                lst.append(r)
+        sks = {'list': lst, 'exhaustive': none_exhaustive}
+    else:
+        orbits = sk.root_orbits(case.GK, list(case.usable.keys()))
+        out['class_orbits'] = len(set(orbits.values()))
+        sks = sk.all_skeletons(case.usable, case.GK, duals=case.duals, units=case.units, masks=case.masks,
+                               max_count=max_skel, orbits=orbits)
     out['skeletons'] = len(sks['list']); out['skeleton_search_exhaustive'] = sks['exhaustive']
     verdicts = {}
     for n, S in enumerate(sks['list']):
@@ -187,10 +208,14 @@ def run_case(tag, pid, max_skel=200, cap=10 ** 7):
         out['verdict'] = out['stop']['verdict']
     elif sks['exhaustive']:
         out['verdict'] = 'EXCLUDED'
-        out['label'] = 'COMPUTED (pass 1: all skeletons excluded)'
+        out['label'] = 'COMPUTED (pass 1: all skeletons excluded)' if sks['list'] else 'COMPUTED (pass 1: no skeleton)'
+    elif sample and not sks['list']:
+        out['verdict'] = 'UNDECIDED'
+        out['label'] = 'every random skeleton search hit the node cap'
     else:
         out['verdict'] = 'PARTIAL'
-        out['label'] = 'PATTERN (skeleton cap %d reached, all tried excluded)' % max_skel
+        out['label'] = ('PATTERN (%d random skeletons, all excluded)' % len(sks['list']) if sample else
+                        'PATTERN (skeleton cap %d or node cap reached, all tried excluded)' % max_skel)
     out['s'] = round(time.time() - t0, 1)
     return out
 
@@ -200,11 +225,12 @@ if __name__ == '__main__':
     ids = sys.argv[2]
     ms = int(sys.argv[3]) if len(sys.argv) > 3 else 200
     cap = int(sys.argv[4]) if len(sys.argv) > 4 else 10 ** 7
+    smp = int(sys.argv[5]) if len(sys.argv) > 5 else 0
     Y = json.load(open(os.path.join(DATA, 'ypairs_%s.json' % tag)))
     pids = [p['id'] for p in Y['pairs']] if ids == 'all' else [int(x) for x in ids.split(',')]
     outf = os.path.join(DATA, 'engine_%s.jsonl' % tag)
     for pid in pids:
-        o = run_case(tag, pid, ms, cap)
+        o = run_case(tag, pid, ms, cap, smp)
         print(json.dumps({k: v for k, v in o.items() if k != 'verdicts'}), flush=True)
         with open(outf, 'a') as f:
             f.write(json.dumps(o) + chr(10))

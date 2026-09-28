@@ -23,17 +23,24 @@ def root_keys_mod4(Gv):
     return np.unique(((R % 4) << (2 * np.arange(R.shape[1]))).sum(axis=1))
 
 
-def usable_classes(GK, Kv=None, rootkeys=None):
+def usable_classes(GK, Kv=None, rootkeys=None, W10=None):
     """norm-10 vectors of K by class in K/2K; with Kv (K basis in V coordinates) and rootkeys, Lemma L1 (structures,
     27/09 night) removes every w with w = r mod 4V for a root r of V (u + (r - w)/2 = (r + r_u)/2 would be a norm-1 vector
     of U). A class is usable when it keeps two vectors w, w' (w' != +-w) with (w, w') in {0, +-4}."""
-    X, nrm = short_vectors_chunked(GK.tolist(), 10)
-    W = X[nrm == 10].astype(np.int32)                       # norm-10 vectors up to sign, K coordinates
-    del X, nrm
+    if W10 is None:
+        X, nrm = short_vectors_chunked(GK.tolist(), 10)
+        W = X[nrm == 10].astype(np.int32)                   # norm-10 vectors up to sign, K coordinates
+        del X, nrm
+    else:
+        W = W10.astype(np.int32)
     n_all = len(W)
     if Kv is not None:
-        keys = ((((W.astype(np.int64) @ Kv) % 4)) << (2 * np.arange(Kv.shape[1]))).sum(axis=1)
-        W = W[~np.isin(keys, rootkeys)]
+        keep = np.ones(len(W), dtype=bool)
+        sh = 2 * np.arange(Kv.shape[1])
+        for s0 in range(0, len(W), 100000):                  # chunks (memory)
+            k = (((W[s0:s0 + 100000].astype(np.int64) @ Kv) % 4) << sh).sum(axis=1)
+            keep[s0:s0 + 100000] = ~np.isin(k, rootkeys)
+        W = W[keep]
     cls = np.zeros(len(W), dtype=np.int64)
     for i in range(15):
         cls |= ((W[:, i] & 1).astype(np.int64) << i)       # class mod 2K as a 15-bit integer
@@ -54,8 +61,9 @@ def usable_classes(GK, Kv=None, rootkeys=None):
             rows = np.arange(ip.shape[0])
             ip[rows, rows + (b0 - s)] = 99                   # the vector with itself
             hi, hj = np.nonzero(np.isin(np.abs(ip), (0, 4)))
-            if len(hi):
-                A = W[b0 + hi].astype(np.int64); Bv = W[s + hj].astype(np.int64)
+            del ip
+            for h0 in range(0, len(hi), 50000):              # chunks: a block can hold ~10^6 usable pairs
+                A = W[b0 + hi[h0:h0 + 50000]].astype(np.int64); Bv = W[s + hj[h0:h0 + 50000]].astype(np.int64)
                 for S_ in ((A + Bv) // 2, (A - Bv) // 2):    # s = (w +- w')/2 = a or b of the cell (M1 masks)
                     m = ((S_ @ G2) % 2) @ pw
                     found.update(np.unique(m).tolist())
@@ -114,7 +122,8 @@ def root_orbits(GK, classes):
     return orb
 
 
-def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, on_leaf=None, orbits=None):
+def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, on_leaf=None, orbits=None,
+                    perm_seed=None):
     """search g_2..g_7 (classes as 15-bit ints): pairwise odd forms, independent, all 21 classes usable, with the
     short-dual (parity energy) rules and the unit rule; M1 (oriented cell usability) is checked on each full skeleton,
     and the search goes on when it fails. v5 (28/09 night): candidate sets are Python-int bitsets.
@@ -134,6 +143,9 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, o
                 keep &= (bits @ x) % 2 == 0
             U = U[keep]
         duals = [(x, km) for x, km, _ in duals if km > 0]
+    if perm_seed is not None:                                         # random candidate order (sampling mode)
+        U = U[np.random.RandomState(perm_seed).permutation(len(U))]
+        orbits = None
     n = len(U)
     if n < 6:
         return None, 0, 0
@@ -141,7 +153,8 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, o
     umask[U] = True
     bits = ((U[:, None] >> np.arange(15)) & 1).astype(np.int64)
     Gm2 = (GK % 2).astype(np.int64)
-    P = ((bits @ Gm2 % 2) @ bits.T % 2).astype(bool)                  # P[i, j]: (U_i, U_j) odd
+    Fm = (((bits @ Gm2) % 2) << np.arange(15)).sum(axis=1).astype(np.int16)   # functional masks of the classes
+    P = (np.bitwise_count(Fm[:, None] & U.astype(np.int16)[None, :]) & 1).astype(bool)   # P[i, j]: (U_i, U_j) odd
     # neighbour bitsets: j > i, odd pairing, U_i ^ U_j usable
     nbr = []
     for i in range(n):
@@ -231,7 +244,7 @@ def skeleton_exists(usable, GK, limit=10 ** 8, duals=(), units=(), masks=None, o
     return r, nodes[0], rejected[0]
 
 
-def all_skeletons(usable, GK, duals=(), units=(), masks=None, max_count=200, limit=10 ** 8, orbits=None):
+def all_skeletons(usable, GK, duals=(), units=(), masks=None, max_count=200, limit=2 * 10 ** 7, orbits=None):
     """every skeleton passing the class-level filters and M1, up to max_count; exhaustive flag"""
     out = []
 
