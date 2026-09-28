@@ -98,3 +98,22 @@ Conséquences :
     aléatoires, `code/identH_check.py`). Elle n'apporte donc rien.
   - Ce qui mord, ce sont les arguments de rigidité : une identité exacte force un motif local uniforme, puis un compte
     de couplages l'interdit (cas β = 10).
+
+## 8. Identité générale de l'extérieur (DÉRIVÉ, toutes classes)
+- Notations : a = a₁ + a₂ (parties sur C₁, C₂) et ã = (a₁, −a₂).
+- On a (Nã)_U = −(4 − 2β_U)ã_U sur C (car (Na₁)_U = β_U a_U sur C₁ et (Na₂)_U = (4 − β_U)a_U).
+  - Hors de C : (Nã)_V = 2(Na₁)_V.
+  - \|rᵀã\|² = 16 n_X, donc \|ã₀\|² = 4n_X/3.
+  - ãᵀWã = 16β − 16n_X − 80.
+- En égalant \|Nã\|² = 16\|ã₄\|² + 9\|ã₋₃\|² aux deux décompositions :
+
+  **E_out := Σ_{V ∉ C} ((Na₁)_V)² = 5β − 40 − 4n_X + o₁ + o₂** (≥ 0).
+
+- Conséquences :
+  - β ≥ 8 dans toute classe, β ≥ 11 en classe A. Avec β ≤ 16, on a β ∈ [8, 16].
+  - Le cas limite ãᵀWã = 0 est impossible en toute classe : dès qu'il y a un bloc de type S, il force β_U = 1/2.
+  - Parité : (Na₁)_V ≡ ζ_V (mod 2), où ζ_V est le nombre d'entrées non nulles de V vers la cellule (1,2).
+- Toutes les autres identités quadratiques essayées (Q_c, Ξ, H, vecteurs retournés sur une cellule) se ramènent à E_out
+  ou sont automatiques.
+- Pour tuer (B), il faut un ingrédient combinatoire plus fin : la répartition des valeurs F sur les ι-couples (système local),
+  ou la structure fine des étoiles X.
