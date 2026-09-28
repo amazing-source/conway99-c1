@@ -31,7 +31,7 @@ typedef struct {
     int *fsp, *fsm;
     int *voff, *fv;
     int np;
-    int *pi, *pj, *fh1, *fh2;
+    uint16_t *pi, *pj, *fh1, *fh2;         /* compact: class size <= 4096, functionals are 15-bit */
     int8_t *s1, *s2;
 } CD;
 static CD *cd;
@@ -105,8 +105,8 @@ static void load(const char *path) {
                 wg[k * MAXB + b] = s;
             }
         int pc = 16; c->np = 0;
-        c->pi = malloc(sizeof(int) * pc); c->pj = malloc(sizeof(int) * pc);
-        c->fh1 = malloc(sizeof(int) * pc); c->fh2 = malloc(sizeof(int) * pc);
+        c->pi = malloc(sizeof(uint16_t) * pc); c->pj = malloc(sizeof(uint16_t) * pc);
+        c->fh1 = malloc(sizeof(uint16_t) * pc); c->fh2 = malloc(sizeof(uint16_t) * pc);
         c->s1 = malloc(pc); c->s2 = malloc(pc);
         for (int a = 0; a < m; a++)
             for (int b2 = a + 1; b2 < m; b2++) {
@@ -115,8 +115,8 @@ static void load(const char *path) {
                 if (ip != 0 && ip != 4 && ip != -4) continue;
                 if (c->np == pc) {
                     pc *= 2;
-                    c->pi = realloc(c->pi, sizeof(int) * pc); c->pj = realloc(c->pj, sizeof(int) * pc);
-                    c->fh1 = realloc(c->fh1, sizeof(int) * pc); c->fh2 = realloc(c->fh2, sizeof(int) * pc);
+                    c->pi = realloc(c->pi, sizeof(uint16_t) * pc); c->pj = realloc(c->pj, sizeof(uint16_t) * pc);
+                    c->fh1 = realloc(c->fh1, sizeof(uint16_t) * pc); c->fh2 = realloc(c->fh2, sizeof(uint16_t) * pc);
                     c->s1 = realloc(c->s1, pc); c->s2 = realloc(c->s2, pc);
                 }
                 int h1[MAXB], h2[MAXB];
@@ -130,6 +130,11 @@ static void load(const char *path) {
                 c->s1[c->np] = (int8_t)sgn1(h1); c->s2[c->np] = (int8_t)sgn1(h2);
                 c->np++;
             }
+        if (c->np) {                                       /* trim the doubling slack (memory) */
+            c->pi = realloc(c->pi, sizeof(uint16_t) * c->np); c->pj = realloc(c->pj, sizeof(uint16_t) * c->np);
+            c->fh1 = realloc(c->fh1, sizeof(uint16_t) * c->np); c->fh2 = realloc(c->fh2, sizeof(uint16_t) * c->np);
+            c->s1 = realloc(c->s1, c->np); c->s2 = realloc(c->s2, c->np);
+        }
         totpairs += c->np;
     }
     free(wg);
@@ -296,19 +301,123 @@ static void build_JK(int kc) {
 }
 
 /* necessary condition on kc chosen classes: the mod-4 test restricted to the cells among labels 1..kc+1, read on kc bits */
+static long long fail_empty[7], fail_z4[7];
 static int partial_ok(int kc) {
     for (int e = 0; e < kc; e++) g[e] = U[chosen[e]];
     KB = kc; ZK = kc;
     build_tables(kc);
-    for (int X = 0; X < 21; X++) {
-        if (CELLd[X] > kc + 1) continue;
-        SIG[X] = cell_sigma(X);
-        if (!SIG[X]) { KB = ZK = 6; return 0; }
-    }
+    for (int pass = 0; pass < 2; pass++)                  /* the cells of the newest label first: early exit */
+        for (int X = 0; X < 21; X++) {
+            if (CELLd[X] > kc + 1 || (CELLd[X] == kc + 1) != (pass == 0)) continue;
+            SIG[X] = cell_sigma(X);
+            if (!SIG[X]) { KB = ZK = 6; fail_empty[kc]++; return 0; }
+        }
     build_JK(kc);
     zsol = 0; zcount_all = 0;
     z4rec(0);
     KB = ZK = 6;
+    if (!zsol) fail_z4[kc]++;
+    return zsol > 0;
+}
+
+/* ---- incremental partial test (same verdicts as partial_ok): per level L (L chosen classes, labels 2..L+1) and active
+   cell X (d <= L+1), the list of cell entries passing the sign normalisation and M1 on the L known bits, stored as
+   (f_a, f_s(w+)). An old cell's list at level L is its level-(L-1) list filtered by the new bit (eps_c has bit L-1 = 1 for
+   c = 1 and 0 otherwise, since c - 2 < L - 1); a new cell (d = L+1) is built from its class. */
+typedef struct { uint16_t fA, fs; } Ent;
+static Ent *arena[7];
+static long long arcap[7], arlen[7], cst[7][21], cln[7][21];
+static int INC = 1;
+/* S7 base rule (valid): relabelling the base vertex is a symmetry, the 21 cell classes are the differences of the 7-point
+   set {0, g_2..g_7}. Take a difference of minimal H-orbit id, make one of its endpoints the base, then canonicalise:
+   x_1 has that orbit id and is its orbit minimum, so every cell class is >= x_1 in the order (H-orbit id, index). */
+static int BASE = 0;                                                    /* off until validated */
+static int FP7 = 0;
+static int STAB2 = 1;
+static int LEAFPRE = 1;
+static long long leaf_pre_killed = 0;
+static inline void push_ent(int L, int fA, int fs) {
+    if (arlen[L] == arcap[L]) {
+        arcap[L] = arcap[L] ? 2 * arcap[L] : (1 << 16);
+        arena[L] = realloc(arena[L], sizeof(Ent) * arcap[L]);
+    }
+    arena[L][arlen[L]].fA = (uint16_t)fA; arena[L][arlen[L]].fs = (uint16_t)fs; arlen[L]++;
+}
+
+static void cell_full_list(int L, int X) {
+    int c = CELLc[X], d = CELLd[X];
+    int gam = (c == 1) ? g[d - 2] : (g[c - 2] ^ g[d - 2]);
+    CD *C = &cd[cidx[gam]];
+    int full = (1 << L) - 1, ec = (c == 1) ? full : (1 << (c - 2));
+    int star12 = (c == 1 && d == 2), star1 = (c == 1);
+    cst[L][X] = arlen[L];
+    for (int p = 0; p < C->np; p++) {
+        int i = C->pi[p], j = C->pj[p];
+        int ph1 = pat(C->fh1[p]), ph2 = pat(C->fh2[p]);
+        int s1 = C->s1[p], s2 = C->s2[p];
+        for (int t = 0; t < 2; t++) {
+            if (t == 0 && ph1 != ec) continue;
+            if (t == 1 && ph2 != ec) continue;
+            int fA = t == 0 ? C->fh1[p] : C->fh2[p];
+            for (int sp = 1; sp >= -1; sp -= 2)
+                for (int ord = 0; ord < 2; ord++) {
+                    int fpA, fpB, fsplus;
+                    if (t == 0) {
+                        fpA = sp * s1 > 0;
+                        fpB = (ord == 0) ? (sp * s2 > 0) : (-sp * s2 > 0);
+                        fsplus = (ord == 0) ? (sp > 0 ? C->fsp[i] : C->fsm[i]) : (sp > 0 ? C->fsp[j] : C->fsm[j]);
+                    } else {
+                        fpA = sp * s2 > 0;
+                        fpB = (ord == 0) ? (sp * s1 > 0) : (-sp * s1 > 0);
+                        fsplus = (ord == 0) ? (sp > 0 ? C->fsp[i] : C->fsm[i]) : (sp > 0 ? C->fsm[j] : C->fsp[j]);
+                    }
+                    if (star12 && !(fpA && fpB)) continue;
+                    if (star1 && !star12 && !fpB) continue;
+                    push_ent(L, fA, fsplus);
+                }
+        }
+    }
+    cln[L][X] = arlen[L] - cst[L][X];
+}
+
+static void cell_filter_list(int L, int X) {
+    int ebit = (CELLc[X] == 1) ? 1 : 0, gnew = g[L - 1];
+    cst[L][X] = arlen[L];
+    Ent *src = arena[L - 1] + cst[L - 1][X];
+    long long n0 = cln[L - 1][X];
+    for (long long k = 0; k < n0; k++) {
+        Ent e = src[k];                                    /* copy: push_ent may move arena[L], never arena[L-1] */
+        if ((__builtin_popcount(e.fA & gnew) & 1) == ebit) push_ent(L, e.fA, e.fs);
+    }
+    cln[L][X] = arlen[L] - cst[L][X];
+}
+
+/* level L lists (chosen[0..L-1] set); returns 0 if the partial test at L fails (only tested when L >= PMIN) */
+static int inc_level(int L, int test) {
+    for (int e = 0; e < L; e++) g[e] = U[chosen[e]];
+    KB = L; ZK = L;
+    build_tables(L);
+    arlen[L] = 0;
+    int anyempty = 0;
+    for (int X = 0; X < 21; X++) {                        /* all active lists are built (the next level reads them) */
+        if (CELLd[X] > L + 1) continue;
+        if (CELLd[X] == L + 1) cell_full_list(L, X); else cell_filter_list(L, X);
+        if (!cln[L][X]) { anyempty = 1; if (test) break; }
+    }
+    if (!test) { KB = ZK = 6; return 1; }
+    if (anyempty) { KB = ZK = 6; fail_empty[L]++; return 0; }
+    for (int X = 0; X < 21; X++) {
+        if (CELLd[X] > L + 1) continue;
+        uint64_t S = 0;
+        Ent *a = arena[L] + cst[L][X];
+        for (long long k = 0; k < cln[L][X]; k++) S |= 1ULL << pat(a[k].fs);
+        SIG[X] = S;
+    }
+    build_JK(L);
+    zsol = 0; zcount_all = 0;
+    z4rec(0);
+    KB = ZK = 6;
+    if (!zsol) fail_z4[L]++;
     return zsol > 0;
 }
 
@@ -327,13 +436,28 @@ static const char *fpfile = 0;
 static unsigned long long *fps = 0;
 static long long nfp = 0, capfp = 0;
 static int *orb0 = 0;
+static unsigned long long *fpset = 0;                  /* open addressing, 2^22 slots: distinct fingerprints only */
+static void fp_add(unsigned long long h) {
+    if (!fpset) fpset = calloc(1 << 22, sizeof(unsigned long long));
+    if (!h) h = 1;
+    unsigned long long k = h & ((1 << 22) - 1);
+    while (fpset[k] && fpset[k] != h) k = (k + 1) & ((1 << 22) - 1);
+    if (!fpset[k]) {
+        fpset[k] = h;
+        if (nfp == capfp) { capfp = capfp ? 2 * capfp : 1 << 16; fps = realloc(fps, sizeof(unsigned long long) * capfp); }
+        fps[nfp++] = h;
+        if (nfp > (1 << 21)) { fprintf(stderr, "too many distinct fingerprints\n"); exit(6); }
+    }
+}
 static int cmpull(const void *a, const void *b) {
     unsigned long long x = *(const unsigned long long *)a, y = *(const unsigned long long *)b;
     return x < y ? -1 : x > y;
 }
 
+static long long maxleaves = 0, maxsurv = 0;                        /* Z4_MAXLEAVES: stop after this many (diagnostics; incomplete) */
 static void leaf(void) {
     leaves++;
+    if (maxleaves && leaves >= maxleaves) stopflag = 1;
     if ((leaves & ((1 << 20) - 1)) == 0) {
         fprintf(stderr, "progress %.0fs top %d/%d leaves %lld empty %lld z4 %lld surv %lld nodes %lld\n",
                 (double)(clock() - tstart) / CLOCKS_PER_SEC, topi, n, leaves, n_empty, n_z4, n_surv, nodes);
@@ -341,7 +465,30 @@ static void leaf(void) {
     }
     for (int e = 0; e < 6; e++) g[e] = U[chosen[e]];
     if (mode == 2) {
-        if (fpfile) {                                      /* H-invariant fingerprint of the set (validation) */
+        if (fpfile && FP7) {                               /* S7 x H invariant: the 7-point set {0, g_2..g_7} */
+            int P[7]; P[0] = 0;
+            for (int e = 0; e < 6; e++) P[e + 1] = U[chosen[e]];
+            long long od[7][7], a21[21], a35[35]; int t = 0;
+            for (int a = 0; a < 7; a++) for (int b2 = a + 1; b2 < 7; b2++) {
+                int si = cidx[P[a] ^ P[b2]];
+                od[a][b2] = od[b2][a] = si >= 0 ? orb0[si] : -1;
+                a21[t++] = od[a][b2];
+            }
+            t = 0;
+            for (int a = 0; a < 7; a++) for (int b2 = a + 1; b2 < 7; b2++) for (int h = b2 + 1; h < 7; h++) {
+                long long x = od[a][b2] + 1, y = od[a][h] + 1, z = od[b2][h] + 1, tt;
+                if (x > y) { tt = x; x = y; y = tt; }
+                if (y > z) { tt = y; y = z; z = tt; }
+                if (x > y) { tt = x; x = y; y = tt; }
+                a35[t++] = (x << 28) | (y << 14) | z;
+            }
+            #define SORTL2(arr, len) for (int u1 = 1; u1 < len; u1++) for (int u2 = u1; u2 > 0 && arr[u2 - 1] > arr[u2]; u2--) { long long tt2 = arr[u2]; arr[u2] = arr[u2 - 1]; arr[u2 - 1] = tt2; }
+            SORTL2(a21, 21) SORTL2(a35, 35)
+            unsigned long long hsh = 1469598103934665603ULL;
+            for (int e = 0; e < 21; e++) { hsh ^= (unsigned long long)(a21[e] + 3); hsh *= 1099511628211ULL; }
+            for (int e = 0; e < 35; e++) { hsh ^= (unsigned long long)a35[e]; hsh *= 1099511628211ULL; }
+            fp_add(hsh);
+        } else if (fpfile) {                               /* H-invariant fingerprint of the set (validation) */
             long long a6[6], a15[15], a20[20]; int t = 0;
             for (int e = 0; e < 6; e++) a6[e] = orb0[chosen[e]];
             for (int e = 0; e < 6; e++) for (int f2 = e + 1; f2 < 6; f2++) {
@@ -361,8 +508,7 @@ static void leaf(void) {
             for (int e = 0; e < 6; e++) { hsh ^= (unsigned long long)a6[e]; hsh *= 1099511628211ULL; }
             for (int e = 0; e < 15; e++) { hsh ^= (unsigned long long)a15[e]; hsh *= 1099511628211ULL; }
             for (int e = 0; e < 20; e++) { hsh ^= (unsigned long long)(a20[e] + 7); hsh *= 1099511628211ULL; }
-            if (nfp == capfp) { capfp = capfp ? 2 * capfp : 1 << 20; fps = realloc(fps, sizeof(unsigned long long) * capfp); }
-            fps[nfp++] = hsh;
+            fp_add(hsh);
         }
         return;
     }
@@ -384,6 +530,7 @@ static void leaf(void) {
         if (zsol == 0) { n_z4++; verdict = "Z4"; }
         else {
             n_surv++; verdict = "SURVIVOR";
+            if (maxsurv && n_surv >= maxsurv) stopflag = 1;
             if (fsurv) {
                 fprintf(fsurv, "%d %d %d %d %d %d\n", g[0], g[1], g[2], g[3], g[4], g[5]);
                 fflush(fsurv);
@@ -472,7 +619,7 @@ static int **genl[7];
 static int ngenl[7];
 static int *genbuf[7][MAXGEN];
 static int *genptr[7][MAXGEN];
-static int SDEPTH = 4, NSCHREIER = 24;
+static int SDEPTH = 6, NSCHREIER = 24;
 static uint64_t *candl;
 static int *bfs_par, *bfs_gen, *bfs_q, *tA, *tB, *tC, *tD;
 static unsigned rngs = 12345u;
@@ -552,18 +699,116 @@ static void stabilizer(int j, int y) {
     orbits_of(genl[j + 1], made, orbl[j + 1]);
 }
 
+/* stabilizer restricted to candidates (same group chain, cheaper): Cand_j (the level-j candidate bitset) is G_j-invariant
+   (it is cut out by adjacency to fixed points and by the (orbit id, index) order of earlier levels, all preserved), so the
+   generators of G_j are only needed on Cand_j. G_{j+1}'s Schreier generators are evaluated on Cand_{j+1} only, through the
+   transversal words (inverse generators for t^-1), and its orbits are computed on Cand_{j+1}. */
+static int **invl[7];
+static int *invbuf[7][MAXGEN];
+static int *invptr[7][MAXGEN];
+static int *inv0buf[MAXGEN * 4];
+static int *clist, *pathbuf;
+static long long stab2_calls = 0;
+
+static void stabilizer2(int j, int y) {
+    int **gs = genl[j], **gi = invl[j], ng = ngenl[j];
+    const uint64_t *cj = candl + (size_t)j * nw, *cj1 = candl + (size_t)(j + 1) * nw;
+    /* orbit of y under G_j (inside Cand_j), Schreier vector */
+    int qh = 0, qt = 0;
+    bfs_q[qt++] = y; bfs_par[y] = -1; bfs_gen[y] = -1;
+    tB[y] = 1;                                              /* tB: visited mark for this BFS */
+    while (qh < qt) {
+        int x = bfs_q[qh++];
+        for (int k = 0; k < ng; k++) {
+            int z = gs[k][x];
+            if (!tB[z]) { tB[z] = 1; bfs_par[z] = x; bfs_gen[z] = k; bfs_q[qt++] = z; }
+        }
+    }
+    int osz = qt;
+    for (int t = 0; t < osz; t++) tB[bfs_q[t]] = 0;
+    /* the list of Cand_{j+1} points */
+    int nc = 0;
+    for (int k = 0; k < nw; k++) {
+        uint64_t c = cj1[k];
+        while (c) { int b = __builtin_ctzll(c); c &= c - 1; clist[nc++] = k * 64 + b; }
+    }
+    (void)cj;
+    if (osz == 1) {                                         /* G_j fixes y: G_{j+1} = G_j */
+        genl[j + 1] = gs; invl[j + 1] = gi; ngenl[j + 1] = ng;
+        for (int t = 0; t < nc; t++) orbl[j + 1][clist[t]] = orbl[j][clist[t]];
+        stab2_calls++;
+        return;
+    }
+    int *orbitpts = malloc(sizeof(int) * osz);
+    memcpy(orbitpts, bfs_q, sizeof(int) * osz);
+    int made = 0;
+    for (int tries = 0; tries < 4 * NSCHREIER && made < NSCHREIER && made < MAXGEN; tries++) {
+        int p = orbitpts[rnd32() % osz], k = rnd32() % ng;
+        int sp = gs[k][p];
+        /* words: t_p = path(p), t_sp = path(sp) (generator indices from y outwards) */
+        int lp = 0, x = p;
+        while (bfs_par[x] != -1) { pathbuf[lp++] = bfs_gen[x]; x = bfs_par[x]; }
+        int *wp = pathbuf;                                  /* reversed: wp[lp-1] is applied first */
+        int ls = 0; x = sp;
+        int *ws = pathbuf + 4096;
+        while (bfs_par[x] != -1) { ws[ls++] = bfs_gen[x]; x = bfs_par[x]; }
+        if (lp >= 4096 || ls >= 4096) { fprintf(stderr, "path too long\n"); exit(3); }
+        int *out = genbuf[j + 1][made];
+        int ident = 1;
+        for (int t = 0; t < nc; t++) {
+            int z = clist[t], v = z;
+            for (int q = lp - 1; q >= 0; q--) v = gs[wp[q]][v];            /* t_p(z) */
+            v = gs[k][v];                                                  /* s(t_p(z)) */
+            for (int q = 0; q < ls; q++) v = gi[ws[q]][v];                 /* t_sp^-1: inverses in reverse order */
+            out[z] = v;
+            if (v != z) ident = 0;
+        }
+        if (!ident) {
+            int *iv = invbuf[j + 1][made];
+            for (int t = 0; t < nc; t++) iv[out[clist[t]]] = clist[t];
+            made++;
+        }
+    }
+    free(orbitpts);
+    genl[j + 1] = genptr[j + 1]; invl[j + 1] = invptr[j + 1];
+    for (int m = 0; m < made; m++) { genptr[j + 1][m] = genbuf[j + 1][m]; invptr[j + 1][m] = invbuf[j + 1][m]; }
+    ngenl[j + 1] = made;
+    schreier_made += made;
+    /* orbits of G_{j+1} on Cand_{j+1}: orbit id = minimum index */
+    for (int t = 0; t < nc; t++) orbl[j + 1][clist[t]] = -1;
+    for (int t = 0; t < nc; t++) {
+        int s = clist[t];
+        if (orbl[j + 1][s] >= 0) continue;
+        int h0 = 0, h1 = 0;
+        bfs_q[h1++] = s; orbl[j + 1][s] = s;
+        while (h0 < h1) {
+            int x2 = bfs_q[h0++];
+            for (int k = 0; k < made; k++) {
+                int z = genptr[j + 1][k][x2];
+                if (!((cj1[z / 64] >> (z % 64)) & 1)) { fprintf(stderr, "stabilizer left the candidate set\n"); exit(7); }
+                if (orbl[j + 1][z] < 0) { orbl[j + 1][z] = s; bfs_q[h1++] = z; }
+            }
+        }
+    }
+    stab2_calls++;
+}
+
 static void trivial_level(int L) {
     ngenl[L] = 0;
     for (int x = 0; x < n; x++) orbl[L][x] = x;
 }
 
+static double t_stab = 0, t_inc = 0, t_cand = 0;
+static long long nodes_at[7];
 static void rec2(int j, const int *o, const int *ou) {
     nodes++;
-    if ((nodes & 0x3FF) == 0 && clock() - tlastp > 20 * CLOCKS_PER_SEC) {
+    nodes_at[j]++;
+    if (clock() - tlastp > 20 * CLOCKS_PER_SEC) {
         tlastp = clock();
-        fprintf(stderr, "progress %.0fs top %d/%d leaves %lld empty %lld z4 %lld surv %lld nodes %lld tested %lld %lld %lld pruned %lld %lld %lld\n",
-                (double)(clock() - tstart) / CLOCKS_PER_SEC, topi, n, leaves, n_empty, n_z4, n_surv, nodes,
-                tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5]);
+        fprintf(stderr, "progress %.0fs top %d/%d leaves %lld nodes %lld by depth %lld %lld %lld %lld %lld %lld tested %lld %lld %lld pruned %lld %lld %lld | time stab %.1f inc %.1f cand %.1f\n",
+                (double)(clock() - tstart) / CLOCKS_PER_SEC, topi, n, leaves, nodes, nodes_at[0], nodes_at[1], nodes_at[2],
+                nodes_at[3], nodes_at[4], nodes_at[5], tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5],
+                t_stab, t_inc, t_cand);
         fflush(stderr);
     }
     int need = 5 - j;
@@ -594,6 +839,9 @@ static void rec2(int j, const int *o, const int *ou) {
                 for (int t = 0; t < nu; t++) if (ou2[t] < 1) { okk = 0; break; }
                 if (!okk) continue;
                 chosen[5] = i;
+                if (INC && LEAFPRE && mode != 2) {         /* incremental leaf pre-test (no L1: a relaxation) */
+                    if (!inc_level(6, 1)) { leaves++; leaf_pre_killed++; continue; }
+                }
                 leaf();
                 if (stopflag) return;
                 continue;
@@ -606,17 +854,27 @@ static void rec2(int j, const int *o, const int *ou) {
                 while (ww) {
                     int bb = __builtin_ctzll(ww); ww &= ww - 1;
                     int z = k * 64 + bb;
-                    if (orb[z] < i || (orb[z] == i && z <= i)) w &= ~(1ULL << bb);
+                    if (orb[z] < i || (orb[z] == i && z <= i)) { w &= ~(1ULL << bb); continue; }
+                    if (BASE) {                            /* S7 base rule: every cell class >= x_1 in (H-orbit, index) */
+                        int x1 = j == 0 ? i : chosen[0];
+                        int ci = cidx[U[i] ^ U[z]];
+                        if (orb0[ci] < orb0[x1] || (orb0[ci] == orb0[x1] && ci < x1)) w &= ~(1ULL << bb);
+                    }
                 }
                 c2[k] = w; cnt += __builtin_popcountll(w);
             }
             if (cnt < need) continue;
             chosen[j] = i;
-            if (j + 1 >= PMIN) {
+            if (INC) {
+                int test = (j + 1 >= PMIN);
+                if (test) tested[j + 1]++;
+                clock_t q0 = clock(); int okl = inc_level(j + 1, test); t_inc += (double)(clock() - q0) / CLOCKS_PER_SEC;
+                if (!okl) { pruned[j + 1]++; continue; }
+            } else if (j + 1 >= PMIN) {
                 tested[j + 1]++;
                 if (!partial_ok(j + 1)) { pruned[j + 1]++; continue; }
             }
-            if (j + 1 < SDEPTH) stabilizer(j, i); else trivial_level(j + 1);
+            { clock_t q0 = clock(); if (j + 1 < SDEPTH) { if (STAB2) stabilizer2(j, i); else stabilizer(j, i); } else trivial_level(j + 1); t_stab += (double)(clock() - q0) / CLOCKS_PER_SEC; }
             int old = nspan;
             for (int s = 0; s < old; s++) span[old + s] = span[s] ^ x;
             nspan = 2 * old;
@@ -692,7 +950,18 @@ int main(int argc, char **argv) {
             tok = strtok(0, ",");
         }
         for (int k = 0; k < nw; k++) all[k] &= keepm[k];
-        fprintf(stderr, "restricted to %lld classes (%d orbits in all)\n", kept, nr);
+        long long ecut = 0;
+        if (getenv("Z4_KEEPSUMS"))                         /* all 21 differences in the kept orbits: S7-invariant */
+            for (int i = 0; i < n; i++)
+                for (int wi = 0; wi < nw; wi++) {
+                    uint64_t c = nbr[(size_t)i * nw + wi];
+                    while (c) {
+                        int b = __builtin_ctzll(c); c &= c - 1;
+                        int j = wi * 64 + b, si = cidx[U[i] ^ U[j]];
+                        if (!((keepm[si / 64] >> (si % 64)) & 1)) { nbr[(size_t)i * nw + wi] &= ~(1ULL << b); ecut++; }
+                    }
+                }
+        fprintf(stderr, "restricted to %lld classes (%d orbits in all), edges cut for sums %lld\n", kept, nr, ecut);
     }
     int o0[32] = {0}, ou0[32] = {0};
     span[0] = 0; nspan = 1;
@@ -700,6 +969,13 @@ int main(int argc, char **argv) {
     int canon = (cv ? atoi(cv) : 1) && mode != 1 && !skelfile;
     if (getenv("Z4_SDEPTH")) SDEPTH = atoi(getenv("Z4_SDEPTH"));
     if (getenv("Z4_NSCH")) NSCHREIER = atoi(getenv("Z4_NSCH"));
+    if (getenv("Z4_INC")) INC = atoi(getenv("Z4_INC"));
+    if (getenv("Z4_BASE")) BASE = atoi(getenv("Z4_BASE"));
+    if (getenv("Z4_FP7")) FP7 = atoi(getenv("Z4_FP7"));
+    if (getenv("Z4_STAB2")) STAB2 = atoi(getenv("Z4_STAB2"));
+    if (getenv("Z4_LEAFPRE")) LEAFPRE = atoi(getenv("Z4_LEAFPRE"));
+    if (getenv("Z4_MAXLEAVES")) maxleaves = atoll(getenv("Z4_MAXLEAVES"));
+    if (getenv("Z4_MAXSURV")) maxsurv = atoll(getenv("Z4_MAXSURV"));
     if (canon) {
         nbrs = calloc((size_t)n * nw, sizeof(uint64_t));
         for (int i = 0; i < n; i++)
@@ -715,9 +991,14 @@ int main(int argc, char **argv) {
         for (int L = 0; L < 7; L++) orbl[L] = malloc(sizeof(int) * n);
         for (int L = 1; L < 7; L++) for (int m = 0; m < MAXGEN; m++) genbuf[L][m] = malloc(sizeof(int) * n);
         bfs_par = malloc(sizeof(int) * n); bfs_gen = malloc(sizeof(int) * n); bfs_q = malloc(sizeof(int) * n);
-        tA = malloc(sizeof(int) * n); tB = malloc(sizeof(int) * n); tC = malloc(sizeof(int) * n); tD = malloc(sizeof(int) * n);
+        tA = malloc(sizeof(int) * n); tB = calloc(n, sizeof(int)); tC = malloc(sizeof(int) * n); tD = malloc(sizeof(int) * n);
+        clist = malloc(sizeof(int) * n); pathbuf = malloc(sizeof(int) * 8192);
+        for (int L = 1; L < 7; L++) for (int m = 0; m < MAXGEN; m++) invbuf[L][m] = malloc(sizeof(int) * n);
         candl = calloc((size_t)7 * nw, sizeof(uint64_t));
         genl[0] = gen0; ngenl[0] = ngen0;
+        if (ngen0 > MAXGEN * 4) { fprintf(stderr, "too many H generators\n"); return 5; }
+        for (int k = 0; k < ngen0; k++) { inv0buf[k] = malloc(sizeof(int) * n); for (int x = 0; x < n; x++) inv0buf[k][gen0[k][x]] = x; }
+        invl[0] = inv0buf;
         orbits_of(gen0, ngen0, orbl[0]);
         long long mism = 0;
         for (int i = 0; i < n; i++) if ((orbl[0][i] == i) != (orbmin[i] != 0)) mism++;
@@ -774,8 +1055,12 @@ int main(int argc, char **argv) {
            "\"sigma_mismatch\": %lld, \"complete\": %s, \"load_s\": %.1f, \"s\": %.1f, \"empty_by_cell\": [",
            leaves, n_empty, n_z4, n_surv, nodes, mismatch, stopflag ? "false" : "true", tl, ts);
     for (int k = 0; k < 21; k++) printf("%lld%s", empty_by_cell[k], k < 20 ? ", " : "");
-    printf("], \"pmin\": %d, \"partial_tested\": [%lld, %lld, %lld], \"partial_pruned\": [%lld, %lld, %lld]}\n", PMIN,
-           tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5]);
+    printf("], \"pmin\": %d, \"partial_tested\": [%lld, %lld, %lld], \"partial_pruned\": [%lld, %lld, %lld], "
+           "\"fail_empty\": [%lld, %lld, %lld], \"fail_z4\": [%lld, %lld, %lld], \"leaf_pre_killed\": %lld, "
+           "\"sdepth\": %d, \"stab2\": %d, \"schreier_gens\": %d}\n", PMIN,
+           tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5],
+           fail_empty[3], fail_empty[4], fail_empty[5], fail_z4[3], fail_z4[4], fail_z4[5], leaf_pre_killed,
+           SDEPTH, STAB2, NSCHREIER);
     if (fsurv) fclose(fsurv);
     return mismatch ? 4 : 0;
 }

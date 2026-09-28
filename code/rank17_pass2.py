@@ -3,7 +3,7 @@ Per (V, pair), in a memory-capped child (run_capped.ps1): rank17_z4export.py -> 
 enumeration, partial and full exact mod-4 test). Verdict per pair:
   EXCLUDED   complete enumeration, no skeleton survives the mod-4 relaxation
              (label COMPUTED: class filters of rank17_skeleton + SPEC section-1 domains + exact mod-4 relaxation)
-  SURVIVORS  some skeletons pass the mod-4 relaxation: listed, they go to the full solver (sbdfs_g) -> not excluded yet
+  MOD4_FEASIBLE  a skeleton passes the mod-4 relaxation (the search stops at the first one): not excluded here
   UNDECIDED  timeout / crash
 Several drivers can run at once (claim files). Results: data/rank17/z4_<tag>.jsonl.
 Usage: python rank17_pass2.py <tags comma-separated>   (child mode: rank17_pass2.py child <tag> <pair>)"""
@@ -27,7 +27,8 @@ def child(tag, pid):
     survf = os.path.join(WORK, '%s_%d.surv' % (tag, pid))
     info = ex.export(tag, pid, binf)
     t0 = time.time()
-    r = subprocess.run([EXE, binf, 'run', survf], capture_output=True, text=True, timeout=7200)
+    env = dict(os.environ, Z4_MAXSURV='1')                  # classification: stop at the first mod-4 survivor
+    r = subprocess.run([EXE, binf, 'run', survf], capture_output=True, text=True, timeout=7200, env=env)
     js = [l for l in r.stdout.splitlines() if l.startswith('{')]
     out = {'tag': tag, 'pair': pid, 'V': info['V'], 'classes': info['classes'], 'H_generators': info['H_generators'],
            'export_s': info['export_s'], 'returncode': r.returncode}
@@ -45,9 +46,11 @@ def child(tag, pid):
         if os.path.exists(survf) and os.path.getsize(survf) == 0:
             os.remove(survf)
     elif ok and out['survivors'] > 0:
-        out['verdict'] = 'SURVIVORS'
-        out['survivor_file'] = survf
-        out['label'] = 'skeletons pass the mod-4 relaxation: full solver needed'
+        out['verdict'] = 'MOD4_FEASIBLE'
+        out['first_survivor'] = open(survf).read().split(chr(10))[0] if os.path.exists(survf) else None
+        out['label'] = ('a skeleton passes the mod-4 relaxation (search stopped at the first one): '
+                        'NOT excluded here, needs the integer level')
+        os.remove(binf)
     else:
         out['verdict'] = 'UNDECIDED'
         out['label'] = 'engine error or incomplete'
@@ -58,17 +61,18 @@ def child(tag, pid):
 
 
 def driver(tags):
-    os.makedirs(os.path.join(WORK, 'claims'), exist_ok=True)
+    os.makedirs(os.path.join(WORK, 'claims2'), exist_ok=True)
     for tag in tags:
         K = json.load(open(os.path.join(DATA, 'K_%s.json' % tag)))
         ids = [r['id'] for r in K['K']]
         outf = os.path.join(DATA, 'z4_%s.jsonl' % tag)
         print('PASS2', tag, 'pairs', len(ids), flush=True)
         for pid in ids:
-            if os.path.exists(outf) and pid in {json.loads(l)['pair'] for l in open(outf) if l.strip()}:
+            if os.path.exists(outf) and pid in {json.loads(l)['pair'] for l in open(outf) if l.strip()
+                                                 and json.loads(l)['verdict'] in ('EXCLUDED', 'MOD4_FEASIBLE')}:
                 continue
             try:
-                os.close(os.open(os.path.join(WORK, 'claims', '%s_%d' % (tag, pid)), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                os.close(os.open(os.path.join(WORK, 'claims2', '%s_%d' % (tag, pid)), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
             except FileExistsError:
                 continue
             log = os.path.join(WORK, '%s_%d.log' % (tag, pid))
