@@ -114,6 +114,28 @@ Results:
   - The inner vertices of the triangle blocks exclude their A-roots from the adjacent groups.
 - **Open branches:** (i) (X = 6), (ii) (X = 4), (iii) (X = 2), (v) (X = 0).
 
+### 2.8 J1a — the zero-graph equations (DERIVED, pointwise, not aggregated)
+Notation, for each zero root y:
+- d(y) = t_v(y) − t_σ(y) = n(y) − 2 (the eigen-condition);
+- f(y) = ρ(y)·N, with N = Σ_k ρ_k;
+- A_Z = the adjacency among the 54 zeros.
+
+**The two equations.**
+- **(A_Z + I) d = −f.** This is μ-counting of y against A, combined with the balance at y's inner neighbours.
+- **A_Z f = −Σ_corners f − Σ_{±2 nbrs} f**, since f is a combination of the D₇ coordinates and A_R g_c = 0.
+
+**Consequences by type.**
+- **Type (v)** (N = 0): (A_Z + I) d = 0. So d ≠ 0 is a (−1)-eigenvector of the zero graph, because d(m_jk) = 2.
+- **Type (i)** (all X-cells): Σ_corners f = 2d and Σ_{±2} f = 2d, so A_Z f = −4d.
+  - Hence (A_Z² + A_Z − 4) d = 0: d lives in the eigenspaces (−1 ± √17)/2 of A_Z.
+  - Σdf = 4Σd² − 96, and Cauchy–Schwarz gives 15 ≤ Σd² ≤ 39.
+- **Interlacing.** A_Z is a principal submatrix of A (54 of 99), so λ₂(A_Z) = … = λ₁₀(A_Z) = 3.
+- **Type (i), generic sub-case.**
+  - Setting: d = ±2 exactly on m_jk / σm_jk, and every A-vertex is a corner of exactly one m.
+  - ‖A_{Zᶜ,Z} d‖² = 8Σd² = 192 is already reached by the S-vertices (96) and the star vertices (96).
+  - Hence **every inner vertex e^s has #m = #σm among its zero neighbours**, so Σ_jk ρ(m_jk) = 0: the three m's lie on a
+    signed triangle of cells.
+
 ## 2bis. Row-capacity lemma (DERIVED) and what it kills
 - **Facts used.**
   - Each row of T has exactly 10 nonzero entries, each ±1 (diagonal of T² + T = 12I − CᵀC).
