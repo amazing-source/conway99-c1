@@ -44,6 +44,15 @@ static int ngen0 = 0;
 static unsigned char dcbad[1 << 15];
 static int ndcbad = 0, DC = 1;
 static long long dc_cut[7];
+/* duals with 7|kappa|^2 = 5 (kmax 2). PE allows o in {0,1,2,5,6} (o = chosen classes pairing oddly with kappa, out of 6);
+   Sol section 7.2 (PROVEN, relayed by structures 28/09): the cut size is exactly 2, so the final o is 2 or 5. On a prefix
+   with m classes chosen, reject when [o, o + 6 - m] misses {2, 5}. Z4_SOL5=0 restores the PE rule. */
+static int SOL5 = 1;
+static inline int kmax2_bad(int oo, int m) {
+    if (!SOL5) return oo > 2 && (m - oo) > 1;
+    int rem = 6 - m;
+    return !((oo <= 2 && 2 <= oo + rem) || (oo <= 5 && 5 <= oo + rem));
+}
 static int **gen0;
 
 static FILE *fin;
@@ -288,6 +297,7 @@ static uint64_t cell_sigma(int X) {
    lies in the one self-dual code, so its signature is phi(d_X)), and forward checking under the integer rule
    (w_X^s, w_Y^t) + r_X^s . r_Y^t in {0, +-4}. A phi that dies has no frame; a skeleton all of whose phi die is excluded. */
 static int INTPHI = 0;
+static FILE *fsurv;                                        /* (tentative definition; also declared with the enumeration) */
 static int *rdom[8][21], rlen[8][21], rcap[21];
 static int detd[21];
 static long long iphi_nodes = 0, iphi_alive = 0, n_int_killed = 0, n_int_surv = 0;
@@ -324,7 +334,15 @@ static int fc_filter(int L, int X, int Y) {
 }
 static int intphi_rec(int k) {
     iphi_nodes++;
-    if (k == 6) { iphi_alive++; return 1; }
+    if (k == 6) {
+        iphi_alive++;
+        if (INTPHI == 2 && fsurv) {                        /* all phi alive after integer FC: for the exact solver */
+            fprintf(fsurv, "S %d %d %d %d %d %d M %d %d %d %d %d %d\n", g[0], g[1], g[2], g[3], g[4], g[5],
+                    Mrow[0], Mrow[1], Mrow[2], Mrow[3], Mrow[4], Mrow[5]);
+            fflush(fsurv);
+        }
+        return INTPHI == 1;
+    }
     uint64_t S = SIG[cellidx[1][k + 2]];
     while (S) {
         int m = __builtin_ctzll(S); S &= S - 1;
@@ -664,8 +682,9 @@ static void leaf(void) {
                 }
                 detd[X] = 0;
             }
-            int r = intphi_rec(0);
-            if (!r) { intkilled = 1; n_int_killed++; }
+            long long before = iphi_alive;
+            intphi_rec(0);
+            if (iphi_alive == before) { intkilled = 1; n_int_killed++; }
             else n_int_surv++;
         }
         if (zsol == 0) { n_z4++; verdict = "Z4"; }
@@ -673,7 +692,7 @@ static void leaf(void) {
         else {
             n_surv++; verdict = "SURVIVOR";
             if (maxsurv && n_surv >= maxsurv) stopflag = 1;
-            if (fsurv) {
+            if (fsurv && INTPHI != 2) {
                 fprintf(fsurv, "%d %d %d %d %d %d\n", g[0], g[1], g[2], g[3], g[4], g[5]);
                 fflush(fsurv);
             }
@@ -718,7 +737,7 @@ static void rec(int depth, const uint64_t *cand, const int *o, const int *ou) {
                 int oo = o[t] + ((FK[i] >> t) & 1), zz = depth + 1 - oo;
                 o2[t] = oo;
                 if (KM[t] == 1) { if (oo > 1 && zz > 0) { bad = 1; break; } }
-                else { if (oo > 2 && zz > 1) { bad = 1; break; } }
+                else { if (kmax2_bad(oo, oo + zz)) { bad = 1; break; } }
             }
             if (bad) continue;
             int ou2[32];
@@ -981,7 +1000,7 @@ static void rec2(int j, const int *o, const int *ou) {
                 int oo = o[t] + ((FK[i] >> t) & 1), zz = j + 1 - oo;
                 o2[t] = oo;
                 if (KM[t] == 1) { if (oo > 1 && zz > 0) { bad = 1; break; } }
-                else { if (oo > 2 && zz > 1) { bad = 1; break; } }
+                else { if (kmax2_bad(oo, oo + zz)) { bad = 1; break; } }
             }
             if (bad) continue;
             int ou2[32];
@@ -1073,7 +1092,7 @@ static void knuth(int walks) {
                     for (int t = 0; t < nd; t++) {
                         int oo = o[t] + ((FK[i] >> t) & 1), zz = j + 1 - oo;
                         if (KM[t] == 1) { if (oo > 1 && zz > 0) { bad = 1; break; } }
-                        else { if (oo > 2 && zz > 1) { bad = 1; break; } }
+                        else { if (kmax2_bad(oo, oo + zz)) { bad = 1; break; } }
                     }
                     if (bad) continue;
                     if (j + 1 == 6) {
@@ -1230,6 +1249,7 @@ int main(int argc, char **argv) {
     if (getenv("Z4_MAXSURV")) maxsurv = atoll(getenv("Z4_MAXSURV"));
     if (getenv("Z4_INTPHI")) INTPHI = atoi(getenv("Z4_INTPHI"));
     if (getenv("Z4_DC")) DC = atoi(getenv("Z4_DC"));
+    if (getenv("Z4_SOL5")) SOL5 = atoi(getenv("Z4_SOL5"));
     if (mode == 1 || skelfile) DC = 0;                /* list/skel modes: comparisons with the Python engine */
     if (canon) {
         nbrs = calloc((size_t)n * nw, sizeof(uint64_t));
