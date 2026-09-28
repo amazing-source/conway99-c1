@@ -117,3 +117,10 @@
     bottleneck.
   - The strongest possible help would be general R8 k=2/k=3 kills: each n=8 witness would then have |S| ∈ {1,6}. Not
     feasible with the current engine.
+- **Resume priorities (structures' Knuth measurement on A11E6p:8, 28/09 ~20:45):**
+  - As it stands: 1.2e10 skeleton leaves.
+  - With R8 k=2/k=3 proven (n=8 witnesses k=1 only): 2.1e6, ~30 min per class.
+  - With J2 closed as well: 0 skeletons.
+  - Order when work resumes:
+    1. finish R5 (4 h; −412 classes);
+    2. general R8 k=2/k=3 and J2. They need a better parametrisation than the star route.
