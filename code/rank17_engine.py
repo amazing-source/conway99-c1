@@ -212,6 +212,9 @@ def run_case(tag, pid, max_skel=200, cap=10 ** 7, sample=0):
     elif sample and not sks['list']:
         out['verdict'] = 'UNDECIDED'
         out['label'] = 'every random skeleton search hit the node cap'
+    elif not sks['list']:
+        out['verdict'] = 'UNDECIDED'
+        out['label'] = 'skeleton search hit the node cap before finding any skeleton (not exhaustive)'
     else:
         out['verdict'] = 'PARTIAL'
         out['label'] = ('PATTERN (%d random skeletons, all excluded)' % len(sks['list']) if sample else
