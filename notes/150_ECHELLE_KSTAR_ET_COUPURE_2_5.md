@@ -117,3 +117,15 @@ Conséquences :
   ou sont automatiques.
 - Pour tuer (B), il faut un ingrédient combinatoire plus fin : la répartition des valeurs F sur les ι-couples (système local),
   ou la structure fine des étoiles X.
+
+## 9. Côté construction : pas de modèle C₅-symétrique en classe A (DÉRIVÉ)
+- Hypothèse : g = (3 4 5 6 7) agit sur les blocs de X, fixe les blocs 1, 2 et leurs sommets intérieurs, et respecte N et a.
+  Le motif de classe A est bien C₅-invariant.
+- z = U₁₂⁺ et z′ = U₁₂⁻ sont fixés. Leurs partenaires μ₁ et τ̂₁ sont donc fixés, d'où μ₁(z) = τ̂₁(z) = z′
+  (paire frère, cas (iii)).
+- Sur C₁ = C₁⁺ ⊔ C₁⁻ (deux orbites de taille 5 sous C₅), un couplage parfait invariant ne peut pas apparier une orbite de
+  taille impaire avec elle-même. μ₁ et τ̂₁ apparient donc C₁⁺ avec C₁⁻, par des décalages m ≠ t.
+- Alors β_U = a_U(a_{τ̂U} − a_{μU}) = −1 − (−1) = 0 pour tout U, d'où β = 0, alors que la classe A exige β ≥ 11.
+  Aucun modèle de classe A n'a de symétrie d'ordre 5 sur X (D₅ compris).
+- Plus généralement, β ≥ 12 exige que τ̂₁ ait au moins deux paires de même signe dans C₁⁺ et que μ₁ soit surtout croisé.
+  Une symétrie de X qui préserve ces structures fixe un bloc de X et est d'ordre au plus 8 (D₄).
