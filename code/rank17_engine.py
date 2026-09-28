@@ -19,6 +19,7 @@ import stageB
 
 DATA = sk.DATA
 WORK = 'C:/home/researcher/AppData/Local/Temp/claude/runs/r17eng'
+CD_CACHE_BYTES = 200 * 2 ** 20                                              # class_data cache budget
 
 
 def canon_mod1(p):
@@ -36,7 +37,7 @@ def first_pos(v):
 
 
 class Case:
-    def __init__(self, tag, pid):
+    def __init__(self, tag, pid, with_masks=True):
         K = json.load(open(os.path.join(DATA, 'K_%s.json' % tag)))
         self.V = K['V']
         rec_ = [r for r in K['K'] if r['id'] == pid][0]
@@ -65,7 +66,7 @@ class Case:
         Xk, nk = short_vectors_chunked(self.GK.tolist(), 10)
         W = Xk[nk == 10].astype(np.int16)
         del Xk, nk
-        self.usable, self.info, self.masks = sk.usable_classes(self.GK, self.Kv, self.rootkeys4, W10=W)
+        self.usable, self.info, self.masks = sk.usable_classes(self.GK, self.Kv, self.rootkeys4, W10=W, with_masks=with_masks)
         self.duals = sk.short_duals(self.GK)
         KG = self.Kv @ self.Gv
         self.units = [KG[:, self.nB - m + j].copy() for j in range(m)]
@@ -85,23 +86,30 @@ class Case:
         if C in self._cd:
             d = self._cd.pop(C); self._cd[C] = d                            # LRU order
             return d
-        while len(self._cd) >= 64:                                          # memory: keep at most 64 classes
-            self._cd.pop(next(iter(self._cd)))
         Wc = self.W[self.cls == C].astype(np.int64) @ self.Kv               # V coordinates, up to sign
         n = len(Wc)
-        ip = Wc @ self.Gv @ Wc.T
-        iu = np.triu_indices(n, 1)
-        sel = np.isin(ip[iu], (0, 4, -4))
-        I, J = iu[0][sel], iu[1][sel]
+        WG = Wc @ self.Gv
+        Is, Js = [], []
+        for b0 in range(0, n, 1024):                                        # blocks: no n x n matrices (memory)
+            ip = WG[b0:b0 + 1024] @ Wc.T
+            I, J = np.nonzero(np.isin(ip, (0, 4, -4)))
+            del ip
+            I = I + b0
+            keep = J > I
+            Is.append(I[keep]); Js.append(J[keep])
+        I = np.concatenate(Is) if Is else np.zeros(0, dtype=np.int64)
+        J = np.concatenate(Js) if Js else np.zeros(0, dtype=np.int64)
+        W16 = Wc.astype(np.int16)                                           # |coordinates| <= 127 (solver input is int8)
+        assert n == 0 or np.abs(Wc).max() <= 127
         Ps, Ms, iP, iM = [], [], [], []
         for sp in (1, -1):
             for sm in (1, -1):
-                Ps.append(sp * Wc[I]); Ms.append(sm * Wc[J]); iP.append(I); iM.append(J)
-                Ps.append(sm * Wc[J]); Ms.append(sp * Wc[I]); iP.append(J); iM.append(I)
-        P = np.vstack(Ps) if len(I) else np.zeros((0, self.nB), dtype=np.int64)
-        Mn = np.vstack(Ms) if len(I) else np.zeros((0, self.nB), dtype=np.int64)
-        iP = np.concatenate(iP) if len(I) else np.zeros(0, dtype=np.int64)
-        iM = np.concatenate(iM) if len(I) else np.zeros(0, dtype=np.int64)
+                Ps.append(sp * W16[I]); Ms.append(sm * W16[J]); iP.append(I); iM.append(J)
+                Ps.append(sm * W16[J]); Ms.append(sp * W16[I]); iP.append(J); iM.append(I)
+        P = np.vstack(Ps) if len(I) else np.zeros((0, self.nB), dtype=np.int16)
+        Mn = np.vstack(Ms) if len(I) else np.zeros((0, self.nB), dtype=np.int16)
+        iP = np.concatenate(iP).astype(np.int32) if len(I) else np.zeros(0, dtype=np.int32)
+        iM = np.concatenate(iM).astype(np.int32) if len(I) else np.zeros(0, dtype=np.int32)
         A = (P + Mn) // 2; Bv = (P - Mn) // 2
         vs, owner = [], []
         pw = 1 << np.arange(self.nB)
@@ -109,10 +117,16 @@ class Case:
             key = int(((w % 2) * pw).sum())
             for r in self.roots_mod2.get(key, []):
                 vs.append((r - w) // 2); owner.append(k)
-        Vv = np.array(vs, dtype=np.int64).reshape(-1, self.nB)
+        Vv = np.array(vs, dtype=np.int16).reshape(-1, self.nB)
         d = {'n': n, 'P': P, 'Mn': Mn, 'A': A, 'B': Bv, 'iP': iP, 'iM': iM, 'V': Vv,
-             'owner': np.array(owner, dtype=np.int64)}
+             'owner': np.array(owner, dtype=np.int32)}
+        d['bytes'] = sum(x.nbytes for x in d.values() if isinstance(x, np.ndarray))
+        if not hasattr(self, '_cdbytes'):
+            self._cdbytes = 0
+        while self._cd and self._cdbytes + d['bytes'] > CD_CACHE_BYTES:     # memory: byte-bounded LRU
+            self._cdbytes -= self._cd.pop(next(iter(self._cd)))['bytes']
         self._cd[C] = d
+        self._cdbytes += d['bytes']
         return d
 
     def domains(self, skel):

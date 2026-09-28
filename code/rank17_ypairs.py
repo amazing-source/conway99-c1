@@ -25,6 +25,32 @@ UNITS = {'E8': 9, 'D12+': 5, 'E7^2+': 3, 'A15+': 2, 'E8^2': 1, 'D16+': 1, 'D8^2+
 SWAP = {'E8^2': (8, 8), 'E7^2+': (8, 8), 'D8^2+': (8, 8)}           # the two components are the two 8-coordinate blocks
 
 
+FP_EXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fp_short.exe')
+FAST_SV = os.environ.get('R17_FAST_SV', '1') == '1'
+_fp_calls = [0]
+
+
+def _fp_short(n, bound, d, Q):
+    """fp_short.exe: the recursion below, compiled (same float operations in the same order, same output order)"""
+    import struct, subprocess, tempfile
+    tmp = os.path.join(tempfile.gettempdir(), 'r17fp')
+    os.makedirs(tmp, exist_ok=True)
+    _fp_calls[0] += 1
+    fi = os.path.join(tmp, 'in_%d_%d.bin' % (os.getpid(), _fp_calls[0]))
+    fo = os.path.join(tmp, 'out_%d_%d.bin' % (os.getpid(), _fp_calls[0]))
+    with open(fi, 'wb') as f:
+        f.write(struct.pack('<i', n) + struct.pack('<d', bound))
+        f.write(np.array(d, dtype='<f8').tobytes())
+        f.write(np.array(Q, dtype='<f8').tobytes())
+    r = subprocess.run([FP_EXE, fi, fo], capture_output=True)
+    assert r.returncode == 0, 'fp_short failed: %r' % r.stderr[-300:]
+    raw = open(fo, 'rb').read()
+    cnt = struct.unpack('<i', raw[:4])[0]
+    X = np.frombuffer(raw[4:], dtype=np.int8).reshape(cnt, n).copy()
+    os.remove(fi); os.remove(fo)
+    return X
+
+
 def short_vectors_chunked(Gi, bound, chunk=200000):
     """h_stage2.short_vectors_fast (same Fincke-Pohst, same output set: all x != 0 up to sign with x G x <= bound), but the
     output is kept as int8 array chunks instead of one Python list of tuples (memory: A11E6+ has ~1M such vectors)"""
@@ -60,10 +86,13 @@ def short_vectors_chunked(Gi, bound, chunk=200000):
             else:
                 rec(k - 1, r2)
         x[k] = 0
-    rec(n - 1, float(bound) + eps)
-    if buf:
-        chunks.append(np.array(buf, dtype=np.int8))
-    X = np.vstack(chunks) if chunks else np.zeros((0, n), dtype=np.int8)
+    if FAST_SV and os.path.exists(FP_EXE):
+        X = _fp_short(n, float(bound), d, Q)                           # compiled, same arithmetic and order
+    else:
+        rec(n - 1, float(bound) + eps)
+        if buf:
+            chunks.append(np.array(buf, dtype=np.int8))
+        X = np.vstack(chunks) if chunks else np.zeros((0, n), dtype=np.int8)
     # keep one of +-x (first nonzero coordinate positive) and drop 0, as short_vectors_fast's output
     X = X[(X != 0).any(axis=1)]
     first = X[np.arange(len(X)), (X != 0).argmax(axis=1)]

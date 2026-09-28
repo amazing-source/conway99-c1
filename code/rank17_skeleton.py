@@ -23,7 +23,7 @@ def root_keys_mod4(Gv):
     return np.unique(((R % 4) << (2 * np.arange(R.shape[1]))).sum(axis=1))
 
 
-def usable_classes(GK, Kv=None, rootkeys=None, W10=None):
+def usable_classes(GK, Kv=None, rootkeys=None, W10=None, with_masks=True):
     """norm-10 vectors of K by class in K/2K; with Kv (K basis in V coordinates) and rootkeys, Lemma L1 (structures,
     27/09 night) removes every w with w = r mod 4V for a root r of V (u + (r - w)/2 = (r + r_u)/2 would be a norm-1 vector
     of U). A class is usable when it keeps two vectors w, w' (w' != +-w) with (w, w') in {0, +-4}."""
@@ -60,6 +60,11 @@ def usable_classes(GK, Kv=None, rootkeys=None, W10=None):
             ip = WG[b0:min(e, b0 + 512)] @ W[s:e].T          # inner products inside the class (up to sign)
             rows = np.arange(ip.shape[0])
             ip[rows, rows + (b0 - s)] = 99                   # the vector with itself
+            if not with_masks:                               # usable <=> one pair exists (no M1 masks needed)
+                if np.isin(np.abs(ip), (0, 4)).any():
+                    found.add(-1)
+                    break
+                continue
             hi, hj = np.nonzero(np.isin(np.abs(ip), (0, 4)))
             del ip
             for h0 in range(0, len(hi), 50000):              # chunks: a block can hold ~10^6 usable pairs
@@ -69,7 +74,8 @@ def usable_classes(GK, Kv=None, rootkeys=None, W10=None):
                     found.update(np.unique(m).tolist())
         if found:
             usable[int(cls[s])] = e - s
-            masks[int(cls[s])] = np.array(sorted(found), dtype=np.int64)
+            if with_masks:
+                masks[int(cls[s])] = np.array(sorted(found), dtype=np.int64)
     return usable, (n_all, len(W), len(starts)), masks
 
 
