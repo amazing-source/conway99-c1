@@ -17,6 +17,8 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'r
 
 
 def v_basis(name):
+    if name == 'Z17':                                                  # V = Z^17, standard basis (structures' Z17 pairs)
+        return [[F(int(i == j)) for j in range(17)] for i in range(17)], 0, 17
     gens, dim = cores()[name]
     Bc = int_basis(gens)
     m = UNITS[name]
