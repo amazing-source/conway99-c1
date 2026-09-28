@@ -68,3 +68,33 @@ DÉRIVÉ = preuve écrite ; CALCUL = vérification exacte sans solveur.*
 ## 6. Ouvert
 - Une preuve lisible de (B) : il faut un argument qui utilise la combinatoire exacte (bijections Φ, K₃, lemme CN de
   « structures ») au-delà des identités linéaires.
+
+## 7. Classe A : identités exactes (DÉRIVÉ, 28/09 après-midi)
+Notations (classe A normalisée : η(x) = 1 pour tout x) :
+- ρ = Σ_x (e_{1x+} − e_{1x−}) et ρ′ = Σ_x (e_{2x+} − e_{2x−}), donc a = ρ − ρ′.
+- r1_X = ρ + ρ′ + 2·1_{X⁺}, où X⁺ désigne les 10 orbites e_x + e_y (x, y ∈ X).
+- ν := N1_{X⁺} = −N(ρ + ρ′)/2 (NR = 0), d'où Nρ = −ν + 2ρ − 2ρ′.
+
+Identités :
+- **(F1)** Pour U ∈ C₁ : ν_U = (2 − β_U)ρ_U, avec β_U = ρ_U(ρ_{τ̂U} − ρ_{μU}) ∈ {0, 1, 2}. De même sur C₂ avec β′ et ρ′.
+- **(F2)** Hors de C₁ ∪ C₂ : ν_V = −(Nρ)_V = −(Nρ′)_V.
+- β = 20 + 2σ₊, où σ₊ = somme de N sur les paires de X⁺. De plus \|Σ_{X⁺} w\|² = 40 + 8σ₊ et \|ν\|² = β + 20.
+- Σ_{hors}ν² = 5β − 60 + o₁ + o₂, où o_c = #{β_U = 1} ≤ 4. En effet β_U = 1 exige un partenaire μ ou τ̂ dans la
+  cellule (1,2), et la cellule (1,2) n'offre que 4 incidences.
+- Couplage par la cellule (1,2) : μ₁ ∋ paire ⟺ τ̂₂ ∋ paire. Les comptes de couplages sur 5 + 5 points donnent
+  β ≤ 18 / 14 / 16 / 16 selon les cas (i)–(iv). En couplant les deux étoiles, **β ≤ 16**.
+
+Conséquences :
+- **β = 10 est impossible.** β = 10 ⟺ Σ_{X⁺} w = 0 ⟺ N1_{X⁺} = ρ + ρ′ − 1_{X⁺}. Par (F1), β_U = 1 pour les 10 orbites
+  de C₁, alors que 4 au plus le peuvent.
+- 5β − 60 + o₁ + o₂ ≥ 0, d'où β ≥ 11. **Classe A ⟹ β ∈ {12, 14, 16}.**
+- **β = 12** (σ₊ = −4) est très rigide :
+  - Cauchy–Schwarz sur Σ_{X⁺} ν = −8 force o₁ = o₂ = 4, donc le cas (iv) aux deux étoiles.
+  - Huit orbites de X⁺ ont ν = −1, deux ont ν = 0, et ν = 0 sur X⁻ et sur la cellule (1,2).
+  - ρ_{τ̂z} = ρ_{μz} en z et en z′.
+- **Identités de moment : toutes automatiques.** L'identité Q_c (système local K₃) combinée aux équations propres donne
+  l'« identité H » : 2γ_c = 20 − 2β + o_c − ν_z² − ν_{z′}².
+  - Elle est vraie pour tout couple de couplages qui satisfait la règle d'alignement (CALCUL : 16 425/16 425 tirages
+    aléatoires, `code/identH_check.py`). Elle n'apporte donc rien.
+  - Ce qui mord, ce sont les arguments de rigidité : une identité exacte force un motif local uniforme, puis un compte
+    de couplages l'interdit (cas β = 10).
