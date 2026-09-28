@@ -245,3 +245,35 @@ breaks.
   and Paley 9: supports on at most 4 stars exist at m = 11 (dimension 4).
 - J2: the 2|5 cut plus one ±2. Redo notes/150's class analysis with the modified balance.
 - J3: class-by-class, class 0 (product) first.
+
+## 4. STATE AT 28/09 ~18:30 (saved before an auto-compaction): where C1 stands, and what comes next
+**Closed in R6** (proofs above):
+- J0 (min N*) and J1b (row capacity).
+- J1a types (i) matching, (ii) P₃+K₂, (iv) K₁,₃ and (vi) double edge.
+
+**Open.**
+- J1a (iii) P₄ and (v) triangle.
+  - Both pass every local test: per-coordinate harmonicity at v₁, v₂, v₃ (all 64 group choices of the triangle-cell A-roots),
+    star-Gram bounds, structures' E₄ pair lemma, and all summed λ/μ counts (automatic).
+  - There is no pinned class for structures' Cauchy–Schwarz step (G5), because every zero touches star(c).
+  - In (v) the six ±2 vertices form an A₂ hexagon of D₇ roots, and the C₆ edges are lines through the inner vertices of
+    d, e, f. This looks like a "natural" local configuration.
+- J2 and J3: only their structure is known (§1, §2ter).
+
+**Data** (conway99-rank17/r6_data, RESULTS_28_09.md, exact, no solver):
+- There are no linked n=6 pairs, and 220 of the 555 R6 classes have a single n=6 witness.
+- 395 of the 754 open classes contain a short triple k, k', k ∓ k' with all norms ≤ 8: (6,8,8) in 302, (6,6,8) in 157,
+  (5,5,6) in 88.
+
+**Next (C1's decision, not started).** Attack the (6,8,8) triple theorem: three eigenvector patterns a1 (n=6: J1a/J2/J3),
+a2 and a3 = a1 − a2 (n=8: k=1/2/3, since R8 k=0 is dead).
+- Linear coupling, and cut(a3) = cut(a1) + cut(a2).
+- In the example where a1 and a2 are both J3 and a1·a2 = 8: e₊ − e₋ = 8 and e₋ = #(±2 in a3). The admissible cuts and overlaps
+  are finite.
+- If it succeeds, it kills 302 classes. Then do (6,6,8) (157) and (5,5,6) (88).
+- Otherwise go back to J1a (iii)/(v) with a new global ingredient.
+
+**Peers.**
+- structures = R8 k=1 (TARGETS_AB_STRUCTURES §7: same-sign lemma; anti pairs impossible; aligned-graph types C₅, house, …).
+- The pairing R8 k ↔ J_k lets the two sides share kills.
+- Protocol: short [RESULTAT] messages, one target at a time, notes in files.
