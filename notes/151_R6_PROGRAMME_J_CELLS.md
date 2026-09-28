@@ -136,6 +136,38 @@ Notation, for each zero root y:
   - Hence **every inner vertex e^s has #m = #σm among its zero neighbours**, so Σ_jk ρ(m_jk) = 0: the three m's lie on a
     signed triangle of cells.
 
+### 2.9 J1a — no hubs (all types), and type (i) is DEAD (DERIVED)
+**Roles.** For every pair of S-vertices, the common neighbours outside star(c) are:
+- (v_i, v_j): {σv_k, m_ij};
+- (v_i, σv_i): the D-orbit (2 vertices);
+- (v_i, σv_j), an edge of C₆: its apex a_ij.
+
+Each role is either a zero or an inner vertex. An inner vertex arises only when the two ρ's share a signed coordinate.
+
+**No hubs.** Write T(w) for the S-neighbours of a zero w, n(w) = 2 + t_v − t_σ for its number of A-corners, and
+c_i(w) = |corners(w) ∩ G_i|. Then:
+- c_i + (shared inner vertex with v_i) + (common S/zero neighbours of w and v_i) = 1 if v_i ∈ T(w), and 2 otherwise.
+- Every σv_k ∈ T(w) is a common neighbour of w and each v_i with i ≠ k.
+
+These rules kill every |T| ≥ 3:
+- {v_i, v_j, σv_k}: c_i = c_j = 0, so c_k = 3 > 2.
+- {v_i, v_j, σv_i}: c_j = 0 and c_k ≤ 1, but n = 3.
+- All |T| = 4 sets, and {v₁, v₂, v₃, σv_i}: dead (two D-roles, or a common neighbour appears twice).
+
+So **every zero has |T| ≤ 2**. The zeros with t = 2 are exactly the zero-roles, and the number of zeros with t = 1 is
+2·#(inner roles).
+
+**Type (i) (matching, X = 6) is DEAD.**
+1. All 18 roles are zeros, so v_i's six zeros are exactly m_ij, m_ik, m_i, σm_i, a_ij, a_ik.
+2. m_jk has T = {v_j, v_k} and n = 4, so c = (1, 1, 2). It then shares no inner vertex with any v, so both of its sharers are
+   σ's and f(m_jk) = −2.
+3. Harmonicity. f = ρ·N is a combination of D₇ coordinates, so A_R f = 0. At v_i:
+   Σ_{G_i} f (= 4) + f(σv_j) + f(σv_k) (= −4) + Σ_{Nz(v_i)} f = 0.
+   Hence f(a_ij) + f(a_ik) = 4, so every apex has f = +2.
+4. But σ(a_ij) = a_ji and f is σ-odd, so f(a_ji) = −2. Contradiction. ∎
+
+**J1a now:** types (i), (iv) and (vi) are dead. Types (ii) P₃+K₂, (iii) P₄ and (v) triangle are open.
+
 ## 2bis. Row-capacity lemma (DERIVED) and what it kills
 - **Facts used.**
   - Each row of T has exactly 10 nonzero entries, each ±1 (diagonal of T² + T = 12I − CᵀC).
