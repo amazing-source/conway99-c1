@@ -846,12 +846,14 @@
   "E8+Z9": {
    "owner": "structures (C2 turned off 28/09 ~06:00), running C1 driver rank17_pass2.py",
    "machine": "lab PC",
-   "inputs": "conway99-c1 data/rank17/ypairs_E8.json, K_E8.json (ambient coordinates)"
+   "inputs": "conway99-c1 data/rank17/ypairs_E8.json, K_E8.json (ambient coordinates)",
+   "pass2": "pass 2 (run by structures with the C1 driver, 28/09 morning): 3 EXCLUDED (#0,3,4) COMPUTED, 50 MOD4_FEASIBLE (PATTERN)"
   },
   "D12+ +Z5": {
    "owner": "structures (C2 turned off 28/09 ~06:00), running C1 driver rank17_pass2.py",
    "machine": "lab PC",
-   "inputs": "conway99-c1 data/rank17/ypairs_D12p.json, K_D12p.json"
+   "inputs": "conway99-c1 data/rank17/ypairs_D12p.json, K_D12p.json",
+   "pass2": "pass 2 (run by structures with the C1 driver): 4 EXCLUDED (#1,7,16,31) COMPUTED, 154 MOD4_FEASIBLE (PATTERN)"
   },
   "E7^2+ +Z3": {
    "owner": "C1",
@@ -883,6 +885,7 @@
    "machine": "laptop",
    "pass2": "pass 2 (C1): 6 EXCLUDED (COMPUTED), 304 MOD4_FEASIBLE (PATTERN)"
   },
-  "policy": "pass 1 fast (sampled, PATTERN), pass 2 exact re-run (COMPUTED); PROVEN = hand lemma; labels never mixed"
+  "policy": "pass 1 fast (sampled, PATTERN), pass 2 exact re-run (COMPUTED); PROVEN = hand lemma; labels never mixed",
+  "total_pass2": "59 / 1,272 y-pair types EXCLUDED (COMPUTED), incl. all of E8^2+Z and D16+ +Z; the other 1,213 MOD4_FEASIBLE: need a tree-cutting lemma (Knuth estimates 1e4-1e12 leaves per pair); notes/147"
  }
 }

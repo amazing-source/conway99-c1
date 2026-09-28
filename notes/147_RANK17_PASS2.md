@@ -104,6 +104,19 @@ record per pair counts. The retries were needed because a memory crunch around 0
 
 **E8² + ℤ and D16⁺ + ℤ are excluded entirely (COMPUTED).**
 
+**C2's two types.** C2 was turned off at about 06:00. structures ran them with this driver on the laptop, same engine
+(sha 062872e742e1a276); the data are in `data/rank17/z4_E8.jsonl` and `z4_D12p.jsonl`.
+
+| V | pairs | EXCLUDED (COMPUTED) | MOD4_FEASIBLE |
+|---|---|---|---|
+| E8 ⊕ ℤ⁹ | 53 | 3 (#0, 3, 4) | 50 |
+| D12⁺ ⊕ ℤ⁵ | 158 | 4 (#1, 7, 16, 31) | 154 |
+
+**ℤ¹⁷**, structures' 8 representatives run on my engine: pair 7 EXCLUDED; pairs 0–6 MOD4_FEASIBLE.
+
+**Rank-17 total (28/09 morning): 59 of 1,272 y-pair types EXCLUDED (COMPUTED).** That is 58 of the 1,264 non-ℤ¹⁷ types
+plus ℤ¹⁷ #7, and it includes two whole V types. The other 1,213 are MOD4_FEASIBLE: PATTERN only, lemma needed.
+
 ## Integer φ test (commit 2630809; engine flag Z4_INTPHI=1)
 
 At a mod-4-feasible leaf, the φ search is redone with each determined cell restricted to its φ-matching entries, plus
