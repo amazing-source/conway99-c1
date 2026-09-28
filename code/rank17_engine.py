@@ -66,6 +66,12 @@ class Case:
         Xk, nk = short_vectors_chunked(self.GK.tolist(), 10)
         W = Xk[nk == 10].astype(np.int16)
         del Xk, nk
+        self.witness_filter = os.environ.get('WITNESS_FILTER', '0') == '1'
+        self.witnesses = []
+        self.n_w10_before = len(W)
+        if self.witness_filter:
+            self.witnesses = sk.witnesses(self.GK, 8)
+            W = W[sk.value_filter_keep(W, self.witnesses)]
         self.usable, self.info, self.masks = sk.usable_classes(self.GK, self.Kv, self.rootkeys4, W10=W, with_masks=with_masks)
         self.duals = sk.short_duals(self.GK)
         KG = self.Kv @ self.Gv

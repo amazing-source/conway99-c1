@@ -305,3 +305,41 @@ def main(tag, first=None, ids=None, limit=10 ** 8):
 
 if __name__ == '__main__':
     main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else None)
+
+def witnesses(GK, nmax=8, nmin=5):
+    """kappa in K* with nmin <= n = 7|kappa|^2 <= nmax, up to sign, in dual-basis coordinates x ((kappa, w) = x . w_K);
+    returns [(x, n)] sorted by n.  Used by the per-vector VALUE filter (C1 + structures, 28/09 evening): for every frame
+    vector w_u, a_u = (kappa, w_u) is the label value of an integer sigma-odd (-4)-eigenvector of type n (F9), so
+      n = 5 : |a_u| <= 1   (the only n=5 cell is the 2|5 cut with 20 x +-1: k=0 min N*, k=1 row capacity, k>=3 PE)
+      n = 8 : |a_u| <= 2   (+-3 killed by row capacity in every k; |a| <= 3 by Cauchy-Schwarz)
+      n = 6, 7: no per-vector restriction beyond Cauchy-Schwarz (the k-dependent parts are per skeleton)."""
+    from envelope_trap import inverse_exact
+    Gi = inverse_exact([[int(x) for x in row] for row in GK])
+    D = np.array([[int(x * 49) for x in row] for row in Gi], dtype=np.int64)
+    assert all((x * 49).denominator == 1 for row in Gi for x in row)
+    X, nrm = short_vectors_chunked(D.tolist(), 7 * nmax)
+    out = []
+    for x, v in zip(X, nrm):
+        v = int(v)
+        if v == 0:
+            continue
+        assert v % 7 == 0, 'dual norm not in (1/7)Z'
+        n = v // 7
+        if n < nmin:
+            raise AssertionError('witness with n=%d < %d: class should be excluded by F11' % (n, nmin))
+        out.append((np.array(x, dtype=np.int64), n))
+    out.sort(key=lambda t: t[1])
+    return out
+
+
+def value_filter_keep(W, wit):
+    """boolean mask of the norm-10 vectors W (K coordinates) passing the per-vector value filter for the witnesses wit"""
+    keep = np.ones(len(W), dtype=bool)
+    Wl = W.astype(np.int64)
+    for x, n in wit:
+        v = np.abs(Wl @ x)
+        if n == 5:
+            keep &= v <= 1
+        elif n == 8:
+            keep &= v <= 2
+    return keep

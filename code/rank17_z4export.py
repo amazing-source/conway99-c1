@@ -61,7 +61,10 @@ def export(tag, pid, path):
             keep &= (bits @ x) % 2 == 0
         U = U[keep]
     dk = [(x, km) for x, km, _ in duals if km > 0]
-    assert len(dk) <= 30 and len(case.units) <= 30, 'too many duals/units for the int32 bit masks'
+    if case.witness_filter:                                                 # n=5..8 witnesses with rule codes
+        code = {5: 2, 6: 6, 7: 7, 8: 8}
+        dk = [(xw, code[nw]) for xw, nw in case.witnesses][:31]
+    assert len(dk) <= 31 and len(case.units) <= 30, 'too many duals/units for the int32 bit masks'
     n = len(U)
     bits = ((U[:, None] >> np.arange(15)) & 1).astype(np.int64)
     Gm2 = (GK % 2).astype(np.int64)
@@ -145,7 +148,9 @@ def export(tag, pid, path):
         if bad:
             w32(*sorted(bad))
         dc_count = len(bad)
-    info = {'V': case.V, 'pair': pid, 'classes': n, 'duals_k12': len(dk), 'units': len(case.units), 'vectors': tot_vec,
+    info = {'witness_filter': case.witness_filter, 'witnesses': [int(nw) for _, nw in case.witnesses],
+            'w10_before': case.n_w10_before, 'w10_after': int(len(case.W)),
+            'V': case.V, 'pair': pid, 'classes': n, 'duals_k12': len(dk), 'units': len(case.units), 'vectors': tot_vec,
             'l1_vectors': tot_v, 'H_generators': len(gens), 'dc_forbidden': dc_count, 'export_s': round(time.time() - t0, 1),
             'bytes': os.path.getsize(path)}
     return info
