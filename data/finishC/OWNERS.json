@@ -840,41 +840,48 @@
  "rank17": {
   "Z17": {
    "owner": "structures (engine) + C2 (second implementation)",
-   "machine": "laptop / lab PC"
+   "machine": "laptop / lab PC",
+   "c1_crosscheck": "C1 engine on structures representatives (K_Z17.json): pair 7 EXCLUDED (agrees), pairs 0-6 MOD4_FEASIBLE"
   },
   "E8+Z9": {
-   "owner": "C2",
+   "owner": "structures (C2 turned off 28/09 ~06:00), running C1 driver rank17_pass2.py",
    "machine": "lab PC",
    "inputs": "conway99-c1 data/rank17/ypairs_E8.json, K_E8.json (ambient coordinates)"
   },
   "D12+ +Z5": {
-   "owner": "C2",
+   "owner": "structures (C2 turned off 28/09 ~06:00), running C1 driver rank17_pass2.py",
    "machine": "lab PC",
    "inputs": "conway99-c1 data/rank17/ypairs_D12p.json, K_D12p.json"
   },
   "E7^2+ +Z3": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1): 4 EXCLUDED (COMPUTED), 187 MOD4_FEASIBLE (integer level needed: PATTERN)"
   },
   "A15+ +Z2": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1): 5 EXCLUDED (COMPUTED), 198 MOD4_FEASIBLE (PATTERN)"
   },
   "E8^2+Z": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1, 28/09 06:35): 12/12 EXCLUDED, COMPUTED (mod-4 engine rank17_z4, commit 2630809; data/rank17/z4_E82.jsonl)"
   },
   "D16+ +Z": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1): 18/18 EXCLUDED, COMPUTED (data/rank17/z4_D16p.jsonl)"
   },
   "D8^2+ +Z": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1): 6 EXCLUDED (COMPUTED), 313 MOD4_FEASIBLE (PATTERN)"
   },
   "A11E6+": {
    "owner": "C1",
-   "machine": "laptop"
+   "machine": "laptop",
+   "pass2": "pass 2 (C1): 6 EXCLUDED (COMPUTED), 304 MOD4_FEASIBLE (PATTERN)"
   },
   "policy": "pass 1 fast (sampled, PATTERN), pass 2 exact re-run (COMPUTED); PROVEN = hand lemma; labels never mixed"
  }

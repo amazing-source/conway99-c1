@@ -89,17 +89,36 @@ A11E6⁺ #31:
 
 ## Results (pass 2, classification)
 
+Final (28/09 06:35), all 1,053 pairs, 0 UNDECIDED. Results in `data/rank17/z4_<tag>.jsonl`; the latest non-UNDECIDED
+record per pair counts. The retries were needed because a memory crunch around 06:07 refused 152 children.
+
 | V | pairs | EXCLUDED (COMPUTED) | MOD4_FEASIBLE |
 |---|---|---|---|
-| E8² + ℤ | 12 | **12** | 0 |
-| D16⁺ + ℤ | 18 | **18** | 0 |
-| E7²⁺ + ℤ³ | 191 | (end of run) | |
-| D8²⁺ + ℤ | 319 | | |
-| A11E6⁺ | 310 | | |
-| A15⁺ + ℤ² | 203 | | |
+| E8² + ℤ | 12 | **12 (all)** | 0 |
+| D16⁺ + ℤ | 18 | **18 (all)** | 0 |
+| E7²⁺ + ℤ³ | 191 | 4 (#0, 3, 28, 33) | 187 |
+| D8²⁺ + ℤ | 319 | 6 (#4, 14, 32, 42, 62, 134) | 313 |
+| A11E6⁺ | 310 | 6 (#1, 3, 18, 31, 114, 272) | 304 |
+| A15⁺ + ℤ² | 203 | 5 (#2, 4, 20, 27, 96) | 198 |
+| **total** | 1,053 | **51** | 1,002 |
 
-**E8² + ℤ and D16⁺ + ℤ are excluded entirely (COMPUTED).** In the other four types, about 90% of the pairs are
-MOD4_FEASIBLE.
+**E8² + ℤ and D16⁺ + ℤ are excluded entirely (COMPUTED).**
+
+## Integer φ test (commit 2630809; engine flag Z4_INTPHI=1)
+
+At a mod-4-feasible leaf, the φ search is redone with each determined cell restricted to its φ-matching entries, plus
+forward checking under the integer rule.
+- It kills all 12 A11E6⁺ #0 survivors.
+- It is not enough everywhere. Each of these pairs has a skeleton with a φ that survives pairwise forward checking:
+  - E7²⁺ #9: after 11 leaves;
+  - D8²⁺ #1: after 3 leaves;
+  - A15⁺ #28: after 2,375 leaves;
+  - A11E6⁺ #17: at the first leaf.
+- sbdfs_g, the full integer solver (stars, PSD), then excludes every φ of the E7²⁺ #9 and D8²⁺ #1 survivors: 224 and 210 φ,
+  at 0.2–2 s each.
+- Scale: A15⁺ #28 with the integer test runs at about 80 leaves/s and is still in its first top-level branch after 10 min.
+  **Integer-level exhaustion of the MOD4_FEASIBLE pairs is not feasible on this machine.** They stay PATTERN: pass-1
+  sampling plus every tested skeleton dying at the integer level.
 
 **ℤ¹⁷ cross-check.** Structures' 8 representatives, K built by `code/rank17_K_z17.py`, det 49:
 - pair 7 is EXCLUDED, which agrees with structures' 0 skeletons;
