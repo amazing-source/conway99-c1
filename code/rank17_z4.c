@@ -17,6 +17,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 #define MAXB 24
 static int nB, n, nd, nu;
@@ -1014,6 +1015,101 @@ static void rec2(int j, const int *o, const int *ou) {
     }
 }
 
+/* ---- Knuth estimator (Z4_KNUTH = number of random walks): each walk descends the H-canonical tree, at every level
+   enumerating the valid children exactly as rec2 does (orbit minimum, independence, duals, units, adjacency and order,
+   partial mod-4 test from PMIN on), multiplying the branching factors; E[product at a leaf] = number of leaves reached
+   by rec2 (before the leaf tests), E[sum of partial products] = number of nodes. */
+static int kchild[1 << 15];
+static void knuth(int walks) {
+    double sumL = 0, sumL2 = 0, sumN = 0, maxL = 0;
+    long long zero = 0;
+    for (int w = 0; w < walks; w++) {
+        double prod = 1, nodes_est = 1;
+        int o[32] = {0}, ou[32] = {0};
+        span[0] = 0; nspan = 1;
+        int j = 0;
+        double leafest = 0;
+        while (1) {
+            const uint64_t *cand = candl + (size_t)j * nw;
+            const int *orb = orbl[j];
+            int need = 5 - j, nk = 0;
+            for (int wi = 0; wi < nw; wi++) {
+                uint64_t c = cand[wi];
+                while (c) {
+                    int b = __builtin_ctzll(c); c &= c - 1;
+                    int i = wi * 64 + b;
+                    if (orb[i] != i) continue;
+                    int x = U[i], in = 0;
+                    for (int s = 0; s < nspan; s++) if (span[s] == x) { in = 1; break; }
+                    if (in) continue;
+                    int bad = 0;
+                    for (int t = 0; t < nd; t++) {
+                        int oo = o[t] + ((FK[i] >> t) & 1), zz = j + 1 - oo;
+                        if (KM[t] == 1) { if (oo > 1 && zz > 0) { bad = 1; break; } }
+                        else { if (oo > 2 && zz > 1) { bad = 1; break; } }
+                    }
+                    if (bad) continue;
+                    if (j + 1 == 6) {
+                        int okk = 1;
+                        for (int t = 0; t < nu; t++) if (ou[t] + ((FU[i] >> t) & 1) < 1) { okk = 0; break; }
+                        if (okk) kchild[nk++] = i;
+                        continue;
+                    }
+                    uint64_t *c2 = candl + (size_t)(j + 1) * nw;
+                    const uint64_t *nb = nbrs + (size_t)i * nw;
+                    int cnt = 0;
+                    for (int k = 0; k < nw; k++) {
+                        uint64_t w2 = cand[k] & nb[k], ww = w2;
+                        while (ww) {
+                            int bb = __builtin_ctzll(ww); ww &= ww - 1;
+                            int z = k * 64 + bb;
+                            if (orb[z] < i || (orb[z] == i && z <= i)) w2 &= ~(1ULL << bb);
+                        }
+                        c2[k] = w2; cnt += __builtin_popcountll(w2);
+                    }
+                    if (cnt < need) continue;
+                    chosen[j] = i;
+                    if (INC && !inc_level(j + 1, j + 1 >= PMIN)) continue;
+                    kchild[nk++] = i;
+                }
+            }
+            if (nk == 0) break;
+            if (j + 1 == 6) { leafest = prod * nk; break; }
+            int i = kchild[rnd32() % nk];
+            prod *= nk;
+            nodes_est += prod;
+            /* rebuild the state of the chosen child */
+            uint64_t *c2 = candl + (size_t)(j + 1) * nw;
+            const uint64_t *nb = nbrs + (size_t)i * nw;
+            for (int k = 0; k < nw; k++) {
+                uint64_t w2 = cand[k] & nb[k], ww = w2;
+                while (ww) {
+                    int bb = __builtin_ctzll(ww); ww &= ww - 1;
+                    int z = k * 64 + bb;
+                    if (orb[z] < i || (orb[z] == i && z <= i)) w2 &= ~(1ULL << bb);
+                }
+                c2[k] = w2;
+            }
+            chosen[j] = i;
+            if (INC) inc_level(j + 1, 0);
+            if (j + 1 < SDEPTH) { if (STAB2) stabilizer2(j, i); else stabilizer(j, i); } else trivial_level(j + 1);
+            for (int t = 0; t < nd; t++) o[t] += (FK[i] >> t) & 1;
+            for (int t = 0; t < nu; t++) ou[t] += (FU[i] >> t) & 1;
+            int x = U[i], old = nspan;
+            for (int s = 0; s < old; s++) span[old + s] = span[s] ^ x;
+            nspan = 2 * old;
+            j++;
+        }
+        sumL += leafest; sumL2 += leafest * leafest; sumN += nodes_est;
+        if (leafest > maxL) maxL = leafest;
+        if (leafest == 0) zero++;
+    }
+    double mL = sumL / walks, sd = sqrt(sumL2 / walks - mL * mL);
+    printf("{\"knuth_walks\": %d, \"leaves_est\": %.4g, \"leaves_sd_of_mean\": %.3g, \"nodes_est\": %.4g, "
+           "\"max_walk\": %.4g, \"dead_walks\": %lld, \"s\": %.1f}\n", walks, mL, sd / sqrt((double)walks),
+           sumN / walks, maxL, zero, (double)(clock() - tstart) / CLOCKS_PER_SEC);
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) { fprintf(stderr, "usage: rank17_z4 <file> [run|list N|count] [survivor file]\n"); return 1; }
     if (argc > 2 && !strcmp(argv[2], "list")) { mode = 1; list_n = argc > 3 ? atoll(argv[3]) : 50; }
@@ -1167,6 +1263,9 @@ int main(int argc, char **argv) {
         }
         if (fs) fclose(fs);
         fprintf(stderr, "partial-test self-check violations: %lld\n", selftest_bad);
+    } else if (canon && getenv("Z4_KNUTH")) {
+        knuth(atoi(getenv("Z4_KNUTH")));
+        return 0;
     } else if (canon)
         rec2(0, o0, ou0);
     else

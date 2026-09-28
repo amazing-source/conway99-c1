@@ -120,6 +120,26 @@ forward checking under the integer rule.
   **Integer-level exhaustion of the MOD4_FEASIBLE pairs is not feasible on this machine.** They stay PATTERN: pass-1
   sampling plus every tested skeleton dying at the integer level.
 
+## Knuth survey of the remaining trees (`code/rank17_knuth.py`, engine flag Z4_KNUTH; `data/rank17/knuth_<tag>.jsonl`)
+
+The estimator uses random walks on the H-canonical tree with the partial mod-4 tests, exactly as the search prunes.
+- Validated on A11E6⁺ #31 without partial tests: 1.65×10⁶ ± 0.22×10⁶ estimated vs 1,704,693 exact leaves, and
+  4.66×10⁵ vs 459,311 nodes. With the partial tests it gives 0 leaves, as the exact search does.
+- On 8 random MOD4_FEASIBLE pairs per type, the estimated leaves still needing the leaf and integer tests are:
+
+| V | estimated leaves per pair (8 random MOD4_FEASIBLE pairs) |
+|---|---|
+| E7²⁺ + ℤ³ | 0 (6/300 walks all died; the pair has a known survivor, so this is an underestimate), 4.5×10⁴, 3.8×10⁶, 2.1×10⁷, 1.4×10⁸, 6.9×10⁸, 1.4×10¹⁰, 1.1×10¹² |
+| D8²⁺ + ℤ | 6.6×10⁸, 2.2×10⁹, 3.4×10⁹, 1.6×10¹¹, 2.9×10¹¹, 3.6×10¹¹, 4×10¹¹, 5.4×10¹¹ |
+| A15⁺ + ℤ² | 7.7×10⁵, 2.1×10⁷, 6.2×10⁷, 4.7×10⁹, 5×10¹⁰, 8.5×10¹⁰, 7.1×10¹¹, 9.5×10¹¹ |
+| A11E6⁺ | 7.2×10⁶, 4×10⁸, 2.7×10⁹, 3.4×10⁹, 1.6×10¹⁰, 1.1×10¹¹, 3.6×10¹¹, 9.9×10¹¹ |
+
+At 1 ms or more per leaf (the mod-4 test plus integer φ), that is 10⁶–10⁹ s per pair for most pairs. **None of the four
+types can be closed by computation.**
+- structures' Knuth estimates on ℤ¹⁷ say the same: pairs 1 and 2 would take years.
+- Team conclusion (28/09 morning): finishing the rank-17 route needs a lemma that cuts the skeleton trees, not more
+  compute.
+
 **ℤ¹⁷ cross-check.** Structures' 8 representatives, K built by `code/rank17_K_z17.py`, det 49:
 - pair 7 is EXCLUDED, which agrees with structures' 0 skeletons;
 - pairs 0–6 are MOD4_FEASIBLE.
