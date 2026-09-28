@@ -87,6 +87,58 @@ Results:
    of A² again. Next: exploit the free star(c) (2-regular, sign-bipartite, Q/P-alternating cycles of length ≡ 0 mod 4) together
    with the C₆ apexes and the X-cell interior vertices.
 
+## 2bis. Row-capacity lemma (DERIVED) and what it kills
+- **Facts used.**
+  - Each row of T has exactly 10 nonzero entries, each ±1 (diagonal of T² + T = 12I − CᵀC).
+  - A label U ∈ star(c) has at most 2 of them inside star(c): its Q_c- and P_c-partners.
+  - A label outside star(c) has at most 4 over star(c): (R2), from (L0).
+  - A label of value α needs |(Ta)_U| = 4|α|.
+- **Dead patterns.**
+  - n = 5, k = 1 (twelve ±1 on star(c) + two ±2): every star label needs a ±2 neighbour, but 2 × 4 < 12. This re-proves
+    Sol's §7.2.
+  - n = 6: J1b.
+  - n = 7:
+    - "12 ±1 + ±4" (the ±4 gets ≤ 4 < 16);
+    - "19 ±1 + ±3" (the ±3 gets ≤ 10 < 12).
+  - n = 8:
+    - k=1, "12 ±1 + ±4 + ±2" (the ±4 gets ≤ 4 + 2 < 16);
+    - k=1, "11 ±1 + ±3 + three ±2" (the ±3 lies in star(c), so it gets ≤ 2 + 6 < 12);
+    - k=1, "10 ±1 + two ±3 + ±2";
+    - k=2, "19 ±1 + ±3 + ±2" (the ±3 gets ≤ 9 + 2 < 12);
+    - k=3, "23 ±1 + ±3" (the ±3 gets ≤ 10 < 12).
+  - So R8 is left with **k=0 (eight ±1), k=1 (12 ±1 + five ±2), k=2 (20 ±1 + three ±2), k=3 (24 ±1 + two ±2)**. Sent to
+    structures.
+- **J1a is the tight case** (3 × 4 = 12), whence §2.
+
+## 2ter. J2: 2|5 cut {c,c'} | X, twenty ±1 + one ±2 (DERIVED)
+- **The ±2 label is not in cell (c,c').**
+  - A vertex v there has S-incidence 4 = t(v) + 2z₁₂(v) with S = {c,c'}.
+  - So it has ≤ 4 cut neighbours, but it needs a difference of 8.
+  - Hence V lies in a K₅(X) cell (x₀, y₀).
+- **The +2 vertex v.**
+  - It has exactly 8 cut neighbours, all −1: 4 in star(c) and 4 in star(c'), 2 on each side.
+  - It has no neighbour in cell (c,c'), and 4 K₅-zero neighbours.
+  - By σ, σv has 8 cut neighbours, all +1: the set P_σ.
+- **Profiles of the P-cut vertices.**
+  - P₀ (12 vertices, not adjacent to σv): d ≤ 1, d + 4 Q-neighbours, 1 − d neighbours in Z₁₂.
+  - P_σ (8 vertices): d ≤ 2, d + 2 Q-neighbours, 2 − d neighbours in Z₁₂.
+- **Capacity of Z₁₂** (the 4 roots of cell (c,c'), each with τ ≤ 2): 28 − 2e_P ≤ 8, so **10 ≤ e_P ≤ 14**. Also
+  e(Z₁₂) = e_P − 10.
+- **Modified balance.**
+  - At x₀^{s₀} (v's side) the cut roots are 1P + 3Q; at x₀^{−s₀}, 3P + 1Q. Same at y₀.
+  - Every other x has 2P + 2Q.
+- The moment and μ-sum identities are all automatic again (checked for the pair (v, P_cut) and for the Z_X moments).
+
+## 2quater. Methodological finding
+Every identity obtained by summing μ/λ counts over classes follows from A² = 12I − A + 2J applied to vectors in the span of the
+class indicators. It is therefore automatically consistent. The kills so far all come from **exact local capacities**:
+- Z_I, and Z₁₂ in J2;
+- the 4-per-star rule in J1a, J2 and the row-capacity lemma;
+- the λ = 1 exclusivity in the C₆ of J1a.
+
+The next steps have to be structural, pushing the rigid pieces (C₆, groups, the 8 opposite neighbours of v) until a capacity
+breaks.
+
 ## 3. Next
 - J1a: push the rigid structure to a contradiction or to an explicit local model. A model would have to be tested against BvLS
   and Paley 9: supports on at most 4 stars exist at m = 11 (dimension 4).
