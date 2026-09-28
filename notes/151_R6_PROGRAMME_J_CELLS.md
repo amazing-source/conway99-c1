@@ -168,6 +168,26 @@ So **every zero has |T| ≤ 2**. The zeros with t = 2 are exactly the zero-roles
 
 **J1a now:** types (i), (iv) and (vi) are dead. Types (ii) P₃+K₂, (iii) P₄ and (v) triangle are open.
 
+**General identities (all types).**
+- Σ over i of the harmonicity at v_i gives **2 Σ_jk ρ(m_jk) = − Σ_{t=1 zeros u adjacent to a v} ρ(u)**. Type (i) recovers
+  Σρ(m) = 0.
+- An m_jk that is a zero shares no inner vertex with any v, so its coordinates lie on inner vertices containing no v.
+- Pointwise: (A_Z + I)d = −f, and Σ_w d(w)f(w) = 0 (automatic).
+- ‖A_{Zᶜ,Z}d‖² = 12Σd² − Σf².
+  - In type (iii) this forces the zero-sum Σ_{O_{e^s} ∩ Z} d = 0 at every inner vertex.
+  - That is again equivalent to the ρ-identity above, so nothing new.
+
+**Type (ii) (P₃ + K₂, X = 4) is DEAD.**
+- Setup: ρ₁ on {d,e}, ρ₂ on {e,f} (opposite at e), ρ₃ on {g,h}.
+- Roles: a₁₂ and a₂₁ are inner (e^{±b}); every other role is a zero. The t=1 zeros are u₁ ∼ v₁, u₂ ∼ v₂ and their σ-images.
+- The m's avoid e^± (both contain a v), so f(m) ∈ {−2, −1}.
+- Summed harmonicity: Σx − 8 + 2Σf(m) + f(u₁) + f(u₂) = 0, with Σx = 8. Hence f(u₁) + f(u₂) = −2Σf(m) ≥ 6 > 4.
+  Contradiction. ∎
+
+**J1a open: (iii) P₄ (X = 2) and (v) triangle (X = 0).**
+- (iii): m₁₂ ⊂ {d^{−a}, h, i}, m₂₃ ⊂ {g^{−γ}, h, i}, m₁₃ ⊂ {d^{−a}, g^{−γ}, h, i} (μ with σv₁, σv₃).
+- The four t=1 zeros satisfy 2Σρ(m) = −Σρ(u).
+
 ## 2bis. Row-capacity lemma (DERIVED) and what it kills
 - **Facts used.**
   - Each row of T has exactly 10 nonzero entries, each ±1 (diagonal of T² + T = 12I − CᵀC).
