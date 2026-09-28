@@ -8,6 +8,7 @@ import rank17_z4export as ex
 DATA = os.path.join(HERE, '..', 'data', 'rank17')
 WORK = 'C:/home/researcher/AppData/Local/Temp/claude/runs/knuth'
 EXE = os.path.join(HERE, 'rank17_z4_k.exe')
+TAGSUFFIX = os.environ.get('KNUTH_SUFFIX', '')
 
 tag, ids = sys.argv[1], [int(x) for x in sys.argv[2].split(',')]
 walks = int(sys.argv[3]) if len(sys.argv) > 3 else 300
@@ -26,7 +27,7 @@ for pid in ids:
         rec['error'] = r.stderr[-300:]
     rec['total_s'] = round(time.time() - t0, 1)
     print(json.dumps(rec), flush=True)
-    with open(os.path.join(DATA, 'knuth_%s.jsonl' % tag), 'a') as f:
+    with open(os.path.join(DATA, 'knuth%s_%s.jsonl' % (TAGSUFFIX, tag)), 'a') as f:
         f.write(json.dumps(rec) + chr(10))
     for f_ in (binf, binf + '.surv'):
         if os.path.exists(f_):

@@ -39,6 +39,11 @@ typedef struct {
 static CD *cd;
 
 static int ngen0 = 0;
+/* short-dual-class obstruction (user's handoff, PROVEN (DC)): no class [7 kappa], 7|kappa|^2 in {2,4,6,8,10,14}, lies in
+   the span of the skeleton classes; a prefix whose span meets the set kills every completion */
+static unsigned char dcbad[1 << 15];
+static int ndcbad = 0, DC = 1;
+static long long dc_cut[7];
 static int **gen0;
 
 static FILE *fin;
@@ -149,6 +154,13 @@ static void load(const char *path) {
         gen0[k] = malloc(sizeof(int) * n);
         rd(gen0[k], 4, n);
         for (int x = 0; x < n; x++) if (gen0[k][x] < 0 || gen0[k][x] >= n) { fprintf(stderr, "bad generator\n"); exit(2); }
+    }
+    {                                                      /* optional trailer 2: short-dual forbidden classes */
+        int32_t magic;
+        if (fread(&magic, 4, 1, fin) == 1 && magic == 0x44435331) {
+            ndcbad = rdi();
+            for (int k = 0; k < ndcbad; k++) { int m = rdi(); if (m > 0 && m < (1 << 15)) dcbad[m] = 1; }
+        }
     }
     fclose(fin);
     fprintf(stderr, "loaded: classes %d, duals %d, units %d, in-class pairs %ld\n", n, nd, nu, totpairs);
@@ -694,6 +706,11 @@ static void rec(int depth, const uint64_t *cand, const int *o, const int *ou) {
             int x = U[i], in = 0;
             for (int s = 0; s < nspan; s++) if (span[s] == x) { in = 1; break; }
             if (in) continue;
+            if (DC && ndcbad) {                            /* (DC): the new span elements x ^ s must avoid the set */
+                int hit = 0;
+                for (int s = 0; s < nspan; s++) if (dcbad[x ^ span[s]]) { hit = 1; break; }
+                if (hit) { dc_cut[depth] ++; continue; }
+            }
             if (depth == 0 && !orbmin[i]) continue;
             if (depth == 0) topi = i;
             int o2[32], bad = 0;
@@ -954,6 +971,11 @@ static void rec2(int j, const int *o, const int *ou) {
             int x = U[i], in = 0;
             for (int s = 0; s < nspan; s++) if (span[s] == x) { in = 1; break; }
             if (in) continue;
+            if (DC && ndcbad) {                            /* (DC): the new span elements x ^ s must avoid the set */
+                int hit = 0;
+                for (int s = 0; s < nspan; s++) if (dcbad[x ^ span[s]]) { hit = 1; break; }
+                if (hit) { dc_cut[j] ++; continue; }
+            }
             int o2[32], bad = 0;
             for (int t = 0; t < nd; t++) {
                 int oo = o[t] + ((FK[i] >> t) & 1), zz = j + 1 - oo;
@@ -1042,6 +1064,11 @@ static void knuth(int walks) {
                     int x = U[i], in = 0;
                     for (int s = 0; s < nspan; s++) if (span[s] == x) { in = 1; break; }
                     if (in) continue;
+                    if (DC && ndcbad) {
+                        int hit = 0;
+                        for (int s = 0; s < nspan; s++) if (dcbad[x ^ span[s]]) { hit = 1; break; }
+                        if (hit) continue;
+                    }
                     int bad = 0;
                     for (int t = 0; t < nd; t++) {
                         int oo = o[t] + ((FK[i] >> t) & 1), zz = j + 1 - oo;
@@ -1202,6 +1229,8 @@ int main(int argc, char **argv) {
     if (getenv("Z4_MAXLEAVES")) maxleaves = atoll(getenv("Z4_MAXLEAVES"));
     if (getenv("Z4_MAXSURV")) maxsurv = atoll(getenv("Z4_MAXSURV"));
     if (getenv("Z4_INTPHI")) INTPHI = atoi(getenv("Z4_INTPHI"));
+    if (getenv("Z4_DC")) DC = atoi(getenv("Z4_DC"));
+    if (mode == 1 || skelfile) DC = 0;                /* list/skel modes: comparisons with the Python engine */
     if (canon) {
         nbrs = calloc((size_t)n * nw, sizeof(uint64_t));
         for (int i = 0; i < n; i++)
@@ -1287,10 +1316,12 @@ int main(int argc, char **argv) {
     printf("], \"pmin\": %d, \"partial_tested\": [%lld, %lld, %lld], \"partial_pruned\": [%lld, %lld, %lld], "
            "\"fail_empty\": [%lld, %lld, %lld], \"fail_z4\": [%lld, %lld, %lld], \"leaf_pre_killed\": %lld, "
            "\"sdepth\": %d, \"stab2\": %d, \"schreier_gens\": %d, \"intphi\": %d, \"int_killed\": %lld, "
-           "\"int_survivors\": %lld, \"intphi_nodes\": %lld}\n", PMIN,
+           "\"int_survivors\": %lld, \"intphi_nodes\": %lld, \"dc\": %d, \"dc_forbidden\": %d, "
+           "\"dc_cut\": [%lld, %lld, %lld, %lld, %lld, %lld]}\n", PMIN,
            tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5],
            fail_empty[3], fail_empty[4], fail_empty[5], fail_z4[3], fail_z4[4], fail_z4[5], leaf_pre_killed,
-           SDEPTH, STAB2, NSCHREIER, INTPHI, n_int_killed, n_int_surv, iphi_nodes);
+           SDEPTH, STAB2, NSCHREIER, INTPHI, n_int_killed, n_int_surv, iphi_nodes, DC, ndcbad,
+           dc_cut[0], dc_cut[1], dc_cut[2], dc_cut[3], dc_cut[4], dc_cut[5]);
     if (fsurv) fclose(fsurv);
     return mismatch ? 4 : 0;
 }

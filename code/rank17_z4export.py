@@ -20,6 +20,31 @@ def mask15(X):
     return ((np.asarray(X) % 2).astype(np.int64) << np.arange(X.shape[1])).sum(axis=1)
 
 
+def short_dual_forbidden(GK):
+    """classes [7 kappa] mod 2K (15-bit, K basis) for kappa in K* with n = 7|kappa|^2 in {2,4,6,8,10,14}: dual vectors
+    z (kappa = GK^-1 z) enumerated as short vectors of D = 49 GK^-1 (integral) with z D z = 7n <= 98; K validated and
+    every record checked by the handoff's dual_class_filter (exact rationals)."""
+    import dual_class_filter as dcf
+    from rank17_ypairs import short_vectors_chunked
+    G = [[int(x) for x in r] for r in GK]
+    Gi = dcf.validate_K(G)
+    D = [[int(x * 49) for x in r] for r in Gi]
+    X, nrm = short_vectors_chunked(D, 98)
+    bad = {}
+    for z, v in zip(X.tolist(), nrm.tolist()):
+        if v == 0 or v % 7:
+            continue
+        n = v // 7
+        if n not in dcf.FORBIDDEN_N:
+            continue
+        rec = dcf.dual_record(G, Gi, z)                                 # exact n, class; raises on inconsistencies
+        assert rec['n'] == n and rec['forbidden']
+        if rec['class'] == 0:                                           # kappa in 2K*: beta = 0, no constraint (DC needs beta != 0)
+            continue
+        bad[rec['class']] = min(n, bad.get(rec['class'], 99))
+    return bad
+
+
 def export(tag, pid, path):
     t0 = time.time()
     case = eng.Case(tag, pid, with_masks=False)                          # the C engine does not use the M1 masks
@@ -113,8 +138,15 @@ def export(tag, pid, path):
         w32(len(gens))
         for p in gens.values():
             f.write(np.ascontiguousarray(p, dtype='<i4').tobytes())
+        # trailer 2: short-dual forbidden classes (user's short-dual handoff, (DC)/(1)): every kappa in K* with
+        # n = 7|kappa|^2 in {2,4,6,8,10,14} forbids the class [7 kappa] (K basis, mod 2) in the span of the skeleton.
+        bad = short_dual_forbidden(GK)
+        w32(0x44435331, len(bad))                                          # 'DCS1'
+        if bad:
+            w32(*sorted(bad))
+        dc_count = len(bad)
     info = {'V': case.V, 'pair': pid, 'classes': n, 'duals_k12': len(dk), 'units': len(case.units), 'vectors': tot_vec,
-            'l1_vectors': tot_v, 'H_generators': len(gens), 'export_s': round(time.time() - t0, 1),
+            'l1_vectors': tot_v, 'H_generators': len(gens), 'dc_forbidden': dc_count, 'export_s': round(time.time() - t0, 1),
             'bytes': os.path.getsize(path)}
     return info
 
