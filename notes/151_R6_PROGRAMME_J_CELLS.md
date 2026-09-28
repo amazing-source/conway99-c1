@@ -277,3 +277,134 @@ a2 and a3 = a1 − a2 (n=8: k=1/2/3, since R8 k=0 is dead).
 - structures = R8 k=1 (TARGETS_AB_STRUCTURES §7: same-sign lemma; anti pairs impossible; aligned-graph types C₅, house, …).
 - The pairing R8 k ↔ J_k lets the two sides share kills.
 - Protocol: short [RESULTAT] messages, one target at a time, notes in files.
+
+## 5. 28/09 evening: the triple route is dropped (coverage data), back to R6 proper
+**Data (CALCUL, exact short vectors, no solver; code/r6/rung_cover.py).**
+- Single rungs over the 754 open classes: R8 covers 676, R6 covers 555, R5 covers 412 and R7 covers 274.
+  R6 ∧ R8 covers all 754; R5 ∧ R8 misses 38; R7 ∧ R8 misses 44.
+- **The 78 classes outside R8** (they have n=6 but no n=8) contain no (6,8,8) or (6,6,8) triple; 12 of them contain a
+  (5,5,6) triple. Examples: 4 classes have exactly one short vector (a single ±κ with n=6).
+- Short triples: (6,8,8) 302, (6,6,8) 157, (5,5,6) 88; union 395; (6,6,8) adds 67 beyond (6,8,8), (5,5,6) adds 26.
+
+**Consequence (decision).**
+- Every (6,8,8) class also has an n=8 witness, so R8 kills it anyway. The triple theorem is therefore off the critical
+  path: at best it is insurance for R8.
+- R6 is needed **in full**, as a single-vector statement. The 78 classes outside R8 include ones whose only short vector
+  is one n=6 κ, so no pair or triple hypothesis is available there.
+- C1 goes back to the open R6 cells: J1a (iii) and (v), then J2, then J3.
+
+**Correction (a trap met while re-deriving).** "Two roots of the same cell are never adjacent" is **not** proven. It is
+false as a consequence of (L1).
+- (c^a, d^b) ~ (c^a, d^{−b}) is locally consistent: the neighbour is then both Q_c and P_d.
+- Only r ≁ σr is proven (zero diagonal of N and D).
+- So e(Z₁₂) = e_P − 10 in J2 stays a live parameter; J2 keeps 10 ≤ e_P ≤ 14.
+
+## 6. J1a (v): a second integer eigenvector from the zero graph (DERIVED, 28/09 evening)
+**Setting.**
+- Type (v): the triangle p, q, r; the other blocks s, t, u; N = 0, so f = 0 and (A_Z + I)d = 0 on the 54 zeros.
+- d = t_v − t_σ. Its values: +2 on M = {m₁₂, m₁₃, m₂₃}, −2 on σM, +1 on the six t=1 zeros U, −1 on σU, and 0 on the
+  D-zeros and on the 30 t=0 zeros. So |d|² = 36.
+
+**Step 1: the star part of h₁ has product form.** In (v) every star(c) cell is S-type, so h₁(c^σ, b^τ) = a_b·σ with
+Σ_b a_b = 0.
+- Proof: balance at b gives 2a_b·[X-type] + 2·net_b = 0, and net ≡ 0 in (v).
+
+**Step 2: the boundary flux B(w) := Σ_{zeros y∼w} d(y) is forced.**
+- At S: B(v_k) = 6 and B(σv_k) = −6.
+- At star(c): B(g) = 3 + I_σ(g) − I_v(g) for g ∈ G_i. This is λ/μ of g against the six S-vertices.
+  - In (v) each triangle inner vertex b^τ is shared by exactly one v and one σv, and never by g's own v_i.
+  - So B = 3 on all of A and B = −3 on σA.
+- Then |B|² = 12|d|² − |f|² = 432 forces B = 0 at every inner vertex. (This is the known ρ-identity.)
+
+**Step 3: the new eigenvector.**
+- On 1⊥ we have P₋₄ = (3I − A)/7, and AD = −D + B. Hence 4D − B ∈ E₋₄. Here 4D − B = 4d + 3h₁|_star − 3h₁|_S.
+- Therefore
+  **u := (4D − B − 3h₁)/4 = d − (3/2)·h₁|_S**
+  is an integer σ-odd (−4)-eigenvector that vanishes on x, the inner vertices and star(c). Its values: −3 on v_k,
+  +3 on σv_k, ±2 on M/σM, ±1 on U/σU.
+- Label norm 45; ⟨h₁, u⟩ = −18.
+- CHECK, pointwise by hand. Au = −4u holds at:
+  - v₁: σv₂, σv₃ give 3 + 3; the zeros give 6; total 12;
+  - g ∈ A: −3 + 3 = 0;
+  - m₁₂: −6 − 2 = −8;
+  - u₁: −3 − 1 = −4;
+  - δ: −3 + 3 + 0 = 0;
+  - the inner vertices: 0.
+
+**Consequences.**
+- Balance of u mod 2 at each block: the six U-labels form an Eulerian multigraph on B₀ (every block has even U-degree).
+  Correction: this is only the ρ-identity mod 2, so it is not new.
+- u vanishes on star(c), so u ∈ Λ_c (integer eigenvectors off star(c); rank ≥ 3 always).
+- ⟨h₁, u⟩ has Gram [[24, −18], [−18, 45]], determinant 756, minimum 24. No short vector, so no contradiction yet.
+
+**Type (iii) analogue.**
+- There f = ρ·N ≠ 0, with N = e_d − e_g after normalisation. The same projection gives 4D + f − B ∈ E₋₄.
+- Then 4e := 4D + f − B − 3h₁ = 4d + (g_d − g_g) − 6h₁|_S lies in E_ℤ, with parity cut{d, g}.
+- Equivalently, U' = (ι_d − ι_g) + d − (3/2)h₁|_S is an integer σ-odd eigenvector in the rank-22 space, ±1 at d±, g±.
+  CHECK: at v₁, v₂, v₃ and d⁺.
+
+**General principle (for structures' R8 k=1 as well).**
+- If the ±2-set W of a J-type vector gives a zero-graph equation (A_Z + I)d = −f with explicit f, then 4D + f − B is an
+  integer eigenvector.
+- Whenever B is forced pointwise, subtracting a multiple of h gives a new, often divisible, eigenvector supported off
+  star(c).
+
+**Invariant subspaces (CHECK, sympy: code/r6/companion_check.py).**
+- (v): span(H = h₁|_star, s, D) is A-invariant, with A H = −2H − 4s − 2D, A s = −H − 2s + D and A D = −3H + 6s − D.
+  - Spectrum {3, −4, −4}, diagonalisable, with (−4)-plane span(h₁, u).
+  - The 3-eigenvector is φ = −H + 2s + D (integer, label norm 42).
+  - Glue relation: 7s = h₁ − u + φ.
+- (iii): span(H, s, D, G = g_d − g_g, ι = ι_d − ι_g) is A-invariant, with spectrum {3², (−4)³}, diagonalisable. The third
+  (−4) vector is D − 3s + ι.
+- **All consistent. No contradiction at this level.**
+
+## 7. J1a: structures' PSD/interlacing test (28/09 late evening; joint with structures)
+**The test.** For any label set U, M_U := 12I − 4T_UU − R_U R_Uᵀ = 28(P₋₄)_UU is PSD of rank ≤ 15. (The P₃ version,
+T + 4I − RRᵀ/3 ⪰ 0, also holds.)
+
+**J1a with positive representatives.** Every support edge is opposite-sign, so T_UU = −G with G ≥ 0 and G·a = 4a (Perron).
+Hence M_U = 12I + 4G − RRᵀ.
+
+**Facts (DERIVED, all J1a types).**
+- G_star (the star(c) labels) = Q ∪ P, both perfect matchings.
+  - Q switches κ (the c-side of the positive representative); P keeps κ.
+  - So the label cycles have length ≡ 0 mod 4, and **G_star is bipartite**.
+- In (v), κ = a_b.
+- Each star label has exactly one V-neighbour. Each V has 4 star labels (2 in B⁺, 2 in B⁻) and the other two V's (a K₃).
+- R e_c|_U is a null vector (g_c).
+
+**Two test families (DERIVED).**
+1. **Proper colouring.** Take x a proper 2-colouring of G_star and y = −s/2 on the V's (s_k = Σ_{G_k} x). Then
+   z^T M z = 48 − 2Σs_k² − |R^T z|². The twisted sum Σ_b a_b(x_{b+} + x_{b−}) is always 0.
+   - This kills unless the groups are colour-balanced.
+2. **Group-constant.** Take x = α_k on G_k and y = β_k. Then F = 48|α|² + 12|β|² + 4αᵀEα + 32⟨α,β⟩ + 8e₂(β) − |Σα_k R_k + Σβ_k ρ_k|².
+   - Here E_kk = 2e_kk and E_kl = e_kl count the G_star edges within and between groups; R_k = Σ_{G_k} r_L.
+   - With α = (1, −1, 0) and β = (−2, 2, 0): violation if 8(e₁₂ − e₁₁ − e₂₂) + |R₁ − R₂ − 2(ρ₁ − ρ₂)|² > 32.
+
+**Where the survivors lie.** A configuration with every G_k = two internal G_star edges (e_kk = 2, e_kl = 2) passes both
+families. The candidate survivors are there. structures' sampler: the odd test fails on 398/400 (v) samples, and the even
+test kills the other 2.
+
+**Next.** Get the survivors from structures, then find a universal certificate or a λ/μ kill of "G_k ⊇ a G_star edge".
+
+**Update 28/09 late night (structures' sampler + C1 checks).**
+- **Sampled survivors.** 13 sampled (v) configurations survive the odd test. They are in
+  conway99-rank17/r8_data/j1a_v_odd_survivors.json.
+  - The sampler does not impose the pair design, so these are a superset of the true survivors.
+  - All 13 die on the even test, 6I − 2G − |R||R|ᵀ + J ⪰ 0 (D_UU = 0 in J1a). Even minima lie in [−1.85, −0.08].
+  - C1 reproduced both minima exactly, with positive representatives r_L = a_L(e_c ± e_K).
+- **Pattern.** Odd-survivors have high internal group connectivity: e_kk ∈ {2, 3, 4} for every k.
+  - The odd test kills cross-dominated configurations: with α = (1,−1,0) and β = (−2,2,0), it violates if
+    8(e_kl − e_kk − e_ll) + |R_k − R_l − 2(ρ_k − ρ_l)|² > 32.
+  - The even test kills internally dominated ones: with α = β = (1,−1,0), it violates if
+    4(e_kk + e_ll − e_kl) + |m_k − m_l + |ρ_k| − |ρ_l||² > 32.
+  - Group-constant compression (6-dim): the odd form is PSD on all 13. The even form is negative on 11/13; on the other 2 it
+    is exactly 0, and the full test kills them.
+- **The G-free combination** 2·even + odd = 36I + 2J − 2|R||R|ᵀ − RRᵀ is PSD in every a-case (min eigenvalue ≈ 18.5).
+  So there is no trivial kill.
+- **Structural null vectors.** The odd form has κ = R e_c. In case (I) the even form has n₀ = e − 2.5a, where
+  e = (Uu − G)a = (−1 on triangle-star labels, +1 on the other star labels, +1 on the V's).
+- **Methodological status.** A complete kill of (v) by PSD seems to need optimised vectors per configuration. The margins can
+  be as small as −0.08. Without a universal structural certificate, closing (v) this way means an exhaustive exact check
+  over configurations, which the user must authorise (solvers and enumeration are banned). Scripts (code/r6/):
+  j1av_psd_one.py, j1av_trace.py, groupquot.py, gfree.py.
