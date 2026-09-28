@@ -33,6 +33,7 @@ typedef struct {
     int np;
     uint16_t *pi, *pj, *fh1, *fh2;         /* compact: class size <= 4096, functionals are 15-bit */
     int8_t *s1, *s2;
+    int *wgv;                              /* w G_V per vector (integer phi test) */
 } CD;
 static CD *cd;
 
@@ -98,11 +99,13 @@ static void load(const char *path) {
         c->voff[m] = used;
         /* in-class pairs */
         if (m > 4096) { fprintf(stderr, "class too large %d\n", m); exit(2); }
+        c->wgv = malloc(sizeof(int) * ((size_t)m * nB + 1));
         for (int k = 0; k < m; k++)
             for (int b = 0; b < nB; b++) {
                 int s = 0;
                 for (int a = 0; a < nB; a++) s += c->w[k * nB + a] * Gv[a][b];
                 wg[k * MAXB + b] = s;
+                c->wgv[k * nB + b] = s;
             }
         int pc = 16; c->np = 0;
         c->pi = malloc(sizeof(uint16_t) * pc); c->pj = malloc(sizeof(uint16_t) * pc);
@@ -187,12 +190,28 @@ static void build_tables(int kb) {
     }
 }
 
+/* entries recorded at a leaf for the integer phi test: (w+, w-) = (s+ w_vp, s- w_vm) in the cell's class, signature */
+typedef struct { uint16_t vp, vm; int8_t sp, sm; uint8_t sig; } IEnt;
+static IEnt *ients[21];
+static int nient[21], capient[21];
+static CD *cellcd[21];
+static int record_entries = 0;
+static void push_ient(int X, int vp, int sp, int vm, int sm, int sig) {
+    if (nient[X] == capient[X]) {
+        capient[X] = capient[X] ? 2 * capient[X] : 256;
+        ients[X] = realloc(ients[X], sizeof(IEnt) * capient[X]);
+    }
+    IEnt *e = &ients[X][nient[X]++];
+    e->vp = (uint16_t)vp; e->vm = (uint16_t)vm; e->sp = (int8_t)sp; e->sm = (int8_t)sm; e->sig = (uint8_t)sig;
+}
+
 static uint64_t cell_sigma(int X) {
     int c = CELLc[X], d = CELLd[X];
     int gam = (c == 1) ? g[d - 2] : (g[c - 2] ^ g[d - 2]);
     int ci = cidx[gam];
     if (ci < 0) { fprintf(stderr, "cell class not usable %d\n", gam); exit(3); }
     CD *C = &cd[ci];
+    if (record_entries) { nient[X] = 0; cellcd[X] = C; }
     int full = (1 << KB) - 1;
     int ec = (c == 1) ? full : (1 << (c - 2)), ed = 1 << (d - 2);
     if (KB == 6) {
@@ -237,11 +256,105 @@ static uint64_t cell_sigma(int X) {
                     int sig = pat(fsplus);
                     if ((pat(fsminus) ^ ed) != sig) mismatch++;
                     S |= 1ULL << sig;
+                    if (record_entries) {                  /* (w+, w-) as (vector index, sign) pairs, and sigma */
+                        int vp, vm, sgp, sgm;
+                        if (t == 0) { if (ord == 0) { vp = i; vm = j; } else { vp = j; vm = i; } sgp = sgm = sp; }
+                        else if (ord == 0) { vp = i; sgp = sp; vm = j; sgm = -sp; }
+                        else { vp = j; sgp = -sp; vm = i; sgm = sp; }
+                        push_ient(X, vp, sgp, vm, sgm, sig);
+                    }
                 }
             }
         }
     }
     return S;
+}
+
+/* ---- integer phi test (Z4_INTPHI=1): at a mod-4-feasible leaf, redo the phi search with, for every cell X determined by
+   the rows chosen so far, the restricted domain R_X = {recorded entries with signature phi(d_X)} (every entry of a frame
+   lies in the one self-dual code, so its signature is phi(d_X)), and forward checking under the integer rule
+   (w_X^s, w_Y^t) + r_X^s . r_Y^t in {0, +-4}. A phi that dies has no frame; a skeleton all of whose phi die is excluded. */
+static int INTPHI = 0;
+static int *rdom[8][21], rlen[8][21], rcap[21];
+static int detd[21];
+static long long iphi_nodes = 0, iphi_alive = 0, n_int_killed = 0, n_int_surv = 0;
+static inline int rr_dot(int X, int s, int Y, int t) {
+    int c = CELLc[X], d = CELLd[X], c2 = CELLc[Y], d2 = CELLd[Y];
+    return (c == c2) + (c == d2) * t + (d == c2) * s + (d == d2) * s * t;
+}
+static inline int wdot(const CD *A, int ia, const CD *B, int ib) {
+    const int *x = A->wgv + ia * nB; const int8_t *y = B->w + ib * nB;
+    int s = 0;
+    for (int k = 0; k < nB; k++) s += x[k] * y[k];
+    return s;
+}
+static inline int ok4(int v) { return !(v & 3) && v <= 4 && v >= -4; }
+static int ent_compat(int X, const IEnt *e, int Y, const IEnt *f) {
+    const CD *A = cellcd[X], *B = cellcd[Y];
+    if (!ok4(e->sp * f->sp * wdot(A, e->vp, B, f->vp) + rr_dot(X, 1, Y, 1))) return 0;
+    if (!ok4(e->sp * f->sm * wdot(A, e->vp, B, f->vm) + rr_dot(X, 1, Y, -1))) return 0;
+    if (!ok4(e->sm * f->sp * wdot(A, e->vm, B, f->vp) + rr_dot(X, -1, Y, 1))) return 0;
+    if (!ok4(e->sm * f->sm * wdot(A, e->vm, B, f->vm) + rr_dot(X, -1, Y, -1))) return 0;
+    return 1;
+}
+/* keep the entries of X (level L list) that have a compatible entry in Y; returns the new length */
+static int fc_filter(int L, int X, int Y) {
+    int n0 = rlen[L][X], out = 0;
+    for (int a = 0; a < n0; a++) {
+        const IEnt *e = &ients[X][rdom[L][X][a]];
+        int ok = 0;
+        for (int b = 0; b < rlen[L][Y] && !ok; b++) ok = ent_compat(X, e, Y, &ients[Y][rdom[L][Y][b]]);
+        if (ok) rdom[L][X][out++] = rdom[L][X][a];
+    }
+    rlen[L][X] = out;
+    return out;
+}
+static int intphi_rec(int k) {
+    iphi_nodes++;
+    if (k == 6) { iphi_alive++; return 1; }
+    uint64_t S = SIG[cellidx[1][k + 2]];
+    while (S) {
+        int m = __builtin_ctzll(S); S &= S - 1;
+        int ok = 1;
+        for (int e = 0; e < k; e++) if ((((m >> e) & 1) ^ ((Mrow[e] >> k) & 1)) != J[k][e]) { ok = 0; break; }
+        if (!ok) continue;
+        int tgt[8], newc[8], nn = 0;
+        newc[nn] = cellidx[1][k + 2]; tgt[nn++] = m;
+        for (int e = 0; e < k; e++) {
+            int v = Mrow[e] ^ m ^ KAP[e][k];
+            if (!((SIG[cellidx[e + 2][k + 2]] >> v) & 1)) { ok = 0; break; }
+            newc[nn] = cellidx[e + 2][k + 2]; tgt[nn++] = v;
+        }
+        if (!ok) continue;
+        /* level k+1 domains: copy the determined ones, build the new ones */
+        for (int X = 0; X < 21; X++) if (detd[X]) {
+            rlen[k + 1][X] = rlen[k][X];
+            memcpy(rdom[k + 1][X], rdom[k][X], sizeof(int) * rlen[k][X]);
+        }
+        for (int q = 0; q < nn; q++) {
+            int X = newc[q]; rlen[k + 1][X] = 0;
+            for (int a = 0; a < nient[X]; a++) if (ients[X][a].sig == tgt[q]) rdom[k + 1][X][rlen[k + 1][X]++] = a;
+            if (!rlen[k + 1][X]) ok = 0;
+        }
+        if (!ok) continue;
+        for (int q = 0; q < nn; q++) detd[newc[q]] = 1;
+        /* forward checking: new cells against every determined cell, then the old ones against the new ones */
+        for (int q = 0; q < nn && ok; q++)
+            for (int Y = 0; Y < 21 && ok; Y++)
+                if (detd[Y] && Y != newc[q] && !fc_filter(k + 1, newc[q], Y)) ok = 0;
+        for (int Y = 0; Y < 21 && ok; Y++) {
+            int isnew = 0;
+            for (int q = 0; q < nn; q++) if (newc[q] == Y) isnew = 1;
+            if (!detd[Y] || isnew) continue;
+            for (int q = 0; q < nn && ok; q++) if (!fc_filter(k + 1, Y, newc[q])) ok = 0;
+        }
+        if (ok) {
+            Mrow[k] = m;
+            if (intphi_rec(k + 1)) { for (int q = 0; q < nn; q++) detd[newc[q]] = 0; return 1; }
+        }
+        for (int q = 0; q < nn; q++) detd[newc[q]] = 0;
+    }
+    return 0;
 }
 
 static int z4rec(int k) {
@@ -515,10 +628,12 @@ static void leaf(void) {
     KB = ZK = 6;
     build_tables(6);
     int firstempty = -1;
+    record_entries = INTPHI;
     for (int X = 0; X < 21; X++) {
         SIG[X] = cell_sigma(X);
         if (!SIG[X] && firstempty < 0) { firstempty = X; if (mode == 0) break; }
     }
+    record_entries = 0;
     const char *verdict;
     if (firstempty >= 0) {
         n_empty++; empty_by_cell[firstempty]++; verdict = "EMPTY";
@@ -527,7 +642,21 @@ static void leaf(void) {
         zsol = 0;
         zcount_all = (mode == 1);
         z4rec(0);
+        int intkilled = 0;
+        if (zsol > 0 && INTPHI) {                          /* integer phi test on the mod-4 survivor */
+            for (int X = 0; X < 21; X++) {
+                if (rcap[X] < nient[X] + 1) {
+                    rcap[X] = nient[X] + 1;
+                    for (int L = 0; L < 8; L++) rdom[L][X] = realloc(rdom[L][X], sizeof(int) * rcap[X]);
+                }
+                detd[X] = 0;
+            }
+            int r = intphi_rec(0);
+            if (!r) { intkilled = 1; n_int_killed++; }
+            else n_int_surv++;
+        }
         if (zsol == 0) { n_z4++; verdict = "Z4"; }
+        else if (intkilled) { verdict = "INT"; }
         else {
             n_surv++; verdict = "SURVIVOR";
             if (maxsurv && n_surv >= maxsurv) stopflag = 1;
@@ -976,6 +1105,7 @@ int main(int argc, char **argv) {
     if (getenv("Z4_LEAFPRE")) LEAFPRE = atoi(getenv("Z4_LEAFPRE"));
     if (getenv("Z4_MAXLEAVES")) maxleaves = atoll(getenv("Z4_MAXLEAVES"));
     if (getenv("Z4_MAXSURV")) maxsurv = atoll(getenv("Z4_MAXSURV"));
+    if (getenv("Z4_INTPHI")) INTPHI = atoi(getenv("Z4_INTPHI"));
     if (canon) {
         nbrs = calloc((size_t)n * nw, sizeof(uint64_t));
         for (int i = 0; i < n; i++)
@@ -1057,10 +1187,11 @@ int main(int argc, char **argv) {
     for (int k = 0; k < 21; k++) printf("%lld%s", empty_by_cell[k], k < 20 ? ", " : "");
     printf("], \"pmin\": %d, \"partial_tested\": [%lld, %lld, %lld], \"partial_pruned\": [%lld, %lld, %lld], "
            "\"fail_empty\": [%lld, %lld, %lld], \"fail_z4\": [%lld, %lld, %lld], \"leaf_pre_killed\": %lld, "
-           "\"sdepth\": %d, \"stab2\": %d, \"schreier_gens\": %d}\n", PMIN,
+           "\"sdepth\": %d, \"stab2\": %d, \"schreier_gens\": %d, \"intphi\": %d, \"int_killed\": %lld, "
+           "\"int_survivors\": %lld, \"intphi_nodes\": %lld}\n", PMIN,
            tested[3], tested[4], tested[5], pruned[3], pruned[4], pruned[5],
            fail_empty[3], fail_empty[4], fail_empty[5], fail_z4[3], fail_z4[4], fail_z4[5], leaf_pre_killed,
-           SDEPTH, STAB2, NSCHREIER);
+           SDEPTH, STAB2, NSCHREIER, INTPHI, n_int_killed, n_int_surv, iphi_nodes);
     if (fsurv) fclose(fsurv);
     return mismatch ? 4 : 0;
 }

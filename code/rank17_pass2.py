@@ -60,8 +60,8 @@ def child(tag, pid):
     print('RESULT ' + json.dumps(out), flush=True)
 
 
-def driver(tags):
-    os.makedirs(os.path.join(WORK, 'claims2'), exist_ok=True)
+def driver(tags, claims='claims2'):
+    os.makedirs(os.path.join(WORK, claims), exist_ok=True)
     for tag in tags:
         K = json.load(open(os.path.join(DATA, 'K_%s.json' % tag)))
         ids = [r['id'] for r in K['K']]
@@ -72,7 +72,7 @@ def driver(tags):
                                                  and json.loads(l)['verdict'] in ('EXCLUDED', 'MOD4_FEASIBLE')}:
                 continue
             try:
-                os.close(os.open(os.path.join(WORK, 'claims2', '%s_%d' % (tag, pid)), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                os.close(os.open(os.path.join(WORK, claims, '%s_%d' % (tag, pid)), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
             except FileExistsError:
                 continue
             log = os.path.join(WORK, '%s_%d.log' % (tag, pid))
@@ -97,5 +97,7 @@ def driver(tags):
 if __name__ == '__main__':
     if sys.argv[1] == 'child':
         child(sys.argv[2], int(sys.argv[3]))
+    elif len(sys.argv) > 2 and sys.argv[2] == 'retry':          # a fresh claim space: retries UNDECIDED pairs only
+        driver(sys.argv[1].split(','), claims='claims_retry_%d' % int(time.time() // 3600))
     else:
         driver(sys.argv[1].split(','))
