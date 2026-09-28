@@ -87,6 +87,33 @@ Results:
    of A² again. Next: exploit the free star(c) (2-regular, sign-bipartite, Q/P-alternating cycles of length ≡ 0 mod 4) together
    with the C₆ apexes and the X-cell interior vertices.
 
+### 2.7 J1a — exhaustive split by the configuration of the three ±2 cells (DERIVED, 28/09 afternoon)
+- ρ_k = D₇ vector of v_k, supported on B₀ = [7] ∖ {c}. The balance at d^± forces net_d = Σ_k (ρ_k)_d ∈ {0, ±1} for every
+  d ∈ B₀.
+- The three cells form a multigraph with 3 edges on the 6 blocks of B₀, and its odd-degree blocks are exactly the X-cells.
+  There are exactly six types:
+  - (i) matching;
+  - (ii) P₃ + K₂;
+  - (iii) P₄;
+  - (iv) K₁,₃;
+  - (v) triangle;
+  - (vi) double edge + edge.
+- Tools, all consequences of λ = 1:
+  - (F1) two adjacent vertices of the same O_ι form a line with ι;
+  - (F4) if v_j and v_k share a signed block d^s, then σv_l ∉ O_{d^s}. Otherwise the edge d^s–σv_l would lie in two
+    triangles, since σv_l ∼ v_j, v_k.
+- **(iv) is DEAD.** net at the centre d is ±1, so two of the ρ's have the same sign s at d and the third has −s. Then v_j, v_k
+  and σv_l all lie in O_{d^s}, contradicting (F4).
+- **(vi) is DEAD.** Two sibling ±2 labels on {d,e}, with the third needed to repair the net. In both sign cases two v's share an
+  inner vertex that also contains σv₃, contradicting (F4).
+- **(v) triangle (X = 0), consistent so far.**
+  - All 6 C₆ apexes are inner vertices.
+  - The m_{jk} are zeros with #v = 2, #σv = 0, so n = 4: all four corners are in A. Exactly one corner lies in G_j, one in G_k,
+    and two in G_l, on opposite sides.
+  - The D-zeros have n = 2. The two remaining zeros of v_k have n = 3.
+  - The inner vertices of the triangle blocks exclude their A-roots from the adjacent groups.
+- **Open branches:** (i) (X = 6), (ii) (X = 4), (iii) (X = 2), (v) (X = 0).
+
 ## 2bis. Row-capacity lemma (DERIVED) and what it kills
 - **Facts used.**
   - Each row of T has exactly 10 nonzero entries, each ±1 (diagonal of T² + T = 12I − CᵀC).
