@@ -605,3 +605,17 @@
   - Restent : P₃+K₂ (4 orientations), K₃ (8), 3K₂ (44), 2K₂ (72) et K₂ (144). Ils demandent le couplage de
     « structures ».
   - Contrôle Σ = ∅ : 0 survivant, c'est le Th. 25.3 de C2.
+
+## 2026-10-06 (reprise de la passation « fonctions courtes », session cloud)
+- Fichiers locaux de la passation absents du dépôt ; tout est recalculé dans `code/v7/`. Voir notes/155.
+- **Théorème de classe** : les transferts 37 → 26 sont exactement les éléments de q + ⟨q_v, 1⟩ ; φ = ‖z‖² − 2k² mod 7
+  est un invariant de classe (forme U mod 7 de notes/101). Au niveau 0 de [q], le minimum vaut 26 ou 40, et 40 est
+  toujours atteint. Minima résiduels de [q] par niveau : 40, 35, 34, 37, 44.
+- **V7 reconstruit** : 24 noyaux (comme la passation), 12 orbites. Nouvelle preuve de la distinction des t
+  (q − (a − q_τ) serait une affine 37 à trois négatifs).
+- **CVP exhaustif sur le noyau** : 1 828 des 13 812 couples (noyau, trous) tués, dont 1 816 par une entière 26 de la
+  forme q − 3a + Q_T − Q_H et 12 par une affine 21. Pour les 11 984 autres, aucun transfert n'est supporté par le noyau.
+- **Germes noyau + O_x** : 18 % survivent au niveau 1, 4,4 % au niveau 2, 0,55 % au niveau 3 ; 40 configurations O_x
+  complètes échantillonnées sur 40 meurent. L'arbre exhaustif (~10⁹ nœuds au niveau 2) demande du C.
+- Étage colonnes avec q : CP-SAT UNKNOWN. SAT complet (6,9 M clauses, encodeur validé sur Paley9, Petersen et BvLS
+  masqué) : UNKNOWN.
