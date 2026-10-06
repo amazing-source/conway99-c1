@@ -97,9 +97,14 @@ est obtenue de façon exacte : LLL sur [I | W·G], puis LLL sur le Gram.
 - **niveau 3 : 0,55 % survivent** ;
 - **configurations O_x complètes échantillonnées : 40 sur 40 meurent.**
 
-**Taille de l'arbre exhaustif.** Il y a 546 109 paires Bx–Zx admissibles. Le niveau 2 compte de l'ordre de 10⁹ nœuds.
-C'est hors de portée en Python. Il faut du C, un branchement par étiquettes (couverture exacte des demandes de x) et
-des tests indépendants des trous partagés entre choix de trous.
+**Taille de l'arbre exhaustif.** Il y a 546 109 paires Bx–Zx admissibles. Le niveau 2 compte de l'ordre de 10⁹ nœuds,
+et l'ordre naïf explose ensuite. Ce n'est raisonnable ni en Python ni, sans autre idée, en C, sur 5 849 couples.
+
+Il faudrait au minimum :
+- un branchement par étiquettes (couverture exacte des demandes de x) ;
+- des tests indépendants des trous, partagés entre les choix de trous.
+
+Coût non estimé de façon défendable.
 
 ## 6. Étage colonnes et SAT complet
 **Étage colonnes (CP-SAT, `bstage*.py`, `projected.py`).**
@@ -121,7 +126,13 @@ des tests indépendants des trous partagés entre choix de trous.
    - Les combinaisons de marques seules sont automatiquement cohérentes (normes ∈ 14Z au niveau 0) : le pouvoir vient
      de la fonction germe.
    - Elle est la plus forte dans le résiduel 37, où 21 et 26 sont interdits.
-3. **Obligation suivante, précise.** Énumérer exhaustivement O_x, puis O_y, pour chacun des 5 849 couples représentants
+3. **Germe universel de la branche 37** ({x, y} ∪ N(x) ∪ N(y), 28 sommets, `twostar_rate.py`). Sur 300 échantillons
+   aléatoires respectant λ/μ :
+   - **83 % survivent** ;
+   - 15 % meurent par une norme 26, 1 % par une affine 21, et 1 cas par (−2, 20), impossible dans tout graphe.
+
+   À cette taille, le test réduit peu : sa force croît avec le germe (cf. §5).
+4. **Obligation suivante, précise.** Énumérer exhaustivement O_x, puis O_y, pour chacun des 5 849 couples représentants
    (noyau, trous), en C, avec les tests de classe.
    - UNSAT : V7 est fermé.
    - Survivants : on obtient des germes à 37 sommets, puis à 47 (noyau + O_x + O_y, avec trois relations connues :
@@ -138,3 +149,4 @@ des tests indépendants des trous partagés entre choix de trous.
   lent) ; `depth1_rate.py`, `depth2_rate.py`.
 - **Étage colonnes** : `bstage.py`, `bstage2.py`, `projected.py`, `reduced_bstage.py`.
 - **SAT** : `srgsat.py`, `test_srgsat.py`, `v7sat.py`, `make_cnf*.py`.
+- **Germe universel 37** : `twostar_rate.py`.
