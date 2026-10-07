@@ -97,3 +97,16 @@ plusieurs « ? » de la table, par exemple (105,52,21,30) et (714,248,97,80). **
 | **E. Pas d'involution** (plus tard) | route C complète | archiver les preuves listées au point 3, vérifier 9/7, moteur unique, seconde lecture |
 
 Avec A + E : **tout graphe de Conway a un groupe d'automorphismes trivial.**
+
+## Mise à jour du 07/10 au soir : C2 exclu
+- Le tracker de la route C est à 156/156 réseaux exclus depuis 17:47 UTC (`conway99-c2-aws/lemma/FINAL_STATEMENT_DRAFT.md`, draft 7).
+- Plusieurs réserves du §3 ont été levées le même jour :
+  - la règle 9/7 (T16) a été relue par Codex ;
+  - T18 et T20 sont acceptés ;
+  - les audits H2, H3 et H4 sont fermés ;
+  - les certificats sont complets (7 762 sur 7 762) ;
+  - l'entrée g ∈ {18, 20} (Théorème B′) n'est plus utilisée.
+- Le texte précise lui-même son statut : relecture par des sessions d'IA, sans arbitre humain ni formalisation.
+- **Conséquence** : avec C3 (Lean) et Behbahani–Lam (tout premier divisant |Aut| vaut 2 ou 3), **tout
+  srg(99,14,1,2) a un groupe d'automorphismes trivial**. L'article A du §4 devient « le graphe de Conway est
+  asymétrique », regroupant C2, C3 et C7.

@@ -651,3 +651,15 @@
     - kissat UNKNOWN (4 C sur 4 à 400 s, contrôle réel BvLS à 1 500 s), solveur dédié incomplet.
   - Verdict : la route Ω est finie mais pas à coût maîtrisé (≥ 10¹⁰ heures CPU) ; C1 n'a aucune route à coût maîtrisé
     connue.
+- **C2 exclu** (annonce de l'utilisateur ; `conway99-c2-aws/lemma/FINAL_STATEMENT_DRAFT.md`, draft 7).
+  - Les 156 réseaux sont exclus dans le tracker du labo depuis le 07/10 à 17:47 UTC.
+  - Ce qui a été fait le 07/10 :
+    - T16 (règle 9/7) relu par Codex ; T18 et T20 acceptés ;
+    - audits H2, H3 et H4 fermés ;
+    - 143 prouvé à la main ;
+    - certificats : 7 762 sur 7 762 ;
+    - l'entrée g ∈ {18, 20} n'est plus utilisée.
+  - Statut déclaré par le texte lui-même : vérification par des sessions d'IA (Claude, Codex), sans relecteur humain ni
+    formalisation. Restent : un document de preuve unique et figé avec manifeste, une passe d'arbitre, et la décision
+    sur les réseaux à enregistrements locaux au labo.
+  - Avec C3 (Lean) et Behbahani–Lam : **tout srg(99,14,1,2) est asymétrique.** C1 est désormais tout le problème.
