@@ -252,3 +252,23 @@ configurations supply, and the programme only needs 994 vectors of norm <= 18: c
   already has the numbers of short vectors that can be proved. What remains is structural: exclusion of the cores of norm
   <= 18 (r = 35), <= 20 (r = 37), <= 24 (r = 39, 41), <= 26 (r = 43), or a reason bounding the rank from above
   (r <= 45 - k as soon as L1 contains k vectors whose Gram matrix is invertible mod 7).
+
+## 11. The 3-side (23:44 UTC): an even lattice of rank 60 and a second ladder; no exclusion
+
+Idea: the dual lattice on the side of the eigenvalue 3 is forced to contain far more short vectors than a random lattice of
+its determinant at every r, so the same method was tried there. Construction (checked independently by Codex, which is
+publishing it): K3 = Z^99 cap (E_3 + Q1) = { kappa : (A - 3I) kappa = c 1 }; u = (1/3) 1 has norm 11; K3' = K3 + Z u is an
+odd lattice of rank 55, level 7, determinant 7^(r-1), with characteristic vector 1 = 3u of norm 99 = 3 mod 8; the even
+neighbour E of K3' + Z^5 is an even lattice of rank 60, level 7, determinant 7^(r-1), so theta_E lies in M_30(Gamma_0(7))
+(dimension 21, basis (eta(7tau)^7/eta(tau))^10 t^j). Along u, theta_E = sum_j Phi_j Theta_j with Phi_j the coset theta
+series of a fixed even lattice of rank 6 and determinant 11 (theta = 1 + 40q + 122q^2 + ...) and Theta_j the theta series
+of the 11 cosets of L_3 = Z^99 cap E_3 (class j = 3c mod 11; projected norm nu = |kappa|^2 - 9c^2/11 >= 9|c|(1 - |c|/11)
+for |c| <= 5: grids are c = +-1, nu = 90/11; integer 3-eigenvectors are c = 0, nu >= 12).
+`theta3.py`: two self-tests (the same decomposition for Z^11 + Z^5 gives theta of D_16^+ = E_4^2; weight-30 basis and
+Fricke formula on E_4^a E_4(7tau)^(7-a) theta_A^2), then the exact LP with unknown shell counts N_j(nu) and the forced
+dual vectors (norm 6: 1386 differences of adjacent vertices; norm 8: 8316 + 4158; norm 10: 182 952; ...).
+Result (`OUTPUT_theta3_ladder_N26.txt`, N = 26): feasible for all r in the window; second ladder: some class has a vector
+of projected norm nu <= 20 at r = 35, <= 266/11 at r = 39, <= 304/11 at r = 43, with at least 667 vectors of nu <= 20 at
+r = 35 and nothing forced below 21 for r >= 39. Adding more forced dual vectors does not move it. So the 3-side gives
+existence statements (3-eigenvectors, grids, regular sets of small norm) but no exclusion; the over-forcing heuristic that
+predicted the (-4)-side well does not carry over, because the 3-side has six classes of unknowns.
