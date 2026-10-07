@@ -1,5 +1,6 @@
 \documentclass[11pt]{amsart}
-\usepackage{amssymb,amsmath,booktabs,hyperref}
+\usepackage{amssymb,amsmath,booktabs}
+\usepackage[hidelinks]{hyperref}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -8,9 +9,10 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \title{A second strongly regular graph with parameters $(243,22,1,2)$}
-\author{[Author]}
+\author{Dilan Djematene}
 \date{\today}
 
+\setlength{\emergencystretch}{2em}
 \begin{document}
 \begin{abstract}
 We construct a strongly regular graph with parameters $(243,22,1,2)$ that is not isomorphic to the
@@ -35,12 +37,12 @@ listed as open in~\cite{BvM,Btab,Zaw}; it is known only among rank~$3$ graphs, a
 graphs~\cite{BvM}.
 
 \begin{theorem}\label{thm:main}
-There is a strongly regular graph $\Gamma'$ with parameters $(243,22,1,2)$ not isomorphic to BvLS. Its automorphism
-group has order $4320$, with vertex orbits of sizes $3$, $60$ and $180$.
+There is a strongly regular graph $\Gamma'$ with parameters $(243,22,1,2)$ that is not isomorphic to BvLS.
+Its automorphism group has order $4320$, with vertex orbits of sizes $3$, $60$ and $180$.
 \end{theorem}
 
-The graph is given explicitly in the ancillary files (\texttt{srg243\_new.g6}, edge list \texttt{srg243\_new.edges}).
-A self-contained verifier in pure Python, \texttt{verify\_srg243.py}, checks $22$-regularity and the values $\lambda=1$,
+The graph is given explicitly in the ancillary files, in graph6 format (\texttt{srg243\_new.g6}) and as an
+edge list (\texttt{srg243\_new.edges}). A self-contained verifier in pure Python (\texttt{verify\_srg243.py}) checks $22$-regularity and the values $\lambda=1$,
 $\mu=2$ on all $29\,403$ pairs of vertices.
 
 \section{The construction}
@@ -62,16 +64,20 @@ Let $\Gamma$ be BvLS and $T$ any triangle. Then $|C|=60$ and $|F|=180$, and for 
 of $w$, and a second one that differs from it in $8$ of its $16$ elements.
 \end{lemma}
 
-The lemma is a finite computation: we enumerated all solutions of~\eqref{eq:rows} for each of the $180$ rows with an
-exact integer solver. BvLS is arc-transitive, so all triangles are equivalent.
+The lemma is a finite computation: for each of the $180$ rows we enumerated all solutions of~\eqref{eq:rows}
+exhaustively with an exact integer constraint solver (OR-Tools CP-SAT). BvLS is arc-transitive, so all triangles are equivalent.
 
 Write $F'$ for the relation in which each far vertex is joined to its \emph{second} solution. The relation $F'$ is
 symmetric, and changing to it removes $720$ edges inside $F$ and adds $720$ others. Let $\Gamma'$ be the graph obtained
 from BvLS by replacing the subgraph induced on $F$ by $F'$; all adjacencies involving $T\cup C$ are kept.
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
-\emph{$\Gamma'$ is an $\mathrm{srg}(243,22,1,2)$.} This is checked directly on all pairs (ancillary verifier). Pairs
-meeting $T\cup C$ are unaffected by \eqref{eq:rows}. Only pairs inside $F$ need the check.
+\emph{$\Gamma'$ is an $\mathrm{srg}(243,22,1,2)$.} Regularity is clear, since every row of $F'$ has $16$ elements.
+For a pair $\{u,w\}$ with $u\in C$ and $w\in F$, the number of common neighbours is preserved by
+\eqref{eq:rows}. For the other pairs meeting $T\cup C$, every edge from the pair to a common neighbour has an end in
+$T\cup C$, so these counts are unchanged. For the
+pairs inside $F$ the values $\lambda=1$, $\mu=2$ are checked by direct computation. The ancillary verifier checks
+all $29\,403$ pairs.
 
 \emph{$\Gamma'$ is not isomorphic to BvLS.} For a vertex $p$, let $g(p)$ be the number of induced $3\times3$ grids
 ($K_3\times K_3$) through $p$; this is an isomorphism invariant. In BvLS, $g\equiv55$ (there are $1485$ grids). In
@@ -152,8 +158,8 @@ neighbour with $a$ if $x\sim a$, and at most $2$ otherwise. Counting pairs there
 (k-d)(n-1)\le d+2(2n-1-d),\qquad\text{that is}\qquad (k-4)n-(k-2)\le d(n-2).
 \]
 For $n=2$ this gives $k\le6$, a contradiction. For $n\ge3$ it gives $d\ge k-3$, so at most $6n$ edges leave $C$. Since
-$\Gamma$ is $k$-regular with second eigenvalue $r=(-1+\sqrt{4k-7})/2$, the number of edges leaving $C$ is at least
-$(k-r)\,2n\,(v-2n)/v$. Hence $2n\ge v\,(1-3/(k-r))$, which gives $n\ge36$, $102$, $3045$ and an even larger value for
+$\Gamma$ is $k$-regular with second largest eigenvalue $r$ (namely $r=3,4,10,31$ for $k=14,22,112,994$), the
+number of edges leaving $C$ is at least $(k-r)\,2n\,(v-2n)/v$. Hence $2n\ge v\,(1-3/(k-r))$, which gives $n\ge36$, $102$, $3045$ and an even larger value for
 $k=14$, $22$, $112$ and $994$ respectively. In every case $n>k$. Then no outside vertex can have $n$ or $2n$ neighbours in
 $C$, so no edge leaves $C$. Since $\Gamma$ is connected, $C=V$.
 \end{proof}
@@ -169,23 +175,24 @@ Ancillary files:
 The automorphism groups were computed with nauty.
 \end{remark}
 
-\begin{remark}[Statement of AI assistance]
-The construction was found during a research project on Conway's $99$-graph problem that used AI assistants (Anthropic's
-Claude and OpenAI's ChatGPT) for derivations, computations and audits. All claims are checked by the ancillary programs.
-The author is responsible for the content.
-\end{remark}
+\section*{Acknowledgements}
+This work was carried out with the assistance of Claude (Anthropic), an AI system, which was used for derivations, computations, independent checks of the arguments and the preparation of the manuscript. The author has verified the results and takes full responsibility for the content.
 
-\begin{thebibliography}{99}
+\begin{thebibliography}{9}
 \bibitem{BvLS} E.~R.~Berlekamp, J.~H.~van Lint and J.~J.~Seidel, A strongly regular graph derived from the perfect
-ternary Golay code, in \emph{A Survey of Combinatorial Theory}, North-Holland, 1973, 25--30.
-\bibitem{Btab} A.~E.~Brouwer, Parameters of strongly regular graphs, \url{https://aeb.win.tue.nl/graphs/srg/srgtab.html}.
-\bibitem{BvM} A.~E.~Brouwer and H.~Van Maldeghem, \emph{Strongly Regular Graphs}, Cambridge University Press, 2022.
-\bibitem{Mak} A.~A.~Makhnev, On strongly regular graphs with $\lambda=1$, \emph{Mat. Zametki} 44 (1988), 667--672.
-\bibitem{nauty} B.~D.~McKay and A.~Piperno, Practical graph isomorphism, II, \emph{J. Symbolic Comput.} 60 (2014),
-94--112.
+ternary Golay code, in: J.~N.~Srivastava (ed.), \emph{A Survey of Combinatorial Theory}, North-Holland, Amsterdam,
+1973, pp.~25--30.
+\bibitem{Btab} A.~E.~Brouwer, \emph{Parameters of strongly regular graphs}, online tables,
+\url{https://aeb.win.tue.nl/graphs/srg/srgtab.html} (accessed October 2026).
+\bibitem{BvM} A.~E.~Brouwer and H.~Van Maldeghem, \emph{Strongly Regular Graphs}, Encyclopedia of Mathematics and its
+Applications 182, Cambridge University Press, Cambridge, 2022.
+\bibitem{Mak} A.~A.~Makhnev, On strongly regular graphs with $\lambda=1$, \emph{Mat. Zametki} \textbf{44} (1988),
+667--672; English transl.\ \emph{Math. Notes} \textbf{44} (1988), 847--850.
+\bibitem{nauty} B.~D.~McKay and A.~Piperno, Practical graph isomorphism, II, \emph{J. Symbolic Comput.}
+\textbf{60} (2014), 94--112.
 \bibitem{Rei} R.~Reimbayev, The lower bound for number of hexagons in strongly regular graphs with parameters
-$\lambda=1$ and $\mu=2$, arXiv:2409.10620, 2024.
-\bibitem{Zaw} S.~S.~Zaw, On strictly Deza graphs derived from the Berlekamp--van Lint--Seidel graph,
-arXiv:1907.02800, 2020.
+$\lambda=1$ and $\mu=2$, preprint, arXiv:2409.10620 (2024).
+\bibitem{Zaw} S.~S.~Zaw, On strictly Deza graphs derived from the Berlekamp--van Lint--Seidel graph, preprint,
+arXiv:1907.02800 (2020).
 \end{thebibliography}
 \end{document}

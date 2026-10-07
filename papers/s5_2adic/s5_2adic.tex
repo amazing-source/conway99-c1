@@ -1,5 +1,6 @@
 \documentclass[11pt]{amsart}
-\usepackage{amssymb,amsmath,booktabs,longtable,hyperref}
+\usepackage{amssymb,amsmath,booktabs}
+\usepackage[hidelinks]{hyperref}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -10,9 +11,10 @@
 \DeclareMathOperator{\disc}{disc}
 
 \title{A $2$-adic nonexistence condition for strongly regular graphs}
-\author{[Author]}
+\author{Dilan Djematene}
 \date{\today}
 
+\setlength{\emergencystretch}{2em}
 \begin{document}
 \begin{abstract}
 For a strongly regular graph with integral eigenvalues $k>r>s$ such that $r-s$ is odd, we show that the integral
@@ -83,11 +85,8 @@ We use three standard facts.
 the dual lattice $L^\#$. Indeed, it lies in $L^\#$, and every integral linear form on $L$ extends to $\Z^v$ because
 $L$ is primitive, and is then given by an element of the unimodular lattice $\Z^v$.
 \item[(F2)] If $L$ is primitive in a unimodular lattice, then $L$ and $L^\perp$ have isomorphic discriminant groups
-(\cite{Nik}, Prop.~1.6.1).
-\item[(F3)] An even lattice over $\Z_2$ with unit determinant is an orthogonal sum of binary lattices with Gram
-matrices $\begin{pmatrix}2a&b\\ b&2c\end{pmatrix}$, $b$ odd (\cite[Ch.~15]{CS}; \cite{OM}, 93:15). Each has
-determinant $4ac-b^2\equiv-1\pmod 4$. Hence such a lattice has even rank $m$, and its determinant is
-$(-1)^{m/2}$ times a square unit, which is $\equiv1\pmod 8$. This is also \cite[Cor.~6.4]{Mart}.
+(\cite[Prop.~1.6.1]{Nik}). Both groups are isomorphic to $M/(L\oplus L^\perp)$, where $M$ is the unimodular lattice.
+\item[(F3)] Let $L$ be an even lattice over $\Z_2$ whose Gram determinant is a unit. Then $L$ has even rank $m$ and its determinant is $\equiv(-1)^{m/2}\pmod 4$. Indeed, the bilinear form is nondegenerate modulo $2$ and alternating there (as $L$ is even), so there are $x,y\in L$ with $(x,y)$ odd. The Gram matrix of $\Z_2x+\Z_2y$ is $\begin{pmatrix}2a&b\\ b&2c\end{pmatrix}$ with $b$ odd. Its determinant $4ac-b^2\equiv-1\pmod 4$ is a unit, so this plane splits off orthogonally, and induction gives the claim (compare \cite[Ch.~15]{CS}). A change of $\Z_2$-basis multiplies the determinant by a square unit, which is $\equiv1\pmod8$, so the congruence holds in any basis.
 \end{enumerate}
 
 \emph{Evenness.} Since $\theta\ne k$, $V_\theta\perp\mathbf 1$, so every $x\in\Lambda_\theta$ has
@@ -96,8 +95,7 @@ $\sum x_i=0$. Hence $x\cdot x=\sum x_i^2\equiv\sum x_i\equiv0\pmod 2$.
 \emph{Odd determinant.} The first term of \eqref{eq:E} has denominator $\pm d$, which is odd. The second is $2$-integral
 because $v_2(k-\theta')\ge v_2(v)$. So $E_\theta$ has $2$-integral entries. By (F1),
 $\Lambda_\theta^\#\otimes\Z_2=E_\theta(\Z_2^v)\subseteq \Z_2^v\cap V_\theta=\Lambda_\theta\otimes\Z_2$, so
-$\Lambda_\theta$ is unimodular at $2$, that is, $\det\Lambda_\theta$ is odd. Part~(a) now follows from (F3), since the
-integer $\det\Lambda_\theta$ and the $2$-adic determinant differ by a square of a unit.
+$\Lambda_\theta$ is unimodular at $2$, that is, $\det\Lambda_\theta$ is odd. Part~(a) now follows from (F3), applied to $\Lambda_\theta\otimes\Z_2$ in a $\Z$-basis of $\Lambda_\theta$.
 
 \emph{Part (b).} Let $q\nmid d$. If $v_q(k-\theta')\ge v_q(v)$, then $E_\theta$ is $q$-integral, and the argument above
 with $q$ in place of $2$ shows $q\nmid\det\Lambda_\theta$. Assume now $v_q(k-\theta')<v_q(v)$, so $q\mid v$. Let
@@ -131,8 +129,9 @@ $m_s\equiv2\pmod4$, so $(-1)^{m_s/2}P_s=-1$, contradicting Corollary~\ref{cor:mo
 \end{proof}
 
 For example, $\mathrm{NL}_3(17)=\mathrm{srg}(289,54,1,12)$, whose nonexistence was proved by Bondarenko and
-Radchenko~\cite{BR} by other means. The table contains open members of this family for $n=13,17,25,29$
-(Table~\ref{tab:open}). At $v=625$ the known graphs of negative Latin square type all have $e$ even.
+Radchenko~\cite{BR} by other means. The table contains open members of this family for
+$n\in\{13,17,25,29\}$, see Table~\ref{tab:open}. At $v=625$, the table records graphs with the parameters $\mathrm{NL}_e(25)$ for $e=4,6,8,10,12$, while
+$e=5,7,9,11$ were open; this matches Corollary~\ref{cor:NL}.
 
 \begin{corollary}\label{cor:pg}
 There is no partial geometry $\mathrm{pg}(14,14,4)$.
@@ -144,7 +143,7 @@ and $3$. We have $v_2(200)\ge v_2(750)$ and $v_3(200)=0<1$, so $P_s=3$. Then $(-
 \end{proof}
 
 \begin{table}[ht]
-\centering
+\centering\small
 \caption{Parameter sets with $v\le 1300$ marked open (``?'') in Brouwer's table (snapshot of September 2026) that are
 excluded by Corollary~\ref{cor:mod4}. The column $\theta$ gives the eigenvalue used, with its multiplicity $m$ and $P_\theta$.}
 \label{tab:open}
@@ -176,8 +175,8 @@ $(v,k,\lambda,\mu)$ & $\theta$ & $m$ & $P_\theta$ & $(v,k,\lambda,\mu)$ & $\thet
 
 \section{Verification and remarks}
 \begin{remark}[Consistency with known graphs]
-The condition was implemented twice, independently (one implementation is the file \texttt{verify\_s5.py} accompanying
-this note). Both were applied to all $4538$ rows of Brouwer's table with $v\le1300$, complements included. No parameter set
+The condition was implemented twice, independently; one implementation is the accompanying file
+\texttt{verify\_s5.py}. Both were applied to all $4538$ rows of Brouwer's table with $v\le1300$, complements included. No parameter set
 for which a graph is known is excluded. Among the parameter sets known not to exist, the condition recovers
 $(289,54,1,12)$~\cite{BR} and $(154,51,8,21)$, which the table excludes by the Krein condition.
 \end{remark}
@@ -189,21 +188,19 @@ $99$-graph problem, $\mathrm{srg}(99,14,1,2)$, where $d=7$. The hypothesis $v_2(
 when $v$ is even. For the Petersen graph, $\Lambda_1$ has determinant $162$.
 \end{remark}
 
-\begin{remark}[Statement of AI assistance]
-The criterion was found, proved, audited and machine-checked in a research project that used AI assistants (Anthropic's
-Claude and OpenAI's ChatGPT) for derivations, independent audits and code. The author has checked the proofs and is
-responsible for the content.
-\end{remark}
+\section*{Acknowledgements}
+This work was carried out with the assistance of Claude (Anthropic), an AI system, which was used for derivations, computations, independent checks of the arguments and the preparation of the manuscript. The author has verified the results and takes full responsibility for the content.
 
-\begin{thebibliography}{99}
+\begin{thebibliography}{9}
 \bibitem{BR} A.~V.~Bondarenko and D.~V.~Radchenko, On a family of strongly regular graphs with $\lambda=1$,
-\emph{J. Combin. Theory Ser. B} 103 (2013), 521--531.
-\bibitem{Btab} A.~E.~Brouwer, Parameters of strongly regular graphs, \url{https://aeb.win.tue.nl/graphs/srg/srgtab.html}.
-\bibitem{BvM} A.~E.~Brouwer and H.~Van Maldeghem, \emph{Strongly Regular Graphs}, Cambridge University Press, 2022.
-\bibitem{CS} J.~H.~Conway and N.~J.~A.~Sloane, \emph{Sphere Packings, Lattices and Groups}, 3rd ed., Springer, 1999.
-\bibitem{Mart} J.~Martinet, On parity classes, lecture notes, Lausanne, 2003.
+\emph{J. Combin. Theory Ser. B} \textbf{103} (2013), 521--531.
+\bibitem{Btab} A.~E.~Brouwer, \emph{Parameters of strongly regular graphs}, online tables,
+\url{https://aeb.win.tue.nl/graphs/srg/srgtab.html} (accessed September 2026).
+\bibitem{BvM} A.~E.~Brouwer and H.~Van Maldeghem, \emph{Strongly Regular Graphs}, Encyclopedia of Mathematics and its
+Applications 182, Cambridge University Press, Cambridge, 2022.
+\bibitem{CS} J.~H.~Conway and N.~J.~A.~Sloane, \emph{Sphere Packings, Lattices and Groups}, 3rd ed., Grundlehren der
+mathematischen Wissenschaften 290, Springer, New York, 1999.
 \bibitem{Nik} V.~V.~Nikulin, Integral symmetric bilinear forms and some of their applications,
-\emph{Math. USSR Izv.} 14 (1980), 103--167.
-\bibitem{OM} O.~T.~O'Meara, \emph{Introduction to Quadratic Forms}, Springer, 1963.
+\emph{Math. USSR Izv.} \textbf{14} (1980), 103--167.
 \end{thebibliography}
 \end{document}
