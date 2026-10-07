@@ -1,0 +1,80 @@
+{
+  "scope": "Re-execution of LAB code after source review, not a second independent search implementation.",
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "records": [
+    {
+      "command": [
+        "C:\\Users\\RESEARCHER\\Desktop\\c2_experimental\\.venv\\Scripts\\python.exe",
+        "-I",
+        "code\\lab_biplane243_2026-10-07\\biplane_test_general.py",
+        "rook"
+      ],
+      "returncode": 0,
+      "seconds": 0.047,
+      "stdout": "n=9 k=4 block size 2 (m=2): candidates 36; ordered (P,Q) 18; eigenvectors of norm 4 up to sign: 9\n",
+      "stderr": "",
+      "script_sha256": "208366508e7fa163bee4ba938de6c6c5a1b289a8387bf837a7abcba194ab606a",
+      "repository_files": [
+        {
+          "path": "code/lab_biplane243_2026-10-07/biplane_test_general.py",
+          "repository_sha256": "af4f039f39d026814d8b681486284ee15663aaad94d6c534c8f33edf3209f2f9",
+          "working_tree_differs_only_by_crlf": true
+        }
+      ]
+    },
+    {
+      "command": [
+        "C:\\Users\\RESEARCHER\\Desktop\\c2_experimental\\.venv\\Scripts\\python.exe",
+        "-I",
+        "code\\lab_biplane243_2026-10-07\\biplane_test.py",
+        "data/srg243/bvls243.edges"
+      ],
+      "returncode": 0,
+      "seconds": 35.515,
+      "stdout": "graph bvls243.edges: srg(243,22,1,2) verified; candidates examined 3592512; ordered configurations (P,Q) found 0; eigenvectors of norm 22 up to sign: 0\n",
+      "stderr": "",
+      "script_sha256": "fb688554462aab8e8e27108cfe307d57f475d0bdd891ecb243ca0979b90bf533",
+      "input_sha256": "504041ee503bd740f35ea437b4ce2b070b2ee555adc488e7715a45e5b7f5da45",
+      "repository_files": [
+        {
+          "path": "code/lab_biplane243_2026-10-07/biplane_test.py",
+          "repository_sha256": "b419ea2cbc8372ffd46969ce8e1402c650e8ac41c856081598a86c9f88c97853",
+          "working_tree_differs_only_by_crlf": true
+        },
+        {
+          "path": "data/srg243/bvls243.edges",
+          "repository_sha256": "bc15b2e9607a7e791dcd411a7489fbfa1635cfa020412b0eb9bc1d6a85dc5e29",
+          "working_tree_differs_only_by_crlf": true
+        }
+      ]
+    },
+    {
+      "command": [
+        "C:\\Users\\RESEARCHER\\Desktop\\c2_experimental\\.venv\\Scripts\\python.exe",
+        "-I",
+        "code\\lab_biplane243_2026-10-07\\biplane_test.py",
+        "data/srg243/twin243_switched.edges"
+      ],
+      "returncode": 0,
+      "seconds": 27.438,
+      "stdout": "graph twin243_switched.edges: srg(243,22,1,2) verified; candidates examined 3592512; ordered configurations (P,Q) found 0; eigenvectors of norm 22 up to sign: 0\n",
+      "stderr": "",
+      "script_sha256": "fb688554462aab8e8e27108cfe307d57f475d0bdd891ecb243ca0979b90bf533",
+      "input_sha256": "90b231b772f789e240af8d5fb0548e795c4fdcf10147a0d7cdeb784a61c11975",
+      "repository_files": [
+        {
+          "path": "code/lab_biplane243_2026-10-07/biplane_test.py",
+          "repository_sha256": "b419ea2cbc8372ffd46969ce8e1402c650e8ac41c856081598a86c9f88c97853",
+          "working_tree_differs_only_by_crlf": true
+        },
+        {
+          "path": "data/srg243/twin243_switched.edges",
+          "repository_sha256": "7796454a050e96130cef18c2ef260ccf5c657d2afcf49e26f6d2306cf530886f",
+          "working_tree_differs_only_by_crlf": true
+        }
+      ]
+    }
+  ],
+  "repository_commit": "d3ddd3f2d4d07add01466b5587d743a160cce8ce",
+  "line_endings": "Windows checkout uses CRLF; every executed script and input was compared byte-for-byte after CRLF-to-LF normalization with the cited Git blob."
+}
