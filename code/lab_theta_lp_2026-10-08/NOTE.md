@@ -143,7 +143,7 @@ union of cores must stay <= r; a lemma "two distinct Fano configurations force r
 The space Q_r = L1 / (L1 cap 7 L1*) is a non-degenerate quadratic space over F_7 of dimension 45 - r and of minus type
 (Witt index (45 - r)/2 - 1); Fano vectors are isotropic in it.
 
-## 8. Addendum (22:48 UTC): at most 4 norm-16 vectors per seed; r = 33 needs half a million vectors of norm 18
+## 8. Addendum (22:44 UTC): at most 4 norm-16 vectors per seed; r = 33 needs half a million vectors of norm 18
 
 Three hand proofs, cross-read (Codex's "at most 10", the laptop's "at most 13", and their combination, re-derived by me):
 for a seed (p0; U = its four neighbours in Q), let V be the six second common neighbours of the pairs of U.
@@ -167,3 +167,10 @@ So **a_8 <= 55 440 * 4 / 8 = 27 720**.
 With 4 per seed: **r = 33 needs at least 94 Fano vectors and at least 497 123 vectors of norm 18.** An upper bound
 a_9 <= 497 122 would therefore exclude r = 33. For norm 18 the supports have 9 vertices each and may contain up to two
 disjoint edges each (8e + (1/2) sum a_p^2 <= 18); the per-seed count is not done.
+
+`tradeoff33.py` (`OUTPUT_tradeoff33_N84.txt`): at r = 33 with a_8 <= 27 720, the forced number of norm-18 vectors as a
+function of the cap on a_7: 497 123 (a_7 <= 7920), 854 645 (<= 4000), 1 128 259 (<= 1000), 1 210 890 (<= 94); roughly
+1.22 million minus 91 a_7. With independent supports (55 440 seeds, 9 per vector) that is 80 to 197 configurations per seed.
+
+Remark: S = J - I - 2A (Seidel matrix) satisfies S^2 = 49 (I + J) and rank_7(S) = r - 1; the rows of S mod 7 are the vectors
+1_{Gamma_2(v)} - 1_{N(v)}, which span the radical code C_0.
