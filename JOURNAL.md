@@ -638,3 +638,8 @@
 - Hiérarchie de moments tirée de openai/math réimplémentée (`code/moments/`), validée sur 7 SRG et sur le contrôle à
   243. À 99 : P ∈ [0, 1 386] à l'ordre 6 ; 208 types et 2 paramètres libres à l'ordre 7. Doublon de la note 91 (déjà
   jusqu'à l'ordre 8, mur L16) : rien de nouveau. Voir la note 161.
+- Inventaire des 12 dépôts Conway (cinq agents de lecture ; synthèse dans notes/162, rapports dans `162_annexes/`).
+  - Les forts : C3 (sans ordinateur, Lean complet) ; C7 sans ordinateur ; le second 243 ; le critère S5 de structures,
+    qui exclut 35 « ? » de la table de Brouwer et la famille NL_e(n). J'ai relu S5 : la preuve est correcte.
+  - Réserves : aucune relecture humaine, paternité de l'article C7, preuves de la route C non archivées, lemme 9/7 non
+    vérifié.
