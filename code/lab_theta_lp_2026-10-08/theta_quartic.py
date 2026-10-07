@@ -93,7 +93,7 @@ def build(d, extra=()):
     for k in range(1, N // 7 + 1):                                       # same for the vectors of sqrt7 M, norm 14k
         lo, hi = bounds(7 * k); c0 = Fr(2 * 196 * k * k, 69)
         low = add(B4[k], sc(B[k], c0 - lo)); up = add(sc(B[k], hi - c0), B4[k], -1)
-        if k == 2: up = add(up, cst(462 * (Fr(52, 3) - hi)), -1)         # the 462 triangle vectors have sum f^4 = 52/3 exactly
+        if k == 2: up = add(up, cst(462 * (Fr(52, 3) - hi)))             # S <= 462 * 52/3 + (b_2 - 462) hi  (sign corrected: Codex, 07/10)
         C.append(("SM(%d) >= lo b" % k, low)); C.append(("SM(%d) <= hi b" % k, up))
     for part in extra:
         if part.startswith("min:"):
