@@ -12,6 +12,7 @@ by a two-phase tableau simplex in Fractions (Bland's rule). Returned objects are
 Modes (constraint sets), all containing: a_n >= 0 (7 <= n <= N), b_n >= 0 (1 <= n <= N), a_7k >= b_k:
   base : b_2 >= 462, b_3 >= 8316, b_4 >= 1386
   ext  : b_2 >= 462, b_3 >= 24948, b_4 >= 388080, b_5 >= 196812     (see NOTE.md for the configurations counted)
+  ext2 : b_2 >= 462, b_3 >= 24948, b_4 >= 1431738, b_5 >= 3415104, b_6 >= 10844064   (NOTE.md section 9)
   suffix "+a7" adds a_7 <= 0;  suffix "+min:m" adds a_n <= 0 for 7 <= n < m (what-if: min L1 >= 2m);  suffix "+cap:b1=X,b2=Y,b3=Z" adds upper bounds b_k <= value (what-if runs, NOT facts)."""
 import sys
 from fractions import Fraction as Fr
@@ -71,11 +72,14 @@ def build(d, mode):
     A, B = T.family(d); C = []
     for n in range(7, N + 1): C.append(("a_%d >= 0" % n, A[n]))
     for n in range(1, N + 1): C.append(("b_%d >= 0" % n, B[n]))
-    low = {"base": ((2, 462), (3, 8316), (4, 1386)), "ext": ((2, 462), (3, 24948), (4, 388080), (5, 196812))}[mode.split("+")[0]]
+    low = {"base": ((2, 462), (3, 8316), (4, 1386)), "ext": ((2, 462), (3, 24948), (4, 388080), (5, 196812)),
+           "ext2": ((2, 462), (3, 24948), (4, 1431738), (5, 3415104), (6, 10844064)),
+           "ext3": ((2, 462), (3, 24948), (4, 1431738), (5, 17668728), (6, 23272326), (7, 5987520))}[mode.split("+")[0]]
     for n, lo in low: C.append(("b_%d >= %d" % (n, lo), T.add(B[n], T.aff(lo), -1)))
     for k in range(1, N // 7 + 1): C.append(("a_%d >= b_%d" % (7 * k, k), T.add(A[7 * k], B[k], -1)))
     for part in mode.split("+")[1:]:
         if part == "a7": C.append(("a_7 <= 0", T.sc(A[7], -1)))
+        elif part == "caps": C.append(("a_7 <= 7920", T.add(T.aff(7920), A[7], -1))); C.append(("b_1 <= 3784", T.add(T.aff(3784), B[1], -1))); C.append(("a_8 <= 27720", T.add(T.aff(27720), A[8], -1)))
         elif part.startswith("min:"):                                     # what-if: no vector of L1 of norm < 2m
             for n in range(7, int(part[4:])): C.append(("a_%d <= 0" % n, T.sc(A[n], -1)))
         elif part.startswith("cap:"):
