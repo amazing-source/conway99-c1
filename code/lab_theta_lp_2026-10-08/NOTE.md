@@ -230,3 +230,25 @@ the caps is 1 049 063 (a_8 <= 27 720), 1 159 235 (a_8 <= 69 300), 1 214 320 (a_8
 So **r >= 35**, conditional on: sections 1, 2, 9 (set-up and counts), a_7 <= 7920 and a_8 <= 27 720 (or 90 090).
 Limit of this lever: at r = 35 the maxima of b_4 and b_3 under the caps are 9.8 million and 661 138, far above what small
 configurations supply, and the programme only needs 994 vectors of norm <= 18: counting does not reach r = 35.
+
+## 10. Status at 23:07 UTC: r >= 35 audited; what the programme can and cannot do from here
+
+* Codex audited section 9 independently (its note 172, commit d1aeb28 on codex/c1-arithmetic-audit): the families F1, F2,
+  their distinctness, direct controls on the rook graph and both 243-vertex graphs, and the certificates. The exclusion of
+  r = 33 is the integer identity, valid at d = 32,
+  12991 a_9 + 3288 a_10 + 3311 b_5 + 5937575 (b_2 - 462) + 936026 (b_3 - 24948) + 79625 (b_4 - 1431738)
+  + 1793806 (7920 - a_7) + 97767 (27720 - a_8) = -5559808184,
+  whose left side is a sum of non-negative terms. Accepted in the chain: **r in {35, 37, 39, 41, 43}**, with
+  min(L1) <= 18 / 20 / 24 / 24 / 26. The bounds b_5, b_6, b_7 of section 9 and the cap on roots are not dependencies.
+* `scenarios.py` (`OUTPUT_scenarios_N84.txt`; uses the non-audited b_5, b_6 of "ext2"): at r = 35, without Fano and
+  norm-16 vectors at least 55 172 vectors of norm 18; without Fano vectors at least 5 829 of norm 16 or 18; in general at
+  least 994 of norm <= 18. At r = 37, norms <= 18 may be empty, and then at least 574 vectors of norm 20.
+* The relation proposed by the laptop session for the sum of the isotropic classes (U_7 theta_L1) is the level-1 trace
+  identity and holds identically on the family; at r = 43 its content is a_7k = b_k, already forced. In representation
+  terms the O(D)-invariants of the Weil representation are Steinberg at r = 43 and 1 + Steinberg for r <= 41, and
+  M_22(Gamma_0(7)) is 1 + Steinberg: the scalar programme contains the whole invariant vector-valued structure.
+* Limits. Counting does not reach r = 35 (the programme tolerates millions of dual vectors there and needs fewer than a
+  thousand short vectors). r = 43 is the generic case: M has determinant 49, and a random lattice of that determinant
+  already has the numbers of short vectors that can be proved. What remains is structural: exclusion of the cores of norm
+  <= 18 (r = 35), <= 20 (r = 37), <= 24 (r = 39, 41), <= 26 (r = 43), or a reason bounding the rank from above
+  (r <= 45 - k as soon as L1 contains k vectors whose Gram matrix is invertible mod 7).
