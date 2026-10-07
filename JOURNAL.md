@@ -619,3 +619,12 @@
   complètes échantillonnées sur 40 meurent. L'arbre exhaustif (~10⁹ nœuds au niveau 2) demande du C.
 - Étage colonnes avec q : CP-SAT UNKNOWN. SAT complet (6,9 M clauses, encodeur validé sur Paley9, Petersen et BvLS
   masqué) : UNKNOWN.
+
+## 2026-10-07 (route Ω, triangle, nouveau srg(243,22,1,2))
+- notes/157 : route Ω (complément étoilé enraciné, valeur propre 3) démontrée complète ; équivalence (★) : Γ 12-régulier
+  avec T² = 7T.
+- notes/158 : deux étoiles mates = boule d'un triangle ; théorème de rang 8 (Z = F₋₄ ⊕ F₃) ; l'étage F est presque forcé
+  par les colonnes. Le vrai goulot est la décomposition en colonnes, sur ~2·10¹¹ structures C.
+- notes/159 : la branche alternative de l'étage F sur BvLS est un **nouveau srg(243,22,1,2)** (|Aut| = 4 320, 405 grilles).
+  La classe de bascule par triangle vaut {BvLS, nouveau}. Sur les 6 types de triangles connus, l'étage F a ≤ 4 candidats
+  par ligne et ≤ 2 complétions SRG. Recherche bibliographique du 07/10 : aucune autre construction connue.
