@@ -174,3 +174,59 @@ function of the cap on a_7: 497 123 (a_7 <= 7920), 854 645 (<= 4000), 1 128 259 
 
 Remark: S = J - I - 2A (Seidel matrix) satisfies S^2 = 49 (I + J) and rank_7(S) = r - 1; the rows of S mod 7 are the vectors
 1_{Gamma_2(v)} - 1_{N(v)}, which span the radical code C_0.
+
+## 9. Stronger dual lower bounds (22:57 UTC): r = 33 is infeasible; ladder 18 / 20 / 24 / 24 / 26
+
+Status: counts and proofs by the lab session, sent to Codex for refereeing; not yet refereed.
+
+Distinctness rule used throughout. Two integer vectors psi, psi' (3 | sum) are equal in M iff w = psi - psi' satisfies
+(A - 3I) w = (sum w / 9) 1. All families below have sum 0 or +-3, so sum w = 0 and w is an integer 3-eigenvector: either its
+entries are 0, +-1 and both supports induce prisms (6 vertices each), or it has an entry +-2 and norm >= 18. Hence two 0/+-1
+vectors with supports (s, t), (s', t') and the same sum are distinct as soon as s + t' <= 5 or t + s' <= 5 and
+|psi - psi'|^2 < 18. This covers all pairs among the types (1,1), (2,2) (sum 0) and among (3,0), (4,1) (sum 3).
+For 0/+-1 vectors with positive support S and negative support T:
+Q = 3(s + t) - 2 e(S) - 2 e(T) + 2 e(S,T) + ((s - t)/3)^2.
+
+Norm 8 (b_4), in addition to the 388 080 of section 2:
+* (F1) 1_C - e_z, C an induced 4-cycle, z adjacent to no vertex of C: 2079 * 51 * 2 = 212 058. (C has 48 outside
+  incidences; exactly 4 outside vertices, the apexes of its edges, have two neighbours in C; none has three: 44 neighbours.)
+* (F2) 1_S - e_z, S a paw (triangle abc and w ~ a), z adjacent to no vertex of S: 8316 * 50 * 2 = 831 600. (Neighbours of
+  S: the 35 near vertices of the triangle other than w and the 10 far neighbours of w.)
+So **b_4 >= 1 431 738**.
+
+Norm 10 (b_5), in addition to the 196 812 independent triples:
+* 1_e - 1_e', two disjoint edges with exactly one edge between: 693 * 264 = 182 952 (the second edge joins one of the 24
+  vertices adjacent to exactly one end of e to one of its 11 far neighbours).
+* +-(1_e - e_x - e_y), x, y non-adjacent among the 72 vertices far from e (366 edges among them): 693 * 2190 * 2 = 3 035 340.
+* triangle + far vertex y, minus a vertex z far from the triangle and not adjacent to y: 231 * 60 * 51 * 2 = 1 413 720.
+* claw (centre v, three pairwise non-adjacent neighbours: 99 * 280) minus a vertex adjacent to none: 27 720 * 51 * 2 = 2 827 440.
+* induced path a-b-c-d (693 * 12 * 11 = 91 476) minus a vertex adjacent to none (at least 50: the path has 50 outside
+  incidences and the overcount is at least 5): >= 91 476 * 50 * 2 = 9 147 600.
+* 4-cycle minus a vertex with exactly one neighbour in it: 2079 * 40 * 2 = 166 320; paw minus a vertex with exactly one
+  neighbour in it: 8316 * 42 * 2 = 698 544.
+So **b_5 >= 17 668 728**.
+
+Norm 12 (b_6): e_u + e_v - e_x - e_y, two disjoint non-edges with no edge between (4158 * 2120 = 8 814 960; among the 71
+vertices far from a non-edge there are 365 edges); +-(1_e - e_x - e_y), x, y non-adjacent with exactly one edge to e
+(693 * 1464 * 2 = 2 029 104); two disjoint edges with no edge between, minus a vertex adjacent to none of the four (at least
+49): >= 126 819 * 49 * 2 = 12 428 262. So **b_6 >= 23 272 326**.
+Norm 14 (b_7): two disjoint non-edges with exactly one edge between: >= 4158 * 24 * 60 = 5 987 520.
+
+Results (`OUTPUT_ext2_N84.txt`, `OUTPUT_ext3_N84.txt`, `certificates2_N84.json`, 7 certificates re-verified):
+
+| r | set "ext3" alone | with a_7 <= 7920, a_8 <= 27 720 |
+|---|---|---|
+| 29 | infeasible | |
+| 31 | needs a_7 >= 1 725 968 | infeasible (without the rank lemma) |
+| 33 | needs a_7 >= 688 | **infeasible** |
+| 35 | feasible | feasible; min(L1) <= 18; at least 994 vectors of norm <= 18 |
+| 37 | feasible | feasible; min(L1) <= 20 |
+| 39, 41 | feasible | feasible; min(L1) <= 24 |
+| 43 | feasible | feasible; min(L1) <= 26 |
+
+The certificate for r = 33 uses only b_2 >= 462, b_3 >= 24 948, b_4 >= 1 431 738, a_7 <= 7920, a_8 <= 27 720 and positivity
+of a_9, a_10, b_5. Margin (`OUTPUT_threshold33_N84.txt`): the maximum of b_4 compatible with the earlier constraints and
+the caps is 1 049 063 (a_8 <= 27 720), 1 159 235 (a_8 <= 69 300), 1 214 320 (a_8 <= 90 090); 5.78 million with no cap on a_8.
+So **r >= 35**, conditional on: sections 1, 2, 9 (set-up and counts), a_7 <= 7920 and a_8 <= 27 720 (or 90 090).
+Limit of this lever: at r = 35 the maxima of b_4 and b_3 under the caps are 9.8 million and 661 138, far above what small
+configurations supply, and the programme only needs 994 vectors of norm <= 18: counting does not reach r = 35.
