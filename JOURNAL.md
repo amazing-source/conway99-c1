@@ -632,3 +632,6 @@
   induits. C'est un **contre-exemple à la conjecture de Reimbayev** (arXiv:2409.10620, énoncée pour toute la famille).
   Une non-existence de 99 ne peut donc pas venir d'une loi uniforme sur la famille (grille (*), plafond de torsion).
   État des lieux et estimation révisée (~75 % pour la non-existence) : notes/160.
+- Exploration du dépôt openai/math (722 manuscrits, traces de raisonnement) : notes/161, en cours. Aucun manuscrit
+  sur Conway-99. Le « Riemann » annoncé est l'hypothèse quasi-Riemann (Re s > 7/8), avec une formalisation Lean
+  annoncée.
