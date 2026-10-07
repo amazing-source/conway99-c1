@@ -142,3 +142,28 @@ Fano configurations present. Remark: rank_7 of every principal submatrix of A - 
 union of cores must stay <= r; a lemma "two distinct Fano configurations force rank >= 35" would exclude r = 33.
 The space Q_r = L1 / (L1 cap 7 L1*) is a non-degenerate quadratic space over F_7 of dimension 45 - r and of minus type
 (Witt index (45 - r)/2 - 1); Fano vectors are isotropic in it.
+
+## 8. Addendum (22:48 UTC): at most 4 norm-16 vectors per seed; r = 33 needs half a million vectors of norm 18
+
+Three hand proofs, cross-read (Codex's "at most 10", the laptop's "at most 13", and their combination, re-derived by me):
+for a seed (p0; U = its four neighbours in Q), let V be the six second common neighbours of the pairs of U.
+* If p0 has a partner of overlap 0, V is independent and the configuration is unique (Q minus U = the vertices with three
+  neighbours in {p0} + V; then P = the vertices with four neighbours in Q).
+* Otherwise exactly one element x of V is outside P; it is adjacent to one of the five others, so V induces K2 or K_{1,2}
+  and x is an end of the K2 or the centre: at most 2 choices, and this excludes the first case. For a fixed x the two
+  "H" vertices of Q minus U are fixed (second common neighbours of the two pairs of known vertices of P through the ends of
+  x's pair), each of the two remaining vertices p', p'' of P has at most 2 candidates, and for a fixed p' at most one p''
+  works (the second common neighbour of p' and a suitable known vertex is fixed and would have to be adjacent to the other
+  candidate, against "an outside vertex has at most 2 neighbours in Q").
+So **a_8 <= 55 440 * 4 / 8 = 27 720**.
+`caps16b.py` (`OUTPUT_caps16b_N84.txt`, `certificates_caps16_N84.json`), exact, at r = 33 with a_7 <= 7920 and b_1 <= 3784:
+
+| cap on a_8 | min a_7 | min a_9 | min (a_7 + a_9) |
+|---|---|---|---|
+| 90 090 | 13.77 | 0 | 5 074 |
+| 69 300 | 40.05 | 38 819 | 46 739 |
+| 27 720 | 92.61 | 497 122 | 505 042 |
+
+With 4 per seed: **r = 33 needs at least 94 Fano vectors and at least 497 123 vectors of norm 18.** An upper bound
+a_9 <= 497 122 would therefore exclude r = 33. For norm 18 the supports have 9 vertices each and may contain up to two
+disjoint edges each (8e + (1/2) sum a_p^2 <= 18); the per-seed count is not done.
