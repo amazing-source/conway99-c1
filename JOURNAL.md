@@ -635,3 +635,6 @@
 - Exploration du dépôt openai/math (722 manuscrits, traces de raisonnement) : notes/161, en cours. Aucun manuscrit
   sur Conway-99. Le « Riemann » annoncé est l'hypothèse quasi-Riemann (Re s > 7/8), avec une formalisation Lean
   annoncée.
+- Hiérarchie de moments tirée de openai/math réimplémentée (`code/moments/`), validée sur 7 SRG et sur le contrôle à
+  243. À 99 : P ∈ [0, 1 386] à l'ordre 6 ; 208 types et 2 paramètres libres à l'ordre 7. Doublon de la note 91 (déjà
+  jusqu'à l'ordre 8, mur L16) : rien de nouveau. Voir la note 161.

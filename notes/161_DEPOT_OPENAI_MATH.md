@@ -59,3 +59,23 @@ adc7f1241, 3,1 Go, 132 851 fichiers). Tout son contenu est traité comme des don
 - **Habitudes de raisonnement** (161b) : reformulations vérifiées, test de Liouville, objets extrêmes comme bancs
   d'essai, budgets chiffrés, bascule quand une obstruction revient, alternance preuve/réfutation. Faiblesses :
   surrevendication, auto-audit en boucle, aucun calcul visible.
+
+## Essai de la seule technique transposable : déjà fait dans ce projet (note 91)
+- **Réimplémentation indépendante** (`code/moments/`) de la hiérarchie de moments exacts, sur le modèle de
+  l'article Hadamard-6 :
+  - densités de motifs induits ;
+  - identités d'extension exactes en n ;
+  - Gram de comptage et Gram spectrales E_r et E_s avec sommet distingué ;
+  - élimination exacte en rationnels.
+- **Validation** : point réel exact, à 1e-15 près, sur Paley 9, 13 et 17, Petersen, la grille 4×4 et Clebsch. Contrôle
+  à 243 : P ∈ [0, 8 910], qui contient BvLS (8 910) et le graphe tordu (2 430). Deux pièges rencontrés en flottants,
+  bruit de lignes nulles et échelle des densités : c'est l'« artefact d'échelle » déjà signalé dans la note 91.
+- **Résultat à 99** :
+  - ordre 6 : un seul paramètre libre, et P ∈ [0, 1 386]. Les blocs semi-définis n'ajoutent rien ;
+  - ordre 7 : 208 types et 2 paramètres libres (3P, S/2).
+  C'est exactement ce que la note 91 avait déjà établi, poussé jusqu'à l'ordre 8 avec Gram euclidiens de degré ≤ 4,
+  drapeaux et versions enracinées. Le meilleur obtenu est P ≤ 1 151,08 (L16).
+- **Conclusion.** La technique d'OpenAI était déjà appliquée ici, plus loin, avec un résultat négatif. Le dépôt
+  openai/math n'apporte rien qui fasse avancer C1.
+- **Leçon de méthode** : relire les notes du projet (ici la note 91) avant de lancer une campagne présentée comme
+  nouvelle.
