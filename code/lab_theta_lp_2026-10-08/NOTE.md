@@ -272,3 +272,27 @@ of projected norm nu <= 20 at r = 35, <= 266/11 at r = 39, <= 304/11 at r = 43, 
 r = 35 and nothing forced below 21 for r >= 39. Adding more forced dual vectors does not move it. So the 3-side gives
 existence statements (3-eigenvectors, grids, regular sets of small norm) but no exclusion; the over-forcing heuristic that
 predicted the (-4)-side well does not carry over, because the 3-side has six classes of unknowns.
+
+## 12. Two more variants, both weaker than the programme of sections 1 to 10 (23:58 UTC)
+
+* 3-side with Codex's proved constraints (`theta3_caps.py`, `OUTPUT_theta3_caps_N24.txt`): number of grids G <= 231 and
+  A_7m >= B_m. Same ladder (nu <= 20 at r = 35, nu <= 304/11 at r = 43); at least 1 844 vectors with nu <= 20 at r = 35;
+  G = 0 remains possible. No exclusion.
+* A (-4)-side programme that keeps the 3-part of the dual (`theta_pi.py`, `OUTPUT_theta_pi_N60.txt`). The vertex vectors
+  sqrt7 P e_v (norm 28/9) are not in M; gluing with A_8 gives the even lattice
+  Lam = { (sqrt7 P psi, pi(z)) : psi in Z^99, z in Z^9, sum psi = sum z mod 9 } of rank 52, level 7, determinant 7^(45-r),
+  in which they have norm 4 (1782 vectors), and its Fricke dual Pi = { (phi - (t/9)1, sqrt7 pi(z')) : (A+4I)phi = 2t 1,
+  sum z' = -t mod 9 }, whose shells are a_7 + 72 at norm 14, a_8 at norm 16, and mix the classes t != 0 from norm 18 on.
+  Theta series in M_26(Gamma_0(7)), nine free parameters; forced numbers of vectors of Lam computed from all integer
+  vectors of support <= 3 (72, 2538, 149 100, 4 499 550, ... for norms 2, 4, 6, 8, ...).
+  Result: feasible for r = 31..43, ladder 18 / 20 / 22 / 26 / 26 / 28 / 28. Weaker than the L1 programme (which excludes
+  r <= 33 and gives 18 / 20 / 24 / 24 / 26): the extra dual vectors do not compensate for the larger space of forms and for
+  the mixing of the classes of L* / L from norm 18 on.
+* Codex (note 175) determined exactly, by graphlet identities, all pairs (Q, Qbar) for the vectors of U of norm <= 5, which
+  gives b_5 >= 18 001 368, b_6 >= 86 272 956, b_7 >= 208 016 424, b_8 >= 263 126 556; with these and the coupled seed bound
+  every r in 35..43 remains feasible.
+Conclusion of the evening for the theta method: the window {35, 37, 39, 41, 43} and the ladder 18 / 20 / 24 / 24 / 26 are
+what scalar and vector-valued theta series of level 7 give with the short vectors that can be counted. What is not used by
+any of these programmes is class-level (glue) information, which is bilinear: e.g. (Codex) each class of M modulo sqrt7 L1
+contains at most one vector of norm <= 24, and a norm-4 vector of M other than the 462 triangle vectors has all its
+partners in sqrt7 K* of norm >= 38.
