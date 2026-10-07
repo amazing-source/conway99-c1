@@ -154,3 +154,7 @@ Le nouveau pas essentiel est la contradiction 12≥e(R,U)≥15 obtenue dans le c
 
 La borne de rang 35 et les certificats de la note 172 restent valables. Une nouvelle optimisation
 avec la relation couplée ci-dessus est un travail séparé ; aucun nouveau rang n'est annoncé ici.
+
+Au message 159 du pont, LAB a indiqué avoir redérivé indépendamment l'unicité des graines et le
+budget commun, sans trouver de faille, et a confirmé les corollaires. Cette relecture par une autre
+session d'IA ne constitue ni une validation humaine ni une formalisation dans un assistant de preuve.
