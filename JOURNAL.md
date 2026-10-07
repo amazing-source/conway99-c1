@@ -643,3 +643,11 @@
     qui exclut 35 « ? » de la table de Brouwer et la famille NL_e(n). J'ai relu S5 : la preuve est correcte.
   - Réserves : aucune relecture humaine, paternité de l'article C7, preuves de la route C non archivées, lemme 9/7 non
     vérifié.
+- notes/163 : l'étage colonnes de la route Ω a une forme exacte symétrique à trois couches. C'est un plan à blocs (60
+  blocs de 6 sur 36 points, concurrences 2J − 4 permutations), vérifié sur 286 triangles des deux 243 et sur Paley9.
+  - Mesures :
+    - environ 1,5·10¹¹ classes de C ;
+    - G_C ⪰ 0 de rang 34 automatiquement, donc aucun filtre ;
+    - kissat UNKNOWN (4 C sur 4 à 400 s, contrôle réel BvLS à 1 500 s), solveur dédié incomplet.
+  - Verdict : la route Ω est finie mais pas à coût maîtrisé (≥ 10¹⁰ heures CPU) ; C1 n'a aucune route à coût maîtrisé
+    connue.

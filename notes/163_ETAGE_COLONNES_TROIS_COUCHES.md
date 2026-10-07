@@ -78,12 +78,13 @@ c'est la signature d'un problème de plans difficile.
 |---|---|
 | kissat, encodage de 2,0·10⁵ variables et 1,1·10⁶ clauses | **UNKNOWN à 400 s pour 4 sur 4** |
 | solveur dédié | **3·10⁶ nœuds en 300 à 430 s, recherche incomplète pour 4 sur 4** |
-| contrôle positif structuré : vraie instance d'un triangle de BvLS (m = 20, 2,2·10⁶ variables, 2,6·10⁷ clauses) | BVLS_RESULT |
+| contrôle positif structuré : vraie instance d'un triangle de BvLS (m = 20, 2,2·10⁶ variables, 2,6·10⁷ clauses) | **UNKNOWN à 1 500 s**, alors qu'une solution existe (le vrai graphe) |
 
 ## 6. Conclusion sur le coût de la route Ω
 - **Ce qu'il faudrait faire.** La route Ω par la boule de triangle consiste à énumérer ≈ 1,5·10¹¹ classes de C, puis à
   décider l'étage colonnes pour chacune.
-- **Ce qu'on a mesuré.** Le meilleur outil générique ne décide pas une seule C en 400 s. Même si une C se décidait en
+- **Ce qu'on a mesuré.** Même sur l'instance réelle d'un graphe qui existe (BvLS), kissat ne retrouve pas le
+  système de colonnes en 1 500 s : l'étage est dur dans les deux sens, pour trouver comme pour réfuter. Le meilleur outil générique ne décide pas une seule C en 400 s. Même si une C se décidait en
   400 s, cela ferait ≥ 6·10¹³ s CPU ≈ **1,7·10¹⁰ heures CPU**, contre environ 10⁴ pour la route C de C2. On est au moins
   6 ordres de grandeur trop loin, et ce n'est qu'un minorant.
 - **Ce n'est pas un problème d'ingénierie.** Chaque paire de couches admet ≈ 10¹⁹ solutions alors que le tout n'en admet
