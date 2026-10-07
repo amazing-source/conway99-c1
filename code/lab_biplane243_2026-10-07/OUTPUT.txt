@@ -1,0 +1,23 @@
+Exact standard output of the runs of 2026-10-07, 21:14 UTC, lab PC (Windows 11, CPython 3.12.10, standard library only).
+Commands are written relative to the root of the repository; D = code/lab_biplane243_2026-10-07.
+
+$ python -I D/biplane_test.py data/srg243/bvls243.edges
+graph bvls243.edges: srg(243,22,1,2) verified; candidates examined 3592512; ordered configurations (P,Q) found 0; eigenvectors of norm 22 up to sign: 0
+[exit 0, 39 s]
+
+$ python -I D/biplane_test.py data/srg243/twin243_switched.edges
+graph twin243_switched.edges: srg(243,22,1,2) verified; candidates examined 3592512; ordered configurations (P,Q) found 0; eigenvectors of norm 22 up to sign: 0
+[exit 0, 28 s]
+
+$ python -I D/biplane_test_general.py rook
+n=9 k=4 block size 2 (m=2): candidates 36; ordered (P,Q) 18; eigenvectors of norm 4 up to sign: 9
+[exit 0, 0 s]
+
+$ python -I D/biplane_test_general.py data/srg243/bvls243.edges 243 22 5 -5
+n=243 k=22 block size 5 (m=11): candidates 3592512; ordered (P,Q) 0; eigenvectors of norm 22 up to sign: 0
+[exit 0, 36 s]
+
+$ python -I D/biplane_test_general.py data/srg243/twin243_switched.edges 243 22 5 -5
+n=243 k=22 block size 5 (m=11): candidates 3592512; ordered (P,Q) 0; eigenvectors of norm 22 up to sign: 0
+[exit 0, 28 s]
+
