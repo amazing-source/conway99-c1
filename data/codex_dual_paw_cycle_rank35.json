@@ -1,0 +1,376 @@
+{
+  "scope": "Independent exact audit of two new norm8 dual families and selected certificates; no higher dual shell counts assumed.",
+  "counts_for_99": {
+    "induced_four_cycles": 2079,
+    "far_vertices_per_cycle": 51,
+    "signed_cycle_minus_far_vertex": 212058,
+    "induced_paws": 8316,
+    "far_vertices_per_paw": 50,
+    "signed_paw_minus_far_vertex": 831600,
+    "old_b4_lower_bound": 388080,
+    "new_b4_lower_bound": 1431738
+  },
+  "verified_certificates": [
+    {
+      "mode": "ext2",
+      "r": 29,
+      "zero_shells": [],
+      "negative_constant": "-9005969069154/346969",
+      "certificate": [
+        [
+          "a_7 >= 0",
+          "1"
+        ],
+        [
+          "a_8 >= 0",
+          "6233/14162"
+        ],
+        [
+          "b_5 >= 0",
+          "3260673/693938"
+        ],
+        [
+          "b_6 >= 0",
+          "1541/3577"
+        ],
+        [
+          "b_7 >= 0",
+          "14895/693938"
+        ],
+        [
+          "b_2 >= 462",
+          "65174617/99134"
+        ],
+        [
+          "b_3 >= 24948",
+          "131591125/693938"
+        ],
+        [
+          "b_4 >= 1431738",
+          "3484553/99134"
+        ]
+      ]
+    },
+    {
+      "mode": "ext3",
+      "r": 29,
+      "zero_shells": [],
+      "negative_constant": "-9005969069154/346969",
+      "certificate": [
+        [
+          "a_7 >= 0",
+          "1"
+        ],
+        [
+          "a_8 >= 0",
+          "6233/14162"
+        ],
+        [
+          "b_5 >= 0",
+          "3260673/693938"
+        ],
+        [
+          "b_6 >= 0",
+          "1541/3577"
+        ],
+        [
+          "b_7 >= 0",
+          "14895/693938"
+        ],
+        [
+          "b_2 >= 462",
+          "65174617/99134"
+        ],
+        [
+          "b_3 >= 24948",
+          "131591125/693938"
+        ],
+        [
+          "b_4 >= 1431738",
+          "3484553/99134"
+        ]
+      ]
+    },
+    {
+      "mode": "ext2+caps",
+      "r": 33,
+      "zero_shells": [],
+      "negative_constant": "-5559808184/12991",
+      "certificate": [
+        [
+          "a_9 >= 0",
+          "1"
+        ],
+        [
+          "a_10 >= 0",
+          "3288/12991"
+        ],
+        [
+          "b_5 >= 0",
+          "301/1181"
+        ],
+        [
+          "b_2 >= 462",
+          "5937575/12991"
+        ],
+        [
+          "b_3 >= 24948",
+          "936026/12991"
+        ],
+        [
+          "b_4 >= 1431738",
+          "79625/12991"
+        ],
+        [
+          "a_7 <= 7920",
+          "1793806/12991"
+        ],
+        [
+          "a_8 <= 27720",
+          "97767/12991"
+        ]
+      ]
+    },
+    {
+      "mode": "ext3+caps",
+      "r": 31,
+      "zero_shells": [],
+      "negative_constant": "-29353813712656/97767",
+      "certificate": [
+        [
+          "a_9 >= 0",
+          "689096/97767"
+        ],
+        [
+          "a_10 >= 0",
+          "20771/32589"
+        ],
+        [
+          "b_5 >= 0",
+          "2636056/97767"
+        ],
+        [
+          "b_6 >= 0",
+          "1"
+        ],
+        [
+          "b_2 >= 462",
+          "1677125632/97767"
+        ],
+        [
+          "b_3 >= 24948",
+          "318942352/97767"
+        ],
+        [
+          "b_4 >= 1431738",
+          "36331288/97767"
+        ],
+        [
+          "a_7 <= 7920",
+          "3862864/5751"
+        ]
+      ]
+    },
+    {
+      "mode": "ext3+caps+min:10",
+      "r": 35,
+      "zero_shells": [
+        7,
+        8,
+        9
+      ],
+      "negative_constant": "-160596944/3261",
+      "certificate": [
+        [
+          "a_10 >= 0",
+          "1"
+        ],
+        [
+          "a_11 >= 0",
+          "8987/22827"
+        ],
+        [
+          "b_2 >= 0",
+          "1348613/3261"
+        ],
+        [
+          "b_3 >= 24948",
+          "137501/3261"
+        ],
+        [
+          "b_4 >= 1431738",
+          "5726/3261"
+        ],
+        [
+          "a_7 <= 0",
+          "1763428/3261"
+        ],
+        [
+          "a_8 <= 0",
+          "1922857/22827"
+        ],
+        [
+          "a_9 <= 0",
+          "135344/22827"
+        ]
+      ]
+    }
+  ],
+  "unused_peer_certificates": [
+    {
+      "mode": "ext2+caps",
+      "r": 31,
+      "reason": "Higher dual counts outside this audit",
+      "unreviewed_constraints": [
+        "b_5 >= 3415104",
+        "b_6 >= 10844064"
+      ]
+    },
+    {
+      "mode": "ext3+caps",
+      "r": 33,
+      "reason": "Higher dual counts outside this audit",
+      "unreviewed_constraints": [
+        "b_5 >= 17668728"
+      ]
+    }
+  ],
+  "graph_controls": [
+    {
+      "graph": "rook_3x3",
+      "vertices": 9,
+      "degree": 4,
+      "cycles": {
+        "subgraphs": 9,
+        "far_vertices_per_subgraph": 1,
+        "signed_representatives": 18,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              1,
+              0,
+              4,
+              0,
+              0
+            ],
+            "subgraphs": 9
+          }
+        ]
+      },
+      "paws": {
+        "subgraphs": 36,
+        "far_vertices_per_subgraph": 0,
+        "signed_representatives": 0,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              0,
+              2,
+              3,
+              0,
+              0
+            ],
+            "subgraphs": 36
+          }
+        ]
+      }
+    },
+    {
+      "graph": "bvls243.edges",
+      "vertices": 243,
+      "degree": 22,
+      "cycles": {
+        "subgraphs": 13365,
+        "far_vertices_per_subgraph": 163,
+        "signed_representatives": 4356990,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              163,
+              72,
+              4,
+              0,
+              0
+            ],
+            "subgraphs": 13365
+          }
+        ]
+      },
+      "paws": {
+        "subgraphs": 53460,
+        "far_vertices_per_subgraph": 162,
+        "signed_representatives": 17321040,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              162,
+              74,
+              3,
+              0,
+              0
+            ],
+            "subgraphs": 53460
+          }
+        ]
+      },
+      "normalized_lf_sha256": "bc15b2e9607a7e791dcd411a7489fbfa1635cfa020412b0eb9bc1d6a85dc5e29"
+    },
+    {
+      "graph": "twin243_switched.edges",
+      "vertices": 243,
+      "degree": 22,
+      "cycles": {
+        "subgraphs": 13365,
+        "far_vertices_per_subgraph": 163,
+        "signed_representatives": 4356990,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              163,
+              72,
+              4,
+              0,
+              0
+            ],
+            "subgraphs": 13365
+          }
+        ]
+      },
+      "paws": {
+        "subgraphs": 53460,
+        "far_vertices_per_subgraph": 162,
+        "signed_representatives": 17321040,
+        "external_degree_histograms": [
+          {
+            "counts_by_degree_0_to_4": [
+              162,
+              74,
+              3,
+              0,
+              0
+            ],
+            "subgraphs": 53460
+          }
+        ]
+      },
+      "normalized_lf_sha256": "7796454a050e96130cef18c2ef260ccf5c657d2afcf49e26f6d2306cf530886f"
+    }
+  ],
+  "basis_sha256": "e60651fa75862da436ffa5a40c22c038ece03d7dbae726fde8df90b0e3a52496",
+  "peer_certificate_normalized_lf_sha256": "f4ae1cd9392fe02fdf1d6251f94c1ce666e4e73265ba3d45969b4c70e4e34a5d",
+  "global_rank7_lower_bound_combining_previous_certificates": 35,
+  "remaining_ranks": [
+    35,
+    37,
+    39,
+    41,
+    43
+  ],
+  "minimum_L1_upper_bound_by_rank": {
+    "35": 18,
+    "37": 20,
+    "39": 24,
+    "41": 24,
+    "43": 26
+  }
+}
