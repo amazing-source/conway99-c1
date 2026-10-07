@@ -94,3 +94,36 @@ Result (N = 30): the ladder is unchanged (16 / 20 / 24 / 26, with certificates t
 minima of a_7 at r = 29, 31 are unchanged; only upper ends of ranges shrink, by a factor of about 2
 (`OUTPUT_quartic_N30.txt`, `OUTPUT_quartic_ladder_N30.txt`). The quartic would become useful only with the exact
 composition of some shells (how many vectors of each coordinate pattern), which is the classification problem again.
+
+## 6. Addendum (22:35 UTC): sign correction, proved caps, forced abundance
+
+* Sign error found by Codex in `theta_quartic.py` (the correction for the 462 triangle vectors relaxed the constraint instead of
+  tightening it). Corrected; ladder and minima unchanged (outputs regenerated). Section 5 stands.
+* Two proved caps. (a) **a_7 <= 7920**: a Fano vector (P, Q) is determined by a vertex p0 of P and its 4 neighbours in Q
+  (pairwise non-adjacent, so in 4 of the 7 triangles on p0: C(7,4) 2^4 = 560 choices): the 6 other vertices of P are the
+  second common neighbours of the pairs, then Q; each vector arises from its 7 vertices of P; 99 * 560 / 7 = 7920.
+  (b) **b_1 <= 3784**: the roots of the even lattice M form a root system of rank <= 44, the largest being D_44.
+  With (a) alone, r = 29 (which needs a_7 >= 2 558 811) is excluded without the rank lemma.
+* `abundance.py`, exact minima under the set "ext" and these caps (`OUTPUT_abundance_N84.txt`), numbers of non-zero vectors of
+  L1 of norm <= 2m:
+
+| r | norm <= 16 | <= 18 | <= 20 | <= 22 | <= 24 | <= 26 |
+|---|---|---|---|---|---|---|
+| 33 | 128 | 81 322 | 93 171 | 131 751 | 12.4 M | 68 M |
+| 35 | 0 | 0 | 3 357 | 6 117 | 136 011 | 2.9 M |
+| 37 | 0 | 0 | 7 | 413 | 16 647 | 49 392 |
+| 39 | 0 | 0 | 0 | 0 | 1 974 | 7 074 |
+| 41 | 0 | 0 | 0 | 0 | 234 | 1 029 |
+| 43 | 0 | 0 | 0 | 0 | 0 | 165 |
+
+  At r = 33 with no Fano vector, a_8 >= 100 986. There are 99 * 560 = 55 440 seeds (p0; four pairwise non-adjacent
+  neighbours), and a norm-16 vector has 8 of them, so some seed would lie in at least 14 norm-16 configurations. A proved
+  bound "at most 13 per seed" would exclude r = 33 without Fano vectors; not proved. At the top (r >= 39) the forced
+  numbers are small: counting cannot conclude there.
+* A remark for r = 43 (d = 42): sum_k (a_7k - b_k) q^k is a cusp form of weight 22 for SL_2(Z), hence a multiple of
+  Delta E_10, which has coefficients of both signs; as a_7k >= b_k, it is zero: **a_7k = b_k for all k**. Every vector of L1
+  whose norm is a multiple of 14 is sqrt7 times a vector of M (the discriminant form is the anisotropic plane), every Fano
+  vector is a root of M, and a_7 <= 3784. For r = 43 a random lattice with the determinant of M (49) has about 1.4 million
+  vectors of norm 6, so large values of b_3 are not absurd there: the what-if caps of section 3 are not expected to hold.
+* Codex (its note 169): the block-rank thresholds of the five norm-16 cores are 17, 15, 19, 17, 15, so they do not force
+  r >= 35.
