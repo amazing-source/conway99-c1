@@ -628,3 +628,7 @@
 - notes/159 : la branche alternative de l'étage F sur BvLS est un **nouveau srg(243,22,1,2)** (|Aut| = 4 320, 405 grilles).
   La classe de bascule par triangle vaut {BvLS, nouveau}. Sur les 6 types de triangles connus, l'étage F a ≤ 4 candidats
   par ligne et ≤ 2 complétions SRG. Recherche bibliographique du 07/10 : aucune autre construction connue.
+- **Le nouveau 243 est tordu.** On trouve n₃ = 19 440, P = 2 430 < 8 910, et H = 5 000 130 > 4 980 690 hexagones
+  induits. C'est un **contre-exemple à la conjecture de Reimbayev** (arXiv:2409.10620, énoncée pour toute la famille).
+  Une non-existence de 99 ne peut donc pas venir d'une loi uniforme sur la famille (grille (*), plafond de torsion).
+  État des lieux et estimation révisée (~75 % pour la non-existence) : notes/160.
