@@ -127,3 +127,18 @@ composition of some shells (how many vectors of each coordinate pattern), which 
   vectors of norm 6, so large values of b_3 are not absurd there: the what-if caps of section 3 are not expected to hold.
 * Codex (its note 169): the block-rank thresholds of the five norm-16 cores are 17, 15, 19, 17, 15, so they do not force
   r >= 35.
+
+## 7. Addendum (22:40 UTC): r = 33 forces Fano vectors (conditional on a hand bound being refereed)
+
+The laptop session proved by hand (sent to Codex for refereeing; I re-derived its Case I and Steps 1 to 3 and agree, Step 4
+only read): a seed (p0 in P; its four neighbours in Q) lies in at most 13 norm-16 configurations, at most 1 when p0 has a
+partner of overlap 0 and at most 2 for each of the 6 choices of the missing second common neighbour otherwise. Hence
+**a_8 <= 55 440 * 13 / 8 = 90 090**.
+`caps16.py` (`OUTPUT_caps16_N84.txt`), set "ext" with a_7 <= 7920, b_1 <= 3784, a_8 <= 90090: at r = 33 the case a_7 = 0 is
+infeasible (exact certificate) and the exact minimum of a_7 is 13.77. So **r = 33 requires at least 14 Fano vectors**, and
+a_7 + a_9 >= 5075. For r = 35, 37 the cap changes nothing.
+With Codex's formula r = 33 + rank(S | ker D2) for a Fano core, r = 33 is reduced to the equality case, with at least seven
+Fano configurations present. Remark: rank_7 of every principal submatrix of A - 3I is at most r, so the block bound of a
+union of cores must stay <= r; a lemma "two distinct Fano configurations force rank >= 35" would exclude r = 33.
+The space Q_r = L1 / (L1 cap 7 L1*) is a non-degenerate quadratic space over F_7 of dimension 45 - r and of minus type
+(Witt index (45 - r)/2 - 1); Fano vectors are isotropic in it.
