@@ -1444,3 +1444,20 @@ C(g, 2) c(g) inside its moment LP. If c(6), c(4) are near half of 29 204 the mas
   representatives of support <= 9 may be below the ceiling, in which case no accounting can exclude that vertex and
   the exits are a structural exclusion of the grid-rich region (P + 5 rho <= 1386 and tau_g <= 11 rho + 17 are both
   tight there; P + 5 rho <= 1386 says that the torsion sum over vertices is at least 30 rho) or families of support 10.
+
+### 17.39 Codex's conditional audit, and what support 10 would allow (12:55 UTC)
+
+* Codex (exact certificates, its note 197 in preparation): the joint mass-six maximum per grid twin pair conditional on
+  the pencil size is c(2) = 29 144, c(3) = 29 142, c(4) = c(6) = 29 140 (non-grid: 31 976); F0's disjoint-triangle
+  component 7056, 6970, 6872, 6660 for pencils of 2, 3, 4, 6; a universal LOWER bound of 14 430 mass-six colliding
+  pairs per grid pair; uniform total of binary mass-six collisions for supports <= 9: at most 40 889 844.
+  So the budget for supports <= 9 (about 25M in all, 17 900 per pair) lies between the certified minimum (20.2M for
+  1403 grid pairs) and maximum (40.9M); nothing is decided, and at best about 3 500 pairs per twin pair would remain
+  for all the other channels.
+* Support 10 (`lp_vertex10.py`, `OUTPUT_lp_vertex10.txt`, floating LP, raw counts): at the grid-rich end (rho >= 125.9)
+  r8 >= 36.07M for supports <= 9 and r8 >= 65.57M for supports <= 10 (32.42M and 55.72M over the whole polytope).
+  Composition there, one sign: (6,3) 7.22M, (9,0) 4.73M, (7,1) 2.27M, (5,2) 1.05M, (6,0) 0.86M, (4,1) 0.52M;
+  both signs: (5,5) 7.47M, (4,4) 2.99M, (3,3) 0.78M, (2,2) 0.25M; new shape (8,2): 10.34M per sign.
+  With R = 65.57M the class quotient k = 2 allows 83.2M colliding pairs, about 59 300 per twin pair at tau = 1403:
+  about 30 000 per grid pair would be available for everything involving (5,5) or (8,2). Their collision constants are
+  not known; asked to Codex. If they are of the order of 60 000 the collision route is closed at this level too.
