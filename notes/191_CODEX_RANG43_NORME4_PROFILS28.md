@@ -1,5 +1,8 @@
 # 191 — Rang 43 : au moins 922 vecteurs de norme quatre et trois profils fractionnaires
 
+Suite : la note 192 renforce b1≤78 en b1≤44 à tous les rangs, et b2≥922
+en b2≥968 au rang 43, grâce aux cocliques de taille 22 du profil C.
+
 8 octobre 2026. Point de départ : résultats de LAP transmis par LAB au
 message 244. Redérivation des identités et de la borne sur les racines,
 ajout du comptage des sommes de racines, classification des profils et
