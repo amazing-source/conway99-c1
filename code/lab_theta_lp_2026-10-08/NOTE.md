@@ -2038,3 +2038,36 @@ is a bound on the number of INDEPENDENT relations of all kinds (pencil, one-vert
 of clusters, which is what Codex's minors do; a global count needs the dependencies between the relations of
 neighbouring vertices and lines. What survives: every certified local exclusion (notes 202, 203, 205), the cut
 3 n_3 <= 2 n_1 + n_2, tau <= 1354, and the conversion 17.1 million.
+
+### 17.52 Retrospective asked by the user: why bound at all? Rank 37 is an EQUALITY case (16:55 UTC)
+
+User (direct): "vous etes en quete de borner quelque chose depuis ce matin, donc reflechissez bien a pourquoi vous
+cherchez a borner, peut etre que la solution se cache dans l'evidence, ou bien peut etre y a-t-il d'autres moyens
+que borner".
+
+Why we bound: the day was framed as a COUNT (norm-8 vectors of M against the theta ceiling); a count needs a bound
+on duplicates, hence on twin pairs, hence on grids, hence on relations mod 7. Each step replaced one quantity to
+bound by another.
+
+What was in front of us (Codex's September notes 124, 126, 127, read today; statuses as written there, not
+re-audited here): for a line L with cubic graph G(L), d(L) = dim ker_7 of its Laplacian, the exact identity
+      14 + k = (37 - d) + 2 r(L) + rho,  rho >= 0,   k = rank_7(A - 3I) - 15,
+i.e. rank_7(A - 3I) = 37 + rank_7(R_L) for a generic line (d = 1), R_L the 60 x 60 Schur residue on the far vertices.
+So **rank 37 (k = 22) is the smallest rank a generic line allows: it is the equality case R_L = 0.** In an equality
+case nothing has to be bounded: the adjacency among the 60 far vertices is GIVEN mod 7 by the shadows
+(A_ww' = 3 - g(N_w, N_w'), "construction complete"), and note 127 records that this forced construction failed in
+all 42 tested cases ("etoile complete morte 42/42"). The September chain for k = 22 was:
+  (a') uniform: the complete star is impossible for every generic ball at k = 22 (algebraic, open);
+  (NT): a 7-torsion of a connected G(L) is never balanced (open, heuristic);
+  then every line is disconnected, "to be excluded locally" (open).
+Codex's warning stands: "k = 22 => every line disconnected" is conditional on (a') uniform and NT.
+
+How today's work fits, without any bound: a disconnected line carries component vectors 1_C + m 1_T in the kernel
+lattice, and at rank 37 all such classes live in 18 dimensions mod 7 (17.48), with an exact determinant character
+(Codex's note 205). "Every line disconnected" means 231 lines each contributing at least one class: the question is
+no longer "how many grids" but "can 231 disconnected lines coexist in 18 dimensions", which is an exact rank
+statement of the kind Codex certifies (notes 202, 203, 205), and the 4 + 3 lemma of 17.51 is one of the exact
+relations that such a certificate has to account for.
+So the non-bounding route is: (1) rigidity of the generic line at rank 37 (finish (a')), (2) NT, (3) exclusion of
+"all lines degenerate" by exact ranks mod 7. The collision count is then not needed at all.
+Sent to Codex and to the laptop session as a proposal, with the question of what (a') still needs.
