@@ -1920,3 +1920,15 @@ a line with G_2 and with G_3, G_2 and G_3 disjoint"; in general (W^T W)^2 = - W^
 incidence and D >= 0 the matrix of missing grids. Link with September (Codex's note 127): rank 37 is k = 22, where a
 generic line has a complete construction and the plan ended on "every line disconnected": 231 lines against 18
 dimensions is the same statement from the other side.
+
+Addendum to 17.49: the cut of note 203 in Codex's own moment LP (`profile_lp2.py`, `OUTPUT_profile_lp2.txt`, floating).
+Codex exported its profiles (177 refined profiles (e, c, h2, u6)) and the model of its note 196: for each s = 0..73
+(number of vertices with e >= 14), variables by profile and by number d of neighbours in that set, with the moment
+equalities sum d = 14 s, sum (d^2 + [e>=14] d) = 12 s + 2 s^2 and sum_inside d <= 3 s + s^2/9. Re-implemented here:
+without the cut the maximum of the twin bound is 1403.46 (s = 56, rho = 126, P = 756): Codex's 1403 is REPRODUCED.
+With the cut 3 n_3 <= 2 n_1 + n_2 (n indexed by the number u6 of lines in six grids): **1354.89** (s = 22, rho = 126);
+tau_g as a function of rho: 1354.9 / 1165.2 at rho = 126 / 110, unchanged for rho <= 90 (944.1, 726.1, 515.3, 308.4,
+101.5 at rho = 90, 70, 50, 30, 10).
+Against the target of 17.49 (tau_g < 614 with no non-grid pair): the cut gives 3.5 %, the target needs a factor
+2.2. Useful by-product: for rho <= 30 the moment LP already gives tau_g <= 308, so a bound rho <= 30 would leave room
+for 266 non-grid twin pairs.
