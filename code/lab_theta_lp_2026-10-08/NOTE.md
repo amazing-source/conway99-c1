@@ -1884,3 +1884,39 @@ my list it brings nothing new. Extremal types with the cut: 16 pairs / 60 cherri
 (17 pairs, 69 cherries, 3 hubs), and grid-free points. Expected size of the gain: small; the accounting needs
 tau of about 540 to 700, which this cut alone cannot give. The lever is the dimension count itself (how many grids
 fit in 19 dimensions), not this consequence.
+
+### 17.49 The one missing statement, with its number (16:10 UTC)
+
+User (relayed by the laptop session as his direct words to it, about 16:00 UTC): find what is missing; getting
+through rank 37 is a necessity now. Agreed split: Codex certifies the analysis around a line in six grids, then in
+four, with unknown cross intersections; the laptop session takes the twin differences of non-grid prisms and the
+September case "every line disconnected"; I give the exact break-even for every bound that gets certified.
+
+**Target.** On Codex's collection (supports <= 9, (6,3) without prism 6-sets), quotient k = 2, joint LP with the Fano
+coupling and the secants (`lp_family.py`, scenario m5s9k2x63 at c = 0): the maximum over the whole polytope of
+(ceiling - 2 R / 3) is -5.703 million (floating). Since the floor is (2R - C)/3, rank 37 is excluded as soon as the
+total number C of colliding pairs satisfies C < 17.1 million. With Codex's certified caps per pair (27 828 for a pair
+of grids on a line, 31 976 for a non-grid twin pair), a SUFFICIENT condition is
+
+      27 828 tau_g + 31 976 tau_n + (channels not in C6) < 17.1 million,
+
+tau_g = pairs of grids on a common line, tau_n = non-grid twin pairs. Examples: tau_g < 614 with no non-grid pair;
+tau_n < 535 with no grid; tau_g <= 347 (i.e. rho <= 30 with tau_g <= 11 rho + 17) leaves room for tau_n <= 232.
+Channels not in C6 and still to be charged inside the 17.1 million: the single-grid relation (a number per grid,
+times rho: small if rho is a few dozen), the masses 7 to 9 and the component C14/L44 of Codex's notes 183-185.
+To be certified exactly by Codex if the bounds on tau_g and tau_n come; the constant 17.1 million is the only thing
+my LP contributes, and it does not depend on where the bounds on tau come from.
+
+**The statement that is missing** (laptop session's formulation, which I adopt): at rank 37 the classes of all grid
+indicators and twin differences live in dimension 18 over F_7 (19 with [1]); needed: a lower bound of the rank of
+such a system in terms of the number of twin pairs that forces 27 828 tau_g + 31 976 tau_n below 17.1 million.
+Done so far towards it: Codex's general certificates (notes 202, 203: on a line in six grids, two three-hub points
+force the third to have one hub; n_3 <= 39); the canonical tables of 17.48. Hand facts from the laptop session
+(16:05 UTC, not rechecked here): a dependency mod 7 among kernel vectors is an integer combination with coefficients
+in {-3..3} lying in L_3 cap 7 L_3*, whose shortest vectors found have norm 42, so every kernel vector of norm < 42 has
+a non-zero class; a twin class of size m spans a non-degenerate subspace of dimension m - 1; a line whose cubic
+graph has c components contributes c - 1 dimensions by itself; the smallest degenerate triple of grids is "G_1 shares
+a line with G_2 and with G_3, G_2 and G_3 disjoint"; in general (W^T W)^2 = - W^T D W mod 7 with W the point-grid
+incidence and D >= 0 the matrix of missing grids. Link with September (Codex's note 127): rank 37 is k = 22, where a
+generic line has a complete construction and the plan ended on "every line disconnected": 231 lines against 18
+dimensions is the same statement from the other side.
