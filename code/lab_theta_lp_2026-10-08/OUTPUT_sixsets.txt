@@ -1,0 +1,41 @@
+# python -I sixsets.py abstract
+e = 7: T1 bowtie + pendant at the centre                            labelled copies 90 (720/8)
+e = 7: T10 4-cycle and 5-cycle sharing a 2-path                     labelled copies 180 (720/4)
+e = 7: T2 bowtie + pendant elsewhere                                labelled copies 360 (720/2)
+e = 7: T3 triangle and 4-cycle sharing a vertex                     labelled copies 180 (720/4)
+e = 7: T4 two triangles joined by an edge                           labelled copies 90 (720/8)
+e = 7: T5 house + pendant at the apex                               labelled copies 360 (720/2)
+e = 7: T6 house + pendant at the shared edge                        labelled copies 720 (720/1)
+e = 7: T7 house + pendant at the far side                           labelled copies 720 (720/1)
+e = 7: T8 triangle and 5-cycle sharing an edge                      labelled copies 360 (720/2)
+e = 7: T9 two 4-cycles sharing an edge                              labelled copies 180 (720/4)
+e = 8: U1 two triangles joined by two edges                         labelled copies 180 (720/4)
+e = 8: U2 bowtie + common neighbour of two outer vertices           labelled copies 360 (720/2)
+e = 8: U3 triangle with 4-cycles on two of its edges, sharing an edge labelled copies 360 (720/2)
+e = 9: prism                                                        labelled copies 60 (720/12)
+
+# python -I sixsets.py rook
+rook 3 x 3: v = 9, k = 4, prisms P = 6; 6-sets with >= 7 edges by type:
+  T5 house + pendant at the apex                          36  formula 36  OK
+  U2 bowtie + common neighbour of two outer vertices      36  formula 36  OK
+  prism                                                   6  formula 6  OK
+all formulas agree
+
+# python -I sixsets.py data/srg243/bvls243.edges 3   (sha256 bc15b2e9607a7e791dcd411a7489fbfa1635cfa020412b0eb9bc1d6a85dc5e29)
+edge (0,1): connected 6-sets visited 26790; with >= 7 edges: [('T1 bowtie + pendant at the centre', 630), ('T10 4-cycle and 5-cycle sharing a 2-path', 2520), ('
+edge (77,222): connected 6-sets visited 26790; with >= 7 edges: [('T1 bowtie + pendant at the centre', 630), ('T10 4-cycle and 5-cycle sharing a 2-path', 2520),
+edge (241,242): connected 6-sets visited 26790; with >= 7 edges: [('T1 bowtie + pendant at the centre', 630), ('T10 4-cycle and 5-cycle sharing a 2-path', 2520)
+v = 243, k = 22, prisms P = 8910; N(type) = (#edges) * count / e (edge-transitive graph):
+  T1 bowtie + pendant at the centre                       240570  formula 240570  OK
+  T10 4-cycle and 5-cycle sharing a 2-path                962280  formula 962280  OK
+  T2 bowtie + pendant elsewhere                           962280  formula 962280  OK
+  T3 triangle and 4-cycle sharing a vertex                481140  formula 481140  OK
+  T4 two triangles joined by an edge                      240570  formula 240570  OK
+  T5 house + pendant at the apex                          1015740  formula 1015740  OK
+  T6 house + pendant at the shared edge                   1924560  formula 1924560  OK
+  T7 house + pendant at the far side                      1924560  formula 1924560  OK
+  T8 triangle and 5-cycle sharing an edge                 1924560  formula 1924560  OK
+  T9 two 4-cycles sharing an edge                         481140  formula 481140  OK
+  U2 bowtie + common neighbour of two outer vertices      53460  formula 53460  OK
+  prism                                                   8910  formula 8910  OK
+all formulas agree

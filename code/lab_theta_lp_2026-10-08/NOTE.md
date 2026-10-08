@@ -398,3 +398,155 @@ Eliminating a_13 between (I1) and (I2):
 1715 a_7 + 1225 a_8 <= about 13.6 million (seed bound), r = 37 needs 539 a_9 + 392 a_10 + 147 a_11 + 49 a_12 >= 10.7 million
 and r = 35 needs it >= 157 million, in addition to the 4.8 million vectors of norm 26: these two ranks are within reach
 of counting on the shells 18 to 24; the ranks 39, 41, 43 are satisfied by small numbers and are not.
+
+## 17. Rank 35 against the 6-subsets: infeasible unless there are at least 43 induced 3 x 3 grids (01:05 UTC, 8 October)
+
+Status: hand derivations of this section, exact LP, formulas tested on the two available graphs of the family. Sent to
+Codex (bridge message 150); NOT yet audited by Codex. Scripts: `margins.py`, `sixsets.py`, `r35.py`, `theta3_maxG.py`.
+
+### 17.1 Margins
+
+`margins.py`: for each rank, the exact maximum of each dual shell b_k compatible with the constraints in use (audited
+b_2, b_3, b_4, Codex's note-175 b_5..b_8, positivity, a_7k >= b_k, 7 a_7 + 8 a_8 <= 55 440, b_1 <= 88).
+
+| r | max b_3 (bound in use 24 948) | max b_4 (bound in use 1 431 738) |
+|---|---|---|
+| 35 | 159 686 (x 6.4) | 4 011 586 (x 2.80) |
+| 37 | 1 399 492 (x 56) | 27 968 995 (x 19.5) |
+| 39 | 7 949 317 (x 319) | 183 220 501 (x 128) |
+| 41 | 23 874 240 | 895 452 911 |
+| 43 | 32 464 759 | 4 549 220 800 |
+
+A proved b_4 >= 4 011 587 alone excludes r = 35. The option `b<k>=<value>` of the script is a what-if, never a result.
+
+### 17.2 A correction to the distinctness criterion: the classes s and s -+ 9
+
+M is the image of {psi in Z^99 : 3 | sum psi} under sqrt7 P, so psi and psi' give the same vector iff psi - psi' lies in
+N' = Z^99 cap (E_3 + R 1) = {phi : (A - 3I) phi = t 1, t in Z}, with sum phi = 9t. N' contains K3 + (multiples of 1 that
+are integral) with index 11 (det L = 9 * 7^(r-1) forces every t). So "psi - psi' is an integer 3-eigenvector" is the
+criterion only when sum psi = sum psi'. For t = +-1:
+
+**Lemma G.** If phi is integral with (A - 3I) phi = 1, then |phi|^2 >= 9, with equality iff phi = 1_R for an induced
+3 x 3 rook's graph R ("grid"). Conversely every induced grid R satisfies (A - 3I) 1_R = 1.
+Proof. sum phi = 9, so |phi|^2 >= sum |phi| >= 9, with equality iff phi is the indicator of a 9-set R. Then every vertex
+of R has 4 neighbours in R and every outside vertex exactly 1. If x ~ y in R, their common neighbour has two neighbours in
+R, so it is in R; if x, y in R are not adjacent, both common neighbours are in R for the same reason: R is an
+srg(9,4,1,2). Conversely, in an induced grid an outside vertex has at most one neighbour (two adjacent neighbours would
+put it on a line of R, two non-adjacent ones would be a third common neighbour), and the 9 * 10 = 90 outgoing edges
+reach the 90 outside vertices once each.
+
+Consequences. (1) The audited dual families have sum psi in {0, +-3}; their differences have sum 0, +-3, +-6: nothing
+changes. (2) Any family with sum psi = +-6 or +-9 can coincide with the families of sum -+3 or 0 through grids.
+(3) A grid is a relation: Q(1_R) = 0; its three rows satisfy t_T + t_T' + t_T'' = 0 in M.
+Notation: P = number of prisms (two disjoint triangles joined by a perfect matching), rho = number of induced grids.
+A grid contains 6 prisms and a prism lies in at most one grid: 6 rho <= P <= 1386 (a triangle lies in at most 12 prisms).
+
+### 17.3 Family (a): 1_T - 1_path (sum 0, norm 8)
+
+T a triangle, {u, m, v} an induced path (u ~ m ~ v, u not~ v) disjoint from T with no edge to T. Q = 18 - 2(3 + 2) = 8.
+Count. N(T) has 36 vertices (no vertex has two neighbours in T), Far(T) has 60. A far vertex has 2 common neighbours
+with each vertex of T, so 6 neighbours in N(T) and 8 in Far(T). A vertex x of N(a) has 3 neighbours in N(T) (its partner
+on the triangle through a, one in N(b), one in N(c)) and 10 in Far(T). With n_i = number of triangles disjoint from T
+having i vertices in N(T): 240 = 3 n_0 + n_1 (edges of Far), 360 = 2 n_1 + 2 n_2, 36 = n_2 + 3 n_3, and n_3 = P_T (the
+prisms on T). Hence n_0 = 32 - P_T, n_1 = 144 + 3 P_T, n_2 = 36 - 3 P_T. Induced paths in Far(T): 60 * 28 - 3 n_0 =
+1584 + 3 P_T. Total, two signs: 2 * 231 * 1584 + 6 * 2P = **731 808 + 12 P**.
+Distinctness. All these vectors have sum 0, so only K3 matters. A 0/+-1 vector of K3 with positive support X and negative
+support Y has deg_X(u) - deg_Y(u) = 3 on X: X has minimum degree 3, so |X| >= 6 with equality only for a prism (a graph
+on 6 vertices with minimum degree 3 has 9 edges). For two members, X is inside T + path': an end of path' would need two
+neighbours in T. Against 1_T1 - 1_T2 (one cross edge): Y = path + T1 would have to be a prism, but the three vertices of
+a path are not a triangle. Against e_u - e_v and edge - far edge: |X| <= 5. The cases where supports overlap give
+entries +-2 on a vertex whose neighbour sum would have to be +-6: checked directly, impossible each time.
+
+### 17.4 Family (d): the 6-subsets (sum +-6)
+
+For |W| = 6: Q(1_W) = 18 - 2 e(W) + 4 = 22 - 2 e(W). Norm 4: prisms (9 edges); norm 6: e(W) = 8; norm 8: e(W) = 7.
+Distinctness inside the family: 1_W - 1_W' is 0/+-1 with supports of size <= 6, so W and W' are disjoint prisms
+("twin prisms"). **All 6-sets with at most 8 edges give pairwise distinct vectors of M**, and 1_W is never -1_W'.
+Types (the 6-vertex graphs in which adjacent vertices have at most 1 common neighbour and non-adjacent ones at most 2;
+`sixsets.py abstract` confirms the list is complete) and numbers, for a graph with lambda = 1, mu = 2, degree k, with
+T = vk/6 triangles, E = vk/2 edges, H = E(k-2) houses (triangle + 4-cycle on one of its edges), B = v C(k/2,2) bowties,
+NA non-adjacent pairs; right column for (v,k) = (99,14):
+
+| e | type | number | (99,14) |
+|---|---|---|---|
+| 7 | T1 bowtie + pendant at the centre | B(k-4) | 20 790 |
+| 7 | T2 bowtie + pendant at an outer vertex | 4B(k-4) | 83 160 |
+| 7 | T3 triangle and 4-cycle sharing a vertex | v(k/2)[C(k-2,2) - (k-2)/2] | 41 580 |
+| 7 | T4 two triangles joined by one edge | 3T(k-2)(k-6)/4 + 3P | 16 632 + 3P |
+| 7 | T5 house + pendant at the apex | H(k-4) + 6P | 83 160 + 6P |
+| 7 | T6 house + pendant at a vertex of the shared edge | 2H(k-4) | 166 320 |
+| 7 | T7 house + pendant at a far vertex | 2H(k-5) + 12P | 149 688 + 12P |
+| 7 | T8 triangle and 5-cycle sharing an edge | 3T(k-2)(2k-9) + 6P | 158 004 + 6P |
+| 7 | T9 two 4-cycles sharing an edge | E(k-2)(k-5)/2 + 3P | 37 422 + 3P |
+| 7 | T10 4-cycle and 5-cycle sharing a 2-path | NA(2k-10) + 6P | 74 844 + 6P |
+| 8 | U1 two triangles joined by two edges | 3T(k-2)/2 - 3P | 4158 - 3P |
+| 8 | U2 bowtie + second common neighbour of two outer vertices | 4B | 8316 |
+| 8 | U3 triangle with 4-cycles on two of its edges | H - 6P | 8316 - 6P |
+| 9 | prism | P | P |
+
+**N(6,7) = 831 600 + 36 P,  N(6,8) = 20 790 - 9 P,  N(6,9) = P.**
+Sketches. T1: a third neighbour of the centre (k - 4). T2: a neighbour of an outer vertex a other than the centre, its
+partner, and the two second common neighbours w_ac, w_ad. T3: two non-adjacent neighbours c, d of v outside the triangle
+and their second common neighbour, which is never adjacent to a or b (v and it would have 3 common neighbours). T4: n_1.
+T5: N(z) minus the line, minus the second common neighbours of z with p and with q, which coincide exactly when the house
+is in a prism (6 houses per prism). T6: N(x) minus y, z, q and the partner of q. T7: N(p) minus y, q, their two partners
+and the second common neighbour of z and p (= partner of q iff prism). T8: for z in N(u), x in N(w) non-adjacent, the two
+common neighbours of z and x, minus those adjacent to u (k - 2 triples), to w (k - 2), or to t (k - 2 - P_T).
+T9: pairs of 4-cycles on an edge, C(k-2,2), minus the pairs with p1 ~ r1 or p2 ~ r2, both at once iff a prism has the
+edge as a rung. T10: for u, w non-adjacent with common neighbours m1, m2: s in N(u) not adjacent to m1, m2 (k - 4
+choices), its two neighbours in N(w), minus the partners of m1, m2 on w; each correction disappears iff a prism.
+U1: n_2. U3: each configuration is seen from two houses.
+Test (`sixsets.py`, `OUTPUT_sixsets.txt`): on the rook's graph (k = 4, P = 6) by brute force over the 84 subsets; on
+bvls243 (k = 22, P = 8910) through three edges, N = (#edges) * count / e; the 14 type counts agree with the formulas.
+Limit of the test: both graphs are prism-saturated (P_T = k - 2), so the coefficient of P and the constant are tested
+together, not separately; twin243_switched would separate them but is not edge-transitive (full enumeration about 45
+minutes of Python: not run here).
+
+Coincidences with the audited families (Lemma G; these are the only ones):
+* norm 8: 1_W = e_z - 1_S in M iff W = (R - S) + z with R a grid, S a 4-cycle (9 per grid) or a paw (36) of R and z an
+  outside vertex whose neighbour in R is not in S (50): 2250 per grid; W is then a bowtie or a house of R plus a
+  pendant. 1_W = -1_Y iff W = R - Y, Y a 3-set of R with one edge: 36 per grid.
+* norm 6: 1_W = -1_Y iff W = R - Y, Y an induced path of R: 36 per grid (W is of type U2).
+The case z outside W gives an entry -1 with non-negative neighbours: impossible.
+
+Hence, counting each coincident pair once (an over-subtraction if a set is hit by two grids, harmless for a lower bound):
+
+    b_4 >= 1 431 738 + (731 808 + 12 P) + 2 (831 600 + 36 P - 2286 rho) = 3 826 746 + 84 P - 4572 rho,
+    b_3 >= 24 948 + 2 (20 790 - 9 P - 36 rho)                           = 66 528 - 18 P - 72 rho.
+
+Remark. The same argument shows more: for any sets W, W' the classes of 1_W and 1_W' can coincide only if W - W' and
+W' - W each contain at least 9 edges (t = 0) or through a relation of N' with t /= 0. The numbers N(6,e) for e <= 6
+would feed b_5, b_6, ...; they are not needed below and were not computed.
+
+### 17.5 The LP (`r35.py`, `OUTPUT_r35_N84.txt`): variables b_1..b_7, P, rho
+
+* rho = 0: **r = 35 is infeasible for every P.** Farkas certificate on a_8 >= 0, a_10 >= 0, a_11 >= 0, b_2 >= 462, the two
+  bounds above, 7 a_7 + 8 a_8 <= 55 440, b_1 <= 88, P <= 1386. Codex's b_5..b_8 are not used.
+* rho free: feasible; the minimum of rho is 42.02 (at P = 1386); P <= 400 is infeasible whatever rho; P = 500 needs
+  rho >= 80.8 (of at most 83.3), P = 1000 needs rho >= 58.9.
+
+**Statement (to be audited): rank_7(A - 3I) = 35 implies at least 43 induced 3 x 3 grids and more than 400 prisms.**
+r = 37 stays feasible with the new bounds (max b_4 = 27.7 million, 7.2 times the bound).
+
+### 17.6 The 3-side does not bound the grids
+
+In the lattice E of section 11, rho is the shell count N_3(90/11). `theta3_maxG.py` (N = 24, d = 34): the 3-side LP allows
+up to 24 459 384 grids. No help.
+
+### 17.7 Open sub-problem
+
+Close r = 35 by one of: a structural upper bound rho <= 42 (or P <= 400) for a hypothetical srg(99,14,1,2), at least under
+rank 35; or families that survive grids: bowtie - far edge (at least 399 168 vectors, sum +-3; a coincidence needs a twin
+configuration bowtie + two adjacent second common neighbours), far pairs of 4-sets with 4 edges (sum 0, of the order of
+millions, count not determined by the parameters), 6-sets with 6 edges for b_5.
+
+### 17.8 Side facts (consequences of sections 15 and 16; consistency checks, no new constraint)
+
+* Eliminating a_13: 7^(m-1) b_2 = [C2 - 14147 (7^m + 1)]/49 + 35 a_7 - 43 * 7^(m-1) b_1 + 25 a_8 + 11 a_9 + 8 a_10 + 3 a_11
+  + a_12. For r = 43: b_2 = 1000 - 8 a_7 + 25 a_8 + 11 a_9 + 8 a_10 + 3 a_11 + a_12 (using b_1 = a_7): without Fano
+  vectors, M has at least 538 vectors of norm 4 that are not triangles.
+* For r = 43, M* / M = F_49 (anisotropic) and M glued to the rank-4 lattice [2,1;1,4]^2 (det 49, level 7) is an even
+  unimodular lattice of rank 48, in two inequivalent ways. The degree-2 zonal harmonic identity in weight 26 (a
+  one-dimensional space of cusp forms), averaged over the two gluings and with a_7 = 0, reads
+  a_13 + 14 b_2 = 16 632 + 348 a_8 + 138 a_9 + 119 a_10 + 44 a_11 + 15 a_12, which is exactly the combination of the
+  two relations above (16 632 = 2632 + 14 000). The per-gluing version involves class-refined counts only.
