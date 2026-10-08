@@ -1138,3 +1138,59 @@ and the norm form are mine (hand); nothing audited.
   and minimum <= 4 (Hermite), so the thousands of norm-4 vectors asked for by the programme at rank 43 are not
   surprising; an exclusion of 22-cocliques at rank 43 by this route needs a classification of f(n) <= 4 for arbitrary
   n, i.e. of the integer (-4)-eigenvectors 21 Pi n vanishing on R of norm 42 or 84. Open.
+
+### 17.26 CORRECTION of 17.22(b), and a structure theorem: the twin-prism corner is the grid corner (11:15 UTC)
+
+Status: hand proofs and floating LPs of the lab session, sent to Codex and to the laptop session for attack; NOT audited.
+
+**Correction.** The figures of 17.22(b) (22.87 million coupled, 15.43 million in b_4 alone, "5.7 million of margin")
+charge the twin-prism losses of (4,4) and (5,2) ONLY, and the family contains all 14-edge 9-sets, including those that
+contain a prism (they collide through every twin). With (9,0) restricted to 2-degenerate sets (`lp_route37.py`,
+`OUTPUT_lp_route37.txt`) the bounds are 9.62 million (b_4) and 12.62 million (coupled): below the ceilings, before
+(7,1), norm 6, masses 7-8, windmills and grids. The sub-family "W triangle-free" of (6,3) (Codex, note 193: 642 tau
++ 710 Omega) does not pay either (`lp_ftf.py`: it brings about 1.0 million and costs about 1.4 million).
+Budget (`lp_corner.py`, `lp_grid.py`): with c the total twin-prism loss per twin pair over all shapes, the b_4-alone
+bound for all shapes of support <= 9 is 29.23M (c = 4000), 21.68M (8000), 6.56M (16000), so c must stay below about
+11 000 (ceiling 15.98M); Codex's proved constants already exceed 16 000. Rank 37 is NOT close with the present counts.
+
+**Notation.** X a prism, Theta its three rung apices, N1 its 60 one-neighbour vertices; u = 1_N1 + 2 * 1_Theta =
+(A - 3I) 1_X and (A + 4I) u = 12, so w in N1 has 8 - 2 theta(w) neighbours in N1 (theta = number of apex neighbours)
+and an apex c has 4 - 2 theta'(c) neighbours in N1 (theta' = degree in Theta). A class = m pairwise far prisms (same
+Theta, same N1, Codex); Z = the 36 - 6m vertices far from all of them.
+
+**Theorem.**
+(a) If Theta is a triangle, Theta + X is a 3 x 3 grid G, [1_X] = - t_Theta in M, and the twins of X are exactly the other
+    grids through the line Theta (two prisms with the same triangular Theta are automatically far: a vertex outside a
+    grid has exactly one neighbour in it; a common vertex forces a common rung and then equality). Class size =
+    g(Theta), the number of grids containing the line Theta; g is 0, 1, 2, 3, 4 or 6 (for g prisms the vertices of Z each
+    have one apex neighbour and Z is cubic, made of "long prisms"; 6 leftover vertices would be one more prism).
+(b) If Theta is not a triangle, the class of X has at most 3 prisms. Proof for m >= 3: for w in N1 and an apex c let
+    r_c(w) be the number of prisms where the neighbour of w is on the rung of c; r_c(w) <= 2 if w is not adjacent to c
+    (common neighbours), r_c(w) = 0 if w ~ c, and the three r add up to m. So no w has two apex neighbours; if w ~ c
+    then m <= 4, and for m = 4 the pairs (w, c'), (w, c'') have their two common neighbours on the rungs, so c is
+    adjacent to no apex; as c has 4 - 2 theta'(c) neighbours in N1, m = 4 forces theta' in {0, 2} for every apex and
+    m >= 5 forces theta' = 2. Finally m = 4 with Theta independent: the common neighbours of two apices lie in Z, each
+    apex has exactly 2 neighbours in Z, so two vertices of Z are adjacent to all three apices: 3 common neighbours.
+(c) Hence tau = (pairs inside non-grid classes) + (pairs of grids sharing a line) <= (P - 6 rho) + sum over lines of
+    C(g, 2), with sum over lines of g = 6 rho; and the twin collisions of grid prisms are consequences of the grid
+    relations 1_G = 0 (the sum-9 channel), not an independent channel.
+
+**The LP corner is impossible.** With tau' <= min(Phi/4, P + 9 rho, 2P + 3 rho) as an LP variable (`lp_grid.py`,
+`OUTPUT_lp_grid.txt`) every penalised optimum is exactly rho = 126, P = 756 = 6 rho, tau' = 1890 = 15 rho: all prisms
+are grid prisms and every line with g > 0 has g = 6. But a line with g = 6 forces g >= 1 on the 18 lines meeting it,
+so at that corner all 231 lines would have g = 6 and rho = 231. (The maximum rho = 126 of the order-10 polytope is
+attained at a vertex with P = 756, 1134 grids-minus-a-vertex, 1890 of several types: a "pure grid world";
+the binding counts are 10-vertex types such as "a line, one further line through each of its points, pairwise far,
+plus a far vertex", `lp_rho_dual.py`.)
+g(l) is the degree of l in the graph Xi_v on the 7 lines through any point v of l (adjacent = span a grid);
+rho = (1/9) sum_v e(Xi_v); pairs of grids sharing a line = (1/3) sum_v #cherries(Xi_v). With graphical degree sequences
+only, the maximum under rho <= 126 is still about 1570; if Xi_v is triangle-free it is at most 945; if no line lies
+in three grids it is at most 378. A point with Xi_v = K_7 is a "locally Hamming" point: the graph is then the ball of
+radius 2 of H(7,3) (1 + 14 + 84 = 99) with each second neighbour (ij; ab) adjacent to exactly one vertex of each of
+the 10 grids G_kl with {k,l} disjoint from {i,j}.
+
+**Open (the lock of rank 37 as I now see it):** which graphs Xi_v are possible (triangles? degrees 3, 4, 6?), and
+whether a non-grid prism can have two twins. Negative results of the day on tau by census positivity: Phi/4 (2120),
+prism + far house (2048), the 10-vertex supports "two prisms sharing a rung / two bowties joined by four edges"
+contained three times in every twin pair (parameters 407 and 527 of my census; maxima 6397 and 13 754: tau <= 4615),
+sum-of-squares cuts (nothing).
