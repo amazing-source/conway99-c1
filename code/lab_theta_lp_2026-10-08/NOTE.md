@@ -1932,3 +1932,46 @@ tau_g as a function of rho: 1354.9 / 1165.2 at rho = 126 / 110, unchanged for rh
 Against the target of 17.49 (tau_g < 614 with no non-grid pair): the cut gives 3.5 %, the target needs a factor
 2.2. Useful by-product: for rho <= 30 the moment LP already gives tau_g <= 308, so a bound rho <= 30 would leave room
 for 266 non-grid twin pairs.
+
+### 17.50 The missing statement, quantified: at most 10 relations beyond the pencil ones (16:25 UTC)
+
+**Where the classes live (laptop session's 2(a), re-derived here).** Mod 7, A + 4I = A - 3I =: N, of rank r. Im(A + 4I)
+lies in K+, and K+/7K+ modulo the column space of N has dimension 55 - r = 18; [1] is in that column space
+(N 1 = 11 * 1), and the centred classes g' = [1_G] - 2 [1] live in this 18-dimensional quotient. So
+* a relation mod 7 among grid classes is exactly a combination of grid indicators lying in the column space of
+  A - 3I mod 7, i.e. orthogonal to every mod-7 solution of A x = 3 x;
+* equivalently the class of a grid is the linear form "sum over G" on the 18-dimensional space
+  ker_7(A - 3I) / (L mod 7) (3-eigenvectors mod 7 modulo reductions of (-4)-eigenvectors, on which every grid sums to 0);
+* the 3-eigenvectors available in every graph, (A + 4I)(sum-zero vector), are in the column space of N: useless as
+  witnesses. Only structure-specific kernel vectors (grids, twin differences, components) can certify independence,
+  which is what Codex's Gram minors do. Also (laptop session, checked): in a non-degenerate space of dimension 19 a
+  family of true dimension d has Gram rank at least 2d - 19 and at least d - 9.
+* For every line T (hub or not) the classes of the components C of its cubic graph, 1_C + (|C|/6) 1_T, sum to
+  (A + 4I) 1_T = 5 [1]: one relation per line, the pencil relation when all components are prisms.
+
+**Conversion table** (`profile_lp3.py`, `OUTPUT_profile_lp3.txt`; Codex's moment LP with the cut of note 203, plus
+rho <= 18 + c + x6 where x6 = number of lines in six grids and c = number of independent relations mod 7 among the
+grid classes beyond the pencil relations; floating):
+
+| c | max tau_g | 27 828 tau_g | max rho | all-grid verdict against 17.1M |
+|---|---|---|---|---|
+| 0 | 388 | 10.80M | 40 | excluded, 6.3M left (197 non-grid pairs) |
+| 4 | 477 | 13.27M | 49 | excluded |
+| 8 | 566 | 15.75M | 58 | excluded |
+| 10 | 608 | 16.92M | 62 | excluded, no margin |
+| 12 | 655 | 18.23M | 67 | not enough |
+| 20 | 847 | 23.56M | 86 | not enough |
+| no dimension constraint | 1354.9 | 37.70M | 126 | not enough |
+
+With c = 0 at the other ranks (dimensions 16, 14, 12): tau_g <= 346, 299, 257 at ranks 39, 41, 43.
+**So the missing lemma has a number: at rank 37, the classes of the grids satisfy at most 10 independent relations
+mod 7 beyond the pencil relations** (fewer if non-grid twin pairs exist: each non-grid class of size m uses m - 1
+further dimensions for at most 3 pairs). The laptop session's own count with a simpler LP gave 13 (h <= 3) or 4
+(h <= 4); Codex's profiles have at most three lines in six grids at a point.
+Nothing bounds c at present: relations are forced as soon as rho + 1 - x6 > 19, and what has to be certified is that
+such forced relations cannot exist, cluster by cluster.
+
+**Codex, note 204 (commit d581508 of its branch), exact certificates:** with the cut of note 203, tau <= 1354
+(89423/66, s = 22; all 74 sizes certified); b_3 >= 45 964; C6 <= 38 084 490 (binary mass-six same-sum, was
+39 016 712); at rank 37 with b_3 >= 45 964: b_4 <= 15 196 716 at rho = 126. No bound rho <= 50 is justified yet: it
+does not count pencil subspaces as independent.
