@@ -960,3 +960,24 @@ All LP values are floating-point explorations over the full order-10 polytope.
   at this order; order 12 (6 + 6 parts) would.
 * **Codex's note 188** (cabec2e): for (6,3) with e(W) <= 8, both signs: mass 6 at most 756 tau (norm 6) and 12 814 tau
   (norm 8); mass 7 at most 108 Omega and 3612 Omega. Masses 8, 9 and the old families remain.
+
+### 17.21 The twin-prism corner, and targeted computations above order 10 (09:14 UTC)
+
+Exploratory floating LPs; nothing here is a bound to be used.
+
+* **The dangerous corner is the twin-prism one** (`lp_no63.py`). Without the shape (6,3) the supports <= 9 give a
+  coupled minimum of 24.8 million at P = 0; with a penalty of 30 000 per prism the optimum moves to P = 852.9 and the
+  value falls to 4.5 million. Codex's proved losses per pair of twin prisms (12 814 for (6,3) at norm 8, 2794 for (4,4),
+  432 for (5,2)) with tau <= 2P + 3 rho are of that size. So the number tau of pairs of disjoint anticomplete prisms
+  is the decisive quantity.
+* **Per prism** (frame identity sum_T (u, t_T)^2 = 84 and sum_T (u, t_T) = 0 for the norm-4 vector u of a prism): with
+  tau_j = number of triangles disjoint from the prism and joined to it by j edges,
+  3 tau_0 + tau_1 + tau_4 + 3 tau_5 + 6 tau_6 = 36; hence at most 12 far triangles, at most 6 twins (5 by the count of
+  far vertices), and 4 tau <= 12 P.
+* **Above order 10** (`census_target.py`, `lp_target.py`, `census_multi.py`, `lp_multi.py`; same recursion,
+  top-down with memoisation on the full order-10 census): "prism + far house" (order 11) has a closure of only 44 types
+  and 32 new parameters; its maximum over the enlarged polytope is 24 579, i.e. tau <= 2048, weaker than Codex's 1890.
+  "prism + far prism" (order 12) is itself 3-regular, hence a new free parameter: no information below order 15.
+  The closure of "prism + F" for all 21 five-vertex types F (16 815 types of order 11, 747 new parameters, 45 s) leaves
+  the caps unchanged: P <= 852.92, H <= 1867.25, order-8 supports <= 53 465.
+  Conclusion: neither the twins nor P can be cut further by positivity at orders 11 and 12 with targets of this kind.
