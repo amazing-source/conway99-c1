@@ -851,3 +851,44 @@ corner; the collisions are not analysed.
 Codex, same hour: b_3 >= 45 528 (far-triangle differences 7392 - 2P with 4 collisions per pair of twins, and the
 inequality classes >= 2R/(k+1) - 2C/[k(k+1)] for R representatives with C colliding pairs, k = 3), note 186 at bf7cc29;
 rank-37 ceiling 16 469 236.
+
+### 17.18 My own census engine: full orders up to 10, all representatives of support <= 10, best case for rank 37 (08:24 UTC)
+
+**Engine.** `census2.py` counts EMBEDDINGS x_H and uses, for a type H with a vertex u of degree <= 2 (G = H - u,
+S = N(u)), the identity x_H = c(S) x_G - sum over the admissible strict supersets S' of S of x_(G + S'), with
+c(empty) = v - m, c({i}) = k - deg_G(i), c({i,j}) = (1 or 2) - |N_G(i) cap N_G(j)|; every term has fewer vertices or more
+edges; the types of minimum degree >= 3 are the parameters. Own canonical form (colour refinement, individualisation, twin
+shortcut). Results for (99,14):
+* types per order 2..10: 2, 4, 9, 21, 62, 208, 916, 5311, 42 430; new parameters at orders 6..10: 1, 1, 7, 48, 492;
+* the type counts sum to C(99, n) identically (checked for n <= 9; skipped at order 10 for time);
+* N(6,9) = P, N(6,8) = 20 790 - 9 P, N(6,7) = 831 600 + 36 P, N(6,6) = 8 560 860 - 84 P;
+* `compare_census.py`: the 6533 formulas of Codex's packet at e5ad4d2 (orders 2 to 9) are reproduced coefficient by
+  coefficient, parameters matched through the canonical form: 0 mismatch. Codex's exhaustive list of 492 ten-vertex
+  types of minimum degree 3 agrees in number.
+Orders 2..9 take 20 s; the full order 10 takes about 4 minutes (`OUTPUT_census2_99_order10.txt`). The 60 MB JSON of
+the order-10 census is not committed (rebuild: `python -I census2.py census 10 99 14 <file> nocheck`).
+
+**All representatives.** `reps10.py`: for every type and every split of all its vertices into W (+1) and Y (-1) with
+3 | |W| - |Y|, Q = 3n - 2 (e(W) + e(Y) - e(W,Y)) + (|W| - |Y|)^2 / 9; the number of signed vectors 1_W - 1_Y of norm 4, 6,
+8 of every shape as an affine form in the 549 parameters. Constant terms at norm 8: (1,1) 1386; (3,0) 49 896 per sign;
+(2,2) 253 638; (4,1) 521 829 per sign; (6,0) 831 600 per sign; (3,3) 765 072; (5,2) 1 056 132 per sign; (7,1) 2 054 052
+per sign; (4,4) 3 164 238; (9,0) 4 995 837 per sign; (6,3) 5 288 976 per sign; (8,2) 5 652 801 per sign; (5,5)
+93 492 630. They reproduce the totals already known (3 826 746; 5 939 010 with (5,2); 4 108 104 for (7,1)). New shapes:
+(9,0) (9-sets with 14 edges) and (8,2).
+
+**Best case for rank 37** (`lp_reps10.py`, `lp_penalty10.py`; floating-point HiGHS, EXPLORATION: no certificate, no
+collision removed). Minimum over the full order-10 polytope of r8 + (651/34) r6:
+* supports <= 10: 66.6 million (r6 = 188 206, r8 = 63.0 million; (5,5) 12.4, (8,2) 13.5, (6,3) 13.5, (9,0) 10.3, (7,1)
+  4.1, (4,4) 3.2 million at the optimum);
+* supports <= 9: 39.7 million (r6 = 167 891, r8 = 36.5 million);
+against the ceiling 17.40 million. The minimum of the norm-6 count of (5,5) alone is 0 (at P = 783).
+At these optima P = H = 0 but the relaxation holds about 16 000 special supports (types of minimum degree >= 3) of order
+8, 56 000 of order 9 and 3 to 4 million of order 10. With a penalty per special support the minimum collapses (20 000 per
+prism and per D: 4.8 million for supports <= 9; 100 per order-9 support: negative). So the method lives or dies on the
+collisions: realistic constants per twin pair at masses 6 and 7, and a bound on the number of twin PAIRS at masses 8 to
+10, which the census does not see.
+
+**Two structural remarks.** (1) A collision of mass m between representatives of supports n, n' needs 2m <= n + n'; for
+mass 10 and supports 10 there is no free vertex. (2) A pure indicator 1_W collides at t = 0 with another indicator of the
+same size only if W contains an induced subgraph of minimum degree >= 3: the 2-degenerate sets of a given size give
+pairwise distinct classes (the 6-sets with at most 8 edges; the 2-degenerate 9-sets with 14 edges).
