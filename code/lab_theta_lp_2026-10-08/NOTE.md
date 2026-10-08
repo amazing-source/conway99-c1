@@ -1194,3 +1194,29 @@ whether a non-grid prism can have two twins. Negative results of the day on tau 
 prism + far house (2048), the 10-vertex supports "two prisms sharing a rung / two bowties joined by four edges"
 contained three times in every twin pair (parameters 407 and 527 of my census; maxima 6397 and 13 754: tau <= 4615),
 sum-of-squares cuts (nothing).
+
+### 17.27 After Codex's cut 17 tau <= 17 P + 105 rho: the budget, the class quotient, the Fano coupling (11:30 UTC)
+
+Status: floating LPs (exploration). Codex checked parts (a), (b) of the theorem of 17.26 and derived, with its bound
+"at most 17 grids through a vertex" (its notes 105, 108) and g != 5: sum of C(d, 2) over the 7 lines at a point is at
+most (69/17) e(Xi_v), hence pairs of grids sharing a line <= (207/17) rho and **17 tau <= 17 P + 105 rho** (to be
+published by Codex).
+
+* `lp_budget.py` (`OUTPUT_lp_budget.txt`): tau' an LP variable with 4 tau' <= Phi, tau' <= 2P + 3 rho,
+  17 tau' <= 17 P + 105 rho; all shapes of support <= 9, b_4 alone; c = total number of colliding pairs per twin pair.
+  Codex's class quotient (its note 186): classes >= 2R/(k+1) - 2C/(k(k+1)).
+  k = 1: 24.32M (c = 8000), 12.05M (16000): affordable c about 13 400.
+  k = 2: 16.21M (c = 16000), 12.12M (24000), 8.03M (32000): affordable c about 16 450.   (Ceiling 15.98M.)
+  Every optimum is the pure grid point rho = 126, P = 756, tau' = 1534, R = 36.59M.
+  Codex's proved constants for (6,3), (4,4), (5,2) add up to 16 040; (7,1), the 9-sets containing a prism, the
+  cross-shape pairs and the other masses are not in. Short by a factor of the order of 1.5 (it was 3).
+* At the pure grid point all twin structures are differences of two grids: sharing a line (mass 6), a point (mass 8:
+  the two grids minus the common point), or disjoint (mass 9: every vertex has exactly one neighbour in a grid). Two
+  grids never share exactly 2 points (the difference would have a vertex of degree 2), nor more than a line.
+* `lp_joint.py` (`OUTPUT_lp_joint.txt`): coupling the ceiling to the census through a_7 <= (2/21) N(F10), with the
+  ceiling replaced by the linear majorant 14.44M + 1900 a_7 (what-if, to be redone exactly). At the grid point
+  N(F10) <= 3672, i.e. a_7 <= 350: with k = 2 and c = 16 000 the minimum is 15.58M against 14.44M (margin 1.14M
+  instead of 0.23M); affordable c about 18 200.
+* What would move it most: restrictions on the graphs Xi_v (grids through a vertex). At 3.4 line-sharing pairs per grid
+  instead of 6.17 the grid point and the non-grid point (P = 852, rho = 0, tau <= 852) balance and the budget is
+  about 24 000 (k = 1) to 30 000 (k = 2).
