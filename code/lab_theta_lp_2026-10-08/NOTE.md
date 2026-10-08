@@ -2588,3 +2588,25 @@ I sent Codex a scope argument before taking up patterns A / B. Outcome of the ex
 State of rank 37 at this point: counting route closed by its margin (17.44, 17.45, 17.49); star route: exact certified
 certificates per ball, one forced pattern valid for every ball with z = 0, no strategy for a uniform contradiction; NT
 and the disconnected case untouched today.
+
+### 17.65 Codex's barrier (note 219) checked independently (21:25 UTC)
+
+Codex's note 219 (commit 108784b of its branch). Statement: G generic (rank_7 of H equal to 35), triangle-free, one
+neighbour per layer; two apex shadows w1, w2 and one NON-APEX shadow n, all binary (two points per layer, centre once),
+of Green norm 6 and mutual Green products 3. Then they extend to ten SIGNED INTEGER vectors with the complete Gram
+3I + 3J - A(4K_2 + 2K_1) modulo 7, the exact sum K e_v, every layer sum 2 and central coordinate 1. No hypothesis on
+4-cycles. Proof idea as given there: the five vectors (sum, w1, w2, n, dual of the central coordinate) have a
+non-degenerate Gram; the complement to realise has dimension 6 inside a non-degenerate ambient complement of dimension
+28, and over F_7 a non-degenerate form of dimension 2k represents every non-degenerate form of dimension k; then
+corrections by multiples of 7 restore the integer sums.
+
+Independent check here of its explicit witness on my triple of 17.63 (ball 12, centre 0; my own inversion of H + J
+modulo 7 and my own K, not Codex's verifier): the Gram modulo 7 equals the target; the row sums equal K e_0 exactly;
+all layer sums are 2; the central coordinate is 1 in every column; the first three columns are the binary supports
+[0,1,12,13,26,35], [0,2,18,21,24,25], [0,7,22,23,29,32]; the seven others have 17, 29, 28, 31, 25, 30, 34 non-binary
+entries, values from -42 to 238. All checks pass.
+
+Meaning: on one star, every condition expressed through the Green form and the sums (norms, pair products, star sum,
+layer sums) is satisfiable around such a triple once the shadows are allowed to be integer vectors. A contradiction must
+therefore use that the shadows are 0/1 sets, or constraints linking several neighbourhoods. This is a statement about
+what cannot work; it excludes nothing and does not show that the remaining options work.
