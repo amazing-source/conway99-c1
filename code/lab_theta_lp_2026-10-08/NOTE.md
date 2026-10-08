@@ -2383,3 +2383,43 @@ near/far block automatically modulo 7; the exact 0/1 form is what the relaxation
 Also recorded, Codex's caveat on 17.57: "the nine shadows of star v alone" (branch 33) is a core of the final relaxation
 only; the prior deletions of the propagation may use the nine other shadows.
 Scope unchanged: finite certificates on one edge of two balls already excluded in September; no uniform lemma.
+
+### 17.59 The two-star obstruction needs only Green values and star sums: a depth-one, solver-free refutation (20:25 UTC)
+
+Three steps, each sharper than the previous one. Pair tables and propagation are Codex's (`filtered_system`, `propagate`,
+commit 96e7f23), rebuilt in each mode; the unary pools (norm 6 mod 7, local filters) and the filters against the common
+apex (Green value 3, overlap <= 2) are unchanged in every mode.
+
+1. **Capacity mode (no saturation) + internal collisions** (asked by Codex): for two shadows of the same star, forbid a common
+   point p with residual star sum t_s(p) = 1. Ball 12, edge (0,12): branches 113 and 184 exactly infeasible (Farkas gaps
+   10 and 1); branches 137 and 33 exactly feasible (rational witnesses). An exact separation: this pairwise consequence
+   of the conditioned sums is not enough everywhere. (`capacity_collision.py`, `balls/ablation/core_capacity_plus_internal_collision_*.json`.)
+2. **Capacity mode + all conditioned star sums** (each star-sum equation multiplied by "shadow i takes candidate c" and
+   linearised with the pair marginals; valid for every integer solution; only the near/near block): exactly infeasible
+   on the four branches of ball 12, with the largest possible gap (126 000 = 1000 x (18 + 108): multiplier -1 on every
+   normalisation and every star sum, no negative column), i.e. every single candidate is excluded. Positive control:
+   with a planted integer solution the lifted LP stays feasible. (`lifted_core.py`.)
+3. **No LP at all: assign one shadow, then propagate** (`sac_two_star.py`). Fix shadow i to a candidate c, run Codex's
+   exact propagation (pointwise star-sum bounds and pair supports) on the current domains; a contradiction deletes c; an
+   empty domain excludes the branch. Integer and deterministic. With the private pair tables in mode GREEN (Green value
+   in {2,3} only: no overlap, capacity, saturation, K filter, degree, or real inequality):
+
+| ball, edge (0,12) | common-apex branches | excluded by plain propagation | excluded after assigning ONE shadow | candidates of that shadow (min / mean / max) | time |
+|---|---|---|---|---|---|
+| September random ball 5 | 368 | 0 | 368 | 6 / 18.7 / 27 | 70 s |
+| September random ball 9 | 464 | 0 | 464 | 8 / 20.4 / 28 | 92 s |
+| September random ball 12 | 416 | 0 | 416 | 11 / 22.6 / 31 | 91 s |
+| cyclic (2,4,1) | 473 | 0 | 473 | 17 / 27.0 / 37 | 133 s |
+
+   In all 1721 branches one round suffices and the pivot is simply the shadow with the smallest domain; each leaf is a
+   propagation of 20 to 110 events ending with an empty domain. Positive control: with a planted solution the procedure
+   ends alive with every planted candidate present (3 seeds). Outputs `balls/sac_green_*.json` (deletion lists; the
+   replay is the recomputation).
+
+What this establishes (pending Codex's audit of the 50-line script): on these four balls the two-star obstruction on
+one edge follows from (i) the Green values mod 7 between shadows and (ii) the exact star sums alone, by a proof tree of
+depth one (about 450 apexes x 23 candidates = 10^4 propagation leaves per edge). The near/far block (saturation), the K
+filter and LAP's real inequalities are alternative strengthenings, not necessary ingredients; Codex's note 215 shows
+conversely that the real 3 x 3 PSD filter with the apex kills by propagation alone, without any assignment.
+Scope: balls already excluded by one star in September; one edge per ball; finite certificates; no uniform lemma, no new
+exclusion of rank 37.
