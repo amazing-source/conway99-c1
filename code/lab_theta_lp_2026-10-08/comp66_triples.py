@@ -54,6 +54,7 @@ for idx, Gr in enumerate(comps):
         if any(K[a, b] < 1 for a, b in itertools.combinations(T, 2)): continue
         if max(sum(1 for v in T if layer[v] == L) for L in "xub") > 2: continue
         if sum(1 for a, b in itertools.combinations(T, 2) if isgedge(a, b)) > 1: continue
+        if any(sum(1 for t in T if isgedge(v, t)) > (1 if v in T else 2) for v in V): continue   # mu / lambda between w and every x of C (Codex, 09/10 msg)
         triples.append(T)
     m = cp_model.CpModel(); x = [m.NewIntVar(0, 1, "") for _ in triples]   # two far vertices with the same triple would share 3 neighbours (mu = 2)
     cover = {}

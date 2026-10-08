@@ -52,7 +52,8 @@ def comp_data(Gr):
     for a, b in itertools.combinations(V, 2):
         K[a, b] = K[b, a] = (1 if Gr.has_edge(a, b) else 2) - len(nb[a] & nb[b])
     T = [t for t in itertools.combinations(V, 3) if all(K[a, b] >= 1 for a, b in itertools.combinations(t, 2))
-         and max(sum(1 for v in t if v[0] == L) for L in "xub") <= 2 and sum(1 for a, b in itertools.combinations(t, 2) if Gr.has_edge(a, b)) <= 1]
+         and max(sum(1 for v in t if v[0] == L) for L in "xub") <= 2 and sum(1 for a, b in itertools.combinations(t, 2) if Gr.has_edge(a, b)) <= 1
+         and all(sum(1 for x in t if Gr.has_edge(v, x)) <= (1 if v in t else 2) for v in V)]   # mu / lambda between w and every x of C
     return V, K, T
 if __name__ == "__main__":
     i, j = int(sys.argv[1]), int(sys.argv[2]); mode = sys.argv[3] if len(sys.argv) > 3 else "lp"; lim = float(sys.argv[4]) if len(sys.argv) > 4 else 200
