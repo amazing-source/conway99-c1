@@ -1676,3 +1676,12 @@ Codex's collection; prism-free with k = 1; pool with ties). Ceiling side: exhaus
 count is inflated by single-grid copies; the pool and its ties are not computed, and my estimates put pool/2 near
 the ceiling. What would be new: an order-11 census (shapes (7,4), (10,1)), which is a real computation and is not
 launched; or an invariant other than b_4.
+
+Addendum (Codex, 15:05 UTC, answer to the laptop session's question of 17.43). The mass-8 tie of two grids meeting in
+one point p is already in the component C14 of its note 183, section 4: G minus p is the 8-vertex 14-edge type, the
+four transversal edges pair the vertices of degree 4; at most 64 collisions of shape (4,4) per pair of such supports,
+and at most (608/3) C14 + 160 tau for the whole component (which contains more than the supports extendable to a
+grid). It belongs to L44 of its note 185, NOT to C6 of notes 195-198 nor to the new prism-free / pool bounds: neither
+forget it when adding C6, nor count it twice if L44 is used. The prism-free internal (7,1) channel is identically zero
+for a pair of grids (the two-sided candidates passing Q = 8 on two adjacent apices contain another prism in their
+positive part).
