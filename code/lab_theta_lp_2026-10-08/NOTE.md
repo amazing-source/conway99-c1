@@ -1372,3 +1372,31 @@ With these counts the norm-18 term of the threshold of 17.32 is 539 * 9240 kappa
 factor of at least 4. The examples "(2,2,2,4) suffices" of 17.32 used 9 and 8 seeds per vector and are too optimistic.
 The seed route is therefore not closer than the collision route; it would become so only if the factor 6 (choice of
 the missing point) could be removed.
+
+### 17.35 Rank 37 in readable coordinates (laptop session), and the reference numbers after Codex's note 196 (12:27 UTC)
+
+Reference numbers from now on (Codex, note 196, commit 1124c0e of its branch): tau <= 1403, b_3 >= 45 898,
+b_4 <= 15 972 863.3, b_4 + (651/34) b_3 <= 16 851 675.0, P + 5 rho <= 1386.
+
+The laptop session's exact parametrisation of the rank-37 family in (a_7, a_8, a_9, a_10; b_1, b_2, b_3), integer
+coefficients (checked here against the exact LP):
+    b_4  = 14 006 902 + 2793 a_7 + 532 a_8 + 77 a_9 + 7 a_10 - 8987 b_1 - 664 b_2 - 35 b_3
+    a_11 =  -133 154 -  406 a_7 - 125 a_8 - 34 a_9 -  7 a_10 + 5726 b_1 + 273 b_2 +  7 b_3
+    a_12 =   736 358 + 1183 a_7 + 350 a_8 + 91 a_9 + 13 a_10 - 2429 b_1 - 476 b_2 - 21 b_3
+    a_13 = 1 260 308 +  378 a_7 +  98 a_8 +  7 a_9 +  6 a_10 + 25830 b_1 + 70 b_2 -  7 b_3
+    a_14 = 5 097 168 -  288 a_7 + 98784 b_1 + 343 b_2
+Consequences:
+* b_4 + 35 b_3 + 664 b_2 + 8987 b_1 = 14 006 902 + 2793 a_7 + 532 a_8 + 77 a_9 + 7 a_10: with caps on a_9 and a_10 a
+  vector of norm 6 of M weighs 35 and a vector of norm 4 weighs 664. Eliminating a_9 through a_11 >= 0 gives
+  b_4 + (651/34) b_3 + 45.7 b_2 <= 13 705 347 + 1873.5 a_7 + 248.9 a_8 - 8.85 a_10 + 3981 b_1 (the coupled ceiling).
+* At the b_4 optimum the adversary has a_7, a_8 at their caps and needs 273 b_2 + 7 b_3 + 5726 b_1 >= 1 249 131, i.e.
+  b_2 about 2480: about 2000 non-triangle norm-4 vectors of M. An upper bound on b_2 would cut the ceiling.
+* 3 a_11 + a_12 + 11 a_9 + 8 a_10 + 25 a_8 + 35 a_7 = 336 896 + 343 b_2 + 14 749 b_1 (49 times this is the threshold of
+  17.32). With the floors b_2 = 462, b_3 = 45 528 and a_9 the only short shell, 91 a_11 + 34 a_12 = 13 413 960: about 29
+  vectors of norm 22 or 85 of norm 24 per seed. So on the seed route the lemmas that matter most are at norms 22
+  and 24 (and the regular 33-sets), where nothing is proved.
+* A cap on a_13 is a floor on b_3: a_13 <= N means 7 b_3 >= 1 260 308 - N + ... ; a_14 >= 5.0 million vectors of norm
+  28 in L1 are forced.
+The laptop session's local model (CP-SAT, necessary conditions): two vectors of norm 16 on one seed are infeasible
+(Codex's kappa_16 = 1 reproduced); two vectors of norm 18 on one seed are feasible with inner product 8 and infeasible
+with inner product 5. Tests with 3 to 5 vectors per seed are running there.
