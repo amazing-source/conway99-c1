@@ -296,3 +296,32 @@ what scalar and vector-valued theta series of level 7 give with the short vector
 any of these programmes is class-level (glue) information, which is bilinear: e.g. (Codex) each class of M modulo sqrt7 L1
 contains at most one vector of norm <= 24, and a norm-4 vector of M other than the 462 triangle vectors has all its
 partners in sqrt7 K* of norm >= 38.
+
+## 13. Descent rules and the distribution of the forced short vectors (00:04 UTC)
+
+Descent against the forced vectors of sqrt7 M (mine; (R1) used by Codex to prove that norm 20 is binary; to be refereed).
+f_T = 7 P 1_T lies in L1 \ L (norm 28) and (x, f_T) = 7 x(T). Since min L = 14 and min(L1 \ L) = 22:
+* (R1) for x in L of norm 2n: x(T) <= (2n + 6)/14. Every integer (-4)-eigenvector of norm <= 20 has all its 231 triangle
+  sums in {-1, 0, 1}, exactly 3n at +1 and 3n at -1 (frame identity sum_T x(T)^2 = 3|x|^2).
+* (R2) for a prism (T, T'), f_T + f_T' lies in L1 \ L and has norm 28: |x(T) + x(T')| <= 1 for norm <= 20; two triangles of
+  sum +1 never form a prism.
+Codex (to be published by it): every vector of norm 20 is binary and its supports have at most one edge each; one norm-16
+vector per seed; 7 a_7 + 8 a_8 <= 55440; at r = 43 each non-zero class of L1 / sqrt7 M carries a single norm.
+
+`top43.py` (`OUTPUT_top43_N84.txt`, `OUTPUT_top_others_N84.txt`): exact LP minima with the audited bounds, Codex's exact
+small shells (b_5 >= 18 001 368, b_6 >= 86 272 956, b_7 >= 208 016 424) and the coupled seed bound.
+
+| r | min (a_8+...+a_13) | norm 18 alone | without norm 18 | norm 26 alone | min of the largest shell |
+|---|---|---|---|---|---|
+| 43 | 164.5 | 164.5 | 2 250.9 | 2 632 | 138.5 |
+| 41 | 1 028.1 | 1 028.1 | 14 067.9 | 18 082.4 | 865.8 |
+| 39 | 7 073.5 | 7 073.5 | 106 246 | 126 988.4 | 5 956.6 |
+| 37 | 49 391.1 | 49 391.1 | 1 063 860 | infeasible | 45 670.5 |
+| 35 | 5 908 747.4 | infeasible | 8 787 534 | infeasible | 4 837 873 |
+
+Norms 16, 20, 22, 24 alone are infeasible at every rank. So norm 18 is the pivot for r >= 37: either many vectors of norm
+18 (166 / 1 030 / 7 074 / 49 392) or 14 to 21 times more vectors of the other norms. At r = 43 some shell has at least 140
+vectors, hence some non-zero class of L1 / sqrt7 M (49 classes) contains at least 18 vectors of the same norm; their
+pairwise differences are vectors of sqrt7 M that are not among the forced ones. At r = 35 at least 5.9 million vectors of
+norm <= 26 are needed, with at least 4.8 million in one shell: a proof that every shell of norm 16..26 has fewer than
+4.8 million vectors would exclude r = 35.
