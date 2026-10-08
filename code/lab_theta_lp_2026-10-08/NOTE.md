@@ -1585,3 +1585,34 @@ Reading.
   repeats classes of support 9 and conversely. This relation has sum 9, it is not a twin relation, and it is counted
   per grid, not per twin pair. Any accounting for supports <= 10 must include it; for supports <= 9 it is the
   "single-grid channel" still outside Codex's mass-six totals (17.29, 17.31).
+
+### 17.43 Two more negative tests, and the laptop session's "shortest representative" principle (14:50 UTC)
+
+* **The ceiling side cannot close supports <= 9 at all.** Hand estimate at the vertex (rho = 126, tau = 1403,
+  r8 = 36.57M): with NO vector of norm 14 to 20 in L1 and no root (a_7 = a_8 = a_9 = a_10 = 0, b_1 = 0, b_2 = 462,
+  b_3 = 45 898) the ceiling is 14 006 902 - 664 * 462 - 35 * 45 898 = 12.09M and the break-even of the k = 2 accounting
+  is (2 * 36.57M - 3 * 12.09M)/1403 = about 26 300 < 27 828. So with the certified collision cap, every possible
+  progress on a_7, a_8, a_9, a_10, b_1 together is still insufficient: the gain has to come from the floor.
+* **Norm-6 floor from prism-free representatives** (`lp_n6.py`, `OUTPUT_lp_n6.txt`): b_3 >= R6(pf) - c6 tau inside the
+  joint LP, norm-8 floor with c8 = 27 828. Even with c6 = 0 the maximum of (ceiling - floor) is +2.42M (3.79M without):
+  at the vertex the order-10 polytope allows R6(pf) = 60 346 only, for supports <= 9 and <= 10 alike (the (6,3), (5,5),
+  (8,2) prism-free counts of norm 6 can be driven to zero there; composition (1,1) 8316, (3,0) 8316 per sign, (3,3)
+  5880, (6,0) 13 986 per sign, (9,0) 773 per sign). Not a route in this relaxation.
+  Remark: the raw norm-6 count of 17.42 (r6 = 455 795) is inflated by the representatives containing a prism: a
+  9-set "prism X of a grid + a triangle T forming a prism with one triangle of X" is the class t_T - t_Theta, one of
+  the 7392 - 2P far-triangle differences.
+* **Laptop session (14:40 UTC, hand; I agree with the statements I could check).** Classes are cosets psi + K, K the
+  kernel lattice; count only the representatives that are SHORTEST in their coset (smallest support for 0/+-1
+  vectors): b_4 >= sum over shortest psi of 1/(number of shortest vectors of the coset). psi is a longer copy iff
+  some phi in K has 2 (psi, phi) > |phi|^2; two shortest ones differ by a tie 2 (psi, phi) = |phi|^2.
+  - phi = 1_G: |phi|^2 = 9 is odd, so a single grid never gives a tie; psi is a copy iff |psi(G)| >= 5. In
+    (9,0) <-> (4,4), (0,9) <-> (5,5), (3,6) <-> (8,2) the member with five points of the grid is the copy.
+  - phi = 1_G - 1_G' for disjoint grids (|phi|^2 = 18): no tie inside |psi(G)| <= 4.
+  - grids meeting in one point: a tie of mass 8 for (4,4) (four points of G - p in W, four of G' - p in Y);
+  - grids on a line (twin prisms): tie iff |A| + |B| = 6; copy iff > 6 (a whole prism is the crude case: this is why
+    "prism-free" was the right restriction in 17.42).
+  So the right numerator is the POOL {Q = 8, support <= 10, |psi(G)| <= 4 for every grid, at most half of every twin
+  pair}, and the raw count of support 10 is not: if the pool at rho = 126 is below about twice the ceiling, supports
+  <= 10 cannot conclude either. The pool is not an intrinsic condition (it needs the grid around five points), so the
+  census does not give it; an upper bound per grid is a local enumeration of the kind Codex does.
+  Multiplicity three exists in principle (W with four points of X_i, Y with two points of X_j and two of X_k).
