@@ -2170,3 +2170,24 @@ Next on my side: the centred Gram entries for meeting lines (note 208 formula wi
 witnesses y of a relation sum c_T h_T = [(A + 4I) y] by their support (can they be cut into closed-neighbourhood
 pieces?); what notes 125, 126 and the scripts x30c, x32 already know about (6,6) components of girth >= 5
 (288 labelled components, 15 types, one is the Pappus graph).
+
+Addendum to 17.53 (18:05 UTC).
+* Codex (checked here by hand): the reduction of note 126 par.3 ter is correct under (i) NT for connected lines and
+  (ii) the uniform generic obstruction, both open; S = number of L18 events, sum_L c4(G(L)) = S + 3P. Correction of my
+  numbers: the class of 1_(C_1) - 1_(C_2) has norm 36 = 1 mod 7 (the half-class has norm 2); and **b(F_v) <= 1**: a
+  K_3,3 component of F_v uses six distinct lines a_1, a_2, a_3 | b_1, b_2, b_3, each a-line's block in it is
+  {b_1, b_2, b_3} and conversely, so the complementary blocks of the a-lines (and of the b-lines) form a triangle in
+  F_v; the rest is not bipartite. Hence at most 99 vertex-local relations, and at least 114 relations among the 231
+  line vectors must be non-local.
+* HONEST READING (mine): this is not a separate lemma. In any graph of the residual case the 231 line vectors lie in 18
+  dimensions, so the relations are FORCED; "the relations are generated locally up to 14" is equivalent to "the line
+  vectors span at least 118 dimensions", i.e. to the non-existence itself. A proof needs a rank lower bound, which
+  needs the Gram entries of DISJOINT lines (unknown): the same nature as the grid case. Recorded so that nobody
+  presents it as a reduction.
+* Two census tests of the P = S = 0 world (`lp_ps0.py`, `lp_comp66_cycles.py`, outputs; floating, NEGATIVE):
+  (1) the order-10 census polytope allows P = 0 together with no Z2 (the 7-vertex configuration of an S event; it is a
+  single census parameter, range 0 to 7469); (2) G(L) = Gamma[N(L)], so F_k = sum over lines of the number of k-cycles
+  of G(L) is a census form (2 types of order 8 for k = 5, 10 of order 9 for k = 6). The 15 (6,6) component types of
+  girth >= 5 have (c5, c6) in {(0,18), (2,12), (4,8), (4,10), (6,4), (6,6), (9,0)}, so "(6,6) everywhere" needs
+  F5 in [0, 4158], F6 in [0, 8316] and 2 F5 + F6 in [7392, 8316]; at P = S = 0 the census allows F5 in [0, 4158],
+  F6 in [0, 8316], 2 F5 + F6 in [0, 11 781]. No contradiction.
