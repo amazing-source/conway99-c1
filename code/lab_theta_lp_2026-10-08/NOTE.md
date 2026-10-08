@@ -1867,3 +1867,20 @@ Reading: in the canonical model a line in six grids has at most two three-hub po
 third point; (2,2,0) and (1,1,1) fit in 19 dimensions, so these two patterns CANNOT be excluded by the grids through
 the three apices alone (the canonical model is a valid choice of the binary intersections): they need the grids
 elsewhere or the non-canonical structure. The five open types of note 202 all have rank 24 to 27 here.
+
+Third addendum to 17.48 (Codex, about 16:00 UTC, exact computation, its note 203 in preparation; not recomputed here).
+GENERAL result, no canonical hypothesis: the pattern (2,2,1) of extra hub rungs at the three apices of a line in six
+grids is excluded for r >= 37 (the 90 column words with integer multiplicities w; margins 4 and 8; tightness sums 2
+for complete duads; w <= 1 when two duads of a word are complete; 7 orbits covering the 1350 placements; 47 integer
+column solutions in all, every Gram of rank 23 or 24). Hence (2,2,2) falls for the five remaining types: **on a line
+in six grids, if two points have three hub lines each, the third has only one (the line itself).** With n_h = number
+of vertices on exactly h lines contained in six grids (h <= 3 because four hubs need 18 grids at a point):
+3 n_3 <= 2 n_1 + n_2, so n_3 <= 39. No rank excluded.
+What the cut is worth in a moment LP (`profile_lp.py`, `OUTPUT_profile_lp.txt`, floating): with MY list of point
+types (586 graphs on the 7 lines: degrees in {0,1,2,3,4,6}, at most 17 edges, D1) the maximum of tau_g is 12.18 rho
+without the cut (1534 at rho = 126, the old bound of note 194) and 11.49 rho with it (1448): still above Codex's
+11 rho + 17 = 1403, which uses a shorter list of types. So the cut has to be evaluated in Codex's own moment LP; with
+my list it brings nothing new. Extremal types with the cut: 16 pairs / 60 cherries / 2 hubs, K_7 minus a 4-cycle
+(17 pairs, 69 cherries, 3 hubs), and grid-free points. Expected size of the gain: small; the accounting needs
+tau of about 540 to 700, which this cut alone cannot give. The lever is the dimension count itself (how many grids
+fit in 19 dimensions), not this consequence.
