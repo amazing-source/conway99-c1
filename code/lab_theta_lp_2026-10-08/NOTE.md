@@ -319,9 +319,33 @@ small shells (b_5 >= 18 001 368, b_6 >= 86 272 956, b_7 >= 208 016 424) and the 
 | 37 | 49 391.1 | 49 391.1 | 1 063 860 | infeasible | 45 670.5 |
 | 35 | 5 908 747.4 | infeasible | 8 787 534 | infeasible | 4 837 873 |
 
-Norms 16, 20, 22, 24 alone are infeasible at every rank. So norm 18 is the pivot for r >= 37: either many vectors of norm
-18 (166 / 1 030 / 7 074 / 49 392) or 14 to 21 times more vectors of the other norms. At r = 43 some shell has at least 140
+Norms 16, 20, 22, 24 alone are infeasible at every rank. Norm 18 is the pivotal shell for r >= 37: it alone can satisfy the
+programme (166 / 1 030 / 7 074 / 49 392 vectors), and if it is empty the other shells need 14 to 21 times more. (These are
+the two pure scenarios, not a dichotomy: mixtures are feasible, e.g. Codex's witness at r = 43 with a_9 = 100,
+a_8 = 20826/49, a_13 = 8916/49.) At r = 43 some shell has at least 140
 vectors, hence some non-zero class of L1 / sqrt7 M (49 classes) contains at least 18 vectors of the same norm; their
 pairwise differences are vectors of sqrt7 M that are not among the forced ones. At r = 35 at least 5.9 million vectors of
 norm <= 26 are needed, with at least 4.8 million in one shell: a proof that every shell of norm 16..26 has fewer than
 4.8 million vectors would exclude r = 35.
+
+## 14. Difference lemmas (00:13 UTC)
+
+Method (Codex): for two short binary vectors f, h whose difference g is a Fano vector, write R, U for the common positive
+and negative vertices; they lie outside the support of g, where every vertex has 0 or 1 neighbour of each sign, and Z_g is
+independent; count the edges between R and U in two ways.
+* Codex: two norm-16 vectors never differ by a Fano vector (note 173); two norm-18 vectors neither (note 176, re-read by
+  me). Hence every vector of norm 16 or 18 is orthogonal to all roots of M.
+* **Lemma F (mine, sent to Codex for refereeing): two distinct Fano vectors never differ by a Fano vector.** Here
+  r + s = 7, deg_U(r') = 4 - n(B1) in {3, 4} for r' in R, E = e(R,U) = 4r - x_R = 4s - x_U with 3r, 3s <= E <= rs; r = 0
+  gives f = h; so {r, s} = {3, 4}, and then E = 12 = rs: R - U is complete bipartite K_{3,4} and two vertices of R have 4
+  common neighbours. Contradiction.
+  Corollaries: the roots of M are pairwise orthogonal (root system A_1^k, k <= 44), so **b_1 <= 88**; at r = 43 every
+  Fano vector is a root of M, so a_7 <= 88 and the Fano vectors are pairwise orthogonal; for any r two distinct Fano
+  vectors have |(f, h)| <= 6. In the LP (`roots88.py`) this cap changes neither the forced numbers nor the ladder.
+* Lemma A (laptop session, completed by me, sent to Codex): for norm 18 with independent supports, root of type (2,1,1)
+  (five second common neighbours in P, one partner of overlap 0, two of overlap 1) and a given missing second common
+  neighbour, at most TWO vectors per seed: two such vectors have no sign crossing and differ by a vector of norm 16 or 14;
+  a Fano difference is impossible (p0 would be in Z_g, but q3, q4 have no neighbour in P_g); a norm-16 difference has its
+  seed at p* determined by f, hence is unique (one norm-16 vector per seed). Not done: different missing vertices, the
+  type (1,1,1,1), supports with an edge. The per-seed count for norm 18 is probably of the order of ten, so seed counting
+  alone is unlikely to reach the thresholds of section 13.
