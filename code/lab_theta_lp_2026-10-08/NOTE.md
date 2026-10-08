@@ -2071,3 +2071,16 @@ relations that such a certificate has to account for.
 So the non-bounding route is: (1) rigidity of the generic line at rank 37 (finish (a')), (2) NT, (3) exclusion of
 "all lines degenerate" by exact ranks mod 7. The collision count is then not needed at all.
 Sent to Codex and to the laptop session as a proposal, with the question of what (a') still needs.
+
+Addendum to 17.51 (Codex's note 206, commit bb36c21 of its branch; exact, not recomputed here). The 4 + 3 lemma is an
+exact INTEGER identity, and the one-vertex relations are classified symbolically: with X the grid graph of v, H its
+complement, and z a function on the seven lines with z_i + z_j = 0 on every edge of H, put y_v = sum z and y = z_i on
+the two other points of line i; then exactly (A + 4I) y = sum over the grids G_ij of (z_i + z_j) 1_(G_ij). The relations
+with a witness supported on N[v] have dimension exactly b(H), the number of bipartite components of H (isolated
+vertices = lines in six grids included). The 17 excess types are confirmed with a short reason (no vertex of H has
+degree 1, so a non-trivial bipartite component has at least 4 vertices, at most one on 7 vertices). Gram formula for
+the centred grids at a vertex: Gamma = 4I + 2 C^T C - 3J mod 7 (C the 7 x e incidence matrix), rank Gamma = e -
+nullity_7(Q_H), Q_H the signless Laplacian of H; bipartite components give the rational null space, any extra
+nullity mod 7 is 7-torsion and need not be a true relation with a witness on the ball.
+Consequence certified at rank 43 only: every vertex has e <= 15, tau <= 1326, b_3 >= 46 000 there. Nothing new at
+rank 37.
