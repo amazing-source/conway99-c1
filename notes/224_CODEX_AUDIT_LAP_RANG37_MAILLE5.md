@@ -20,8 +20,11 @@ arrêt au plafond.
 La partie informatique de l'énoncé complet repose encore en partie sur
 les exécutions archivées par LAP : cet audit ne prétend pas avoir rejoué
 les 576 recherches d'étoiles ni les 33784128 matrices de la première
-étape du cas (3,3). Une réimplémentation d'une étoile témoin (0,0) est
-confiée à LAB ; son résultat sera consigné séparément lorsqu'il arrivera.
+étape du cas (3,3). Une réimplémentation d'une étoile témoin (0,0) avait
+été confiée à LAB. **Mise à jour du 9 octobre : mission annulée par message
+420 suivant la demande explicite de l'utilisateur de privilégier l'exploration
+et d'alléger les vérifications.** Ne pas attendre ni relancer cette étape pour
+explorer les conséquences du résultat disponible.
 
 ## 1. L'espace quadratique et les relations de la boule
 

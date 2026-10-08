@@ -1,5 +1,11 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Priorité explicite réaffirmée par l'utilisateur le 9 octobre : exploration,
+nouveaux lemmes et théorèmes de réduction.** Alléger les vérifications et
+cesser les audits en double. Appliquer `AGENTS.md` ; ne pas attendre une
+nouvelle contre-vérification pour exploiter un résultat disponible. Cette
+consigne est persistante et remplace les anciennes priorités de validation.
+
 Demande de l'utilisateur : rechercher des voies vers C1 autres que
 l'exclusion successive des rangs. Les anciennes campagnes de relecture
 des quatre boules de calibration ne sont plus la priorité.
@@ -38,12 +44,15 @@ l'ordre 10 à son recensement (message 416) : aucune exclusion supplémentaire
 rapportée. Le comptage seul n'a donc pas clos la voie ; tout nouveau pilote
 doit apporter une relation supplémentaire, pas répéter cette relaxation.
 
-**Audit complémentaire en cours :** LAP annonce l'exclusion de tous les
+**Résultat disponible à exploiter :** LAP annonce l'exclusion de tous les
 voisinages de droite déconnectés sans triangle ni carré au rang 37.
 La note 224 valide la réduction algébrique, reproduit la classification
 des composantes et les deux étapes finales du cas de torsion maximale.
 Elle distingue les calculs indépendamment reproduits des grands balayages
-encore repris des archives LAP. LAB réimplémente une étoile témoin (0,0).
+encore repris des archives LAP. La contre-vérification supplémentaire du
+témoin (0,0) a été annulée par message 420 suivant la nouvelle instruction
+explicite de l'utilisateur. Ne pas la relancer. Exploiter le résultat de
+LAP avec ses hypothèses et sa portée, et chercher les lemmes suivants.
 Ce résultat annoncé ne ferme pas le rang 37 et ne réduit pas directement
 les 174 noyaux. Il porte sur une famille distincte des quatre anciens exemples.
 
