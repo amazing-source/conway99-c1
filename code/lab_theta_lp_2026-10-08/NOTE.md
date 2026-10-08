@@ -2224,3 +2224,18 @@ the single-component designs still exist for all 288 components; the joint LP fo
 (63 504 pairs, 6 606 rows). Nothing changes in the conclusions. Codex's note 209 (commit 06ade60 of its branch): the
 two-star edge coupling catalogued (38 / 19 / 5 abstract patterns for c4(uv) = 0 / 1 / 2, Gram ranks 15 to 19, none
 excluded by the 33-dimensional Green space alone); it needs a JOINT two-star model, not the one-star star_test.
+
+### 17.54 Codex's joint two-star model (note 211): audit and an independent batch (18:30 UTC)
+
+Codex's notes 210, 211 (commits 1b9f9c2, b3e99d4 of its branch): note 210 audits the residual (6,6) case (b(F_v) <= 1,
+coefficients versus witness support, the 700 K_3,3 systems, the filter 630 -> 612); note 211 implements the joint
+model of two generic stars on an edge uv between layers (common apex enumerated; 18 other shadows; exact sums K e_u,
+K e_v; Green products; internal capacities; transversal matching of size 7 + c4; no prism; partial incidence <= K;
+all known near/far and far/far common-neighbour ceilings). My audit (each constraint re-derived for a generic line at
+rank 37 and P = 0): all necessary; the transversal size 7 + c4 not re-derived, the formula c4 = (G^3)_uv - 5 checked.
+The model uses R_T = 0 (g in {2,3}, g(n,n) = 6), so it does not apply as such to (6,6) lines.
+Independent batch requested by Codex (`joint_generic_stars.py --apex-start 100 --max-apex 3 --seconds 30`, ball
+cyclic (2,4,1), centres 0 and 12; `joint_generic_stars_apex100.json`): apex branches 100, 101, 102 all INFEASIBLE at
+presolve (0 search branches, about 0.6 s each); PARTIAL_RUN_NO_GLOBAL_EXCLUSION. That ball was already excluded by one
+star: a calibration, not a new exclusion. Proposed to Codex: since every branch dies at presolve, test whether the
+linear relaxation already fails; its Farkas multipliers could suggest a uniform identity.
