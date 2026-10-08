@@ -1163,7 +1163,10 @@ Theta, same N1, Codex); Z = the 36 - 6m vertices far from all of them.
     grids through the line Theta (two prisms with the same triangular Theta are automatically far: a vertex outside a
     grid has exactly one neighbour in it; a common vertex forces a common rung and then equality). Class size =
     g(Theta), the number of grids containing the line Theta; g is 0, 1, 2, 3, 4 or 6 (for g prisms the vertices of Z each
-    have one apex neighbour and Z is cubic, made of "long prisms"; 6 leftover vertices would be one more prism).
+    have one apex neighbour and Z is cubic; 6 leftover vertices would be one more prism).
+    CORRECTION (laptop session, 11:50 UTC): a triangle inside Z gives a PRISM on Theta, not necessarily a grid (the
+    mates of its vertices need not form a triangle), so Z is not always made of "long prisms" and the number of prisms
+    on a line can exceed twice its number of grids; "never 5" is unaffected.
 (b) If Theta is not a triangle, the class of X has at most 3 prisms. Proof for m >= 3: for w in N1 and an apex c let
     r_c(w) be the number of prisms where the neighbour of w is on the rung of c; r_c(w) <= 2 if w is not adjacent to c
     (common neighbours), r_c(w) = 0 if w ~ c, and the three r add up to m. So no w has two apex neighbours; if w ~ c
@@ -1280,3 +1283,32 @@ Remark (mine): the collisions of F0 of the first pattern are genuine and come in
 triangle of W, [psi] = t_U - t_T + [1_W0], and t_U - t_T = t_U' - t_T' exactly when (U, T') and (T, U') are twin prisms;
 so re-counting by distinct differences t_U - t_T removes nothing. The lever is tau (the structure of grids through a
 line, 17.28), not the bookkeeping.
+
+### 17.31 The window for rank 37 after Codex's note 195, and three more negative tests (12:10 UTC)
+
+* Codex, note 195 (commit 006c793 of its branch, exact certificates): all binary mass-six same-sum channels for the
+  shapes of support <= 9 (e(W) <= 8 for (6,3)) cost at most 29 204 colliding pairs per GRID twin pair and 31 976 per
+  non-grid pair (22 422 / 23 150 without the 9-set indicators). In F0 the component "T, T' disjoint triangles of the two
+  prisms" carries up to 7 304 of the 7 496.
+* The window. Classes >= R^2/(R + 2C) (Cauchy-Schwarz; envelope of Codex's inequalities in k). With the ceiling
+  b_4 <= 15.975M, rank 37 forces R + 2C >= R^2/15.975M: C >= 25.25M at the grid point (R = 36.59M), C >= 16.9M in the
+  best case of the census (R = 32.42M). Certified cap: C <= 29 204 * 1534 = 44.8M. So 25.25M <= C <= 44.8M: the pairwise
+  accounting misses by a factor 1.8 before the other channels (masses 7 to 9, windmills, single grid) are added; it
+  would need tau <= about 860. It is a diagnostic, not a route. (My idea of counting by distinct differences
+  t_U - t_T removes nothing: those collisions are genuine identifications.)
+* Read positively: a graph of rank 37 must have rho near 126, tau near 1534 and more than half of the worst-case
+  collision profile at the average twin pair.
+* The ceiling side (laptop session's exact sensitivities): b_4 = 13.15M + 839 a_7 - 43.2 a_8 - 80.5 a_9 - 7.3 a_10
+  + 2.4 a_11 + 2.7 a_12 - 0.62 a_13 on the feasible family; a cap a_13 <= 10^6 gives b_4 <= 13.4M and a_13 <= 3 * 10^5
+  gives 11.0M; with 11.0M the forced C is 42.6M, almost the cap. An upper bound of a few 10^5 on the vectors of norm 26
+  of L1 is therefore worth a factor 1.8 on tau. No such bound is known (no census coupling: a 13 + 13 eigenvector
+  contains no forced special support of order <= 10; sphere-packing bounds do not exclude 3 million).
+* Negative tests (`lp_line.py`, `OUTPUT_lp_line.txt`), suggested by the laptop session: sub-configurations of two grids
+  on a common line T that contain T: K_3 x P_3 (order 9), the same plus one vertex of a third row, grid minus a vertex
+  of T plus a rung of the other grid (order 10). Maxima 7560, 45 360, 22 680, i.e. 15 rho each time: the order-10
+  polytope contains the pure grid world exactly. No cut.
+* The laptop session's lattice fact (re-derived here): for every maximal totally isotropic I in D = L1/7L1*
+  (q = norm/2 mod 7, dimension 45 - r), the preimage Lam# of I-perp is an even lattice of level 7, determinant 7^42,
+  minimum >= 14, whose theta series satisfies the rank-43 relations, and M+ = (preimage of I)/sqrt7 is an even lattice
+  of determinant 49 containing M. So every rank contains rank-43-type pairs; the only thing that separates rank 37 from
+  rank 43 is the size of b_4 of M itself.
