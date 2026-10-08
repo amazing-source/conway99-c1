@@ -10,6 +10,10 @@ Le calcul ne suppose pas que les soixante noms proviennent du modèle
 canonique de Petersen ou d'un total de synthèmes. Il ne suppose aucune
 symétrie du graphe.
 
+**Suite :** la [note 203](203_CODEX_EXCLUSION_GENERALE_221_ET_COUPURE_GLOBALE.md)
+exclut le motif (2,2,1) sans indice de centre commun et en déduit
+3n₃≤2n₁+n₂, donc n₃≤39.
+
 ## 1. La borne sur les matrices de produits scalaires
 
 Posons r=rank₇(A−3I), et
