@@ -2267,3 +2267,44 @@ linear relaxation already fails; its Farkas multipliers could suggest a uniform 
 * Scope: these balls were already excluded by one complete star (September). What is new is a solver-free,
   replayable reason, the same on three balls, with a small fixed set of constraint families: the right object for a
   uniform lemma. Not a uniform lemma, not a new rank exclusion.
+
+### 17.56 Which rows of the two-star certificates are really needed (19:33 UTC)
+
+Object (Codex's notes 211-213): generic line T, P = 0, edge uv of G(T) between two layers, common apex w (the third
+point of the line uv) fixed; 9 + 9 other shadows, each labelled by its second point in the layer of its centre;
+domains after Codex's exact propagation; pair tables = Green value in {2, 3} plus the pairwise filters of
+`joint_star_propagation.setup` (overlap, capacity, saturation, K ceiling on a shared pair). All "EXACT" below =
+integer Farkas vectors found and checked by Codex's own `find_bounded_dual` / `verify_farkas` on the reduced matrix.
+
+1. Potentials (note 213) on my four certificates of random ball 12 (branches 33, 113, 137, 184):
+   `two_star_potentials.py --drop-degrees` fails on all four; with the degree multipliers kept it gives exact potential
+   certificates (gaps 38, 3, 85, 4; `--verify-only` passes; `balls/potentials_ball12_*.json`). In all four the star
+   multipliers beta are positive at G-distance <= 2 from their centre and negative beyond
+   (`balls/potentials_ball12_comparison.txt`).
+2. After re-optimisation the degree rows are NOT needed (`radial_two_star_exact.py`; rows = domain + pair marginals +
+   star sums only, aggregated or not):
+
+| ball, branches | star rows kept | result |
+|---|---|---|
+| ball 12: 33, 113, 137, 184 | 13 sums by G-distance from the centre | EXACT, gaps 704, 1546, 1532, 4383 |
+| ball 12: same | 2 classes per side: distance <= 2 / > 2 | EXACT, gaps 1, 1052, 1426, 2727 |
+| ball 12: same | 2 classes: distance <= 1 / > 1 | only 184 (which is already infeasible with no star row at all) |
+| cyclic (2,4,1): 19 survivors sampled (every 8th) | 2 classes: <= 2 / > 2 | EXACT for 8 (0, 90, 149, 171, 212, 241, 276, 337); FEASIBLE for 11 (33, 57, 75, 104, 124, 137, 182, 193, 230, 260, 314) |
+| cyclic: 33, 57, 75, 104, 124, 137, 182, 193 | all distance classes | EXACT only for 104; feasible for the other seven |
+| cyclic: 33, 57, 75, 124, 137, 182, 193 | the 72 pointwise star sums, no degree row | EXACT for all seven (gaps 730, 490, 2404, 809, 220, 483, 1405) |
+| cyclic: 33, 57 | Codex's full pair LP (`balls/pairlp_cyclic241_apex*.json`) | EXACT (gaps 743, 334) |
+
+3. Direction of the aggregated inequality on ball 12 (`radial_ball_range.py`, floating, diagnostic): let m_s be the number
+   of points of the 9 non-apex shadows of side s inside the G-ball of radius 2 around its centre; the star sums force
+   (m_u, m_v) = (16, 14). On the pair-marginal polytope: m_u + m_v >= 30.27, 31.22, 31.55 for branches 33, 113, 137
+   (target 30). With the pairs inside one star only, neither side is excluded (e.g. m_u in [15.89, 20.70] for 113).
+   So there, compatible pairs force TOO MANY shadow points near the centres, and the pairs across the two stars are
+   needed at this level of relaxation.
+
+What this establishes: in every surviving branch tested so far (4 of ball 12, 16 of the cyclic ball), "domains + pair
+tables + exact pointwise star sums" is already fractionally infeasible, with exact certificates; degree rows, ceilings and
+prism rows never carry necessary weight. What it refutes: the distance-aggregated form (my hypothesis from item 1) is
+not uniform; it fails on most cyclic branches (230, 260, 314 not tested pointwise). Scope: finite certificates on balls already excluded by one star in
+September; no uniform lemma, no new exclusion of rank 37.
+Not launched (above the five-minute rule): the pointwise-without-degree certificate on all 213 cyclic survivors, about
+213 x 8 s = 30 minutes, one process, below 3 GB.
