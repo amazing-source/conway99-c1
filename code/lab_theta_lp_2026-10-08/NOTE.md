@@ -752,3 +752,30 @@ injective or already counted family I, classes(F + I) >= classes(F): the cross-c
 than |I|, and one may take the maximum instead of the sum. For (6,3) against the 6-sets (grids and the triangle
 exception together) the cost is at most 1 663 200 + 72 P. What has to be controlled exactly is the internal t = 0
 collisions of the large families (same sign; masses 6 to 9).
+
+### 17.15 Rank 37: what the LP optimum lives on; twins as a subgraph count; the 3-side again (07:29 UTC)
+
+**Ceiling.** `ceiling37.py` (`OUTPUT_ceiling37_N84.txt`), with Codex's uniform bounds on distinct vectors
+(b_3 >= 43 848, b_4 >= 3 371 634, b_5 >= 34 087 368) and a_7 <= 990: the maximum of b_4 is 16 499 433 and the maximum of
+b_4 + (651/34) b_3 is 17 398 653 (the slope of the frontier beyond b_3 = 150 000). The optimum uses a_7 = 990, a_8 = 6063.75
+(the whole seed budget), b_1 = 88 roots, about 2.05 million vectors of norm 24 and 4.3 million of norm 26, and no vector of
+norm 18, 20, 22. What-if caps (hypothetical, to rank the levers) give for the coupled maximum: b_1 = 0: 17.05 million;
+a_8 <= 866: 16.10 million; a_7 <= 500 and a_8 <= 866: 15.19 million; a_7 = 0: 15.41 million; a_7 = 0 and a_8 <= 866:
+13.90 million. So a packing bound on the norm-16 vectors is worth about 1.3 million, the absence of Fano vectors about 2
+million. Codex (message of 01:27 UTC) explained why the Fano packing does not transfer as it stands to norms 16 and 18.
+
+**Twins are a subgraph count.** For disjoint X, Y of the same size m, Q(1_X - 1_Y) = 6m - 2 (e(X) + e(Y) - e(X,Y)); so
+the two indicators have the same projection iff e(X) + e(Y) - e(X,Y) = 3m, and the "balanced outside" condition is a
+consequence. In particular two disjoint prisms with no edge between them are always twins: tau = number of unordered
+pairs of disjoint anticomplete prisms. Likewise two disjoint copies of D whose only cross edge joins the centres, two
+disjoint anticomplete cubic 8-vertex supports, two disjoint grids (always joined by 9 edges). Consequence proposed to
+Codex (message 171): a twin of Pi consists of two triangles far from Pi, so 4 tau <= number of pairs (prism, far
+triangle), an affine function of the order-9 invariants (half of the signed count of the row "norm 4, e(W) = 9,
+e(Y) = 3, no cross edge" of its note 182): a coupled bound on tau to use with tau <= 5P/2.
+Order of magnitude of the internal collisions of (6,3) through one pair of twins (heuristic): several thousand; with tau
+allowed up to 2130 the family can be wiped out in the twin-rich corner, so the bound on tau is decisive there.
+
+**3-side, negative again.** `theta3_margins.py` (`OUTPUT_theta3_margins_N24.txt`): the largest dual shells
+compatible with the 3-side LP are about 1.3 * 10^12 (norm 6) and 3 * 10^12 (norm 8) for r = 37, 4 * 10^14 and 10^15 for
+r = 43, the same for N = 22, 24, 27. On that side two dual representatives collide only through a vector of L, so a
+census of dense induced bipartite subgraphs would be clean, but the margins make it useless. Do not retry.
