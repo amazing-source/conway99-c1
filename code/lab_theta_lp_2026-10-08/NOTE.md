@@ -1586,7 +1586,7 @@ Reading.
   per grid, not per twin pair. Any accounting for supports <= 10 must include it; for supports <= 9 it is the
   "single-grid channel" still outside Codex's mass-six totals (17.29, 17.31).
 
-### 17.43 Two more negative tests, and the laptop session's "shortest representative" principle (14:50 UTC)
+### 17.43 Two more negative tests, and the laptop session's "shortest representative" principle (14:40 UTC)
 
 * **The ceiling side cannot close supports <= 9 at all.** Hand estimate at the vertex (rho = 126, tau = 1403,
   r8 = 36.57M): with NO vector of norm 14 to 20 in L1 and no root (a_7 = a_8 = a_9 = a_10 = 0, b_1 = 0, b_2 = 462,
@@ -1616,3 +1616,30 @@ Reading.
   <= 10 cannot conclude either. The pool is not an intrinsic condition (it needs the grid around five points), so the
   census does not give it; an upper bound per grid is a local enumeration of the kind Codex does.
   Multiplicity three exists in principle (W with four points of X_i, Y with two points of X_j and two of X_k).
+
+### 17.44 CORRECTION: the break-even of 17.27, 17.41, 17.42 was computed on a larger collection than Codex's cap (14:50 UTC)
+
+Codex (reply to my message 211): its certified interval [16 496, 27 828] per pair of grids on a line is for the
+collection "all shapes of support <= 9, with (6,3) and (3,6) restricted to e <= 8 on the 6-set", i.e. WITHOUT the
+(6,3) representatives whose 6-set is a prism. My r8 contained them (about 4.1 million at the vertex), and their full
+swaps are not in the 27 828. So "19 600 (or 19 728) against [16 496, 27 828], undecided" compared two different
+collections. Redone on Codex's collection (`lp_family.py`, scenario `m5s9k2x63`, `OUTPUT_lp_family_x63.txt`):
+
+| collection (supports <= 9), quotient k = 2 | R at the vertex | break-even c per twin pair |
+|---|---|---|
+| all representatives (what I used) | 36.57M | 19 728 |
+| Codex's collection (no prism 6-set in (6,3)) | 32.43M | about 13 900 |
+| same, k = 3 | 32.5M | about 3 350 |
+
+The break-even 13 900 is BELOW the certified minimum 16 496: on that collection the pairwise accounting with k = 2
+cannot exclude the vertex rho = 126, tau = 1403, whatever the true constant. So this accounting is closed for supports
+<= 9, not "undecided". (The parameter numbering of `joint2_forms.json` is identical to Codex's archive; the
+single-grid relations are not in its C6; its 738/756 norm-6 numbers concerned (6,3) with e(W) <= 8 only.)
+
+What is left open on the floor side: the pool accounting of 17.42/17.43 (prism-free representatives, quotient by the
+real class sizes). Codex's counter-example to "one partner": three prisms X_1, X_2, X_3 of one pencil, an apex theta,
+a vertex b among the 60 whose neighbours v_1, v_2, v_3 in the three prisms avoid the column of theta;
+psi_i = 1_(X_i - v_i) + 1_theta - 1_b - 1_(v_j) - 1_(v_k): W has 8 edges, Y is a path, no cross edge, Q = 8, both
+supports prism-free, psi_i - psi_j = 1_(X_i) - 1_(X_j). So three prism-free representatives in one class, two partners
+each (checked by Codex on a 22-vertex fixture, no claim of a global realisation). "At most two per class" is false in
+pencils of three or more; the cost has to be computed (Codex is doing it).

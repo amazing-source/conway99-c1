@@ -1,7 +1,8 @@
 """C1, lab session, 2026-10-08. Rank 37: joint LP (census + theta identities) for a FAMILY of representatives.
   python lp_family.py <census2 order-10 json> <reps10_pf json> <scenario> [...]
 Scenario "m<M>s<S>k<K>[all]": representatives of norm 8 with min(|W|,|Y|) <= M and support <= S; class "pf"
-(neither W nor Y contains an induced prism) unless "all" is appended; class quotient
+(neither W nor Y contains an induced prism) unless "all" is appended ("x63": all classes except the (6,3) and (3,6) representatives whose 6-set is a prism,
+i.e. the collection of Codex's notes 195-198); class quotient
    classes >= 2 R/(K+1) - 2 C/(K(K+1)),  C <= c tau   (K = 1: classes >= R - C).
 For prism-free representatives a twin-prism collision is two-sided (1 <= |A|, |B| <= 5); c is the number of such
 colliding pairs charged per twin pair: UNKNOWN here, the script prints the break-even value of c.
@@ -45,11 +46,12 @@ for k in range(0, 44, 2):
 add(Z, [0, 406, 125, 34, 7, -5726, -273, -7], -133154.0); add(Z, [0, -1183, -350, -91, -13, 2429, 476, 21], 736358.0); add(Z, [0, -378, -98, -7, -6, -25830, -70, 7], 1260308.0)
 ext = vstack(rows0); bb = np.array(b0)
 for s in scen:
-    m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all)?$", s); M, S, K, allc = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4))
+    m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
     cv = np.zeros(npar); kv = 0.0; used = []
     for k_, f in R.items():
         a_, b_, q_, cl = k_.split(","); a_, b_, q_ = int(a_), int(b_), int(q_)
         if q_ != 8 or a_ + b_ > S or min(a_, b_) > M or (cl != "pf" and not allc): continue
+        if x63 and cl == "fp" and (a_, b_) in ((6, 3), (3, 6)): continue          # Codex's collection: (6,3) only with e(W) <= 8
         cc, kk = vec(f); cv += cc; kv += kk; used.append(k_)
     def solve(cc):
         obj = np.concatenate([2 * cv / (K + 1), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35]])
