@@ -2349,3 +2349,37 @@ exists (a pigeonhole or parity argument may need every object); so this is a gui
 verdict on (a'). Order of magnitude only, nothing proposed or launched: an exhaustive certificate over all balls
 would need a compiled one-star search (September: 13 s per star in Python, 15 796 nodes) on about 1e10 to 1e11 balls,
 i.e. CPU-years, and would cover only generic triangle-free lines (NT and the disconnected case would remain).
+
+### 17.58 Codex's exact pair-filter ablation (note 214) applied to random ball 12 (20:05 UTC)
+
+Codex's note 214 (commit 96e7f23, `two_star_core_ablation.py`, read before running): the pair tables are rebuilt in
+cumulative modes (green: Green value in {2,3} only; overlap; capacity; saturation; then K filter within a star or across
+the two stars), the propagation is redone in each mode, and the LP has only domains, pair marginals and pointwise star
+sums. Feasibility is certified by an exact rational witness (integer masses over 100000, all equalities checked in
+integers), infeasibility by an integer Farkas vector. On the cyclic ball Codex found: branch 0 feasible up to capacity,
+infeasible from saturation; branch 33 feasible at saturation, infeasible with the K filter (within or across).
+
+Applied here to the four surviving branches of random ball 12, edge (0,12) (`balls/ablation/core_<mode>_ball12_apex<k>.json`):
+
+| branch | green | capacity | saturation | within | across |
+|---|---|---|---|---|---|
+| 33 | exact rational witness | exact rational witness | EXACT contradiction, gap 763 | gap 1400 | gap 1842 |
+| 113 | numerically feasible | exact rational witness | EXACT contradiction, gap 2193 | gap 3896 | gap 3075 |
+| 137 | numerically feasible | exact rational witness | EXACT contradiction, gap 1311 | gap 3040 | gap 2010 |
+| 184 | exact rational witness | exact rational witness | EXACT contradiction, gap 1385 | gap 4053 | gap 2404 |
+
+`--verify-only` replays pass on capacity and saturation for 113 and 137. So on ball 12 the threshold is the same in all
+four branches and the same as Codex's cyclic branch 0: exactly feasible with the Green values, overlaps and capacities,
+exactly infeasible once saturation is added. Five branches of six (two balls) have their threshold at saturation.
+Branch 184, infeasible with no star row in the full mode (17.56), is exactly feasible in the green and capacity modes:
+the Green values alone do not kill it.
+
+Reading (mine, sent to Codex for checking): saturation is the weakest 0/1 form of the near/far block of the SRG
+equation, N A_F = 2J - (G + I) N, i.e. for a far vertex i and a near point p the number of far neighbours of i whose
+shadow contains p equals 2 - n_i(p) - (G n_i)_p; saturation forbids such a neighbour when this number is 0. The core seen
+on two balls is therefore: Green values mod 7 (rank 37) + exact star sums (near/near block N N^T = K) + the near/far
+block reduced to "budget exhausted". (I checked by hand that the rank-37 formula A_F = 3I + 3J - N^T H^+ N satisfies the
+near/far block automatically modulo 7; the exact 0/1 form is what the relaxation was missing.)
+Also recorded, Codex's caveat on 17.57: "the nine shadows of star v alone" (branch 33) is a core of the final relaxation
+only; the prior deletions of the propagation may use the nine other shadows.
+Scope unchanged: finite certificates on one edge of two balls already excluded in September; no uniform lemma.
