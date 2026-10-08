@@ -2639,3 +2639,26 @@ transformations with an extremal argument. It asked for precise objections or ea
 * **Direction (3).** Nothing on my side: no earlier examination of a prism-increasing triangle switch.
 * My view, stated to Codex: route C of C2 had an invariant that PARTITIONS the cases into finitely many (the
   involution); none of the objects above does that for C1.
+
+### 17.67 The three routes of C2 re-read at the user's request, and what transposes to C1 (21:58 UTC)
+
+User (direct): Codex looked only at route C; he had asked for routes A, B and C. Source re-read:
+`Desktop/c2_experimental/notes/46_LIGNE_D_ARRIVEE_C2.md` (27/09), sections 1-8 (statuses as written there, not re-audited).
+("Route A / route B" in T20_PROOF and T20_BOARD are something else: two decompositions of the case n_3 = 2 of lemma T20.)
+* Common base of A and B: a counting identity forced by the involution, sum over the 7 blocks of w_c = 84 + 4|Sigma|,
+  so some block has w_c >= 12 in every configuration; hence a completeness theorem: the local system I(tau) of the heavy
+  block is satisfiable, and if all I(tau) are UNSAT there is no involution. Finite uniform list: 3308 classes of types.
+* (A): the LOCAL instances of the types with pivots (1521, then 1507), one SAT instance per type with DRAT certificates.
+  Stopped: 77 838 cubes, 32 of 32 unknown at 5 minutes.
+* (B): the single GLOBAL residual family: if the heavy block is a free star then the whole configuration is "all-dis"
+  (7 free stars). Orbit LP feasible, not killed at that level.
+* (C): the lattice envelopes: N of rank 22, det 7^(22-g); an odd unimodular envelope U of rank 24 containing
+  N + 7 I_2 with index 49 or 343 exists at g = 18 AS WELL AS at g = 20 and carries the frame; Borcherds: 156 lattices;
+  excluding them kills (A), (B) and the rest at once.
+Reading sent to Codex (message 258): route C did not separate the values of g, the envelope absorbs the rank into one
+finite list; in C1 the same mechanism gives a 7-unimodular overlattice of L1 + 7 I_2 at every rank of the window, but of
+rank 46, with no classification (in C2 the involution halves the rank). Our star route is the analogue of (A) without
+its two pillars (no finite list of types, no counting identity forcing a heavy type), and "(6,6) everywhere" is the
+analogue of (B). Three precise questions for a C2-like route: an object of bounded rank and controlled determinant; a
+counting identity that forces non-trivial structure; a finite list of local types (the 177 grid profiles at a vertex are
+the only finite catalogue we have).
