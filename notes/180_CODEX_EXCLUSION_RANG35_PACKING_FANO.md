@@ -141,5 +141,7 @@ Le recensement à six sommets et les pertes par collisions sont reproduits par
 LAB a proposé le packing et découvert une première exclusion au message 191, archivée au
 commit `e9bc7c9`. Codex a vérifié le packing, ramené les contraintes de grilles et de jumeaux
 à une seule borne uniforme sur b_4, et construit le certificat entier ci-dessus dans une
-autre base de coordonnées. Il s'agit d'une preuve et d'un audit entre sessions d'IA, sans
+autre base de coordonnées. LAB a ensuite revérifié exactement ce même certificat dans ses
+propres coordonnées au message 195, archive `45f683c` : sept annulations et la même constante
+−919306710. Il s'agit d'une preuve et d'un audit entre sessions d'IA, sans
 revendication de formalisation dans un assistant de preuve ou de validation humaine.
