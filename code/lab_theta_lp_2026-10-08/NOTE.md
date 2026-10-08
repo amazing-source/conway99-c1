@@ -2726,3 +2726,21 @@ equations of the 85 outside vertices on H (mask multiplicities, exact integer ce
 Compared state of the routes (no rank excluded by any): (i) rank-free cores: 373 -> 310 -> 174 certified, then no death
 at small depth in these two pilots; (ii) grid / no grid: factor 0.79 missing at rank 37, restricted cap not computed;
 (iii) stars at rank 37: certificates per ball, no uniform lemma. Neither campaign is continued on my side.
+
+### 17.70 Reserve route "no grid": one quick variant tested, negative (22:38 UTC, 09/10)
+
+Codex declined my proposal to read the 174 core types on the four old balls (absence on four excluded examples covers
+nothing): accepted. It found integer mask multiplicities for 15 of the 174 (no gain from integrality) and is piloting the
+coexistence of masks; not duplicated here.
+Meanwhile, one check on the reserve route of 17.68 (new fact used: Codex's note 195 gives a much lower certified cap,
+23 150 per non-grid twin pair, for the collection WITHOUT the 9-set indicators (9,0), against 31 976 with them).
+`lp_family.py` with a new option "n" (drop the shapes (9,0), (0,9)), floating:
+* with (9,0), rho = 0: break-even 25 201 (reproduced; R = 32.5 million);
+* without (9,0), rho = 0 or free: R = 23.55 million and max(ceiling - floor) = +0.054 million with NO collision at all.
+So the 9-set indicators carry about 9 million representatives and cannot be dropped: without them the floor does not
+reach the ceiling even before any collision is paid. NEGATIVE; the smaller cap is of no use.
+What the grid-free branch would need, for the record: the cap of the collection WITH (9,0) for a non-grid twin pair,
+31 976, brought below 25 201 in a grid-free graph, a reduction of 21 %. Codex's refinements of the grid-pair cap moved it
+from 29 204 to 27 828 (5 %), and its certified range for a grid pair is [16 496, 27 828] (note 198); the non-grid cap was
+never refined. By note 195 the collisions of the (9,0) channel use supports containing a prism, not a grid, so
+grid-freeness does not obviously reduce them. Also unpaid in any case: the collisions of masses 7 to 9.
