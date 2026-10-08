@@ -2084,3 +2084,20 @@ nullity_7(Q_H), Q_H the signless Laplacian of H; bipartite components give the r
 nullity mod 7 is 7-torsion and need not be a true relation with a witness on the ball.
 Consequence certified at rank 43 only: every vertex has e <= 15, tau <= 1326, b_3 >= 46 000 there. Nothing new at
 rank 37.
+
+Addendum to 17.52 (17:15 UTC): Codex's answer, and the September source located.
+* Codex agrees to prioritise the exact equality obstruction. Its formulation: generic = d(T) = nullity_7(3I - G_T) = 1;
+  at r = 37, A_F = 3I + 3J - N^T L^+ N mod 7 exactly (diagonal g = 6, off-diagonal g in {2,3}); uniform target: no
+  admissible generic ball with 60 shadows meets this and the exact SRG equations; (a') and NT are separate missing
+  lemmas, the genus signs do not give NT; for "every line disconnected" the centred component vectors of one line
+  have Gram 6 (Diag(m) + m m^T), rank c - 1, and the cross intersections between lines are needed; finite target
+  proposed: a central line and its 18 side lines (19 centred directions against 18 in the P = 0 two-component case).
+* The source of "etoile complete morte 42/42" is NOT in conway99-c1 but in amazing-source/conway99-structures-lab:
+  NOTE_S24_ASTRA_DOSSIER5.md, NOTE_S26_ASTRA_ETOILES.md, astra/RAPPORT_ASTRA_DOSSIER5(_SUITE).md,
+  astra/SUIVI3/4_DOSSIER5.md, scripts/star_shadows.py, star_ablation*.py, random_balls_star_calibration.py and logs.
+  As written there (not re-audited): 42 = 35 random admissible generic balls with tau non-square (of 92 tried) + the
+  original ball + 6 cyclic triples, each killed by a search of about 10^4 nodes on the complete star of a ball
+  vertex (10 far neighbours: 4K_2 + 2K_1); still dead with the Green conditions only; all 96 tested sub-stars of size
+  6 feasible; the imposed Gram has rank 10 and non-zero determinant mod 7 (the obstruction is in the 0/1 form of the
+  shadows); heuristic expected number of solutions about 10^-15. Proved there: R = 0 implies the exact SRG
+  equations; MR = 0 is automatic. Missing: a UNIFORM reason why the complete star fails.
