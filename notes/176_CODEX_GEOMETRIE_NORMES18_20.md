@@ -228,13 +228,10 @@ ayant i voisins dans U, on a n_0+n_1+n_2=8 et n_1+2n_2=12. Il reste trois types 
 
     (n_0,n_1,n_2)=(2,0,6), (1,2,5), (0,4,4).
 
-Dans le premier type, tous les six points de V appartiennent à P. Pour deux réalisations sur
-la même graine, les signes ne se croisent pas : un point de Q\U a au moins deux voisins parmi
-les six points communs de V, tandis qu'un des deux partenaires positifs n'a aucun voisin parmi
-les sept positifs connus et ne pourrait atteindre quatre voisins dans l'autre support positif.
-Les supports communs contiennent au moins sept positifs et quatre négatifs. La différence a donc
-norme au plus quatorze ; si elle est non nulle, c'est un Fano, interdit par le §5.
-**Il y a au plus une réalisation du type (2,0,6) par graine.**
+**Le premier type est impossible.** Les deux partenaires positifs sans voisin dans U ont
+chacun quatre voisins dans Q\U, qui contient cinq sommets. Ils ont donc au moins trois voisins
+communs, contrairement à μ=2. Cette amélioration a été signalée par LAB au message 182 et
+vérifiée ici ; elle remplace la borne antérieure d'au plus une réalisation par graine.
 
 Pour le type (1,2,5), fixons en plus le point manquant c∈V\P. Il y a six positifs connus et
 trois partenaires, dont un unique p_* sans voisin dans U. L'argument de LAP et LAB transmis
@@ -252,6 +249,6 @@ seize (note 173) détermine g, donc h : il y a au plus un autre h.
 **Il y a au plus deux réalisations du type (1,2,5) par graine et point manquant fixé**, donc
 au plus douze sur les six choix de point manquant. Cette borne est due à LAP et LAB et a été
 vérifiée ici ; l'exclusion générale du §5 simplifie ses sous-cas.
-Les deux types réunis donnent au plus treize réalisations par graine. Ce n'est pas encore
+Les deux types réunis donnent au plus douze réalisations par graine. Ce n'est pas encore
 une borne sur toute la norme dix-huit : le type (0,4,4) et le cas d'une arête dans chaque
 support restent à traiter.
