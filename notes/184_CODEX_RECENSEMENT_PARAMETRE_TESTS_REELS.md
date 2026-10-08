@@ -5,26 +5,37 @@
 Le programme `code/codex/census_real_graph_packet.py` reconstruit les comptes
 depuis **un sommet**, avec les paramètres numériques `(v,k,1,2)` injectés dans
 les mêmes équations d'extension et la même élimination rationnelle creuse.
-Il fournit trois paquets pour `(99,14)`, `(243,22)` et `(9,4)` jusqu'à huit sommets.
+Il fournit trois paquets pour `(99,14)`, `(243,22)` et `(9,4)`, désormais jusqu'à neuf sommets.
 
 Deux contrôles sont déjà terminés :
 
-- toutes les 208 et 916 formules des ordres sept et huit pour `(99,14)` coïncident
+- toutes les 208, 916 et 5311 formules des ordres sept, huit et neuf pour `(99,14)` coïncident
   exactement avec les données des notes 181–182, après changement de coordonnées ;
-- sur la grille 3×3, les **1222 comptes de types**, y compris les comptes nuls,
-  des ordres deux à huit coïncident exactement avec une énumération exhaustive
+- sur la grille 3×3, les **6533 comptes de types**, y compris les comptes nuls,
+  des ordres deux à neuf coïncident exactement avec une énumération exhaustive
   des sous-ensembles du graphe réel.
 
-Le paquet `(243,22)` contient des **prédictions à vérifier indépendamment** sur
-les graphes bvls243 et twin243_switched. Leur vérification n'est pas encore
-annoncée comme effectuée dans cette note.
+LAB a maintenant vérifié indépendamment le paquet d'ordre huit sur les deux
+graphes à 243 sommets : 173 types connexes sur bvls243, 106 sur twin243_switched,
+ainsi que les comptages des papillons, maisons, familles `(4,4)` et `(7,1)`.
+**Aucune différence trouvée.** Ses scripts et sorties sont archivés dans les
+commits 7f6bafe et 99d3d3a de sa branche, importés ici. Les types omis sont les
+types déconnectés ou trop nombreux pour le budget de calcul fixé par LAB.
+
+Limites : H, C8_5683824 et C8_245715219 sont nuls dans les deux graphes, donc ces
+tests n'éprouvent pas leurs coefficients. Le paquet à neuf sommets utilise la
+canonisation par individualisation et raffinement de la note 182 ; son test
+indépendant sur les deux graphes à 243 sommets reste à effectuer. Le contrôle
+exhaustif sur la grille couvre déjà ce chemin de calcul, dans ce cas particulier.
 
 ## 1. Coordonnées géométriques
 
 À six sommets, l'invariant est P, le nombre de prismes. À sept sommets, on prend
 H, le nombre de copies de D défini dans la note 181. À huit sommets, les sept
 comptes des types de degré minimum trois forment une base du nouvel espace libre.
-La matrice de changement de coordonnées a bien rang sept.
+La matrice de changement de coordonnées a bien rang sept. À neuf sommets,
+les 48 types de degré minimum trois forment de même une base des 48 nouveaux
+invariants. Ils sont nommés C9_CODE, avec l'adjacence de chaque type dans le paquet.
 
 L'ordre des coordonnées affines à huit sommets est
 
@@ -76,7 +87,7 @@ Les collisions de cette famille sont en cours d'étude par LAB.
 
 ## 4. Fichiers et reproduction
 
-    python code/codex/census_real_graph_packet.py
+    python code/codex/census_real_graph_packet.py --max-order 9
 
 Paquets : `data/codex_census_validation_99.json`,
 `data/codex_census_validation_243.json`, `data/codex_census_validation_9.json`.
