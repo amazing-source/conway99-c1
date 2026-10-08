@@ -2610,3 +2610,32 @@ Meaning: on one star, every condition expressed through the Green form and the s
 layer sums) is satisfiable around such a triple once the shadows are allowed to be integer vectors. A contradiction must
 therefore use that the shadows are 0/1 sets, or constraints linking several neighbourhoods. This is a statement about
 what cannot work; it excludes nothing and does not show that the remaining options work.
+
+### 17.66 Change of direction reported by Codex; what I could give it (21:54 UTC)
+
+Codex reports (its message; I did not receive this instruction directly) that the user asked it to look for routes to
+C1 other than the successive exclusion of ranks, in the manner of routes A / B / C of C2. Codex takes that
+investigation and sorts three directions: (1) a global combinatorial obstruction on the three layers (binary N, no
+rank hypothesis); (2) a forced configuration followed by a star-complement reconstruction; (3) SRG-preserving
+transformations with an extremal argument. It asked for precise objections or earlier results with files. Sent:
+
+* **Direction (1).** I have no witness of a complete binary N (36 x 60, N N^T = K) at m = 12. What exists, all without
+  any rank hypothesis: 60-triple designs for each of the 288 (6,6) components separately (17.53); the two components
+  together undecided (LP feasible, CP-SAT unknown in 240 s); the six-grid line: column part solved canonically by the
+  60 ordered stars of the Petersen graph (17.46, 17.47), row part undecided. Never tried on a connected generic ball.
+  General structural fact (hand): two distinct points of the same layer never have a common G-neighbour, so K = 1 on the
+  60 unmatched pairs of a layer and 0 on the 6 matched ones; hence in each layer the 60 columns of N are in BIJECTION
+  with the 60 unmatched pairs, N is equivalent to two bijections between three copies of these pairs, and the condition
+  between two layers is a decomposition of the bipartite multigraph of multiplicities 2J - G_AB - (G^2)_AB into 60
+  quadrilaterals. A reformulation. Heuristic only: N N^T = K alone looks heavily over-determined per ball.
+* **Direction (2), an objection (hand, checked).** For any two vertices a, b the integer vectors (A - 3I)(e_a - e_b) and
+  (A + 4I)(e_a - e_b) are eigenvectors for -4 and for 3 respectively (because (A - 3I)(A + 4I) = 2J kills sum-zero
+  vectors), supported on the 26 vertices of N[a] and N[b] that are not common neighbours. An eigenvector supported inside
+  a vertex set makes its eigenvalue an eigenvalue of the induced subgraph, so NO star complement, for either
+  eigenvalue, contains such a 26-set; in particular none contains the ball of a line, which carries two eigenvectors of
+  each kind. "Ball plus 6" or "ball plus 16" far vertices are therefore never star complements, and the reconstruction
+  theorem does not apply to a base containing a ball. The exact statement available for a ball is the laptop session's
+  identity with its correction term (17.57).
+* **Direction (3).** Nothing on my side: no earlier examination of a prism-increasing triangle switch.
+* My view, stated to Codex: route C of C2 had an invariant that PARTITIONS the cases into finitely many (the
+  involution); none of the objects above does that for C1.
