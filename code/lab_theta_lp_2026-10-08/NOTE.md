@@ -715,3 +715,40 @@ Limits: H, C8_5683824 and C8_245715219 vanish in both 243-graphs, so their coeff
 sparse and disconnected types are tested only through the families; the packet stops at order 8 and Codex's order 9
 uses another canonicalisation, so P <= 852, rho <= 126 and N8 are not covered by this test (an order-9 packet was
 requested).
+
+### 17.14 The family (7,1), the laptop session's audit, and a cap for cross-collisions (07:19 UTC)
+
+**Family (7,1).** psi = 1_W - e_y, |W| = 7, y outside W, sum 6: Q = 28 - 2 (e(W) - deg_W(y)). Norm 8: type A (e(W) = 10,
+y far from W) or B (e(W) = 11, y with one neighbour in W); norm 6: type C (e(W) = 11, y far). Codex's order-8 census
+(note 184) gives the signed numbers of representatives for (99,14):
+Q8 = 4 108 104 + 468 P - 512 H + 72 C14 - 12 (C13a + C13b + C13c), Q6 = 132 P + 46 H - 8 C14 (C14, C13x = numbers of its
+8-vertex types with minimum degree 3 and 14 or 13 edges). `seven_one.py` counts the three branches by brute force on the
+real graphs (all 7-sets with 10 or 11 edges, built from the 6-sets with 8 or 9 edges): twin243 144 996 480 / 1 837 080 /
+1 574 640, bvls243 223 248 960 / 6 735 960 / 5 773 680, exactly the packet's predictions at the measured parameters.
+
+Collisions found by hand (sent to Codex, message 169; NOT yet checked against its finite models):
+* t = 0 against the 6-sets, same sign. Mass 6: W = prism + x, Z = (twin prism - y) + x: type A 300 per ordered pair of
+  twins (x with one neighbour in the prism, y one of the 5 vertices of the twin not adjacent to x), type B 6 per ordered
+  pair; in all 1224 tau at norm 8. Mass 7: W = D, Z = D' - y: 4 Omega at norm 8 (y = centre of D'), 24 Omega at norm 6
+  (y a non-central vertex, against the 8-edge 6-sets).
+* t = 0 among themselves: masses 6, 7, 8 (W = X - y' with X one of the 13- or 14-edge 8-vertex supports); not counted.
+* t = 1 against -1_Y (3-set with one edge): W = grid minus a pair, 1620 per grid and per sign; against e_z - 1_S (old
+  (4,1)): W = a prism of the grid plus z, S = the third line plus y, 9000 per grid and per sign. So at least 21 240 rho.
+* against the negative (5,2): full cancellation impossible; only the uncancelled negative triangle remains.
+* against the negative (6,3): four negative coordinates, and a new exception shape: an uncancelled negative 4-cycle
+  (any uncancelled negative set must be 2-regular on itself and anticomplete to the positive part).
+
+**Audit by the laptop session (07:20 UTC, relayed to Codex).** Hand re-derivation, no error found, of Lemma G, Lemma F,
+the seed-packing lemma and a_7 <= 990, of Codex's note 179 par. 1, 3, 4, 5 and the arithmetic of par. 6, and of note 181
+par. 2 to 4 and the assembly of its (3); every pair of norm-8 families behind (3) was listed with both signs and the sums
+differing by 9. Not checked by it: the census numbers, the exact identity, the programs, notes 168 / 172 / 175.
+On the exception of note 183 par. 5 (uncancelled negative triangle Y): only the sub-family (7,3,0) is concerned; the
+positive part is binary; it is equivalent to a 12-set U inside the 60 vertices far from Y, inducing a 4-regular graph,
+each of the 36 neighbours of Y having exactly two neighbours in U; it exists locally (three suitable grids), so it
+cannot be excluded by local arguments.
+
+**Cap (laptop session).** An injective family meets each projection class at most once. So for any family F and any
+injective or already counted family I, classes(F + I) >= classes(F): the cross-collisions against I never cost more
+than |I|, and one may take the maximum instead of the sum. For (6,3) against the 6-sets (grids and the triangle
+exception together) the cost is at most 1 663 200 + 72 P. What has to be controlled exactly is the internal t = 0
+collisions of the large families (same sign; masses 6 to 9).
