@@ -186,4 +186,8 @@ exactes sur les mêmes exemples.
 
 Ni ce balayage, ni les treize pilotes ne prouvent que tous les
 graphes proches admissibles possèdent une telle contradiction.
-L'obtention d'un énoncé uniforme reste la question T20 ouverte.
+L'obtention d'un énoncé uniforme pour toutes les boules admissibles
+reste l'objectif de cette piste dans le cas C1. Le lemme T20,
+relatif aux fonctions propres σ-impaires de norme carrée 20 dans
+le cas avec involution, appartient au dossier C2 : il ne désigne
+pas l'objectif des calculs de cette note.

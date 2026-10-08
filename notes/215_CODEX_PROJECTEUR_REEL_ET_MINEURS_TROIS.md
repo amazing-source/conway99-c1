@@ -210,4 +210,4 @@ complète. Les deux scripts acceptent aussi un JSON `adjacency`
 La géométrie réelle fournit donc un renforcement exact et efficace
 du mécanisme combinatoire. Il reste à établir une obstruction
 valable pour toutes les boules admissibles : ce balayage complet
-d'un exemple connu n'est pas le lemme T20 uniforme.
+d'un exemple connu ne donne pas une obstruction uniforme pour le cas C1.
