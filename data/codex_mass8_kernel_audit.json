@@ -1,0 +1,237 @@
+{
+  "binary_support_types": [
+    {
+      "code": 2022000,
+      "edges": 12,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "four_four_partitions": 6
+    },
+    {
+      "code": 5683824,
+      "edges": 12,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "four_four_partitions": 4
+    },
+    {
+      "code": 5691760,
+      "edges": 12,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "four_four_partitions": 8
+    },
+    {
+      "code": 127242964,
+      "edges": 14,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4
+      ],
+      "four_four_partitions": 16
+    },
+    {
+      "code": 127305925,
+      "edges": 13,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ],
+      "four_four_partitions": 10
+    },
+    {
+      "code": 128354469,
+      "edges": 13,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ],
+      "four_four_partitions": 12
+    },
+    {
+      "code": 245715219,
+      "edges": 13,
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4
+      ],
+      "four_four_partitions": 8
+    }
+  ],
+  "weighted_support": "three triangles with centre weight two",
+  "number_of_weighted_windmills": 3465,
+  "cubic_windmill_pairs": [
+    {
+      "supports": [
+        "2022000",
+        "2022000"
+      ],
+      "collision_pairs": 36
+    },
+    {
+      "supports": [
+        "2022000",
+        "5683824"
+      ],
+      "collision_pairs": 24
+    },
+    {
+      "supports": [
+        "2022000",
+        "5691760"
+      ],
+      "collision_pairs": 48
+    },
+    {
+      "supports": [
+        "2022000",
+        "weighted_windmill"
+      ],
+      "collision_pairs": 72
+    },
+    {
+      "supports": [
+        "5683824",
+        "5683824"
+      ],
+      "collision_pairs": 16
+    },
+    {
+      "supports": [
+        "5683824",
+        "5691760"
+      ],
+      "collision_pairs": 32
+    },
+    {
+      "supports": [
+        "5683824",
+        "weighted_windmill"
+      ],
+      "collision_pairs": 48
+    },
+    {
+      "supports": [
+        "5691760",
+        "5691760"
+      ],
+      "collision_pairs": 64
+    },
+    {
+      "supports": [
+        "5691760",
+        "weighted_windmill"
+      ],
+      "collision_pairs": 96
+    },
+    {
+      "supports": [
+        "weighted_windmill",
+        "weighted_windmill"
+      ],
+      "collision_pairs": 144
+    }
+  ],
+  "thirteen_edge_pairs": [
+    {
+      "supports": [
+        127305925,
+        127305925
+      ],
+      "collision_pairs": 50
+    },
+    {
+      "supports": [
+        127305925,
+        128354469
+      ],
+      "collision_pairs": 60
+    },
+    {
+      "supports": [
+        127305925,
+        245715219
+      ],
+      "collision_pairs": 40
+    },
+    {
+      "supports": [
+        128354469,
+        128354469
+      ],
+      "collision_pairs": 72
+    },
+    {
+      "supports": [
+        128354469,
+        245715219
+      ],
+      "collision_pairs": 48
+    },
+    {
+      "supports": [
+        245715219,
+        245715219
+      ],
+      "collision_pairs": 32
+    }
+  ],
+  "fourteen_edge_pair_maximum": 64,
+  "maximum_class_size": {
+    "cubic_only": 4,
+    "cubic_and_windmill": 5,
+    "thirteen_edges": 5
+  },
+  "cubic_windmill_collision_bound": "72*C2022000+32*C5683824+128*C5691760+997920",
+  "thirteen_edge_collision_bound": "100*C127305925+144*C128354469+64*C245715219",
+  "fourteen_edge_collision_bound": "(608/3)*C127242964+160*tau",
+  "scope": "Mass-eight component only; other masses and previous families still need handling."
+}
