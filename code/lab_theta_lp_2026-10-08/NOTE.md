@@ -2239,3 +2239,31 @@ cyclic (2,4,1), centres 0 and 12; `joint_generic_stars_apex100.json`): apex bran
 presolve (0 search branches, about 0.6 s each); PARTIAL_RUN_NO_GLOBAL_EXCLUSION. That ball was already excluded by one
 star: a calibration, not a new exclusion. Proposed to Codex: since every branch dies at presolve, test whether the
 linear relaxation already fails; its Farkas multipliers could suggest a uniform identity.
+
+### 17.55 Codex's two-star certificates (note 212) re-run, and extended to three September random balls (18:55 UTC)
+
+* Codex's note 212 (commit f87be43 of its branch): on the cyclic ball (2,4,1), edge (u, v) = (0, 12), branch 100 dies by
+  exact propagation (star sums + pairwise compatibility supports, 263 deletions) and branch 0 by an exact integer Farkas
+  certificate of the pair-marginal LP (22 339 pair variables; weighted rhs -4589 against box bound -522). Re-run here:
+  both `--verify-only` replays pass; the verifier's logic (Farkas with the box 0 <= x <= 1, equalities with free sign,
+  inequalities with non-negative multipliers) is correct.
+* NEW, mine (`make_random_balls.py` regenerates the September calibration balls, seed 2609, same filters, keeping the
+  triangle-free ones; `sweep_two_star_propagation.py` runs Codex's setup / propagate / replay over ALL common-apex
+  branches of one ball; outputs in `balls/`):
+
+| ball (edge 0-12) | tau mod 7 | c4(uv) | branches | dead by propagation alone | survivors -> pair LP |
+|---|---|---|---|---|---|
+| September random ball 5 | 5 | 0 | 368 | 368 | none |
+| September random ball 9 | 5 | 1 | 464 | 464 | none |
+| September random ball 12 | 6 | 0 | 416 | 412 | 4 (33, 113, 137, 184): all 4 killed by EXACT integer Farkas certificates (`balls/pairlp_ball12_summary.json`) |
+| cyclic (2,4,1) | 5 | 0 | 473 | 260 | 213 (not run: about 50 min of LPs) |
+
+  So for three random balls the two-star model excludes every branch with finite exact certificates (propagation
+  traces replayed, Farkas vectors checked in integers); about 26 to 39 s per ball for the propagation.
+* Structure of the certificates (all five LP certificates so far): only domain normalisations, pair marginals, the
+  72 star-sum rows and 24 to 36 degree rows carry weight; no near/near or near/far ceiling beyond the star sums, no
+  prism row. So the obstruction is "exact star sums + exact internal and transversal degrees + pairwise Green
+  compatibility", already fractionally infeasible at the pair-marginal level.
+* Scope: these balls were already excluded by one complete star (September). What is new is a solver-free,
+  replayable reason, the same on three balls, with a small fixed set of constraint families: the right object for a
+  uniform lemma. Not a uniform lemma, not a new rank exclusion.
