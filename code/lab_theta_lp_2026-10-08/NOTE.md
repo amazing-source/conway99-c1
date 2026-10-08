@@ -1677,7 +1677,7 @@ count is inflated by single-grid copies; the pool and its ties are not computed,
 the ceiling. What would be new: an order-11 census (shapes (7,4), (10,1)), which is a real computation and is not
 launched; or an invariant other than b_4.
 
-Addendum (Codex, 15:05 UTC, answer to the laptop session's question of 17.43). The mass-8 tie of two grids meeting in
+Addendum (Codex, about 15:02 UTC, answer to the laptop session's question of 17.43). The mass-8 tie of two grids meeting in
 one point p is already in the component C14 of its note 183, section 4: G minus p is the 8-vertex 14-edge type, the
 four transversal edges pair the vertices of degree 4; at most 64 collisions of shape (4,4) per pair of such supports,
 and at most (608/3) C14 + 160 tau for the whole component (which contains more than the supports extendable to a
@@ -1685,3 +1685,35 @@ grid). It belongs to L44 of its note 185, NOT to C6 of notes 195-198 nor to the 
 forget it when adding C6, nor count it twice if L44 is used. The prism-free internal (7,1) channel is identically zero
 for a pair of grids (the two-sided candidates passing Q = 8 on two adjacent apices contain another prism in their
 positive part).
+
+### 17.46 The object behind the missing lemma: a line in six grids, written as a design on 60 points (hand, not audited)
+
+Context: by 17.28 the statement that would change rank 37 most is "no line lies in 4 or 6 grids" (then
+tau_g <= 3 * 231 = 693 and rho <= 115). With the corrected numbers of 17.44 this gives about the factor needed and no
+margin (13 900 * 1403 / 693 = 28 100 against a certified cap of 27 818 for pencils of three, other channels unpaid), so
+it is necessary-looking, not sufficient. This section only fixes the object, so that it can be attacked as such.
+
+Let Theta = {t_1, t_2, t_3} lie in six grids G_k = Theta + X_k (k = 1..6), X_k a prism with rows R_k, R_k' and
+columns i = 1, 2, 3 (column i is the line through t_i). Then:
+* the 36 vertices of the X_k are exactly the neighbours of Theta; a vertex of X_k has no neighbour in X_j (j != k), so
+  it has 10 neighbours among the 60 other vertices B;
+* each b in B has exactly one neighbour v_k(b) in each X_k, hence a NAME x(b) in (Z_3 x Z_2)^6 (column and row of
+  v_k(b)); mu(b, t_i) = 2 forces every column to be used exactly twice: the six grids are split into three duads,
+  one per column;
+* for fixed k the six sets N_B(v), v in X_k, partition B into blocks of 10; for k != j a block of k and a block of j
+  meet in 1 point if they have the same column and in 2 points otherwise (mu = 2, t_i being a common neighbour in
+  the first case);
+* lambda(b, v_k(b)) = 1 gives a unique b'_k in B adjacent to b with the same name at k: six perfect matchings
+  M_1..M_6 of B, pairwise disjoint; b and b'_k differ at every other coordinate; the seventh line of b lies inside
+  B: B is partitioned into 20 triangles, whose three vertices differ at every coordinate; B is 8-regular (240 edges);
+* for b and v in X_k, with u = v_k(b): the number of neighbours of b in B lying in the block of v is 1 if v = u,
+  1 if v is adjacent to u in the prism (same row or same column), 2 otherwise;
+* for b, b' in B: (number of coordinates where the names agree) + (number of common neighbours in B) = 1 if adjacent,
+  2 if not. Counting: 360 non-adjacent pairs agree at two coordinates (one for each pair of prism vertices of
+  different prisms and different columns) and have no common neighbour in B, 720 agree at one, 450 at none; the
+  totals 1620 = 60 * 28 - 60 match, so first and second moments give no contradiction (as the equitable partition
+  {3, 36, 60} with quotient eigenvalues 14, 3, -4 already said).
+Conversely a system (names, graph on B) with these properties is a strongly regular graph (99,14,1,2) with a line in
+six grids. So "no line in six grids" is the non-existence of this design: 60 names in (Z_3 x Z_2)^6 with prescribed
+pairwise coordinate statistics, 20 triangles and six matchings. Nothing is known about it here; a blind solver run on
+it is the kind of whole-graph sub-case that did not terminate for the laptop session, so none is launched.
