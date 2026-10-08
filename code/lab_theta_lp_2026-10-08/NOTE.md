@@ -892,3 +892,37 @@ collisions: realistic constants per twin pair at masses 6 and 7, and a bound on 
 mass 10 and supports 10 there is no free vertex. (2) A pure indicator 1_W collides at t = 0 with another indicator of the
 same size only if W contains an induced subgraph of minimum degree >= 3: the 2-degenerate sets of a given size give
 pairwise distinct classes (the 6-sets with at most 8 edges; the 2-degenerate 9-sets with 14 edges).
+
+### 17.19 Where the rank-37 argument stands after the full order-10 census (08:38 UTC)
+
+All LP values of this section are floating-point explorations over the full order-10 polytope of `census2.py`
+(549 parameters, 46 439 distinct positivity constraints); none is a certificate.
+
+**Caps on the special supports** (`lp_caps10.py`): P <= 852.92 (Codex's 11088/13, found here independently),
+H <= 1867.25 (2079 at order 9), grid minus a vertex <= 1134 (= 9 * 126), the three 13-edge 8-vertex types <= 5122, 4158,
+4158, the cube <= 3101.7, the two other cubic 8-vertex types <= 29 325 and 18 346; all order-8 supports <= 53 465; all
+order-9 supports <= 476 669; all order-10 supports <= 8.86 million.
+
+**Affordable losses** (`lp_penalty10.py`, supports <= 9, coupled form, base 39.7 million, ceiling 17.05 to 17.40
+million): with a penalty per special support of 10 000 per prism alone the minimum is 38.5 million; 5000 per D alone:
+32.8 million; 200 per order-8 support alone: 31.5 million (1000: negative); 30 per order-9 support alone: 28.2 million
+(100: negative); (5000, 2000, 200, 30) together: 22.6 million. So masses 6 and 7 are comfortable; masses 8 and 9 are the
+tight ones, because the relaxation holds tens and hundreds of thousands of supports, while a collision needs a TWIN
+PAIR of supports.
+
+**2-degenerate 9-sets** (`degenerate9.py`): of the 344 nine-vertex types with 14 edges, 243 are 2-degenerate; none
+with 15 or 16 edges is. Number of 2-degenerate 9-sets with 14 edges: constant term 4 995 837, minimum 1 022 353 over the
+polytope; all 9-sets with 14 edges: between 3.49 and 5.49 million. So this injective family adds about one million
+vectors of norm 8 per sign in the worst case.
+
+**Rigidity of twins of cubic supports.** If X, Y are anticomplete twins and X is 3-regular, every neighbour of a vertex
+of Y outside Y is adjacent to X; so Y is a union of connected components of the graph induced on Far(X), all of whose
+vertices have exactly 3 far neighbours. For a 9-support with 14 edges, Far(X) has 20 - n_3 vertices (n_3 = outside
+vertices with three neighbours in X) and a twin has 8 of its 9 vertices there.
+
+**L1 side: the laptop session's cuts** (its message of 08:30 UTC; hand proofs and a local CP-SAT search, not audited
+here): roots are orthogonal to every other vector of norm 14, 16, 18; b_1 <= 78; a_7 + 4 b_1 <= 990;
+7 a_7 + 8 a_8 + 273 b_1 <= 55 440; a Fano vector and a norm-16 vector sharing p0 and three negative neighbours have
+inner product exactly 6, so their difference is a vector of norm 18 (no exclusivity of seeds). `ceiling37_lap.py`:
+with these cuts the coupled ceiling is 17 048 350, the value of "no root"; the optimum then has b_1 = 0, a_7 = 990,
+a_8 = 6063.75, a_9 = 28 102, a_13 = 335 434. What remains valuable on that side is a packing bound on a_8.
