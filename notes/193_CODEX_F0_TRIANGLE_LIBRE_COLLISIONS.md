@@ -205,3 +205,50 @@ en minoration de b4. Outre les masses restantes, les collisions de sommes
 différentes avec les familles négatives (6,0) et (7,1) restent ouvertes.
 Il faut y conserver **la branche avec triangle négatif non annulé** de
 la note 183, et pas seulement la branche non négative des grilles.
+
+## 7. Compter les classes sans fixer leur taille
+
+Après la publication initiale, LAB a corrigé au message 257 son budget
+global : certaines collisions des indicatrices à neuf sommets manquaient.
+Son calcul flottant avec les pertes séparées 672τ+716Ω ne donne pas un
+gain net pour Ftf. La présente note ne revendique donc aucune amélioration
+du plancher global de b4. Voici une autre manière exacte d'exploiter les
+comptes de collisions, proposée au message 260.
+
+Soit R le nombre brut de représentants **de toute une famille de même
+norme**, C le nombre total de paires non ordonnées qui ont la même image,
+et D le nombre d'images. Pour tout entier k≥1, la note 186 donne
+
+    D ≥ 2R/(k+1) − 2C/[k(k+1)].                         (6)
+
+Cette formule ne suppose ni une taille maximale des classes, ni une
+décomposition canonique des représentants en prisme et reste. Pour k=2,
+elle devient D≥(2R−C)/3. On peut choisir des valeurs différentes de k
+pour les normes six et huit, puis combiner leurs minorations. C doit
+cependant inclure **toutes** les collisions : les seules pertes de masses
+six et sept de cette note ne suffisent pas.
+
+Il existe aussi une version qui conserve le compte des anciennes images.
+Notons Rn le nombre de nouveaux représentants, Cnn les paires en collision
+entre eux et Cna les paires entre un nouveau et un ancien représentant.
+Le nombre Δ de nouvelles images absentes de la famille ancienne satisfait
+
+    Δ ≥ 2Rn/(k+1) − 2Cnn/[k(k+1)] − 2Cna/(k+1).        (7)
+
+Preuve : dans une classe sans ancien représentant et contenant m nouveaux,
+(7) se réduit à l'identité de la note 186,
+
+    1 − 2m/(k+1) + m(m−1)/[k(k+1)]
+      = (m−k)(m−k−1)/[k(k+1)] ≥ 0.
+
+Si la classe contient n≥1 anciens représentants, son gain réel est zéro.
+Sa contribution au membre droit de (7) vaut
+
+    2m(1−n)/(k+1) − m(m−1)/[k(k+1)] ≤ 0.
+
+La somme prouve (7), même si les anciens représentants ont eux-mêmes des
+doublons. Tout plafond prouvé pour Cnn ou Cna peut remplacer le compte
+correspondant puisque son coefficient est négatif. Cela permet de tester
+les nouvelles sous-familles sans réduire le plancher déjà établi pour les
+anciennes. Les canaux de collision restant ouverts doivent encore être
+complétés avant toute application numérique globale.
