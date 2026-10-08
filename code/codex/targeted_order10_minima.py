@@ -33,23 +33,27 @@ def constraints(report):
 
 
 class SparseCertificates:
-    def __init__(self, parameters, rows):
+    def __init__(self, parameters, rows, *, normalize=False, method='highs', progress=False):
         self.parameters, self.rows = parameters, rows
+        self.method, self.progress = method, progress
         index = {name: i for i, name in enumerate(parameters)}
         ii, jj, vv = [], [], []
-        self.constants = np.array([float(row.get('1', 0)) for _, row in rows])
+        scales = [max(map(abs, row.values()), default=F(1)) if normalize else F(1) for _, row in rows]
+        self.constants = np.array([float(row.get('1', 0)/scale) for (_, row), scale in zip(rows, scales)])
         for i, (_, row) in enumerate(rows):
             for key, value in row.items():
                 if key != '1' and value:
-                    ii.append(i); jj.append(index[key]); vv.append(float(value))
+                    ii.append(i); jj.append(index[key]); vv.append(float(value/scales[i]))
         self.matrix = coo_matrix((vv, (ii, jj)), shape=(len(rows), len(parameters))).tocsr()
 
     def minimum(self, objective):
         cost = np.array([float(objective.get(p, 0)) for p in self.parameters])
         result = linprog(cost, A_ub=-self.matrix, b_ub=self.constants,
-                         bounds=[(None, None)]*len(cost), method='highs')
+                         bounds=[(None, None)]*len(cost), method=self.method)
         assert result.success, result.message
         support = [i for i, weight in enumerate(-result.ineqlin.marginals) if weight > 1e-8]
+        if self.progress:
+            print('Floating discovery complete; reconstructing', len(support), 'exact dual weights', flush=True)
         matrix = Matrix([[Rational(self.rows[i][1].get(name, 0)) for i in support] for name in self.parameters])
         target = Matrix([Rational(objective.get(name, 0)) for name in self.parameters])
         weights, free = matrix.gauss_jordan_solve(target)
