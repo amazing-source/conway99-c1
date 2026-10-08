@@ -31,12 +31,21 @@ et coexistence par paires ont tous un témoin nécessaire (note 223).
 Ne pas approfondir automatiquement ces campagnes, ni retourner aux quatre
 boules déjà exclues pour y compter des types sans théorème de couverture.
 
-**Cible théorique suivante :** compatibilité des noyaux autour de tous
+**Comptage global tenté :** compatibilité des noyaux autour de tous
 les motifs S d'un même graphe. Le catalogue impose e(D(S))≤4 et
-61≤e(C(S))≤65 pour chacun. Chercher un double comptage de la somme des
-e(D(S)) ou des types, avec une relation supplémentaire propre aux paramètres
-de 99. Ce sous-problème est proposé à LAB ; aucune contradiction par ce
-comptage n'est acquise. La route reste révisable selon les résultats.
+61≤e(C(S))≤65 pour chacun. LAB a incorporé les équations de types jusqu'à
+l'ordre 10 à son recensement (message 416) : aucune exclusion supplémentaire
+rapportée. Le comptage seul n'a donc pas clos la voie ; tout nouveau pilote
+doit apporter une relation supplémentaire, pas répéter cette relaxation.
+
+**Audit complémentaire en cours :** LAP annonce l'exclusion de tous les
+voisinages de droite déconnectés sans triangle ni carré au rang 37.
+La note 224 valide la réduction algébrique, reproduit la classification
+des composantes et les deux étapes finales du cas de torsion maximale.
+Elle distingue les calculs indépendamment reproduits des grands balayages
+encore repris des archives LAP. LAB réimplémente une étoile témoin (0,0).
+Ce résultat annoncé ne ferme pas le rang 37 et ne réduit pas directement
+les 174 noyaux. Il porte sur une famille distincte des quatre anciens exemples.
 
 Sources de travail :
 
@@ -48,6 +57,8 @@ Sources de travail :
   supplémentaires par les incidences des sommets extérieurs ;
 - `notes/223_CODEX_LIMITE_DES_PREMIERS_PROLONGEMENTS.md` : pilotes sans
   exclusion supplémentaire, témoins exacts, limite et cible suivante ;
+- `notes/224_CODEX_AUDIT_LAP_RANG37_MAILLE5.md` : réduction algébrique
+  et contrôles indépendants du nouveau sous-cas annoncé par LAP ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
