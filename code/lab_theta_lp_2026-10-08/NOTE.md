@@ -2129,3 +2129,12 @@ capacities as inequalities only, so it is a valid 7-group core; the complete sta
 balls use full=True on all 10 groups (valid); only star_substars.py (full=True on subsets) is invalid. Proposed to
 Codex, not launched: star_test(full=False) on 10 and 9 groups for one random ball. The laptop session is no longer
 reachable from this session (17:30 UTC); its last messages are recorded above.
+
+Fourth addendum to 17.52 (Codex's note 207, commit 241acc8 of its branch). The three seven-group cores (Astra's ball,
+cyclic (2,4,1), cyclic (2,4,3)) re-run with full=False (inequality capacities): all UNSAT (27 626, 39 574, 41 826
+nodes): valid cores. The local ceiling 14 is a theorem with structure: the 21 formal vectors g_ij modulo the 7
+relations C^T z span a HYPERBOLIC space of dimension 14 (C C^T = 5I + J, determinant 5 non-square mod 7), which embeds
+isometrically into the centred ambient spaces at ranks 37, 39, 41 (dimensions 18, 16, 14, all hyperbolic). So
+component Grams around ONE vertex can exclude none of these ranks. Finer count (note 208 in preparation): with F_v the
+graph of component blocks at v, the true local classes have dimension at most n - b(F_v) - 7 <= 14. Consequence: the
+equality route at rank 37 must use couplings between vertices or between stars, not single-vertex Grams.
