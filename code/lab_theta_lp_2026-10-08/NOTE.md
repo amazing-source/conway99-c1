@@ -2662,3 +2662,40 @@ its two pillars (no finite list of types, no counting identity forcing a heavy t
 analogue of (B). Three precise questions for a C2-like route: an object of bounded rank and controlled determinant; a
 counting identity that forces non-trivial structure; a finite list of local types (the 177 grid profiles at a vertex are
 the only finite catalogue we have).
+
+### 17.68 A rank-free forced configuration with a finite catalogue (Codex), re-derived independently (22:07 UTC, 09/10)
+
+User (direct, about 22:00 UTC on 08/10): C2 needed three routes; the point is not to imitate C2 but not to stay stuck
+on one route, here the route "rank by rank", and to come back if the others are worse. Relayed to Codex in his words.
+
+Two alternative organisations were put on the table.
+* **Mine, checked in this note before proposing: split by structure (no grid / at least one grid).** Already on record
+  (17.45): at rank 37 with rho = 0 the counting on Codex's collection has break-even 25 201 collisions per twin pair,
+  against the certified GENERAL cap 31 976 for a non-grid twin pair; nobody computed the cap restricted to grid-free
+  graphs. Asked to Codex. Best outcome: "rank 37 forces a grid", a reduction to a rigid rank-free base (a grid is a tight
+  set). Not run.
+* **Codex's, rank-free (its note 221 in preparation).** By Makhnev's theorem (L1) every srg(99,14,1,2) contains two
+  disjoint triangles joined by exactly two edges: S = 012 + 345 with 03, 14 and no 25. Around S the masks and their
+  numbers are forced: 8 vertices with two neighbours in S (supports 03, 14, 23, 24, 05, 15, 25, 25), 52 with one
+  (9, 9, 8, 9, 9, 8), 33 with none. The core H = S + the 8 doubles (14 vertices) is present in every such graph, at
+  every rank. Catalogue: 2299 labelled cores, 373 up to the group of order 8; the exact positivity of the two projector
+  blocks 27I - 9A_H + J and 44I + 11A_H - 2J excludes 63 and leaves 310.
+
+**Independent re-derivation here** (`twisted_core_check.py`, `twisted_core_check.json`; Codex's code and data not read):
+* forcing, by hand: two disjoint lines are joined by at most 3 edges; if "at least 2" always meant 3, then for two
+  lines L1 = {v,a,a'}, L2 = {v,b,b'} and c_ab the second common neighbour of a and b, the line through a and c_ab would
+  have a third edge to L2, forcing c_ab ~ c_ab', and symmetrically c_ab ~ c_a'b: every two lines at every vertex would
+  span a grid, against Makhnev;
+* masks and numbers, by hand: 04 and 13 impossible (two common neighbours already in S); the counts above;
+* enumeration: 2299 labelled; the seven pairs of doubles that are never adjacent are (03,23), (03,05), (14,24),
+  (14,15), (23,05), (24,15), (25,25), also obtained by hand; 21 optional pairs; 373 orbits;
+* exact test (rational symmetric elimination, an integer vector z with z^T Q z < 0 for each failure): 63 excluded, 310
+  pass. All 63 exclusions come from the block of E_(-4); the block of E_3 excludes nothing more at 14 vertices. The two
+  complementary conditions are automatic: 36I + 9A - J = (63/77)(44I + 11A - 2J) + (7/11) J and
+  33I - 11A + 2J = (77/63)(27I - 9A + J) + (7/9) J.
+So the covering statement is correct and rank-free: every srg(99,14,1,2) contains one of 310 cores.
+
+Scope, stated to Codex at once: the catalogue classifies 14 vertices of 99; positivity of projector blocks is the
+classical interlacing refined by J, weak on small subgraphs. The route is of "type C" only if every core DIES AT SMALL
+DEPTH. Proposed decisive measurement, not run: forced closure only (third points of lines, missing common neighbours),
+exact positivity at each step, recording the depth of death or the number of survivors per level.
