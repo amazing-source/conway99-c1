@@ -1717,3 +1717,19 @@ Conversely a system (names, graph on B) with these properties is a strongly regu
 six grids. So "no line in six grids" is the non-existence of this design: 60 names in (Z_3 x Z_2)^6 with prescribed
 pairwise coordinate statistics, 20 triangles and six matchings. Nothing is known about it here; a blind solver run on
 it is the kind of whole-graph sub-case that did not terminate for the laptop session, so none is launched.
+
+Addendum to 17.46 (hand). The COLUMN part of the names has a canonical solution, so no contradiction can come from
+the columns alone. A name gives a syntheme of the six grids (three duads) with a bijection of its duads to the three
+columns: 15 * 6 = 90 labelled synthemes. The conditions on columns are: each (duad, column) in exactly 4 names; for k, j
+in different duads and columns i != i', exactly 8 names. Fix a synthematic total T (five synthemes covering each duad
+once): the 10 synthemes outside T cover each duad twice, and for k != j exactly 8 of them do not contain the duad
+{k, j}. So "all 60 labelled synthemes outside a total" satisfies both conditions (2 synthemes * 2 labellings = 4;
+8 synthemes * 1 labelling = 8). The stabiliser of T is S_5 acting on the six grids as PGL(2,5). Whether other column
+solutions exist is not examined. What remains to be decided is the row part (a sign vector in Z_2^6 for each name:
+the four names of a (duad, column) carry the four sign pairs once, the eight names of a (k -> i, j -> i') carry each
+sign pair twice) together with the 20 triangles and the six matchings. Reminder: the graph has no automorphism in the
+project's setting (cases C2, C3 closed), so a solution cannot keep the S_5 symmetry of the columns.
+
+Codex's note 200 (commit a5ee693 of its branch) contains the exact certificates of the bounds quoted in 17.45
+(prism-free collisions, ties under the grid filters, the certified triple and its shorter representative; 1440 signed
+triples per pencil of six, all removed by the grid filter). No rank excluded.
