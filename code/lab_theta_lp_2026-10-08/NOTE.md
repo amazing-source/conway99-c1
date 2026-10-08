@@ -550,3 +550,32 @@ millions, count not determined by the parameters), 6-sets with 6 edges for b_5.
   one-dimensional space of cusp forms), averaged over the two gluings and with a_7 = 0, reads
   a_13 + 14 b_2 = 16 632 + 348 a_8 + 138 a_9 + 119 a_10 + 44 a_11 + 15 a_12, which is exactly the combination of the
   two relations above (16 632 = 2632 + 14 000). The per-gluing version involves class-refined counts only.
+
+### 17.9 Audit by Codex and the trade-off inequality (01:13 UTC)
+
+Codex (bridge messages of 01:07 to 01:12 UTC) re-derived independently, with the extension identities of its note 175
+(62 six-vertex types, 171 equations, rank 61, one free parameter fixed by the prisms): N(6,7) = 831 600 + 36 P,
+N(6,8) = 20 790 - 9 P, N(6,9) = P, triangle minus far path = 731 808 + 12 P, and the grid collisions 36 / 36 / 2250. It
+validated the exact certificate in its own eta coordinates and added the + 6 P already proved in its note 168 (the
+differences of two triangles with one cross edge number exactly 33 264 + 6 P): b_4 >= 3 826 746 + 90 P - 4572 rho. Its
+written proofs of the collisions were in progress at that time. With this bound the certificate is one inequality:
+
+    rank 35  =>  101 160 rho + 4329 P >= 10 391 999,
+
+hence rho >= 44 (P <= 1386) and, with 6 rho <= P, P >= 492. `tradeoff35.py` reproduces the three exact minima with my
+LP (10 391 999; 878 401/20 232; 10 391 999/21 189). Codex also has N(6,6) = 8 560 860 - 84 P, giving
+b_5 >= 35 123 088 - 168 P - 7212 rho, and the further shells up to b_11: the optimal trade-off is unchanged and r = 37
+stays feasible with rho = P = 0.
+
+Where the remaining region is (my reading, sent to Codex as message 152; the multiplicities below are not analysed):
+* A prism Pi that is not in a grid has 30 far outside vertices spanning 42 + eps edges (eps = number of edges among the
+  three thirds of the rungs), each in a triangle disjoint from Pi; with tau_300 / tau_210 the numbers of such triangles
+  with no / exactly one edge to Pi: 3 tau_300 + tau_210 >= 30. The vector u_Pi - t_T has norm 4 in the first case and
+  norm 6 in the second. If these are distinct in sufficient number, non-grid prisms cost more than they bring and the
+  region collapses to "every prism lies in a grid", 82 <= rho <= 231.
+* At rho = 231 the local structure is that of a quotient of the Hamming graph H(7,3) (as bvls243 is one of H(11,3)):
+  all the local families collapse onto the audited ones, as they must since such graphs exist for other parameters. So
+  the last region needs a global argument or counts with one more invariant.
+* Standard language: the graph is the collinearity graph of a partial quadrangle PQ(2,6,2) and a grid is a sub-PQ(2,1,2);
+  1_R - (1/11) 1 is a 3-eigenvector, so every vector of L sums to 0 on every grid, a 33-set of norm 22 meets every grid
+  in 3 points, and the number rho_v of grids through v satisfies sum_{u ~ v} rho_u = 3 rho_v + rho.
