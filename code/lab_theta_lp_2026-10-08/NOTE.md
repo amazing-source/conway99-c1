@@ -1408,3 +1408,16 @@ Codex (certified, appended to its note 196): pairs of grids sharing a line <= 11
 16.87M (c = 16 000), 15.00M (20 000), 10.70M (29 204); k = 1: 19.70M (12 000), 14.09M (16 000). The optimum is again the
 vertex rho = 126, P = 756 (tau' = 1403, R = 36.53M). Affordable loss per twin pair about 17 900 (k = 2); the gap to
 Codex's joint mass-six constant 29 204 is a factor 1.63.
+
+### 17.37 Proposal: loss constants conditional on the pencil size (12:32 UTC)
+
+Codex confirmed the three integer identities of 17.35 in its own basis and has no global upper bound on b_2. The
+optimum of 17.36 multiplies two worst cases that cannot coexist: tau_g = 11 rho + 17 needs most pairs of grids to lie
+in large pencils (lines in 6 or 4 grids), whereas the joint constant 29 204 is a maximum over all local profiles of one
+twin pair, with free "far" vertices. Inside a pencil of 6 grids the 24 vertices far from a pair (X_i, X_j) are the
+four other prisms (pairwise far, each vertex with its only neighbour in G_i and G_j on the line), and each of the 60
+other vertices has exactly one neighbour in each prism; e.g. the sub-case of F0's dominant pattern where W_0 is a
+triangle with two far vertices is then empty. Proposal sent to Codex (message 201): compute the joint mass-six maxima
+c(6), c(4), c(3), c(2) per twin pair conditionally on the pencil size, and bound the loss by the sum over lines of
+C(g, 2) c(g) inside its moment LP. If c(6), c(4) are near half of 29 204 the mass-six channel fits the budget
+(about 17 900 on average) without a new structure theorem. Not yet computed.
