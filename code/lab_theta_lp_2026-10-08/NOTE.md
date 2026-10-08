@@ -2119,3 +2119,13 @@ Second addendum to 17.52 (17:25 UTC), the equality route, state of the pieces (s
   search used only conditions mod 7 and combinatorics (NOTE_S24 par.1), so this filter is additional. (3) Negatives:
   pairwise positivity of 7 Pi around a six-grid line forces nothing; (A + 4I)(e_u - e_v) is a grid combination only
   with at least 30 A-grids in the canonical model.
+
+Third addendum to 17.52 (17:30 UTC). Codex rebuilt the apex witness independently (19 non-apex pairs forbidden); the
+laptop session's small-exchange filter is automatic inside one star (ten distinct pivots), useful only for coupled
+stars; Codex proved the rank-14 ceiling at one vertex uniformly (kappa(i,B) = sum over j in B of the 21 formal
+vectors g_ij, Gram 4I + 2C^T C - 3J of rank 14). Flags of the September searches (my reading of the structures-lab
+scripts, nothing run): the seven-group exclusion of Astra's ball (verify_astra_d5_seven_shadows.py) uses the
+capacities as inequalities only, so it is a valid 7-group core; the complete stars of the 6 cyclic and 35 random
+balls use full=True on all 10 groups (valid); only star_substars.py (full=True on subsets) is invalid. Proposed to
+Codex, not launched: star_test(full=False) on 10 and 9 groups for one random ball. The laptop session is no longer
+reachable from this session (17:30 UTC); its last messages are recorded above.
