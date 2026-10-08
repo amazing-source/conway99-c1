@@ -2308,3 +2308,44 @@ not uniform; it fails on most cyclic branches (230, 260, 314 not tested pointwis
 September; no uniform lemma, no new exclusion of rank 37.
 Not launched (above the five-minute rule): the pointwise-without-degree certificate on all 213 cyclic survivors, about
 213 x 8 s = 30 minutes, one process, below 3 GB.
+
+### 17.57 Minimal supports of the two-star certificates; LAP's real Green identity; a heuristic and its limits (19:55 UTC)
+
+**1. Minimal supports on random ball 12, edge (0,12)** (`min_support_two_star.py`; rows = domain + pair marginals +
+pointwise star sums; domains = those of Codex's full propagation; greedy steps decided by floating HiGHS, final vectors
+checked in integers by Codex's `verify_farkas` and archived in full in `balls/minsupport_<mode>_ball12_apex<k>.json`).
+Removing a shadow turns the star sums of its side into  t(p) - m <= sum <= t(p)  (valid for any sub-family of a solution).
+
+| branch | fewest shadows found (all 72 star rows) | fewest star rows found (all 18 shadows) | those rows, then fewest shadows |
+|---|---|---|---|
+| 33 | 9: the nine shadows of star v alone (gap 562) | 32 (time budget reached, not reduced) | - |
+| 113 | 11: 8 of u + 3 of v (gap 59 891) | 4: star v at points 28, 31, 33, 35 (gap 124 833) | 15: 6 of u + 9 of v |
+| 137 | 15: 8 of u + 7 of v (gap 84 468) | 2: star v at points 34, 35 (gap 45 356) | 15: 6 of u + 9 of v |
+| 184 | 10: 3 of u + 7 of v (gap 12 159) | 0 (already infeasible with no star row, 17.56) | - |
+
+Reading: the sufficient supports are far from unique (for 137 a first sparse dual used 27 star rows, two suffice) and
+few rows cost many shadows: the relaxation is infeasible in many diffuse ways; no single small sub-configuration was
+isolated. At the four points of branch 113 no pigeonhole is visible (every shadow of star v has 1 to 10 candidates
+through each point). Minimality is for single deletions and numerical; the cores are upper bounds.
+
+**2. LAP's exact real identity (relayed 19:34 UTC; LAP's hand derivation with a trace check; Codex re-derived the first
+line; I checked only the consequence Pi 1_{S_u} = 0; items (c), (d) below not audited by anyone else).** For a line with
+connected G, at every rank, H^+ the real pseudo-inverse of 3I - G, Pi (rank 8) and Pi' (rank 18) the orthogonal
+projectors onto the (-4)- and 3-eigenvectors supported on the far set:
+    n_f^T H^+ n_f = 37/12 - 7 Pi_ff,   n_f^T H^+ n_f' = 1/12 - A_ff' - 7 Pi_ff',   n_f^T (4I+G)^(-1) n_f = 138/35 - 7 Pi'_ff,   Pi N^T = 0.
+The September conditions (g = 6, g in {2,3}) are its reduction mod 7; rank 37 = "Pi is 7-integral". Lost by the
+reduction: (a) real Green norm <= 37/12; (b) a Cauchy-Schwarz bound on pairs; (c) for a star, Sigma = 3I - A_star + J/12
+- N_s^T H^+ N_s is positive semidefinite of rank <= 8; (d) a square condition on eight far vertices. Measured by LAP on
+four balls: (a) keeps 86 to 95 % of the candidates, (b) removes 37 to 39 % of the mod-7-compatible pairs. True at every
+rank, so exact additional filters, not an exclusion.
+
+**3. A heuristic, recorded as such.** `logs/star_expected_count.log` of September (structures-lab) gives 8.6e-16 and
+2.2e-15 expected complete stars per ball (product of probabilities assumed independent). With an orbit mass of
+(11!!)^3 / 6 = 1.9e11 balls (three layer matchings and three bijections modulo S_12^3 x S_3; a mass, not an exact count
+of classes) this gives well below one expected star over all balls. So "42 of 42 balls dead" is what randomness
+alone predicts and is not by itself evidence of a structural lemma. Codex's objections, which I accept: the
+independence assumption is uncalibrated; the size of an infeasible core does not decide whether a short uniform proof
+exists (a pigeonhole or parity argument may need every object); so this is a guide for choosing experiments, not a
+verdict on (a'). Order of magnitude only, nothing proposed or launched: an exhaustive certificate over all balls
+would need a compiled one-star search (September: 13 s per star in Python, 15 796 nodes) on about 1e10 to 1e11 balls,
+i.e. CPU-years, and would cover only generic triangle-free lines (NT and the disconnected case would remain).
