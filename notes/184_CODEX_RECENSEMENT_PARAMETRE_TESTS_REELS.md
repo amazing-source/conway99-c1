@@ -50,10 +50,10 @@ La dernière case utilise la transitivité sur les arêtes de bvls243 : deux ar�
 ont été testées, avec 26600 six-ensembles à sept arêtes contenant chacune, et
 2632560 couples avec un triangle lointain. Elle n'est pas une énumération de tous
 les six-ensembles du témoin. Les scripts annoncés sont `census_check243.py`,
-`six_three.py` et `six_three_730.py` ; au moment de cette mise à jour, leurs dernières
-versions ne figurent pas encore dans la branche publique arrêtée à `4aa839a`.
-Les résultats ci-dessus sont donc attribués au rapport indépendant de LAB,
-sans revendiquer une réexécution locale de cette nouvelle série de tests.
+`six_three.py` et `six_three_730.py`. Leurs versions et sorties sont publiées
+au commit LAB `5707500`, importé ici par `668967d`. Les sorties archivées ont
+été lues et confirment le tableau. Les résultats sont attribués au calcul
+indépendant de LAB, sans revendiquer une réexécution locale de toute cette série.
 
 Limites : H, C8_5683824, C8_245715219 et **25 des 48 coordonnées C9** sont nuls
 dans les deux graphes, donc ces tests n'éprouvent pas leurs coefficients. Les
