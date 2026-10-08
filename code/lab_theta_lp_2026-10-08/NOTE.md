@@ -1461,3 +1461,24 @@ C(g, 2) c(g) inside its moment LP. If c(6), c(4) are near half of 29 204 the mas
   With R = 65.57M the class quotient k = 2 allows 83.2M colliding pairs, about 59 300 per twin pair at tau = 1403:
   about 30 000 per grid pair would be available for everything involving (5,5) or (8,2). Their collision constants are
   not known; asked to Codex. If they are of the order of 60 000 the collision route is closed at this level too.
+
+### 17.40 State of the three routes for rank 37 at 13:15 UTC
+
+* **Collisions, supports <= 9.** Codex (certified, notes 197-198): the 9-set channel is exactly 5376 + 12 t_Z colliding
+  pairs per pair of grids on a line (t_Z = number of triangles among the 24 vertices far from both prisms; my count of
+  2736 choices in a pencil of six, generalised by first moments of the line types and re-checked here); joint binary
+  mass-six constant per grid pair at most 27 828 (was 29 204), at least 14 430; budget about 17 900 per pair. Undecided,
+  short by 1.55 on the certified constants; the other channels are not included.
+* **Support 10.** Raw count 65.57M at the grid-rich end (17.39); the constants of (5,5) and (8,2) are not computed.
+* **Seeds (L1 side).** CLOSED as a method (laptop session, local CP-SAT model with necessary conditions): two vectors of
+  norm 16 on a seed are infeasible (as proved), but two vectors of norm 18 are feasible at inner products 7 to 10,
+  THREE on one seed are feasible, vectors with different missing points coexist; kappa_18 = 3 alone gives 98 % of the
+  need 11 a_9 + 8 a_10 + 3 a_11 + a_12 >= 311 061 and nothing is known at norms 22, 24.
+* **A class-level constraint (laptop session).** The form (x, y) mod 7 on L1 factors through D = L1/7L1* of dimension
+  45 - r, so the Gram matrix of ANY family of vectors of L1 has rank at most 45 - r modulo 7 (8 at rank 37, 2 at rank
+  43): e.g. at rank 37 any nine vectors of L1 have a Gram determinant divisible by 7; at rank 41 orthogonality of
+  non-root Fano vectors is transitive; for 22-cocliques the matrix (|C cap C'| - 1) has rank at most 45 - r mod 7 with
+  zero diagonal (this is "1, 8, 15" at rank 43). It constrains configurations of the exotic short vectors, not their
+  number; no exclusion from it so far.
+* **Ceiling.** Needs caps on a_7 (22-cocliques), a_8, or an upper bound on b_2 (about 2000 non-triangle norm-4 vectors
+  of M are needed at the b_4 optimum); none available.
