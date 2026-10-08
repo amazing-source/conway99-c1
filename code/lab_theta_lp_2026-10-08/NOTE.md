@@ -1098,7 +1098,7 @@ Status: results of the three sessions of the last hour; hand work, not audited u
   spectrum 10, 3^33, (-1)^21, (-4)^22; all counts close). A direct search is the whole 99-vertex problem with one
   extra hypothesis: recorded as a possible computation, not launched (computations are parked).
 
-### 17.24 The shape (6,3) by sub-family, and a certificate in b_4 alone (10:35 UTC)
+### 17.24 The shape (6,3) by sub-family, and a certificate in b_4 alone (10:28 UTC)
 
 `lp_f0.py` (`OUTPUT_lp_f0.txt`), floating LP, supports <= 9. The shape (6,3) at norm 8 by (e(W), e(Y), cross), one sign,
 at the unpenalised optimum / minimum alone: (7,3,0) [W with 7 edges, Y a far triangle; "F0"] 2.51M / 2.10M;
@@ -1112,3 +1112,29 @@ patterns (17.22(b)); for the first one, with U, U' the triangles of the two pris
 vertices W_0 of W lie among the 15 vertices having their prism neighbours in U and U' and the 24 vertices far from
 both prisms, with e(W_0) + #(W_0 in the 15) = 4. My hand bound for the constant is only "a few hundred to a few
 thousand": the exact maximum needs Codex's local-model enumeration (asked, bridge message 187).
+
+### 17.25 The lattice of a 22-coclique: the laptop session's level-21 programme, and b = 2 at rank 43 (10:35 UTC)
+
+Status: the programme and its numbers are the laptop session's (exact rational simplex, not refereed); the index bound
+and the norm form are mine (hand); nothing audited.
+
+* Determinant (laptop session, re-derived here): with iota the index in Z^22 of the restriction of L to R,
+  det L = det L_0 * det(projection of L on span{P e_r}), the projection having Gram (7/3)(I - J/49) on the
+  restrictions, so det L_0 = 3^21 7^(r-21) / iota^2 and **det Lam = 3 * 7^(43-r) * iota^2**; iota = 3^d 7^c.
+* **c <= 1 (mine).** The restriction of L to R contains 3(e_r - e_s) (from 7P(e_r - e_s)), 27 e_r + 1 (from 63 P e_r),
+  1 - 9 * 1_o (from 63 P e_o) and 7 * 1 (from 9 * 1_R - 2); modulo 3 A_21 these generate exactly
+  { y : y = k 1 mod 3, 7 | sum y }, of index 3^21 * 7. Hence iota divides 3^21 * 7, so b := v_7(det Lam) is 43 - r or
+  45 - r: 6 or 8 at rank 37, 4 or 6 at rank 39, 2 or 4 at rank 41, and, since at rank 43 every integral eigenvector
+  sums to 0 mod 7 on R (c >= 1), **b = 2 exactly at rank 43**.
+* The programme (laptop session): theta_Lam in M_11(Gamma_0(21), chi_-3) (dimension 28), Fricke partner theta_L0 with no
+  term below q^7, all coefficients >= 0 up to q^34. No exclusion. With c_n the number of vectors of Lam of norm 2n:
+  d = 0, b = 2: c_1 = 0 needs c_2 >= 13 953; d = 1, b = 2: c_2 >= 4 432; b = 6 or 8 are feasible with minimum 6;
+  b >= 16 (d = 0) and b >= 14 (d = 1) are infeasible. Not run: d >= 2, the two partial duals.
+* Norm form (mine): 21 Pi = 9 I + J - 3 G - N^t N, so for n in Z^77 with s = sum n,
+  f(n) = |sqrt21 Pi n|^2 = 9 |n|^2 + s^2 - 3 n^t G n - |N n|^2 = 3 * min over real c in R^22 of Q(n on the blocks, c on R),
+  the minimum being at c_r = d_r/3 - s/21 (d_r = (N n)_r). If N n = 0 then f(n) = 3 Q(n) >= 6. Sums and differences of
+  at most three blocks have f >= 6. A 4-cycle of mates has f = 4 (at most 115 such cycles).
+* Caveat: a generic even lattice of rank 22 and determinant 147 has about 2 500 vectors of norm <= 4 (Gaussian count)
+  and minimum <= 4 (Hermite), so the thousands of norm-4 vectors asked for by the programme at rank 43 are not
+  surprising; an exclusion of 22-cocliques at rank 43 by this route needs a classification of f(n) <= 4 for arbitrary
+  n, i.e. of the integer (-4)-eigenvectors 21 Pi n vanishing on R of norm 42 or 84. Open.
