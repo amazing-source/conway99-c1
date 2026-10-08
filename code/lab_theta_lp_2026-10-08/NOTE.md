@@ -1830,3 +1830,15 @@ of Theta; (3) no general lower bound of the rank in terms of rho or tau_g; (4) l
 differences of non-grid prisms (norm 12), which the accounting also needs: by 17.45 a cap on rho alone does not
 conclude (break-even 25 201 at rho = 0 against 31 976), the total number of twin pairs has to go below about 540.
 If a general lemma gives rho of a few dozen and tau of a few hundred at rank 37, the accounting of 17.44 concludes.
+
+Addendum to 17.48 (Codex, about 15:50 UTC, exact computation, certificate in preparation on its side; not recomputed
+here). The bound is confirmed. Twin differences inside one pencil are G_i - G_j and add no rank. With UNKNOWN binary
+cross intersections (not only the canonical columns): for H^i_ab = the possible grid at t_i between the rungs of the
+prisms a, b, two such grids at different apices are disjoint when their pairs meet, and meet in 0 or 1 point when the
+pairs are disjoint. If the rung of prism 0 is universal at the three apices, the 21 grids have rank 18 mod 7 (excluded
+at ranks 39, 41, 43). Adding at one apex a second universal rung keeps 12 completions of rank <= 19; adding then a
+single grid H^1_12 gives rank 20 or 21 in all 108 extensions. Hence, at rank 37: NO configuration "three apices with
+three hubs each, one same prism giving an extra hub at all three apices". The pencil of six itself is not excluded.
+Targets sent to Codex: excluding six-grid lines only leaves tau_g <= 1134, not enough; what pays is a bound on rho
+(tau_g <= 11 rho + 17: rho <= 60 gives 677) and on non-grid twin pairs. Negative (mine): the modular polynomial
+method on the centred classes (norm -2, products -1, -3, -4, dimension 18) only gives rho <= C(21,3) = 1330.
