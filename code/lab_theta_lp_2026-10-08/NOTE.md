@@ -1842,3 +1842,28 @@ three hubs each, one same prism giving an extra hub at all three apices". The pe
 Targets sent to Codex: excluding six-grid lines only leaves tau_g <= 1134, not enough; what pays is a bound on rho
 (tau_g <= 11 rho + 17: rho <= 60 gives 677) and on non-grid twin pairs. Negative (mine): the modular polynomial
 method on the centred classes (norm -2, products -1, -3, -4, dimension 18) only gives rho <= C(21,3) = 1330.
+
+Second addendum to 17.48 (Codex's note 202, commit 8fabef6 of its branch; then my exhaustive table on the canonical
+model, `OUTPUT_pencil6_rank7_types.txt`).
+Codex, GENERAL certificate (no restriction to the Petersen names; 433 non-zero minors of order 20 mod 7 covering the
+59 049 binary choices): if the rung of prism 0 is universal at the three apices and the rung of prism 1 universal at
+the first, then the rungs of prism 1 at the two other apices lie in exactly two grids. So three apices with three
+hubs each sharing a common extra index are excluded at r >= 37. Open in its note: three apices with two extra hubs
+each and NO common index (five types of the three pairs).
+Canonical model, exhaustive over all positions (hub rungs {a_r, b_r} at apex r, H_r = the 9 duads meeting them):
+
+| extra hub rungs at the three apices | grids | rank mod 7 (all positions) |
+|---|---|---|
+| 2, 2, 2: common index | 33 | 27 |
+| 2, 2, 2: triangle; P3 + K2 | 33 | 27 |
+| 2, 2, 2: path P4 | 33 | 25, 26, 27 |
+| 2, 2, 2: two identical pairs and a disjoint one | 33 | 25, 27 |
+| 2, 2, 2: three disjoint pairs | 33 | 24, 25 |
+| 2, 2, 1 (all positions) | 29 | 23, 24 |
+| 2, 2, 0 | 24 | 18, 19, 20 |
+| 1, 1, 1 | 21 | 18 |
+
+Reading: in the canonical model a line in six grids has at most two three-hub points, and then no extra hub at the
+third point; (2,2,0) and (1,1,1) fit in 19 dimensions, so these two patterns CANNOT be excluded by the grids through
+the three apices alone (the canonical model is a valid choice of the binary intersections): they need the grids
+elsewhere or the non-canonical structure. The five open types of note 202 all have rank 24 to 27 here.
