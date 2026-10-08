@@ -9,6 +9,10 @@ sur son rang modulo sept :
 
     τ ≤ 1403,          b3 ≥ 45898.
 
+La forme couplée, plus précise que le seul plafond constant, est
+
+    τ_g≤11ρ+17,       τ≤P+5ρ+17.
+
 Les valeurs précédentes étaient 1534 et 45766. Le plafond sur les paires
 de prismes baisse donc de 131, soit environ 8,5 %, et le plancher sur les
 vecteurs de norme six augmente de 132. Le calcul ne suppose aucune borne
@@ -134,6 +138,23 @@ et correspond à la relaxation pour s=56. L'intégralité de τ donne
 **τ≤1403**. Ce « cas maximal » concerne le modèle relâché, pas une
 configuration du graphe dont on affirmerait l'existence.
 
+### Forme couplée conservant P et ρ
+
+Une seconde série de 74 certificats maximise l'objectif
+
+    (1/3)Σc n−11ρ.
+
+Le plafond maximal est **1729/99=17+46/99**, encore pour s=56. Comme
+τ_g et ρ sont entiers, on obtient
+
+    τ_g≤11ρ+17,        τ≤P+5ρ+17.                       (8b)
+
+Avec P+5ρ≤1386, on retrouve τ≤1403. La relation (8b) est toutefois
+plus forte quand P+5ρ<1386. Par exemple, le point relâché approximatif
+P=691, ρ=115,2, τ=1403 communiqué par LAB respecte le plafond constant
+mais viole (8b), dont le membre de droite vaut alors 1284. Les futurs
+programmes globaux peuvent donc utiliser cette coupure supplémentaire.
+
 ## 4. Ce que vérifient les certificats
 
 Les lignes sont écrites a_i0+Σ_j a_ij x_j≥0. Le programme minimise
@@ -196,15 +217,17 @@ Fichiers de preuve :
 
 - `data/codex_prism_plus_five_grids_cap.json` ;
 - `data/codex_grid_neighbour_moment_bounds.json.gz` ;
+- `data/codex_grid_neighbour_moment_coupled.json.gz` ;
 - `data/codex_neighbour_moment_b3_bound.json` ;
 - `data/codex_neighbour_moment_theta_effect.json`.
 
 Reproduction sans optimisation :
 
     python code/codex/grid_neighbour_moment_bounds.py --verify-only
+    python code/codex/grid_neighbour_moment_bounds.py --coupled --verify-only
     python code/codex/grid_neighbour_shell_effect.py --verify-only
 
-Les deux commandes passent. La première vérifie les profils nécessaires,
+Les trois commandes passent. Les deux premières vérifient les profils nécessaires,
 la coupure P+5ρ et ses dépendances, les tailles exclues par expansion et
-les 74 certificats de moments. La seconde vérifie les identités duales et
+les deux séries de 74 certificats de moments. La dernière vérifie les identités duales et
 les points rationnels pour b3 et les deux plafonds thêta.

@@ -127,20 +127,25 @@ def discover(rows,caps,objective):
             'numerical_discovery_value':float(result.fun)}
 
 
-def main(verify_only=False):
+def main(verify_only=False,coupled=False):
     census_cut(verify_only)
     degrees,grouped = profiles()
-    path = ROOT/'data/codex_grid_neighbour_moment_bounds.json.gz'
+    path = ROOT/('data/codex_grid_neighbour_moment_coupled.json.gz' if coupled
+                 else 'data/codex_grid_neighbour_moment_bounds.json.gz')
     if verify_only:
         with gzip.open(path,'rt') as stream: report = json.load(stream)
         assert report['degree_vectors'] == list(map(list,degrees))
         assert report['grouped_profiles'] == list(map(list,grouped))
     else:
         report = {'degree_vectors':degrees,'grouped_profiles':grouped,'cases':{},
-                  'scope':'Exact rational upper certificates for tau; no graph attainment or rank exclusion claimed.'}
+                  'scope':('Exact rational upper certificates for tau_g-11rho; no graph attainment or rank exclusion claimed.'
+                           if coupled else 'Exact rational upper certificates for tau; no graph attainment or rank exclusion claimed.')}
     maxima = []
     for s in range(74):
         types,rows,caps,objective = model(s,grouped)
+        if coupled:
+            # Bound tau_g-11rho. Integrality then gives tau<=P+5rho+17.
+            objective[-2] = F(0); objective[-1] = F(11)
         proof = report['cases'][str(s)] if verify_only else discover(rows,caps,objective)
         if proof['infeasible']:
             rows = [(name,c,a+[F(1)]) for name,c,a in rows]
@@ -154,7 +159,7 @@ def main(verify_only=False):
         if not verify_only: report['cases'][str(s)] = proof
     maximum,s = max(maxima)
     summary = {'maximum_rational_upper_bound':str(maximum),'maximising_size':s,
-               'integer_twin_cap':floor(maximum),
+               ('integer_excess_cap' if coupled else 'integer_twin_cap'):floor(maximum),
                'feasible_sizes':len(maxima),'infeasible_sizes':74-len(maxima)}
     if verify_only: assert report['summary'] == summary
     else:
@@ -167,4 +172,6 @@ def main(verify_only=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--verify-only',action='store_true')
-    main(parser.parse_args().verify_only)
+    parser.add_argument('--coupled',action='store_true')
+    args = parser.parse_args()
+    main(args.verify_only,args.coupled)
