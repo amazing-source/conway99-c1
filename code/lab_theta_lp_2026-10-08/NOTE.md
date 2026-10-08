@@ -2101,3 +2101,21 @@ Addendum to 17.52 (17:15 UTC): Codex's answer, and the September source located.
   6 feasible; the imposed Gram has rank 10 and non-zero determinant mod 7 (the obstruction is in the 0/1 form of the
   shadows); heuristic expected number of solutions about 10^-15. Proved there: R = 0 implies the exact SRG
   equations; MR = 0 is automatic. Missing: a UNIFORM reason why the complete star fails.
+
+Second addendum to 17.52 (17:25 UTC), the equality route, state of the pieces (statuses as given by their authors).
+* Codex (17:15): astra/RAPPORT_ASTRA_SUIVI4_ET_AUDIT_S5.md (structures-lab), message 1: on the cyclic ball (2,4,1) an
+  explicit witness of ten shadows passes the two apexes, the ten norms, the integer sum K e_u, lambda/mu and
+  M_star M_star^T <= K, and fails only on 19 non-apex pairs. No contradiction from apexes + sum alone; the eight
+  paired shadows are needed together. Audit: star_substars.py with full=True on subsets is not a valid search for
+  UNSAT cores (use full=False); "only_green" keeps G-dependent capacities. My suggestion to tabulate minimal dying
+  sub-stars from the existing logs is void; the valid version is not launched (Codex rebuilds the witness itself).
+* Laptop session (17:17, hand, scripts on its side): (1) exact Gram over Z of the component vectors at one vertex
+  (same line: [b = b'] 6m + 3 m m'; different lines: 2 |b cap b'| + 4 [j in b][i in b'] + 2 m' [j in b] + 2 m [i in b'] +
+  m m'); centred rank at one vertex 4 to 14 over 30 000 random systems: one vertex never contradicts rank 37; the
+  cross-apex entries of Codex's "central line + 18 side lines" are not determined by the blocks. (2) For a connected
+  line, identities over Z: tau = (9/4) 7^(37-r) t^2 det(L_far), det(4I + A_G) = (256/5) 7^(38-r) t'^2 det(K(F)),
+  iota = 2 * 7^(37-r+g) t t'; at r = 37, d = 1: ker_Z N = L_far (+) K(F) orthogonally without glue. Filter: no two
+  disjoint families of at most five far vertices with equal shadow sums (6 + 6 only twin prisms). The September star
+  search used only conditions mod 7 and combinatorics (NOTE_S24 par.1), so this filter is additional. (3) Negatives:
+  pairwise positivity of 7 Pi around a six-grid line forces nothing; (A + 4I)(e_u - e_v) is a grid combination only
+  with at least 30 A-grids in the canonical model.
