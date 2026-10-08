@@ -681,3 +681,37 @@ for an 8-edge set minus a far triangle, norm 8 for a 7-edge set minus a far tria
 induced path. Heuristic sizes (not counts): about 7.7 and 7.9 million at norm 8, about 190 000 at norm 6. The 9-vertex
 counts are not determined by the parameters and the collisions (prisms formed by a triangle of W and Y', grids, both
 signs) are not analysed: proposed to Codex (message 156) as the next use of its census.
+
+### 17.13 Resync on 8 October, and an end-to-end test of Codex's census on the real 243-graphs (07:12 UTC)
+
+After a shutdown of the PC the three sessions resumed about 06:55 UTC with fresh usage. Codex's notes 179 to 184 were
+read in full here (179-183 at 9fb98bf, 184 at ba41e4a). State taken from them: exact censuses of induced subgraphs of
+orders 7, 8, 9 (208 / 916 / 5311 types; free invariants P, H, then seven dense 8-vertex types, then 48 more);
+P <= 852, rho <= 126 (order 9); uniform bounds on distinct vectors b_3 >= 43 848, b_4 >= 3 371 634, b_5 >= 34 087 368;
+representatives whose collisions are not yet all audited: (5,2) (audited, note 181), (4,4) F8 >= 2 723 490 (mass 8 done,
+note 183), (6,3) N8 >= 10 336 557, (7,1) Q8 = 4 108 104 + 468 P - 512 H + 72 C14 - 12 (C13a + C13b + C13c). Rank 37 is
+feasible in the LP: ceiling b_4 <= 16.5 million at b_3 = 43 848.
+Split agreed by messages: Codex continues the collision audit of (4,4) then (6,3); the laptop session re-reads the three
+lemmas of the rank-35 exclusion and studies the "negative triangle" exception of note 183 par. 5; this session tests the
+census on real graphs and studies the family (7,1).
+
+**Test.** `testbeds.py` (brute force: prisms, grids, H, bowtie or house with a far edge, far pairs of 4-sets with 4
+edges) and `census_check243.py` (reads Codex's packet `data/codex_census_validation_243.json`, blob 993becea, as data;
+measures the parameters with an induced-embedding search written here; counts every connected type with at most
+4 million predicted embeddings within 200 s). Outputs: `OUTPUT_testbeds.txt`, `OUTPUT_census_check_*.txt`.
+
+| graph | P | P_T | grids | H | cube | C8_5691760 | C14 | C13a | C13b | types checked | mismatches |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| bvls243 | 8910 | 20 everywhere | 1485 | 0 | 40 095 | 0 | 13 365 | 0 | 0 | 173 | 0 |
+| twin243_switched | 2430 | 2 (240), 4 (540), 20 (111) | 405 | 0 | 14 175 | 43 200 | 3645 | 2160 | 6480 | 106 | 0 |
+| rook 3 x 3 | 6 | 2 | 1 | 0 | 0 | 0 | 9 | 0 | 0 | 813 | 0 |
+
+Families, packet formula at the measured parameters = separate brute force: bowtie minus far edge 24 057 000 /
+23 979 240; house minus far edge 96 228 000 / 97 083 360; F8 685 865 070 / 700 146 990 (bvls / twin).
+Hand formulas confirmed on the way (any v, k): bowtie minus far edge = B [(v - 5k + 11)(k - 10) + 4 (k - 6)] + 12 P + 2 H
+with B = v C(k/2,2); a house has generically [(v - 5k + 12)(k - 10) + 5k - 28]/2 far edges (103 for (99,14)), and the
+coefficient of P in the house count is -12 (k - 11) (-36 for k = 14).
+Limits: H, C8_5683824 and C8_245715219 vanish in both 243-graphs, so their coefficients are not tested by real graphs;
+sparse and disconnected types are tested only through the families; the packet stops at order 8 and Codex's order 9
+uses another canonicalisation, so P <= 852, rho <= 126 and N8 are not covered by this test (an order-9 packet was
+requested).
