@@ -671,8 +671,9 @@ second common neighbours are in P, so two vectors sharing a triple may share onl
 The identity of section 15 at r = 37 reads 2 a_8 + 16 a_9 + a_13 = 790 258 + 16 807 b_1 + 7 a_7 + 7 a_10 + 2 a_11 + a_12:
 with a_8 <= 6930, rank 37 needs 16 a_9 + a_13 >= 776 398 (`needs37.py` gives the same picture).
 
-Dual side (`frontier37.py`, `OUTPUT_frontier37_N84.txt`; WHAT-IF lower bounds, not results; a_7 <= 990, b_5 >= 35
-million): rank 37 becomes infeasible for b_4 >= 18 million alone, or b_3 >= 150 000 with b_4 >= 15 million, or
+Dual side (`frontier37.py`, `OUTPUT_frontier37_N84.txt`; WHAT-IF lower bounds on b_3 and b_4, not results; a_7 <= 990 and
+the uniform proved b_5 >= 33 224 268 = 35 123 088 - 168 P - 7212 rho minimised over rho <= P/6, P <= 1386 (Codex's
+correction: the first run used 35 million, which is not uniform; the table is the same at this resolution): rank 37 becomes infeasible for b_4 >= 18 million alone, or b_3 >= 150 000 with b_4 >= 15 million, or
 b_3 >= 300 000 with b_4 >= 12 million, or b_3 >= 600 000 with b_4 >= 6 million, or b_3 >= 900 000 alone. Proved worst-case
 values: 24 948 and 2 729 034.
 Candidate source: the family (6,3), 1_W - 1_Y with |W| = 6, |Y| = 3 disjoint, Q = 28 - 2 (e(W) + e(Y) - e(W,Y)): norm 6
