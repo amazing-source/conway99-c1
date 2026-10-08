@@ -1733,3 +1733,13 @@ project's setting (cases C2, C3 closed), so a solution cannot keep the S_5 symme
 Codex's note 200 (commit a5ee693 of its branch) contains the exact certificates of the bounds quoted in 17.45
 (prism-free collisions, ties under the grid filters, the certified triple and its shorter representative; 1440 signed
 triples per pencil of six, all removed by the grid filter). No rank excluded.
+
+Addendum to 17.46 (laptop session, exact computation `pencil_det.py` on its side, sympy; its message of about 15:15
+UTC; not recomputed here). New fact used: the rank enters the object through a determinant. For U = Theta with its g
+prisms the Gram matrix E_UU of the projections is known, so the lattice L_far of integer (-4)-eigenvectors vanishing
+on U has rank 44 - rank(E_UU) and determinant det(L) det(Pi) / t^2 (det(L) = 9 * 7^(r-1), Pi the span of the projected
+e_x, t >= 1 an index). Exact values: g = 2: rank 31 on 84 vertices; g = 4: rank 21 on 72 vertices; g = 6: rank 13 on
+the 60 vertices of B, det(L_far) t^2 = 324 * 5^12 * 7^(r-32) (rank E_UU = 31 for g = 6: two extra 3-eigenvectors appear
+only for the full pencil). Hermite with min >= 14: the forced vector on the far set has norm at most 28, 30, 38 for
+g = 2, 4, 6 at rank 37: no contradiction (it would contradict a line in six grids only for r <= 31, ranks already
+excluded). NEGATIVE; do not recompute.
