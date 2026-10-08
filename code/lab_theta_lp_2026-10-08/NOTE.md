@@ -2699,3 +2699,30 @@ Scope, stated to Codex at once: the catalogue classifies 14 vertices of 99; posi
 classical interlacing refined by J, weak on small subgraphs. The route is of "type C" only if every core DIES AT SMALL
 DEPTH. Proposed decisive measurement, not run: forced closure only (third points of lines, missing common neighbours),
 exact positivity at each step, recording the depth of death or the number of survivors per level.
+
+### 17.69 The 174 remaining cores: two bounded pilots, both negative (22:33 UTC, 09/10)
+
+Codex (its note 222, commit cdca3c6 of its branch, entry point RECHERCHE_ACTIVE_C1.md): the simultaneous incidence
+equations of the 85 outside vertices on H (mask multiplicities, exact integer certificates) exclude 136 of the 310 cores;
+174 remain. Covering of C1 without any rank: 373 -> 310 -> 174. My encoding matched with Codex's (its 310 = my 310;
+`codex_unresolved_174_bits.json`). Division of work: Codex the global mask system, I the forced closure.
+
+* **Pilot 1, forced closure** (`twisted_core_closure.py`). Added vertices: only the third points w(s, d) of the edges
+  (s in S, d a double through s) with no common neighbour in H; forced, uniquely identified, pairwise distinct (6 to 12
+  per core, 26 to 100 free pairs). Pruning: common-neighbour quotas inside H' and exact positivity of the two projector
+  blocks after each added vertex. First try on 13 of the 310: one core dead exhaustively (bits 77595264, 339 nodes),
+  which is among Codex's 136. On 15 of the 174 (cap 400 000 nodes or 18 s per core): no death, none exhausted, all at
+  the cap. Survivors per level, typical: 1,1,1,1,1,1,1,1,1,9,1162,77892; 1,1,1,1,3,69,3077,57102. The first forced
+  vertices have a unique adjacency, then the count grows by a factor 20 to 130 per vertex. (`twisted_core_closure_pilot174.json`)
+* **Pilot 2, a second-level linear system** (`twisted_core_level2.py`). Variables Y[b, b'] = number of adjacent pairs of
+  outside vertices of masks b, b'; exact equations of the pairs (outside vertex, vertex of H); admissible adjacent mask
+  pairs filtered by quotas and exact positivity on H + 2. On 29 of the 174: level 1 feasible 29 of 29 (agreement with
+  Codex, same numbers of masks), level 2 feasible 29 of 29 in floating point. No gain. (`twisted_core_level2_pilot.json`)
+* **Identification (mine, sent to Codex for checking).** S is the object of the two-star model seen without rank: T = 012
+  is a line, 3 and 4 are two adjacent near points (a transversal edge of G(T)), 5 is its far apex; the 8 doubles are the
+  layer partners of 3 and 4, their other transversal neighbours, and the rest of the shadow of the apex. So the 373
+  types are the local types of an "apex branch", and Makhnev's forcing reads "not every transversal edge lies in a prism".
+
+Compared state of the routes (no rank excluded by any): (i) rank-free cores: 373 -> 310 -> 174 certified, then no death
+at small depth in these two pilots; (ii) grid / no grid: factor 0.79 missing at rank 37, restricted cap not computed;
+(iii) stars at rank 37: certificates per ball, no uniform lemma. Neither campaign is continued on my side.
