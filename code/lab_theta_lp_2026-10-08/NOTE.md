@@ -830,3 +830,24 @@ the differences of two far triangles give b_3 >= 73 920 - 20 P - 72 rho - 4 tau.
 norm-16 seeds (7 a_7 + 8 a_8 <= 6930 instead of 55 440), the coupled ceiling would be 15.89 million instead of 17.40; with
 no root in addition, 15.54 million. The laptop session was asked to study whether the packing argument transfers to the
 norm-16 cores and to mixed pairs (Fano, norm 16).
+
+### 17.17 A 10-vertex family whose size reaches the norm-6 threshold: (5,5) (07:57 UTC)
+
+Proposal sent to Codex (message 174); nothing here is a bound.
+psi = 1_X - 1_Y, |X| = |Y| = 5 disjoint, sum 0: Q = 30 - 2 (e(X) + e(Y) - e(X,Y)). The 5-sets with 6 edges are the
+bowties and the houses (2079 + 8316). Norm 6: X, Y both with 6 edges and anticomplete. Norm 8: (6, 5, anticomplete) in
+both orders, and (6, 6, one cross edge).
+Calibration on real graphs (`five_five.py`, `OUTPUT_five_five.txt`): the number of ordered far pairs of bowties/houses
+is 170 178 840 on twin243_switched and 172 248 120 on bvls243, i.e. 0.513 and 0.519 times N^2 (f/v)^5. Transferred to
+(99,14): about 0.6 million vectors of norm 6. By hand N(5,5) = 332 640 five-sets with 5 edges (33 264 induced pentagons,
+41 580 + 91 476 + 83 160 triangles with pendants, 83 160 quadrangles with a pendant), so the anticomplete (6,5) pairs are
+of the order of 40 million at norm 8.
+Why: at rank 37 the LP is infeasible for b_3 >= 900 000 alone and for b_3 >= 600 000 with b_4 >= 5.91 million. This
+family has sum 0 (no grid channel) and would not depend on the collision audit of (6,3).
+Needs: an order-10 census (three disconnected types and their minima over the invariant polytope) and the supports of
+mass 10. Caveats: the 0.6 million is a heuristic transfer; the minimum over the invariants may be far lower at some
+corner; the collisions are not analysed.
+
+Codex, same hour: b_3 >= 45 528 (far-triangle differences 7392 - 2P with 4 collisions per pair of twins, and the
+inequality classes >= 2R/(k+1) - 2C/[k(k+1)] for R representatives with C colliding pairs, k = 3), note 186 at bf7cc29;
+rank-37 ceiling 16 469 236.
