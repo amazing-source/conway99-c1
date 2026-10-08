@@ -1400,3 +1400,11 @@ Consequences:
 The laptop session's local model (CP-SAT, necessary conditions): two vectors of norm 16 on one seed are infeasible
 (Codex's kappa_16 = 1 reproduced); two vectors of norm 18 on one seed are feasible with inner product 8 and infeasible
 with inner product 5. Tests with 3 to 5 vectors per seed are running there.
+
+### 17.36 Codex's coupled bound tau <= P + 5 rho + 17 (12:27 UTC)
+
+Codex (certified, appended to its note 196): pairs of grids sharing a line <= 11 rho + 17, hence tau <= P + 5 rho + 17.
+`lp_budget3.py` (`OUTPUT_lp_budget3.txt`), floating LP with this relation, P + 5 rho <= 1386 and tau' <= 1403: k = 2:
+16.87M (c = 16 000), 15.00M (20 000), 10.70M (29 204); k = 1: 19.70M (12 000), 14.09M (16 000). The optimum is again the
+vertex rho = 126, P = 756 (tau' = 1403, R = 36.53M). Affordable loss per twin pair about 17 900 (k = 2); the gap to
+Codex's joint mass-six constant 29 204 is a factor 1.63.
