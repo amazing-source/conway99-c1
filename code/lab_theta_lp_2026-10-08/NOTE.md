@@ -2520,3 +2520,35 @@ archive (leaves not replayed on my side). Only ball 12 was run (6 min 20 s in th
   Gram of the nine = 3 mod 7 since (K H^+ K)_vv = 0). It also gives, labelled as a reformulation, an independent
   verifier without H^+: a star is admissible iff the Seidel matrix J - I - 2A of the abstract 49-vertex graph (ball of
   T, ten far vertices joined to their shadows, 4K_2 between them) has rank 36 modulo 7. Not tested here.
+
+### 17.63 CORRECTION of 17.62; Codex's counting lemma; the forced pattern is not excluded by three shadows (20:51 UTC)
+
+* **Correction (found by Codex).** In 17.62 and in my message to Codex I wrote that the star sums K e_v take the value 1 on
+  8 points and 2 on 16 points outside the layer of the centre, "from the sums alone". This needs z = 0, where z is the
+  number of points outside the layer joined to the centre by two 2-paths of G (4-cycles through the centre). In
+  general: K = 1 on 8 - 2z points, K = 2 on 16 + z points, K = 0 on z points. In our balls: ball 5 and ball 9, centres 0
+  and 12: 6 / 17 / 1; ball 12: centre 0: 8 / 16 / 0, centre 12: 6 / 17 / 1; cyclic: 8 / 16 / 0 at both centres. So the two
+  stars of ball 12 do NOT have the same profile, and observation 4 of 17.62 ("they differ in size, not in kind") is
+  withdrawn. Also: the 38 518 leaves of Codex's archive are all refuted, so they cannot test observation 3; and my
+  single survivor with two coordinates of residual sum one (apex 187, pivot 0, candidate 17) refutes the algorithmic
+  rule "two such coordinates imply a contradiction by plain propagation".
+* **Counting lemma (Codex; checked here by hand, independently).** Let z = 0, P = the 8 points outside the layer with
+  K = 1, a(n) = |n ∩ P| for a member n of a complete star, and for an apex w and another member n let d_w(n) be the
+  number of points of n outside the layer where K e_v - w equals 1. Then some apex w and some other member n have
+  d_w(n) >= 2. Proof: each point of P is covered once, so n ∩ P avoids w and d_w(n) >= a(n); if every d were <= 1, the
+  two apexes (each contains a transversal neighbour of v, so a >= 1) would have a = 1; for such an apex the coordinates
+  of residual sum one number (8 - 1) + (4 - 1) = 10, to be covered once each by nine members with at most one each.
+  Only the star sums are used, not the Green values.
+  Refinement (mine, to be checked by Codex): d_w(n) >= 2 means (a) a(n) >= 2, or (b) a(n) >= 1 and n ∩ w = {v, x} with
+  K_vx = 2; the third possibility, two shared points of K = 2, would give |n ∩ w| >= 3, impossible for two non-adjacent
+  far vertices. Local filters also give a(w_i) <= 3.
+* **The forced pattern is not excluded by three shadows** (`two_apex_triples.py`, ball 12, centre 0, z = 0). Triples
+  (w1, w2, n) with both apexes, which are isolated in the star, so that the three adjacencies are known: 24 058 apex
+  pairs pass the mod 7 and sum conditions (10 814 also the real 2 x 2 test); triples passing mod 7: 344 057 with d >= 2
+  and 333 489 with d <= 1; passing also the real 3 x 3 positivity (floating, diagnostic): 77 880 and 91 175. The real
+  test removes 77 % of the triples but does not single out the pattern.
+* **Why the pattern cannot be forbidden without the Green values of the particular G (argument).** In any
+  srg(99,14,1,2), for adjacent v and n, each of the 12 other neighbours p of n lies on a quadrilateral (v, q_p, p, n)
+  with a unique q_p adjacent to v. Pattern (a) only says that two such p and their q_p lie in the ball of T: a condition
+  on the position relative to T, with no content of its own. So the lemma identifies what must be forbidden, but
+  forbidding it for every ball is again the uniform statement we do not have.
