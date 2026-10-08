@@ -657,3 +657,26 @@ The window is now **r in {37, 39, 41, 43}**.
 `needs37.py` (what-if caps, not results): at r = 37 with a_7 <= 990 the LP needs nothing while a_9 is free; with
 a_8 <= 866 and a_9 <= 20 000 it needs a_13 >= 621 497; with a_9 <= 1000, a_13 >= 1 064 831. Rank 37 lives on roughly
 25 000 or more vectors of norm 18, or on more than 600 000 vectors of norm 26.
+
+### 17.12 After the exclusion: Codex's note 180, and where rank 37 could give (01:28 UTC)
+
+Codex's note 180 (branch codex/c1-arithmetic-audit, commit 7f22098) was read in full here: it states the packing lemma,
+a_7 <= 990, the uniform bound b_4 >= 2 729 034 with the grid and twin losses of its note 179, and the integer identity;
+its verifier imports no module of this directory and no LP solver. The inputs listed in 17.11 are the ones it uses.
+
+Norm 18 (Codex, message of 01:27 UTC): the per-seed cap 12 covers the types (1,2,5) only, (2,0,6) is empty, the types
+(0,4,4) and e = 1 are open; the Fano packing does not transfer as it stands (for a seed of type (0,4,4) only 4 of the 6
+second common neighbours are in P, so two vectors sharing a triple may share only p0 on the positive side). No cap on a_9.
+
+The identity of section 15 at r = 37 reads 2 a_8 + 16 a_9 + a_13 = 790 258 + 16 807 b_1 + 7 a_7 + 7 a_10 + 2 a_11 + a_12:
+with a_8 <= 6930, rank 37 needs 16 a_9 + a_13 >= 776 398 (`needs37.py` gives the same picture).
+
+Dual side (`frontier37.py`, `OUTPUT_frontier37_N84.txt`; WHAT-IF lower bounds, not results; a_7 <= 990, b_5 >= 35
+million): rank 37 becomes infeasible for b_4 >= 18 million alone, or b_3 >= 150 000 with b_4 >= 15 million, or
+b_3 >= 300 000 with b_4 >= 12 million, or b_3 >= 600 000 with b_4 >= 6 million, or b_3 >= 900 000 alone. Proved worst-case
+values: 24 948 and 2 729 034.
+Candidate source: the family (6,3), 1_W - 1_Y with |W| = 6, |Y| = 3 disjoint, Q = 28 - 2 (e(W) + e(Y) - e(W,Y)): norm 6
+for an 8-edge set minus a far triangle, norm 8 for a 7-edge set minus a far triangle and for an 8-edge set minus a far
+induced path. Heuristic sizes (not counts): about 7.7 and 7.9 million at norm 8, about 190 000 at norm 6. The 9-vertex
+counts are not determined by the parameters and the collisions (prisms formed by a triangle of W and Y', grids, both
+signs) are not analysed: proposed to Codex (message 156) as the next use of its census.
