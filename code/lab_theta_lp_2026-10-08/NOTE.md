@@ -2145,3 +2145,28 @@ products): h = n - b(F_v) - 7 bounds the TRUE local classes of component vectors
 fixed by the pairs {u, v} of layer A but the apexes and the 4K_2 matching depend on the chosen shadows, so there is
 no canonical "same pattern"; and a surviving 7-tuple would not show that the minimal core is the whole star.
 Not launched. Priority: constraints between several vertices / stars, using note 208 for blocks sharing a vertex.
+
+### 17.53 Breaking the wait: the residual case "(6,6) everywhere" as a local-to-global question (17:50 UTC)
+
+User (direct): Codex and I were both waiting for the other. Split sent to Codex (message 235): Codex keeps the generic
+side (couplings of stars, (a')); I take the degenerate residual case left open by Codex's note 126 par.3 ter: at
+P = S = 0 (no prism; S = number of S events, so every cubic graph G(L) has girth >= 5, note 125) and k = 22, under
+(i) NT for connected lines and (ii) the uniform star, the 231 lines all have profile (6,6) (two components, three
+lines per point each); "il resterait a exclure (6,6) partout". Status of that reduction: conditional, as written there.
+
+**First fact (hand, with Codex's note 208; to be checked by Codex).**
+* Each (6,6) line T gives ONE centred class h_T, that of 1_(C_1) - 1_(C_2) (a 3-eigenvector, norm 36 = 1 mod 7, so
+  non-zero and anisotropic). Rank 37: 231 non-zero vectors in the 18-dimensional centred space, hence at least
+  231 - 18 = 213 independent linear relations mod 7 among them.
+* At a vertex v all seven lines have two blocks of size 3; Codex's graph F_v (one vertex per block, one edge per pair
+  {i, j} joining the block of L_i containing L_j to the block of L_j containing L_i) is a SIMPLE CUBIC graph on 14
+  vertices. A simple cubic bipartite graph has at least 6 vertices, so b(F_v) <= 2, and the relations among the
+  seven h_T at v with a witness supported on the closed neighbourhood of v number at most 2.
+* Hence at most 198 relations are vertex-local, and **at least 15 independent relations among the line vectors must
+  have non-local witnesses**. "(6,6) everywhere" at rank 37 falls as soon as the relations among the h_T are generated
+  by the vertex-local ones up to at most 14 more: a local-to-global (sheaf-type) statement on the geometry of 99
+  points and 231 lines, not a bound on a count. Not proved.
+Next on my side: the centred Gram entries for meeting lines (note 208 formula with m = m' = 3); a description of the
+witnesses y of a relation sum c_T h_T = [(A + 4I) y] by their support (can they be cut into closed-neighbourhood
+pieces?); what notes 125, 126 and the scripts x30c, x32 already know about (6,6) components of girth >= 5
+(288 labelled components, 15 types, one is the Pappus graph).
