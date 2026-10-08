@@ -2001,3 +2001,40 @@ model (`pencil6_hull.py`, `OUTPUT_pencil6_hull.txt`).
     7 with [1]), so the relation involves the pencil of Theta.
   - K_6 at three points: the 52 indicator vectors have only rank 46 (six linear dependencies among the vectors
     themselves).
+
+### 17.51 CORRECTION to 17.50: relations at ONE vertex exist in every graph; the count "c <= 10" was too optimistic
+
+**The explicit relation asked by Codex** (`OUTPUT_two_triangles_relation.txt`, `two_triangles_relation.json`): in the
+canonical model with the two-triangles pattern at theta_0, y = 2 e_(theta_0) + 1 on the four corners of P_0 - 1 on the
+columns of theta_0 in the prisms 1 and 2 gives
+(A + 4I) y = -(P_0 + P_1 + P_2) - (A_01 + A_12 + A_02) + (A_34 + A_45 + A_35) (mod 7), with [(A + 4I) y] = [1]; in
+centred classes: (sum of the six grids on the four lines Theta, m_0, m_1, m_2) = (sum of the three grids on m_3, m_4,
+m_5). The pencil of Theta is NOT needed (P_3, P_4, P_5 have coefficient 0).
+
+**It is general** (hand proof, every vertex type checked: v, the points of the seven lines, the corners c(a,b) of
+grid pairs and of non-grid pairs): **Lemma (4 + 3).** Let v be a vertex whose seven lines split into four lines pairwise
+spanning grids and three lines pairwise spanning grids. With y = -e_v + (indicator of the eight other points of the
+four lines), (A + 4I) y = (sum of the 6 grids of the four lines) - (sum of the 3 grids of the three lines) + 1 (mod 7).
+Hence, in centred classes, sum over the six = sum over the three: one true relation among nine grids, in ANY
+srg(99,14,1,2). (The split 4 + 3 is the hypothesis of the laptop session's Lemma N16.)
+
+**All one-vertex relations** (`vertex_relations.py`, `OUTPUT_vertex_relations.txt`). For y supported on the closed
+neighbourhood of v, (A + 4I) y is determined by y in every graph (y_a + y_b at the corner c(a,b)), so
+"(A + 4I) y = sum a_G 1_G + k (mod 7) over the grids through v" is a linear system depending only on the grid graph Xi
+of v: y constant on each line minus v (value y_l); y_l + y_l' = k on the pairs that do not span a grid; a_G = y_l + y_l'
+- k on the grids; one equation per line and one at v. Its non-trivial solutions are true relations. Result over the
+types of Codex's profiles (with D1): 500 graphs without relation; with a line in six grids, the pencil relation
+(y = 1 on the line) for each such line; and 17 graphs (17 of the 177 profiles) with ONE relation more than their
+number of hub lines: 4 + 3 (9 pairs, 15 cherries), and richer types up to K_7 minus a 4-cycle (17 pairs, 3 hubs); the
+complement of Xi has a bipartite component there. Three-hub points (K_3 joined to four independent lines) have no
+excess.
+
+**Consequence for the count.** In 17.50 only the pencil relations were treated as available to the adversary. Adding
+the one-vertex relations as if they were all independent (rho <= 18 + c' + x6 + number of vertices of an excess
+type) in Codex's moment LP gives max tau_g = 1331 at c' = 0 (rho = 126, about 53 vertex relations and 55 hub lines):
+**the dimension count with these two families of relations assumed independent does not bound tau_g at all.**
+So the statement "at most 10 relations beyond the pencil ones" is FALSE as a target: the correct missing statement
+is a bound on the number of INDEPENDENT relations of all kinds (pencil, one-vertex, others), i.e. certified ranks
+of clusters, which is what Codex's minors do; a global count needs the dependencies between the relations of
+neighbouring vertices and lines. What survives: every certified local exclusion (notes 202, 203, 205), the cut
+3 n_3 <= 2 n_1 + n_2, tau <= 1354, and the conversion 17.1 million.
