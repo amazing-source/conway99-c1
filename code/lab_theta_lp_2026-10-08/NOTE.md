@@ -1503,3 +1503,85 @@ and the ceiling is 15.20M instead of 16.0M. So the target for Codex's joint mass
 [16 496, 27 828] per pair of grids, note 198) moves from 17 900 to about 19 600. Still undecided.
 Laptop session, end of its seed test: four vectors of norm 18 on one seed undecided after 2400 s; three are locally
 feasible; the seed route stays closed as a method.
+
+### 17.42 Joint LP: what each lever is worth; prism-free representatives (14:31 UTC)
+
+All LPs below are floating point (HiGHS), exploration, same constraints as 17.41 plus `P >= 6 rho` and Codex's 22
+secants of `b_2 >= 462 + 41 b_1 + b_1^2/2` at consecutive even `b_1` (b_1 is even). Nothing here excludes rank 37.
+
+**For Codex's certificate.** `export_joint2.py` -> `joint2_forms.json`: exact rational forms of `r8` (all shapes of
+support <= 9, by shape and summed), `Phi`, the parameter list with its numbering, the indices of P, rho, F10 and the
+list of constraints of `lp_joint2.py`. Codex (its note 199, commit 5347cbc of its branch, certified): 4 N(F10) + 75 P
++ 96 rho <= 84546, hence a_7 + 13 rho <= 2013 (a_7 <= 374 at rho = 126), and
+b_4 + (651/34) b_3 <= 15 457 549 + (450359/272) a_7 at rank 37. The value N(F10) <= 3648 of 17.41 is the value at the
+joint optimum, not a uniform cap at rho = 126 (Codex: 3937.5 there).
+
+**Break-even collision constant per twin pair** (`lp_joint3.py`; class quotient k = 2 unless said; the optimum is always
+at rho = 126, P = 756, tau = 1403; to be compared with Codex's certified cap 27 828 for supports <= 9):
+
+| scenario | break-even c |
+|---|---|
+| supports <= 9, as in 17.41 with the secants | 19 728 |
+| what-if a_8 = 0 | 23 253 |
+| what-if a_8 = a_9 = 0 | 23 813 |
+| what-if a_8 = a_9 = a_10 = 0 | 24 238 |
+| supports <= 9, quotient k = 3 | 12 130 |
+| supports <= 10, k = 2 / 3 / 4 / 5 | 61 756 / 76 384 / 80 177 / 73 138 |
+
+* Caps on the short shells of L1 cannot close the gap alone: without any vector of norm 16, 18, 20 the break-even is
+  24 238 < 27 828 (the adversary replaces a_8 by a_9, then a_10, then nothing).
+* The b_3 floor inside the same LP (`b3floor=<c6>`: b_3 >= (2 r6 - c6 tau)/3, norm-6 representatives of support <= 9):
+  break-even 32 316, 29 444, 26 572 for c6 = 0, 150, 300; i.e. the condition is **c8 + (651/34) c6 <= 32 316**
+  (c6 <= 234 at c8 = 27 828); for c6 >= about 550 the floor is not binding. For supports <= 10 and c6 = 0: 91 394.
+  r6 = 455 795 at that vertex. No certified c6 is known to me.
+* For supports <= 10 the best quotient is k = 4: 80 177 colliding pairs per twin pair would be affordable, if ALL
+  same-class pairs (all channels) are counted.
+
+**Laptop session's Lemma N16** (its message of 13:58 UTC; checked by hand here, every step): a vector of norm 16
+(binary, independent supports, Codex's note 166) cannot be non-zero at a point p0 with seed lines l_1..l_4 and other
+lines l_5, l_6, l_7 when the six pairs of seed lines and the three pairs of other lines all span grids. Tools: x sums
+to 0 on every grid (a vertex outside a grid has exactly one neighbour in it, so 1_G - 1/11 is in E_3); corners of two
+grids through p0 sharing a line are never adjacent; without a common line each corner has exactly one neighbour among
+the corners of the other; counting 3 + pi + nu <= 4 negatives and 6 + nu + pi <= 7 positives and three cases. Its
+solver gives the complete list of minimal forbidding sets (7 to 17 grids). Worth: it bites only at points with at
+least four lines in six grids; by the table above even a_8 = 0 moves the break-even by 3525 only.
+
+**Prism-free representatives** (`reps10_pf.py`, `reps10_pf.json`, `OUTPUT_reps10_pf.txt`: exact forms). Class "pf":
+neither W nor Y contains an induced prism; class "fp": one of them does. If psi and psi' = psi - 1_X + 1_X' are both
+binary (X, X' twin prisms), with A = W cap X, B = Y cap X', then psi' has X' minus B in W' and X minus A in Y'. So:
+* a collision between two pf representatives through a twin pair is two-sided, 1 <= |A|, |B| <= 5, and each
+  representative has ONE partner for that twin pair;
+* a full swap (A = X) only involves fp representatives; in a pencil of g grids on Theta the g representatives
+  1_(X_k) + rho are one class, equal to the class of rho - 1_Theta (17.38): the fp representatives bring no class
+  that a shorter representative does not already give. So the right family is pf, and its natural quotient is k = 1
+  (classes >= R - C, exact when the classes have at most two representatives).
+* Coefficient of P in the fp counts (representatives containing a given prism, before the corrections by the other
+  parameters): (9,0) 3480, (6,3) 2940, (7,1) 1680, (8,2) 9210 per sign. Exact hand count for (7,1): 1200 + 180 + 24
+  = 1404 per sign (z among the 60, y among the 24 far vertices, not adjacent: 60 * 24 - 240; z an apex, y among the
+  60; z an apex and y one of its 8 far neighbours); (9,0): 2688 + 6 t_Z (17.40).
+
+`lp_family.py` (`OUTPUT_lp_family.txt`, `OUTPUT_lp_family_s10.txt`): joint LP for the pf family; R at the worst
+vertex and the break-even number c of two-sided colliding pairs per twin pair:
+
+| family (pf) | R (min over the polytope / at rho = 126) | break-even c, k = 1 | k = 2 |
+|---|---|---|---|
+| supports <= 9, all shapes | 24.0M / 25.6M | 7 447 | 2 668 |
+| supports <= 10, all shapes | 39.4M / 41.3M | 18 616 | 26 404 |
+| supports <= 10 without (5,5) | 30.8M / 33.0M | 12 707 | |
+| supports <= 10, min(a,b) <= 2 | 17.1M | 1 686 | |
+| sign-pure only; min(a,b) <= 1 | 5.3M; 8.0M | not excluded even with c = 0 | |
+
+Reading.
+* Supports <= 9: at the grid-rich vertex 25.6M pf representatives against a ceiling of 15.14M. If the pf classes have
+  at most two representatives, the number of classes is between 12.8M and 25.6M: the exclusion holds iff fewer than
+  82 % of the pf representatives are in a collision (10.45M pairs). Neither side is known. This is the same undecided
+  ratio as 19 728 against [16 496, 27 828], but it is now a statement about pf pairs only.
+* Supports <= 10: 41.3M pf representatives. "At most two representatives per class" would give 20.6M > 15.2M, an
+  exclusion; "at most three" gives 13.8M, nothing.
+* NOT handled, and of first order in a grid-rich graph: the single-grid relation. If Y contains exactly four points
+  B of a grid G and psi has no other point in G, then psi + 1_G is binary, pf, of support |psi| + 1, in the same
+  class: (9,0) with a bowtie of a grid in W <-> (4,4); (0,9) with four points of a grid in Y <-> (5,5); (3,6) <-> (8,2).
+  At rho = 126 about 55 % of the squares and paws lie in grids, so a large part of the representatives of support 10
+  repeats classes of support 9 and conversely. This relation has sum 9, it is not a twin relation, and it is counted
+  per grid, not per twin pair. Any accounting for supports <= 10 must include it; for supports <= 9 it is the
+  "single-grid channel" still outside Codex's mass-six totals (17.29, 17.31).

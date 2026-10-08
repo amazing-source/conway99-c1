@@ -1,0 +1,76 @@
+"""C1, lab session, 2026-10-08. Rank 37: joint LP (census + theta identities) for a FAMILY of representatives.
+  python lp_family.py <census2 order-10 json> <reps10_pf json> <scenario> [...]
+Scenario "m<M>s<S>k<K>[all]": representatives of norm 8 with min(|W|,|Y|) <= M and support <= S; class "pf"
+(neither W nor Y contains an induced prism) unless "all" is appended; class quotient
+   classes >= 2 R/(K+1) - 2 C/(K(K+1)),  C <= c tau   (K = 1: classes >= R - C).
+For prism-free representatives a twin-prism collision is two-sided (1 <= |A|, |B| <= 5); c is the number of such
+colliding pairs charged per twin pair: UNKNOWN here, the script prints the break-even value of c.
+Theta side and census cuts as in lp_joint3.py (secants for b_2, P >= 6 rho, Fano coupling). Floating HiGHS, exploration."""
+import sys, json, time, re
+from fractions import Fraction as Fr
+import numpy as np
+from scipy.optimize import linprog
+from scipy.sparse import csr_matrix, vstack, hstack
+t0 = time.time(); D = json.load(open(sys.argv[1])); R = json.load(open(sys.argv[2])); scen = sys.argv[3:]
+npar = len(D["params"]); pc = lambda x: bin(x).count("1"); ri = []; ci = []; va = []; const = []; r = 0; seen = set()
+for n in ("6", "7", "8", "9", "10"):
+    for key, rows, aut, form in D["types"][n]:
+        sig = tuple(sorted(form.items()))
+        if sig in seen or not form: continue
+        seen.add(sig); f = {int(p): float(Fr(v_)) for p, v_ in form.items()}; sc = max(abs(x) for x in f.values())
+        const.append(f.get(0, 0.0) / sc)
+        for p, v_ in f.items():
+            if p: ri.append(r); ci.append(p - 1); va.append(v_ / sc)
+        r += 1
+A = csr_matrix((va, (ri, ci)), shape=(r, npar)); const = np.array(const)
+g = [i for i, p in enumerate(D["params"]) if p[0] == 9 and sum(pc(x) for x in p[2]) // 2 == 18][0]; F10 = 437
+eP = np.zeros(npar); eP[0] = 1.0; eG = np.zeros(npar); eG[g] = 1.0; eF = np.zeros(npar); eF[F10] = 1.0
+def vec(form):
+    c = np.zeros(npar)
+    for p, v_ in form.items():
+        if int(p): c[int(p) - 1] = float(Fr(v_))
+    return c, float(Fr(form.get("0", 0)))
+R0 = json.load(open(sys.argv[2].replace("reps10_pf", "reps10"))); cphi, kphi = vec(R0["6,3,4"])
+NX = 8
+def row(v, ex): return csr_matrix(np.concatenate([v, ex]).reshape(1, -1))
+Z = np.zeros(npar); rows0 = [hstack([-A, csr_matrix((A.shape[0], NX))])]; b0 = list(const)
+def add(v, ex, rhs): rows0.append(row(v, ex)); b0.append(rhs)
+add(-cphi, [4, 0, 0, 0, 0, 0, 0, 0], kphi); add(-(2 * eP + 3 * eG), [1, 0, 0, 0, 0, 0, 0, 0], 0.0); add(-(17 * eP + 105 * eG), [17, 0, 0, 0, 0, 0, 0, 0], 0.0)
+add(Z, [1, 0, 0, 0, 0, 0, 0, 0], 1403.0); add(eP + 5 * eG, [0] * 8, 1386.0); add(-(eP + 5 * eG), [1, 0, 0, 0, 0, 0, 0, 0], 17.0)
+add(Z, [0, 1, 0, 0, 0, 0, 0, 0], 842.0); add(-(2 / 21) * eF, [0, 1, 0, 0, 0, 0, 0, 0], 0.0); add(Z, [0, 7, 8, 0, 0, 0, 0, 0], 55440.0); add(Z, [0, 0, 0, 0, 0, 1, 0, 0], 44.0)
+add(Z, [0, 0, 0, 0, 0, 0, 0, -1], -45898.0); add(-(eP - 6 * eG), [0] * 8, 0.0)
+fb = lambda t: 462 + 41 * t + t * t / 2
+for k in range(0, 44, 2):
+    sl = (fb(k + 2) - fb(k)) / 2; add(Z, [0, 0, 0, 0, 0, sl, -1, 0], sl * k - fb(k))
+add(Z, [0, 406, 125, 34, 7, -5726, -273, -7], -133154.0); add(Z, [0, -1183, -350, -91, -13, 2429, 476, 21], 736358.0); add(Z, [0, -378, -98, -7, -6, -25830, -70, 7], 1260308.0)
+ext = vstack(rows0); bb = np.array(b0)
+for s in scen:
+    m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all)?$", s); M, S, K, allc = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4))
+    cv = np.zeros(npar); kv = 0.0; used = []
+    for k_, f in R.items():
+        a_, b_, q_, cl = k_.split(","); a_, b_, q_ = int(a_), int(b_), int(q_)
+        if q_ != 8 or a_ + b_ > S or min(a_, b_) > M or (cl != "pf" and not allc): continue
+        cc, kk = vec(f); cv += cc; kv += kk; used.append(k_)
+    def solve(cc):
+        obj = np.concatenate([2 * cv / (K + 1), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35]])
+        res = linprog(obj, A_ub=ext, b_ub=bb, bounds=[(0, None)] * (npar + NX), method="highs-ipm")
+        if res.status != 0: return None
+        x = res.x; ex = x[npar:]; r8 = cv @ x[:npar] + kv
+        ceil_ = 14006902 + 2793 * ex[1] + 532 * ex[2] + 77 * ex[3] + 7 * ex[4] - 8987 * ex[5] - 664 * ex[6] - 35 * ex[7]
+        return x, ex, r8, ceil_, ceil_ - (2 * r8 / (K + 1) - 2 * cc * ex[0] / (K * (K + 1)))
+    o = solve(0.0)
+    if o is None: print("scenario %s: LP failed" % s); continue
+    print("scenario %-12s (%d forms) at c = 0: max (ceiling - floor) = %+.4gM  [ceiling %.4gM, R %.4gM; a_7 %.0f a_8 %.0f a_9 %.0f b_1 %.0f; P %.0f rho %.1f tau %.0f]" % (
+        s, len(used), o[4] / 1e6, o[3] / 1e6, o[2] / 1e6, o[1][1], o[1][2], o[1][3], o[1][5], o[0][0], o[0][g], o[1][0]), flush=True)
+    if o[4] >= 0: print("      not excluded even without any collision"); continue
+    lo, hi = 0.0, None; cc = 4000.0
+    for _ in range(6):                                                         # the maximum is convex and non-decreasing in c: bracket, then secant
+        o2 = solve(cc)
+        if o2 is None: break
+        if o2[4] < 0: lo = cc; cn = (2 * o2[2] / (K + 1) - o2[3]) * K * (K + 1) / 2 / max(o2[1][0], 1e-9)
+        else: hi = cc; cn = (2 * o2[2] / (K + 1) - o2[3]) * K * (K + 1) / 2 / max(o2[1][0], 1e-9)
+        last = o2
+        if abs(cn - cc) < 3: break
+        cc = cn
+    print("      break-even c about %.0f  (bracket %s .. %s); vertex there: R %.4gM ceiling %.4gM P %.0f rho %.1f tau %.0f   [%.0f s]" % (
+        cc, "%.0f" % lo, "%.0f" % hi if hi else "?", last[2] / 1e6, last[3] / 1e6, last[0][0], last[0][g], last[1][0], time.time() - t0), flush=True)
