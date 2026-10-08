@@ -2,6 +2,10 @@
 
 8 octobre 2026. Proposition de LAB au message 182, audit et correction par Codex.
 
+**Mise à jour : la note 180 exclut désormais le rang 35**, en combinant le présent comptage
+corrigé avec un nouveau packing des graines de Fano. Les conclusions conditionnelles ci-dessous
+et leurs points de relaxation sont conservés pour documenter les étapes et les preuves utilisées.
+
 **Résultat vérifié.** Dans un hypothétique srg(99,14,1,2) de rang modulo sept égal à 35,
 il existe au moins **16 grilles induites 3×3**, **450 prismes triangulaires induits** et
 **33 paires non ordonnées de prismes jumeaux**. Deux prismes sont dits jumeaux lorsque
