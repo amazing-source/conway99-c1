@@ -1063,7 +1063,7 @@ e(S) = 51 + e(Z), e(S,Z) = 30 + 2 e(Z), e(Z,O) = 12 - 4 e(Z), e(S,O) = 372 - 4 e
 Z = its rung apices, S = prism + its 30 far vertices.
 Open: whether a srg(99,14,1,2) can have a 22-coclique.
 
-### 17.23 The 22-cocliques: what they are worth, and what is known (10:55 UTC)
+### 17.23 The 22-cocliques: what they are worth, and what is known (10:20 UTC)
 
 Status: results of the three sessions of the last hour; hand work, not audited unless stated.
 
@@ -1097,3 +1097,18 @@ Status: results of the three sessions of the last hour; hand work, not audited u
 * No obstruction to a 22-coclique is known to any of the three sessions (design 2-(22,4,2); block graph 10-regular with
   spectrum 10, 3^33, (-1)^21, (-4)^22; all counts close). A direct search is the whole 99-vertex problem with one
   extra hypothesis: recorded as a possible computation, not launched (computations are parked).
+
+### 17.24 The shape (6,3) by sub-family, and a certificate in b_4 alone (10:35 UTC)
+
+`lp_f0.py` (`OUTPUT_lp_f0.txt`), floating LP, supports <= 9. The shape (6,3) at norm 8 by (e(W), e(Y), cross), one sign,
+at the unpenalised optimum / minimum alone: (7,3,0) [W with 7 edges, Y a far triangle; "F0"] 2.51M / 2.10M;
+(8,2,0) [W with 8 edges, Y a far induced path] 3.11M / 1.94M; (8,3,1) 0.56M / 0.40M; the three prism-based ones 0.
+Bound in b_4 alone with F0 added to "all shapes except (6,3)", the twin-prism losses charged as
+-((3228 + c_F0)/4) Phi (c_F0 = colliding pairs involving +-F0 per twin pair of prisms):
+20.59M (c_F0 = 0), 19.53M (500), 18.47M (1000), 16.35M (2000), 12.10M (4000); without F0: 15.43M.
+Ceiling in b_4 alone: 15.98M (Codex, note 192). So a certificate that uses no norm-6 vector exists as soon as c_F0 is
+below about 2100 and the other channels fit in the remaining margin. Inside F0 a twin-prism collision has only two
+patterns (17.22(b)); for the first one, with U, U' the triangles of the two prisms inside W, W', the three other
+vertices W_0 of W lie among the 15 vertices having their prism neighbours in U and U' and the 24 vertices far from
+both prisms, with e(W_0) + #(W_0 in the 15) = 4. My hand bound for the constant is only "a few hundred to a few
+thousand": the exact maximum needs Codex's local-model enumeration (asked, bridge message 187).
