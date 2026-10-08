@@ -24,7 +24,24 @@ graphes complets ni des instances à coût maîtrisé.
 SRG(99,14,1,2), C1 est exclu, tous rangs confondus. Aucune hypothèse
 de généricité, d'absence de prismes ou d'involution n'est utilisée.
 
-Le prochain travail porte sur les 33 sommets sans voisin dans le
+**Nouveau lemme sans rang (note 225) :** les composantes visibles dans
+chaque noyau imposent, par regroupement de leurs poids, les tailles
+possibles des composantes autour de chacun des deux triangles. Cela
+borne le nombre de grilles passant par ces triangles : 20 types imposent
+zéro grille pour les deux, et 59 pour au moins l'un. Si tous les triangles
+d'un candidat appartiennent à au moins q grilles, la couverture se réduit
+à 115, 52, 11 ou 2 types pour q=1,2,3,4 ; q≥5 est impossible.
+Ces réductions sont conditionnelles : les 174 types restent ouverts
+sans hypothèse supplémentaire sur les grilles.
+
+**Prochaine cible d'exploration :** tirer une obstruction des profils de
+composantes imposés, ou des deux seuls noyaux du sous-cas où chaque
+triangle appartient à au moins quatre grilles (identifiants 0 et 1).
+Relier ces profils aux familles étudiées par LAP en gardant leurs
+hypothèses de rang. Ne pas convertir cette piste en nouvelle mission
+de reproduction des résultats précédents.
+
+Une autre piste porte sur les 33 sommets sans voisin dans le
 motif initial et les six classes restantes (52 sommets au total),
 avec les degrés et voisinages communs exacts de la note 221 §4.
 Chercher une obstruction uniforme ou une réduction démontrée des
@@ -68,6 +85,10 @@ Sources de travail :
   exclusion supplémentaire, témoins exacts, limite et cible suivante ;
 - `notes/224_CODEX_AUDIT_LAP_RANG37_MAILLE5.md` : réduction algébrique
   et contrôles indépendants du nouveau sous-cas annoncé par LAP ;
+- `notes/225_CODEX_NOYAUX_COMPOSANTES_ET_GRILLES.md` : nouveau lemme
+  de regroupement et réductions conditionnelles sans rang ;
+- `data/codex_core_component_profiles.json` : profils des deux triangles
+  et listes de noyaux pour chaque sous-cas de couverture par des grilles ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
