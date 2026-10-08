@@ -2453,3 +2453,32 @@ exclusion of rank 37.
 * What remains independent of G, hence the only material for a uniform statement (the laptop session's view, which I
   share): the FORM of the two identities (real: Sigma_X positive semidefinite of rank <= 8 for every X; mod 7: Pi
   7-integral) and the star-sum relations.
+
+### 17.61 It is a ONE-star obstruction: ball 12, the star of vertex 12 alone (20:38 UTC)
+
+Codex's intermediate audit of 17.59 (its message of 20:36 UTC): ball 5 fully re-derived, 368 of 368 branches, 6882 leaves,
+every leaf trace verified on the original indices, my deletion lists identical; planted integer witnesses survive and
+four deliberate corruptions are rejected; the three other balls are being replayed (its notes 216, 217 to come). Codex
+also confirmed, with an independent reconstruction, the laptop session's square condition and its constants
+(tau = (9/4) 7^(37-r) t^2 det(L_far); tau x det(7 Pi_X) a rational square for eight far vertices).
+
+Codex's remark: with the tables BETWEEN the two stars replaced by "all compatible", most of its pilot branches still
+die. Checked here on the whole of ball 12 (`one_star_sweep.py`, `balls/onestar_green_ball12_*.json`): Green-only tables
+inside each star, no table between the stars, so that the two stars share only the fixed apex w and are independent
+problems (nine private shadows, exact sums K e_centre - w, Green value 3 and overlap <= 2 against w, Green value in
+{2,3} between them); pivots by increasing domain size, at most four, every candidate of the pivot tested from the same
+fresh base domains with Codex's propagation.
+
+| ball 12, edge (0,12), 416 apex candidates | refuted | pivots needed (1st / 2nd / 3rd / 4th) | not refuted within 4 pivots |
+|---|---|---|---|
+| star of vertex 12 alone | 416 | 384 / 25 / 6 / 1 | 0 |
+| star of vertex 0 alone | 398 | 314 / 52 / 28 / 4 | 18 |
+
+Leaves per apex for the star of vertex 12: 11 to 125, mean 26.7 (about 11 000 propagation leaves in all). Plain
+propagation refutes no branch. So on this ball the contradiction sits in ONE star: for every apex candidate w of the
+star of vertex 12 in the direction of vertex 0 there are no nine further shadows of norm 6 with Green value 3 against
+w, mutual Green values in {2,3} and sum K e_12 - w. The links between the two stars are not needed there.
+Novelty, stated honestly: that a complete star dies with the Green values alone was already observed by search in
+September (`logs/star_ablation_astra.log`: "only_green: dead; nodes 416964"). New here: the shape (apex, one pivot,
+propagation), the size (10^4 leaves), and the exact replay Codex is building. Status: a classification, not a certified
+archive (leaves not replayed on my side). Only ball 12 was run (6 min 20 s in three pieces).
