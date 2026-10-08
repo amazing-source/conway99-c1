@@ -926,3 +926,37 @@ here): roots are orthogonal to every other vector of norm 14, 16, 18; b_1 <= 78;
 inner product exactly 6, so their difference is a vector of norm 18 (no exclusivity of seeds). `ceiling37_lap.py`:
 with these cuts the coupled ceiling is 17 048 350, the value of "no root"; the optimum then has b_1 = 0, a_7 = 990,
 a_8 = 6063.75, a_9 = 28 102, a_13 = 335 434. What remains valuable on that side is a packing bound on a_8.
+
+### 17.20 What was tried on the twin pairs and on the L1 side with the census (09:05 UTC)
+
+All LP values are floating-point explorations over the full order-10 polytope.
+
+* **Clean part** (`lp_clean9.py`): every representative with support <= 8 plus the 2-degenerate 9-sets with 14 edges,
+  both signs: joint minimum of the coupled count 18.43 million (r8 = 15.23 million, r6 = 167 459). Above the ceiling by
+  about one million only; with 5000 per prism and 2000 per D it is 13.6 million. So (6,3), (8,2), (5,5) are needed.
+* **Class sizes.** If every class of M contained at most 2 representatives with support <= 9 (resp. at most 3 with
+  support <= 10), rank 37 would be excluded (39.7 / 2 and 66.6 / 3 exceed 17.4 million). No such bound is available:
+  the Gram argument on the 3-components only gives 7 (all pairwise masses 9) or 34 (masses >= 8).
+* **Mass 9 for (6,3)**, 14-edge supports: the collisions of a twin pair (X, Y) are the pairs (B, B') with B a triangle
+  of X avoiding the degree-4 vertex and B' an induced path or a suitable triangle of Y, or B a path and B' a triangle:
+  at most t_X p_Y + t_X t_Y + p_X t_Y, zero when neither support has a triangle. `lp_caps9.py`: the eleven special
+  9-supports with 14 edges are all MINIMAL (no special sub-support), ten of them contain a triangle, and the polytope
+  allows 16 000 to 160 000 copies of each; `lp_pertype9.py`: a penalty per support of this size is not affordable. What
+  is missing is a bound on the number of twin PAIRS.
+* **The 3-side does not bound the twins** (`theta3_maxK3.py`): the maximum of the number of integer 3-eigenvectors of
+  norm 12, 14, 16, 18, 20 compatible with the 3-side LP at rank 37 is 1.8 * 10^11, 1.3 * 10^13, 3.2 * 10^14,
+  5.3 * 10^15, 6.6 * 10^16; with the caps tau <= 1890, Omega <= 1867, at most 126 grids the norms 16, 18, 20 still allow
+  4.6 * 10^12, 7.9 * 10^13, 9.7 * 10^14. The laptop session found the same independently. Closed.
+* **Laptop session, local searches (its message of 08:50 UTC):** twins of the three cubic 8-supports are locally
+  possible, for the cube even in a prism-free local world; three norm-16 vectors can share p0 and three negative
+  neighbours; four Fano vectors can share p0 and two neighbours. No packing bound on a_8 and no local obstruction to
+  twins.
+* **A census cap on the Fano vectors** (`fano_census.py`): a Fano configuration contains exactly 21 induced copies of
+  one special 10-support F10 (5 + 5 vertices, 16 edges, degrees 3,3,3,3,4 on each side: remove two blocks and their two
+  common points), and no other special support of order <= 10. A copy of F10 lies in at most one Fano configuration
+  (it contains a full seed). So a_7 <= (2/21) N(F10), and the maximum of N(F10) over the polytope is 8841.7: a_7 <= 842
+  (990 before). `norm16_census.py`: the five norm-16 cores of Codex's note 166 contain no special support of order
+  <= 10 with a full seed (a 5 + 5 or 6 + 4 part of an 8 + 8 core has too few edges), so the census gives no cap on a_8
+  at this order; order 12 (6 + 6 parts) would.
+* **Codex's note 188** (cabec2e): for (6,3) with e(W) <= 8, both signs: mass 6 at most 756 tau (norm 6) and 12 814 tau
+  (norm 8); mass 7 at most 108 Omega and 3612 Omega. Masses 8, 9 and the old families remain.
