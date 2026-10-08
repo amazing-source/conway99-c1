@@ -1,0 +1,21 @@
+# packet 993becea (ba41e4a) on twin243_switched
+packet: orders [2, 3, 4, 5, 6, 7, 8]; parameters of the last stage: ['P', 'H', 'C8_2022000', 'C8_5683824', 'C8_5691760', 'C8_127242964', 'C8_127305925', 'C8_128354469', 'C8_245715219']
+  measured P                = 2430   (order 6, 9 edges, |Aut| = 12)
+  measured H                = 0   (order 7, 11 edges, |Aut| = 4)
+  measured C8_2022000       = 14175   (order 8, 12 edges, |Aut| = 48)
+  measured C8_5683824       = 0   (order 8, 12 edges, |Aut| = 16)
+  measured C8_5691760       = 43200   (order 8, 12 edges, |Aut| = 4)
+  measured C8_127242964     = 3645   (order 8, 14 edges, |Aut| = 8)
+  measured C8_127305925     = 2160   (order 8, 13 edges, |Aut| = 2)
+  measured C8_128354469     = 6480   (order 8, 13 edges, |Aut| = 2)
+  measured C8_245715219     = 0   (order 8, 13 edges, |Aut| = 2)
+types: 1222 in the packet; 106 counted and equal to the prediction; 0 MISMATCHES; skipped: 6 disconnected, 1110 too numerous or out of time (202 s)
+families predicted by the packet at the measured parameters:
+  bowtie_minus_far_edge                    23979240
+  house_minus_far_edge                     97083360
+  F8_four_minus_four                       700146990
+  seven_minus_one_edges10_cross0           144996480
+  seven_minus_one_edges11_cross1           1837080
+  seven_minus_one_edges11_cross0           1574640
+brute force (testbeds.py): bowtie-far edge 23979240, house-far edge 97083360, far pairs of 4-sets 700146990
+  present among the predictions: {'bowtie_minus_far_edge': True, 'house_minus_far_edge': True, 'F8_four_minus_four': True, 'seven_minus_one_edges10_cross0': False, 'seven_minus_one_edges11_cross1': False, 'seven_minus_one_edges11_cross0': False}
