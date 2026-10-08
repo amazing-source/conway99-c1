@@ -1347,3 +1347,13 @@ gives 15.67M (not enough). On average rank 37 needs 4.59 eigenvectors of norm 18
 of norm 14 or 16. Known: one vector of norm 16 per seed (Codex); for norm 18 at most two per seed in the sub-case of
 Lemma A (section 14); norm 20 is binary with at most one edge per support (Codex). This route is independent of the
 grids and of all collision counts: it needs per-seed multiplicity lemmas for the norms 18, 20, 22, 24.
+
+### 17.33 Codex's certified tau <= 1403 and the budget (12:17 UTC)
+
+Codex (certified, to be published): with S = {v : at least 14 grids through v}, the SRG moment identities for the
+numbers of neighbours in S and the spectral bound, the Xi degree profiles and the census cut P + 5 rho <= 1386:
+tau <= 138943/99, i.e. **tau <= 1403** (1534 before).
+`lp_budget2.py` (`OUTPUT_lp_budget2.txt`), floating LP with tau' <= 1403 and P + 5 rho <= 1386 added, all shapes of
+support <= 9, b_4 alone: k = 2: 16.55M (c = 16 000), 14.67M (20 000), 10.37M (29 204); k = 1: 19.21M (12 000), 13.59M
+(16 000). Optimum at P = 691, rho = 115.2, R = 36.04M. Affordable loss per twin pair about 17 200 (k = 2) against
+Codex's joint mass-six constant 29 204: still short by a factor 1.7; tau <= about 830 would be needed.
