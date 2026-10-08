@@ -2803,3 +2803,47 @@ every line has a connected graph" would give **no grid at all at rank 37**. The 
 finite family of disconnected profiles; the profiles needed are k prisms plus a rest of 36 - 6k vertices, k = 1, 2, 3,
 4, 6 (k = 5 forces k = 6). For a vertex x of a prism component the star is 5 K_2 with no apex, and K e_x is 1 on the ten
 other points of its layer outside the prism and 2 on the twenty points of the other layers outside it.
+
+### 17.73 Two reduction targets: prisms are forced by the counting at rank 37; the six-grid line as an integer matrix (23:39 UTC, 08/10)
+
+**A. The counting at rank 37 when prisms are few** (question of the laptop session: at P = 0 there is no twin pair, so
+do the uncounted channels need prisms?).
+* Classification read in Codex's notes 181, 183, 185 (statuses as written there): a proper difference of two
+  representatives of norm 8 has mass at least 6; mass 6 = two twin prisms; mass 7 = two copies of the 7-vertex graph D
+  with the same projection (D has no prism; their number H is free, 3P + 2H <= 4158); mass 8 = weighted windmills (3465
+  in every graph) and the cubic or nearly cubic induced graphs on 8 vertices (seven types, only the grid minus a vertex
+  contains a prism); mass 9 and changes of sum are not classified for the whole collection (note 195 says so).
+  So NOT every channel needs a prism, and no certified bound of the channels outside C_6 exists for the collection.
+* Margins (`lp_family.py` with the new options ZERO_PARAMS and PCAP; floating; Codex's collection, both signs):
+
+| condition | number of representatives R | theta ceiling | what the collisions must reach to save rank 37 |
+|---|---|---|---|
+| P = 0 | 32.5 million | 15.8 million | 16.75 million colliding pairs (k = 1), 17.7 million (k = 2) |
+| P <= 100 | 32.5 million | 15.9 million | 87 431 per twin pair (certified cap 31 976) |
+| P <= 200 | 32.5 million | 15.9 million | 45 402 per twin pair; slack 5.2 million for the other channels |
+| P <= 300 | 32.5 million | 15.9 million | 30 697 per twin pair: no longer enough |
+
+  **Target statement: at rank 37 the graph has more than 200 prisms** (in particular the world P = S = 0 of Codex's note
+  126 is empty at rank 37). What is missing is only a certified upper bound of the collisions of masses 7, 8, 9 and of
+  the changes of sum for the whole collection, as a linear form in census parameters; expected to be far below the slack
+  (rare objects times a few hundred pairs), NOT proved. Asked to Codex. Floating LP; nothing is excluded yet.
+
+**B. A line in six grids** (the object of 17.46; the laptop session's statement of 23:24 UTC: at rank 37 the 60 far
+vertices carry isotropic vectors of a non-degenerate 5-space over F_7 with an explicit Gram matrix).
+* Real Green function of a prism (hand): same vertex 47/180, mates -7/180, same parallel line -1/180, other side and other
+  layer -19/180; modulo 7 this is the laptop session's table 1, 0, 4, 6.
+* For two far vertices f, g let a be their adjacency and e, m, r, o the numbers of the six coordinates where their names
+  are the same vertex / mates / in the same row / other. Then the integer matrix
+        q_ff = 91,     q_fg = 43 - 60 a - 22 e - 4 m - 6 r
+  is 420 times the projector onto the (-4)-eigenvectors supported on the far set (rank 13; trace check tr(H^+ K) = 94).
+* **Lemma (hand): q^2 = 420 q follows identically from the axioms of 17.46.** Diagonal: with the second moments forced
+  by the axioms (sums of A^2, E^2, C^2, R^2, AE, AC, AR, EC, ER, CR equal to 8, 78, 300, 594, 6, 12, 18, 132, 174, 324
+  per vertex) one gets sum s^2 = 146 856 = 91 x 329 + 116 917 exactly. Off the diagonal: the ten bilinear sums over a
+  third vertex are affine in (a, e, m, r, o), the terms in a cancel, and the equation reduces to e + m + r + o = 6.
+  So the real identity carries no information on this object (the axioms of 17.46 already are the SRG equations).
+* The information is modular. Modulo 7: q_fg = 1 + 3a - e + 3m + r, of rank r - 32 - 2 v_7(t) (5 at rank 37), in
+  agreement with the laptop session's determinant det(L_far) t^2 = 324 x 5^12 x 7^(r-32) (17.46; unaudited). The same
+  formula gives conditions at EVERY rank at the other primes: modulo 3, q = J - C depends on the columns only and must
+  have rank 4 - 2 v_3(t); modulo 5, q_fg = 3 - 2e + m - r depends on the names only (not on the adjacency) and must have
+  rank 12 - 2 v_5(t). Test done: the canonical column solution (60 ordered Petersen stars) has rank_3(J - C) = 4: it
+  passes, which also confirms the formulas. The test modulo 5 needs the rows (signs) and is the next thing to look at.

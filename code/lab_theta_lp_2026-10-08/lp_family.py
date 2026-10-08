@@ -47,6 +47,7 @@ add(Z, [0, 406, 125, 34, 7, -5726, -273, -7], -133154.0); add(Z, [0, -1183, -350
 import os
 for p_ in [int(x) for x in os.environ.get("ZERO_PARAMS", "").split(",") if x]:      # census parameters forced to zero (e.g. types excluded by the rank-free cores, NOTE 17.71)
     e_ = np.zeros(npar); e_[p_ - 1] = 1.0; add(e_, [0] * 8, 0.0)
+if os.environ.get("PCAP"): add(eP, [0] * 8, float(os.environ["PCAP"]))                 # what-if / case split: number of prisms P <= PCAP
 ext = vstack(rows0); bb = np.array(b0)
 for s in scen:
     m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?(n)?(?:r(\d+))?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
