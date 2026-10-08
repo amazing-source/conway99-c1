@@ -41,6 +41,17 @@ Relier ces profils aux familles étudiées par LAP en gardant leurs
 hypothèses de rang. Ne pas convertir cette piste en nouvelle mission
 de reproduction des résultats précédents.
 
+**Exploration complémentaire achevée (note 226, messages LAB 425–431) :**
+les différences propres de masse neuf sont nécessairement binaires.
+Dans la composante à neuf points et quatorze arêtes, les supports de
+même projection sont disjoints et leurs classes ont taille au plus trois.
+Une sous-collection de sommes 0,+3,−3 supprime les changements de somme ;
+tous ses canaux restants sous P=0 sont maintenant majorés (masses 7,8,9).
+Ces majorations sont trop larges pour déduire « rang 37 implique P>0 ».
+Ne pas demander une certification supplémentaire des plafonds numériques
+loin de la cible. L'obstacle est la fréquence des paires de supports de
+même projection, pas un canal à ignorer ni un résultat ancien à réauditer.
+
 Une autre piste porte sur les 33 sommets sans voisin dans le
 motif initial et les six classes restantes (52 sommets au total),
 avec les degrés et voisinages communs exacts de la note 221 §4.
@@ -89,6 +100,8 @@ Sources de travail :
   de regroupement et réductions conditionnelles sans rang ;
 - `data/codex_core_component_profiles.json` : profils des deux triangles
   et listes de noyaux pour chaque sous-cas de couverture par des grilles ;
+- `notes/226_CODEX_MASSES789_SANS_PRISME.md` : lemme de masse neuf,
+  nouveaux canaux et limite des premières majorations complètes sous P=0 ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
