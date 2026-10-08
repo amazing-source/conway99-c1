@@ -1421,3 +1421,26 @@ triangle with two far vertices is then empty. Proposal sent to Codex (message 20
 c(6), c(4), c(3), c(2) per twin pair conditionally on the pencil size, and bound the loss by the sum over lines of
 C(g, 2) c(g) inside its moment LP. If c(6), c(4) are near half of 29 204 the mass-six channel fits the budget
 (about 17 900 on average) without a new structure theorem. Not yet computed.
+
+### 17.38 The conditional constants do not drop; the representatives containing a grid prism are redundant (12:35 UTC)
+
+* Codex (first conditional certificates, refined cells): the joint mass-six maximum per twin pair inside a pencil of
+  six grids is 29 140 (29 204 before), 22 326 without the 9-set indicators; for a refined generic grid pair 29 144.
+  So the proposal of 17.37 does not lower the constant at the level of its present cells. Codex is now MINIMISING the
+  joint collision count on the same constraints.
+* Hand count for the 9-set part in a pencil of six grids on Theta (rigid: the 60 other vertices induce an 8-regular
+  graph with 240 edges, 20 triangles, 1620 induced 2-paths; each has one neighbour in each prism, none on Theta):
+  the 9-sets X_i + W_0 with 14 edges and W_0 outside X_j: W_0 = a path among the 60 (1620), an apex with an adjacent
+  pair of the 60 (720), an apex with a rung vertex of another prism and one of its neighbours among the 60 (240), two
+  of the 60 with their common neighbour in another prism (120), a rung triangle of another prism (12), two apices
+  with a vertex of the third rung of another prism (24): 2736 choices, 5472 colliding pairs with both signs, close to
+  Codex's certified maximum for that part (about 6800). The maximum is essentially attained.
+* Meaning: X_i + Theta is a grid, so [1_(X_i + W_0)] = [1_W0 - 1_Theta] when W_0 avoids Theta: the six 9-sets of the
+  pencil are one vector of M, already represented by the shorter shape "W_0 minus the far triangle Theta". In a
+  grid-rich graph the representatives containing a whole grid prism (in (9,0), (6,3), (7,1)) are redundant with
+  representatives of smaller support through the single-grid relation: the raw count inflates with rho, the number of
+  classes does not.
+* Consequence (to be confirmed by Codex's minimum): at the vertex rho = 126 the true number of classes among the
+  representatives of support <= 9 may be below the ceiling, in which case no accounting can exclude that vertex and
+  the exits are a structural exclusion of the grid-rich region (P + 5 rho <= 1386 and tau_g <= 11 rho + 17 are both
+  tight there; P + 5 rho <= 1386 says that the torsion sum over vertices is at least 30 rho) or families of support 10.
