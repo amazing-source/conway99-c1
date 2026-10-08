@@ -2772,3 +2772,34 @@ torsion the 36 near vectors span a non-degenerate hyperplane of the 36-dimension
 far vertex carries one extra scalar, and the star conditions with that scalar are searched exhaustively (192 + 96 + 288
 searches, and 33 784 128 matrices in the torsion case (3,3)); no star. Relayed to Codex with its request for an audit;
 I offered to re-implement one witness ball. Not checked here yet. Rank 37 is not excluded by it.
+
+### 17.72 The laptop session's result on girth-5 lines: Codex's audit and my independent witness (23:18 UTC, 09/10)
+
+* **Codex's audit (its note 224, commit e7bba78 of its branch).** Points 1 to 7 of the laptop session's note re-derived
+  with no defect found (rank 36 of A - 3I + 3J, non-degenerate quotient, scalar residue, torsion cases 00, 01, 11, 33);
+  the 288 normal forms and the 7 types reproduced independently; the end of case (3,3) re-implemented (25 588 -> 44 at
+  vertex 1, 44 -> 0 at vertex 6, identical lists). Not replayed by Codex: the initial sweep of GL_3(F_7) at vertex 0 and
+  the 576 star searches (engines read, logs checked for coverage and absence of timeouts).
+* **My independent witness (`lap_witness_check.py`; scope: this one ball).** Ball type 0 + type 0, identity order of the
+  layers, u = 0, c0 = 1. Only the data convention of the component key is shared; the quadratic data are computed
+  differently (W = (M0 + z0 z0^T)^(-1) with M0 = 3J - H, g(n, n') = (3.1 + n)^T W (3.1 + n'), instead of the Green
+  functions of the two components) and the search is my own (labels by the same-layer point, forward checking, exact-
+  cover propagation). Results: 10 584 candidate shadows and 11 232 with a scalar, as announced; the row K e_u agrees;
+  **no star**: the 792 root branches are exhausted, branches 0 to 392 in a first run (529 000 nodes, stopped by the
+  time limit inside branch 393; console record only) and branches 393 to 791 in a second run (511 676 nodes,
+  `lap_witness_check_part2.json`); a later re-run archived branches 0 to 367 (`lap_witness_check_part1.json`). Positive
+  control: with the conditions modulo 7 switched off a star is found in 3024 nodes, with cover exactly K e_u.
+  The whole check needed two runs of about four minutes each.
+* Status of the statement "at rank 37 a line whose graph has girth >= 5 is connected": derivation audited by Codex, one
+  star search reproduced independently here, the other searches read but not replayed. Used from now on as a working
+  result with that status.
+* Priority reported by Codex as an explicit instruction of the user to it (not received directly here): exploration,
+  new lemmas and reduction theorems first; no default double verification. The witness check above was already
+  complete when this arrived; nothing further is replayed.
+
+Consequence worth aiming at (mine, elementary): if a line T lies in a grid, the six other vertices of the grid form a
+prism, which is a cubic graph, hence a whole connected component of G(T): G(T) is disconnected. So a theorem "at rank 37
+every line has a connected graph" would give **no grid at all at rank 37**. The laptop session's method decides any
+finite family of disconnected profiles; the profiles needed are k prisms plus a rest of 36 - 6k vertices, k = 1, 2, 3,
+4, 6 (k = 5 forces k = 6). For a vertex x of a prism component the star is 5 K_2 with no apex, and K e_x is 1 on the ten
+other points of its layer outside the prism and 2 on the twenty points of the other layers outside it.
