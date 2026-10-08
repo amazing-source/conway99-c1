@@ -2744,3 +2744,31 @@ What the grid-free branch would need, for the record: the cap of the collection 
 from 29 204 to 27 828 (5 %), and its certified range for a grid pair is [16 496, 27 828] (note 198); the non-grid cap was
 never refined. By note 195 the collisions of the (9,0) channel use supports containing a prism, not a grid, so
 grid-freeness does not obviously reduce them. Also unpaid in any case: the collisions of masses 7 to 9.
+
+### 17.71 Crossing the 174 cores with the order-10 census: exact, valid, no effect on the counting (22:54 UTC, 09/10)
+
+Codex (its note 223): integer mask multiplicities and the coexistence of masks exclude no further core; it proposed a
+double count over ALL motifs S of one graph. Done here in the census, with exact forms.
+* `core_double_count.py`: N_2 = 4158 - 3 x_1 (x_1 = number of prisms) and
+  T = sum over S of e(D(S)) = 3 x_1 + 6 x_2 - 2 x_3 + 2 x_4 + x_5 + x_6 (six census parameters of orders 6 to 8).
+  Ranges over the census polytope (floating): T in [0, 18 649], N_2 in [1599, 4158], T - 4 N_2 in [-16 632, 2017].
+  The census forces no mean value of e(D); the cut T <= 4 N_2 implied by the 174 cores removes only a corner.
+* `core_forbidden_types.py`: among the sub-configurations "S + j doubles", every pattern with j <= 3 (15 and 43 types)
+  still occurs in a surviving core; for j = 4 two of the 130 do not. They are two 4-regular graphs on 10 vertices
+  (20 edges), which are census parameters: **x_58 = x_59 = 0 in every srg(99,14,1,2)**, given Codex's certificates for
+  the 63 + 136 excluded cores. A small rank-free lemma.
+* `core_type_equations.py`: the complete coupling. Unknowns lambda_c >= 0 (number of motifs of core type c, c = 1..174)
+  and, for each of the 192 types X = S + j doubles (orders 6 to 10), the exact equation
+  m(X) N(X) = sum_c lambda_c cnt_c(X). Self-check passed: for j = 1 the identity m(X) N(X) = cnt N_2 holds as forms.
+* Injected into the rank-37 counting LP (`lp_family.py`, new environment options ZERO_PARAMS and EXTRA_ROWS, floating):
+  break-even 13 900 -> 13 830 at the grid-rich corner (P = 756, rho = 126, tau = 1403 still attained) and
+  25 201 -> 25 214 with no grid. NO EFFECT: the distribution of the 174 core types is compatible with the corner where
+  the counting fails. An obstruction of this kind would need motifs with at least five doubles (order >= 11).
+
+Laptop session (22:43 UTC on 08/10; computer-assisted, audited by nobody; repo conway99-c2-aws, folder
+c1_rank37_girth5_lines/, commit 15a3cfe3f): at rank 37, a line whose graph G(T) has neither triangle nor 4-cycle is
+CONNECTED; so the residual case "(6,6) everywhere" of 17.53 does not occur. Method: for a disconnected line without
+torsion the 36 near vectors span a non-degenerate hyperplane of the 36-dimensional space of A - 3I + 3J modulo 7, each
+far vertex carries one extra scalar, and the star conditions with that scalar are searched exhaustively (192 + 96 + 288
+searches, and 33 784 128 matrices in the torsion case (3,3)); no star. Relayed to Codex with its request for an audit;
+I offered to re-implement one witness ball. Not checked here yet. Rank 37 is not excluded by it.

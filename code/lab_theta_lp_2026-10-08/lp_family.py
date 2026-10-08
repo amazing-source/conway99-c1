@@ -44,10 +44,24 @@ fb = lambda t: 462 + 41 * t + t * t / 2
 for k in range(0, 44, 2):
     sl = (fb(k + 2) - fb(k)) / 2; add(Z, [0, 0, 0, 0, 0, sl, -1, 0], sl * k - fb(k))
 add(Z, [0, 406, 125, 34, 7, -5726, -273, -7], -133154.0); add(Z, [0, -1183, -350, -91, -13, 2429, 476, 21], 736358.0); add(Z, [0, -378, -98, -7, -6, -25830, -70, 7], 1260308.0)
+import os
+for p_ in [int(x) for x in os.environ.get("ZERO_PARAMS", "").split(",") if x]:      # census parameters forced to zero (e.g. types excluded by the rank-free cores, NOTE 17.71)
+    e_ = np.zeros(npar); e_[p_ - 1] = 1.0; add(e_, [0] * 8, 0.0)
 ext = vstack(rows0); bb = np.array(b0)
 for s in scen:
     m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?(n)?(?:r(\d+))?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
     no90 = bool(m_.group(5)); rcap = float(m_.group(6)) if m_.group(6) else None; ext = vstack(rows0 + ([row(eG, [0] * 8)] if rcap is not None else [])); bb = np.array(b0 + ([rcap] if rcap is not None else []))
+    NL = 0
+    if os.environ.get("EXTRA_ROWS"):                                           # exact equations  census form = sum_c lambda_c cnt_c  (core_type_equations.py, NOTE 17.71)
+        EX = json.load(open(os.environ["EXTRA_ROWS"])); NL = EX["nlam"]; er, ec, ev, eb = [], [], [], []
+        for k_, rw in enumerate(EX["rows"]):
+            f_ = {int(p_): float(Fr(v_)) for p_, v_ in rw["p"].items()}; sc_ = max([abs(x_) for x_ in f_.values()] + [1.0])
+            for p_, v_ in f_.items():
+                if p_: er.append(k_); ec.append(p_ - 1); ev.append(v_ / sc_)
+            for c_, v_ in rw["lam"].items(): er.append(k_); ec.append(npar + NX + int(c_)); ev.append(-float(v_) / sc_)
+            eb.append(-f_.get(0, 0.0) / sc_)
+        E_ = csr_matrix((ev, (er, ec)), shape=(len(EX["rows"]), npar + NX + NL))
+        ext = vstack([hstack([ext, csr_matrix((ext.shape[0], NL))]), E_, -E_]); bb = np.concatenate([bb, np.array(eb), -np.array(eb)])
     cv = np.zeros(npar); kv = 0.0; used = []
     for k_, f in R.items():
         a_, b_, q_, cl = k_.split(","); a_, b_, q_ = int(a_), int(b_), int(q_)
@@ -56,10 +70,10 @@ for s in scen:
         if no90 and (a_, b_) in ((9, 0), (0, 9)): continue                         # "n": without the 9-set indicators (Codex's note 195, caps 22 422 / 23 150)
         cc, kk = vec(f); cv += cc; kv += kk; used.append(k_)
     def solve(cc):
-        obj = np.concatenate([2 * cv / (K + 1), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35]])
-        res = linprog(obj, A_ub=ext, b_ub=bb, bounds=[(0, None)] * (npar + NX), method="highs-ipm")
+        obj = np.concatenate([2 * cv / (K + 1), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35], np.zeros(NL)])
+        res = linprog(obj, A_ub=ext, b_ub=bb, bounds=[(0, None)] * (npar + NX + NL), method="highs-ipm")
         if res.status != 0: return None
-        x = res.x; ex = x[npar:]; r8 = cv @ x[:npar] + kv
+        x = res.x; ex = x[npar:npar + NX]; r8 = cv @ x[:npar] + kv
         ceil_ = 14006902 + 2793 * ex[1] + 532 * ex[2] + 77 * ex[3] + 7 * ex[4] - 8987 * ex[5] - 664 * ex[6] - 35 * ex[7]
         return x, ex, r8, ceil_, ceil_ - (2 * r8 / (K + 1) - 2 * cc * ex[0] / (K * (K + 1)))
     o = solve(0.0)
