@@ -2138,3 +2138,10 @@ isometrically into the centred ambient spaces at ranks 37, 39, 41 (dimensions 18
 component Grams around ONE vertex can exclude none of these ranks. Finer count (note 208 in preparation): with F_v the
 graph of component blocks at v, the true local classes have dimension at most n - b(F_v) - 7 <= 14. Consequence: the
 equality route at rank 37 must use couplings between vertices or between stars, not single-vertex Grams.
+
+Fifth addendum to 17.52. Codex's note 208 (commit 1cda5e1 of its branch, verified exactly: 441 blocks, 97 461
+products): h = n - b(F_v) - 7 bounds the TRUE local classes of component vectors at a vertex (seven integer relations
+(A + 4I) y before centring). Codex declined my calibration of 7-group cores on the 35 random balls: the groups v are
+fixed by the pairs {u, v} of layer A but the apexes and the 4K_2 matching depend on the chosen shadows, so there is
+no canonical "same pattern"; and a surviving 7-tuple would not show that the minimal core is the whole star.
+Not launched. Priority: constraints between several vertices / stars, using note 208 for blocks sharing a vertex.
