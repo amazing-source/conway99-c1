@@ -2,7 +2,7 @@
   python lp_family.py <census2 order-10 json> <reps10_pf json> <scenario> [...]
 Scenario "m<M>s<S>k<K>[all]": representatives of norm 8 with min(|W|,|Y|) <= M and support <= S; class "pf"
 (neither W nor Y contains an induced prism) unless "all" is appended ("x63": all classes except the (6,3) and (3,6) representatives whose 6-set is a prism,
-i.e. the collection of Codex's notes 195-198; an "n" after the class drops the shapes (9,0) and (0,9); a final "r<X>" adds the what-if cap rho <= X); class quotient
+i.e. the collection of Codex's notes 195-198; an "n" after the class drops the shapes (9,0) and (0,9); a "z" keeps only the shapes of sum 0 or +-3; a final "r<X>" adds the what-if cap rho <= X); class quotient
    classes >= 2 R/(K+1) - 2 C/(K(K+1)),  C <= c tau   (K = 1: classes >= R - C).
 For prism-free representatives a twin-prism collision is two-sided (1 <= |A|, |B| <= 5); c is the number of such
 colliding pairs charged per twin pair: UNKNOWN here, the script prints the break-even value of c.
@@ -50,8 +50,8 @@ for p_ in [int(x) for x in os.environ.get("ZERO_PARAMS", "").split(",") if x]:  
 if os.environ.get("PCAP"): add(eP, [0] * 8, float(os.environ["PCAP"]))                 # what-if / case split: number of prisms P <= PCAP
 ext = vstack(rows0); bb = np.array(b0)
 for s in scen:
-    m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?(n)?(?:r(\d+))?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
-    no90 = bool(m_.group(5)); rcap = float(m_.group(6)) if m_.group(6) else None; ext = vstack(rows0 + ([row(eG, [0] * 8)] if rcap is not None else [])); bb = np.array(b0 + ([rcap] if rcap is not None else []))
+    m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?(n)?(z)?(?:r(\d+))?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
+    no90 = bool(m_.group(5)); zsum = bool(m_.group(6)); rcap = float(m_.group(7)) if m_.group(7) else None; ext = vstack(rows0 + ([row(eG, [0] * 8)] if rcap is not None else [])); bb = np.array(b0 + ([rcap] if rcap is not None else []))
     NL = 0
     if os.environ.get("EXTRA_ROWS"):                                           # exact equations  census form = sum_c lambda_c cnt_c  (core_type_equations.py, NOTE 17.71)
         EX = json.load(open(os.environ["EXTRA_ROWS"])); NL = EX["nlam"]; er, ec, ev, eb = [], [], [], []
@@ -68,6 +68,7 @@ for s in scen:
         a_, b_, q_, cl = k_.split(","); a_, b_, q_ = int(a_), int(b_), int(q_)
         if q_ != 8 or a_ + b_ > S or min(a_, b_) > M or (cl != "pf" and not allc): continue
         if x63 and cl == "fp" and (a_, b_) in ((6, 3), (3, 6)): continue          # Codex's collection: (6,3) only with e(W) <= 8
+        if zsum and abs(a_ - b_) not in (0, 3): continue                            # "z": sums 0 and +-3 only (no change of sum possible in a collision)
         if no90 and (a_, b_) in ((9, 0), (0, 9)): continue                         # "n": without the 9-set indicators (Codex's note 195, caps 22 422 / 23 150)
         cc, kk = vec(f); cv += cc; kv += kk; used.append(k_)
     def solve(cc):

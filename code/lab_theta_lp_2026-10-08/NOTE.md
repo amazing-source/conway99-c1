@@ -2862,3 +2862,37 @@ A_B - 3I = J + M' + sigma sigma^T + U U^T + 2 Z Z^T modulo 7 (sigma the sign vec
 M' the Gram of rank r - 32 of the isotropic vectors). A tempting shortcut is FALSE and is recorded so that it is not
 retried: M' vanishes on the reduction of L_far + K_far, not on the whole of ker N modulo 7 (there is glue of dimension
 rank M'), so the isotropic vectors are not a linear function of the shadows.
+
+### 17.74 CORRECTION of the expectation in 17.73 A: the collision channels without prisms are not bounded finely enough (23:55 UTC, 08/10)
+
+In 17.73 A I wrote that the channels surviving at P = 0 were "expected to be far below the slack". That had no basis.
+Codex has now given a first rigorous and complete linear bound for the sub-collection without change of sum (sums 0,
++3, -3: (1,1), (2,2), (3,3), (4,4) and both signs of (3,0), (4,1), (5,2), (6,3) with e(W) <= 8), conditional on P = 0:
+* mass 7: at most 5402 per copy of D;  mass 8: 1872, 1840, 3088 per cubic support of 12 edges, 3512, 3616, 4448 per
+  support of 13 edges, and 2592 per windmill, i.e. 8.98 million for the 3465 windmills alone;
+* mass 9 ((6,3) against (6,3) only; Codex's lemma: such a difference is binary, two disjoint 9-sets of minimum degree
+  3): 39 types with coefficients 58 to 1301.
+Numbers computed here (floating LPs; `lp_family.py` option "z", `census_param_max.py`, `collision_form_lp.py`):
+
+| quantity at P = 0 | value |
+|---|---|
+| margin of the sub-collection, k = 1 (k = 2 and 3 do not exclude) | 3.84 million colliding pairs |
+| same without the (6,3) family (supports <= 8) | no exclusion: R = 7.5 million < ceiling 15.9 million |
+| supports <= 9 without (9,0) | 8.95 million (brings back changes of sum) |
+| complete collection | 16.75 million |
+| largest number of copies of D | 1867 |
+| largest counts of the six prism-free types of order 8 with minimum degree 3 | 5122, 4158, 4158, 2821, 29 323, 16 846 |
+| Codex's mass-9 bound maximised with orders 6 to 9 / 6 to 10 | 193.5 million (its own figure, reproduced) / 149.2 million |
+
+The mass-9 bound is 40 times the budget and no single type dominates (the six largest terms are 17.9, 13.2, 11.2, 11.0,
+9.4, 8.5 million): what is too large is the shape "weight squared per support", which charges every support as if it
+had partners. The true sizes are unknown. **So the counting does NOT give "rank 37 implies P > 0" at present, and it is
+not established that it will.** The margins of 17.73 A are correct; what has to be paid is not bounded finely enough.
+With the sub-collection at P <= 200 the break-even is 8244 per twin pair, below the caps of the mass-6 channels.
+A collision of mass 9 is a pair (U, V) of disjoint 9-sets of minimum degree 3 joined by exactly 2e(U) - 27 edges, every
+outside vertex seeing as many points of U as of V; counting such pairs is not within a census of order 10.
+
+Permission received from the user (direct, about 23:48 UTC): local runs on the lab PC may use up to 80% of the processor
+and of the memory, falling back to low performance when Discord, FiveM, Valorant or similar opens. `guarded_pool.py` runs
+a list of commands with at most 12 workers and a single one while such a program is running (resumable log). Offered to
+the laptop session for a share of its sweeps; nothing launched yet.
