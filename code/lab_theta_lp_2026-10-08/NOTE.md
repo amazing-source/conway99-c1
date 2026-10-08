@@ -368,3 +368,33 @@ Norm 26 in L1: binary vectors of L with supports 13 + 13 (at most 4 edges in eac
 2n^2 - 38n + 198 >= 6e + S2), vectors of L with entries +-2, and vectors phi - (1/3)1 of L1 \ L with phi = 1_S - e_z - e_z',
 |S| = 35 (for the class L1 \ L: norm 22 is phi = 1_S with |S| = 33 inducing a 2-regular graph, every outside vertex with 6
 neighbours in S; norm 24 is 1_S - e_z with |S| = 34; an entry 2 is impossible below norm 28).
+
+## 16. The programme in readable coordinates (00:20 UTC)
+
+`bfroma.py` (`OUTPUT_bfroma_N40.txt`): the dual shell counts as exact affine functions of (a_7, ..., a_13); the coefficients
+do not depend on the rank, only the constant and a power of 7 (m = (45 - r)/2):
+
+    7^(m+1) b_1 = -329 (7^m + 1) - 7 a_7 + 2 a_8 + 16 a_9 - 7 a_10 - 2 a_11 - a_12 + a_13
+    7^(m+1) b_2 = C2 + 2016 a_7 + 1139 a_8 - 149 a_9 + 693 a_10 + 233 a_11 + 92 a_12 - 43 a_13
+    7^(m+1) b_3 = C3 + 901908 a_7 + 254068 a_8 + 74357 a_9 - 4494 a_10 - 5050 a_11 - 2770 a_12 + 859 a_13
+    7^m     b_4 = C4 + 2014208 a_7 - 103618 a_8 - 193316 a_9 - 17472 a_10 + 5716 a_11 + 6407 a_12 - 1500 a_13
+
+| r | C2 | C3 | C4 |
+|---|---|---|---|
+| 43 | 162 176 | 519 526 000 | 31 252 717 160 |
+| 41 | 465 878 | 515 405 884 | 31 258 183 460 |
+| 39 | 2 591 792 | 486 565 072 | 31 296 447 560 |
+| 37 | 17 473 190 | 284 679 388 | 31 564 296 260 |
+| 35 | 121 642 976 | -1 128 520 400 | 33 439 237 160 |
+
+With b_1 >= 0, b_2 >= 462, b_3 >= 24 948:
+* (I1) 2 a_8 + 16 a_9 + a_13 >= 329 (7^m + 1) + 7 a_7 + 7 a_10 + 2 a_11 + a_12;
+* (I2) 149 a_9 + 43 a_13 <= U_r + 2016 a_7 + 1139 a_8 + 693 a_10 + 233 a_11 + 92 a_12, U_r = C2 - 462 * 7^(m+1) =
+  139 538 / 307 412 / 1 482 530 / 9 708 356 / 67 289 138 for r = 43 / 41 / 39 / 37 / 35;
+* (I3) binds only for r = 37 (right-hand constant 134.6 million) and r = 35 (4.06 billion).
+Eliminating a_13 between (I1) and (I2):
+539 a_9 + 1225 a_8 + 1715 a_7 + 392 a_10 + 147 a_11 + 49 a_12 >= 43 * 329 (7^m + 1) - U_r, i.e.
+>= 399 938 / 3 384 038 / 24 272 738 / 170 493 638 for r = 41 / 39 / 37 / 35 (negative for r = 43). Since
+1715 a_7 + 1225 a_8 <= about 13.6 million (seed bound), r = 37 needs 539 a_9 + 392 a_10 + 147 a_11 + 49 a_12 >= 10.7 million
+and r = 35 needs it >= 157 million, in addition to the 4.8 million vectors of norm 26: these two ranks are within reach
+of counting on the shells 18 to 24; the ranks 39, 41, 43 are satisfied by small numbers and are not.
