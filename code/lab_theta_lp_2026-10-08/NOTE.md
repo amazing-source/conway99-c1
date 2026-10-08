@@ -2454,9 +2454,9 @@ exclusion of rank 37.
   share): the FORM of the two identities (real: Sigma_X positive semidefinite of rank <= 8 for every X; mod 7: Pi
   7-integral) and the star-sum relations.
 
-### 17.61 It is a ONE-star obstruction: ball 12, the star of vertex 12 alone (20:38 UTC)
+### 17.61 It is a ONE-star obstruction: ball 12, the star of vertex 12 alone (20:36 UTC)
 
-Codex's intermediate audit of 17.59 (its message of 20:36 UTC): ball 5 fully re-derived, 368 of 368 branches, 6882 leaves,
+Codex's intermediate audit of 17.59 (its message of about 20:30 UTC): ball 5 fully re-derived, 368 of 368 branches, 6882 leaves,
 every leaf trace verified on the original indices, my deletion lists identical; planted integer witnesses survive and
 four deliberate corruptions are rejected; the three other balls are being replayed (its notes 216, 217 to come). Codex
 also confirmed, with an independent reconstruction, the laptop session's square condition and its constants
@@ -2482,3 +2482,41 @@ Novelty, stated honestly: that a complete star dies with the Green values alone 
 September (`logs/star_ablation_astra.log`: "only_green: dead; nodes 416964"). New here: the shape (apex, one pivot,
 propagation), the size (10^4 leaves), and the exact replay Codex is building. Status: a classification, not a certified
 archive (leaves not replayed on my side). Only ball 12 was run (6 min 20 s in three pieces).
+
+### 17.62 Codex's audit is complete; the 18 resisting branches of the star of vertex 0 (20:42 UTC)
+
+* **Audit complete (Codex, commit b917050 of its branch, notes 216 and 217).** Note 216: the 1721 branches of 17.59 are
+  confirmed with the same pivots and the same deletion lists as mine; 38 518 leaves (6882 + 9484 + 9395 + 12 757), each
+  started from the same base domains, every trace verified on the original indices and tables, then every archive
+  replayed from disk; planted integer witnesses survive, four corrupted certificates are rejected. It also certified 13
+  pilot branches with no table between the stars (349 leaves, every event of each leaf on the side of the pivot): the
+  proof is local to one conditioned star. Note 217: independent audit of the laptop session's square condition. So
+  17.59 is now CERTIFIED by Codex for the four balls; 17.61 (whole ball 12, one star) remains a classification.
+* **Manifest of refuting pivots for ball 12** (asked by Codex): `balls/onestar_green_ball12_manifest.json`.
+* **The 18 apexes where the star of vertex 0 resists four pivots** (`pivot_profile.py`, `balls/pivot_profile_ball12_*.json`).
+  OBSERVATIONS on this one ball, none of them a general implication:
+  1. They are not solutions: an exact search (branch on the smallest domain, Codex's propagation at each node) finds
+     no assignment of the nine private shadows with the Green-only tables and the exact sums, in 2 to 4 nodes for each
+     of the 18 apexes. The star of vertex 0 is refuted too, at depth two.
+  2. No leaf dies by a one-step cover failure: after the Green cut by the pivot candidate, no coordinate has
+     need > capacity (0 of 2619 leaves) and no coordinate is even tight (need = capacity). Every refutation is a cascade
+     of about 30 to 50 alternating sum and pair deletions. So there is no "profile of tightened targets" to read at depth one.
+  3. Survival of a pivot candidate depends sharply on how many coordinates of residual sum ONE it contains (these are the
+     points within G-distance 2 of the centre, plus the points already used once by the apex):
+
+| coordinates of residual sum 1 in the candidate | 0 | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|---|
+| survive / refuted (2619 leaves, star of vertex 0) | 87 / 174 | 38 / 936 | 1 / 1057 | 0 / 313 | 0 / 13 |
+
+     For the star of vertex 12 on six of the same apexes: 0 survivors in every column (24, 64, 43, 6 refuted).
+  4. The two stars differ in size, not in kind: smallest pivot domain 19 to 24 for vertex 12 against 27 to 39 for
+     vertex 0; smallest Green cut 5.0 on average against 7.4 (refuted) and 9.1 (surviving).
+  Reading (hypothesis): a candidate through a coordinate of residual sum one removes that coordinate from the eight other
+  shadows; with two such coordinates the remaining domains are too small to cover exactly. This is the internal
+  collision of Codex's note 214 acting through propagation; it is a counting mechanism, not an identity. It agrees with
+  17.56 item 3 (compatible shadows carry too many points near the centre), now seen at the level of single candidates.
+* The laptop session (20:39 UTC) lists what is automatic and need not be retested: every first- or second-order
+  condition on the apex alone follows from bilinearity (e_v^T K H^+ n_w = 5 mod 7; the sum of the 81 entries of the
+  Gram of the nine = 3 mod 7 since (K H^+ K)_vv = 0). It also gives, labelled as a reformulation, an independent
+  verifier without H^+: a star is admissible iff the Seidel matrix J - I - 2A of the abstract 49-vertex graph (ball of
+  T, ten far vertices joined to their shadows, 4K_2 between them) has rank 36 modulo 7. Not tested here.
