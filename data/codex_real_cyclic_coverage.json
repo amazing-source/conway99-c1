@@ -1,0 +1,26 @@
+{
+  "input": "cyclic(2,4,1)",
+  "centers": [
+    0,
+    12
+  ],
+  "apex_candidates": 473,
+  "first_stage_norm": 14,
+  "first_stage_propagation": 428,
+  "second_stage_propagation": 31,
+  "sources": [
+    "codex_real_green_triples_cyclic_sweep.json",
+    "codex_real_full_triples_cyclic_survivors.json"
+  ],
+  "source_sha256": [
+    "8d5f1006cf824ea01bda822b0ca1302c38f98d7657b3b0cef5074a32e91ab6ba",
+    "39f9e3ec0e3176fb1411e769426ed2eafecfe0634d7c9eda7c8e6e9f18ec88ff"
+  ],
+  "conclusion": "ALL_473_APEX_BRANCHES_HAVE_EXACT_PROPAGATION_OR_NORM_CERTIFICATES",
+  "verification": "Every trace replayed at production; both complete compressed archives replayed from disk after concatenation (473 first-stage records and 31 second-stage records); index union checked exactly.",
+  "scope": "already excluded calibration ball, no uniform or global rank exclusion",
+  "full_archive_replay_seconds": [
+    209.49,
+    19.2
+  ]
+}
