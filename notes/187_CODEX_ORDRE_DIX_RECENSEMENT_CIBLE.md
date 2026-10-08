@@ -136,5 +136,8 @@ dans `data/codex_targeted_order10_census.json.gz` (JSON compressé, environ 6,3 
 Les certificats sont dans `data/codex_targeted_order10_minima.json`, et le catalogue
 dans `data/codex_mass10_support_catalogue.json`.
 
-Le recensement est ciblé : la complétion à tous les types d'ordre dix et l'audit
-des collisions constituent des prolongements distincts encore nécessaires.
+Le recensement décrit ici est ciblé. **Mise à jour :** LAB a ensuite produit
+les 42430 types du recensement complet, importés dans la note 188. La comparaison
+exacte retrouve toutes les 3875 formules ciblées. Les bornes de la présente
+note restent celles de sa relaxation partielle ; l'audit des collisions est
+un prolongement distinct.
