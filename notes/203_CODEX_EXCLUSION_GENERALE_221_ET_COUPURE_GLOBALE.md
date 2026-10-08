@@ -6,6 +6,9 @@ ci-dessous traite **toutes les multiplicités entières de colonnes**,
 y compris les modèles non canoniques. Aucun automorphisme du graphe
 n'est supposé.
 
+Suite : la note 204 intègre la coupure ci-dessous aux 74 modèles de
+moments et certifie τ≤1354, b3≥45964 et C6≤38084490, pour r≥37.
+
 **Résultats pour r=rank₇(A−3I)≥37.**
 
 - Sur une droite contenue dans six grilles, deux points portant chacun
