@@ -349,3 +349,22 @@ independent; count the edges between R and U in two ways.
   seed at p* determined by f, hence is unique (one norm-16 vector per seed). Not done: different missing vertices, the
   type (1,1,1,1), supports with an edge. The per-seed count for norm 18 is probably of the order of ten, so seed counting
   alone is unlikely to reach the thresholds of section 13.
+
+## 15. The identity behind the forced numbers (00:18 UTC)
+
+Found by Codex at r = 43 from the Farkas certificate; closed form for all ranks checked exactly in my coordinates
+(`identity43.py`, `OUTPUT_identity_N40.txt`). With m = (45 - r)/2, identically on the 7-parameter family:
+
+    2 a_8 + 16 a_9 + a_13  =  329 (7^m + 1)  +  7^(m+1) b_1  +  7 a_7  +  7 a_10  +  2 a_11  +  a_12.
+
+(329 (7^m + 1) = 2632, 16 450, 113 176, 790 258, 5 529 832 for r = 43, 41, 39, 37, 35.) So W = 2 a_8 + 16 a_9 + a_13 is at
+least 329 (7^m + 1); vectors of norm 14, 20, 22, 24 and roots of M only increase what is needed. With a_8 <= 6930:
+16 a_9 + a_13 >= 5 515 972 / 776 398 / 99 316 / 2 590 for r = 35 / 37 / 39 / 41. **A rank is excluded as soon as the numbers
+of vectors of norm 18 and of norm 26 of L1 are shown to be too small for this.**
+`caps18.py` (`OUTPUT_caps18_N84.txt`), exact LP with a cap on a_9: at r = 35 any cap a_9 <= 10^6 forces a_13 >= 4 837 873
+(and a_10 + a_11 + a_12 >= 339 822); at r = 37, a_9 <= 10^4 forces a_13 >= 757 806; at r = 39, a_9 <= 1000 forces
+a_13 >= 83 316; at r = 41 (resp. 43), a_9 = 0 forces a_13 >= 11 686 (resp. 1 870).
+Norm 26 in L1: binary vectors of L with supports 13 + 13 (at most 4 edges in each support by the counting
+2n^2 - 38n + 198 >= 6e + S2), vectors of L with entries +-2, and vectors phi - (1/3)1 of L1 \ L with phi = 1_S - e_z - e_z',
+|S| = 35 (for the class L1 \ L: norm 22 is phi = 1_S with |S| = 33 inducing a 2-regular graph, every outside vertex with 6
+neighbours in S; norm 24 is 1_S - e_z with |S| = 34; an entry 2 is impossible below norm 28).
