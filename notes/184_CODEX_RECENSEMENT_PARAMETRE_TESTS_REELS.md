@@ -22,11 +22,46 @@ ainsi que les comptages des papillons, maisons, familles `(4,4)` et `(7,1)`.
 commits 7f6bafe et 99d3d3a de sa branche, importés ici. Les types omis sont les
 types déconnectés ou trop nombreux pour le budget de calcul fixé par LAB.
 
-Limites : H, C8_5683824 et C8_245715219 sont nuls dans les deux graphes, donc ces
-tests n'éprouvent pas leurs coefficients. Le paquet à neuf sommets utilise la
-canonisation par individualisation et raffinement de la note 182 ; son test
-indépendant sur les deux graphes à 243 sommets reste à effectuer. Le contrôle
-exhaustif sur la grille couvre déjà ce chemin de calcul, dans ce cas particulier.
+Au message 227 du pont, LAB rapporte aussi la réussite des tests indépendants
+à **neuf sommets** : 40 types connexes sur bvls243 et 276 sur twin243_switched,
+sans différence. Les 57 paramètres de chaque témoin ont été mesurés par son
+énumérateur de plongements, indépendamment des formules du paquet. La sélection
+des types testés impose au plus quatre millions de plongements et une limite
+de temps ; ce n'est pas une vérification exhaustive des 5311 types sur ces témoins.
+
+Le tableau ci-dessous donne les comptes signés des familles `(6,3)`, retrouvés
+par un autre comptage de six-ensembles puis de triples extérieurs. Les prédictions
+du paquet et les comptes de LAB coïncident dans chaque case renseignée.
+
+| (e(W),e(Y),e(W,Y)) | twin243_switched | bvls243 |
+|---|---:|---:|
+| (8,3,0) | 19746720 | 8981280 |
+| (8,3,1) | 87190560 | 42340320 |
+| (8,2,0) | 1485473040 | 679369680 |
+| (9,3,0) | 355320 | 1176120 |
+| (9,3,1) | 1995840 | 7698240 |
+| (9,3,2) | 1547100 | 5292540 |
+| (9,2,0) | 29114640 | 107133840 |
+| (9,2,1) | 105811920 | 386836560 |
+| (9,1,0) | 336639240 | 1233963720 |
+| (7,3,0) | non testé | 2010523680 |
+
+La dernière case utilise la transitivité sur les arêtes de bvls243 : deux arêtes
+ont été testées, avec 26600 six-ensembles à sept arêtes contenant chacune, et
+2632560 couples avec un triangle lointain. Elle n'est pas une énumération de tous
+les six-ensembles du témoin. Les scripts annoncés sont `census_check243.py`,
+`six_three.py` et `six_three_730.py` ; au moment de cette mise à jour, leurs dernières
+versions ne figurent pas encore dans la branche publique arrêtée à `4aa839a`.
+Les résultats ci-dessus sont donc attribués au rapport indépendant de LAB,
+sans revendiquer une réexécution locale de cette nouvelle série de tests.
+
+Limites : H, C8_5683824, C8_245715219 et **25 des 48 coordonnées C9** sont nuls
+dans les deux graphes, donc ces tests n'éprouvent pas leurs coefficients. Les
+familles testées font intervenir les 23 autres coordonnées C9. Le chemin de
+canonisation par individualisation et raffinement est désormais testé sur ces
+familles et types réels, en plus de la grille 3×3. La borne P≤852 est spécifique
+aux paramètres `(99,14)` : elle découle des certificats exacts, et n'est pas
+elle-même un énoncé testé sur les graphes à 243 sommets.
 
 ## 1. Coordonnées géométriques
 
