@@ -1,7 +1,9 @@
 """C1, lab session, 2026-10-08. Independent test of Codex's parametrised census (its note 184, packet at ba41e4a) on a REAL
 graph srg(v,k,1,2): bvls243, twin243_switched (or the rook's graph with the (9,4) packet).
 
-  python -I census_check243.py <packet json> rook|<edge file> [seconds] [BF HF F8]
+  python -I census_check243.py <packet json> rook|<edge file> [seconds] [BF HF F8] [save=<file>] [load=<file>] [orders=9] [measure]
+Options: save / load the measured parameters (JSON) so that the measurement and the type checks can be two bounded runs;
+orders=a,b restricts the type checks to those orders; "measure" stops after the measurement.
 
 The packet is read as data only (JSON; nothing in it is executed). For the last stage, the parameters (P, H and the
 dense 8-vertex invariants) are MEASURED in the real graph by an induced-embedding search written here; then every type of
@@ -49,23 +51,32 @@ def embeddings(rows, hmask, hn):
 
 
 def main():
+    opts = dict(a.split("=", 1) for a in sys.argv[3:] if "=" in a); flags = [a for a in sys.argv[3:] if "=" not in a]
+    nums = [a for a in flags if a.replace(".", "").isdigit()]; sys.argv = sys.argv[:3] + nums
     D = json.load(open(sys.argv[1])); hn, hk, hmask = load(sys.argv[2]); budget = float(sys.argv[3]) if len(sys.argv) > 3 else 200.0
+    only = [int(x) for x in opts["orders"].split(",")] if "orders" in opts else None
     assert D["srg_parameters"][:2] == [hn, hk], "packet and graph have different parameters"
     stages = D["stages"]; last = stages[-1]; names = last["parameters"]; t0 = time.time()
     graphs = {}
     for st in stages:
         for g in st["new_parameter_graphs"]: graphs[g["name"] if "name" in g else g.get("parameter")] = g
     print("packet: orders %s; parameters of the last stage: %s" % ([s["order"] for s in stages], names), flush=True)
-    val = {}
+    val = {k_: int(v_) for k_, v_ in json.load(open(opts["load"])).items()} if "load" in opts else {}
     for st in stages:
         for g in st["new_parameter_graphs"]:
+            if g.get("name", g.get("parameter")) in val: continue
             nm = g.get("name", g.get("parameter")); rows = g["adjacency_bits"]; emb = embeddings(rows, hmask, hn); aut = embeddings(rows, rows, len(rows))
             assert emb is not None and emb % aut == 0; val[nm] = emb // aut
-            print("  measured %-16s = %d   (order %d, %d edges, |Aut| = %d)" % (nm, val[nm], len(rows), sum(bin(r).count("1") for r in rows) // 2, aut), flush=True)
+            print("  measured %-16s = %d   (order %d, %d edges, |Aut| = %d)  [%.0f s]" % (nm, val[nm], len(rows), sum(bin(r).count("1") for r in rows) // 2, aut, time.time() - t0), flush=True)
+            if "save" in opts: json.dump(val, open(opts["save"], "w"))
+    print("parameters: %d known; non-zero: %s" % (len(val), {k_: v_ for k_, v_ in val.items() if v_}), flush=True)
+    if "measure" in flags: return
+    t0 = time.time()
     def evaluate(aff, params): return Fr(aff[0]) + sum(Fr(c) * val[p] for c, p in zip(aff[1:], params))
     tot = ok = bad = skipped_disc = skipped_big = 0; todo = []
     for st in stages:
         params = st["parameters"]; assert all(p in val for p in params), (params, list(val))
+        if only is not None and st["order"] not in only: continue
         for c in st["counts"]:
             pred = evaluate(c["affine"], params); assert pred.denominator == 1 and pred >= 0, ("non-integral or negative prediction", st["order"], c["code"], pred)
             todo.append((int(pred), st["order"], c))
@@ -80,7 +91,7 @@ def main():
         if emb == pred * aut: ok += 1
         else:
             bad += 1; print("  MISMATCH order %d code %s: predicted %d, counted %s/%d" % (order, c["code"], pred, emb, aut), flush=True)
-    print("types: %d in the packet; %d counted and equal to the prediction; %d MISMATCHES; skipped: %d disconnected, %d too numerous or out of time (%.0f s)" % (tot, ok, bad, skipped_disc, skipped_big, time.time() - t0), flush=True)
+    print("types: %d considered; %d counted and equal to the prediction; %d MISMATCHES; skipped: %d disconnected, %d too numerous or out of time (%.0f s)" % (tot, ok, bad, skipped_disc, skipped_big, time.time() - t0), flush=True)
     fam = {}
     for st in stages:
         for nm, aff in st["families"].items(): fam[nm] = evaluate(aff, st["parameters"])
