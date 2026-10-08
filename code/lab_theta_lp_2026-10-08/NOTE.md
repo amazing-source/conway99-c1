@@ -1783,3 +1783,50 @@ matching F_k at p. Column agreements between two distinct names, by Petersen dis
   is one of several.
 What this is: a concrete finite description (Petersen, ordered stars) of the only configuration whose exclusion would
 give the missing factor; what it is not: a result. Open on it: the rows (signs), the six matchings M_k, the triangles.
+
+### 17.48 A constraint of a new kind (laptop session): the classes of grids live in 56 - r dimensions mod 7
+
+**Statement (laptop session, about 15:40 UTC; argument checked here).** K+ = Z^99 cap (E_3 + <1>) is the orthogonal
+complement of L = Z^99 cap E_{-4} in the unimodular Z^99, so disc(K+) = disc(L), whose 7-part is elementary of rank
+r - 1; K+ has rank 55, so K+/7K+ modulo the radical of the form has dimension 56 - r. Hence the Gram matrix of ANY
+family of kernel vectors (grid indicators, twin differences, ...) has rank at most 56 - r modulo 7: **19 at rank 37**,
+17, 15, 13 at ranks 39, 41, 43. For grids the Gram matrix is the intersection matrix (9, 3, 1, 0 for equal, common
+line, common point, disjoint). It is the kernel-side twin of "rank <= 45 - r for families of L" (17.40), and the
+mechanism of Codex's note 103 section 4 (Hamming point, k <= 26) in general form. It is not a count and not linear
+in the census.
+Remarks (mine, hand). (A + 4I) e_v = 4 e_v + 1_N(v) lies in K+ and pairs to 8 or 1, i.e. 1 mod 7, with every grid: all of
+Im(A + 4I) is a multiple of the class [1] modulo the radical. For a line in six grids,
+sum_k 1_(G_k) = (A + 4I) 1_Theta, so sum_k [1_(G_k)] = 5 [1]: with g' = [1_G] - 2 [1] (orthogonal to [1], norm -2,
+products -1, -3, -4 for common line, common point, disjoint) the six classes of a pencil of six sum to zero in the
+18-dimensional space [1]^perp. The same computation for any grid G and any hub line only gives back the tight-set
+property (a grid disjoint from a line meets its far set in 6 points), so the information is in the dimension count.
+
+**Table on the canonical column solution of 17.47** (laptop session, `pencil_rank.py` on its side; RE-COMPUTED
+INDEPENDENTLY here: `pencil6_rank7.py`, `OUTPUT_pencil6_rank7.txt`, `OUTPUT_pencil6_rank7_hubs.txt`). Grids: the six
+pencil grids P_k and A(r, d) = the grid through theta_r on the columns of the two grids of the duad d, when it exists;
+H_r = set of such duads at theta_r. Intersections: A with P_k: 3 if k in d, else 1; A(r,d), A(r,d'): 3 if the duads
+meet, else 1; A(r,d), A(r',d') for r != r': 1 if d, d' are disjoint and the syntheme {d, d', rest} is outside the
+total, else 0. Number of grids and rank mod 7 (range over random positions):
+
+| H at each of 1 / 2 / 3 points of Theta | grids | rank mod 7 |
+|---|---|---|
+| nothing (pencil alone) | 6 | 6 |
+| perfect matching | 9 / 12 / 15 | 9 / 12 / 12-15 |
+| hexagon (every column in 3 grids) | 12 / 18 / 24 | 12 / 15-18 / 20-24: three points impossible at rank 37 |
+| K_3,3 (every column in 4 grids) | 15 / 24 / 33 | 15 / 24 / 33: two points impossible |
+| two triangles | 12 / 18 / 24 | 11 / 12-16 / 17-21 |
+| star (one more line in six grids) | 11 / 16 / 21 | 10 / 10-12 / 18 |
+| double star (the point has three lines in six grids) | 15 / 24 / 33 | 13 / 18-20 / 24-27: three points impossible |
+| triple star (four lines in six grids) | 18 / 30 / 42 | 15 / 24 / 33: two points impossible |
+| K_6 | 21 / 36 / 51 | 15 / 24 / 33: two points impossible |
+
+My two computations agree with the laptop session's values (its ranges are inside mine). Reading: around a line in
+six grids the classes of grids are nearly independent mod 7; a hub line whose three points are all "three-hub"
+points (the extremal type of tau_g <= 11 rho + 17) is impossible at rank 37, and with two such points at most one
+dimension is left for all the other grids of the graph. The laptop session's greedy search finds at most about 21
+further grids around the pencil at rank 37.
+NOT PROVED: (1) only the canonical column solution (others exist, 17.47); (2) only grids through the three points
+of Theta; (3) no general lower bound of the rank in terms of rho or tau_g; (4) lines in four grids; (5) twin
+differences of non-grid prisms (norm 12), which the accounting also needs: by 17.45 a cap on rho alone does not
+conclude (break-even 25 201 at rho = 0 against 31 976), the total number of twin pairs has to go below about 540.
+If a general lemma gives rho of a few dozen and tau of a few hundred at rank 37, the accounting of 17.44 concludes.
