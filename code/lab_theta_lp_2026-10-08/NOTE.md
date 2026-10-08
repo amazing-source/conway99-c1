@@ -2384,7 +2384,7 @@ Also recorded, Codex's caveat on 17.57: "the nine shadows of star v alone" (bran
 only; the prior deletions of the propagation may use the nine other shadows.
 Scope unchanged: finite certificates on one edge of two balls already excluded in September; no uniform lemma.
 
-### 17.59 The two-star obstruction needs only Green values and star sums: a depth-one, solver-free refutation (20:25 UTC)
+### 17.59 The two-star obstruction needs only Green values and star sums: a depth-one, solver-free refutation (20:22 UTC)
 
 Three steps, each sharper than the previous one. Pair tables and propagation are Codex's (`filtered_system`, `propagate`,
 commit 96e7f23), rebuilt in each mode; the unary pools (norm 6 mod 7, local filters) and the filters against the common
@@ -2423,3 +2423,33 @@ filter and LAP's real inequalities are alternative strengthenings, not necessary
 conversely that the real 3 x 3 PSD filter with the apex kills by propagation alone, without any assignment.
 Scope: balls already excluded by one star in September; one edge per ball; finite certificates; no uniform lemma, no new
 exclusion of rank 37.
+
+### 17.60 Status of 17.59, and two negative results from the laptop session (20:27 UTC)
+
+* **Audit of `sac_two_star.py` by Codex (in progress, its message of 20:28 UTC).** `restrict()` and the index mapping look
+  correct to it, and nothing is inherited from a stronger mode. Certification gap, accepted: `close()` replays Codex's
+  trace only when the propagation survives, so the traces of the contradictory leaves are not replayed here. Codex is
+  building a `.proofs.jsonl.gz` archive for the four balls (one pivot, every candidate tested from the same base
+  domains, independent replay on the original indices). Until then 17.59 is "computed, not certified". The two lifted
+  certificates of 17.59 item 2 (3.5 MB and 10 MB) are kept locally only; they are rebuilt in 15 s each.
+* **Laptop session, 20:09 UTC (hand): no closed form in G alone for a star.** In the 10 x 10 real block of a star only the
+  row sums depend on G alone (everything bilinear in N does: N f(A_F) N^T = f(-(G+I)) K + cJ); already the trace of the
+  block depends on a third moment of N (the number of far vertices adjacent to u, w, z). So no invariant of G can be
+  tested without a search at that level. Usable form of the star equation: with n_f = e_u + m_f and Q the real Green
+  Gram of the ten 5-sets, the largest eigenvalue of P (A_star + Q) P on the sum-zero space is exactly 3; for a sub-star
+  only "at most 3" remains. Its derivation of the square condition was relayed to Codex for audit.
+* **Laptop session, 20:26 UTC (measured on three random admissible balls, exact rational H^+): no uniform counting
+  inequality.** Through a point: about 25 000 candidate shadows, 3 516 to 3 731 of Green norm 6 mod 7 (1/7 within 5 %);
+  through a transversal edge: median 3 400 apex candidates, 324 to 468 after "real bound + norm 6", none of the 108 edges
+  without a candidate; 0.164 of the pairs compatible mod 7. Counts of single shadows and of pairs are equidistributed and
+  never small: what kills is the conjunction (45 pair conditions on 10 choices, then the cover). Idea tested and
+  REFUTED by that session: an apex shadow contains two G-adjacent points, so its real energy might exceed 37/12; the
+  minimum per edge is 1.87 to 2.02 (bound 3.083). So the strength of Codex's 3 x 3 minor with the apex comes only from
+  the two known (zero) adjacencies, not from an apex of small projection.
+  Its reasons against a uniform bound of counting type, which I accept: such a bound is a cancellation statement for
+  character sums uniform in the quadratic form (false for special G); every second-order average is determined by G and
+  automatically consistent; my "340 x 2/49 = 14 candidates" is an expectation over G and says nothing for very
+  symmetric balls. So my question of 20:27 UTC is answered negatively; the heuristic of 17.57 item 3 stays a heuristic.
+* What remains independent of G, hence the only material for a uniform statement (the laptop session's view, which I
+  share): the FORM of the two identities (real: Sigma_X positive semidefinite of rank <= 8 for every X; mod 7: Pi
+  7-integral) and the star-sum relations.
