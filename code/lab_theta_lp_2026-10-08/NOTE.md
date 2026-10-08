@@ -1263,3 +1263,20 @@ Request sent to Codex: recompute its per-pair maxima separately for the two type
 apices form a triangle, have no neighbour among the 60 one-neighbour vertices, and the collisions are the rewritings
 by 1_G - 1_G'). Still outside this budget: masses 7, 8, 9, the weighted windmills, the single-grid (sum-9) channel,
 and the exact certificate.
+
+### 17.30 Codex's grid split, and the budget without the sub-family F0 (11:50 UTC)
+
+Codex (exact, script not yet published): for a GRID twin pair the internal constant of (6,3), e(W) <= 8, is 12 182 at
+norm 8 (12 814 for a non-grid pair) and 738 at norm 6 (756); F0 = (7,3,0) internal 7 496 (7 564); so the split gains
+about 5 %. The 2794 of its note 185 for (4,4) is 2634 + 4 e(Theta) of mass six plus 160 reserved for the disjoint
+mass-eight component.
+`lp_nof0.py` (`OUTPUT_lp_nof0.txt`): without F0 the raw count at the grid point is 31.57M and the budget is about
+10 200 colliding pairs per twin pair (k = 1; 22.37M at c = 6000, 16.23M at c = 10 000; k = 2 gives 15.93M at 10 000).
+With F0: 16 450 (k = 2). Known mass-six constants for a grid pair: 12 182 + 2 646 + 432 = 15 260 with F0, about 7 800
+without. In both cases only 1 000 to 2 500 pairs per twin pair are left for (7,1), the 9-sets containing a prism and the
+cross-shape pairs: the pairwise accounting is too tight at tau = 1534. F0 is roughly break-even (it brings 5.0M and
+may lose 7 496 * 1534 = 11.5M pairs).
+Remark (mine): the collisions of F0 of the first pattern are genuine and come in classes of size exactly 2: with U a
+triangle of W, [psi] = t_U - t_T + [1_W0], and t_U - t_T = t_U' - t_T' exactly when (U, T') and (T, U') are twin prisms;
+so re-counting by distinct differences t_U - t_T removes nothing. The lever is tau (the structure of grids through a
+line, 17.28), not the bookkeeping.
