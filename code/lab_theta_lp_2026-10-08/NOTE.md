@@ -1247,3 +1247,19 @@ point, L8; at most 17 grids through a vertex; the incomplete pairs at a vertex c
 the same setting with the "slot" calculus; Codex is asked to push it to "one universal class" and "one class of degree 4".
 Also from Codex today: the 27-vertex cube H(3,3) is not an induced subgraph (72 outside vertices against 36 diagonal
 triples); a triangle of Xi_v only gives the 19-vertex union of three grids, which passes the local budgets.
+
+### 17.29 Two loss constants: grid twins and non-grid twins (11:40 UTC)
+
+Codex's note 194 (commit 996baa2 of its branch) contains the class theorem of 17.26 with proofs, its cut
+17 tau <= 17 P + 105 rho, the certified tau <= 1534 and b_3 >= 45766, and the new ceilings b_4 <= 15 975 390.7,
+b_4 + (651/34) b_3 <= 16 851 675.0.
+
+`lp_two.py` (`OUTPUT_lp_two.txt`), floating LP: tau_g = pairs of grids sharing a line, tau_n = pairs inside non-grid
+classes, with 17 tau_g <= 207 rho, tau_n <= P - 6 rho, 4 (tau_g + tau_n) <= Phi; bound (2 r8 - c_g tau_g - c_n tau_n)/3
+(class quotient k = 2), all shapes of support <= 9, b_4 alone:
+(c_g, c_n) = (8000, 30000): 16.57M; (12000, 30000): 16.57M; (16000, 30000): 15.90M; (16000, 20000): 16.21M;
+(12000, 40000): 13.98M. So the mass-6 channel closes in b_4 alone when, roughly, c_g <= 16 400 and c_n <= 32 000.
+Request sent to Codex: recompute its per-pair maxima separately for the two types of twin pairs (in the grid case the
+apices form a triangle, have no neighbour among the 60 one-neighbour vertices, and the collisions are the rewritings
+by 1_G - 1_G'). Still outside this budget: masses 7, 8, 9, the weighted windmills, the single-grid (sum-9) channel,
+and the exact certificate.
