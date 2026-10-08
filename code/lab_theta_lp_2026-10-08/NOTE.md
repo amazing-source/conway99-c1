@@ -2663,7 +2663,7 @@ analogue of (B). Three precise questions for a C2-like route: an object of bound
 counting identity that forces non-trivial structure; a finite list of local types (the 177 grid profiles at a vertex are
 the only finite catalogue we have).
 
-### 17.68 A rank-free forced configuration with a finite catalogue (Codex), re-derived independently (22:07 UTC, 09/10)
+### 17.68 A rank-free forced configuration with a finite catalogue (Codex), re-derived independently (22:07 UTC, 08/10)
 
 User (direct, about 22:00 UTC on 08/10): C2 needed three routes; the point is not to imitate C2 but not to stay stuck
 on one route, here the route "rank by rank", and to come back if the others are worse. Relayed to Codex in his words.
@@ -2700,7 +2700,7 @@ classical interlacing refined by J, weak on small subgraphs. The route is of "ty
 DEPTH. Proposed decisive measurement, not run: forced closure only (third points of lines, missing common neighbours),
 exact positivity at each step, recording the depth of death or the number of survivors per level.
 
-### 17.69 The 174 remaining cores: two bounded pilots, both negative (22:33 UTC, 09/10)
+### 17.69 The 174 remaining cores: two bounded pilots, both negative (22:33 UTC, 08/10)
 
 Codex (its note 222, commit cdca3c6 of its branch, entry point RECHERCHE_ACTIVE_C1.md): the simultaneous incidence
 equations of the 85 outside vertices on H (mask multiplicities, exact integer certificates) exclude 136 of the 310 cores;
@@ -2727,7 +2727,7 @@ Compared state of the routes (no rank excluded by any): (i) rank-free cores: 373
 at small depth in these two pilots; (ii) grid / no grid: factor 0.79 missing at rank 37, restricted cap not computed;
 (iii) stars at rank 37: certificates per ball, no uniform lemma. Neither campaign is continued on my side.
 
-### 17.70 Reserve route "no grid": one quick variant tested, negative (22:38 UTC, 09/10)
+### 17.70 Reserve route "no grid": one quick variant tested, negative (22:38 UTC, 08/10)
 
 Codex declined my proposal to read the 174 core types on the four old balls (absence on four excluded examples covers
 nothing): accepted. It found integer mask multiplicities for 15 of the 174 (no gain from integrality) and is piloting the
@@ -2745,7 +2745,7 @@ from 29 204 to 27 828 (5 %), and its certified range for a grid pair is [16 496,
 never refined. By note 195 the collisions of the (9,0) channel use supports containing a prism, not a grid, so
 grid-freeness does not obviously reduce them. Also unpaid in any case: the collisions of masses 7 to 9.
 
-### 17.71 Crossing the 174 cores with the order-10 census: exact, valid, no effect on the counting (22:54 UTC, 09/10)
+### 17.71 Crossing the 174 cores with the order-10 census: exact, valid, no effect on the counting (22:54 UTC, 08/10)
 
 Codex (its note 223): integer mask multiplicities and the coexistence of masks exclude no further core; it proposed a
 double count over ALL motifs S of one graph. Done here in the census, with exact forms.
@@ -2773,7 +2773,7 @@ far vertex carries one extra scalar, and the star conditions with that scalar ar
 searches, and 33 784 128 matrices in the torsion case (3,3)); no star. Relayed to Codex with its request for an audit;
 I offered to re-implement one witness ball. Not checked here yet. Rank 37 is not excluded by it.
 
-### 17.72 The laptop session's result on girth-5 lines: Codex's audit and my independent witness (23:18 UTC, 09/10)
+### 17.72 The laptop session's result on girth-5 lines: Codex's audit and my independent witness (23:18 UTC, 08/10)
 
 * **Codex's audit (its note 224, commit e7bba78 of its branch).** Points 1 to 7 of the laptop session's note re-derived
   with no defect found (rank 36 of A - 3I + 3J, non-degenerate quotient, scalar residue, torsion cases 00, 01, 11, 33);
@@ -2847,3 +2847,18 @@ vertices carry isotropic vectors of a non-degenerate 5-space over F_7 with an ex
   have rank 4 - 2 v_3(t); modulo 5, q_fg = 3 - 2e + m - r depends on the names only (not on the adjacency) and must have
   rank 12 - 2 v_5(t). Test done: the canonical column solution (60 ordered Petersen stars) has rank_3(J - C) = 4: it
   passes, which also confirms the formulas. The test modulo 5 needs the rows (signs) and is the next thing to look at.
+
+Addendum to 17.73 B (23:43 UTC, hand): the conditions modulo 3 and modulo 5 on a six-grid line are AUTOMATIC; do not test them.
+* Modulo 3. Let c(f) in F_3^6 be the column vector of the name of f. For x, y in F_3, [x = y] = 1 - (x - y)^2, so the
+  number C(f, g) of column agreements is -|c(f) - c(g)|^2 modulo 3; every name uses each column twice, so |c(f)|^2 = 10
+  = 1, and q = J - C = c(f).c(g) modulo 3: the Gram matrix of the column vectors. They lie in the hyperplane sum = 0,
+  which contains the all-ones vector as a radical direction, so the rank is at most 4 for ANY column data. (This
+  explains the 3^4 of the determinant formula; the canonical solution reaches 4.)
+* Modulo 5. With s_k(f) = +-1 the row sign and z_k(f) = s_k(f) e_(c_k(f)) in F_5^3, one finds
+  q_fg = sum over k of s_k(f) s_k(g) (2 - [same column at k]) = Z_f^T B Z_g with B the direct sum of six blocks 2J_3 - I_3,
+  each of rank 2 over F_5 (eigenvalue 5 on the constants). So the rank is at most 12 for ANY names. (This explains 5^12.)
+So only the condition modulo 7 carries information on this object, and it involves the far adjacency:
+A_B - 3I = J + M' + sigma sigma^T + U U^T + 2 Z Z^T modulo 7 (sigma the sign vectors, U the column indicators, Z as above,
+M' the Gram of rank r - 32 of the isotropic vectors). A tempting shortcut is FALSE and is recorded so that it is not
+retried: M' vanishes on the reduction of L_far + K_far, not on the whole of ker N modulo 7 (there is glue of dimension
+rank M'), so the isotropic vectors are not a linear function of the shadows.
