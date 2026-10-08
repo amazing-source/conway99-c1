@@ -13,17 +13,21 @@ def read(name):
     with gzip.open(ROOT/f'data/{name}.json.gz','rt') as stream:return json.load(stream)
 
 
-def main(verify_only=False):
-    costs={m:read(f'codex_pencil_{m}_collision_bounds')['results']['all_including90']['even_upper_bound']
+def main(verify_only=False,degree_moments=False):
+    suffix='degree_moments' if degree_moments else 'collision_bounds'
+    costs={m:read(f'codex_pencil_{m}_{suffix}')['results']['all_including90']['even_upper_bound']
            for m in (2,3,4,6)}
     nongrid=read('codex_grid_pair_collisions_all_nongrid')['results']['all_including90']['even_integer_upper_bound']
-    assert costs=={2:29144,3:29142,4:29140,6:29140} and nongrid==31976
+    assert nongrid==31976
+    if not degree_moments:
+        assert costs=={2:29144,3:29142,4:29140,6:29140}
     degrees,grouped=profiles();weighted={}
     for ds in degrees:
         key=(sum(ds)//2,sum(comb(d,2) for d in ds),sum(d>=2 for d in ds))
         weight=sum(comb(d,2)*costs[d] for d in ds if d>=2)
         weighted[key]=max(weighted.get(key,0),weight)
-    path=ROOT/'data/codex_pencil_weighted_moments.json.gz'
+    path=ROOT/('data/codex_pencil_degree_weighted_moments.json.gz' if degree_moments
+               else 'data/codex_pencil_weighted_moments.json.gz')
     if verify_only:
         with gzip.open(path,'rt') as stream:report=json.load(stream)
         assert report['costs']=={str(m):c for m,c in costs.items()}
@@ -71,4 +75,6 @@ def main(verify_only=False):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--verify-only',action='store_true')
-    main(parser.parse_args().verify_only)
+    parser.add_argument('--degree-moments',action='store_true')
+    args=parser.parse_args()
+    main(args.verify_only,args.degree_moments)

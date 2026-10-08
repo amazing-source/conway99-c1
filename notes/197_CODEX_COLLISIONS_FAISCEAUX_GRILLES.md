@@ -5,6 +5,11 @@ comptages et certificats par Codex. Un faisceau de taille m est l'ensemble
 des grilles contenant une droite Θ fixée. Les tailles donnant des paires
 sont m=2,3,4,6 ; la taille cinq est exclue par la note 194.
 
+Suite : la [note 198](198_CODEX_MOMENTS_DEGRES_ET_CANAL90.md) ajoute les
+moments des degrés individuels et améliore ces plafonds. Elle donne
+notamment C_6≤39016712 globalement et C_90=5376+12t_Z pour chaque paire
+de grilles. Les certificats ci-dessous restent valides.
+
 ## 1. Résultats
 
 On fixe deux prismes X1,X2 obtenus en supprimant Θ de deux grilles du
