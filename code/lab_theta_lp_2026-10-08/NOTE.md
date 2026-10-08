@@ -981,3 +981,84 @@ Exploratory floating LPs; nothing here is a bound to be used.
   The closure of "prism + F" for all 21 five-vertex types F (16 815 types of order 11, 747 new parameters, 45 s) leaves
   the caps unchanged: P <= 852.92, H <= 1867.25, order-8 supports <= 53 465.
   Conclusion: neither the twins nor P can be cut further by positivity at orders 11 and 12 with targets of this kind.
+
+### 17.22 Twin prisms charged to a census count; rank 43 in six parameters; profile C is a 22-coclique (10:05 UTC)
+
+Status: hand derivations and floating LPs of the lab session, NOT audited; the rank-43 formulas are the laptop session's
+(exact, reproduced by Codex in its own basis, note 191); the three profiles are Codex's (note 191).
+
+**(a) Far triangles of a prism (laptop session).** With n_j = number of triangles disjoint from a prism and joined to
+it by j edges: F = n_0 = 40 - n_3 - 3 n_4 - 6 n_5 - 10 n_6 and n_1 = 3 n_3 + 8 n_4 + 15 n_5 + 24 n_6 - 84 >= 0, so
+F <= 12. A prism in a class of m twins has F >= 2(m-1), hence **4 tau <= Phi := number of pairs (prism, far triangle)**,
+and Phi is a linear form of the order-9 census (the shape (6,3) at norm 4).
+`lp_norm4.py` (`OUTPUT_lp_norm4.txt`): max Phi = 8483.3 over the order-10 polytope (tau <= 2120, weaker than Codex's
+1890); with P >= 850, Phi <= 7514 (tau <= 1878); max (Phi - 12 P) = 0.
+
+**(b) The twin-prism losses inside the LP** (`lp_phi.py`, `OUTPUT_lp_phi_9.txt`, `OUTPUT_lp_phi_9_no63.txt`). If the
+collisions through twin prisms cost at most c per twin pair, the number of classes is at least R - (c/4) Phi. Minima
+over the polytope, supports <= 9 (millions):
+
+| c per twin pair | r8, all shapes | coupled, all shapes | r8, without (6,3) | coupled, without (6,3) |
+|---|---|---|---|---|
+| 0 | 32.42 | 39.69 | 19.79 | 24.78 |
+| 3228 (= 2794 + 432, Codex's (4,4) and (5,2)) | | | 15.43 | 22.87 |
+| 4000 | 28.64 | 37.87 | | |
+| 6000 | | | 9.56 | 17.08 |
+| 8000 | 20.20 | 29.86 | | |
+| 16000 | 3.23 | 12.94 | | |
+
+Ceilings at rank 37 (Codex, note 189, with a_7 <= 842): b_4 <= 16.23 million, b_4 + (651/34) b_3 <= 17.15 million.
+Reading: with Codex's constant 12 814 the shape (6,3) costs more than it brings and should be dropped; without it the
+coupled bound keeps 5.7 million of margin after the mass-6 norm-8 losses. Still to be paid from that margin: the norm-6
+twin-prism collisions (about 140 per twin pair affordable, since each weighs 651/34), the masses 7 to 9, the
+windmills and the grids. With b_4 alone the bound fails (15.43 < 16.23). Rank 37 remains open.
+Remark for (6,3): inside the sub-family "Y a triangle far from W, e(W) = 7", a mass-6 collision forces either T, T'
+disjoint, each a triangle of one of the twin prisms and W containing the other triangle of the prism of T', or T, T'
+meeting in a common rung apex and W containing the 4-cycle of the two other rungs; the pattern 5 + 1 is impossible.
+Not counted exactly.
+
+**(c) Norm-4 representatives of support <= 10.** 3n - 2E + ((a-b)/3)^2 = 4 leaves only: triangle; prism; prism minus
+far triangle; 9-set with 16 edges; (8-set with 14 edges) minus far edge. All but the triangle lie on a special support.
+Maxima over the polytope (one sign): 852.9, 8483.3, 6839.2, 5670.
+
+**(d) A refuted lever: sum-of-squares cuts** (`sos_tri.py`, `sos_flags.py`, `OUTPUT_sos_*.txt`). For a root
+configuration sigma and rooted extensions ("flags") F, the matrix M[F,G] = sum over embeddings of c_F c_G is positive
+semidefinite and LINEAR in the census counts; positivity of the counts does not imply it. Tested with roots triangle
+(flags up to 3 extra vertices, orders <= 9, 124 flags), prism (2 extra, orders <= 10, 109 flags) and house (2 extra,
+orders <= 9, 131 flags), at the max-P vertex and at the rank-37 optimum: no negative eigenvalue, no cut. For the
+triangle root the whole matrix reduces to 231 * sum_T n3(T)^2 >= (2P)^2 (the order-6 extension counts of a triangle are
+affine in n3(T)), which holds at the vertex (pairs of prisms on a common triangle: 8697 >= 5446). Not pursued.
+
+**(e) Rank 43 (laptop session; reproduced by Codex).** With a_0 = b_0 = 1, a_1..a_6 = 0, b_1 = a_7 and a_7k = b_k the
+theta series is affine in (a_7, ..., a_12):
+    a_13 = 2632 + 56 a_7 - 2 a_8 - 16 a_9 + 7 a_10 + 2 a_11 + a_12
+    b_2  = 1000 - 8 a_7 + 25 a_8 + 11 a_9 + 8 a_10 + 3 a_11 + a_12     (agrees with section 16 after b_1 = a_7)
+    b_3  = 10648712 + 19388 a_7 + 5150 a_8 + 1237 a_9 + 31 a_10 - 68 a_11 - 39 a_12
+    b_4  = 4464109880 + 275744 a_7 - 14374 a_8 - 24188 a_9 - 3996 a_10 + 388 a_11 + 701 a_12
+Rank 43 is excluded as soon as one of: 2 a_8 + 16 a_9 + a_13 < 2632; b_2 < 922 (Codex: b_2 >= 462 + 41 b_1 + b_1^2/2
+at every rank, hence 922 here); b_3 < 6 696 790. Dual counting cannot do it (millions of norm-6 and billions of norm-8
+vectors are forced); a Gaussian count of short vectors of L1 and M agrees in order of magnitude with the forced
+numbers, so only the frame can exclude this rank.
+At rank 43 every norm-28 vector of L1 lies in 7 L1*, so b_2 = a_14, and the fractional ones have (Codex) three
+profiles phi - 1/3: (A) 36 ones and three -1; (B) 33 ones, a 2 at v, -1 at two neighbours a, b of v, no 1 adjacent to
+v; (C) 35 ones containing N(v), and -2 at v.
+
+**(f) Profile C = a 22-coclique with a marked vertex (mine).** In profile C let R = {v} u (S - N(v)). The equations
+A phi = -4 phi + 6 say: R is a coclique of size 22 and every outside vertex has exactly 4 neighbours in R. Conversely,
+22 is the ratio bound 99 * 4 / 18, a coclique of that size has this regularity, and for every v in R the vector
+phi = 1_N(v) + 1_(R-v) - 2 e_v has profile C. Hence: **44 norm-28 vectors of L1 per 22-coclique, and none otherwise.**
+Formulas: P 1_R = 1_R - (2/9) 1, sigma = P 1_R - 7 P e_v. Consequences:
+* points R, blocks the 77 outside vertices: a 2-(22,4,2) design; a block meets 6 blocks in 2 points (non-adjacent,
+  no further common neighbour), 40 in one point (4 adjacent), 30 in none (6 adjacent); the graph induced on the 77
+  blocks is 10-regular with spectrum 10, 3^33, (-1)^21, (-4)^22 and 77 triangles. No contradiction found.
+* two 22-cocliques R, R' meeting in i vertices give the integer (-4)-eigenvector 1_R - 1_R' of norm 2(22 - i): so
+  i <= 15, and i = 15 is a Fano vector (switching a coclique along a Fano configuration).
+* at rank 43, y = [1_R]/7 lies in M + Z[e_v], has norm 22/9 (the frame vectors have 28/9), (y, [e_x]) = 7/9 on R and
+  -2/9 outside, the 22 norm-4 vectors are y - [e_v] (pairwise inner product 1), and Q(y - y') = 2(22 - i)/7 must be an
+  even integer: **two 22-cocliques meet in 1, 8 or 15 vertices** (15: a root; 8: an integral norm-28 vector).
+Profile B in the same language: R' = S u (N(v) - {a,b}) (45 vertices, v outside), chi = 1_R' - e_v satisfies
+A chi = -4 chi + 8, i.e. the degrees into R' are 4 + [x ~ v] on R', 8 + [x ~ v] outside, 12 at v; sigma = chi - 4/9
++ 7 P e_v. Profile A: a triangle Z forces S = N1(Z), so the non-triangle vectors have e(Z) <= 2 and
+e(S) = 51 + e(Z), e(S,Z) = 30 + 2 e(Z), e(Z,O) = 12 - 4 e(Z), e(S,O) = 372 - 4 e(Z), e(O) = 228 + 4 e(Z); the prism is
+Z = its rung apices, S = prism + its 30 far vertices.
+Open: whether a srg(99,14,1,2) can have a 22-coclique.
