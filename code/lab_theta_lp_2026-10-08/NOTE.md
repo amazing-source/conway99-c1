@@ -779,3 +779,54 @@ allowed up to 2130 the family can be wiped out in the twin-rich corner, so the b
 compatible with the 3-side LP are about 1.3 * 10^12 (norm 6) and 3 * 10^12 (norm 8) for r = 37, 4 * 10^14 and 10^15 for
 r = 43, the same for N = 22, 24, 27. On that side two dual representatives collide only through a vector of L, so a
 census of dense induced bipartite subgraphs would be clean, but the margins make it useless. Do not retry.
+
+### 17.16 Codex's ORDER-9 census tested on the real 243-graphs; state of the collision audit (07:48 UTC)
+
+**Test.** Packet `data/codex_census_validation_243.json` at e5ad4d2 (blob 3029fdfb), with a stage of order 9 (5311
+types, 57 parameters: P, H, the seven dense 8-vertex types and 48 nine-vertex types of minimum degree 3).
+`census_check243.py` measures the 57 parameters by its own induced-embedding search (about two minutes per graph;
+options save= / load= split the work into bounded runs), then counts the connected order-9 types with at most 4 million
+embeddings: twin243_switched 276 types, bvls243 40 types, all equal to the packet's formulas.
+`six_three.py` counts nine of the ten branches of the family (6,3) by brute force (all 6-sets with 8 or 9 edges, then
+the triangles, induced paths and "edge + far vertex" outside) and `six_three_730.py` the branch (7,3,0) on bvls243
+through edge-transitivity (26 600 six-sets with 7 edges on an edge, 2 632 560 pairs with a far triangle). Signed counts,
+packet prediction = brute force in every case:
+
+| branch | twin243_switched | bvls243 |
+|---|---|---|
+| (8,3,0) | 19 746 720 | 8 981 280 |
+| (8,3,1) | 87 190 560 | 42 340 320 |
+| (8,2,0) | 1 485 473 040 | 679 369 680 |
+| (9,3,0) | 355 320 | 1 176 120 |
+| (9,3,1) | 1 995 840 | 7 698 240 |
+| (9,3,2) | 1 547 100 | 5 292 540 |
+| (9,2,0) | 29 114 640 | 107 133 840 |
+| (9,2,1) | 105 811 920 | 386 836 560 |
+| (9,1,0) | 336 639 240 | 1 233 963 720 |
+| (7,3,0) | not done | 2 010 523 680 |
+
+Measured parameters: bvls243 has only P = 8910, cube 40 095, C14 13 365, C9_1452856528 = 1 924 560, the grid 1485 and
+C9_61547791256 = 160 380 non-zero; the twin has 29 non-zero parameters (23 of the 48 new ones).
+Limits: (7,3,0) is not brute-forced on the twin; H, C8_5683824, C8_245715219 and 25 of the nine-vertex parameters vanish
+in both graphs, so their coefficients are not tested by real graphs; P <= 852, rho <= 126, tau <= 1890 and the minima of
+N8 are statements about (99,14) and are tested only through the code path that produces them.
+
+**Collision audit (Codex's note 185 at d6e2e08, and the laptop session).** Codex: complete loss bound for (4,4),
+L44 = 997 920 + 2794 tau + 272 Omega + (668/3) C14 + 72 / 32 / 128 times the three cubic types + 100 / 144 / 64 times the
+three 13-edge types; tau <= 2P + 3 rho (a class of six twin prisms forces a grid) and tau <= 1890, N4 <= 17 325 (my bound
+8 tau <= N4 is correct, its multiplier is zero in that certificate); for the (6,3) representatives
+N8 + (651/34) N6 - 1000 tau >= 12 908 649.6, the same value as without the penalty (the penalty per twin pair is
+exploratory, not a proved loss). No uniform gain yet.
+Laptop session (hand, not refereed): for twins Pi, Pi' every colliding (6,3) representative is
+1_Pi - 1_B - 1_B' + 1_C - 1_K with B in Pi, B' in Pi', C, K outside, |B| = |B'| = |C| = c, |K| = 3 - c, and Q = 8 reads
+e(C) + e(K) - e(C,K) + e(B) + e(B') + sum_C g - sum_K g = 1 + 3c with g(v) = d(v) - deg_B(v) - deg_B'(v); all shapes are
+listed; only three are rigid, the others contain free outside vertices, so the number of collisions per twin pair is not
+a constant ("zero to a few thousand per pair and per sign"), in agreement with the estimate of 17.15. Mass 7: the same
+reduction with |B| = |B'| = c + 1, |K| = 2 - c and right-hand side 2 + 3c - [a centre is removed]; it gives back the
+7 * 7 of the (5,2) family. Its remarks: restricting (6,3) to e(W) <= 8 removes every collision involving a prism member;
+the differences of two far triangles give b_3 >= 73 920 - 20 P - 72 rho - 4 tau.
+
+**L1-side levers (what-if, `ceiling37.py`).** If the 280 independent triples of a vertex were shared between Fano and
+norm-16 seeds (7 a_7 + 8 a_8 <= 6930 instead of 55 440), the coupled ceiling would be 15.89 million instead of 17.40; with
+no root in addition, 15.54 million. The laptop session was asked to study whether the packing argument transfers to the
+norm-16 cores and to mixed pairs (Fano, norm 16).
