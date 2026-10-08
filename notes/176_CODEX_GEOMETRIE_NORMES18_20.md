@@ -252,3 +252,25 @@ vérifiée ici ; l'exclusion générale du §5 simplifie ses sous-cas.
 Les deux types réunis donnent au plus douze réalisations par graine. Ce n'est pas encore
 une borne sur toute la norme dix-huit : le type (0,4,4) et le cas d'une arête dans chaque
 support restent à traiter.
+
+## 9. Norme vingt : au moins sept graines indépendantes, pas huit par ce seul argument
+
+Pour un vecteur orienté de norme vingt, si les deux supports sont indépendants, chaque
+sommet positif fournit une graine indépendante : il y en a dix.
+
+Si chacun des supports contient une arête, huit sommets positifs sont isolés dans leur
+propre support et ont exactement quatre voisins négatifs. Cependant, au plus un de ces
+huit sommets peut voir les deux bouts de l'arête négative : cette arête a un unique
+voisin commun, par λ=1. Son ensemble de quatre voisins ne serait pas indépendant.
+Les autres sommets donnent donc **au moins sept graines indépendantes**. C'est le même
+argument que celui des six graines de norme dix-huit dans la note 171.
+
+Si κ20 majorait uniformément le nombre de vecteurs orientés de norme vingt par graine
+indépendante, on aurait ainsi
+
+    7a10≤55440κ20,        a10≤7920κ20.
+
+Le coefficient 6930 obtenu en divisant par huit n'est pas justifié pour la famille
+entière sans un argument supplémentaire. Aucun majorant uniforme κ20 n'est prouvé ici.
+De même, le facteur deux du §8 pour la norme dix-huit suppose le point manquant fixé ;
+il ne doit pas remplacer le facteur douze après sommation sur les six choix.
