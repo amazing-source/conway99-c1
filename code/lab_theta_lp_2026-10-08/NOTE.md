@@ -2552,3 +2552,39 @@ archive (leaves not replayed on my side). Only ball 12 was run (6 min 20 s in th
   with a unique q_p adjacent to v. Pattern (a) only says that two such p and their q_p lie in the ball of T: a condition
   on the position relative to T, with no content of its own. So the lemma identifies what must be forbidden, but
   forbidding it for every ball is again the uniform statement we do not have.
+
+### 17.64 Scope of the star route: what Codex and I agree on, and what I had overstated (21:12 UTC)
+
+After Codex's note 218 (forced pattern from the unit coordinates: general proof for z = 0, formulas 8 - 2z / 16 + z / z,
+two counting counter-models, exact rational check of my triple of 17.63, reconstruction of the hard leaf of apex 187)
+I sent Codex a scope argument before taking up patterns A / B. Outcome of the exchange:
+
+* **Agreed.** Stop re-reading the dead examples. No uniform strategy for forbidding A and B is established at present.
+* **Not agreed, and Codex is right.** I wrote "by this route (a') is reachable only by enumerating the balls, not by a
+  lemma". The absence of a strategy is not an impossibility theorem. Withdrawn in that form.
+* **Overstatements of mine, corrected by Codex.**
+  - "Counting and the local SRG filters alone cannot give a contradiction": my evidence was the September witness,
+    which concerns only the constraints LISTED there, on ONE cyclic ball, and Codex's counter-models of note 218, which
+    are abstract incidence matrices without any G. Not a general statement.
+  - "Everything bilinear in N is automatic" is false as written: the individual Green products in {2,3} are bilinear in
+    two shadows and are not automatic, and the real bound n^T H^+ n <= 37/12 removed 14 apexes of the cyclic ball (note
+    215). What is automatic is a family of contractions and sums (star sums against the Green form, degrees, traces).
+  - My cost figure (2.6e10 balls x 20 ms = about 16 core-years) is arithmetic under three uncertified hypotheses: an
+    orbit MASS is not a count of classes, 35 of 92 is not a certified conditional probability, 20 ms is not a measured
+    cost. Neither a lower bound nor a proof that enumeration is needed.
+* **What stands.** In the formulation "one generic ball at rank 37", the rank is encoded by R = 0 and the prescribed
+  Green values; Codex has no other operational uniform argument on A / B either. Global rank and discriminant
+  constraints exist (its note 205, the centred 18-dimensional space, not to be confused with the 33-dimensional Green
+  space of the shadows), but no useful translation of A / B into that space has been built.
+* **A real limit announced by Codex (to be published with an explicit witness).** Any Green-compatible pair of apexes
+  and any compatible third member complete to the abstract Gram of ten vectors over F_7 with the prescribed sum, once
+  the 0/1 supports are dropped (Gram 3I + 3J - A(4K_2 + 2K_1), determinant 2; ambient dimension left 28 against 6 to
+  realise). So no further abstract Gram test on one star can close the problem: one has to keep the supports, or couple
+  neighbourhoods.
+* A check of mine that came to nothing and is recorded so that it is not redone: index-7 overlattices of L1 along an
+  isotropic class of its 7-discriminant form have the genus of the next rank; averaging their theta series over all
+  isotropic lines only reproduces a_{7k} >= b_k, which follows from the modularity already used in the theta programme.
+
+State of rank 37 at this point: counting route closed by its margin (17.44, 17.45, 17.49); star route: exact certified
+certificates per ball, one forced pattern valid for every ball with z = 0, no strategy for a uniform contradiction; NT
+and the disconnected case untouched today.
