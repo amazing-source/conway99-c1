@@ -1210,9 +1210,12 @@ published by Codex).
   Every optimum is the pure grid point rho = 126, P = 756, tau' = 1534, R = 36.59M.
   Codex's proved constants for (6,3), (4,4), (5,2) add up to 16 040; (7,1), the 9-sets containing a prism, the
   cross-shape pairs and the other masses are not in. Short by a factor of the order of 1.5 (it was 3).
-* At the pure grid point all twin structures are differences of two grids: sharing a line (mass 6), a point (mass 8:
-  the two grids minus the common point), or disjoint (mass 9: every vertex has exactly one neighbour in a grid). Two
-  grids never share exactly 2 points (the difference would have a vertex of degree 2), nor more than a line.
+* Pairs of grids give twin structures by intersection: sharing a line (mass 6), a point (mass 8: the two grids minus
+  the common point), or disjoint (mass 9: every vertex has exactly one neighbour in a grid). Two grids never share
+  exactly 2 points (the difference would have a vertex of degree 2), nor more than a line.
+  CORRECTION (Codex, 11:30 UTC): this does NOT mean that all twin structures of the LP's grid point are differences of
+  grids; at that point the 8-vertex 13-edge parameter is 1890 (non-zero), so other proper supports are present and
+  their twins, and the weighted windmills, must be controlled separately.
 * `lp_joint.py` (`OUTPUT_lp_joint.txt`): coupling the ceiling to the census through a_7 <= (2/21) N(F10), with the
   ceiling replaced by the linear majorant 14.44M + 1900 a_7 (what-if, to be redone exactly). At the grid point
   N(F10) <= 3672, i.e. a_7 <= 350: with k = 2 and c = 16 000 the minimum is 15.58M against 14.44M (margin 1.14M
