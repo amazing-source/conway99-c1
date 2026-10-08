@@ -1296,8 +1296,11 @@ line, 17.28), not the bookkeeping.
   accounting misses by a factor 1.8 before the other channels (masses 7 to 9, windmills, single grid) are added; it
   would need tau <= about 860. It is a diagnostic, not a route. (My idea of counting by distinct differences
   t_U - t_T removes nothing: those collisions are genuine identifications.)
-* Read positively: a graph of rank 37 must have rho near 126, tau near 1534 and more than half of the worst-case
-  collision profile at the average twin pair.
+* CORRECTION (Codex, 12:10 UTC): the forced C is the TOTAL number of colliding pairs (all channels: masses 6 to 9,
+  windmills, single grids), while 44.8M caps the binary mass-six same-sum channels only. So there is no "window" for
+  the mass-six collisions, and nothing follows about rho or tau being near their maxima; and the integer-k family of
+  Codex is slightly stronger than the smooth Cauchy-Schwarz expression. What remains true: the bounds proved so far
+  are insufficient, by a factor of the order of 1.8 on the mass-six part alone.
 * The ceiling side (laptop session's exact sensitivities): b_4 = 13.15M + 839 a_7 - 43.2 a_8 - 80.5 a_9 - 7.3 a_10
   + 2.4 a_11 + 2.7 a_12 - 0.62 a_13 on the feasible family; a cap a_13 <= 10^6 gives b_4 <= 13.4M and a_13 <= 3 * 10^5
   gives 11.0M; with 11.0M the forced C is 42.6M, almost the cap. An upper bound of a few 10^5 on the vectors of norm 26
@@ -1312,3 +1315,35 @@ line, 17.28), not the bookkeeping.
   minimum >= 14, whose theta series satisfies the rank-43 relations, and M+ = (preimage of I)/sqrt7 is an even lattice
   of determinant 49 containing M. So every rank contains rank-43-type pairs; the only thing that separates rank 37 from
   rank 43 is the size of b_4 of M itself.
+
+### 17.32 The L1 side again: what rank 37 requires on the shells of norm 18 to 24, in seeds (12:15 UTC)
+
+`needs37b.py` (`OUTPUT_needs37b_N84.txt`), exact rational simplex, N = 84. Constraints: positivity, a_7k >= b_k, Codex's
+dual lower bounds (b_2 >= 462, b_3 >= 45766, b_4 >= 3371634, ...), the seed budget 7 a_7 + 8 a_8 <= 55440, a_7 <= 842,
+b_1 <= 44. No census, no collision count. Exact minima at rank 37:
+
+| linear form | minimum | where |
+|---|---|---|
+| 539 a_9 + 392 a_10 + 147 a_11 + 49 a_12 | 15 241 976.8 | a_7 = 842, a_8 = 6193.25, a_9 = 28 278.25 |
+| 9 a_9 + 10 a_10 + 11 a_11 + 12 a_12 | 254 504.25 | same point |
+| 9 a_9 + ... + 12 a_12 + 13 a_13 | 436 723.9 | a_7 = 0, a_8 = 6930, a_9 = 48 524.9 |
+| a_9 + a_10 + a_11 + a_12 | 28 278.25 | |
+| a_9 + ... + a_13 | 48 524.9 | |
+| 16 a_9 + a_13 | 776 398 | |
+
+(The first line is b_2 >= 462 rewritten with section 16: 1715 a_7 + 1225 a_8 + 539 a_9 + 392 a_10 + 147 a_11 + 49 a_12
+>= 24 272 738 + 722 701 b_1.)
+Reading in seeds. A seed is (p0, U), U an independent 4-subset of N(p0): 99 * 560 = 55 440 seeds. A binary eigenvector of
+norm 2n with independent supports has n positive vertices, each with exactly 4 negative neighbours, i.e. n seeds; the
+vectors of norm 14 and 16 use each seed at most once (Codex: 7 a_7 + 8 a_8 <= 55 440). If every seed lies in at most
+kappa_n signed eigenvectors of norm 2n, then a_9 <= 6160 kappa_18, a_10 <= 6930 kappa_20 (at least 8 clean seeds: at
+most one edge per support, Codex), a_11 <= 5040 kappa_22, a_12 <= 4620 kappa_24 for the binary vectors with independent
+supports, and the first line gives:
+    **rank 37 is impossible as soon as  3 320 240 kappa_18 + 2 716 560 kappa_20 + 740 880 kappa_22 + 226 380 kappa_24
+    (+ the same weights 539, 392, 147, 49 times the numbers of the other types: supports with edges, an entry 2 at norm
+    24, the regular 33-sets at norm 22, the (34,1) profile at norm 24)  <  15 241 977.**
+Examples: (kappa_18, kappa_20, kappa_22, kappa_24) = (2, 2, 2, 4) gives 14.47M; (3, 1, 2, 4) gives 15.07M; (4, 0, 2, 4)
+gives 15.67M (not enough). On average rank 37 needs 4.59 eigenvectors of norm 18 to 24 per seed, in addition to the one
+of norm 14 or 16. Known: one vector of norm 16 per seed (Codex); for norm 18 at most two per seed in the sub-case of
+Lemma A (section 14); norm 20 is binary with at most one edge per support (Codex). This route is independent of the
+grids and of all collision counts: it needs per-seed multiplicity lemmas for the norms 18, 20, 22, 24.
