@@ -17,23 +17,31 @@ sys.argv = [sys.argv[0], '84']
 import theta_lp_exact as solver
 
 
-def main():
-    forms = basis(84)
+def system_for_rank(r, forms, lows):
+    a, b = family(r-1, forms)
+    rows = [(f'a{n}>=0', a[n]) for n in range(7, 85)]
+    rows += [(f'b{n}>=0', b[n]) for n in range(1, 85)]
+    for n, low in sorted(lows.items()):
+        row = list(b[n]); row[0] -= low
+        rows.append((f'b{n}>={low}', row))
+    for n in range(1, 13):
+        rows.append((f'a{7*n}>=b{n}', [x-y for x, y in zip(a[7*n], b[n])]))
+    row = [-7*x-8*y for x, y in zip(a[7], a[8])]; row[0] += 55440
+    rows.append(('7a7+8a8<=55440', row))
+    return a, b, rows
+
+
+def audited_lows():
     source = json.loads((ROOT/'data/codex_joint_theta_small_shells.json').read_text())
     lows = {int(k): v for k, v in source['lower_bounds_M_q_coefficients'].items()}
     lows[4] = max(lows[4], 1431738)
-    cases = []
+    return lows
+
+
+def main():
+    forms, lows, cases = basis(84), audited_lows(), []
     for r in (35, 37, 39, 41, 43):
-        a, b = family(r-1, forms)
-        rows = [(f'a{n}>=0', a[n]) for n in range(7, 85)]
-        rows += [(f'b{n}>=0', b[n]) for n in range(1, 85)]
-        for n, low in sorted(lows.items()):
-            row = list(b[n]); row[0] -= low
-            rows.append((f'b{n}>={low}', row))
-        for n in range(1, 13):
-            rows.append((f'a{7*n}>=b{n}', [x-y for x, y in zip(a[7*n], b[n])]))
-        row = [-7*x-8*y for x, y in zip(a[7], a[8])]; row[0] += 55440
-        rows.append(('7a7+8a8<=55440', row))
+        a, b, rows = system_for_rank(r, forms, lows)
         result = solver.minimise(rows, [F(0)]*8)
         if result[0] == 'min':
             point = result[2]
