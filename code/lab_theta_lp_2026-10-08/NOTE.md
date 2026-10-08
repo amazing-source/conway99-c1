@@ -629,3 +629,31 @@ only, a_7 <= 3960.
 **If the lemma and Codex's twin-safe count are confirmed, the window is {37, 39, 41, 43}.**
 Next: the same packing argument for the vectors of norm 16 and 18 (Codex has their seed structure); rank 37 needs
 539 a_9 + 392 a_10 + 147 a_11 + 49 a_12 >= 24.27 million - 1715 a_7 - 1225 a_8.
+
+### 17.11 Rank 35 excluded: Codex's exact identity, re-verified here (01:23 UTC)
+
+Codex (bridge, about 01:22 UTC) confirmed the seed-packing lemma with a shorter argument (every other positive vertex of
+either Fano vector is the second common neighbour of a pair of its four seed neighbours, hence adjacent to one of the three
+shared ones: no sign crossing; at least 4 common positive and 3 common negative vertices) and gave an exact identity in its
+own eta coordinates, with no grid or twin parameter left: rho <= P/6, tau <= 5P/2 and P <= 1386 give uniformly
+b_4 >= 3 826 746 - 792 P >= 2 729 034, and
+
+    3110 a_9 + 5474 a_10 + 1328 a_11 + 68698 (b_3 - 24948) + 3822 (b_4 - 2729034) + 15559 (55440 - 7 a_7 - 8 a_8)
+    + 876897 (990 - a_7) + 18880582 (88 - b_1) = -919 306 710.
+
+`cert35.py` checks it in the coordinates of this directory (theta_lp.family(34)): the seven variable coefficients vanish
+and the constant is -919 306 710 (`OUTPUT_cert35_N84.txt`). Every bracket is non-negative, so **no srg(99,14,1,2) has
+rank_7(A - 3I) = 35**. Neither b_2 nor the shells beyond b_4 are used.
+
+Inputs of this exclusion, with their status at the time of writing:
+* theta set-up, Fricke relation, level and determinant: audited (Codex 168);
+* b_3 >= 24 948, 7 a_7 + 8 a_8 <= 55 440, b_1 <= 88 (Lemma F): audited (Codex 172, 173, 176);
+* a_7 <= 990: section 17.10, confirmed by Codex by message; its written note 180 was announced, not yet read here;
+* b_4 >= 2 729 034: audited part 1 431 738 + 6 P (note 168); 6-sets with 7 edges 2 (831 600 + 36 P - 2286 rho) (17.4;
+  counts and grid collisions re-derived by Codex, note 179); triangle minus far path 731 808 + 12 P - 48 tau (17.3 with
+  Codex's correction, note 179).
+The window is now **r in {37, 39, 41, 43}**.
+
+`needs37.py` (what-if caps, not results): at r = 37 with a_7 <= 990 the LP needs nothing while a_9 is free; with
+a_8 <= 866 and a_9 <= 20 000 it needs a_13 >= 621 497; with a_9 <= 1000, a_13 >= 1 064 831. Rank 37 lives on roughly
+25 000 or more vectors of norm 18, or on more than 600 000 vectors of norm 26.
