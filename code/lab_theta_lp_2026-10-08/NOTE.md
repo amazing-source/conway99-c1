@@ -1220,3 +1220,27 @@ published by Codex).
 * What would move it most: restrictions on the graphs Xi_v (grids through a vertex). At 3.4 line-sharing pairs per grid
   instead of 6.17 the grid point and the non-grid point (P = 852, rho = 0, tau <= 852) balance and the budget is
   about 24 000 (k = 1) to 30 000 (k = 2).
+
+### 17.28 What a bound on the grids through a line would give (11:40 UTC)
+
+`lp_beta.py` (`OUTPUT_lp_beta.txt`), floating what-if LPs: HYPOTHESES "pairs of grids sharing a line <= beta rho" and
+"pairs inside non-grid classes <= gamma (P - 6 rho)"; tau' <= gamma (P - 6 rho) + beta rho, 4 tau' <= Phi; class quotient
+k = 2; all shapes of support <= 9; b_4 alone (ceiling 15.98M). c = total number of colliding pairs per twin pair.
+
+| beta, gamma | status | optimum | affordable c |
+|---|---|---|---|
+| 207/17 = 12.18, 1 | proved (Codex, with the theorem of 17.26; certified tau <= 1534, its note 194) | rho = 126, P = 756, tau' = 1534 | about 16 450 |
+| 6, 1 | what-if | P = 853, rho = 53, tau' = 853 | about 30 300 |
+| 3, 1 | what-if | P = 780, rho = 0, tau' = 780 | about 32 300 |
+| 3, 1/2 | what-if | P = 850, tau' = 425 | about 60 000 |
+
+beta = 6 is exactly "no line lies in 4 or 6 grids" (for degrees d <= 3, C(d,2) <= d, so the number of cherries of Xi_v is
+at most 2 e(Xi_v)); below beta = 6.8 the pure grid point is no longer the worst point. So the statement that would
+change rank 37 most is **g(l) <= 3 for every line**. For g = 6 the six grids through the line Theta = {v, a, a'} cover
+39 vertices, and each of the 60 others is named by a duad of the six other lines from each of v, a, a', the three duads
+forming a perfect matching of K_6; for g = 4 the 12 leftover vertices are a_k^+-, y(a, k^+-), y(a', k^+-) for the two
+non-grid lines k. Neither is excluded by my counts. The project's earlier notes 103, 105, 108 (read today: no Hamming
+point, L8; at most 17 grids through a vertex; the incomplete pairs at a vertex contain two disjoint pairs, D1) work in
+the same setting with the "slot" calculus; Codex is asked to push it to "one universal class" and "one class of degree 4".
+Also from Codex today: the 27-vertex cube H(3,3) is not an induced subgraph (72 outside vertices against 36 diagonal
+triples); a triangle of Xi_v only gives the 19-vertex union of three grids, which passes the local budgets.
