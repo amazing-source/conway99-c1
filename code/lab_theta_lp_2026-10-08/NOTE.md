@@ -2191,3 +2191,20 @@ Addendum to 17.53 (18:05 UTC).
   girth >= 5 have (c5, c6) in {(0,18), (2,12), (4,8), (4,10), (6,4), (6,6), (9,0)}, so "(6,6) everywhere" needs
   F5 in [0, 4158], F6 in [0, 8316] and 2 F5 + F6 in [7392, 8316]; at P = S = 0 the census allows F5 in [0, 4158],
   F6 in [0, 8316], 2 F5 + F6 in [0, 11 781]. No contradiction.
+
+Second addendum to 17.53 (18:20 UTC): the far side of a (6,6) line, exact tests (`comp66_triples.py`,
+`comp66_joint.py`, outputs). New fact used: equilibrium (every far vertex meets each component in 3 points) and the
+exact pair multiplicities K (far common neighbours) inside a component and across components (1 same layer, 2 else),
+plus "a 3-set of N(L) lies in at most one shadow" (mu = 2).
+* ONE component: for all 288 labelled (6,6) components of girth >= 5 (all 15 types), a set of 60 distinct admissible
+  triples (630 candidates) with exactly the pair multiplicities K exists (CP-SAT, under a second each; row sums of K
+  are 20 = 2 * 10 as they must). No component is excluded by its own triple design. (Codex confirms that x32 only
+  checked candidate counts per pair, not a simultaneous design.)
+* BOTH components (types 0 and 0, 70 308 layer-compatible pairs of triples, 6 642 rows: pair multiplicities in each
+  component, cross multiplicities, each triple at most once, each 3-set in at most one shadow): LP relaxation
+  feasible; CP-SAT UNKNOWN after 240 s with 4 threads. Beyond a tiny check; NOT pursued further here (the full sweep
+  is 120 type pairs). Undecided.
+Codex (generic side, being verified there): for an edge uv of G(T) between two layers at P = 0, the stars of u and v
+share exactly one shadow, the cross edges between the two other sets of nine shadows form a matching of size
+7 + c4(uv), so c4(uv) <= 2; at S = 0 the union is three paths plus at most one cycle of length 8 or 12 (38 abstract
+types). And the 60 centred shadows live in a non-degenerate Green space of dimension 33 (not 35) when d(T) = 1.
