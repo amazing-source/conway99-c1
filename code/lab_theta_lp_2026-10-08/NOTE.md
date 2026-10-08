@@ -579,3 +579,53 @@ Where the remaining region is (my reading, sent to Codex as message 152; the mul
 * Standard language: the graph is the collinearity graph of a partial quadrangle PQ(2,6,2) and a grid is a sub-PQ(2,1,2);
   1_R - (1/11) 1 is a 3-eigenvector, so every vector of L sums to 0 on every grid, a 33-set of norm 22 meets every grid
   in 3 points, and the number rho_v of grids through v satisfies sum_{u ~ v} rho_u = 3 rho_v + rho.
+
+### 17.10 Correction of 17.3, and a packing bound on the Fano vectors: a_7 <= 990; rank 35 infeasible (01:20 UTC)
+
+Status: the correction is Codex's; the lemma and the LP runs below are mine and NOT yet audited.
+
+**Correction (Codex, 01:15 UTC).** The distinctness argument of 17.3 covers two vectors of the same orientation only.
+1_T - 1_Y and 1_Y2 - 1_T2 differ by (T + T2) - (Y + Y2), which is a 3-eigenvector when T + T2 and Y + Y2 are twin
+prisms (a prism splits into two induced paths). Codex: 48 collisions per unordered pair of twin prisms, a class of twin
+prisms has at most 6 members, so the number tau of such pairs is at most 5P/2, and the safe bounds are
+
+    family (a) >= 731 808 + 12 P - 48 tau >= 731 808 - 108 P,      b_4 >= 3 826 746 - 30 P - 4572 rho
+
+(with the + 6 P of its note 168). The statements of 17.5 and 17.9 (rho >= 43 or 44, P >= 492) hold only if there are no
+twin prisms; unconditionally the same certificate gives 101 160 rho + 6369 P >= 10 391 999, i.e. rho >= 16, P >= 450.
+
+**Lemma (seed packing).** Let (p0; U) and (p0; U') be two different seeds at the same vertex (U, U': four pairwise
+non-adjacent neighbours of p0) which both extend to Fano vectors x, x' (p0 in P, U = Q cap N(p0)). Then |U cap U'| <= 2.
+Proof. Let U = {q1,q2,q3,q4}, U' = {q1,q2,q3,q4*}, q4* /= q4. In a Fano configuration both common neighbours of two
+vertices of Q lie in P, so P = {p0} + {c_ij}, c_ij the second common neighbour of q_i and q_j (a bijection with the six
+pairs). So P cap P' contains p0, c_12, c_13, c_23 and Q cap Q' contains q1, q2, q3. P cap Q' is empty: a vertex of P is
+p0 or c_ij with i, j <= 3 (in P'), or c_i4, adjacent to q_i in Q' (Q' is independent). Q cap P' is empty: q1, q2, q3 are
+in Q', q4 is adjacent to p0 in P', and q5, q6, q7 cannot be a second common neighbour c' of x' since every c' is adjacent
+to some q_i with i <= 3 and Q is independent. Hence (x, x') >= 7. x /= x' because q4 is not in Q' (p0 has exactly four
+neighbours in Q'). So x - x' is a non-zero vector of L of norm 28 - 2 (x,x') <= 14, hence a Fano vector, against Lemma F
+of section 14 (two Fano vectors never differ by a Fano vector).
+Lemma F re-proved here: if y, z, y + z are Fano vectors, the supports of y and z overlap in a set D of 7 vertices with
+opposite signs, D+ = P_y cap Q_z, D- = Q_y cap P_z, a + b = 7. Two vertices of D+ are two points of the biplane y and two
+blocks of the biplane z: their two common neighbours are in Q_y and in P_z, i.e. in D-. A vertex of D- sees at most 4
+vertices of D+, so 2 C(a,2) <= 6 b: a <= 4, and by symmetry b <= 4. For (a,b) = (4,3): the 12 incidences force two
+vertices of D- adjacent to all four of D+ (the distribution 6+3+3 puts a pair in three neighbourhoods), and those two
+have four common neighbours, against mu = 2.
+
+**Corollary.** At p0 there are C(7,3) 2^3 = 280 triples of pairwise non-adjacent neighbours; each lies in at most one
+extending seed and an extending seed contains four of them: at most 70 of the 560 seeds at p0 extend, 6930 in all, and
+a Fano vector has 7 seeds: **a_7 <= 990** (before: 7920). With the weaker statement for two seeds differing on one line
+only, a_7 <= 3960.
+
+**LP** (`fanocap2.py`, `fanocap3.py`, `fanocap.py`; outputs `OUTPUT_fanocap*_N84.txt`), with a_7 <= 990 added:
+* r = 35 with Codex's twin-safe b_4 (and even with the audited b_3 >= 24 948 only): **infeasible for all P and rho**, no
+  hypothesis on grids or twin prisms. Certificate on a_10, a_11 >= 0, b_2 >= 462, b_3, b_4, 7 a_7 + 8 a_8 <= 55 440,
+  b_1 <= 88, P <= 1386, 6 rho <= P, a_7 <= 990.
+* Robustness: infeasible for a cap up to 1980, feasible at 2500. The family triangle minus far path is needed: with
+  b_4 >= 3 094 938 + 78 P - 4572 rho rank 35 is feasible even at cap 990. With the audited dual bounds alone and the cap
+  990, rank 35 is feasible but needs 8.0 million vectors of norm 16 to 26 (5.9 million before).
+* With the cap 3960 and the uncorrected bound: rank 35 needs rho >= 201, P >= 1242 and a_7 >= 3201.
+* r = 37, 39, 41, 43: unchanged by the cap (feasible with a_7 = 0).
+
+**If the lemma and Codex's twin-safe count are confirmed, the window is {37, 39, 41, 43}.**
+Next: the same packing argument for the vectors of norm 16 and 18 (Codex has their seed structure); rank 37 needs
+539 a_9 + 392 a_10 + 147 a_11 + 49 a_12 >= 24.27 million - 1715 a_7 - 1225 a_8.
