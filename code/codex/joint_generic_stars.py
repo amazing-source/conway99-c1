@@ -68,9 +68,8 @@ def prepare(g, u, v):
     return g, green, k, c4, pu, pv, sorted(common_u)
 
 
-def branch_model(g, green, k, c4, u, v, pu, pv, common):
-    w = np.array([int(i in common) for i in range(36)], dtype=np.int64)
-    assert (g@w)[u] == (g@w)[v] == 1
+def branch_domains(green, u, v, pu, pv, common):
+    """Pure candidate-domain construction, shared with independent relaxations."""
     common_groups = [next(i for i in common if i//12 == x//12 and i != x) for x in (u, v)]
     labels, domains = [], []
     for side, (pool, other, omitted) in enumerate(zip((pu, pv), (v, u), common_groups)):
@@ -83,6 +82,13 @@ def branch_model(g, green, k, c4, u, v, pu, pv, common):
             labels.append((side, group))
             domains.append(domain)
     assert len(domains) == 18
+    return labels, domains
+
+
+def branch_model(g, green, k, c4, u, v, pu, pv, common):
+    w = np.array([int(i in common) for i in range(36)], dtype=np.int64)
+    assert (g@w)[u] == (g@w)[v] == 1
+    labels, domains = branch_domains(green, u, v, pu, pv, common)
     if any(not domain for domain in domains):
         return None, labels, domains, None
     model = cp_model.CpModel()
