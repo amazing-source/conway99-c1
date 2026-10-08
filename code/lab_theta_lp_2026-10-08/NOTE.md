@@ -1482,3 +1482,24 @@ C(g, 2) c(g) inside its moment LP. If c(6), c(4) are near half of 29 204 the mas
   number; no exclusion from it so far.
 * **Ceiling.** Needs caps on a_7 (22-cocliques), a_8, or an upper bound on b_2 (about 2000 non-triangle norm-4 vectors
   of M are needed at the b_4 optimum); none available.
+
+### 17.41 The ceiling inside the census LP: the Fano coupling is worth 0.8 million (13:40 UTC)
+
+Suggested by the laptop session. `lp_joint2.py` (`OUTPUT_lp_joint2.txt`), floating LP. Variables: the census
+parameters, tau', and (a_7, a_8, a_9, a_10, b_1, b_2, b_3); the three integer identities of 17.35 with a_11, a_12,
+a_13 >= 0; caps a_7 <= 842, 7 a_7 + 8 a_8 <= 55440, b_1 <= 44, b_2 >= 462 + 41 b_1, b_3 >= 45898, and the census coupling
+a_7 <= (2/21) N(F10) used pointwise; census side with Codex's cuts (tau' <= 1403, P + 5 rho <= 1386,
+tau' <= P + 5 rho + 17); floor (2 r8 - c tau')/3 for supports <= 9. Maximum of (ceiling - floor):
+
+| c per twin pair | without the Fano coupling | with a_7 <= (2/21) N(F10) |
+|---|---|---|
+| 17 000 | -0.40M | -1.23M |
+| 19 000 | +0.54M | -0.30M |
+| 21 000 | +1.47M | +0.64M |
+
+Break-even: about 17 850 without, about 19 600 with. The optimum stays at rho = 126, P = 756, tau' = 1403, where the
+polytope allows only N(F10) <= 3648, i.e. a_7 <= 347; the adversary then has a_8 = 6626, a_9 = 2629, b_1 = 44, b_2 = 2266
+and the ceiling is 15.20M instead of 16.0M. So the target for Codex's joint mass-six constant (certified interval
+[16 496, 27 828] per pair of grids, note 198) moves from 17 900 to about 19 600. Still undecided.
+Laptop session, end of its seed test: four vectors of norm 18 on one seed undecided after 2400 s; three are locally
+feasible; the seed route stays closed as a method.
