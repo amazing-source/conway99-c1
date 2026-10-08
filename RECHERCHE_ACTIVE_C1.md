@@ -25,11 +25,18 @@ Chercher une obstruction uniforme ou une réduction démontrée des
 prolongements. Une liste de tests supplémentaires sur des exemples
 déjà exclus ne remplit pas cette cible. Le premier modèle de multiplicités
 est terminé sur les 310 entrées (22,4 secondes) ; ne pas le relancer comme
-nouvelle avancée. LAB étudie maintenant une fermeture bornée par voisins
-communs forcés sur les 174 survivants. Des voisins requis par deux paires
-peuvent coïncider : toute identification non forcée doit rester une branche,
-pas devenir une exclusion. Comparer les réductions obtenues et la croissance
-des branches avant toute campagne plus profonde.
+nouvelle avancée. Les premiers pilotes de fermeture et de paires de LAB
+n'ont rien exclu de plus ; les 15 pilotes Codex avec multiplicités entières
+et coexistence par paires ont tous un témoin nécessaire (note 223).
+Ne pas approfondir automatiquement ces campagnes, ni retourner aux quatre
+boules déjà exclues pour y compter des types sans théorème de couverture.
+
+**Cible théorique suivante :** compatibilité des noyaux autour de tous
+les motifs S d'un même graphe. Le catalogue impose e(D(S))≤4 et
+61≤e(C(S))≤65 pour chacun. Chercher un double comptage de la somme des
+e(D(S)) ou des types, avec une relation supplémentaire propre aux paramètres
+de 99. Ce sous-problème est proposé à LAB ; aucune contradiction par ce
+comptage n'est acquise. La route reste révisable selon les résultats.
 
 Sources de travail :
 
@@ -39,6 +46,8 @@ Sources de travail :
   portée exacte et équations de prolongement ;
 - `notes/222_CODEX_PROLONGEMENT_PRISME_MASQUES.md` : 136 exclusions
   supplémentaires par les incidences des sommets extérieurs ;
+- `notes/223_CODEX_LIMITE_DES_PREMIERS_PROLONGEMENTS.md` : pilotes sans
+  exclusion supplémentaire, témoins exacts, limite et cible suivante ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
