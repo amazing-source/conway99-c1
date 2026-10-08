@@ -1357,3 +1357,18 @@ tau <= 138943/99, i.e. **tau <= 1403** (1534 before).
 support <= 9, b_4 alone: k = 2: 16.55M (c = 16 000), 14.67M (20 000), 10.37M (29 204); k = 1: 19.21M (12 000), 13.59M
 (16 000). Optimum at P = 691, rho = 115.2, R = 36.04M. Affordable loss per twin pair about 17 200 (k = 2) against
 Codex's joint mass-six constant 29 204: still short by a factor 1.7; tau <= about 830 would be needed.
+
+### 17.34 Correction of the seed counts of 17.32 (Codex, 12:20 UTC)
+
+Codex's precisions on the seed route (its notes 171, 176): a general norm-18 vector has only SIX clean seeds (nine when
+the supports are independent), so a_9 <= 9240 kappa_18; proved at norm 18: the type (n0, n1, n2) = (2,0,6) is excluded,
+the type (1,2,5) has at most 2 vectors per seed AND per missing point c among six, i.e. at most 12 per seed; the type
+(0,4,4) and the supports with one edge are open. At norm 20: ten seeds if there is no edge, SEVEN guaranteed in the
+one-edge case, so a_10 <= 7920 kappa_20; no uniqueness is proved. The bound "(x, y) >= 5 hence |x - y|^2 <= 4n - 10" for
+two vectors on a common seed needs the absence of opposite-sign intersections outside the seed, proved only in
+specific branches.
+With these counts the norm-18 term of the threshold of 17.32 is 539 * 9240 kappa_18 = 4.98M kappa_18 against
+15.24M: the route needs kappa_18 <= 2 and kappa_20 <= 1 or so, and the proved 12 per seed (one branch) is short by a
+factor of at least 4. The examples "(2,2,2,4) suffices" of 17.32 used 9 and 8 seeds per vector and are too optimistic.
+The seed route is therefore not closer than the collision route; it would become so only if the factor 6 (choice of
+the missing point) could be removed.
