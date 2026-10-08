@@ -79,8 +79,10 @@ class F0Representatives:
         masks = {mask: i for i, (mask, _) in enumerate(profiles)}
         self.reverse = [masks[(mask >> m) | ((mask & ((1 << m)-1)) << m)] for mask, _ in profiles]
 
-    def one_orientation(self, indices, edges):
+    def one_orientation(self, indices, edges, common_negative=None):
         keep = np.ones(len(self.vectors), dtype=bool)
+        if common_negative is not None:
+            keep &= np.sum(self.cn, axis=1) == common_negative
         for component,(p0, n0, x0, pdot, ndot) in enumerate(self.components):
             ep, en, cross = p0.copy(), n0.copy(), x0.copy()
             for j, index in enumerate(indices):
@@ -114,10 +116,10 @@ class F0Representatives:
                         keep[a] = False; break
         return int(np.count_nonzero(keep))
 
-    def count(self, indices, edges):
-        count = self.one_orientation(indices, edges)
+    def count(self, indices, edges, common_negative=None):
+        count = self.one_orientation(indices, edges, common_negative)
         if self.p != 6:
-            count += self.one_orientation([self.reverse[i] for i in indices], edges)
+            count += self.one_orientation([self.reverse[i] for i in indices], edges, common_negative)
         return 2*count
 
     def direct_check(self, indices, edges):
