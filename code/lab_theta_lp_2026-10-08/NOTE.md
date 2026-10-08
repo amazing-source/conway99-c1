@@ -1975,3 +1975,29 @@ such forced relations cannot exist, cluster by cluster.
 (89423/66, s = 22; all 74 sizes certified); b_3 >= 45 964; C6 <= 38 084 490 (binary mass-six same-sum, was
 39 016 712); at rank 37 with b_3 >= 45 964: b_4 <= 15 196 716 at rho = 126. No bound rho <= 50 is justified yet: it
 does not count pencil subspaces as independent.
+
+Addendum to 17.50: three reformulations by the laptop session (16:30 UTC; checked here), and a test on the canonical
+model (`pencil6_hull.py`, `OUTPUT_pencil6_hull.txt`).
+* HULL. C = the F_7-code spanned by the grid indicators and 1. Gram rank = dim C - dim Hull(C), Hull(C) = C cap C^perp
+  = the combinations summing to 0 on every grid and over all vertices; the true relations are a subspace of the hull,
+  the rest of the hull is the radical of the span (dimension at most 9). Sufficient for the lemma:
+  (n - dim C) + dim Hull(C) <= x6 + 10 (n = rho + 1). For EVERY line T the function f_T = (A + 4I) 1_T + 2
+  (1 on T, 3 on N(T) - T, 2 elsewhere) is in C^perp (checked: 21 + 7 |T cap G| on a grid, 252 in total); it is in C
+  when T lies in six grids.
+* CLASSES OF M. y -> (A + 4I) y; a relation is a class whose image is a grid combination mod 7; the pencil relations
+  are the classes of the triangle vectors t_T of the hub lines. (Not rechecked in detail.)
+* FILTER. (A + 4I)^2 = 7 (A + 4I) + 2J (checked), so (A + 4I) y = F implies |F|^2 = 7 (y, F) + 2 (sum y)^2 and
+  sum F = 18 sum y. Also, for every line: (A + 4I)(1_(N(T) - T) - 1_T) = 6 * 1 exactly (mine).
+* TEST (canonical six-pencil; all 99 vertices explicit; y supported on the ball of Theta and constant on every rung,
+  so that (A + 4I) y does not depend on the unknown rows). For each pattern: generators n = grids + 1, dim C, Gram
+  rank, dim Hull, and REL = dim({(A + 4I) y} cap C) - 1 (the -1 removes 6 * 1): the relations certified TRUE.
+  - pencil alone, perfect matchings, hexagons, K_3,3 at 1, 2, 3 points: REL = 1 = the pencil relation of Theta, while
+    the hull has dimension 1 to 4. So the Gram shortfalls of matchings and hexagons (1 to 3) are NOT relations of this
+    kind: degeneracy of the form on the family, or relations whose y is not rung-constant on the ball.
+  - star, double star, K_6: REL = x6 exactly (one relation per line in six grids of the pattern).
+  - "two triangles" (at an apex, Theta and three columns pairwise in grids, twice): REL = x6 + 1 per apex: ONE extra
+    true relation per such apex (2, 3, 4 in all for 1, 2, 3 apices). First example of a relation beyond the pencil
+    ones; six grids through a point on four lines pairwise in grids are independent by themselves (Gram of rank 6,
+    7 with [1]), so the relation involves the pencil of Theta.
+  - K_6 at three points: the 52 indicator vectors have only rank 46 (six linear dependencies among the vectors
+    themselves).
