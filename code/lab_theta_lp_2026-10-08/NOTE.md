@@ -1617,7 +1617,7 @@ Reading.
   census does not give it; an upper bound per grid is a local enumeration of the kind Codex does.
   Multiplicity three exists in principle (W with four points of X_i, Y with two points of X_j and two of X_k).
 
-### 17.44 CORRECTION: the break-even of 17.27, 17.41, 17.42 was computed on a larger collection than Codex's cap (14:50 UTC)
+### 17.44 CORRECTION: the break-even of 17.27, 17.41, 17.42 was computed on a larger collection than Codex's cap (14:47 UTC)
 
 Codex (reply to my message 211): its certified interval [16 496, 27 828] per pair of grids on a line is for the
 collection "all shapes of support <= 9, with (6,3) and (3,6) restricted to e <= 8 on the 6-set", i.e. WITHOUT the
@@ -1643,3 +1643,36 @@ psi_i = 1_(X_i - v_i) + 1_theta - 1_b - 1_(v_j) - 1_(v_k): W has 8 edges, Y is a
 supports prism-free, psi_i - psi_j = 1_(X_i) - 1_(X_j). So three prism-free representatives in one class, two partners
 each (checked by Codex on a 22-vertex fixture, no claim of a global realisation). "At most two per class" is false in
 pencils of three or more; the cost has to be computed (Codex is doing it).
+
+### 17.45 Supports <= 9: every accounting falls short; no "rank 37 forces grids" either (15:00 UTC)
+
+* **Status of 17.44.** "13 900 < 16 496, hence closed" is a floating diagnostic: to be a statement it needs an exact
+  rational point of the LP (Codex's remark). It is not an exclusion of anything.
+* **Codex, certified (its note 200 in preparation), supports <= 9, norm 8, mass six, both signs:**
+  - prism-free collisions per pair of grids on a line: 6992 <= C_pf <= 18 244; per non-grid twin pair: 7034 <= C_pf
+    <= 19 178;
+  - TIES after the two grid filters |psi(G_i)|, |psi(G_j)| <= 4: at most 12 674 per pair of grids (14 426 for a
+    non-grid pair, prism-free and equal sizes only); only the shapes (3,3), (4,4), (6,3) survive on the grid side;
+  - its three-prism triples of 17.44 are single-grid copies (psi_i - 1_(G_i) has support 6), so they leave the pool;
+    in a pencil of six there are four choices of triples, in four different classes, not a class of four.
+  Against my break-even of at most 7447 (17.42, before removing the single-grid copies from the numerator): not
+  reached. Hand estimate of the copies in (9,0): W = a bowtie of a grid plus a square or paw whose four vertices are
+  attached to the bowtie (about 7700 per grid), or a grid minus a path plus a line attached to it (about 1550 per
+  grid): about 1.16M per sign at rho = 126, roughly half of the prism-free (9,0) representatives. So the pool for
+  supports <= 9 is of the order of the ceiling itself, before any tie.
+* **What-if cap on the number of grids** (`lp_family.py` scenarios `m5s9k2x63r<X>`, `OUTPUT_lp_family_rho.txt`; Codex's
+  collection, k = 2): break-even 13 900, 14 841, 16 902, 21 259, 25 201 for rho <= 126, 100, 60, 20, 0 (tau = 1403,
+  1308, 1161, 924, 780 at the optimum). Even with no grid at all the break-even stays below the certified cap for
+  non-grid twin pairs (31 976), so this accounting does not even give "rank 37 forces many grids".
+* **Remark on tau_g <= 11 rho + 17** (not used above): the extremal mix of the moment bound (points with three lines
+  in six grids, e = 15, 57 cherries, together with grid-free points) is not realisable: a line through a grid-free
+  point has g = 0, a line through a three-hub point has g >= 3, so no line joins the two kinds, and every non-adjacent
+  pair needs two common neighbours carrying lines of both kinds. With types of about 11.5 pairs of lines each
+  ((6,6,3,3,2,2,2): 39 cherries; (6,4,4,4,4,1,1): 39) tau_g would be about 1250-1300 at rho = 126. That is 10 %, far
+  from the factor needed; not pursued.
+
+Conclusion for rank 37 at this hour. Supports <= 9: closed on the three accountings tried (pairs with k = 2 on
+Codex's collection; prism-free with k = 1; pool with ties). Ceiling side: exhausted (17.43). Support 10: the raw
+count is inflated by single-grid copies; the pool and its ties are not computed, and my estimates put pool/2 near
+the ceiling. What would be new: an order-11 census (shapes (7,4), (10,1)), which is a real computation and is not
+launched; or an invariant other than b_4.
