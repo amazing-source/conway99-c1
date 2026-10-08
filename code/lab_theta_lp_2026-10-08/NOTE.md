@@ -1743,3 +1743,43 @@ the 60 vertices of B, det(L_far) t^2 = 324 * 5^12 * 7^(r-32) (rank E_UU = 31 for
 only for the full pencil). Hermite with min >= 14: the forced vector on the far set has norm at most 28, 30, 38 for
 g = 2, 4, 6 at rank 37: no contradiction (it would contradict a line in six grids only for r <= 31, ranks already
 excluded). NEGATIVE; do not recompute.
+
+### 17.47 Open exploration asked by the user: literature after 25/09, and the Petersen graph behind a line in six grids
+
+User (direct, about 15:20 UTC): go and look elsewhere (web, other objects), without duplicating conway99-c1 or
+conway99-lab-archive. Duplication check done first: Codex's notes 94 (literature night), 110, 114, 124 read; Codex
+checked the archive (its message of about 15:35 UTC): Bamberg-De Clerck-Durante (intriguing sets of partial
+quadrangles) is already audited there and credited for L5, and |grid cap 22-coclique| = 2 is the standard
+positive/negative intersection, so nothing new from that theorem; the synthematic totals of S_6 appear only in note
+103 section 8, for the Hamming point, not for the object below.
+
+**Web, what it adds.**
+* A. Keramatipour, "Approaching the Conway-99 problem using SAT solvers", arXiv:2604.23037 (April 2026), read in the
+  HTML version (first 100 000 characters). "Paley(9) pattern" = every pair of lines at every vertex spans a 3 x 3
+  grid; its Theorem 3.4.2 (no 99-graph follows the pattern) is Makhnev's 1988 theorem (L1) again. Theorem 3.4.3: a
+  99-graph cannot contain eleven independent (disjoint) Paley(9) subgraphs, PROOF OMITTED in the paper: not usable as
+  stated. Conjecture 3.4.4: no 3 x 3 grid at all. SAT experiments: reported as not concluding. Nothing for rank 37.
+* Thakkar-Severini, arXiv:2608.11211: a rooted CP-SAT reduction and a statement on circulants only. Nothing.
+So the literature still has no fact on grids beyond Makhnev's theorem; status of each item above: read, not audited.
+
+**A structural identification (mine; checked by `pencil6_petersen.py`, `OUTPUT_pencil6_petersen.txt`).**
+In 17.46 the column part of a name is a syntheme of the six grids with a bijection of its three duads to the three
+columns. Take the canonical column solution (the 10 synthemes outside a synthematic total, all six labellings each).
+Then: the graph on these 10 synthemes "sharing a duad" is the PETERSEN graph; the 15 duads are its 15 edges; each of
+the six grids is one of its six perfect matchings (the five duads containing that grid); a syntheme is a vertex with
+its three edges. So the 60 far vertices are the 60 ORDERED STARS of the Petersen graph (a vertex p and a bijection of
+its three edges to the three points of Theta), the column of b at the grid k being the label of the edge of the
+matching F_k at p. Column agreements between two distinct names, by Petersen distance of their vertices: distance 0:
+0 (2 names, the rotations) or 2 (3 names); distance 1: 1 (12 names) or 4 (6 names); distance 2: 0 (6), 2 (18), 3 (12).
+* Other column solutions exist: at the level of synthemes, W = 4 + (5-dimensional kernel spanned by "-4 on a total, +2
+  outside"), i.e. W(T_i cap T_j) = 4 - x_i - x_j with sum x = 0; the canonical one is x = (5, -1, ..., -1), the uniform
+  one x = 0. Not classified.
+* The obvious symmetric graph on the 60 ordered stars (rotations at a vertex, and along a Petersen edge with the same
+  label on that edge) is 8-regular with 240 edges and 20 triangles but violates "exactly two neighbours in the same
+  column" in all 360 (name, grid) cases. So the graph on B is not that one.
+* Exact search, column-level necessary conditions only (`pencil6_cols_sat.py`: 8-regular; 2 / 3 / 3 neighbours by
+  column for every (name, grid); common neighbours between 2 - h - (column agreements) and 2 - h): CP-SAT, 4 threads,
+  240 s: UNKNOWN (353 conflicts). Not pursued blindly; the model is heavy (102 660 products) and the column structure
+  is one of several.
+What this is: a concrete finite description (Petersen, ordered stars) of the only configuration whose exclusion would
+give the missing factor; what it is not: a result. Open on it: the rows (signs), the six matchings M_k, the triangles.
