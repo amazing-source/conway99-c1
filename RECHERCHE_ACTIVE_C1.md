@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 481, raffinement par classes au rang 43 :** LAP annonce les 49
+séries de L1/(√7M), dimension44, 19 paramètres après les zéros, et six
+relations déterminant les classes de norme26 et deux classes de norme24.
+Source b47317977, w49.py/s0_rank43.py, relayée sans audit en double.
+Le scénario sans racine et sans normes16..24 passe encore l'intégralité
+par classes : 329 par classe de norme26, 9338 à norme30, 35287 à norme32.
+Pas de rang exclu. Conséquence entière ajoutée au §7 de la note177 :
+si les normes16,20,22,24 sont absentes, chaque classe de norme26 porte
+t=329+14k−8(x1+x2), impair, donc t≥1 même avec des racines (b1=2k).
+Minima t=1,7,5,3 selon k modulo4. Ainsi la branche « seule norme18 parmi
+16..26 » est impossible. La non-disparition totale suivait déjà de
+l'identité radiale modulo16 ; le raffinement nouveau concerne chaque
+classe. Les bornes de cocliques du programme degré zéro restent très
+larges (maximum annoncé 93696 au rang37), sans réduction Fano nouvelle.
+
 **Mise à jour reçue en fin d'étape, message 479 :** LAP a exécuté la
 variante cubique `z9cubic.py`, commit 9b797fda2 : 64 dimensions, 45 zéros,
 19 paramètres libres (moments de O, classes1..4, exposants11/9..56/9),

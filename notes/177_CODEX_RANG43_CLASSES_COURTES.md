@@ -1,5 +1,11 @@
 # 177 — Rang 43 : une classe porte au moins dix-huit vecteurs de norme 16, 18 ou 26
 
+**Complément du 9 octobre, message LAB 481 :** les séries par classes ont
+été construites par LAP, sans exclusion du rang 43. Le §7 consigne leur
+portée et une conséquence de parité : dans la branche où les normes
+16,20,22,24 sont absentes, la norme 26 est obligatoire même avec des
+racines. Le résultat de pair est exploité sans audit en double.
+
 8 octobre 2026. Codex, audit et prolongement des messages 166, 169 et 171 de LAB.
 
 **Résultat.** Si r=43, une classe non nulle de L1/(√7 M) contient au moins dix-huit vecteurs
@@ -158,3 +164,61 @@ Le seuil dix-huit a été découvert par le calcul de LAB (message 169), puis v�
 Le passage aux seules normes 16,18,26, les seuils conditionnels 110 et 329, et les restrictions
 géométriques supplémentaires sont explicités dans cette note. Nous ne prétendons pas encore
 classer tous les ensembles de dix-huit vecteurs répondant à ces contraintes.
+
+## 7. Complément par classes reçu au message 481
+
+Source : LAP, relayé par LAB sans contrôle supplémentaire, commit
+`b47317977` de `conway99-c2-aws`, fichiers
+`c1_mandat_c_transformations/w49.py` et `s0_rank43.py`, section 12 de sa
+note. L'exactitude annoncée emploie python-flint. Nous ne reproduisons pas
+ce programme.
+
+LAP annonce un espace de dimension 44 pour les 49 séries de classes de
+L1/(√7 M). Après les absences prouvées, il reste 19 paramètres : b1,
+quatre classes pour chacune des normes 16,18,20,22, et deux classes de
+norme 24. Six relations déterminent les deux autres classes de norme 24
+et les quatre classes de norme 26, où les classes opposées ont été
+identifiées dans les paramètres. Le message ne fournit pas les six
+relations complètes ; elles ne sont donc pas reconstruites ici.
+
+Le scénario sans racine et sans norme 16 à 24 reste compatible avec
+l'intégralité des classes. Les tailles annoncées, pour chacune des huit
+classes du cercle concerné, sont 329 à norme 26, 9338 à norme 30, 35287 à
+norme 32. On retrouve b2=1000, b3=10648712, a13=2632. Ces résultats ne
+constituent pas une réalisation de réseau ou de graphe.
+
+### Une conséquence entière dans la branche 18/26
+
+Supposer a8=a10=a11=a12=0 : seules les normes 18 et 26 peuvent donc être
+présentes parmi les normes 16 à 26. Les racines, de norme 14 dans L1 et
+de norme deux dans M, restent autorisées. Écrire b1=2k.
+
+Dans cette branche, LAP donne les quatre tailles de classes à norme 18
+sous la forme (x1,x2,x2,x1), classes opposées identifiées, et chaque classe
+à norme 26 a exactement
+
+    t = 329+7b1−8(x1+x2) = 329+14k−8(x1+x2).
+
+**Ce nombre est impair.** Comme t est un cardinal non négatif, il est
+strictement positif. La norme 26 est donc obligatoire **même en présence
+de racines**, et ses huit classes sont toutes non vides.
+
+Plus précisément :
+
+| k modulo 4 | t modulo 8 | Minimum possible de t |
+|---:|---:|---:|
+| 0 | 1 | 1 |
+| 1 | 7 | 7 |
+| 2 | 5 | 5 |
+| 3 | 3 | 3 |
+
+Ainsi x1+x2≤41+floor(7k/4), et a13=8t est au moins respectivement
+8,56,40,24 selon k modulo quatre. Ces minima ne sont pas annoncés atteints.
+En particulier la branche « seule norme 18 parmi 16 à 26 » est impossible.
+
+La non-disparition de la norme 26 se lit aussi directement dans (1) :
+avec les quatre absences ci-dessus, a13=2632+56b1−16a9 est congru à huit
+modulo seize puisque b1 est pair. La nouvelle information du résultat
+par classes est que **chaque classe**, et pas seulement la couche totale,
+doit être non vide. Aucune exclusion du rang 43 ne suit de cette seule
+conséquence.
