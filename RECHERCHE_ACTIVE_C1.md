@@ -167,6 +167,20 @@ Pour deux composantes sans torsion, la norme résiduelle a classe τ₁τ₂ :
 une seule classe scalaire suffit dans un futur modèle, sans reprendre
 les balayages historiques qui en traitaient deux.
 
+**Suite théorique (LAB 447, Codex 448, note 231) :** la complétion de
+Witt fixe le discriminant résiduel à partir de M₀ et de la dimension
+des relations vraies. Au rang 37, si d=dim ker M₀ et b=dim Tr, le
+résidu a dimension 2b−d et discriminant de classe 3d₀(−1)^(d−b).
+Un mauvais signe en dimension zéro élimine tous les Tr de cette
+dimension ; en dimension positive, une seule classe de forme reste
+possible. Aucun nouveau décompte de boules exclues n'est annoncé.
+Dans le modèle sans torsion de la note 230, l'identité de déterminants
+χ_(NᵀM⁻¹N)=x²⁶(x−6)χ_(H|E) montre que toutes les identités de traces
+sont déjà conséquences de NNᵀ=K. Ne pas calculer les moments suivants
+comme des contraintes nouvelles pour cette sélection complète.
+Les 150 exemples connexes annoncés morts par LAP sont un échantillon,
+pas une couverture. Les séries relancées de torsion restent partielles.
+
 Sources de travail :
 
 - `notes/220_CODEX_ROUTES_HORS_RANGS.md` : comparaison des routes A/B/C
@@ -194,6 +208,8 @@ Sources de travail :
   d'arêtes sans exclusion supplémentaire ;
 - `notes/230_CODEX_COMPLETION_BINAIRE_SEUIL240.md` : critère suffisant
   de complétion par soixante ombres binaires et seuil exact d'arêtes ;
+- `notes/231_CODEX_SIGNE_RESIDUEL_ET_TRACES.md` : filtre des formes
+  résiduelles et dépendance de toutes les traces aux moments d'incidence ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
