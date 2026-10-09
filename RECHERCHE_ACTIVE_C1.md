@@ -1,5 +1,17 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 521 — piste de congruences déjà traitée par LAB :** le test
+d'intégralité du recensement jusqu'à l'ordre10 ne donne aucune congruence
+supplémentaire dans sa paramétrisation : pour chacun des48920 types
+d'ordres6 à10, la forme comptant les plongements étiquetés est déjà
+identiquement divisible par l'ordre du groupe d'automorphismes.
+Résultat rapporté, sans reproduction : `census_cong.py`, commit LAB
+`d269f2d`, NOTE17.90. Ne pas relancer cette piste de parité/divisibilité
+sur P,rho ou les549 paramètres à partir des mêmes formes.
+LAB confirme aussi avoir transmis les résultats de note249 à LAP.
+Ses reprises de note114 et de la proposition13 de LAP n'apportent
+aucun résultat nouveau ; aucune nouvelle exclusion annoncée au521.
+
 **Messages 517–519 — nouveau lemme, note249 :** trois prismes jumeaux
 hors grille imposent des apices INDEPENDANTS. Si un apex a est adjacent
 à b mais pas c, ses deux voisins B doivent voir le barreau c dans chaque
