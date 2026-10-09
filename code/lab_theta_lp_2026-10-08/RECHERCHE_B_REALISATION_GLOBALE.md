@@ -411,3 +411,20 @@ Bilan de la piste « cycles longs » : un cycle de transport est une grille (3),
 porte au moins deux relations supplémentaires ; ces derniers ne se laissent pas classer en une liste courte (chaque
 relation est une coïncidence d'une carte de sommet), donc aucune couverture par des supports courts n'est démontrée et
 aucun cycle de longueur quatre n'est forcé. Je ferme cette piste ici, sauf idée nouvelle.
+
+
+**Addendum du 9 octobre, 14:04 UTC : certificats exacts des échecs.** Les verdicts négatifs des deux relevés à une
+relation sont maintenant exacts : (i) « local » est combinatoire (une arête dans deux triangles, ou trois voisins
+communs) ; (ii) « non positif » a un témoin entier v avec vᵀQv < 0 pour chacun des 853 cas étiquetés
+(`psd_witnesses.py`, `psd_witnesses.json` ; fenêtre de cinq centres et cycles fermés de longueur 6, 7, 8) ;
+(iii) « système des multiplicités impossible » a un vecteur de Farkas rationnel vérifié contre tous les masques
+(`certify_supports.py`, `certificates_window5.json`, `certificates_closed6.json` : les six arêtes et l'identification
+c1 = c4 de la fenêtre ; les huit cas du cycle de longueur 6). Les cas qui « passent » ne sont établis qu'en flottant,
+ce qui suffit puisqu'on n'en tire aucune exclusion. Énoncés exacts obtenus, pour tout srg(99,14,1,2) :
+1. un cycle de transport propre a longueur 3, 4 ou 5 ;
+2. un segment propre a au plus quatre centres ;
+3. une fenêtre de cinq centres portant une seule relation supplémentaire est du type c1 ~ c5 ou de l'un des neuf types
+   d'identification listés plus haut ;
+4. un cycle de transport de longueur 6, 7 ou 8 porte au moins deux relations supplémentaires.
+Réserve : les axiomes « locaux » utilisés sont ceux d'un sous-graphe induit ; les contraintes propres au transport sur
+les paires extrêmes d'une fenêtre ne sont pas toutes imposées (elles ne peuvent que retirer des cas qui passent).
