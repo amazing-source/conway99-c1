@@ -1,5 +1,22 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 496, cible plus petite — note 245 :** LAP force dans S0 au
+moins dix profils P3 indépendant / N25 de norme208/9 dans L9.
+Codex prouve que N est une forêt de12 arêtes, faite de chemins d'au
+plus7 sommets, d'isolés et d'au plus une étoile K1,3 : 32 formes de N.
+Au moins3 arêtes de N doivent avoir leur triangle complété hors du
+support : preuve analytique delta>=2, puis exclusion exacte de toute
+la tranche delta=2. Plus précisément 3delta>=21-4u+X_P+X_N, u=n2+3s<=6.
+La note donne une preuve directe par comptage, indépendante des rangs.
+L'annonce de fermeture S0 au message500 a été RETIRÉE au501 : la
+première liste29 supposait tous les triangles internes. Les fichiers
+`p3_n25_saturated` portent désormais explicitement cette restriction.
+La nouvelle énumération autorise les triangles extérieurs : 6899
+supports, dont1469 exclus par certificats spectraux entiers. La tranche
+delta=2 est TERMINEE : 61 exclus spectraux et85 exclus par certificats
+entiers au bord. Il reste5345 supports non exclus, tous avec delta>=3.
+Certificats : `data/codex_p3_n25_delta2.json`. S0 reste ouvert.
+
 **Messages 491–493, réduction uniforme nouvelle — note 244 :** le
 programme neuf classes de LAP force en S0 au moins5672 vecteurs O
 classe2 norme40/9, dont693 arêtes. S0 désigne rang43 sans racines et
