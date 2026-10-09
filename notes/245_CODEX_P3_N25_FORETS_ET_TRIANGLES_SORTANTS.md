@@ -185,6 +185,23 @@ En particulier delta>=2. Si delta=2, (5) impose :
 - u=5, X_P=4, X_N<=1 ; ou
 - u=6, X_P=6, X_N<=3.
 
+Plus généralement, les triangles manquants définissent un multigraphe
+eulérien sans boucle sur P. À chaque q de N, associer bijectivement
+ses arêtes sortantes dans N aux labels positifs dont le triangle P-q
+sort également. Ces deux ensembles ont la même taille. Une arête
+sortante q-r relie alors les deux labels associés ; ils sont distincts,
+car q et r n'ont aucun voisin commun dans P. Chaque degré dans ce
+multigraphe est pair par le comptage huit moins deux fois un appariement.
+
+**Conséquence pour la première tranche encore ouverte, delta=3 :** ce
+multigraphe est exactement le triangle sur P. Chaque point de P a deux
+arêtes P-N dont le triangle sort. Dans N, une arête sortante a forcément
+une feuille comme extrémité, puisque deux sommets de degré au moins deux
+partageraient un label positif. Le graphe formé uniquement des arêtes
+sortantes est donc soit trois K2 disjoints, soit P3+K2. Dans le second cas, les deux feuilles du
+P3 portent le même label C, son centre porte AB, et le K2 restant relie
+les défauts A et B. Cela donne deux géométries précises à exploiter ensuite.
+
 La preuve des sections 2 à 4 est autonome et n'utilise aucun solveur.
 
 ## 5. Exploration finie avec les triangles extérieurs autorisés
