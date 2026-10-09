@@ -452,3 +452,13 @@ point de ce barreau). Par conséquent **deux prismes jumeaux ont les mêmes troi
 Test (`twin_prisms.py`, système des multiplicités à un sommet, flottant) du support à 15 points X + Y + {a1, a2, a3}
 avec 0, 1, 2 ou 3 arêtes entre les a_i : les quatre cas passent (104, 72, 51, 39 masques), y compris les trois cas hors
 grille. Ce niveau ne borne donc pas le nombre de paires jumelles hors grille du verrou du rang 37.
+
+
+## 14. 9 octobre, 14:55 UTC : les deux formes en étoile résiduelles du ruban six (note 239 de Codex) sont impossibles
+
+Codex (note 239, non vérifiée par moi) : dans un ruban fermé injectif de longueur 6 dont toutes les cordes ont un sommet
+commun, ce sommet n'est jamais latéral, et pour un centre commun c0 il ne reste que {c0–a4, c0–b3} ou
+{c0–c2, c0–c4} (indices à partir de 0). Test au système des multiplicités à un sommet, avec certificat de Farkas exact
+(`ribbon6_star_forms.py`, `ribbon6_star_forms.json`) : {c0–a4, c0–b3}, son image {c0–a3, c0–b4} et {c0–c2, c0–c4}
+sont **impossibles**, pour les deux fermetures (107 à 119 masques, vecteurs sur 82 à 106 lignes). Avec la note 239 :
+un ruban fermé injectif de longueur 6 n'a jamais toutes ses cordes issues d'un même sommet. Aucun rang ni C1 exclu.
