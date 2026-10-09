@@ -1,5 +1,25 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 491–493, réduction uniforme nouvelle — note 244 :** le
+programme neuf classes de LAP force en S0 au moins5672 vecteurs O
+classe2 norme40/9, dont693 arêtes. S0 désigne rang43 sans racines et
+sans normes16..24. Les données passent son test d'intégralité ; ne
+pas le reproduire. Il reste au plus22 sommets fantômes.
+Codex prouve que chaque fantôme a un profil positif6/négatif17, avec
+0/1 arête positive et un appariement de1/2 arêtes négatives. Ces
+formes permettent de traiter les vecteurs entiers non binaires que
+le lemme LAP à cinq arêtes ne couvrait pas : exactement6g vecteurs
+norm28 ont un -2 ; les I-6g autres produisent chacun au plus5 profils
+D non indépendants. Les bijections de descente donnent alors
+AU MOINS2289+15g profils (1^7;(-1)^29) dont les7 positifs sont
+indépendants, AVEC OU SANS fantômes. Cela remplace le seuil2001
+annoncé par LAP uniquement sans fantômes et couvre son cas restant.
+Une borne uniforme2288 sur ces configurations fermerait tout S0,
+donc, par note242, toute la branche sans normes16..24 du rang43.
+Cette borne supérieure reste à démontrer. Le budget de défaut17 de
+la note244 limite aussi tous les supports positifs D à sept forêts
+de types vide,K2,2K2,P3,3K2,P3+K2,P4. Aucun rang entier exclu.
+
 **Suite sans racines — note 243 :** les moments par paires de classes
 de LAP donnent un budget 2s+4d+e=296 pour chaque x de norme26, où d
 compte les vecteurs y de sa classe avec (x,y)=12 et s>=d. Nouveau
