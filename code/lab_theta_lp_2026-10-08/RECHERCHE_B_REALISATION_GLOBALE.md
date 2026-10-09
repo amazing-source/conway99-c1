@@ -359,3 +359,26 @@ m = 3..9 dans le terminal (m ≥ 7 : valeur propre minimale −0,247 ; −0,414 
 identifications de points ou des arêtes supplémentaires (c'est le cas des périodes 8, 9, 16 du 243 tordu : 4, 9, 16
 paires de centres adjacentes). Pour m = 4 le ruban est toujours propre (dossier). Rien d'exclu ; pas de minoration du
 nombre de cycles courts.
+
+
+**Addendum du 9 octobre, 13:25 UTC : pas de ruban propre de longueur six ; pas de segment propre à cinq centres.**
+
+(a) *Ruban fermé propre de longueur 6 : impossible dans un srg(99,14,1,2)* (`ribbon6_boundary.py 6 cylinder|moebius`,
+certificats exacts `ribbon6_*_certificate.json`). Dans le cas d'égalité m = 6, les deux vecteurs propres de A_H pour la
+valeur 3, de somme nulle, prolongés par zéro sont des vecteurs propres de A ; donc le masque S ⊂ H de tout sommet
+extérieur est une coclique équilibrée (somme nulle pour ces deux vecteurs). Avec « chaque point de H a 10 voisins
+extérieurs » et « deux points non adjacents p, q de H ont 2 − |N_H(p) ∩ N_H(q)| voisins extérieurs communs », les
+multiplicités des 113 (cylindre) ou 111 (Möbius) masques admissibles vérifient 135 égalités linéaires sans solution
+rationnelle positive : vecteur de Farkas exact vérifié (y·colonne ≥ 0 pour tout masque, y·second membre = −132).
+Contrôles du même programme : m = 3 Möbius (la grille) force 90 masques singletons ; m = 4 et m = 5 sont faisables.
+Donc : **un ruban fermé propre a m ∈ {3, 4, 5}.**
+
+(b) *Segment ouvert propre : au plus quatre centres.* Pour w centres consécutifs c_1..c_w et les paires p_1..p_(w+1)
+(3w + 2 points distincts, aucune arête hors des 2w droites), la plus petite valeur propre de 3I − A_H + J/9 vaut
++0,969 ; +0,595 ; +0,559 ; +0,186 pour w = 1, 2, 3, 4 et −0,128 pour w = 5 (puis décroît). Donc, le long de toute
+géodésique de transport, **toute fenêtre de cinq centres consécutifs (17 rôles) contient une identification de deux
+rôles ou une arête supplémentaire**. Le vecteur propre négatif est antisymétrique le long du ruban : les réparations
+par une seule arête relient les deux moitiés (16 arêtes possibles, par exemple c_1–c_5, a_2–a_5, c_2–c_4 au bord), et
+35 identifications simples conviennent (par exemple c_1 = c_5, a_1 = a_6 : c'est la fermeture en cycle de longueur 5).
+C'est une loi locale sur les identifications demandée par le dossier externe ; elle ne borne pas la longueur des cycles
+et n'exclut ni rang ni C1.
