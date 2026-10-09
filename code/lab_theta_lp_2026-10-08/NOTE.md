@@ -3652,3 +3652,41 @@ invariant separates "resisting" balls from the others, because there are none: 0
 with the same depth profile everywhere. A uniform proof would have to bound the number of 0/1 solutions of the
 bilinear system for every ball; nothing in this section gives that. **Rank 37 is not excluded.** Cost of the sweep
 with the best variant (real filters and saturation): unchanged within 5 %.
+
+### 17.93 CORRECTION of the last item of 17.90: what "every ball dies" would give; where the leverage is (22:32 UTC, 09/10)
+
+User (direct): he thinks that all the balls necessarily die.
+
+**Correction.** In 17.90 I wrote that the ball sweep "does not end in an exclusion of rank 37 even if it is run",
+because of the lines with 7-torsion, and I repeated it to the user. That is true of the sweep costed in
+`work/c1_cost37_2026-10-09/COUT_RANG37.md` (connected balls without torsion) and FALSE as a general statement. In the
+line-free form of 17.92 A every line has a necessary star condition, whatever its type: the Gram matrix of the 39
+ball vectors has rank 36 - delta (delta + 1 = nullity modulo 7 of the Laplacian of G(T); delta >= 1 for the lines with
+torsion and for the disconnected ones), so their span V_T is a proper subspace of W. When V_T is non-degenerate (of
+dimension 36 - delta) a far vertex is v_f + r_f with v_f in V_T determined by its shadow (which must be orthogonal
+to the kernel functions) and r_f in the complement of dimension delta, and the ten members of a star must have the
+prescribed Gram matrix: this is the laptop session's model with delta free scalars (used for the disconnected lines
+of girth >= 5, 17.71); the degenerate cases are its torsion cases. So:
+
+    if every ball of every type fails its star test, rank 37 is excluded, with no global lemma.
+
+The statement NT is only a way of not having to test the balls with torsion.
+Heuristic count for these types (mine, NOT tested): the balanced shadows are a fraction 7^-delta of the shadows and a
+residual vector of prescribed norm has about 7^(delta-1) choices, so a slot keeps about 260 signed candidates for
+every delta, and a pair is compatible with the same probability: the same over-determination is expected. Not written:
+the fast test with free scalars. Balls concerned beyond those of COUT_RANG37.md: about 2e10 connected with torsion
+and 4e10 disconnected (labelled masses), with a slower test: the complete sweep is of the order of several core-years.
+
+**State of the belief.** No survivor in more than 25 000 random balls; extrapolated expectation of the order of 1e-19
+complete star per ball (17.91), i.e. below 1e-8 over all the balls to test. Three ways to turn it into a proof:
+1. test every ball (cost above; refused by the user);
+2. a theorem: by 17.92 B it cannot come from the bilinear form, the sums and the Gram pattern alone; it would have to
+   be a statement about 0/1 solutions, and none is in sight;
+3. a COVERING FAMILY: a lemma forcing, in every graph of rank 37, a line of a rare type, after which only that type
+   is swept (the balls with a prism component have mass 1.4e8: days of one PC). Candidates examined on 09/10 and
+   10/10, none of which forces a rare type today: a line in a grid (no lower bound on the number of grids at rank
+   37); a line with many prisms (no certified lower bound on the number of prisms: 17.73, 17.74); a line through an
+   edge of a forced short eigenvector (norm <= 20 at rank 37): it carries labelled structure, e.g. three prescribed
+   edges between two layers for a norm-14 vector, but no rare unlabelled feature of G(T), and the six far vertices of
+   the vector give a weaker test than a star (21 conditions on 6 shadows against 55 on 10).
+The factor 1000 is in point 3.
