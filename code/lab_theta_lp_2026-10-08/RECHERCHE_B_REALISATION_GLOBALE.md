@@ -77,9 +77,10 @@ loi n'est pas vide ; il la confirme. Le 243 tordu a des holonomies très non tri
   « aucune loi ». Note 164 : la proposition « cocycle et holonomie » jugée déjà explorée sans contradiction.
 - Note 95 (L7) : un comptage « chaque terme apparaît 12 fois, donc 0 ≡ 1 », mais seulement en un point de Hamming
   fixé par une involution.
-- Différence effective : (i) l'holonomie des QUADRILATÈRES, absente du dossier ; (ii) le fait que la parité est
-  un morphisme sur l'espace des cycles ; (iii) le 2-cycle universel « tous les quadrilatères », qui donne une
-  relation sans aucune hypothèse. Le « aucune loi » de la note 94 portait sur les droites seules, où il n'y a
+- Différence effective : l'idée d'une classe de cohomologie figurait déjà dans la proposition évaluée en note 164.
+  Ce qui est ajouté : (i) la classe explicite (signe du transport sur N[v]) et sa valeur sur les QUADRILATÈRES,
+  absente du dossier ; (ii) le 2-cycle universel « tous les quadrilatères », qui donne une relation sans aucune
+  hypothèse. Le « aucune loi » de la note 94 portait sur les droites seules, où il n'y a
   effectivement pas de relation universelle (la somme des bords des 231 droites est l'ensemble de toutes les
   arêtes, qui n'est pas nul).
 
@@ -102,9 +103,9 @@ utilise que les MÊMES 693 arêtes portent chacune 12 quadrilatères.
   rang. Les quatre graphes de diamètre deux disponibles le vérifient.
   **Obstacle précis :** (i) la géométrie tordue à 39 sommets (mêmes λ, μ locaux, diamètre > 2) a 78 quadrilatères
   impairs : aucune preuve locale n'est possible, il faut un argument utilisant le diamètre deux ; (ii) les quatre
-  exemples sont très symétriques, et sur le 243 tordu les cycles pairs viennent par paires, ce qu'une symétrie
-  suffit à expliquer : ce n'est pas une indication fiable pour un graphe sans automorphisme. Ni preuve, ni
-  contre-exemple.
+  exemples sont très symétriques ; sur le 243 tordu les cycles pairs viennent par paires, ce qu'un automorphisme
+  renversant la droite expliquerait (explication possible, non vérifiée). Ce n'est donc pas une indication
+  fiable pour un graphe sans automorphisme. Ni preuve, ni contre-exemple.
 - Essai lié, négatif (`minors_sign.py`) : dans la jauge où tous les mineurs d'arêtes dét A[N(v), N(w)] valent +1,
   les mineurs des paires NON adjacentes ont un seul signe sur la grille (+1) et sur BvLS (−64), mais les deux
   signes sur le 243 tordu (−64, −16, −8, −4, 0, +8). Il n'y a donc pas de « signe global » des mineurs à exploiter.
