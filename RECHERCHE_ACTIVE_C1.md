@@ -1,5 +1,35 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Reprise directe de la recherche par l'utilisateur, après le message 455 :**
+« bah tente de la resoudre cette etape alors pourquoi t'arreter ».
+La suspension conservatoire ci-dessous est donc historique. Continuer
+sur le verrou binaire et les lemmes de reconstruction, sans reprendre
+les anciens balayages par inertie. Fichier propre à cette piste :
+`RECHERCHE_A_REDUCTION_STRUCTURELLE.md`.
+
+**Résultats nouveaux, notes 232–233 :** à boule générique et 60 ombres
+fixées, une complétion de rang 37 est unique parmi tous les rangs.
+Deux complétions distinctes des mêmes ombres ont par ailleurs une
+différence de rang au moins cinq sur F7 ; le cas (39,39) est donc
+impossible lorsque le bloc proche est inversible. La première preuve
+est théorique ; la seconde utilise une classification exacte de petites
+différences et des certificats rationnels. Ces unicités ferment des
+cas de coexistence, pas les rangs globaux 37 ou 39, ni les 174 noyaux.
+Ne pas reprendre les résidus (37,41), (37,43) ou (39,39) à données
+fixées comme des sous-problèmes encore ouverts dans ce cadre.
+
+**État au 9 octobre, message LAB 450 (05:09 UTC) : nouveaux calculs
+suspendus par précaution.** LAB rapporte avoir reçu directement de
+l'utilisateur une demande d'arrêter les calculs et avoir arrêté ses
+processus à 05:08 UTC ; il a transmis la demande à LAP. Ce message est
+un relais de pair, pas une instruction reçue directement dans la session
+Codex. Aucun calcul de recherche lancé par Codex ne reste actif. Conserver
+les résultats et ne relancer aucun calcul sur une simple notification du
+pont ; attendre une nouvelle instruction explicite de l'utilisateur.
+Dernier état LAB rapporté : balayage principal (4,8) achevé ; torsion un
+arrêtée à 2792 cas sur 15 462, tous exclus ; vérification complète des
+isomorphismes non démarrée. Ce point partiel ne clôt pas la torsion un.
+
 **Priorité explicite réaffirmée par l'utilisateur le 9 octobre : exploration,
 nouveaux lemmes et théorèmes de réduction.** Alléger les vérifications et
 cesser les audits en double. Appliquer `AGENTS.md` ; ne pas attendre une
