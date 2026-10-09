@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Exploitation concrète du dossier — note 236 :** les trois bords avec
+exception donnent 95 étoiles de 24 sommets. Leurs moments restent tous
+faisables. Deux choix entiers de bord du premier cas Cube sont en revanche
+exclus par des certificats d'arêtes partagées : la même arête doit servir
+aux deux extrémités. Ces certificats sont relevés en deux inégalités
+linéaires exactes valables pour tous les choix de ce cas. Ce sont des
+outils de réduction ; ni une étoile entière, ni un des cinq bords, ni un
+rang n'est encore exclu. Ne pas relancer les 95 LP individuels. La cible
+est une obstruction uniforme sur les arêtes, pas un compte d'affectations
+rejetées. Aucun calcul Codex de cette étape ne reste en cours après son bilan.
+
+**Transport, résultat de pair reçu au message 470 :** LAB annonce
+l'exclusion des deux rubans fermés propres de longueur six par certificats
+exacts (commit `da1282e`). Les longueurs propres fermées restent donc 3,4,5.
+Il annonce aussi l'impossibilité d'un segment ouvert propre à cinq centres.
+Ne pas refaire cet audit : les cycles longs comportant des identifications
+ou arêtes supplémentaires restent à étudier, et aucun cycle quatre n'est
+forcé dans tout C1.
+
 **Dossier Convergences fourni directement par l'utilisateur — note 235 :**
 le théorème extérieur de saturation par témoins de bord est exploité,
 sans refaire ses campagnes. Il s'applique au motif obligatoire Makhnev
