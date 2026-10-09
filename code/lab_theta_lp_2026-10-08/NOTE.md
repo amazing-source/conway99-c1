@@ -3390,3 +3390,22 @@ holds only when d = 1 or by accident. Status of the quadrangle law: conjecture; 
 from the factors). Evidence: the nine base graphs and the local SAT result at valency 6. `random_family_sat.py` (random
 members by cadical): valency 6 gives only the 20- and 27-vertex graphs; valency 8 gives the 39-vertex graph, 42 to 48
 vertices undecided in one minute. No exclusion; ranks and kernels unchanged.
+
+
+### 17.87 The laptop session's quartic harmonic theta series (vertices and lines): exact answer, no exclusion (13:26 UTC, 09/10)
+
+The laptop session proposed (its mandate C note, section 9; conway99-c2-aws faf2ac76d) two harmonic quartics on the
+(-4)-eigenspace, P_V(y) = sum_v y_v^4 - (2/69)|y|^4 and P_T(y) = sum_T y(T)^4 - (18/161)|y|^4, hence two cusp forms of
+weight 26 on Gamma_0(7) per rank, with exact coefficients for the vectors of L1 of norm <= 20 and for the roots, line
+vectors and vertex differences of M. P_V is the quartic of section 5 of this note; P_T and the exact M-side values are
+new. Its question: do exact quartic sums over the catalogued dual families of norms 6, 8, 10 make rank 37 infeasible?
+
+Answer: no, whatever these sums are. `lap_harm/harm4_exact.py` keeps the laptop session's construction (exact) and
+replaces its floating LP by the exact rational simplex with a checked Farkas certificate. Controls: rank 35 infeasible
+in base mode, rank 37 feasible in base mode and with both series. Then the catalogued vectors (45 964, 3 371 634,
+34 087 368 at norms 6, 8, 10) are given the extreme value lo or hi of the Cauchy-Schwarz range for each series and each
+norm: 64 corners, all exactly feasible at rank 37 for truncations 14 and 20 (`lap_harm/run_corners_exact.py`). The set of
+catalogue sums for which the system is feasible is convex, so every exact value in between is feasible as well.
+Reason: four parameters per series stay free after the exact equalities, and the slack of the uncatalogued vectors is
+proportional to their number, which degree 0 forces to be large at rank 37. The floating probe reports "margin -1"
+with one active row on such corners: a scaling artefact (the same corners are exactly feasible).
