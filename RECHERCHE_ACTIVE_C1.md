@@ -1,5 +1,13 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Dernier lemme sans rang — note 234 :** autour de chaque quadrilatère,
+chacun des deux graphes sur les vingt voisins simples des coins opposés
+est connexe. Preuve par parité, déficits et moments entiers des degrés
+extérieurs ; aucun solveur. Cette restriction locale ne ferme aucun rang
+global ni C1. Le modèle des quarante voisins simples n'est 5-régulier
+que si les quatre troisièmes points sont appariés par deux arêtes.
+Voir `RECHERCHE_A_REDUCTION_STRUCTURELLE.md` pour la piste et ses limites.
+
 **Reprise directe de la recherche par l'utilisateur, après le message 455 :**
 « bah tente de la resoudre cette etape alors pourquoi t'arreter ».
 La suspension conservatoire ci-dessous est donc historique. Continuer

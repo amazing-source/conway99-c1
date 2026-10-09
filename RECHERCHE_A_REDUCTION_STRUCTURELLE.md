@@ -29,6 +29,34 @@ d'une première complétion et ne ferment aucun rang global ni C1.
 Le contrôle des différences de rang cinq ou six et l'existence des
 données (G,N) restent ouverts. Aucun ancien balayage n'a été repris.
 
+## Quadrilatère : connexité des murs opposés
+
+Suite au message LAB 460, la [note 234](notes/234_CODEX_CONNEXITE_MURS_OPPOSES.md)
+prouve que les deux graphes sur vingt sommets formés par les murs opposés
+d'un quadrilatère sont toujours connexes, sans rang ni généricité. Les
+identités entières des degrés extérieurs excluent les composantes cubiques
+de tailles 8, 12, 16, ainsi que la taille 8 de déficit 2 ; la parité et le
+budget total de déficit excluent alors toutes les partitions déconnectées.
+Preuve transmise aux pairs au message 463, sans demande d'audit en double.
+
+Correction préalable, transmise au message 461 et acceptée par LAB au 462 :
+les quarante voisins simples ne sont 5-réguliers que si les quatre points
+spéciaux sont appariés par deux arêtes. En général leurs degrés valent
+`5−2e_x`, où `e_x` compte leurs voisins spéciaux. Les modèles doivent
+conserver ces défauts.
+
+Le nouvel obstacle franchi concerne des structures locales déconnectées ;
+aucun rang global ni C1 n'est exclu. Il reste à contraindre les deux
+structures connexes sur vingt sommets et leur couplage. Le message 462 de
+LAP apporte séparément un scindage entier au rang 37 générique, qui n'est
+pas utilisé ici.
+
+Deux pistes très courtes n'ont pas donné d'obstruction : les profils
+locaux où les deux arêtes entre spéciaux ont des troisièmes points distincts
+passent encore les premiers tests spectraux ; la relaxation spectrale
+ordinaire des graphes 5-réguliers est trop large pour exclure quarante
+sommets. Ne pas transformer ces essais en nouvelles campagnes d'audit.
+
 ## Premier essai, conservé comme historique
 
 9 octobre 2026. Révision consultée :
