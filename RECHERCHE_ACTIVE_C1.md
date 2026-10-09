@@ -4,9 +4,12 @@
 sous sa formule det Lambda_-=4*7^(2k)*tau/(9j²), rang8 et G connexe,
 le minimum global>=14 et gamma8=2 imposent
 4*7^(2k)*tau>=9*j²*7^8. Au rang37 : tau>=12970803 pour j>=1.
-Avec min L>=18 ou20 : seuil96855123 ou225000000. Aucun balayage
-supplémentaire lancé ; efficacité de ce filtre réel inconnue. La
-formule de déterminant est un apport LAB, non réaudité ici.
+Avec min L>=18 ou20 : seuil96855123 ou225000000. **Retour LAB513 :
+zéro rejet sur800 boules connexes échantillonnées**, 400 sans triangles
+et400 avec triangles autorisés ; leurs tau minimaux sont respectivement
+6,9e11 et3,9e11. Aucune borne inférieure supplémentaire sur j disponible.
+Condition secondaire seulement ; aucun nouveau balayage sur cette piste.
+La formule de déterminant est un apport LAB, non réaudité ici.
 Côté+3, le minimum>=12 était déjà prouvé (notes168/174) ; il ne
 contredit pas ses bornes Hermite30..60. Ne pas annoncer d'exclusion.
 

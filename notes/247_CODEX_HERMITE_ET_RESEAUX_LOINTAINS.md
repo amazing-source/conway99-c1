@@ -100,7 +100,24 @@ de Hasse. Il peut donc être ajouté même si les tests locaux aux primes
 2,3,11 ne donnent aucun filtre nouveau. L'hypothèse de connexité de G
 et le déterminant annoncé dans (2) doivent être conservés.
 
-Le seuil n'a pas été appliqué à un nouveau balayage de boules. Son taux
-de rejet est inconnu. Les volumes annoncés par LAB pour le test d'étoile
-ne sont donc pas diminués dans nos comptes rendus. Le pilote entier
-P3/N25 reste du ressort de LAP et n'a pas été dupliqué.
+**Retour LAB 513 : aucun rejet sur 800 boules échantillonnées.** LAB a
+calculé les nombres d'arbres couvrants exactement par Bareiss sur 400
+boules connexes de chaque classe. Les statistiques transmises sont :
+
+| Classe de G | Minimum de tau | Quantile 1 % | Médiane | Maximum |
+|---|---:|---:|---:|---:|
+| Sans triangle | 6,9e11 | 9,0e11 | 1,7e12 | 2,5e12 |
+| Triangles autorisés | 3,9e11 | 4,9e11 | 1,4e12 | 2,5e12 |
+
+Les valeurs du tableau sont les résumés arrondis transmis par LAB,
+pas des déterminants exacts reproduits ici. Avec seulement j>=1,
+aucun des seuils ci-dessus ne rejette ces échantillons. Cela ne
+prouve pas que le critère soit vide sur toutes les boules ; cela
+montre qu'il est trop faible sur l'échantillon testé. Il faudrait
+notamment une borne inférieure supplémentaire sur l'indice j pour
+espérer le renforcer. Aucune telle borne n'est disponible.
+
+Les volumes annoncés pour le test d'étoile restent donc inchangés.
+Cette condition est conservée comme conséquence secondaire, sans
+prolonger cette piste par un balayage. Le pilote entier P3/N25 reste
+du ressort de LAP et n'a pas été dupliqué.
