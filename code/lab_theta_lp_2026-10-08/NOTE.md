@@ -2977,3 +2977,36 @@ supports with the same projection can, and neither the census (a pair has 16 to 
 (17.20: it allows 10^12 integer 3-eigenvectors of norm 16) gives one. Checked before going further that the
 overlattice idea (a nearly unimodular envelope at rank 37) is already recorded as closed (end of 17.64, and 17.67).
 The target "rank 37 implies P > 0" by counting stays open and blocked at this precise point.
+
+### 17.77 Pairs of cubic supports with the same projection are exactly the anticomplete pairs; a census test of it, negative (00:57 UTC, 09/10)
+
+Codex's observation (bridge, 00:40 UTC): if two induced cubic 8-sets U, V are anticomplete then 1_U - 1_V is
+automatically an eigenvector of eigenvalue 3. Checked by hand, two readings:
+* Cauchy-Schwarz. With 7E = 3I - A + J/9: 7 |E 1_U|^2 = 64/9 for every induced cubic 8-set, and 7 <E 1_U, E 1_V> = 64/9
+  when U, V are anticomplete, so E 1_U = E 1_V. In general, for disjoint U, V of the same size m,
+  7 |E(1_U - 1_V)|^2 = 6m - 2 (e(U) + e(V) - e(U,V)) >= 0: the pairs with the same projection are the pairs reaching
+  e(U) + e(V) - e(U,V) = 3m.
+* Interlacing. U + G[Z(U)] (disjoint union, no edge between) is an induced subgraph, U carries the eigenvalue 3 and the
+  second eigenvalue of the graph is 3: every eigenvalue of the graph induced on Z(U) is <= 3, and the partners of U
+  (with any positive weights: cubic sets, windmill with weights (2, 1^6)) are exactly the components of G[Z(U)] of
+  spectral radius 3. So "U has a partner" is the local statement det(3I - A_{Z(U)}) = 0 on at most 23 points
+  (24 for a windmill, at most 30 for a prism), and e(Z(U)) <= 34.
+Consequences already noted by Codex: a cubic set anticomplete to a cubic 8-set has a size multiple of 8 (the >= 48
+outside vertices with one neighbour in U); in particular no prism is anticomplete to a cubic 8-set.
+
+Test (`far_edges_lp.py`, floating LP, P = 0, census of order 10). New fact used: a partner puts 12 edges inside Z(U),
+so the number of ordered pairs (U, partner) is at most N(U + K_2) / 12, and U + K_2 is an induced type of order 10.
+Result, negative: N(U + K_2) >= 12 N(U) on the whole polytope for the three cubic types; the mean number of edges in
+Z(U) at the extreme points is 22.7 to 35.7 (cube, at most 2822 copies), 32.3 to 33.3 (type 5683824, at most 16 846),
+23.3 to 28.2 (two-triangle type 5691760, at most 29 323). The census does not see whether Z(U) has a cubic component.
+By-products: for the cube N(U + K_1) = 23 N(U) identically (|Z(U)| = 23 always); the cut e(Z(U)) <= 34 is valid and
+slightly inside the polytope (35.7 allowed for the cube), with no effect on the counting.
+
+**Laptop session, torsion follow-up of the (4,8) profile.** Its commit 0c6057273 (`sweep48t.py`, `fastg4.c`,
+`tors_m4.json`; read before running; kept in its own folder `work/c1_lap_sweep48t_2026-10-09/` so that the running
+sweep keeps its code). Torsion ranks of the 81 959 large types: 68 372 / 12 811 / 719 / 48 / 9 for ranks 0 to 4.
+Checks here: its two expected lines reproduced (rank 1: 3 sub-cases dead, 4.0 s; rank 2: 17 dead, 17.9 s); its list of
+torsion types agrees without exception with what `sweep48.py` marks TORSION on the 19 341 balls swept so far (3 248
+marked, none missing either way). Queued (a background wait loop starts it when `pool_48.log` reaches 12 000 lines):
+rank 1 in 2000 parts, rank 2 in 400, rank 3 in 144, 11 workers under `guarded_pool.py`; rank 4 (27 balls) is left to
+the laptop session. Estimate 6 to 7 hours after the main sweep.
