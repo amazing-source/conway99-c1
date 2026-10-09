@@ -222,3 +222,46 @@ ni combiner à deux droites parallèles ; pas de nouveau graphe de diamètre deu
 
 **Effet pour un candidat à 99 sommets, SI la loi est démontrée :** les 231 droites ont toutes la même parité de
 F(T) ; chacun des 2079 quadrilatères vérifie c(Q) ≡ somme des quatre c_e. État : conjecture, neuf graphes.
+
+## 10. Travail du 9 octobre après 11:16 UTC (consigne : aucun compte rendu sans exclusion d'un rang ou de C1)
+
+Aucune exclusion à ce stade. Faits établis depuis le §9, à exploiter :
+
+**10.1 Forme « transport apparié » de la loi.** Pour v ∼ w, T~_vw : N(v) → N(w) = « avancer de deux pas le long
+des cycles à deux couches orientés » (x ↦ π(x′) pour le point d'entrée, x′ ↦ π(x′)′ pour le point de sortie ;
+w ↦ t, t ↦ v). Elle envoie partenaires sur partenaires ; elle est définie à des permutations cycliques de droites
+près, sans retournement. sgn(T~_vw) = sgn(Φ_vw)·(−1)^{c_vw+1}. L'holonomie des T~ est donc dans W(B₇) = 2⁷⋊S₇,
+et la loi du §9 dit exactement : **son caractère « nombre de retournements » est trivial sur les marches paires**,
+c'est-à-dire que la structure se réduit à W(D₇) (choix cohérent d'une classe de transversales de N(v) modulo un
+nombre pair d'échanges). En diamètre deux, T~ se prolonge canoniquement en une permutation T^_vw de tous les
+sommets (v ↦ w, [x,y]_v ↦ [T~x,T~y]_w), fonctorielle, et sgn(Ĥ) = χ_retournements·χ_permutation des droites.
+`chart_transport.py` : T^ n'est pas proche d'un automorphisme, même sur BvLS.
+
+**10.2 Le plus petit cas est localement rigide** (`local_quad_sat.py`, cadical, axiomes exacts sur le
+quadrilatère et ses quatre murs, sommets supplémentaires libres). Valence 6 : 26 configurations abstraites des
+quatre murs ; les 13 impaires sont UNSAT, et 10 des 13 paires aussi ; il en reste 3 (toutes paires). Valence 8 :
+7 configurations tirées au hasard sur 8 sont UNSAT (4 impaires, 3 paires), 1 non décidée en 25 s. La parité y
+est donc un sous-produit de contraintes locales bien plus fortes, dues à la petitesse des degrés ; cela
+n'explique pas le cas des grandes valences (12, 16, 22), où la loi tient aussi.
+
+**10.3 Voisinage d'un quadrilatère = ensemble étoilé pour −4 (propre à 99).** Un quadrilatère Q a 4·12 − 4 = 44
+voisins extérieurs (40 voisins d'un seul sommet, 4 troisièmes points), et 44 est la multiplicité de −4.
+(Note 172 compte ces 44 voisins ; elle n'utilise pas cette coïncidence.) Conséquences exactes, SANS hypothèse de
+rang, pour S = N(Q) et G_S = 27I − 9A_S + J :
+- G_S ⪰ 0 ; comme le graphe induit sur S est presque 5-régulier, cela impose que toutes ses valeurs propres
+  sauf la première soient ≤ 3 (condition forte : en dessous de la borne de Ramanujan 4 ; pour une boule de
+  droite, cubique, la condition analogue est vide) ;
+- dét G_S = 3⁸⁶·(7^{(45−r)/2}·m_Q)², m_Q = indice du réseau engendré par les 44 projections ; donc
+  Δ(Q) := 9·dét(3I − A_S) + 1ᵀ adj(3I − A_S) 1 est un carré parfait divisible par 7^{45−r} ≥ 49, à tous les rangs ;
+- si Δ(Q) ≠ 0, les 44 projections forment une base de l'espace propre : les 4 sommets de Q s'écrivent
+  q_v = −(7/24)ΣW_v + (1/12)(ΣW_a + ΣW_b) − (1/24)ΣW_w, et chacun des 51 sommets lointains f est déterminé
+  par son ombre s_f (8 points, deux par mur) avec les conditions de Green EXACTES sur Q :
+  (1 − 9s_f)ᵀ G_S⁻¹ (1 − 9s_f) = 28 et (1 − 9s_f)ᵀ G_S⁻¹ (1 − 9s_g) ∈ {1, −8}.
+  C'est l'analogue sans rang de la complétion binaire des notes 230 et 232 : le graphe est déterminé par la
+  structure des quatre murs (quatre couplages, deux graphes entre murs opposés) et 51 ombres.
+- Même fait pour une « griffe » (v ; a, b, c) : (N[v] ∪ N[a] ∪ N[b] ∪ N[c]) privé des quatre centres a 44 points.
+- Variante modulo 7 : rang₇ Gram(Q ∪ N(Q)) ≤ r − 1 ≤ 42 pour 48 sommets, dont 4 relations automatiques.
+Non exploité : énumérer les structures de quatre murs reste hors de portée ; aucune exclusion.
+
+**10.4 Sans suite.** Le caractère quadratique de τ(G(T)) modulo 7 est indépendant de la parité du nombre de faces
+(`tau_parity_test.py`, 6000 graphes proches aléatoires).
