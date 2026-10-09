@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 528–531 — cadre norme16 construit, note252 :** premier JSON
+`codex_norm16_typed_frame_0_0_2` : base37, rang Seidel35, types et domaines
+binaires pour les62 sommets restants. Correction structurelle : tout cadre
+37 de note251 a DEUX relations, f et l'étoile complète4e_p+1_N(p), donc
+rang<=35, jamais36. LAB doit traiter une dimension résiduelle ou ajouter
+un sommet. La matrice auxiliaire43 du pilote est de rang40 : elle n'est
+PAS fixée dans le test de la base37. Les autres attaches D–Z restent libres.
+Ne pas présenter ce pilote comme une exclusion ou un catalogue exhaustif.
+Répartition : Codex construit/réduit les catalogues ; LAB possède le moteur
+de rang et le pilote norme14. Paquet publié sur branche
+`amazing-source/conway99-c1:codex/norm16-far-forest`.
+
+LAP rapporte au528 un lemme C excluant297 supports P3/N25 supplémentaires,
+donc3343 après les trois lemmes (commit bdf492708).72 autres exclusions par
+étoiles sont annoncées avec contrôle exact EN COURS (2/72 alors terminés) :
+ne pas confondre ce statut avec le théorème C ni additionner les anciens
+bilans. LAB rapporte800427 cadres norme14 et un petit pilote de produits,
+pas une exclusion exhaustive. Aucune contre-vérification doublée lancée.
+
 **Messages 525–527 — nouveau théorème norme16, note251 :** D (8 points
 doubles) a AU PLUS UNE ARETE et Z (11 points loin du cœur) est une forêt
 de composantes K1,K2,P3,P4,K1,3. Preuves par comptage :
@@ -10,7 +29,7 @@ norme16. Code/data `norm16_far_forest`, pas de nouvelle classification
 des5 cœurs ni des478 attaches (notes166/169). Ajouter les10 voisins
 extérieurs d'un p vise un cadre37 :2D+8B, trois arêtes internes et quatre
 isolés ; Z correspond à11 arêtes distinctes d'un graphe sur ces10 points.
-Les attaches et le rang36 de ce cadre restent à traiter ;75 n'est PAS
+Les attaches et la dimension résiduelle de ce cadre restent à traiter ;75 n'est PAS
 un nombre de complétions99. LAB développe son pilote norme14 ; ne pas
 le dupliquer. Profils18/20 connus (binaires, au plus une arête par signe),
 mais aucun catalogue complet de leurs cœurs actuellement disponible.

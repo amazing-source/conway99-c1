@@ -159,11 +159,16 @@ Pour les deux points D il vaut4 ou5, par (1)-(2) ; pour un point B il
 vaut1+d_D(b). Les arêtes entre Z et Y restent à choisir avec ces contraintes
 et le graphe induit de Z, qui est désormais l'une des quinze forêts.
 
-Le cadre possède37 points et la relation connue f=1_P-1_Q entre leurs
-vecteurs de Seidel modulo sept. Au rang37, cela permet de viser une base
-de dimension36, comme proposé par LAB. **Il reste à déterminer si le
-rang36 est atteint et à borner/énumérer les attaches de ces cadres.**
-Les75 supports partiels ne constituent pas75 instances complètes du test.
+Le cadre possède37 points et deux relations indépendantes entre leurs
+vecteurs de Seidel modulo sept : f=1_P-1_Q et la relation de l'étoile
+complète g=4e_p+1_{N(p)}. En effet S(A+4I)=0 modulo sept. Son rang est
+donc **au plus35**, jamais36. Au rang global37, un cadre de rang35
+demande une dimension résiduelle ; on peut aussi lui ajouter un sommet
+avant de viser un bloc non dégénéré de dimension36. La note252 donne
+un premier cadre explicite de rang35. **Il reste à borner/énumérer leurs
+attaches.** Les75 supports partiels ne constituent pas75 instances
+complètes du test. Ce paragraphe corrige la première version du10 octobre,
+qui avait oublié la relation de l'étoile complète.
 
 ## 6. Réponse sur les normes18 et20 et sur la couverture
 
