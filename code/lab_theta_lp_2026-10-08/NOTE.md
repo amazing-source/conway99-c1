@@ -3475,3 +3475,46 @@ sweep is NOT proposed: it would prove a statement that no available argument tur
 How the error passed: an old script was re-run on its own numbers without re-reading 17.44, 17.45 and 17.70 of this
 note, and the check came after the announcement instead of before it. Retracted with Codex and with the laptop
 session, and with the user.
+
+### 17.90 Outside balls and counting: what was looked at on the evening of 09/10, all without result (21:13 UTC, 09/10)
+
+Asked by the user (direct): stop the line balls, look elsewhere. Record of what was examined so that it is not redone.
+Nothing here excludes a rank. Items marked "already known" were re-derived by hand before I found them in the logs.
+
+* **Integrality of the census (new negative; `census_cong.py`, `OUTPUT_census_cong.txt`).** The census forms are numbers
+  of labelled embeddings, so form / |Aut H| must be an integer for each of the 48 920 types of order 6 to 10. Every form
+  is identically divisible by |Aut H| (automorphism orders recomputed): the census carries NO congruence on its 549
+  parameters, in particular none on the numbers of prisms and grids.
+* **Spectrum of the far graph of a line** (already known: Codex's note 114). From (A^2)_PF = 2J - N: N A_F = 2J - (G + I) N,
+  so for a connected G(T) the 8-regular graph on the 60 far vertices has spectrum 8, 3^18, (-4)^8 and -(theta + 1) for
+  the 33 eigenvalues theta of G(T) orthogonal to the layers. All its closed-walk counts are functions of the ball.
+* **Lines as vectors** (already known: laptop session, its sections 10.1 and 14.4). The 231 line vectors have norm 4 in
+  the even lattice of determinant 7^(45-r); two meeting lines are orthogonal (3 - 4 + 1 = 0), two disjoint lines with e
+  edges between them have product 1 - e; each vertex is an orthogonal frame of 7 line vectors whose sum is 3 p_v. The
+  frames are saturated (hand: the 8 points of four lines through v, v removed, are not in the binary code im A + <1>).
+  The 2-part and the 5-part of Z^99 / <lines> are killed by the 3-eigenlattice, only the 3-part survives in M / Lambda_L:
+  this is the laptop session's Proposition 13.
+* **The two cyclic glues are explicit.** Row v of A - 3I, i.e. 1_N(v) - 3 e_v, satisfies (A + 4I) z = 2.1 (sum 11, norm
+  23); 1_N(v) + 4 e_v satisfies (A - 3I) y = 2.1. An integer solution of (A - 3I) y = 1 has sum 9 and odd norm >= 9, with
+  norm 9 exactly for a 3 x 3 grid; norms 11 and 13 are impossible (hand, three and three cases); so WITHOUT a grid every
+  solution has norm >= 15, and norm 15 is y = 1_P - 1_Q with Q a line and P twelve far vertices of Q, 4-regular, every
+  near point of Q having two neighbours in P and every other far vertex one. No bound from above on this minimum: the
+  theta series concerned has weight 27 and level 77 (about 200 free coefficients). Not audited.
+* **The world of a norm-14 vector** (X, Y two 7-sets, biplane; 70 boundary vertices, 15 far ones forming a coclique;
+  work/c1_cores_sat_2026-10-09). By hand: the 70 boundary vertices are the blocks of a 2-(15,3,2) design on the far
+  vertices, placed in a 7 x 7 array with 1 + [x on y] blocks in cell (x, y), every row and every column covering each far
+  vertex twice (a cubic graph on 10 vertices whose 15 edges are the far vertices); 28 + 21 + 21 + 105 + 56 lines by type.
+  No contradiction by counting; the design part alone looks realisable (two disjoint Kirkman systems); the SAT pilot
+  gave no decision in 240 s. Not pursued: it is a whole-graph sub-case.
+* **Complement.** The complement has the parameters of the point graph of a partial geometry pg(21, 3, 18), which
+  cannot exist (alpha > t + 1): the 4158 non-edges are not partitioned by 18 cocliques of size 22. Nothing else from it.
+* **Rank 37 by lines, cost floor.** Any method that first fixes a set of vertices spanning the 37-dimensional code
+  enumerates at least as many cases as there are line balls (about 1.5e11), because no condition modulo 7 exists before
+  the span is complete and the real conditions are satisfied by every ball. And the generic sweep would still leave the
+  7-torsion lines: at rank 37 a non-generic line is exactly a line with a non-zero function on N(T), harmonic modulo 7,
+  with zero sums on the layers and on all 60 shadows (re-derived by hand from the rank of the ball block; it is the
+  "balanced torsion" of Codex's September statement NT, still open), and no argument forbids all 231 lines being of
+  that kind. So the ball sweep does not end in an exclusion of rank 37 even if it is run.
+* **Rank 43 on the laptop** (its sections 13 to 16, read): the P3/N25 supports concern the branch S0 only (no vector of
+  norm 16 to 24); at rank 43 in general no layer is forced. Its stage 1 is a necessary condition on the 71 outside
+  neighbourhoods; a support that passes it still needs the whole graph.
