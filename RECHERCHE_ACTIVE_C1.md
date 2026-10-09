@@ -1,5 +1,32 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Suite sans racines — note 243 :** les moments par paires de classes
+de LAP donnent un budget 2s+4d+e=296 pour chaque x de norme26, où d
+compte les vecteurs y de sa classe avec (x,y)=12 et s>=d. Nouveau
+lemme de parité triangulaire : au moins6 triangles ont x(T) impair
+si x est entier, au moins22 s'il est fractionnaire. D'où d<=48,
+et d<=45 dans le second cas. Les bornes triangulaires sont indépendantes
+du rang ; le budget par classe concerne la branche rang43 sans racines
+et sans normes16..24. Ces bornes ne ferment pas encore cette branche.
+
+**Messages 485/487, exploitation nouvelle — note 242 :** au rang43,
+une racine impose 10a8+2a9+5a10+2a11+a12>=328. En particulier l'absence
+des normes16..24 FORCE désormais k=0 : les cas k=1,2 précédemment
+ouverts dans cette branche sont exclus. Preuve par l'identité quadratique
+H13+3H12+4H11+7H10+6H9+12H8+14R2+728R1=0 et les moments positifs
+des triangles et de leurs reflets dans une direction de racine.
+La version relative à chaque racine ajoute les nombres de vecteurs
+non orthogonaux au second membre. Code exact et données :
+`theta7_degree2_reduction.py`, `codex_theta7_degree2_reduction.json`.
+Dans le cas sans racines et sans normes16..24, toutes les couches
+TOTALES sans trace dépendent d'un seul tenseur D_M4, avec D_L26=-14D_M4
+et D_M6=-34D_M4. Pour les538 vecteurs M[4] non triangulaires,
+T_L26+14T_extra=2240I. LAP obtient indépendamment le même transfert
+et ajoute T(C)+T(C')=560I-(7/2)T_extra pour deux classes norm26
+orthogonales (bd27d407c, w49evenk.py/s0_tensor.py). Ces contraintes ne
+ferment pas le cas sans racines ; le rang43 entier reste ouvert.
+Ne pas relancer le calcul LAP ni les audits radiaux pour exploiter cela.
+
 **Message 482 et cible de degré deux :** LAP annonce `w49odd.py`, commit
 055a7e791 : sans normes16..24, chaque couche de chaque classe non nulle
 est centrée (somme vectorielle nulle). Exploitation note177 §8 : les

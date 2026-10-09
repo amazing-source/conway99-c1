@@ -225,6 +225,13 @@ conséquence.
 
 ## 8. Sommes nulles par classe et cible quadratique (message 482)
 
+**Suite du 9 octobre, note 242 :** l'identité quadratique et la
+positivité dans une direction de racine excluent maintenant k=1 et
+k=2 lorsque les normes 16 à 24 sont absentes. Seul k=0 et N=329
+subsistent dans cette branche. L'argument ci-dessous conserve son
+intérêt pour distinguer moyenne nulle et isotropie ; son ancienne
+liste de trois tailles n'est plus la liste des cas ouverts.
+
 LAP annonce ensuite, via LAB au message 482, le calcul de degré un
 `w49odd.py`, commit `055a7e791`. L'espace a dimension 44 ; les 24 zéros
 en dessous de la norme 14 laissent vingt paramètres, les sommes
