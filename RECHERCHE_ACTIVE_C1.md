@@ -1,5 +1,15 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 511, conséquence du déterminant lointain LAB — note 247 :**
+sous sa formule det Lambda_-=4*7^(2k)*tau/(9j²), rang8 et G connexe,
+le minimum global>=14 et gamma8=2 imposent
+4*7^(2k)*tau>=9*j²*7^8. Au rang37 : tau>=12970803 pour j>=1.
+Avec min L>=18 ou20 : seuil96855123 ou225000000. Aucun balayage
+supplémentaire lancé ; efficacité de ce filtre réel inconnue. La
+formule de déterminant est un apport LAB, non réaudité ici.
+Côté+3, le minimum>=12 était déjà prouvé (notes168/174) ; il ne
+contredit pas ses bornes Hermite30..60. Ne pas annoncer d'exclusion.
+
 **Messages 507–508, transmission au pilote entier LAP :** le registre
 autonome des6899 supports et des4581 ouverts est publié dans
 `amazing-source/conway99-c1`, branche `codex/p3-n25-register`,
