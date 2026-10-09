@@ -3355,3 +3355,18 @@ and proofs). Summary:
   48 vertices; no kernel type, no rank excluded.
 * Open sub-lemma, attacked without success: omega = 0 in diameter two (would make every line have an even number
   of cross cycles). No local proof can exist (the small twisted geometries have omega non-zero).
+
+### 17.85 Mandate B, continued: the exact law that replaces the sub-lemma (conjecture, nine graphs); not proved (10:40 UTC, 09/10)
+
+The user asked for a proof of "all quadrangles even in diameter two". Outcome (details in section 9 of
+`RECHERCHE_B_REALISATION_GLOBALE.md`):
+* the sub-lemma is false in the general family (the tri-incidence graphs on 39, 93 and 171 vertices have odd
+  quadrangles); what holds on all nine graphs available is  omega(walk) = sum of c_e over its edges + kappa * length,
+  c_e = number of two-layer cycles of the edge e (det (A+I)[X u Y] = (-3)^{c_e}), kappa a constant of the graph;
+* consequences for a 99-candidate IF it is proved: all 231 lines have the same parity of the number of faces
+  F(T) = c(T) + c_uv + c_vw + c_wu, and every quadrangle has c(Q) = sum of its four c_e mod 2;
+* it is NOT a local identity: on 20000 random abstract four-wall configurations the parity fails 10083 times;
+* proved reductions: Pfaffian formula f = c + d_o; the class of d does not depend on an ARBITRARY orientation of the
+  edges; four candidate proofs (parallel, anti-parallel, balanced, coherent orientations) fail on the twisted 243.
+Scripts: two_layer_test.py, triinc_test.py, abstract_quad.py, parallel_orient.py, balanced_orient.py,
+arc_coherence.py, gewirtz_test.py, flip_zoo.py, minors_sign.py, holonomy_mu2.py.

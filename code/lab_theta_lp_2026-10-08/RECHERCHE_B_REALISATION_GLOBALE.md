@@ -152,3 +152,73 @@ Je n'ai aucune raison de croire le sous-lemme vrai pour un graphe sans automorph
 type n'existe pour le tester. **Je l'abandonne comme non décidable par les moyens disponibles.**
 
 État final du mandat B dans cette session : la loi de parité du §1 est démontrée ; elle n'exclut rien.
+
+## 9. Suite du 9 octobre, 10:40 UTC : la loi exacte (conjecturale) qui remplace le sous-lemme ; non démontrée
+
+L'utilisateur a demandé de PROUVER le sous-lemme du §5. Résultat de la tentative : le sous-lemme tel qu'énoncé est
+faux dans la famille générale, et il est remplacé par une formule précise, vérifiée sur neuf graphes, que je n'ai
+pas su démontrer.
+
+**Notation.** Pour une arête e = vw de troisième point t, le graphe « à deux couches » de e est le graphe induit
+sur (N(v) ∪ N(w)) ∖ {v, w, t} : partenaires et couplage π_vw ; c'est une réunion de cycles de longueur 4ℓ. Soit
+c_e leur nombre. Identité vérifiée : dét (A + I)[X ∪ Y] = (−3)^{c_e} si aucun ℓ n'est multiple de trois (0 sinon).
+
+**Loi observée (conjecture).** Pour toute marche fermée γ,
+
+    ω(γ) ≡ Σ_{e ∈ γ} c_e + κ·longueur(γ)   (mod 2),   κ ∈ {0, 1} constante du graphe.
+
+Autrement dit la cochaîne de signe f est égale à c + κ à un cobord près. Conséquences :
+- quadrilatère Q = (v, a, w, b) : c(Q) ≡ c_va + c_aw + c_wb + c_bv (mod 2) ;
+- droite T = {u, v, w} : F(T) = c(T) + c_uv + c_vw + c_wu ≡ κ (mod 2) pour TOUTES les droites. F(T) est le nombre
+  de faces de la carte Σ_T tracée sur G(T) (cycles transversaux et cycles à deux couches), et χ(Σ_T) = F(T) − 18.
+
+**Vérification** (`two_layer_test.py`, `triinc_test.py`, test sur tous les cycles par arbre couvrant) :
+
+| Graphe | n, k | valeurs de c_e | classe de f seule | f + c |
+|---|---|---|---|---|
+| grille | 9, 4 | 1 | nulle | cobord + 1 |
+| t=2 non tordue | 27, 6 | 2 | nulle | cobord |
+| t=2 tordue | 20, 6 | 1 | longueur | cobord |
+| t=3 tordue (tri-incidence q=3) | 39, 8 | 1, 2, 3 | autre | cobord + 1 |
+| t=3 tordue, 42 sommets | 42, 8 | 1 | longueur | cobord |
+| tri-incidence q=5 | 93, 12 | 2, 3 | autre | cobord + 1 |
+| tri-incidence q=7 | 171, 16 | 2, 3, 5 | autre | cobord + 1 |
+| BvLS | 243, 22 | 10 | nulle | cobord |
+| 243 tordu | 243, 22 | 4, 10 | nulle | cobord |
+
+Les trois graphes de tri-incidence ont une holonomie de parité non triviale (« autre ») et des c_e de parités
+mélangées ; leur groupe ne suffit pas à forcer le résultat (pour q = 7, les classes invariantes sous Z_57 forment
+un espace de dimension 22). Le sous-lemme « tout quadrilatère est pair » y est FAUX ; ce qui est vrai est la formule.
+
+**Ce n'est pas une identité locale.** Modèle abstrait des quatre murs d'un quadrilatère (`abstract_quad.py` :
+partenaires et couplages tirés au hasard, seules les contraintes aux coins imposées) : c(Q) + Σ c_e est pair dans
+9917 tirages et impair dans 10083, sur 20000. Si la loi est vraie, elle exclut donc la moitié des recollements
+abstraits de quatre murs : ce serait une obstruction de réalisation au sens du mandat. Elle n'est pas démontrée.
+
+**Réductions démontrées vers une preuve.**
+1. Formule de Pfaffien : pour une orientation cyclique o des droites, f = c + d_o dans la jauge induite, où d_o(e)
+   est le nombre de paires de partenaires aux extrémités de e orientées contre le parcours de leur cycle à deux
+   couches. De façon équivalente d_o(e) est la parité de la distance de o aux orientations « anti-parallèles en e »
+   (tout quadrilatère par e a ses deux côtés adjacents à e de sens opposés).
+2. Liberté de jauge plus grande : pour une orientation ξ QUELCONQUE des 693 arêtes,
+   Λ_ξ(vw) = #{p dans une classe de couleur du graphe à deux couches : ξ oriente p → partenaire(p)}
+             + [ξ : t → w] + [ξ : t → v]
+   a une classe indépendante de ξ. Démontrer la loi revient à exhiber, dans chaque graphe, une orientation des
+   arêtes pour laquelle Λ_ξ est constante.
+
+**Pistes de preuve essayées, toutes insuffisantes** (`parallel_orient.py`, `balanced_orient.py`,
+`arc_coherence.py`) :
+- orientation des droites parallèle (ou anti-parallèle) dans tout quadrilatère : existe sur six graphes, pas sur
+  le 243 tordu ni sur le graphe à 42 sommets ;
+- orientation « équilibrée » (nombre pair de côtés à contresens dans tout quadrilatère) : même échec ; là où elle
+  existe, d_o est constante ;
+- orientation des arêtes cohérente le long de tous les cycles à deux couches : n'existe que sur le graphe à 20
+  sommets ;
+- aucune orientation canonique locale de N(v) ne peut convenir (dans un graphe de Hamming une réflexion fixe v et
+  renverse l'orientation) : la preuve, si elle existe, est globale.
+
+**Autre essai sans suite** (`flip_zoo.py`) : la bascule BvLS → 243 tordu ne se laisse ni appliquer partiellement
+ni combiner à deux droites parallèles ; pas de nouveau graphe de diamètre deux pour tester.
+
+**Effet pour un candidat à 99 sommets, SI la loi est démontrée :** les 231 droites ont toutes la même parité de
+F(T) ; chacun des 2079 quadrilatères vérifie c(Q) ≡ somme des quatre c_e. État : conjecture, neuf graphes.
