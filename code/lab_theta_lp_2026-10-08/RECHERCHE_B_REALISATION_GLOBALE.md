@@ -342,3 +342,20 @@ tensorielles, Σ_y (y yᵀ − |y|²E/44) q^{|y|²/2} sur L1 et son analogue sur
 et de M sont donc combinaisons linéaires d'au plus neuf d'entre eux. Les couches « algébriques » (droites, différences
 de sommets) sont des 2-designs ; l'écart mesure l'inhomogénéité du graphe. Sans couche connue non homogène, aucune
 contradiction.
+
+
+**Addendum du 9 octobre, 13:19 UTC : rubans propres de longueur au plus six.** Appelons propre un cycle de transport de
+longueur m dont les 3m points (a_i, b_i, c_i) sont distincts et induisent exactement le graphe 4-régulier
+H = L(D), D étant l'échelle circulaire ou l'échelle de Möbius à 2m sommets. Les valeurs propres de H sont μ + 1 (μ valeur
+propre de D) et −2 ; la plus grande valeur propre non principale vaut 2 cos(2π/m) + 2 dans les deux cas, portée par un
+vecteur de somme nulle. La positivité de 3I − A_H + J/9 (bloc de 7E) exige donc cos(2π/m) ≤ 1/2 :
+
+    un ruban propre a m ∈ {3, 4, 5, 6} ;  m = 3 et m = 6 sont les cas d'égalité (valeur propre 3 exacte).
+
+Dans les cas d'égalité, le vecteur propre prolongé par zéro est un vecteur propre de A pour la valeur 3 porté par le
+ruban (m = 3 : les grilles ; m = 6 : deux vecteurs entiers de support ≤ 18). Contrôle numérique des deux fermetures pour
+m = 3..9 dans le terminal (m ≥ 7 : valeur propre minimale −0,247 ; −0,414 ; −0,532). Le dossier externe donnait
+𝒟(H) = 9m² − 60m + 99 ≥ 0, qui ne borne pas m. Conséquence : tout cycle de transport de longueur ≥ 7 comporte des
+identifications de points ou des arêtes supplémentaires (c'est le cas des périodes 8, 9, 16 du 243 tordu : 4, 9, 16
+paires de centres adjacentes). Pour m = 4 le ruban est toujours propre (dossier). Rien d'exclu ; pas de minoration du
+nombre de cycles courts.
