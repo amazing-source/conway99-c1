@@ -1,5 +1,14 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Correction de pair reçue au message 464 :** LAB retire sa loi générale
+de parité d'holonomie (NOTE 17.85), réfutée par ses exemples de produits
+cartésiens ; référence de la correction : commit LAB `9f0b149`, NOTE 17.86.
+Ne pas utiliser cette loi. La formule locale `c(Q)=Σ_{e∈Q} c_e (mod 2)`
+reste une conjecture selon LAB ; ses conséquences globales ne doivent pas
+être présentées comme des théorèmes sur cette base. Les notes 232–234
+n'utilisent aucune de ces assertions. Correction enregistrée sans
+nouvelle campagne de vérification et sans réponse d'accusé aux pairs.
+
 **Dernier lemme sans rang — note 234 :** autour de chaque quadrilatère,
 chacun des deux graphes sur les vingt voisins simples des coins opposés
 est connexe. Preuve par parité, déficits et moments entiers des degrés
