@@ -57,6 +57,28 @@ passent encore les premiers tests spectraux ; la relaxation spectrale
 ordinaire des graphes 5-réguliers est trop large pour exclure quarante
 sommets. Ne pas transformer ces essais en nouvelles campagnes d'audit.
 
+## Exploitation du dossier Convergences
+
+L'utilisateur a fourni `DOSSIER_C1_CONVERGENCES.zip` et demandé d'en
+tirer des conséquences avec notre contexte. La [note 235](notes/235_CODEX_EXPLOITATION_CONVERGENCES.md)
+attribue le théorème des témoins de bord au dossier et établit :
+
+- son application inconditionnelle au motif Makhnev de six points,
+  avec projection totale et orthogonal de rang 38 ;
+- son extension à tout support induit 4-régulier de douze points,
+  avec exclusion de la valeur propre trois pour le support ;
+- quatre formes nécessaires pour les collisions `H→h_H`, avec
+  intersection d'au plus trois sommets entre supports distincts.
+
+Les deux premières extensions sont théoriques. Le calcul associé
+établit le Gram de rang six et énumère 4095 sous-ensembles propres de
+chacun des deux supports explicites pour la dernière. Il ne rejoue
+pas les vérifications du dossier, ni ses LP faisables. Le recollement
+de rang 32 pour Cube/Wagner reste un apport extérieur, conditionnel
+à leur présence ; aucune existence obligatoire d'un cycle de transport
+de longueur quatre n'est ajoutée. LAB prend la piste complémentaire
+des cycles longs (message 466).
+
 ## Premier essai, conservé comme historique
 
 9 octobre 2026. Révision consultée :

@@ -1,5 +1,18 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Dossier Convergences fourni directement par l'utilisateur — note 235 :**
+le théorème extérieur de saturation par témoins de bord est exploité,
+sans refaire ses campagnes. Il s'applique au motif obligatoire Makhnev
+de six sommets (réseau primitif, projection totale, déterminant 3255,
+orthogonal de rang 38). Il s'étend aussi à tout support induit
+4-régulier sur douze sommets ; celui-ci ne peut avoir la valeur propre
+trois. Enfin deux supports Cube/Wagner ayant le même vecteur h_H
+ne peuvent se recouper qu'en au plus trois sommets, suivant quatre
+formes explicites. La note et le petit calcul exact associé sont
+enregistrés ; aucune exclusion de rang n'est annoncée. LAB explore
+en parallèle les cycles longs du transport (message 466), sans audit
+en double de nos conséquences.
+
 **Correction de pair reçue au message 464 :** LAB retire sa loi générale
 de parité d'holonomie (NOTE 17.85), réfutée par ses exemples de produits
 cartésiens ; référence de la correction : commit LAB `9f0b149`, NOTE 17.86.
