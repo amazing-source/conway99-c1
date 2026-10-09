@@ -397,3 +397,17 @@ Lecture : dans toute fenêtre de cinq centres d'une géodésique, ou bien les ce
 deux rôles éloignés coïncident (dix formes), ou bien il y a au moins deux relations supplémentaires. Les contraintes
 propres au transport au-delà des axiomes locaux (par exemple le second voisin commun des paires extrêmes) ne sont pas
 toutes imposées dans ce test. Cela ne borne pas la longueur des cycles et n'exclut rien.
+
+
+**Addendum du 9 octobre, 13:57 UTC : cycles fermés de longueur 6, 7, 8 avec peu de relations supplémentaires**
+(`closed_cycle_repairs.py`, `closed_cycle_two_edges.py` ; mêmes tests, indication flottante).
+- Longueur 6, rôles distincts ou une identification : le cycle propre et tous les cycles à UNE relation supplémentaire
+  échouent (cylindre : arêtes a0–a3, a0–b3, c0–c3 et identifications a0 = b3, c0 = c3 ; Möbius : a0–a3, c0–c3, c0 = c3 ;
+  les autres violent les axiomes locaux ou la positivité).
+- Longueurs 7 et 8 : aucune relation unique ne rétablit la positivité (deux modes négatifs indépendants).
+- Longueur 6 avec DEUX arêtes supplémentaires (cylindre, 92 classes) : 46 non positives, 5 locales, 27 échouent au
+  système des multiplicités, **14 passent** (par exemple c0–c3 avec c1–c4, a0–b3 avec a1–b4).
+Bilan de la piste « cycles longs » : un cycle de transport est une grille (3), un ruban propre de longueur 4 ou 5, ou
+porte au moins deux relations supplémentaires ; ces derniers ne se laissent pas classer en une liste courte (chaque
+relation est une coïncidence d'une carte de sommet), donc aucune couverture par des supports courts n'est démontrée et
+aucun cycle de longueur quatre n'est forcé. Je ferme cette piste ici, sauf idée nouvelle.
