@@ -3011,7 +3011,7 @@ marked, none missing either way). Queued (a background wait loop starts it when 
 rank 1 in 2000 parts, rank 2 in 400, rank 3 in 144, 11 workers under `guarded_pool.py`; rank 4 (27 balls) is left to
 the laptop session. Estimate 6 to 7 hours after the main sweep.
 
-Addendum to 17.77 (01:04 UTC): the shortest form of the same fact, and the laptop session's instance of it.
+Addendum to 17.77 (01:03 UTC): the shortest form of the same fact, and the laptop session's instance of it.
 If z is supported on a vertex set S and is an eigenvector of the induced graph on S for the eigenvalue 3, then
 A z = 3 z + e with e supported outside S, and A^2 = 12 I - A + 2 J gives |A z|^2 = 9 |z|^2 + 2 (sum z)^2, hence
         |e|^2 = 2 (sum z)^2.
@@ -3025,3 +3025,33 @@ disconnected line is a family of integer 3-eigenvectors of small norm (mass 12 f
 Laptop session, reported state: profile (4,4,4) closed, 275 multisets of three ordered types, all dead (its commit
 784c31c98; computer-assisted, not audited); (6,6) at P = 0 in progress, all dead so far; rank 4 of the (4,8) torsion
 balls running there. Main (4,8) sweep here at 01:02 UTC: 25 221 balls, 21 018 dead, 4 203 TORSION, 0 other.
+
+### 17.78 The (4,8) sweep reduced to one ball per isomorphism class; independent check; new division of the torsion ranks (01:33 UTC, 09/10)
+
+Laptop session's reduction (its message of 01:27 UTC, commit cb4ff9ec1 of conway99-c2-aws: `actc.c`, `reps48.py`,
+`reps48.txt`). A ball of the profile (4,8) is a pair (s, b), s one of the three small types kept (0, 1, 3), b one of
+the 81 959 large ordered types; re-reading the three layers in another order sends (s, b) to (g.s, g.b), so for a fixed
+s the large types matter only up to the stabiliser of s (order 6 for s = 0, order 2 for s = 1, 3): 14 424 + 41 736 +
+41 736 = 97 896 balls instead of 245 877. "No star at some near vertex" kills the isomorphism class, whatever the test
+vertex, so the sweep of the representatives is enough.
+Checks here before using it:
+* its table rebuilt (`actc.exe`, `reps48.py`): same counts, same hashes (act48.txt 5e8b7f89a6034d0c, reps48.txt
+  6f2968daa1c9deb7), file identical to the laptop's;
+* independently of its action code (`iso_check_reps48.py`: the two balls are built by the function the sweep itself
+  uses and compared by networkx as graphs on 36 vertices with a partition into three layers, the six permutations of
+  the layers being tried): random sample of 400 non-representative balls, all isomorphic to their representative;
+  negative control, 400 pairs of representatives of different classes, none isomorphic; every ball in exactly one
+  class, sizes adding up to 245 877. The complete version (all 147 981 non-representative balls) is queued for when
+  the processor is free; until it has run, the reduction is checked on a sample only;
+* on the balls already swept in full: 5 076 non-representative balls have their representative swept too, all with
+  the same verdict (dead or TORSION), none different. (I first wrote "20 000" to the laptop session without having
+  computed it, and corrected it in the next message.)
+Switch at 01:30 UTC: the 1763 parts finished before are kept (swept in full), the others run with the filter; at 01:31
+UTC 17 448 of the 97 896 representatives were logged (14 497 dead, 2 951 TORSION, 0 other). About 57 parts a minute
+at 11 workers (load measured with a single sampler: mean 71%, maximum 78%): end around 04:30 UTC.
+Torsion ranks, new division proposed by the laptop session and accepted: rank 1 here on the representatives (15 462
+balls), ranks 2, 3, 4 on the laptop with its pair filter (`sweep48tp.py`: for a space B of balanced torsion vectors,
+each pair of near points with K_ab = c > 0 needs at least c admissible B-balanced 6-sets through it; it reports that
+this removes 95 to 99.6% of the subspaces of dimension 2 and all those of dimension >= 3 on its samples). As a
+cross-check of that filter, 65 representative balls of rank 2 are queued here WITHOUT it (parts 0 to 3 of 64).
+Laptop session, reported: (6,6) at P = 0, the 2887 torsion-free pairs all dead; torsion pairs running.
