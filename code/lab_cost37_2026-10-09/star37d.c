@@ -27,6 +27,8 @@
    the brute-force reference run to depth 10.
    Environment variable STAR37_TYPE1 set: the random balls may contain 4-cycles of type I (two mate pairs joined by
    two transversal edges, i.e. an edge of the line in a prism); still no triangle in G(T). Default: prism-free.
+   Environment variable STAR37_NT set: triangles of G(T) are allowed too (a line parallel to T); the star vertex is
+   then taken outside the triangles, so that the star has the same shape (two apexes, four adjacent pairs).
    Compile: gcc -O3 -march=native (AVX-512 BW + VBMI), or -DSCALAR for plain C with the same formulas.
    One process, about 30 MB (100 MB with check). */
 #include <stdio.h>
@@ -44,7 +46,7 @@ static u64 rs;
 static inline u64 rnd(void) { rs ^= rs >> 12; rs ^= rs << 25; rs ^= rs >> 27; return rs * 2685821657736338717ULL; }
 static int A[36][36], A2[36][36], K[36][36], Gm[36][36], nb[36][3], mate[36], lay[36];
 static u64 amask[36];
-static int U, REAL, ORDER, ALLOW4, has4;
+static int U, REAL, ORDER, ALLOW4, has4, ALLOW3, has3;
 static unsigned char pordI[512][10]; static int pord[10], reffirst;   /* search order of the slots, per first member */
 static double Hr[36][36];
 static const double BND = 37.0 / 12;
@@ -53,7 +55,7 @@ static double now(void) { struct timespec ts; clock_gettime(CLOCK_MONOTONIC, &ts
 static void shuffle(int *p, int n) { for (int i = n - 1; i > 0; i--) { int j = rnd() % (i + 1); int t = p[i]; p[i] = p[j]; p[j] = t; } }
 
 static int make_ball(void) {
-    int p[3][12]; has4 = 0;
+    int p[3][12]; has4 = 0; has3 = 0;
     for (int l = 0; l < 3; l++) { for (int i = 0; i < 12; i++) p[l][i] = i; shuffle(p[l], 12); }
     memset(A, 0, sizeof A);
     for (int i = 0; i < 36; i++) { lay[i] = i / 12; mate[i] = i ^ 1; A[i][i ^ 1] = 1; }
@@ -63,7 +65,7 @@ static int make_ball(void) {
     for (int i = 0; i < 36; i++) for (int j = 0; j < 36; j++) {
         if (i == j) { K[i][j] = 10; continue; }
         int same = lay[i] == lay[j];
-        if (A[i][j]) { if (A2[i][j] != 0) return 0; }
+        if (A[i][j]) { if (A2[i][j] != 0) { if (!ALLOW3 || same || A2[i][j] > 1) return 0; has3 = 1; } }   /* triangle of G(T) */
         K[i][j] = 2 - A[i][j] - A2[i][j] - same;
         if (K[i][j] < 0) return 0;
     }
@@ -698,6 +700,7 @@ int main(int argc, char **argv) {
     rs = strtoull(argv[1], 0, 10) * 0x9E3779B97F4A7C15ULL + 1; int NB = atoi(argv[2]); int UMODE = atoi(argv[3]); REAL = atoi(argv[4]); ORDER = atoi(argv[5]); int CHECK = argc > 6;
     REFD = argc > 7 ? atoi(argv[7]) : 4;
     ALLOW4 = getenv("STAR37_TYPE1") != NULL; long long with4 = 0, with4t = 0;
+    ALLOW3 = getenv("STAR37_NT") != NULL; long long with3 = 0, with3t = 0, nou = 0; if (ALLOW3) ALLOW4 = 1;
     int PLANTMODE = CHECK && !strcmp(argv[6], "plant"); long long planted = 0, plfound = 0, plfail = 0;
     if (PLANTMODE) { REAL = 0; REFD = 10; }
     if (CHECK) { for (int k = 0; k < 12; k++) { balive[k] = malloc(sizeof(int) * MAXC); btie[k] = malloc(sizeof(int) * MAXC); } refm = malloc((size_t)MAXC * MAXC); }
@@ -711,14 +714,19 @@ int main(int argc, char **argv) {
         tried++;
         double g0 = now(); int okb = make_ball(); tgen += now() - g0;
         if (!okb) continue;
-        valid++; with4 += has4;
+        valid++; with4 += has4; with3 += has3;
         double t0 = now(); int det = invert(); tinv += now() - t0;
         if (CHECK) { static int G2[36][36]; int d2 = invert_plain(G2); int bad = d2 != det; if (det) for (int i = 0; i < 36; i++) for (int j = 0; j < 36; j++) if (G2[i][j] != Gm[i][j]) bad = 1;
             if (bad) { printf("MISMATCH: fast inverse differs from plain Gauss-Jordan (valid ball %lld)\n", valid); mism++; } }
         if (det == 0) { tors++; continue; }
         if (det == 1 || det == 2 || det == 4) { resid++; continue; }
-        U = 0;
-        if (UMODE == 1) { int bz = -1; for (int x = 0; x < 36; x++) { int z = 0; for (int k = 0; k < 36; k++) if (lay[k] != lay[x] && K[x][k] == 0) z++; if (z > bz) { bz = z; U = x; } } }
+        U = -1;                                        /* the star vertex is taken outside the triangles of G(T) */
+        { int bz = -1; for (int x = 0; x < 36; x++) {
+            int c[2], nc = 0; for (int k = 0; k < 3; k++) if (lay[nb[x][k]] != lay[x]) c[nc++] = nb[x][k];
+            if (A[c[0]][c[1]]) continue;
+            int z = 0; for (int k = 0; k < 36; k++) if (lay[k] != lay[x] && K[x][k] == 0) z++;
+            if (U < 0 || (UMODE == 1 && z > bz)) { bz = z; U = x; } } }
+        if (U < 0) { nou++; continue; }
         double c0 = now();
         if (REAL) real_pinv();
         ball_tables(); candidates(); double c1 = now();
@@ -728,7 +736,7 @@ int main(int argc, char **argv) {
         if (PLANTMODE) { plnodes = 0; if (pl_dfs(0, 0, 0)) { PLANT = 1; planted++; } else plfail++; }
         search(); double c3 = now();
         tcand += c1 - c0; ttab += c2 - c1; tsearch += c3 - c2;
-        tested++; with4t += has4; totc += NC; if (nsol) alive_balls++;
+        tested++; with4t += has4; with3t += has3; totc += NC; if (nsol) alive_balls++;
         for (int d = 0; d <= 10; d++) { tot[d] += cntd[d]; if (cntd[d] && d > maxdepth) maxdepth = d; }
         for (int p = 0; p < 10; p++) if (nsl[p] > maxslot) maxslot = nsl[p];
         if (CHECK) {
@@ -762,7 +770,8 @@ int main(int argc, char **argv) {
     }
     double wall = now() - t00;
     printf("slot order %s; ", ORDER ? "per first member" : "fixed");
-    if (ALLOW4) printf("class: connected, no triangle in G(T), 4-cycles of type I ALLOWED (%lld of the valid balls and %lld of the tested ones have one); ", with4, with4t);
+    if (ALLOW3) printf("class: connected, triangles of G(T) and 4-cycles of type I ALLOWED (with a triangle: %lld of the valid balls, %lld of the tested ones; with a 4-cycle of type I: %lld, %lld; balls where every point is in a triangle, skipped: %lld); ", with3, with3t, with4, with4t, nou);
+    else if (ALLOW4) printf("class: connected, no triangle in G(T), 4-cycles of type I ALLOWED (%lld of the valid balls and %lld of the tested ones have one); ", with4, with4t);
     printf("real filters %s; drawn %lld, valid connected %lld, torsion %lld, residue discriminant %lld, tested %lld (slot too big: %lld)\n", REAL ? "ON" : "off", tried, valid, tors, resid, tested, big);
     printf("mean candidates %.0f, largest slot %d, balls with a star %lld, deepest level reached %d\n", (double)totc / tested, maxslot, alive_balls, maxdepth);
     printf("mean consistent partial stars by depth:"); for (int d = 1; d <= maxdepth; d++) printf(" %.1f", (double)tot[d] / tested);
