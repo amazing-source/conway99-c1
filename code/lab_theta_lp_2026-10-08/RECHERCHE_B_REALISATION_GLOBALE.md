@@ -428,3 +428,14 @@ ce qui suffit puisqu'on n'en tire aucune exclusion. Énoncés exacts obtenus, po
 4. un cycle de transport de longueur 6, 7 ou 8 porte au moins deux relations supplémentaires.
 Réserve : les axiomes « locaux » utilisés sont ceux d'un sous-graphe induit ; les contraintes propres au transport sur
 les paires extrêmes d'une fenêtre ne sont pas toutes imposées (elles ne peuvent que retirer des cas qui passent).
+
+
+**Addendum du 9 octobre, 14:05 UTC : deux contrôles de plus, sans exclusion.**
+- Rubans fermés à rôles distincts avec les seules cordes c_i ~ c_(i+4) (chaque fenêtre de cinq centres porte alors la
+  seule relation c1 ~ c5) : jamais positifs pour m = 9..24 (m = 9 viole de plus les axiomes locaux). Un cycle long ne
+  peut donc pas être « réparé » uniformément par ces cordes : il lui faut des identifications ou des fenêtres à deux
+  relations au moins.
+- Ruban propre de longueur 5, second niveau (`ribbon5_second_level.py`) : le comptage donne
+  n1 = 3 n3 + 8 n4 + 15 n5 − 30, donc au moins un sommet extérieur a trois voisins ou plus dans H ; pour chacun des
+  masques de taille ≥ 3 (8 orbites pour le cylindre, 10 pour Möbius) le support H + z passe le test à un sommet. Le
+  ruban propre de longueur 5 n'est donc pas exclu à ce niveau.
