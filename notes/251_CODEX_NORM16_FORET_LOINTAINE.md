@@ -3,6 +3,10 @@
 10 octobre 2026, heure de Paris. Recherche motivée par la famille couvrante
 proposée au message LAB525. Les résultats ci-dessous ne dépendent pas du rang.
 
+**Suite :** la note253 force un sommet isolé dans Z et retire la forme
+4K2+P3. La liste nécessaire actuelle comporte donc14 formes et70 supports.
+La présente note conserve la première réduction et ses identifiants.
+
 **Théorème.** Soit f un vecteur propre entier de valeur -4 et de norme
 carrée16 dans un srg(99,14,1,2). Reprendre la partition de la note166 :
 P,Q, les deux supports indépendants de huit points ; D, les huit points
