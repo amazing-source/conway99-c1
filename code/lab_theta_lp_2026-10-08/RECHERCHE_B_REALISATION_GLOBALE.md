@@ -131,7 +131,7 @@ partenaires. Vérification par identité : Mᵀ(27I − 9A + J)M = 9(3I − L �
 - `minors_sign.py` : signes des mineurs dét A[N(v), N(w)] pour toutes les paires.
 - Sorties reproduites dans le tableau du §2.
 
-## 8. Suite du 9 octobre, 10:05 UTC : le sous-lemme n'a aucun appui hors symétrie
+## 8. Suite du 9 octobre, 10:02 UTC : le sous-lemme n'a aucun appui hors symétrie
 
 Cinquième graphe de diamètre deux, de nature différente : Gewirtz srg(56,10,0,2) (`gewirtz_test.py`). Les 630
 quadrilatères sont pairs et la classe est « longueur mod 2 », alors que la loi de parité ne s'y applique même pas
