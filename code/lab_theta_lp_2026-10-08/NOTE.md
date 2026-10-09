@@ -3332,3 +3332,26 @@ For the 31 types with the fewest partner types (2, 6, 8 or 9 partners) the very 
 the largest number of completions tested before a feasible one is 30 (type 9728). A feasible verdict is a
 floating LP solution of a necessary condition; it constructs nothing. Outcome: the mask test on the union of
 the two kernels of a quadrangle excludes NO kernel type. Both chains unchanged: 174 kernels; ranks 37, 39, 41, 43.
+
+### 17.84 Mandate B (user's mission of 09:15 UTC, 09/10): a global parity law on quadrangle holonomies; proved, no exclusion (10:40 UTC, 09/10)
+
+The user replaced the agenda by three mandates (A = Astra/Codex, B = this session, C = the laptop session); I relayed
+A and C word for word at 09:23 UTC and took B: an obstruction coming from the fact that the same 99 vertices and 693
+edges realise every local constraint. Work file: `RECHERCHE_B_REALISATION_GLOBALE.md` (French, complete statement
+and proofs). Summary:
+
+* For adjacent v, w the cross matching pi_vw extends to a bijection PHI_vw : N[v] -> N[w]. The parity of the
+  holonomy of a closed walk is a homomorphism omega from the cycle space to F_2 (a 1-cochain f after ordering every
+  N[v]; det A[N(w), N(v)] = -sign(pi_vw)). On a line, omega = parity of the number of cross cycles of G(T); on a
+  quadrangle, omega = parity of the number of cycles of the "band" permutation of N(v) minus {a, b}.
+* THEOREM: every edge lies in k - 2 = 12 quadrangles, so the sum of all quadrangle boundaries vanishes mod 2 and
+  the number of quadrangles with odd holonomy is EVEN (2079 quadrangles in all). More generally at least
+  2310 - 595 = 1715 independent linear relations between the 2310 local parities.
+* Checked by `holonomy_class.py` on seven graphs; the law is non-void on the 39-vertex twisted geometry (78 odd
+  quadrangles of 234). omega is zero on the grid, BvLS and the twisted 243; non-zero on the 20-, 39- and 42-vertex
+  twisted geometries.
+* NOT in the dossier: note 94 section 2 looked at line holonomies only ("no law"), note 95 uses a count-twelve
+  parity only at a Hamming point. NO EFFECT on C1 shown: one equation over F_2 on invariants that each depend on
+  48 vertices; no kernel type, no rank excluded.
+* Open sub-lemma, attacked without success: omega = 0 in diameter two (would make every line have an even number
+  of cross cycles). No local proof can exist (the small twisted geometries have omega non-zero).
