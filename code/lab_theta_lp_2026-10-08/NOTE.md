@@ -3412,6 +3412,7 @@ with one active row on such corners: a scaling artefact (the same corners are ex
 
 ### 17.88 Rank 37: the counting LP with NO grid sits at the threshold; grids are a small class of balls (20:29 UTC, 09/10)
 
+**WRONG AS STATED: see the correction 17.89 (two different collections were compared).**
 Status: floating LP (exploration) and a cost estimate; nothing is excluded. Asked by the user on 09/10 in the evening:
 look elsewhere than the full sweep of line balls.
 
@@ -3449,3 +3450,28 @@ the maximum 126 of the census polytope. Hence rho = 0.
 
 **So the route would be:** (1) small sweep: at rank 37 no line lies in a grid, rho = 0; (2) counting at rho = 0, which
 needs the uncharged channels and a few per cent on c or the bound on twin classes. Neither step is done.
+
+### 17.89 CORRECTION of 17.88: the "threshold at rho = 0" compared two collections; the answer was already in 17.45 and 17.70 (20:35 UTC, 09/10)
+
+The observation and the conclusion of 17.88 are WRONG. The section is kept above for the record.
+
+* `lp_budget3.py` sums every representative of norm 8 and support <= 9 (R = 36.56M at its rho = 0 optimum), including
+  the (6,3) representatives whose 6-set is a prism. Codex's cap 31 976 per non-grid twin pair is certified for ITS
+  collection, which leaves them out; their full swaps 1_X - 1_Y <-> 1_X' - 1_Y are collisions that this cap does not
+  count. It is exactly the error corrected in 17.44, made a second time.
+* On Codex's collection the question "what if there is no grid at all" was computed on 08/10, twice: 17.45
+  (`OUTPUT_lp_family_rho.txt`, scenario m5s9k2x63r0: break-even 25 201 at rho = 0, with R = 32.51M, ceiling 15.13M,
+  P = 780, tau = 780) and 17.70 (reproduced). 25 201 < 31 976: with no grid at all the mass-six accounting is short by
+  21 per cent.
+* The channels of masses 7 to 9 are not a small remainder either: by 17.74 and 17.76 their only certified bounds are
+  20 to 35 times the margin, with or without grids.
+
+So "no grid at rank 37", even if proved, is not followed by an exclusion with anything certified today. The figure
+"20.2M with twin classes of size at most 2" of 17.88 was computed on the same wrong collection and is withdrawn; it was
+not recomputed on Codex's collection. What stays true in 17.88: a line lies in a grid exactly when its graph has a
+prism component; the labelled mass of these balls is (9!!)^3 / 6; the profile (1^6) follows from the others. The small
+sweep is NOT proposed: it would prove a statement that no available argument turns into an exclusion.
+
+How the error passed: an old script was re-run on its own numbers without re-reading 17.44, 17.45 and 17.70 of this
+note, and the check came after the announcement instead of before it. Retracted with Codex and with the laptop
+session, and with the user.
