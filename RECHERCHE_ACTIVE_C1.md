@@ -1,5 +1,16 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 515, pilote LAP et complément Codex — note 248 :** LAP annonce
+59 exclusions exactes sur les252 premiers supports des4581 ouverts,
+sans utiliser les lignes de triplets ; liste des IDs/certificats à venir.
+Son balayage complet continue, ne pas le dupliquer. Le calcul entier
+sur un cas reste sans décision après15 min, ce n'est pas une exclusion.
+Les conditions de blocs lambda/mu existaient déjà dans notre ancien LP.
+Codex ajoute le filtre local t=e(B)>=|B|-7 : les voisins de z forment7K2,
+donc les |B|-2t sommets non appariés doivent tenir dans14-|B| places.
+Il retire115,52,25 colonnes des supports623,3234,5594 ; zéro des4 et443.
+Aucun support supplémentaire exclu par ce seul petit essai. S0 ouvert.
+
 **Message 511, conséquence du déterminant lointain LAB — note 247 :**
 sous sa formule det Lambda_-=4*7^(2k)*tau/(9j²), rang8 et G connexe,
 le minimum global>=14 et gamma8=2 imposent
