@@ -65,6 +65,12 @@ automatiquement une composante. Le message LAB 437 donnait déjà cette
 nécessité pour les partenaires de même projection ; (1) fournit aussi
 la réciproque et (2) s'applique au reste du graphe.
 
+Le message LAB 439 propose de détecter ces composantes par
+det(3I−A[Z(S)])=0. Cette équivalence concerne un partenaire positif de
+**masse quelconque, après normalisation**. Elle ne détecte pas à elle
+seule une collision de masse huit : une composante cubique connexe de
+seize points, par exemple, correspond à 2·1_U−1_C de masse seize.
+
 ## 3. Divisibilité et profils forcés
 
 Pour un cubique U à huit sommets, notons n_k le nombre de sommets
@@ -100,6 +106,12 @@ l'extérieur des deux supports. Sur W, d_U=0. Par conséquent aucun
 sommet extérieur à U ne peut avoir trois voisins dans U, et (3) devient
 
     (n_0,n_1,n_2)=(23,48,20).                            (6)
+
+Pour le cube 2022000, cette condition est déjà automatique, comme le
+signale LAB 439 : deux points d'une même part de sa bipartition ont
+déjà deux voisins communs dans le cube. Un sommet extérieur voit donc
+au plus un point de chaque part. Le critère n'interdit des partenaires
+moulins que pour les deux autres types de cubiques.
 
 De plus W est une composante de Z(U), U une composante de Z(W), et
 
@@ -178,3 +190,10 @@ bornes de collisions restent trop larges. L'étape suivante doit porter
 sur l'existence des composantes partenaires, ou sur une obstruction
 structurelle dans R, et non sur une nouvelle certification de plafonds
 numériques loin de la cible.
+
+**Complément LAB 439 utilisé sans reproduction :** le comptage d'ordre
+dix de U disjoint-anticomplet à une arête majore les partenaires cubiques
+par e(Z(U))/12, mais cette majoration est trop large sur tout son polytope.
+Ne pas relancer cette piste de comptage comme si elle n'avait pas été
+essayée. La coupe e(Z(U))≤34 issue de (2) reste valide ; elle ne fournit
+pas, à elle seule, une exclusion annoncée par LAB.
