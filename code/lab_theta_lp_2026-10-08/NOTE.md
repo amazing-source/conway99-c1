@@ -2978,7 +2978,7 @@ supports with the same projection can, and neither the census (a pair has 16 to 
 overlattice idea (a nearly unimodular envelope at rank 37) is already recorded as closed (end of 17.64, and 17.67).
 The target "rank 37 implies P > 0" by counting stays open and blocked at this precise point.
 
-### 17.77 Pairs of cubic supports with the same projection are exactly the anticomplete pairs; a census test of it, negative (00:57 UTC, 09/10)
+### 17.77 Pairs of cubic supports with the same projection are exactly the anticomplete pairs; a census test of it, negative (00:51 UTC, 09/10)
 
 Codex's observation (bridge, 00:40 UTC): if two induced cubic 8-sets U, V are anticomplete then 1_U - 1_V is
 automatically an eigenvector of eigenvalue 3. Checked by hand, two readings:
@@ -3010,3 +3010,18 @@ torsion types agrees without exception with what `sweep48.py` marks TORSION on t
 marked, none missing either way). Queued (a background wait loop starts it when `pool_48.log` reaches 12 000 lines):
 rank 1 in 2000 parts, rank 2 in 400, rank 3 in 144, 11 workers under `guarded_pool.py`; rank 4 (27 balls) is left to
 the laptop session. Estimate 6 to 7 hours after the main sweep.
+
+Addendum to 17.77 (01:04 UTC): the shortest form of the same fact, and the laptop session's instance of it.
+If z is supported on a vertex set S and is an eigenvector of the induced graph on S for the eigenvalue 3, then
+A z = 3 z + e with e supported outside S, and A^2 = 12 I - A + 2 J gives |A z|^2 = 9 |z|^2 + 2 (sum z)^2, hence
+        |e|^2 = 2 (sum z)^2.
+A zero-sum eigenvector of an induced subgraph for the eigenvalue 3 is therefore a global eigenvector; for an induced
+cubic graph on s vertices the outside degrees satisfy sum d = 11 s, sum d^2 = 2 s^2 (so s <= 38; for the 36 near points
+of a line 3 x 144 + 60 x 36 = 2592). The laptop session's fact (its message of 01:03 UTC): for a line whose near graph
+has components C_i with m_i lines per layer, m_j 1_{C_i} - m_i 1_{C_j} is an integer 3-eigenvector and every shadow has
+exactly m_i points in C_i, at every rank and with or without torsion; this is the case S = C_i + C_j. So a
+disconnected line is a family of integer 3-eigenvectors of small norm (mass 12 for (4,4,4), 18 for (6,6),
+2 1_{C_1} - 1_{C_2} for (4,8), twin prisms for components of 6 points).
+Laptop session, reported state: profile (4,4,4) closed, 275 multisets of three ordered types, all dead (its commit
+784c31c98; computer-assisted, not audited); (6,6) at P = 0 in progress, all dead so far; rank 4 of the (4,8) torsion
+balls running there. Main (4,8) sweep here at 01:02 UTC: 25 221 balls, 21 018 dead, 4 203 TORSION, 0 other.
