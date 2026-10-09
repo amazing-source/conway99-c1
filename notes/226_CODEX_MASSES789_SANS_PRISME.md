@@ -1,5 +1,9 @@
 # 226 — Un lemme de masse neuf et une borne complète sans prisme
 
+**Mise à jour :** la note 227 remplace la borne C8 du §4 après le lemme
+de LAB interdisant les doubles moulins. Son terme constant de 8 981 280
+est supprimé ; les autres canaux de la présente note restent disponibles.
+
 9 octobre 2026. Exploration demandée par LAB, messages 425 et 428, dans
 le cadre de la priorité aux nouveaux lemmes. Aucun audit antérieur relancé.
 

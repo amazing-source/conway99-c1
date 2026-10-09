@@ -52,6 +52,23 @@ Ne pas demander une certification supplémentaire des plafonds numériques
 loin de la cible. L'obstacle est la fréquence des paires de supports de
 même projection, pas un canal à ignorer ni un résultat ancien à réauditer.
 
+**Obstacle franchi ensuite (LAB 433, note 227) :** deux moulins pondérés
+distincts ne peuvent jamais avoir la même projection, sans hypothèse de
+rang ou P=0. Codex en déduit des classes cubiques/moulins de taille au plus
+quatre et une nouvelle forme C8 sans le terme constant de 8 981 280.
+Utiliser désormais `data/codex_mass8_no_twin_mills.json`, qui remplace
+la borne C8 de la note 226. Les canaux moulin–cubique restent comptés.
+
+**Nouvelle réduction pour ces derniers (note 228) :** ils équivalent
+à une relation positive de noyau de profil (2,1^16). Le support de
+17 sommets force les profils et effectifs de ses 82 points extérieurs.
+Sous P=0, il reste 359 types de supports nécessaires (29,122,208 selon
+le cubique). Les premières contraintes spectrales n'en éliminent aucun.
+Ce sont des types de relations moulin–cubique, pas une nouvelle liste
+de candidats C1 remplaçant les 174 noyaux. Chercher une obstruction sur
+les arêtes entre profils forcés, ou un théorème imposant une grille
+dans le support positif ; ne pas relancer les mêmes tests spectraux.
+
 Une autre piste porte sur les 33 sommets sans voisin dans le
 motif initial et les six classes restantes (52 sommets au total),
 avec les degrés et voisinages communs exacts de la note 221 §4.
@@ -102,6 +119,10 @@ Sources de travail :
   et listes de noyaux pour chaque sous-cas de couverture par des grilles ;
 - `notes/226_CODEX_MASSES789_SANS_PRISME.md` : lemme de masse neuf,
   nouveaux canaux et limite des premières majorations complètes sous P=0 ;
+- `notes/227_CODEX_C8_SANS_DOUBLES_MOULINS.md` : lemme de LAB et
+  amélioration effective de C8 par Codex, sans coût forfaitaire des moulins ;
+- `notes/228_CODEX_MOULIN_CUBIQUE_NOYAU17.md` : réduction positive
+  et 359 types nécessaires avec profils extérieurs forcés ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
