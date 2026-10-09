@@ -6,6 +6,7 @@ i.e. the collection of Codex's notes 195-198; an "n" after the class drops the s
    classes >= 2 R/(K+1) - 2 C/(K(K+1)),  C <= c tau   (K = 1: classes >= R - C).
 For prism-free representatives a twin-prism collision is two-sided (1 <= |A|, |B| <= 5); c is the number of such
 colliding pairs charged per twin pair: UNKNOWN here, the script prints the break-even value of c.
+Env COLLISION_FORM=<json>:<key> subtracts a census form bounding the colliding pairs inside the LP (coupled optimum).
 Theta side and census cuts as in lp_joint3.py (secants for b_2, P >= 6 rho, Fano coupling). Floating HiGHS, exploration."""
 import sys, json, time, re
 from fractions import Fraction as Fr
@@ -71,18 +72,37 @@ for s in scen:
         if zsum and abs(a_ - b_) not in (0, 3): continue                            # "z": sums 0 and +-3 only (no change of sum possible in a collision)
         if no90 and (a_, b_) in ((9, 0), (0, 9)): continue                         # "n": without the 9-set indicators (Codex's note 195, caps 22 422 / 23 150)
         cc, kk = vec(f); cv += cc; kv += kk; used.append(k_)
+    cF = np.zeros(npar); kF = 0.0; sF = [1.0]; shown = []
+    if os.environ.get("COLLISION_FORM"):                                       # coupled LP: classes >= 2R/(K+1) - 2 C(x)/(K(K+1)) with C(x) a census form bounding the colliding pairs (file, key)
+        fn_, key_ = os.environ["COLLISION_FORM"].rsplit(":", 1); FF_ = json.load(open(fn_)); cF, kF = vec(FF_[key_]["form"])
+        shown = [(k2, vec(FF_[k2]["form"])) for k2 in os.environ.get("SHOW_FORMS", "").split(",") if k2]      # other forms of the same file, evaluated at the optimum
     def solve(cc):
-        obj = np.concatenate([2 * cv / (K + 1), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35], np.zeros(NL)])
+        obj = np.concatenate([2 * cv / (K + 1) - 2 * sF[0] * cF / (K * (K + 1)), [-2 * cc / (K * (K + 1)), -2793, -532, -77, -7, 8987, 664, 35], np.zeros(NL)])
         res = linprog(obj, A_ub=ext, b_ub=bb, bounds=[(0, None)] * (npar + NX + NL), method="highs-ipm")
         if res.status != 0: return None
         x = res.x; ex = x[npar:npar + NX]; r8 = cv @ x[:npar] + kv
         ceil_ = 14006902 + 2793 * ex[1] + 532 * ex[2] + 77 * ex[3] + 7 * ex[4] - 8987 * ex[5] - 664 * ex[6] - 35 * ex[7]
-        return x, ex, r8, ceil_, ceil_ - (2 * r8 / (K + 1) - 2 * cc * ex[0] / (K * (K + 1)))
+        return x, ex, r8, ceil_, ceil_ - (2 * r8 / (K + 1) - 2 * cc * ex[0] / (K * (K + 1)) - 2 * sF[0] * (cF @ x[:npar] + kF) / (K * (K + 1))), cF @ x[:npar] + kF
     o = solve(0.0)
     if o is None: print("scenario %s: LP failed" % s); continue
     print("scenario %-12s (%d forms) at c = 0: max (ceiling - floor) = %+.4gM  [ceiling %.4gM, R %.4gM; a_7 %.0f a_8 %.0f a_9 %.0f b_1 %.0f; P %.0f rho %.1f tau %.0f]" % (
         s, len(used), o[4] / 1e6, o[3] / 1e6, o[2] / 1e6, o[1][1], o[1][2], o[1][3], o[1][5], o[0][0], o[0][g], o[1][0]), flush=True)
-    if o[4] >= 0: print("      not excluded even without any collision"); continue
+    if os.environ.get("COLLISION_FORM"):
+        print("      coupled with the collision form %s: its value at this optimum %.4gM" % (os.environ["COLLISION_FORM"].rsplit(":", 1)[1], o[5] / 1e6))
+        if shown: print("      values at this optimum: " + "; ".join("%s = %.5g" % (k2, c2_ @ o[0][:npar] + k0_) for k2, (c2_, k0_) in shown))
+        if o[4] >= 0:                                                          # break-even scale: the maximum is convex and non-decreasing in the scale s of the form
+            lo_, hi_, flo_, fhi_ = 0.0, 1.0, None, o[4]; sF[0] = 0.0; o0_ = solve(0.0); flo_ = o0_[4]
+            if flo_ < 0:
+                for _ in range(8):
+                    sF[0] = lo_ - flo_ * (hi_ - lo_) / (fhi_ - flo_); om_ = solve(0.0)
+                    if om_ is None: break
+                    if om_[4] < 0: lo_, flo_ = sF[0], om_[4]
+                    else: hi_, fhi_ = sF[0], om_[4]
+                    if hi_ - lo_ < 1e-4 * hi_ or abs(om_[4]) < 500: break
+                print("      break-even scale of this form: about %.4f (secant from below on a convex function; last value %+.0f): the exclusion would need the bound divided by about %.1f" % (lo_, flo_, 1 / max(lo_, 1e-12)))
+            else: print("      no exclusion even with the form scaled to zero")
+            sF[0] = 1.0
+    if o[4] >= 0: print("      not excluded" + ("" if os.environ.get("COLLISION_FORM") else " even without any collision")); continue
     lo, hi = 0.0, None; cc = 4000.0
     for _ in range(6):                                                         # the maximum is convex and non-decreasing in c: bracket, then secant
         o2 = solve(cc)

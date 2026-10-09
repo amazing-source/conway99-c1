@@ -2896,3 +2896,84 @@ Permission received from the user (direct, about 23:48 UTC): local runs on the l
 and of the memory, falling back to low performance when Discord, FiveM, Valorant or similar opens. `guarded_pool.py` runs
 a list of commands with at most 12 workers and a single one while such a program is running (resumable log). Offered to
 the laptop session for a share of its sweeps; nothing launched yet.
+
+### 17.75 Lemma: two weighted windmills never have the same projection; the far set of a support (00:01 and 00:30 UTC, 09/10)
+
+Hand proofs, valid in every srg(99,14,1,2), with no hypothesis on P or on the rank. Sent to Codex (message 268); Codex
+used the lemma in its note 227 (new mass-8 form without constant). Not audited by a third party.
+
+A weighted windmill is u = 2 e_v + 1_L, L the six points of three lines through v ("leaves").
+
+**Lemma (windmills).** If W_1, W_2 are disjoint weighted windmills, u_1 - u_2 is not an eigenvector of eigenvalue 3.
+Proof. Suppose A(u_1 - u_2) = 3(u_1 - u_2).
+1. At v_1 the neighbours sum to 6 minus the weight seen in W_2, and this must be 6: v_1 has no neighbour in W_2. At a
+   leaf a of W_1: 2 + 1 minus the weight seen in W_2 must be 3. So W_1 and W_2 are anticomplete; v_1, v_2 are not adjacent.
+2. For x outside both supports, s_1(x) = s_2(x), where s_i(x) = 2 [x ~ v_i] + number of leaves of W_i adjacent to x.
+3. v_1, v_2 have exactly two common neighbours c, c'. Neither is a leaf (a leaf of W_1 has no neighbour in W_2), and
+   c, c' are not adjacent (the adjacent pair c, c' would have the two common neighbours v_1, v_2).
+4. Let cbar be the third point of the line {v_1, c, cbar}. It is not a leaf of W_1 (its line contains c), it is not in
+   W_2 (it is adjacent to v_1), and it is not adjacent to v_2 (it would be c or c'; it is not c, and it is adjacent to c
+   while c' is not).
+5. s_1(cbar) = 2: it sees v_1 and no leaf of W_1 (two neighbours of v_1 on different lines are not adjacent).
+6. cbar and v_2 are not adjacent, so they have exactly two common neighbours, and c is one of them. The leaves of W_2
+   adjacent to cbar are common neighbours too. Hence s_2(cbar) <= 1 < 2 = s_1(cbar), against 2.  QED.
+Consequence: a class of supports of mass 8 with the same projection contains at most one windmill; the only relations
+involving a windmill are windmill against cubic support (not excluded; Codex's note 228 reduces them to 359 rooted
+types with forced cells).
+
+**Far set of a support.** For an induced cubic 8-set U let n_k be the number of outside vertices with k neighbours in U
+and Z(U) the set of outside vertices with none. Counting edges out of U and common neighbours of pairs of U
+(sum k n_k = 88, sum C(k,2) n_k = 20 for every cubic type) gives
+        |Z(U)| = 23 - sum over k >= 3 of C(k-1, 2) n_k <= 23.
+For a weighted windmill W with centre v, every vertex y not adjacent to v has exactly two neighbours among the 14
+neighbours of v, and Z(W) (no neighbour in W) is the set of the y whose two neighbours lie on the four other lines:
+|Z(W)| = 24 exactly, in bijection with the 24 pairs of points on two different ones of these four lines.
+If 1_U - 1_V (or 1_U - u_W) is an eigenvector of eigenvalue 3 then U and V are anticomplete and every outside vertex
+sees as much of U as of V; so V lies in Z(U) and no vertex of Z(U) outside V has a neighbour in V:
+**every other member of the class of U is a union of connected components of the graph induced on Z(U)** (one component,
+since the three cubic types and the windmill are connected), and two of them are disjoint. Hence a class without
+windmill has at most 3 members (8 + 8 <= 23 < 24) and a class with a windmill at most 3 cubic members (Codex's bound
+was 4 and 3, from "at least 61 common outside vertices"); with three cubic members and a windmill all the inequalities
+are equalities (n_k = 0 for k >= 3, Z(W) is exactly the union of the three). No numerical gain on Codex's coefficients:
+their tight cases are those with a windmill.
+
+**Night run for the laptop session (user's direct allowance of 80% of the machine).** Profile (4,8) at P = 0 of its
+sweep "rank 37, P = 0: disconnected lines": 245 877 balls in 12 000 parts, its code at commit 6a334970a of
+conway99-c2-aws (read before running), in `work/c1_lap_sweep48_2026-10-09/`. Component types regenerated here
+(81 959, same counts and hash as the laptop's); the first three balls reproduce its expected lines exactly. Started
+23:59 UTC with 12 workers, stopped after 37 parts because the total load averaged 79% with peaks at 84%, restarted at
+00:04 UTC with 11 workers (load 70 to 76%, memory 44%); `guarded_pool.py` drops to one worker while Discord, FiveM,
+Valorant or similar runs. Rate 20 parts per minute: about 10 hours. Nothing but dead balls and TORSION lines so far
+(777 balls at the restart). The result is the laptop session's to interpret; I only return the log and the counts.
+
+### 17.76 Coupled LP with Codex's collision bounds at P = 0: a charge per support is 20 to 35 times too large (00:30 UTC, 09/10)
+
+Question (Codex, 00:07 UTC): put its new mass-8 form (no constant, thanks to the windmill lemma) into the rank-37 LP
+together with the mass-7 and mass-9 bounds, instead of maximising each form separately. Done: `collision_forms_build.py`
+translates the three bounds into exact forms of my census parameters (H = parameter 2; six types of order 8; 39 types
+of order 9), `lp_family.py` with COLLISION_FORM subtracts the form inside the LP (classes >= R - C(x), k = 1) and
+reports the scale s at which max(ceiling - R + s C) crosses zero. Sub-collection "sums 0, +3, -3" (scenario m4s9k1z,
+12 forms), P = 0, floating LP. Reference without collisions reproduced: -3.837 million.
+
+| collision form | max (ceiling - R + C) | value of the form there | the bound would have to be divided by |
+|---|---|---|---|
+| C7 = 5402 H | +5.54 million | 10.08 million (H = 1865) | 2.2 |
+| C8, new form | +115.9 million | 122.5 million | 23.4 |
+| C9 | about +111 million | 118.4 million | 22.3 |
+| C7 + C8 + C9 | +177.7 million | 185.2 million (7.0 + 108.3 + 69.9) | 34.6 |
+
+At the coupled optimum of the total the mass-8 part is carried by ONE type: the cubic graph with two triangles
+(Codex code 5691760: triangles abc, def, edge cf, paths a-x-d, b-y-e, edge xy), 27 935 copies at 2840 each, i.e. 79
+of the 108 million; then the cubic type 5683824 (14 702 copies, 12 million) and the 13-edge type 128354469 (10 million).
+So removing the constant 8.98 million changes nothing in the conclusion, mass 8 is as much a lock as mass 9, and mass 7
+alone already eats the margin.
+
+Reading. This is the wall already met on 08/10 (17.20: "a penalty per support of this size is not affordable; what is
+missing is a bound on the number of twin PAIRS"), now measured with Codex's actual coefficients. The census allows
+about 28 000 supports of one type and the budget is 3.84 million colliding pairs of representatives, so any bound of
+the form "coefficient times number of supports" needs a coefficient near 100 where the cost of ONE twin pair is already
+of the order of 1500. No refinement of the coefficients can bridge that; only a bound on the number of pairs of
+supports with the same projection can, and neither the census (a pair has 16 to 18 vertices) nor the 3-side theta LP
+(17.20: it allows 10^12 integer 3-eigenvectors of norm 16) gives one. Checked before going further that the
+overlattice idea (a nearly unimodular envelope at rank 37) is already recorded as closed (end of 17.64, and 17.67).
+The target "rank 37 implies P > 0" by counting stays open and blocked at this precise point.
