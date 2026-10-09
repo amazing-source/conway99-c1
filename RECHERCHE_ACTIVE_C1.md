@@ -1,5 +1,39 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Exploitation de la nouvelle preuve reçue — note 239 :** le texte fourni
+par l'utilisateur exclut les rubans six nus et à une corde, via des
+fonctions propres de valeur trois et une obstruction arithmétique au bord.
+Son mécanisme est étendu aux ensembles de cordes ayant un sommet commun.
+Une étoile de cordes centrée sur un sommet latéral est toujours impossible,
+même avec plusieurs cordes. Si le sommet commun est un centre c_0, seules
+deux formes restent nécessaires à symétrie près : {c_0a_4,c_0b_3} et
+{c_0c_2,c_0c_4}, exactement deux cordes. Ces formes ne sont pas déclarées
+réalisables. Preuve par une forme 2×2, les budgets locaux et des sommes
+entières ; certificat standard-library dans `ribbon_six_star.py`.
+Ce résultat suppose les dix-huit sommets distincts, ne force aucun ruban
+six, et donne une nouvelle coupe conditionnelle : pour chaque sommet
+latéral du ruban, au moins une corde ne lui est pas incidente. Ne pas
+reprendre l'audit de la preuve reçue ; exploiter les répartitions de cordes
+restantes. Le fichier `verify_ribbons.py` de l'autre session n'a pas été
+fourni ni exécuté ici.
+
+**Suite à la demande directe de poursuivre — note 238 :** chaque fenêtre
+de huit centres avec rôles distincts impose au moins deux arêtes latérales
+supplémentaires, même avec un graphe de centres arbitraire. Preuve locale
+complète : deux types à six centres, un exclu par moments ; six types
+nécessaires avec une seule arête latérale à sept centres ; leur recouvrement
+laisse quatre supports à huit centres, tous exclus spectralement par
+témoins entiers. Les 68 vecteurs de couverture et certificats sont archivés.
+Une identification impose elle aussi au moins deux adjacences supplémentaires
+entre rôles. Ainsi tout cycle de transport de longueur m≥10 a au moins
+ceil(m/4) paires de rôles latérales supplémentaires dans ses fenêtres de
+huit centres, identifications comprises. Ces paires ne sont pas autant
+d'arêtes physiques distinctes de C1. Le raccord à une contrainte obligatoire
+sur chaque cycle long est obtenu ; une borne supérieure contradictoire et
+l'exclusion des assemblages restants manquent encore. Aucun rang ni noyau
+global fermé. Ne pas refaire la classification : exploiter les types
+restants à au moins deux écarts et leurs recouvrements.
+
 **Résultat de pair reçu au message 473, piste arithmétique distincte :**
 LAP annonce, via LAB, `[M:Lambda_L]=3^(e3−1)` et
 `M/Lambda_L ≅ F3^(e3−1)`, où Lambda_L est engendré par les 231 vecteurs
