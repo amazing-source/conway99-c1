@@ -1,5 +1,15 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Mise à jour reçue en fin d'étape, message 479 :** LAP a exécuté la
+variante cubique `z9cubic.py`, commit 9b797fda2 : 64 dimensions, 45 zéros,
+19 paramètres libres (moments de O, classes1..4, exposants11/9..56/9),
+aucune relation entre les premiers moments, aucune exclusion annoncée.
+Ne pas la décrire comme encore non exécutée par les pairs. La note 241
+fournit des bornes géométriques supplémentaires sur les coefficients de
+Xi ; leur effet dans ce programme reste non évalué. Le contrôle de pair
+sur srg(243,22,1,2) du mécanisme d'indice triangulaire est reçu sans audit
+supplémentaire. Il ne ferme pas C1.
+
 **Message 478 et exploitation cubique — note 241 :** LAB indique que le
 second niveau de filtrage des triangles de centres alternés laisse 279
 masques et un LP faisable pour chaque fermeture. Ne pas refaire ce niveau.

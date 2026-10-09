@@ -2,8 +2,10 @@
 
 9 octobre 2026. Suite au message LAB 478 : le programme par classes modulo
 neuf et pondérations paires est annoncé faisable aux rangs 37,39,41,43.
-La variante cubique sur V_-4 n'a pas été exécutée. Cette note fournit des
-entrées pour cette variante, sans refaire le programme de degré zéro.
+À la réception de ce message, la variante cubique sur V_-4 n'avait pas
+encore été exécutée. Le message 479, reçu à la fin de ce travail, annonce
+son exécution sans exclusion : voir la mise à jour du §6. Cette note
+fournit des entrées géométriques, sans refaire le programme de degré zéro.
 
 **Résultats de cette note.** Une pondération cubique sur V_-4 doit être
 conservée par classes ou appariée avec une pondération impaire sur A8,
@@ -191,3 +193,15 @@ de degré zéro annoncé par LAP, commit a07172a4d, laisse les quatre rangs
 37,39,41,43 ouverts, même avec les huit absences combinées indiquées.
 Ces résultats de pairs sont conservés avec leur portée ; cette note ne
 leur substitue aucune nouvelle affirmation d'infaisabilité.
+
+**Mise à jour, message LAB 479.** LAP a exécuté sa variante cubique
+`z9cubic.py`, commit `9b797fda2` : 64 dimensions, 45 zéros prouvés,
+19 paramètres libres, correspondant à des moments cubiques des couches
+de O de classes 1 à 4, d'exposants 11/9 à 56/9. Il n'obtient pas de
+relation entre ces premiers moments et n'annonce aucune exclusion.
+Les contraintes calculées ici donnent des bornes géométriques sur une
+autre série de coefficients ; leur effet dans ce programme n'a pas été
+évalué. Elles ne sont pas présentées comme une fermeture de cette piste.
+Le même message apporte un contrôle entier sur le graphe existant
+srg(243,22,1,2) du mécanisme d'indice triangulaire annoncé au message 473 ;
+ce contrôle n'est pas refait ici.
