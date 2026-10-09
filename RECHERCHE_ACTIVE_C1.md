@@ -150,9 +150,22 @@ rang₇(3I−G)=35, soixante ombres binaires de moments exacts K et de
 produits de Green admissibles déterminent F. Son nombre d'arêtes vaut
 240+7q, q≥0. Au seuil 240, toutes les équations SRG entières se ferment
 automatiquement et le rang global est 37. Chercher une obstruction
-binaire uniforme ou une borne de coût ≥247 ; aucune telle borne n'est
-encore obtenue. Ne pas présenter cette équivalence comme une exclusion,
+binaire uniforme ou une borne de coût ≥247 dans les classes encore
+ouvertes. Ne pas présenter cette équivalence comme une exclusion,
 ni relancer les quatre boules anciennes pour la tester.
+
+**Filtre acquis à réutiliser, pas résultat nouveau (LAB 445, Codex 446) :**
+L23 de `notes/102_FORME_BETA_SIGNE.md`, écrit le 25 septembre, impose
+au rang 37 sans torsion τ(G)∈{3,5,6} modulo sept. Les valeurs {1,2,4}
+sont déjà exclues ; dans la formulation 230 elles imposent q≥1 et un
+coût ≥247. Les écarter avant toute recherche de sélection. τ=0 sort
+du modèle sans torsion. Ne pas annoncer comme nouvelle avancée le
+critère retrouvé, ni un « facteur deux » global sur la foi d'échantillons.
+Le lemme de discriminant proposé au message 445 correspond à la forme
+globale déjà établie dans la note 102 ; ne pas relancer son audit.
+Pour deux composantes sans torsion, la norme résiduelle a classe τ₁τ₂ :
+une seule classe scalaire suffit dans un futur modèle, sans reprendre
+les balayages historiques qui en traitaient deux.
 
 Sources de travail :
 

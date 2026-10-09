@@ -16,7 +16,9 @@ restantes de voisins communs sont automatiques sur les entiers.
 
 Cela donne une formulation suffisante du problème de complétion, au-delà
 des conditions nécessaires d'une ou deux étoiles. **Ce n'est pas une
-exclusion : aucune borne q≥1 n'est démontrée.** Aucun balayage de graphes
+nouvelle exclusion.** Le critère ancien L23 impose déjà q≥1 lorsque
+le nombre d'arbres couvrants est un carré non nul modulo sept (§7) ;
+la borne reste à trouver pour les autres classes sans torsion. Aucun balayage de graphes
 proches ni nouvelle vérification des recherches LAP n'est lancé ici.
 
 ## 1. Données et hypothèses
@@ -179,7 +181,8 @@ ne sont pas remplacées par des vecteurs arbitraires ou signés.
 Une sélection au coût 240 serait une construction complète de C1 au
 rang 37. À l'inverse, une borne uniforme coût≥247 sur toutes les
 sélections admissibles exclurait le cas connexe sans torsion, sans
-traiter séparément chaque graphe G. **Cette borne reste à trouver.**
+traiter séparément chaque graphe G. **Cette borne reste à trouver pour
+les classes non carrées de τ, après application de L23 au §7.**
 La formulation ne résout pas le choix des soixante ombres ni celui de G.
 
 La note ne suppose pas P=0. Dans une recherche limitée à P=0, il faut
@@ -188,3 +191,47 @@ Elle ne traite pas les droites connexes avec torsion, les autres rangs,
 ni directement les 174 noyaux de la route sans rang. Sa contribution
 est la suffisance du seuil, et la suppression des équations quadratiques
 supplémentaires en F une fois les hypothèses ci-dessus satisfaites.
+
+## 7. Appliquer L23 avant toute recherche de sélection
+
+Le message LAB 445 retrouve un filtre déjà établi le 25 septembre
+dans `notes/102_FORME_BETA_SIGNE.md`, sections 1 et 4, sous le nom
+**L23**. On l'utilise comme acquis, sans refaire la preuve d'oddité
+ni ses tests sur des graphes exemples. Ce n'est pas une découverte
+supplémentaire de la présente campagne.
+
+Notons τ(G) le nombre d'arbres couvrants de G. Le discriminant de la
+forme globale non dégénérée Q est non carré au rang 37. Or, dans le
+cas de la présente note, les 36 vecteurs proches sont une base, de
+matrice M. Le théorème des arbres couvrants donne
+
+    det M = −3888 τ(G) ≡ 4 τ(G)  (mod 7).
+
+Donc toute vraie complétion au rang 37 impose
+
+    τ(G) mod 7 ∈ {3,5,6}.                               (6)
+
+Si τ(G)∈{1,2,4} modulo sept, le cas q=0 du théorème produirait un
+SRG contredisant L23. Pour toute sélection satisfaisant les hypothèses
+des §§1–2, on a donc déjà
+
+    q≥1,       e(F)≥247.
+
+Cette borne est une application du filtre ancien à la nouvelle fonction
+de coût ; elle ne constitue pas une nouvelle famille de graphes exclus.
+Si τ≡0, H n'a pas rang 35 et le modèle sans torsion ne s'applique pas.
+
+**Consigne de recherche.** Écarter les classes {1,2,4} avant de construire
+les pools de sélection de la note 230 ; rechercher une obstruction
+nouvelle uniquement dans {3,5,6}. Une proportion d'environ moitié sur
+des échantillons aléatoires n'est pas une proportion démontrée du
+catalogue complet. Aucun échantillonnage supplémentaire n'est nécessaire
+pour utiliser le critère exact.
+
+Le même type global précise la forme résiduelle dans le cas de deux
+composantes sans torsion, comme l'indique LAB 445 : leur sous-espace
+proche a discriminant de classe 3τ₁τ₂. Le complément de dimension un
+au rang 37 a donc norme de classe τ₁τ₂. Une seule des deux classes de
+normes scalaires est pertinente pour chaque paire. Les balayages déjà
+réalisés sur les deux classes restent des recherches sur un sur-ensemble ;
+ce constat n'invalide pas leurs exclusions et ne demande pas de les rejouer.
