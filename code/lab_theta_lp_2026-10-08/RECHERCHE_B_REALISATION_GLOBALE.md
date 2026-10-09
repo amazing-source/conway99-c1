@@ -248,9 +248,11 @@ n'explique pas le cas des grandes valences (12, 16, 22), où la loi tient aussi.
 voisins extérieurs (40 voisins d'un seul sommet, 4 troisièmes points), et 44 est la multiplicité de −4.
 (Note 172 compte ces 44 voisins ; elle n'utilise pas cette coïncidence.) Conséquences exactes, SANS hypothèse de
 rang, pour S = N(Q) et G_S = 27I − 9A_S + J :
-- G_S ⪰ 0 ; comme le graphe induit sur S est presque 5-régulier, cela impose que toutes ses valeurs propres
-  sauf la première soient ≤ 3 (condition forte : en dessous de la borne de Ramanujan 4 ; pour une boule de
-  droite, cubique, la condition analogue est vide) ;
+- G_S ⪰ 0, donc A_S − J/9 a toutes ses valeurs propres ≤ 3 (pour une boule de droite, cubique, la condition
+  analogue est vide). Correction de Codex (11:28 UTC) à ma description des degrés : un sommet simple x a
+  deg_S(x) = 5 − (nombre de troisièmes points adjacents à x) ; |E(S)| = 100 + t, t = 0, 1, 2 étant le nombre
+  d'arêtes entre troisièmes points ; A_S a les valeurs propres −1, −1, +1 forcées (vecteurs Bᵀz, z de somme
+  nulle sur Q). La condition est satisfaisable : `quad_ball_psd.py` trouve une structure qui la vérifie ;
 - dét G_S = 3⁸⁶·(7^{(45−r)/2}·m_Q)², m_Q = indice du réseau engendré par les 44 projections ; donc
   Δ(Q) := 9·dét(3I − A_S) + 1ᵀ adj(3I − A_S) 1 est un carré parfait divisible par 7^{45−r} ≥ 49, à tous les rangs ;
 - si Δ(Q) ≠ 0, les 44 projections forment une base de l'espace propre : les 4 sommets de Q s'écrivent
@@ -265,3 +267,12 @@ Non exploité : énumérer les structures de quatre murs reste hors de portée ;
 
 **10.4 Sans suite.** Le caractère quadratique de τ(G(T)) modulo 7 est indépendant de la parité du nombre de faces
 (`tau_parity_test.py`, 6000 graphes proches aléatoires).
+
+**10.5 Deux vérifications sans gain pour le coût de la première étoile de LAP (11:28 UTC).** (i) La relation réelle
+« somme des résidus d'une étoile = 0 » donne n_fᵀH⁺d_x = 17/6 + (G n_f)_x, qui est une identité pour toute ombre
+contenant x (H⁺d_x = 4e_x + G e_x − (1/3)·1_couche(u) − (1/12)·1) : aucun filtre unaire. (ii) Le Gram résiduel de
+m sommets lointains est positif de rang ≤ 8 : les égalités réelles exactes ne commencent qu'à 9 sommets.
+En revanche le quadrilatère (u, v, y, x) d'une arête transversale x–y donne un test exact sans rang pour DEUX
+étoiles adjacentes : N(Q) = (couche u ∖ x) ∪ (couche v ∖ y) ∪ {w, voisins de x et y dans la couche w} ∪ étoile(x)
+∪ étoile(y), soit 44 sommets ; les dix points restants de la couche w doivent alors vérifier 10 + 45 égalités
+rationnelles. Transmis à LAP.
