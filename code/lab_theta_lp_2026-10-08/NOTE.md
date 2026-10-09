@@ -3392,7 +3392,7 @@ members by cadical): valency 6 gives only the 20- and 27-vertex graphs; valency 
 vertices undecided in one minute. No exclusion; ranks and kernels unchanged.
 
 
-### 17.87 The laptop session's quartic harmonic theta series (vertices and lines): exact answer, no exclusion (13:26 UTC, 09/10)
+### 17.87 The laptop session's quartic harmonic theta series (vertices and lines): exact answer, no exclusion (12:59 UTC, 09/10)
 
 The laptop session proposed (its mandate C note, section 9; conway99-c2-aws faf2ac76d) two harmonic quartics on the
 (-4)-eigenspace, P_V(y) = sum_v y_v^4 - (2/69)|y|^4 and P_T(y) = sum_T y(T)^4 - (18/161)|y|^4, hence two cusp forms of
