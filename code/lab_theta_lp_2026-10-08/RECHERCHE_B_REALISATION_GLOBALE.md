@@ -382,3 +382,18 @@ par une seule arête relient les deux moitiés (16 arêtes possibles, par exempl
 35 identifications simples conviennent (par exemple c_1 = c_5, a_1 = a_6 : c'est la fermeture en cycle de longueur 5).
 C'est une loi locale sur les identifications demandée par le dossier externe ; elle ne borne pas la longueur des cycles
 et n'exclut ni rang ni C1.
+
+
+**Addendum du 9 octobre, 13:52 UTC : fenêtres de cinq centres réparées par UNE relation** (`support_masks.py window5`,
+indication : programmes linéaires flottants, pas de certificat exact). Le test est celui de la note 222 de Codex pour un
+support quelconque : masques d'un sommet extérieur filtrés par les axiomes locaux et par les deux compléments de Schur
+exacts, puis système des multiplicités (degrés extérieurs, voisins communs extérieurs exacts, total 99 − |H|).
+Classes sous l'échange des deux brins et le retournement.
+- Une arête supplémentaire : 34 classes ; 14 violent les axiomes locaux, 13 ne rétablissent pas la positivité, 6
+  échouent au système des multiplicités (a2–a5, a2–b5, a2–c4, a2–c5, c1–c4, c2–c4) ; **seule c1–c5 passe**.
+- Une identification de deux rôles : 34 classes ; 23 locales, 1 non positive, 1 échoue (c1 = c4) ; **neuf passent** :
+  a1 = a5, a1 = a6, a1 = b5, a1 = b6, a1 = c4, a1 = c5, a2 = b5, a2 = c5, c1 = c5.
+Lecture : dans toute fenêtre de cinq centres d'une géodésique, ou bien les centres extrêmes sont adjacents, ou bien
+deux rôles éloignés coïncident (dix formes), ou bien il y a au moins deux relations supplémentaires. Les contraintes
+propres au transport au-delà des axiomes locaux (par exemple le second voisin commun des paires extrêmes) ne sont pas
+toutes imposées dans ce test. Cela ne borne pas la longueur des cycles et n'exclut rien.
