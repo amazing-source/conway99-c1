@@ -3553,3 +3553,102 @@ the five dissections of 08/10. Extrapolating the ratios: about 6e-8 partial star
   heuristic, not a proof, and it says nothing about the balls with torsion.
 * Deviations of a few 1e-4 from 1/7 are visible in some lines (weight class 2); the pairs of one ball are not
   independent samples, so their significance is not established. Not analysed.
+
+### 17.92 Collective dependencies inside a star at rank 37: what exists, what cannot exist, one missing exact rule (22:16 UTC, 09/10)
+
+Mission given by the user (direct): marginal equidistribution does not prove independence; look for exact collective
+relations between the Green products of three to six candidates, extract minimal conflicts, derive a propagation rule,
+implement it in the fast test and measure, then look for a covering statement. Success criteria: a family of balls
+excluded by a theorem, or a filter that cuts the cost substantially, or a finite classification of conflicts, or a new
+relation that reduces the choices. **Outcome: none of the four is reached.** What is established instead is below.
+Code: `work/c1_cost37_2026-10-09/star37f_patch.py` (applied to star37d.c gives star37f.c), outputs `OUTPUT_star37f_*.txt`.
+
+**A. The equations, without a line (hand).** With S = J - I - 2A the Seidel matrix, S^2 = 49 (I + J) exactly, and
+S = 5 (A - 3I + 3J) modulo 7; (A - 3I + 3J) x = (A - 3I)(x + 6 (1.x) 1), so rank_7 S = rank_7 (A - 3I) - 1. Rank 37 means:
+there are a space W of dimension 36 over F_7 with a non-degenerate symmetric form and 99 vectors xi_v with
+<xi_u, xi_v> = S_uv: all isotropic, product -1 on edges and +1 on non-edges, sum zero, and sum over the neighbours of
+v equal to 3 xi_v. For a generic line the 36 near vectors are a basis, the coordinates of a far vertex in the dual
+basis are its shadow, and the model of the star test (M0 = 3J - 3I + A_G, x = n + 3.1, value 0 on the diagonal, 3 or 4
+off it) is this statement in that basis. (The laptop session used the Seidel form as a verifier, 17.62.)
+
+**B. No relation between few candidates (theorem, with Codex's barrier 17.65 as the case of three).**
+1. *The pair conditions are complete at first order.* For any family X of shadows and any symmetric 0/1 matrix A_X,
+   the matrix A - 3I + 3J on ball + X has rank 36 exactly when every member is isotropic and every pair has the
+   prescribed product. Proof: Schur complement on the invertible block M0. So rank 37 imposes nothing on three or more
+   far vertices that it does not impose on their pairs.
+2. *Abstract completion.* Let I be a partial star (d <= 9 members, pair conditions satisfied) whose vectors, together
+   with the known sum sigma = K e_U + 2.1 of the ten members, are linearly independent in W (automatic when the Gram
+   matrix of (e_I, s) in the prescribed pattern is non-singular modulo 7: 862 of the 1022 index sets; det of the full
+   pattern is 2). Then there are vectors y_j of W, for the missing members, with the complete prescribed Gram matrix
+   and the sum sigma. Proof: the prescribed 10 x 10 pattern is non-degenerate, so its space embeds in W; two isometric
+   copies of the span of (x_I, sigma) differ by an isometry of W (Witt). The y_j are not shadows in general.
+   Consequence: **no necessary condition on a partial star can come from the bilinear form, the sums and the Gram
+   pattern alone; every obstruction uses that the missing vectors have all 36 coordinates in {3, 4}.**
+3. *Check on data* (`STAR37_PAT`, 100 balls, `OUTPUT_star37f_patterns_seed2026_all.txt`): the Green values of three
+   candidates of three slots take all 343 patterns (counts 3 659 447 to 3 696 255 for a mean of 3 677 541, all
+   1.26e9 triples enumerated); of four candidates, all 117 649 patterns (3141 to 3656 for a mean of 3400, 4e8 random
+   quadruples: the spread of a Poisson count). No value pattern is forbidden.
+4. *The bilinear conditions alone do not obstruct* (`STAR37_GREEN`, scalar build, `OUTPUT_star37f_green_only.txt`):
+   keeping only "every pair of chosen candidates has Green value 0 or 1" (no rule on shared points, on partners, on
+   coverage), 9 balls of 12 have a selection of ten candidates, one per slot (2.2 per ball; 1.3e7 nodes per ball).
+   The star dies only when the adjacency pattern (four adjacent pairs, two apexes), the shared-point rules and the
+   coverage are imposed together with the values.
+
+**C. The collective relations that do exist** (all exact; none acts before eight members).
+* Exchange: a candidate is a sum of six point vectors, so for candidates differing by one point the difference of
+  their products with ANY vector is the same; the whole 2600 x 2600 table of values is a function of the 36 x 36 Green
+  matrix. This is what the fast rows already use.
+* Sum rule: the ten members add up to sigma. Hence, for a selection that covers exactly, the 45 products satisfy ten
+  linear relations: if nine members are isotropic with their 36 prescribed products and the tenth is the complement
+  sigma - (sum of the nine), the tenth is isotropic and has its nine prescribed products automatically.
+* Second order (from the laptop session's real identity 17.57; derived, not audited, not implemented): at rank 37 the
+  residues Sigma_fg = c_fg - n_f^T H^+ n_g are divisible by 7 (this is the first order), and Sigma / 7 modulo 7 is the
+  Gram matrix of vectors of an 8-dimensional quadratic space of non-residue discriminant. So eight members have a
+  determinant that is zero or a non-residue, nine members a zero determinant, a complete star rank at most 8. These
+  need H^+ modulo 49. They cannot prune: no branch reaches eight members.
+* Real, every rank: the ten residual vectors lie in R^8 and add up to zero, so the 9 x 9 real Gram determinant of any
+  nine members vanishes exactly; below nine members only the positivity already used.
+
+**D. Minimal conflicts** (`STAR37_CORES`, 500 balls, pair rules with saturation, no lower bound on the coverage;
+`OUTPUT_star37f_cores_seed2026_all.txt`). A conflict between FIXED candidates is always small: a pair (wrong value or wrong
+sharing), or three candidates (a point covered three times, a member with two partners). A conflict that forbids EVERY selection is a set of slots: on average 94
+minimal conflicting sets of slots per ball, 45 of six slots and 49 of seven; the smallest has six slots in 479 balls
+and seven in 21; no set of five slots or fewer is ever conflicting. Every slot takes part equally (share 0.099 to
+0.101 by rank of size; same shares as all slots by distance of the slot point from U in G(T)). No recurrent pattern.
+
+**E. One exact rule was missing from the fast test: saturation** (rank-free; Codex's September tables had it, the
+laptop session's model and my port did not). If f, g are adjacent far vertices and p is a near point of g outside the
+shadow of f, then p and f have exactly two common neighbours and g is one of them, so p has at most one neighbour of
+G(T) in the shadow of f. With it I find, by hand, no other pairwise condition inside ball + star: the K ceilings,
+"at most one neighbour inside / two outside", the shared points and saturation exhaust the common-neighbour counts.
+Implemented (`STAR37_SAT`), checked against the brute-force reference written from the definition (120 balls, counts
+to depth 4, 0 mismatch) and with planted stars (60 of 60 found, numbers of complete stars equal;
+`OUTPUT_star37f_controls.txt`).
+
+**F. Measured gain, same 5000 balls (seed 41, all connected balls; `OUTPUT_star37f_gain_seed41_all.txt`).**
+
+| conditions | variant | nodes per ball | deepest partial star | time per ball |
+|---|---|---|---|---|
+| integer | star37d | 52 767 | 5 to 7 (6 for 84 %) | 1.57 to 1.66 ms |
+| integer | + saturation | 41 106 | 5 to 7 | 1.26 to 1.32 ms |
+| integer | + saturation + forward checking | 14 251 | 3 to 5 (4 for 99 %) | 1.49 to 1.64 ms |
+| integer | + partner and coverage look-ahead | 12 969 | 3 or 4 | 3.4 ms |
+| with real filters | star37d | 14 196 | 4 to 6 | 0.84 to 0.89 ms |
+| with real filters | + saturation | 13 256 | 4 to 6 | 0.81 to 0.85 ms |
+| with real filters | + saturation + forward checking | 5 238 | 3 or 4 | 1.15 to 1.21 ms |
+| with real filters | + partner and coverage look-ahead | 4 482 | 2 to 4 (3 for 99.8 %) | 1.8 ms |
+
+(Times of three runs on a machine in use; the node counts are exact.) Saturation: 22 % fewer nodes and about 20 %
+less time (16 to 24 % over three runs) with the integer conditions, 7 % fewer nodes and 0 to 9 % less time with the real filters (the real pair
+test already removes most of these pairs). Forward checking with the smallest alive slot first detects the
+contradiction two levels earlier and divides the nodes by 3 to 4, but it needs five times as many compatibility rows
+and the total time goes UP. No variant survives: 0 ball with a star in every run.
+
+**G. Why this does not generalise.** By B there is no identity to generalise: for at most seven members every
+algebraic consequence of the equations is a consequence of the pair conditions, and the pair conditions leave
+24 000 to 30 000 mutually compatible triples per ball. The contradiction is the absence of a 0/1 solution of a system that is
+over-determined by 15 to 20 orders of magnitude, and it appears at six or seven slots whichever slots are taken. No
+invariant separates "resisting" balls from the others, because there are none: 0 survivor in 10 000 + 5 000 balls,
+with the same depth profile everywhere. A uniform proof would have to bound the number of 0/1 solutions of the
+bilinear system for every ball; nothing in this section gives that. **Rank 37 is not excluded.** Cost of the sweep
+with the best variant (real filters and saturation): unchanged within 5 %.
