@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message533 — nouveau théorème, note253 : Z a toujours un sommet isolé.**
+Budget local L_d=6-2d_D(d)-sum_{z voisinZ de d} d_Z(z)>=0.
+Si D a l'arête de, son triangle a un troisième sommet z* dans Z,
+isolé ou feuille dans Z=K1,3+P3+K2+2K1. Les extrémités n'ont AUCUN
+voisin commun au cœur ni dans B ; leurs8 voisins B distincts ont chacun
+un seul voisin D. Leurs5 voisins Z ont une somme de degrés exactement4.
+La forêt15=4K2+P3 est exclue :14 formes,70 supports27 désormais.
+Choisir un z isolé forcé donne N(z)=2D+12B; les cellules des12B sont
+un multigraphe biparti de degré<=2, degrés fixés par les2D. Piste de cadre41.
+Pour D indépendant, les478 attaches donnent86 graphes d'intersections C
+sur D; le modèle local D-Z ne dépend que de C et Z. Premier comptage
+exhaustif :1696 incidences modulo Aut(Z), cœur8/attache0/forêt2. Aucun
+total global ni exclusion de norme16. Ne pas confondre ces incidences
+avec des graphes à99 points.
+
 **Messages 528–531 — cadre norme16 construit, note252 :** premier JSON
 `codex_norm16_typed_frame_0_0_2` : base37, rang Seidel35, types et domaines
 binaires pour les62 sommets restants. Correction structurelle : tout cadre
