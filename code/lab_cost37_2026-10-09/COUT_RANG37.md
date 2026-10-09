@@ -1,4 +1,4 @@
-# Coût du calcul du rang 37 : mesures (session du PC labo, 09/10/2026, mis à jour à 16:35 UTC)
+# Coût du calcul du rang 37 : mesures (session du PC labo, 09/10/2026, mis à jour à 16:38 UTC)
 
 Demande de l'utilisateur : « coupe le coût du calcul ». Objet : le test d'une étoile par boule de droite au rang 37
 (modèle de la session portable, `c1_rank37_girth5_lines/NOTE.md` de `conway99-c2-aws`, non audité par un tiers), pour
@@ -61,19 +61,23 @@ plus petits emplacements (10 % de mieux que « le plus de zéros », pour 36 cal
 
 ## Ce que cela donne
 
-Tirage (66 283 tirés, graine 41) : 7,2 % des boules étiquetées sont dans la classe ; avec la masse (11!!)^3/6 = 1,87e11
-cela fait environ 1,4e10 types. Parmi les valides : 14,7 % ont de la torsion, 43,2 % un discriminant résidu (éliminées
-sans recherche, L23 de Codex), 42,1 % sont à tester, soit environ 6e9 tests d'étoile.
+Tirages (graine 41) et masse (11!!)^3/6 = 1,87e11 des boules étiquetées modulo les symétries :
 
-| périmètre | tests | à 60 ms (départ) | à 2,2 ms (entier) | à 1,26 ms (avec réels) |
-|---|---|---|---|---|
-| connexes sans prisme, sans torsion | 6e9 | 11 années-cœur | **150 jours-cœur** | **90 jours-cœur** |
-| extrapolation à toute la masse (1,87e11), même coût par boule supposé | 8e10 | 150 années-cœur | 5,6 années-cœur | 3,2 années-cœur |
+| classe de boules connexes, sans torsion | part de la masse | types | à tester (discriminant non résidu) | version entière | avec filtres réels |
+|---|---|---|---|---|---|
+| sans prisme (ni triangle dans G(T), ni 4-cycle de type I) | 7,2 % | 1,35e10 | 42 % : 5,7e9 | 2,2 ms : **145 jours-cœur** | 1,26 ms : **83 jours-cœur** |
+| sans triangle dans G(T), 4-cycles de type I permis (contient la ligne du dessus) | 28,7 % | 5,4e10 | 43,5 % : 2,3e10 | 1,71 ms : **1,3 année-cœur** | 0,99 ms : **0,73 année-cœur** |
+
+Avec la recherche de départ (60 ms) : 11 années-cœur pour la première ligne, 44 pour la seconde.
+Dans les deux classes, environ 14 % des boules valides ont de la torsion (non traitées ici) et 42 à 43 % ont un
+discriminant résidu (éliminées sans recherche, L23 de Codex). Aucune des 5000 boules testées n'a d'étoile.
+La seconde classe est permise par la même option du programme (variable `STAR37_TYPE1`) ; mêmes contrôles à 0 écart
+(80 boules en mode `check`, 30 en contrôle positif).
 
 Ce PC a 8 cœurs (16 fils) : avec la limite de 80 % il fournit environ 7 cœurs, pas 12 (ma note précédente disait
-« une année-cœur par mois », c'était trop). Première ligne : environ 3 semaines de ce PC en version entière, 2 semaines
-avec les filtres réels. Deuxième ligne : 6 à 10 mois de ce PC, ou de l'ordre du millier de dollars de machines louées
-(ordre de grandeur non vérifié, aucun devis).
+« une année-cœur par mois », c'était trop). Première ligne : 3 semaines de ce PC en version entière, 2 semaines avec
+les filtres réels. Seconde ligne : environ 10 semaines, ou 5 à 6 semaines avec les filtres réels.
+Le reste de la masse (environ 70 %) est fait des boules dont G(T) contient un triangle : modèle non programmé ici.
 
 ## Ce qui manque pour lancer quoi que ce soit (rien n'est lancé)
 
@@ -82,10 +86,11 @@ avec les filtres réels. Deuxième ligne : 6 à 10 mois de ce PC, ou de l'ordre 
    total contre la masse). Son coût par boule devrait rester très inférieur à la milliseconde, non mesuré.
 2. **Les boules connexes avec torsion (15 %)** : autre modèle (vecteur de torsion équilibré, `fastg.c` de la session
    portable), non accéléré ici.
-3. **Les boules avec prisme (92 % de la masse) et les boules non connexes avec prisme** : hors du programme actuel
-   (triangles dans G(T), 4-cycles de type I). Sans elles, ou sans un lemme donnant une droite sans prisme, le rang 37
-   n'est pas exclu même si toute la première ligne meurt. L'énoncé accessible est : « au rang 37, aucune droite sans
-   prisme n'a un graphe connexe sans torsion » (avec l'énoncé B de la session portable, incomplet lui aussi).
+3. **Les boules dont G(T) contient un triangle (environ 70 % de la masse) et les boules non connexes** : hors du
+   programme actuel. Sans elles, ou sans un lemme donnant une droite dont le graphe est sans triangle, le rang 37
+   n'est pas exclu même si toute la seconde ligne meurt. L'énoncé accessible est : « au rang 37, aucune droite n'a
+   un graphe connexe, sans triangle et sans torsion » (à joindre à l'énoncé B de la session portable sur les graphes
+   non connexes, incomplet lui aussi).
 4. **Rigueur des filtres réels** : flottants. Pour une preuve, la version entière (2,2 ms) est la version sûre ; la
    version réelle demanderait une analyse d'erreur ou un recalcul exact.
 5. **Audit du modèle** par un tiers (Codex n'a audité que la partie maille 5).
@@ -94,5 +99,5 @@ avec les filtres réels. Deuxième ligne : 6 à 10 mois de ce PC, ou de l'ordre 
 
 `star37d.c` (version rapide ; modes `check` et `plant` ; `gcc -O3 -march=native`, ou `-DSCALAR`), `star37c.c` (étape
 intermédiaire : bits, conditions entières seules), `star37.c` (référence), `star37b.c`, `star37_stats.c`,
-`star37_spread.c` (première étape), `OUTPUT_star37d_seed41_integer.txt`, `OUTPUT_star37d_seed41_real.txt`.
+`star37_spread.c` (première étape), `OUTPUT_star37d_seed41_*.txt` (quatre sorties : deux classes, avec et sans filtres réels).
 Un processus, environ 30 Mo (100 Mo en mode `check`), chaque essai de quelques secondes à une minute.
