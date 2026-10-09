@@ -276,3 +276,40 @@ En revanche le quadrilatère (u, v, y, x) d'une arête transversale x–y donne 
 étoiles adjacentes : N(Q) = (couche u ∖ x) ∪ (couche v ∖ y) ∪ {w, voisins de x et y dans la couche w} ∪ étoile(x)
 ∪ étoile(y), soit 44 sommets ; les dix points restants de la couche w doivent alors vérifier 10 + 45 égalités
 rationnelles. Transmis à LAP.
+
+
+## 11. 9 octobre, 12:28 UTC : la « loi exacte » du §9 est FAUSSE en général ; ce qui reste
+
+**Réfutation.** Le produit cartésien de deux graphes de la famille (toute arête dans un seul triangle, deux sommets à
+distance deux ont exactement deux voisins communs) est dans la famille. Pour une droite T du premier facteur, le graphe
+proche dans le produit est G₁(T) plus k₂/2 prismes, donc F(T) = F₁(T) + 5k₂/2. Une loi universelle « F de même parité sur
+toutes les droites » forcerait κ + k/2 à être le même pour tous les graphes de la famille. Or κ + k/2 vaut 1 pour huit des
+neuf graphes du §9 et 0 pour la géométrie tordue à 42 sommets. Vérification directe (`product_test.py`) : sur
+t3_twisted_42 × K₃ (126 sommets, valence 10), t2_twisted × t3_twisted_42 (840 sommets, **valence 14**) et
+grille × t3_twisted_42, ni f + c ni f + c + 1 n'est un cobord ; les droites ont les deux parités (par exemple 1120 et 840).
+Je cesse donc de chercher à démontrer un énoncé faux. Les voies de preuve du §9 et du §10.1 (réduction à W(D₇),
+transports appariés) portaient sur cet énoncé : elles sont closes.
+
+**Ce qui reste vrai sur tous les graphes disponibles** (`product_quad_test.py`) : pour tout quadrilatère Q,
+(f + c)(Q) = 0, c'est-à-dire c(Q) ≡ c_va + c_aw + c_wb + c_bv (mod 2). Les quadrilatères et les droites engendrent tout
+l'espace des cycles, et la dimension d du quotient (cycles) / (quadrilatères) est :
+
+| graphe | cycles | quadrilatères | d |
+|---|---|---|---|
+| t2_twisted (20) | 41 | 40 | 1 |
+| H(3,3) (27) | 55 | 52 | 3 |
+| t3_twisted (39) | 118 | 117 | 1 |
+| t3_twisted_42 | 127 | 125 | 2 |
+| grille 3×3 | 10 | 8 | 2 |
+| BvLS (243) | 2431 | 2420 | 11 |
+| 243 tordu | 2431 | 2429 | 2 |
+
+La classe [f + c] est donc un élément de Hom(cycles / quadrilatères, F₂) ; « F(T) de parité constante » n'est vrai que
+lorsque d = 1 ou par accident. Statut de la loi des quadrilatères : conjecture. Les produits ne la mettent pas à l'épreuve
+(elle se transmet des facteurs au produit : holonomie d'un quadrilatère mixte triviale, c_e des côtés opposés égaux).
+Appui réel : les neuf graphes de base et le cas de valence 6 (SAT local). Recherche de membres non construits à la main
+(`random_family_sat.py`, cadical) : en valence 6 seuls 20 et 27 sommets apparaissent ; en valence 8, 39 sommets retrouvé,
+42 à 48 non décidés en une minute.
+
+**Conséquence pour un graphe à 99 sommets, si la loi des quadrilatères est vraie :** une condition d'un bit sur chaque
+configuration à quatre murs (48 sommets), et F(T) ≡ F(T') dès que T + T' est somme de quadrilatères. Rien n'est exclu.

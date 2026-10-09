@@ -3370,3 +3370,23 @@ The user asked for a proof of "all quadrangles even in diameter two". Outcome (d
   edges; four candidate proofs (parallel, anti-parallel, balanced, coherent orientations) fail on the twisted 243.
 Scripts: two_layer_test.py, triinc_test.py, abstract_quad.py, parallel_orient.py, balanced_orient.py,
 arc_coherence.py, gewirtz_test.py, flip_zoo.py, minors_sign.py, holonomy_mu2.py.
+
+
+### 17.86 CORRECTION of 17.85: the exact law is FALSE in general; only its quadrangle part survives (12:28 UTC, 09/10)
+
+The family (every edge in one triangle, two vertices at distance two have exactly two common neighbours) is closed
+under Cartesian products, and for a line T of the first factor F(T) = F_1(T) + 5 k_2 / 2 in the product. A universal law
+"f + c + kappa is a coboundary" would force kappa + k/2 to be the same for every member. It is 1 for eight of the nine
+graphs of 17.85 and 0 for the 42-vertex twisted geometry. Direct check (`product_test.py`): on t3_twisted_42 x K3
+(n = 126, k = 10), t2_twisted x t3_twisted_42 (n = 840, k = 14) and grid x t3_twisted_42, neither f + c nor f + c + 1 is a
+coboundary and the lines have both parities. The conjecture of 17.85 is withdrawn, with the proof routes built on it
+(W(D7) reduction, matched transports).
+
+What still holds on every available graph (`product_quad_test.py`): (f + c)(Q) = 0 for every quadrangle, i.e.
+c(Q) = c_va + c_aw + c_wb + c_bv (mod 2). Quadrangles and lines span the cycle space; the dimension d of
+cycles / quadrangles is 1, 3, 1, 2, 2, 11, 2 for t2_twisted, H(3,3), t3_twisted, t3_twisted_42, the 3 x 3 grid, BvLS and
+the twisted 243 graph. The class [f + c] lives in Hom(cycles / quadrangles, F_2); "all lines have the same face parity"
+holds only when d = 1 or by accident. Status of the quadrangle law: conjecture; products do not test it (it is inherited
+from the factors). Evidence: the nine base graphs and the local SAT result at valency 6. `random_family_sat.py` (random
+members by cadical): valency 6 gives only the 20- and 27-vertex graphs; valency 8 gives the 39-vertex graph, 42 to 48
+vertices undecided in one minute. No exclusion; ranks and kernels unchanged.
