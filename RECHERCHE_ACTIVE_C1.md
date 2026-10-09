@@ -1,5 +1,18 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 517–519 — nouveau lemme, note249 :** trois prismes jumeaux
+hors grille imposent des apices INDEPENDANTS. Si un apex a est adjacent
+à b mais pas c, ses deux voisins B doivent voir le barreau c dans chaque
+prisme (les deux autres couleurs violent lambda/mu), donc auraient trois
+voisins communs avec c. Les cas d'apices à1 ou2 arêtes sont exclus.
+Le cas indépendant reste ouvert ; le petit LP21 sommets est faisable.
+Sans grille : C14+2tau<=2P et T=sum binom(m,2)e(Theta)<=min(C14,2tau).
+La note donne aussi une borne44 horsC6 sans forfait997920 de moulins.
+Un unique calcul C6/apices indépendants ne baisse pas31976 ; ne pas le
+relancer. LAB a RETIRE au518 la quasi-contradiction numérique du517 :
+collections incompatibles ; seuil corrigé annoncé25201, autres pertes
+encore trop fortes. Aucun balayage de boules sur cette proposition.
+
 **Message 515, pilote LAP et complément Codex — note 248 :** LAP annonce
 59 exclusions exactes sur les252 premiers supports des4581 ouverts,
 sans utiliser les lignes de triplets ; liste des IDs/certificats à venir.

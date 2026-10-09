@@ -45,6 +45,9 @@ def add_type(data, pairs, caps, rows, matrix, constants, kind):
                 pair = tuple(sorted((a, b)))
                 extra.append((f'grid_no_apex_simple_edge_{pair}', 0,
                               {indices[pair]: -1}))
+    elif kind == 'independent':
+        extra.append(('independent_apex_edges_zero', 0,
+                      {indices[pair]: -1 for pair in combinations(apex, 2)}))
     else:
         extra.append(('nongrid_apex_edges_at_most_two', 2,
                       {indices[pair]: -1 for pair in combinations(apex, 2)}))
@@ -146,7 +149,8 @@ def run(family, kind, verify_only=False, selected=None):
             print('Solving', family, kind, name, flush=True)
             result = linprog(np.array(objective, dtype=float), A_ub=-matrix,
                              b_ub=constants, bounds=list(zip([0]*len(caps), caps)),
-                             method='highs-ipm')
+                             method='highs-ipm',
+                             options={'time_limit': 120} if kind == 'independent' else {})
             assert result.success, result.message
             proof = certificate(rows, caps, objective, result)
             upper = F(proof['collision_upper_bound'])+offset
@@ -169,7 +173,7 @@ def run(family, kind, verify_only=False, selected=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--family', choices=('63', 'f0', 'ftf', 'all', 'f0split'), required=True)
-    parser.add_argument('--kind', choices=('grid', 'nongrid'), required=True)
+    parser.add_argument('--kind', choices=('grid', 'nongrid', 'independent'), required=True)
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--objectives', nargs='+')
     args = parser.parse_args()
