@@ -3518,3 +3518,38 @@ Nothing here excludes a rank. Items marked "already known" were re-derived by ha
 * **Rank 43 on the laptop** (its sections 13 to 16, read): the P3/N25 supports concern the branch S0 only (no vector of
   norm 16 to 24); at rank 43 in general no layer is forced. Its stage 1 is a necessary condition on the 71 outside
   neighbourhoods; a support that passes it still needs the whole graph.
+
+### 17.91 Anatomy of the death of 10 000 random balls at rank 37: equidistribution, no mechanism (21:26 UTC, 09/10)
+
+User (direct): had I looked microscopically at WHY the random balls die? Before this section: five balls dissected on
+08/10 (17.56 to 17.65: diffuse cores, Codex's barrier), and for the large samples only the mean depth profile.
+
+`work/c1_cost37_2026-10-09/star37_anatomy_patch.py` adds counters to star37d.c without changing the search (scalar
+build, integer conditions only, real filters off). `OUTPUT_star37e_anatomy_seed2026_all.txt`: 10 000 connected balls
+without torsion and with non-residue discriminant (class "all": triangles and 4-cycles of type I allowed), 90 s, one
+process. Mean partial stars by depth 217.1, 7113.7, 30 290.3, 14 942.0, 763.8, 3.5 (seed 41 gave 216.6, 7077.5, ...).
+
+1. **Norms.** Of the 18 405 shadows per ball that pass the combinatorial filters, the Green norm modulo 7 takes the
+   seven residues with frequencies 0.1430 0.1429 0.1429 0.1429 0.1428 0.1427 0.1428 (1/7 = 0.1429). 2632 candidates
+   per ball remain, about 260 per slot.
+2. **Pairs, depth by depth.** For the member placed at depth d and every candidate of the next slot still alive after
+   the d - 1 earlier members, the Green value of the pair modulo 7 (residue 0 = compatible as non-adjacent, residue 1 =
+   compatible as adjacent, the five others incompatible), in each of the three weight classes (no shared point, one
+   shared point of demand 2, more): every frequency lies between 0.1427 and 0.1431 at depths 1 to 4 (2.5e7 to 3e9
+   pairs per line of the table) and between 0.1416 and 0.1443 at depth 5 (1.4e5 pairs). So, to the precision measured,
+   being compatible with a new member is independent of having been compatible with the earlier ones.
+3. **Depth of death.** Deepest consistent partial star: 5 members for 1643 balls, 6 for 8342, 7 for 15, never 8; the
+   15 balls that reach 7 have exactly one such partial star. Successive ratios of the mean numbers of partial stars:
+   32.8, 4.26, 0.49, 0.051, 0.0046, 0.00043: each is about one tenth of the previous one, which is what independent
+   conditions of probability 1/7 to 2/7 per pair give once the coverage is counted.
+
+Reading. A ball dies as a lottery is lost: about 260^10 tuples, 45 pair conditions each passed with probability about
+1/6, plus the coverage; no special slot, no special pair, no single condition is "the" obstruction, in agreement with
+the five dissections of 08/10. Extrapolating the ratios: about 6e-8 partial stars with 8 members per ball, 2e-13 with
+9, of the order of 1e-19 complete stars before the final coverage and partner tests.
+* Nothing here can be turned into an identity: a uniform proof would be an equidistribution statement for the Green
+  form on 0/1 shadows, valid for every ball, and none is in sight.
+* Heuristically no generic ball survives (expected number over the 6e10 testable balls below 1e-8); this is a
+  heuristic, not a proof, and it says nothing about the balls with torsion.
+* Deviations of a few 1e-4 from 1/7 are visible in some lines (weight class 2); the pairs of one ball are not
+  independent samples, so their significance is not established. Not analysed.

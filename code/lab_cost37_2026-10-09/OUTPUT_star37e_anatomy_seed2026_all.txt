@@ -1,0 +1,36 @@
+python star37_anatomy_patch.py star37d.c star37e.c ; gcc -O3 -march=native -DSCALAR -o star37e star37e.c
+STAR37_NT=1 ./star37e 2026 10000 1 0 0      (one process, 90 s, below 100 MB)
+
+slot order fixed; class: connected, triangles of G(T) and 4-cycles of type I ALLOWED (with a triangle: 14910 of the valid balls, 6347 of the tested ones; with a 4-cycle of type I: 17378, 7367; balls where every point is in a triangle, skipped: 0); real filters off; drawn 29756, valid connected 23379, torsion 3424, residue discriminant 9955, tested 10000 (slot too big: 0)
+mean candidates 2632, largest slot 426, balls with a star 0, deepest level reached 7
+mean consistent partial stars by depth: 217.1 7113.7 30290.3 14942.0 763.8 3.5 0.0
+per tested ball: rows 3308, set steps 79909, children rejected by the exact real tests 0
+time: inverse 0.0112 ms per valid ball; per tested ball: tables and candidates 0.2609 ms, slots 0.0228 ms, search 8.7227 ms; total per tested ball without the generator 9.0324 ms
+wall 90.46 s, of which random generation and rejection 0.13 s
+Green norm mod 7 of the shadows passing the combinatorial filters (18405 per ball): 0.1430 0.1429 0.1429 0.1429 0.1428 0.1427 0.1428   (kept: residue 0)
+pair value mod 7 between the member placed at depth d and the candidates of the next slot still alive, by weight class
+  depth 1 weight 0: n = 1197766295   0.1429 0.1429 0.1429 0.1428 0.1428 0.1428 0.1429
+  depth 1 weight 1: n = 908744521    0.1429 0.1428 0.1430 0.1429 0.1429 0.1428 0.1428
+  depth 1 weight 2: n = 605744938    0.1428 0.1428 0.1430 0.1429 0.1428 0.1429 0.1428
+  depth 2 weight 0: n = 3071400753   0.1429 0.1428 0.1429 0.1428 0.1428 0.1429 0.1429
+  depth 2 weight 1: n = 2611121826   0.1428 0.1428 0.1429 0.1428 0.1429 0.1428 0.1429
+  depth 2 weight 2: n = 1759715513   0.1428 0.1427 0.1431 0.1429 0.1428 0.1429 0.1428
+  depth 3 weight 0: n = 787583876    0.1429 0.1429 0.1428 0.1428 0.1428 0.1428 0.1430
+  depth 3 weight 1: n = 735228570    0.1428 0.1428 0.1430 0.1428 0.1428 0.1429 0.1428
+  depth 3 weight 2: n = 527081511    0.1427 0.1427 0.1431 0.1428 0.1427 0.1430 0.1429
+  depth 4 weight 0: n = 30533146     0.1430 0.1429 0.1429 0.1427 0.1428 0.1428 0.1429
+  depth 4 weight 1: n = 31667850     0.1428 0.1429 0.1429 0.1428 0.1427 0.1429 0.1429
+  depth 4 weight 2: n = 24852697     0.1429 0.1428 0.1429 0.1427 0.1429 0.1429 0.1429
+  depth 5 weight 0: n = 137862       0.1419 0.1432 0.1439 0.1425 0.1438 0.1416 0.1430
+  depth 5 weight 1: n = 163233       0.1419 0.1431 0.1429 0.1431 0.1426 0.1434 0.1431
+  depth 5 weight 2: n = 143114       0.1421 0.1428 0.1441 0.1443 0.1416 0.1424 0.1427
+  depth 6 weight 0: n = 47           0.1915 0.1915 0.1915 0.1064 0.0851 0.1489 0.0851
+  depth 6 weight 1: n = 73           0.1507 0.1370 0.1370 0.1507 0.1096 0.1918 0.1233
+  depth 6 weight 2: n = 79           0.1519 0.1139 0.1392 0.1899 0.1266 0.1013 0.1772
+balls by deepest consistent partial star:  5 members: 1643  6 members: 8342  7 members: 15
+balls reaching depth d: 10000 10000 10000 10000 10000 8357 15 0 0 0
+  number of partial stars at depth 4, balls by size class (0, 1, 2-3, 4-7, ...): 0 0 0 0 0 0 0 0 0 0 1 30 363 2172 3833 3160 418 23 0 0 0 0 0 0
+  number of partial stars at depth 5, balls by size class (0, 1, 2-3, 4-7, ...): 0 0 0 0 0 1 26 238 1130 2834 3225 2236 279 31 0 0 0 0 0 0 0 0 0 0
+  number of partial stars at depth 6, balls by size class (0, 1, 2-3, 4-7, ...): 1643 1828 2720 2617 1087 96 9 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  number of partial stars at depth 7, balls by size class (0, 1, 2-3, 4-7, ...): 9985 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  number of partial stars at depth 8, balls by size class (0, 1, 2-3, 4-7, ...): 10000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
