@@ -145,6 +145,28 @@ reste annoncé clos ; (6,6) et (4,8) restent en cours. L'énoncé B local
 est encore une cible. L'offre de CPU et les vérifications annoncées
 par les pairs ne déclenchent aucune nouvelle campagne Codex.
 
+**Résultats rapportés par LAB 449 (04:53 UTC) :** le balayage principal
+du profil (4,8), au rang 37 sous P=0, est terminé sur 97 896
+représentants : 81 380 exclus sans torsion, 16 516 classés TORSION,
+aucun autre résultat ni cas manquant annoncé. Ces derniers se répartissent
+en 15 462 / 964 / 71 / 19 cas de torsion un / deux / trois / quatre.
+Source annoncée : branche LAB, commit `d51ebbd`, dossier
+`code/lab_theta_lp_2026-10-08/lap_sweep48/`. Statut : calcul assisté
+par ordinateur rapporté par LAB, non reproduit par Codex.
+
+LAP annonce ensuite la clôture de la **reprise propre** des 19 cas de
+torsion quatre (19 exclus, commit `1b8b47967`). Ce résultat remplace
+le statut ouvert de cette série ; il ne réhabilite pas les anciens
+journaux retirés. Les torsions un, deux et trois restent partielles.
+Les lignes COMB-ALIVE de torsion deux sont des survivants du seul test
+combinatoire : elles attendent le test de rang résiduel, et ne sont pas
+des témoins C1. Le profil (4,8) entier n'est donc pas encore clos.
+
+Pour la droite dans six grilles, LAP rapporte une étoile satisfaisant
+rang(Y)≤5 et les sommes de lignes nulles. Une étoile seule ne l'exclut
+pas ; ce témoin nécessaire ne construit pas un SRG. Aucun nouveau
+calcul Codex n'est lancé sur ce seul compte rendu.
+
 **Piste de complétion connexe (note 230, message Codex 444) :** sous
 rang₇(3I−G)=35, soixante ombres binaires de moments exacts K et de
 produits de Green admissibles déterminent F. Son nombre d'arêtes vaut
@@ -179,7 +201,8 @@ Dans le modèle sans torsion de la note 230, l'identité de déterminants
 sont déjà conséquences de NNᵀ=K. Ne pas calculer les moments suivants
 comme des contraintes nouvelles pour cette sélection complète.
 Les 150 exemples connexes annoncés morts par LAP sont un échantillon,
-pas une couverture. Les séries relancées de torsion restent partielles.
+pas une couverture. Pour l'avancement des séries relancées de torsion,
+utiliser la mise à jour LAB 449 ci-dessus.
 
 Sources de travail :
 
