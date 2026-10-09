@@ -3314,3 +3314,21 @@ types of 38 and of 2118 remain. Not run on the other types (thousands of complet
   type lying on no closed walk of admissible length would be excluded. Decisive test: the same enumeration with up
   to seven new vertices; cost of the same order as computation 1. Whether that relation is again elementary is
   not known.
+
+**Addendum (08:39 UTC, 09/10): the union test in its decisive form; the mechanism is closed without exclusion.**
+Before running anything I checked whether the natural strengthening (edge counts between mask classes, pairs of
+outside vertices) was still open: it is not. Codex's note 223 records my own pilots of message 412 (edge-count
+relaxation feasible on the 29 kernels tried; closure by third points stopped at the ceiling on 15 kernels) and
+its integer coexistence model (15 kernels, all with a witness). Not repeated.
+
+What was missing from computation 3 above is the decisive question: does a type exist for which NO completion
+of H u H* passes the mask-multiplicity test on the union? `quad_union_first_feasible.py` answers it by stopping at
+the first feasible completion of each type (a type with none would have been excluded, numerically).
+
+    python quad_union_first_feasible.py <Codex data folder> quad_union_first_feasible.json 250 <the 140 types>
+    decided 140 of 140 listed types: feasible 140, no feasible completion 0, undecided 0        [48 s, one process]
+
+For the 31 types with the fewest partner types (2, 6, 8 or 9 partners) the very first completion is feasible;
+the largest number of completions tested before a feasible one is 30 (type 9728). A feasible verdict is a
+floating LP solution of a necessary condition; it constructs nothing. Outcome: the mask test on the union of
+the two kernels of a quadrangle excludes NO kernel type. Both chains unchanged: 174 kernels; ranks 37, 39, 41, 43.
