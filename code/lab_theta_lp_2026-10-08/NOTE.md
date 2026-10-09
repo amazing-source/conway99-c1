@@ -3442,8 +3442,10 @@ one free scalar per far vertex because of the second component) this is of the o
 PC, not months. To be written before any run: the two-component model in the fast test (free scalar, both classes of
 the residual form or the class fixed by the determinant), the exhaustive generator of the 30-point remainders, and the
 remainders with 7-torsion (about one in six; the laptop session's torsion models, to be accelerated).
-The six-grid line (1^6) is not decided by one star (laptop session), but it has g = 6 on every line and is excluded by
-the counting (17.26: it would force rho = 231 > 126).
+The six-grid line (1^6) is not decided by one star (laptop session), but it need not be swept: once every other profile
+with a prism component is excluded, a line in a grid lies in exactly six grids; a line with g = 6 gives g >= 1, hence
+g = 6, on the 18 lines meeting it (17.26), so by connectivity all 231 lines would have g = 6 and rho = 231, against
+the maximum 126 of the census polytope. Hence rho = 0.
 
 **So the route would be:** (1) small sweep: at rank 37 no line lies in a grid, rho = 0; (2) counting at rho = 0, which
 needs the uncharged channels and a few per cent on c or the bound on twin classes. Neither step is done.
