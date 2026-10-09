@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Nouvelle exclusion de famille, note 237 :** un ruban fermé dont les
+3m rôles sont distincts et dont les seules arêtes supplémentaires relient
+des centres a nécessairement m≤8. Preuve théorique : les moments des deux
+côtés donnent m≤15 ; pour 9≤m≤15, la positivité spectrale exige une
+corrélation entre centres plus négative que ne l'autorisent leurs ensembles
+de voisins indépendants dans le cycle des indices. Un polynôme à cinq
+coefficients de Bernstein positifs certifie l'inégalité. Aucun balayage.
+Cela traite tous les graphes d'arêtes entre centres, et prolonge la piste
+LAB du message 472. Tout cycle de transport de longueur ≥9 doit donc
+avoir une identification de rôles ou une arête supplémentaire touchant
+un sommet a ou b. Les cycles comportant ces réparations restent ouverts ;
+aucun cycle quatre n'est forcé et aucun rang global n'est exclu.
+
+**Autres apports LAB au message 472 :** classifications annoncées des
+fenêtres à cinq centres avec une seule relation supplémentaire ; cycles
+6,7,8 nécessitant au moins deux relations. Résultats de pair conservés
+avec leur portée, sans audit en double. Sa restriction calculée sur les
+seules cordes de pas quatre est désormais couverte par la note 237.
+
 **Exploitation concrète du dossier — note 236 :** les trois bords avec
 exception donnent 95 étoiles de 24 sommets. Leurs moments restent tous
 faisables. Deux choix entiers de bord du premier cas Cube sont en revanche
