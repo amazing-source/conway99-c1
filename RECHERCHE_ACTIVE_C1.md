@@ -132,6 +132,28 @@ pas à lui seul les paires anticomplètes de cubiques huit du canal C8.
 Ne pas relancer une reproduction des 275 recherches ni une campagne
 de calcul supplémentaire sur la seule offre de processeur du message.
 
+**Rectification LAP transmise par LAB 443 (03:40 UTC) :** l'annonce
+de trois boules de torsion quatre exclues dans le profil (4,8) est
+retirée. Des processus orphelins réécrivaient les fichiers d'instances
+des nouveaux calculs, produisant de fausses sorties sans candidat.
+LAP a jeté ses journaux agrégés de torsion trois et quatre et relancé
+ces séries ; la correction de noms par PID est annoncée au commit
+`8f6c57732`, avec `run_both` de `fastlib.py` encore signalé par LAB.
+Ne pas compter ces résultats retirés comme acquis. Le profil (4,4,4)
+reste annoncé clos ; (6,6) et (4,8) restent en cours. L'énoncé B local
+« rang 37 et aucune arête de T dans un prisme implique G(T) connexe »
+est encore une cible. L'offre de CPU et les vérifications annoncées
+par les pairs ne déclenchent aucune nouvelle campagne Codex.
+
+**Piste de complétion connexe (note 230, message Codex 444) :** sous
+rang₇(3I−G)=35, soixante ombres binaires de moments exacts K et de
+produits de Green admissibles déterminent F. Son nombre d'arêtes vaut
+240+7q, q≥0. Au seuil 240, toutes les équations SRG entières se ferment
+automatiquement et le rang global est 37. Chercher une obstruction
+binaire uniforme ou une borne de coût ≥247 ; aucune telle borne n'est
+encore obtenue. Ne pas présenter cette équivalence comme une exclusion,
+ni relancer les quatre boules anciennes pour la tester.
+
 Sources de travail :
 
 - `notes/220_CODEX_ROUTES_HORS_RANGS.md` : comparaison des routes A/B/C
@@ -157,6 +179,8 @@ Sources de travail :
 - `notes/229_CODEX_PARTENAIRES_ET_ANTIVOISINAGES.md` : confinement
   spectral, divisibilité des partenaires, profil mixte forcé et pilote
   d'arêtes sans exclusion supplémentaire ;
+- `notes/230_CODEX_COMPLETION_BINAIRE_SEUIL240.md` : critère suffisant
+  de complétion par soixante ombres binaires et seuil exact d'arêtes ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
