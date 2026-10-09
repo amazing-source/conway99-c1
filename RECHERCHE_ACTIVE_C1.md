@@ -1,5 +1,16 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Résultat de pair reçu au message 473, piste arithmétique distincte :**
+LAP annonce, via LAB, `[M:Lambda_L]=3^(e3−1)` et
+`M/Lambda_L ≅ F3^(e3−1)`, où Lambda_L est engendré par les 231 vecteurs
+triangulaires et `e3=99−rang_F3(N)`, avec `1≤e3≤22`. Source annoncée :
+`conway99-c2-aws`, commit `9ca72369f`, note mandat C §10 ; preuve à la main
+rapportée, non auditée ici. Conséquence annoncée directement pertinente
+au dossier : `2h_H=Σ huit w_T` entraîne `h_H∈Lambda_L`, car le quotient
+n'a pas de torsion deux. Cela donne une combinaison entière de triangles
+globaux ; aucune expression à coefficients bornés ni exclusion n'est fournie.
+Ce résultat n'intervient pas dans la preuve de la note 237.
+
 **Nouvelle exclusion de famille, note 237 :** un ruban fermé dont les
 3m rôles sont distincts et dont les seules arêtes supplémentaires relient
 des centres a nécessairement m≤8. Preuve théorique : les moments des deux
