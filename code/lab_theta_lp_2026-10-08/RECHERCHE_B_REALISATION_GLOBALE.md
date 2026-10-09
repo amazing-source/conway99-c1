@@ -315,10 +315,10 @@ Appui réel : les neuf graphes de base et le cas de valence 6 (SAT local). Reche
 configuration à quatre murs (48 sommets), et F(T) ≡ F(T') dès que T + T' est somme de quadrilatères. Rien n'est exclu.
 
 
-## 12. 9 octobre, 13:25 UTC : dossier externe « Convergences » (piste « couverture et cycles longs ») ; rien d'exclu
+## 12. 9 octobre, 13:09 UTC : dossier externe « Convergences » (piste « couverture et cycles longs ») ; rien d'exclu
 
 Source : `Desktop/c1-imports/2026-10-09-convergences/DOSSIER_C1_CONVERGENCES/DOSSIER_C1_INTEGRE.md`, signalé par Codex
-(message du pont, 13:05 UTC) comme fourni par l'utilisateur. Lu comme donnée ; aucun de ses programmes n'a été exécuté.
+(message du pont reçu pendant ce travail) comme fourni par l'utilisateur. Lu comme donnée ; aucun de ses programmes n'a été exécuté.
 Sa piste « Claude 1 » : le cas sans cycle de transport de longueur quatre, les rubans longs, une loi propre à 99.
 
 **Lecture du transport comme flot géodésique (mienne).** Pour un sommet x, soit s_x la réflexion ponctuelle de la carte
