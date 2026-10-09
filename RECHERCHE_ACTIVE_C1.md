@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 524 — test d'étoiles LAB, aucune exclusion nouvelle :** LAB a
+ajouté la saturation pour deux sommets lointains adjacents f,g : si
+p est voisin proche de g mais pas de f, p a au plus un voisin dans
+l'ombre de f (g consomme déjà un des deux voisins communs de p,f).
+Sur ses5000 boules, les nœuds du modèle entier passent de52767 à41106 ;
+ce sont des économies de recherche, pas de nouveaux cas exclus.
+Source rapportée : NOTE17.92, commit LAB9f4672d, `star37f_patch.py`.
+Ne pas refaire ses comparaisons ni ouvrir un second chantier d'étoiles.
+Pour le futur couplage P3/N25, si les blocs b,c correspondent à deux
+sommets extérieurs ADJACENTS, les contraintes nécessaires sont notamment
+c<=2*1-b-A_S*b et b<=2*1-c-A_S*c, coordonnée par coordonnée, ainsi que
+b^T*c<=1. Elles expriment les déficits de voisins communs après ajout de
+l'arête extérieure. Notre filtre unaire `A_S*b<=2-b` ne choisit aucune
+arête entre sommets extérieurs et ne remplace donc pas ces contraintes.
+LAB généralise aussi la barrière de note219 : pour d<=9, sous indépendance
+des d membres avec sigma et les conditions de paires, la forme de Gram
+et la somme seules n'obstruent pas la complétion abstraite. Ses conditions
+d'ordre2 modulo49 aux étages8/9 sont proposées, pas implémentées.
+
 **Messages 522–523 — 941 supports exclus par LAP, extension Codex note250 :**
 LAP annonce une union de941 exclusions par deux lemmes entiers parmi
 les4581 supports ouverts, soit3640 restants après ces SEULS lemmes.
