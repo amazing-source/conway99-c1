@@ -3178,3 +3178,139 @@ Addendum to 17.80 (03:49 UTC, 09/10): the rule with torsion, asked by the laptop
   tr((WK)^k) = tr(gamma^k). I computed both sides for k = 1, 2, 3 for a triangle-free G: 3 = 3; 2 = 2 once e(F) = 240;
   6 = 6 once the far graph has 32 triangles (the 32 far lines). So they give e(F) = 240 and 32 far triangles modulo 7
   and nothing on G: no invariant of G alone comes out of the moments up to order 3. (k = 1 is in note 102, section 8.)
+
+Second addendum to 17.80 (03:54 UTC, 09/10): Codex's reading of the two additions (its answer to my message 274; its note 231 in
+preparation, not read here).
+* Rule B' confirmed by Witt completion, with no test on graphs: for p : F_7^36 -> V, Tr = ker p (dimension b) lies in
+  R0 = ker M0 (dimension d); the image has dimension 36 - b, radical of dimension a = d - b and non-degenerate
+  quotient of discriminant d0; completing the radical by a hyperbolic planes gives V = W0 + H^a + R, so
+  dim R = r - 37 + 2b - d and disc R = disc(V) d0 (-1)^a modulo squares, at every rank with its known disc(V).
+  Codex's extra consequence: when dim R = 0 fails by the sign, ALL the subspaces Tr of that dimension are excluded,
+  not one choice of basis; the dimension of Tr must then go up by at least 1, and if another bound forbids it the
+  ball is eliminated directly. Status of B': derived here, refereed by Codex, still not used in tonight's runs.
+* Moments, Codex's general form (it replaces my three computations): with W = M0^(-1) = 5J - H^+ and gamma = N^T W N,
+  Sylvester gives chi_gamma(x) = x^24 chi_WK(x); on the three layer constants WK has the values 6, 0, 0, and on
+  E = {layer sums zero} WK = H. So tr gamma^k = 6^k + tr (H|E)^k for EVERY k >= 1 in F_7: all the traces follow from
+  N N^T = K. They can filter a relaxation that drops this equality; they add nothing to the complete selection.
+
+### 17.81 The (4,8) main sweep is finished: every torsion-free representative ball is dead (04:51 UTC, 09/10)
+
+Run of the laptop session's driver on the lab PC (its model and solver, not audited here; see the README of
+`../c1_lap_sweep48_2026-10-09/`). Ended 04:49:07 UTC; 12 000 parts of 12 000, no error code, no presence check
+positive during the night.
+* Representatives (one ball per isomorphism class, the laptop session's `reps48.txt`): 97 896 of 97 896 logged;
+  dead 81 380; TORSION 16 516 (rank 1: 15 462, rank 2: 964, rank 3: 71, rank 4: 19); other 0; missing 0.
+* All balls logged (the parts before the switch were swept in full): 117 860 of 245 877; dead 98 163; TORSION
+  19 697; other 0.
+* Checks on the finished logs: no trace of the race of 17.79 (117 860 distinct balls, smallest cands 5184, smallest
+  node count 23 773); the 19 964 non-representative balls swept before the switch all have the verdict of their
+  representative (dead 16 783, TORSION 3181, none different); the TORSION flags agree with `tors_m4.json`.
+* Raw log in the repository: commit d51ebbd, `lap_sweep48/sweep_48_all.log.gz` (sha256 of the uncompressed file
+  b8fac2c90714ef47...).
+What it says: in the laptop session's model, at rank 37, a line with components of 12 and 24 points, without prism
+and whose large component has no 7-torsion, admits no star at one near point, for both classes of the residue.
+What it does not say: nothing on the 16 516 torsion balls (rank 1 running here since 04:49:49 UTC, about 32 s per
+part of 8 balls; ranks 2 to 4 on the laptop: rank 4 reported closed, 19 of 19, at 04:51 UTC); nothing on connected
+lines; the reduction to representatives is checked on a sample and on the 19 964 balls above, the complete check is
+queued. Rank 37 is not excluded.
+Reported by the laptop session at 04:19 and 04:51 UTC: at torsion rank 2 some balls come out COMB-ALIVE in the
+sub-case where the whole torsion plane is balanced (residue of rank 3, combinatorial test only); it decides them
+with a rank test (`fastrD`), the 6 met so far are dead. Its six-grid line: one star with the rank condition EXISTS,
+so one star does not decide that line; my own treatment (17.46, 17.47, 17.73 B) is still open, sent to it with the
+known degrees between two blocks of a prism for a two-point test.
+
+Addendum to 17.81 (04:57 UTC, 09/10): load of the torsion run. With 11 workers the torsion driver gave a mean load of 75% with
+8 samples of 40 above 80% (maximum 93%), above the user's allowance. Stopped at 04:54 UTC (whole process tree; count
+afterwards: no driver, no worker, no fastg4.exe; 9 leftover instance files deleted; 100 parts and 844 balls logged,
+all DEAD, no ball twice) and restarted at 04:55 UTC with 9 workers, resuming from the log: mean 71%, maximum 80%, no
+sample above 80%. The temporary files carry the process id since 03:25 UTC, so the two runs could not share a file
+even if a process had survived. New expected end of rank 1: about 06:50 UTC.
+
+### 17.82 Computations stopped on the user's order (05:08 UTC, 09/10)
+
+The user, direct message: "Vasy arrete les calculs vous êtes vraiment pas possibles", after asking whether six hours
+had brought no advance (answer given: on the objective, none; rank 37 is not excluded). Stopped at 05:08 UTC: the
+torsion run of rank 1 and the queued complete isomorphism check; no computation process left on the lab PC (load 3%).
+State kept on disk, resumable, NOT to be restarted without the user's word:
+* (4,8) main sweep: finished (17.81).
+* Torsion rank 1 (`../c1_lap_sweep48t_2026-10-09/`): 346 parts of 2004 finished, 2792 balls of 15 462 logged, not DEAD: 0.
+  The 65 unfiltered balls of rank 2 were not reached.
+* Complete isomorphism check of the reduction to representatives: never started. The reduction therefore rests on the
+  sample of 400 + 400 pairs (17.78) and on the 19 964 balls swept twice over (17.81).
+
+### 17.83 The two obligatory kernels of one quadrangle: an exact relation between kernel types; it excludes pairs, not types (05:51 UTC, 09/10)
+
+Mission of the user (direct, 05:10 UTC): research on routes to a complete decision, rank-free, with a real attempt
+and an honest account. Computation used: single process, runs of at most four minutes (about 20 minutes in all).
+Reference state read: Codex's branch at 19ec316 (ten commits after the reference d772db0: its notes 225 to 231).
+
+**Three mechanisms considered.**
+1. (chosen) Coherence of several obligatory kernels: a quadrangle carries TWO occurrences of the motif.
+2. The complete binary shadow design of one line (60 shadows with N N^T = K, no rank). Not pursued: it needs the
+   cubic graph G(T), whose types are too many; no decisive test of bounded size.
+3. A link with the arithmetic (sign of blocks, Codex's L23) or with the laptop session's theorem. Not pursued: those
+   tools act on blocks of at least 36 determined vertices; a kernel or a union of two has 14 to 20.
+
+**Setting** (Codex's note 221): S = triangles 012, 345, cross edges 03, 14; D = the eight double vertices
+(6:{0,3}, 7:{1,4}, 8:{2,3}, 9:{2,4}, 10:{0,5}, 11:{1,5}, 12, 13:{2,5}); H = S + D; 174 surviving types.
+In the picture of the line T = 012: 3-4 is a cross edge of G(T), 5 its far apex, 6, 7 the mates of 3, 4.
+
+**Lemma (hand, no hypothesis).** Suppose 6 and 7 are not adjacent. Then:
+(a) S* = {0,3,6} + {1,4,7} is again an occurrence of the motif (cross edges 0-1 and 3-4): the quadrangle 0-3-4-1
+    has two pairs of opposite edges and each gives a pair of lines; S + S* is the quadrangle with its four third
+    points 2, 5, 6, 7. So the kernel H* = S* + D* exists and must be one of the 174 types.
+(b) D* = {2, 5, d(1,6), d(4,6), d(0,7), d(3,7), two common neighbours of 6 and 7}. A member is a vertex of H
+    exactly in these cases: d(1,6) = 11 if 6~11; d(4,6) = 9 if 6~9; d(0,7) = 10 if 7~10; d(3,7) = 8 if 7~8; a
+    common neighbour of 6, 7 is 12 or 13 if that vertex is adjacent to both. Otherwise it is a vertex outside H
+    whose neighbours in S are exactly {1}, {4}, {0}, {3} respectively, and a subset of {2,5} other than {2,5} for
+    a common neighbour of 6 and 7. (Proof: two neighbours in a triangle are impossible; a second neighbour in S
+    would make the vertex one of the eight double vertices, which are all in H.)
+(c) Each of the four pairs (2,6), (2,7), (5,6), (5,7) is non-adjacent and has one common neighbour in the
+    quadrangle (0, 1, 3, 4 respectively), hence EXACTLY ONE other common neighbour.
+Consequences for the types (tau of H, tau* of H*): tau* agrees with tau on the members of D* lying in H; the bits
+(6,9), (7,8), (6,11), (7,10) of tau become the bits (6*,9*), (6*,11*), (7*,8*), (7*,10*) of tau* (the two middle ones
+exchanged); and by (c), a vertex adjacent to 2, 5 and to exactly one of 6, 7 cannot coexist with a vertex adjacent
+to 6, 7 and to exactly one of 2, 5.
+
+**Computation 1: all completions of H u H*** (`quad_partner_kernels.py`, `quad_partner_kernels.json`). For each
+of the 140 surviving types with 6 not adjacent to 7 (the 34 others have a prism as partner pair), every labelled
+survivor is tried as H* and every adjacency of the new vertices to H is enumerated; kept: common neighbours
+<= 2 - adjacency for all pairs, and the two positivity conditions of note 221 on the union (17 to 20 vertices).
+* Every type has at least two partner types: **no kernel type is excluded.**
+* The relation "tau and tau* can share a quadrangle" has 4177 ordered pairs out of 19 600 (2122 unordered pairs
+  out of 9870) and is exactly symmetric (0 asymmetric pair: a control of the program, since the union is the same
+  graph read from either side). It has six connected components, of 2, 8, 9, 14, 48 and 59 types.
+* In the components of 48 and 59 types, 26 and 22 types are compatible with the whole component and the 22 and 37
+  others only with those: two types of the second kind never share a quadrangle.
+**Computation 2: the relation is elementary** (`quad_partner_elementary.py`). The relation predicted from the lemma
+alone (agreement on common members, forced neighbours of the new members, (c)) is EQUAL to the computed one for all
+140 types. So the exclusion of the 7748 unordered pairs is a theorem by hand, and the positivity conditions on the
+union together with the search over the new vertices add nothing at the level of types or pairs of types. (The
+smallest eigenvalue of 27I - 9A + J on a surviving kernel lies between 0.82 and 2.95 in the two large components:
+positivity is far from active.)
+**Computation 3: the mask-multiplicity test of note 222 on the union** (`quad_union_mask_lp.py`). Control first:
+on the 310 fourteen-vertex kernels my implementation gives Codex's exact statuses in all cases (174 feasible, 136
+infeasible) and the same number of admissible masks for every kernel. On the unions (floating LP, numerical
+verdicts): type 38: 230 completions, 160 feasible; type 2118: 112 completions, 59 feasible; type 136: 2042 of
+19 208 completions tested, 539 feasible. The test removes a large part of the completions and no type; both partner
+types of 38 and of 2118 remain. Not run on the other types (thousands of completions each).
+
+**What is new, and what is not.**
+* New exact statement, rank-free, covering every candidate: on every quadrangle whose two pairs of opposite lines
+  are both joined by exactly two edges, the two kernel types form one of 2122 explicit unordered pairs; in
+  particular, with n(.) the numbers of occurrences, n(restricted types) <= n(full types) inside each of the two
+  large components (each occurrence of a restricted type is matched with one of a full type on its quadrangle).
+* Not obtained: any exclusion among the 174 kernels. The chain of coverage is unchanged: 174 kernels open; ranks
+  37, 39, 41, 43 open. This is a negative result on the tested closure, not an exclusion of candidates.
+* Refuted expectation: "asking the partner kernel of the same quadrangle to be a survivor, with positivity on the
+  union, removes kernel types". Witnesses: one explicit completion for each of the 4177 pairs (in the json).
+* Precise obstacle: the two kernels of a quadrangle share only the quadrangle and its four third points; up to six
+  vertices are new and attach to H through few edges, so the only binding conditions are the common-neighbour
+  counts of the four pairs in (c). The exact covering equations (masks) do bite on the union, but they act on
+  completions, which are numerous.
+* Next closure identified, not done: every kernel has four further obligatory kernels WITHOUT any hypothesis (the
+  cross edges 3-8 and 4-9 of G(T), and 0-10, 1-11 of G(T'): the edge 3-8 is never in a triangle because 3-4 is not).
+  Along a cycle of cross edges of G(T) the kernel types must follow the corresponding transition relation, so a
+  type lying on no closed walk of admissible length would be excluded. Decisive test: the same enumeration with up
+  to seven new vertices; cost of the same order as computation 1. Whether that relation is again elementary is
+  not known.
