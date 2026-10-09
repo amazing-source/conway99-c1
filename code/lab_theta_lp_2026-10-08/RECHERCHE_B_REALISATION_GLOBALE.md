@@ -130,3 +130,25 @@ partenaires. Vérification par identité : Mᵀ(27I − 9A + J)M = 9(3I − L �
 - `holonomy_mu2.py` : la même classe pour λ ≤ 1, avec le test « nulle / longueur / autre » sur tous les graphes.
 - `minors_sign.py` : signes des mineurs dét A[N(v), N(w)] pour toutes les paires.
 - Sorties reproduites dans le tableau du §2.
+
+## 8. Suite du 9 octobre, 10:05 UTC : le sous-lemme n'a aucun appui hors symétrie
+
+Cinquième graphe de diamètre deux, de nature différente : Gewirtz srg(56,10,0,2) (`gewirtz_test.py`). Les 630
+quadrilatères sont pairs et la classe est « longueur mod 2 », alors que la loi de parité ne s'y applique même pas
+(9 quadrilatères par arête).
+
+**Mais cet accord s'explique entièrement par la symétrie.** En diamètre deux avec λ = 0, tout sommet autre que v
+et ses voisins s'écrit [x, y]_v (le second voisin commun de x, y ∈ N(v)). Pour v ∼ w on a donc une permutation
+canonique Ψ_vw de TOUS les sommets : v ↔ w, x ↔ π_vw(x), [x, y]_v ↦ [πx, πy]_w. Pour k pair, son signe est une
+cochaîne de la classe (vérifié sur Gewirtz : la différence avec la cochaîne de Φ est un cobord). Cette cochaîne
+est canonique, donc constante sur chaque orbite d'arêtes : dans un graphe transitif sur les arêtes la classe est
+automatiquement nulle ou égale à la longueur. La grille et BvLS relèvent d'un argument analogue (graphes de
+Cayley d'un groupe d'ordre impair, stabilisateur linéaire transitif sur les directions).
+
+**Conclusion sur ce point.** Les cinq exemples de diamètre deux sont très symétriques et quatre d'entre eux sont
+expliqués par leur symétrie ; seul le 243 tordu ne l'est pas par ces arguments. Pour λ = 1 la permutation Ψ_vw
+n'est pas canonique (il faudrait apparier les droites sans prisme en v et en w), donc aucune cochaîne canonique.
+Je n'ai aucune raison de croire le sous-lemme vrai pour un graphe sans automorphisme, et aucun exemple de ce
+type n'existe pour le tester. **Je l'abandonne comme non décidable par les moyens disponibles.**
+
+État final du mandat B dans cette session : la loi de parité du §1 est démontrée ; elle n'exclut rien.
