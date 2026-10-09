@@ -1,5 +1,17 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 504, nouveau lemme analytique — note 246 :** le comptage
+séparé à chaque p positif donne 1<=t_p<=3 et
+3t_p<=5+2(c_pa+c_pb)-X_p-W_p. Donc 3<=delta<=9 directement,
+sans l'énumération delta2 de la note245. Le raffinement local exclut
+764 supports supplémentaires (158 par delta<=9,606 autres) ; il en
+reste4581, dont209 à delta3. LAP apporte en parallèle l'identité exacte
+n=10+u_LAP+s44+2w+4c1+g_l+7g_v pour le nombre d'objets P3/N25.
+Son programme n'a pas été reproduit. Le premier pilote au bord à
+delta3, support4, est numériquement faisable : ne pas le présenter
+comme un SRG ni relancer ce même test. Cible utile : les ensembles
+ell_p<=2 et le couplage entre triangles sortants. S0 reste ouvert.
+
 **Message 496, cible plus petite — note 245 :** LAP force dans S0 au
 moins dix profils P3 indépendant / N25 de norme208/9 dans L9.
 Codex prouve que N est une forêt de12 arêtes, faite de chemins d'au

@@ -2,6 +2,12 @@
 
 9 octobre 2026. Exploitation du message LAP relayé par LAB au numéro 496.
 
+**Suite, note 246 :** la borne delta>=3 est désormais prouvée directement
+par un comptage séparé pour chaque sommet positif. Il donne aussi
+delta<=9 et 764 exclusions supplémentaires parmi les 5 345 supports
+restants ci-dessous. Les calculs de la présente note restent une trace
+de la découverte ; ils ne sont plus nécessaires à la preuve de delta>=3.
+
 **Résultat analytique.** Soient P et N deux ensembles disjoints de sommets
 d'un SRG(99,14,1,2), avec P indépendant, |P|=3, |N|=25, et
 
