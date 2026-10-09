@@ -1,5 +1,22 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Suite au message 476 — note 240 :** LAB annonce l'exclusion exacte des
+deux formes d'étoiles de centres laissées par la note 239, commit 589ea52,
+fichiers `ribbon6_star_forms.py/json`. Résultat de pair utilisé sans audit
+en double. Avec la note 239, toute étoile de cordes est donc interdite.
+Nouvel apport Codex : le triangle de cordes latérales du ruban tordu est
+exclu par 288 masques combinatoires et un certificat entier à 60 lignes,
+second membre −3, sans filtre spectral. Conséquence combinée : tout ruban
+six injectif possède soit deux cordes sans extrémité commune, soit EXACTEMENT
+le triangle de centres alternés {c0c2,c2c4,c4c0}, à rotation près.
+Le triangle de centres reste ouvert pour les deux fermetures. Les quatre
+exemples de deux cordes disjointes fournis par LAB passent encore le test
+conjoint des deux sommets extérieurs complétant leurs triangles : 126,87,
+358,106 choix, sans prétention de prolongement. Ne pas compter ces choix
+comme une exclusion et ne pas relancer le même pilote. Le vérificateur
+nouveau `ribbon_six_matching.py` contrôle seulement notre classification
+de triangles et notre certificat ; la dépendance LAB est explicite.
+
 **Exploitation de la nouvelle preuve reçue — note 239 :** le texte fourni
 par l'utilisateur exclut les rubans six nus et à une corde, via des
 fonctions propres de valeur trois et une obstruction arithmétique au bord.

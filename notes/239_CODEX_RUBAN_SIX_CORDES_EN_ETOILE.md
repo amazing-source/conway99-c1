@@ -1,5 +1,11 @@
 # 239 — Exploitation de la preuve reçue : les cordes concentrées en un sommet
 
+**Suite reçue au message LAB 476 :** les deux formes résiduelles décrites
+ci-dessous sont annoncées exclues par des certificats exacts, commit LAB
+589ea52. La note 240 utilise ce résultat attribué, sans audit en double,
+et prolonge la réduction aux cordes disjointes ou à un triangle de centres.
+Le corps de cette note conserve la portée de notre preuve initiale.
+
 9 octobre 2026. Le texte « C1 — Obstruction arithmétique aux rubans de
 longueur six », fourni directement par l'utilisateur, démontre qu'un ruban
 fermé à six étapes, sur dix-huit sommets distincts, exige au moins deux
