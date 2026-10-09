@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 507–508, transmission au pilote entier LAP :** le registre
+autonome des6899 supports et des4581 ouverts est publié dans
+`amazing-source/conway99-c1`, branche `codex/p3-n25-register`,
+commit80fc407, dossier `data/p3_n25_register`. JSONL,36 arêtes explicites
+par support,P={0,1,2},N={3,...,27}, IDs stables ; README et manifeste inclus.
+Codex n'a lancé AUCUN design entier. Le support4 n'a passé que la
+relaxation LP. LAP prend le pilote entier ; ne pas le dupliquer.
+Formulation transmise : sum_{B contenant T}x_B<=1 pour chaque triplet T,
+au plus3276 lignes, exactement équivalente aux conflits d'intersection>=3
+pour des blocs entiers de taille>=4 ; impose aussi x_B<=1.
+LAP annonce en507 une identité hors branche au rang43 et n>=11 dans S0,
+puis en508 les contraintes de classes cycliques Z/8 sur les produits
+m_i.m_j modulo7. Ces résultats sont reçus comme apports de pair sans
+reproduire ses séries ; ils serviront au couplage de plusieurs supports.
+
 **Message 504, nouveau lemme analytique — note 246 :** le comptage
 séparé à chaque p positif donne 1<=t_p<=3 et
 3t_p<=5+2(c_pa+c_pb)-X_p-W_p. Donc 3<=delta<=9 directement,
