@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 525–527 — nouveau théorème norme16, note251 :** D (8 points
+doubles) a AU PLUS UNE ARETE et Z (11 points loin du cœur) est une forêt
+de composantes K1,K2,P3,P4,K1,3. Preuves par comptage :
+5e(D)+W_D+W_Z+W_B=9 ; sur tout chemin u-v-w de Z, somme des degrés<=5.
+Donc15 formes de Z (7 avec5 arêtes,8 avec6), et avec les5 cœurs déjà
+classifiés,75 supports induits connus sur27 points couvrent toute la
+norme16. Code/data `norm16_far_forest`, pas de nouvelle classification
+des5 cœurs ni des478 attaches (notes166/169). Ajouter les10 voisins
+extérieurs d'un p vise un cadre37 :2D+8B, trois arêtes internes et quatre
+isolés ; Z correspond à11 arêtes distinctes d'un graphe sur ces10 points.
+Les attaches et le rang36 de ce cadre restent à traiter ;75 n'est PAS
+un nombre de complétions99. LAB développe son pilote norme14 ; ne pas
+le dupliquer. Profils18/20 connus (binaires, au plus une arête par signe),
+mais aucun catalogue complet de leurs cœurs actuellement disponible.
+
 **Message 524 — test d'étoiles LAB, aucune exclusion nouvelle :** LAB a
 ajouté la saturation pour deux sommets lointains adjacents f,g : si
 p est voisin proche de g mais pas de f, p a au plus un voisin dans
