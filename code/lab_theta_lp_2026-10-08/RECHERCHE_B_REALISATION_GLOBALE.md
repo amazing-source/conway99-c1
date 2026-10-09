@@ -439,3 +439,16 @@ les paires extrêmes d'une fenêtre ne sont pas toutes imposées (elles ne peuve
   n1 = 3 n3 + 8 n4 + 15 n5 − 30, donc au moins un sommet extérieur a trois voisins ou plus dans H ; pour chacun des
   masques de taille ≥ 3 (8 orbites pour le cylindre, 10 pour Möbius) le support H + z passe le test à un sommet. Le
   ruban propre de longueur 5 n'est donc pas exclu à ce niveau.
+
+
+## 13. 9 octobre, 14:15 UTC : prismes jumeaux hors grille, test à un sommet ; rien d'exclu
+
+Deux prismes disjoints X, Y sans arête entre eux induisent un graphe cubique, donc 1_X − 1_Y est un vecteur propre de A
+pour la valeur 3 (cas d'égalité) et tout sommet extérieur a autant de voisins dans X que dans Y. Dans un prisme, les
+paires (x_i, x_j'), i ≠ j, ont déjà deux voisins communs et les arêtes des deux triangles ont leur troisième point à
+l'intérieur : un sommet extérieur rencontre donc un prisme en rien, un point, ou un barreau (il est alors le troisième
+point de ce barreau). Par conséquent **deux prismes jumeaux ont les mêmes trois sommets de barreaux** a1, a2, a3
+(probablement déjà contenu dans le théorème de structure du 8 octobre ; non revendiqué comme nouveau).
+Test (`twin_prisms.py`, système des multiplicités à un sommet, flottant) du support à 15 points X + Y + {a1, a2, a3}
+avec 0, 1, 2 ou 3 arêtes entre les a_i : les quatre cas passent (104, 72, 51, 39 masques), y compris les trois cas hors
+grille. Ce niveau ne borne donc pas le nombre de paires jumelles hors grille du verrou du rang 37.
