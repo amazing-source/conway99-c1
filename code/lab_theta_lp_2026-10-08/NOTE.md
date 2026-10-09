@@ -3409,3 +3409,41 @@ catalogue sums for which the system is feasible is convex, so every exact value 
 Reason: four parameters per series stay free after the exact equalities, and the slack of the uncatalogued vectors is
 proportional to their number, which degree 0 forces to be large at rank 37. The floating probe reports "margin -1"
 with one active row on such corners: a scaling artefact (the same corners are exactly feasible).
+
+### 17.88 Rank 37: the counting LP with NO grid sits at the threshold; grids are a small class of balls (20:29 UTC, 09/10)
+
+Status: floating LP (exploration) and a cost estimate; nothing is excluded. Asked by the user on 09/10 in the evening:
+look elsewhere than the full sweep of line balls.
+
+**Observation.** The budget LP of 17.36 (`lp_budget3.py`: class quotient k = 2, Codex's cuts P + 5 rho <= 1386,
+tau <= P + 5 rho + 17, 17 tau' <= 17 P + 105 rho, ceiling 15.98M on b_4) has its optimum at the pure grid point
+rho = 126. `lp_budget3_rho.py` is the same LP with an upper bound on rho (environment variable RHOMAX);
+`OUTPUT_lp_budget3_rho0.txt`, with c = 31 976 (Codex's certified loss for a NON-grid twin pair, 17.49):
+
+| bound on rho | LP bound (k = 2) | optimum | against the ceiling 15.98M |
+|---|---|---|---|
+| none (17.36, c = 29 204) | 10.70M | rho = 126, P = 756, tau' = 1403 | far below |
+| rho <= 30 | 14.00M | rho = 30, P = 821, tau' = 988 | below |
+| rho <= 10 | 15.31M | rho = 10, P = 793, tau' = 855 | below |
+| **rho = 0** | **16.06M** | P = 780, tau' = 780 | **above by 0.08M** |
+
+At rho = 0 the break-even loss per twin pair is about 32 040 against the certified 31 976: where the route was short
+by a factor 1.55 (17.40) it is at 1.00. NOT an exclusion: the LP is floating, and the channels listed in 17.49 as not
+charged (masses 7 to 9, the component C14/L44; the single-grid relation disappears with the grids) are still not
+charged; any of them tips it back. What would give a real margin at rho = 0: twin classes of non-grid prisms of size
+at most 2 (17.26(b) proves at most 3): then tau <= P/2 and the bound is about 20.2M; or a smaller certified constant
+(Codex has 14 430 <= c_non-grid <= 31 976).
+
+**Why rho = 0 is cheap to prove at rank 37.** A line T lies in a 3 x 3 grid exactly when its cubic graph G(T) has a
+prism component (the two other rows of the grid). The balls with a prism component are the profiles (1,5), (1,1,4),
+(1,2,3), ..., (1^6); their labelled mass is that of the 30-point remainder, (9!!)^3 / 6 = 1.4e8, against 1.5e11 for
+the connected balls (a factor 1000). With the star test of work/c1_cost37_2026-10-09 (a few milliseconds per ball,
+one free scalar per far vertex because of the second component) this is of the order of ten core-days: days of the lab
+PC, not months. To be written before any run: the two-component model in the fast test (free scalar, both classes of
+the residual form or the class fixed by the determinant), the exhaustive generator of the 30-point remainders, and the
+remainders with 7-torsion (about one in six; the laptop session's torsion models, to be accelerated).
+The six-grid line (1^6) is not decided by one star (laptop session), but it has g = 6 on every line and is excluded by
+the counting (17.26: it would force rho = 231 > 126).
+
+**So the route would be:** (1) small sweep: at rank 37 no line lies in a grid, rho = 0; (2) counting at rho = 0, which
+needs the uncharged channels and a few per cent on c or the bound on twin classes. Neither step is done.
