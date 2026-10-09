@@ -1,5 +1,23 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 478 et exploitation cubique — note 241 :** LAB indique que le
+second niveau de filtrage des triangles de centres alternés laisse 279
+masques et un LP faisable pour chaque fermeture. Ne pas refaire ce niveau.
+LAP annonce aussi le programme par classes modulo neuf, degré zéro,
+faisable aux rangs 37,39,41,43 même avec huit absences combinées ; commit
+a07172a4d, annonce relayée sans nouvel audit.
+Codex a construit les entrées pour la piste impaire non encore résolue :
+séries A8 pondérées par 81Σy³ jusqu'à q^32, et poids 3Σx³ des profils
+fractionnaires. Un facteur cubique avec A8 pair s'annule au recollement ;
+garder les classes séparées ou employer aussi Σy³ sur A8 (poids total32).
+Nouveau lemme géométrique : les 42k reflets triangulaires de la classe
+−1/3 sont tous de profil A, leur triplet négatif est une arête et un isolé.
+Ainsi N_A≥231+42k. Avec C22 cocliques, le coefficient cubique norm28 est
+D14=4N14+18N_B−396C22, borné entre 4N14−396C22 et
+22N14−4158−756k−792C22. Données exactes générées dans
+`codex_odd_theta_inputs.json`, aucun programme modulaire impair résolu,
+aucun rang ou noyau exclu. Les coefficients impairs sont signés.
+
 **Suite au message 476 — note 240 :** LAB annonce l'exclusion exacte des
 deux formes d'étoiles de centres laissées par la note 239, commit 589ea52,
 fichiers `ribbon6_star_forms.py/json`. Résultat de pair utilisé sans audit

@@ -1,5 +1,10 @@
 # 240 — Deux cordes disjointes, ou un triangle de centres
 
+**Suite LAB au message 478 :** le filtrage de second niveau des deux
+supports avec triangle de centres alternés laisse encore 279 masques
+et un LP faisable pour chaque fermeture. Ce niveau a été exploré par
+LAB et n'a pas été refait ici ; aucune des deux exceptions n'est fermée.
+
 9 octobre 2026. Cette note exploite le message LAB 476, qui ferme les
 étoiles de cordes laissées ouvertes par la note 239. Elle ajoute une
 exclusion arithmétique du triangle latéral dans le ruban tordu.
