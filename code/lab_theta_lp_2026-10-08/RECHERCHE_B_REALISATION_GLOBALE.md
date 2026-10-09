@@ -52,15 +52,19 @@ quadrilatères » est canonique ; les autres dépendent du graphe.
 
 ## 2. Contrôles (programme `holonomy_class.py`, quelques secondes, un processus)
 
-| Graphe | droites impaires | quadrilatères impairs | classe ω dans H¹(Γ ; F₂) |
-|---|---|---|---|
-| grille 3×3 | 0 sur 6 | 0 sur 9 | nulle |
-| BvLS 243 | 0 sur 891 | 0 sur 13 365 | nulle |
-| 243 tordu | 0 sur 891 | 0 sur 13 365 | nulle |
-| tordue t=2, 20 sommets | 20 sur 20 | 0 sur 60 | non nulle |
-| non tordue t=2, 27 sommets | 0 sur 27 | 0 sur 81 | nulle |
-| tordue t=3, 39 sommets | 0 sur 52 | **78 sur 234** | non nulle |
-| tordue t=3, 42 sommets | 56 sur 56 | 0 sur 252 | non nulle |
+| Graphe | diamètre deux | droites impaires | quadrilatères impairs | classe ω |
+|---|---|---|---|---|
+| grille 3×3 | oui | 0 sur 6 | 0 sur 9 | nulle |
+| Clebsch (16,5,0,2), λ = 0 | oui | (pas de droite) | 0 sur 40 | longueur mod 2 |
+| BvLS 243 | oui | 0 sur 891 | 0 sur 13 365 | nulle |
+| 243 tordu | oui | 0 sur 891 | 0 sur 13 365 | nulle |
+| non tordue t=2, 27 sommets | non | 0 sur 27 | 0 sur 81 | nulle |
+| tordue t=2, 20 sommets | non | 20 sur 20 | 0 sur 60 | longueur mod 2 |
+| tordue t=3, 42 sommets | non | 56 sur 56 | 0 sur 252 | longueur mod 2 |
+| tordue t=3, 39 sommets | non | 0 sur 52 | **78 sur 234** | autre |
+
+« Longueur mod 2 » : ω(γ) est la parité de la longueur de γ (toutes les droites impaires, tous les quadrilatères
+pairs). Le transport s'étend tel quel à λ = 0 (`holonomy_mu2.py`) ; pour λ ≥ 2 ce n'est plus une bijection.
 
 Dans tous les cas la somme de la cochaîne f reproduit la parité calculée directement sur chaque droite et chaque
 quadrilatère, et le nombre de quadrilatères impairs est pair. Le cas à 39 sommets (78 impairs) est le seul où la
@@ -91,14 +95,19 @@ utilise que les MÊMES 693 arêtes portent chacune 12 quadrilatères.
   N(v), N(a), N(w), N(b), soit 48 sommets : bien au-delà des noyaux de 14 à 20 sommets. Je n'ai pas de formule
   de ω(Q) en fonction d'un type de noyau, donc pas de conséquence sur les 174 types.
 - Énoncé exclu, faible : aucun candidat n'a tous ses quadrilatères d'holonomie impaire.
-- **Sous-lemme attaqué, non résolu.** « Dans un graphe de diamètre deux de cette famille, ω = 0. » S'il était
-  vrai, toute droite d'un candidat aurait un nombre pair de cycles transversaux et tout quadrilatère une
-  holonomie paire : une réduction couvrante (sans rang) d'un facteur deux sur les graphes proches, et une
-  contrainte sur tous les cycles. Les trois graphes de diamètre deux disponibles ont ω = 0.
-  **Obstacle précis :** les géométries tordues à 20, 39 et 42 sommets (mêmes λ, μ locaux, diamètre > 2) ont
-  ω ≠ 0. Aucune preuve locale n'est donc possible ; il faudrait un argument utilisant le diamètre deux. Sur le
-  243 tordu, la nullité peut venir de ses symétries (les cycles pairs y apparaissent par paires) : ce n'est pas
-  une indication fiable pour un graphe sans automorphisme. Je n'ai ni preuve ni contre-exemple.
+- **Sous-lemme attaqué, non résolu.** « Dans un graphe de diamètre deux de cette famille, ω est nulle ou égale à
+  la classe longueur ; autrement dit tout quadrilatère a une holonomie paire et toutes les droites ont la même
+  parité. » S'il était vrai, chacun des 2079 quadrilatères d'un candidat aurait un nombre pair de cycles de bande,
+  et les 231 graphes proches auraient tous la même parité de cycles transversaux : une contrainte couvrante, sans
+  rang. Les quatre graphes de diamètre deux disponibles le vérifient.
+  **Obstacle précis :** (i) la géométrie tordue à 39 sommets (mêmes λ, μ locaux, diamètre > 2) a 78 quadrilatères
+  impairs : aucune preuve locale n'est possible, il faut un argument utilisant le diamètre deux ; (ii) les quatre
+  exemples sont très symétriques, et sur le 243 tordu les cycles pairs viennent par paires, ce qu'une symétrie
+  suffit à expliquer : ce n'est pas une indication fiable pour un graphe sans automorphisme. Ni preuve, ni
+  contre-exemple.
+- Essai lié, négatif (`minors_sign.py`) : dans la jauge où tous les mineurs d'arêtes dét A[N(v), N(w)] valent +1,
+  les mineurs des paires NON adjacentes ont un seul signe sur la grille (+1) et sur BvLS (−64), mais les deux
+  signes sur le 243 tordu (−64, −16, −8, −4, 0, +8). Il n'y a donc pas de « signe global » des mineurs à exploiter.
 - Tentatives de seconde évaluation de ω, sans succès : (a) matrice 99×99 des mineurs dét B[N(v), N(w)] pour B
   positive. Elle est positive (compression de Λ¹⁴B) et porte sur les arêtes le signe de π_vw. Pour B = 7E₋₄ le
   terme d'arête vaut ±256/9 et le terme diagonal (32/9)·2²⁰ : rapport 2¹⁷, aucune contrainte de signe (de même
@@ -117,4 +126,6 @@ partenaires. Vérification par identité : Mᵀ(27I − 9A + J)M = 9(3I − L �
 ## 7. Fichiers
 
 - `holonomy_class.py` : calcul de f, des holonomies de droites et de quadrilatères, de la nullité de ω.
+- `holonomy_mu2.py` : la même classe pour λ ≤ 1, avec le test « nulle / longueur / autre » sur tous les graphes.
+- `minors_sign.py` : signes des mineurs dét A[N(v), N(w)] pour toutes les paires.
 - Sorties reproduites dans le tableau du §2.

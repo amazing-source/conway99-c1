@@ -3333,7 +3333,7 @@ the largest number of completions tested before a feasible one is 30 (type 9728)
 floating LP solution of a necessary condition; it constructs nothing. Outcome: the mask test on the union of
 the two kernels of a quadrangle excludes NO kernel type. Both chains unchanged: 174 kernels; ranks 37, 39, 41, 43.
 
-### 17.84 Mandate B (user's mission of 09:15 UTC, 09/10): a global parity law on quadrangle holonomies; proved, no exclusion (10:40 UTC, 09/10)
+### 17.84 Mandate B (user's mission of 09:15 UTC, 09/10): a global parity law on quadrangle holonomies; proved, no exclusion (09:49 UTC, 09/10)
 
 The user replaced the agenda by three mandates (A = Astra/Codex, B = this session, C = the laptop session); I relayed
 A and C word for word at 09:23 UTC and took B: an obstruction coming from the fact that the same 99 vertices and 693
