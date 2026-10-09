@@ -3690,3 +3690,48 @@ complete star per ball (17.91), i.e. below 1e-8 over all the balls to test. Thre
    edges between two layers for a norm-14 vector, but no rare unlabelled feature of G(T), and the six far vertices of
    the vector give a weaker test than a star (21 conditions on 6 shadows against 55 on 10).
 The factor 1000 is in point 3.
+
+### 17.94 A covering family from the forced short eigenvector: pilot on norm 14, Codex's rigidity for norm 16 (23:16 UTC, 09/10)
+
+User (direct): trust the instinct that every ball dies; find the ARGUMENT that rank 37 is impossible.
+Status of this section: a proof STRATEGY with one case piloted on random samples, one case made rigid by Codex, two
+cases not catalogued. Nothing is excluded.
+
+**Strategy** (of the type of Lam's proof for the plane of order 10: forced short vectors, then a finite search for each).
+1. Section 3 of this note (exact certificates, re-derived by Codex in its note 168): a graph of rank 37 has a non-zero
+   integral (-4)-eigenvector of norm 14, 16, 18 or 20.
+2. 17.92 A: rank 37 <=> the Seidel matrix has rank 36 modulo 7; ANY vertex set of Seidel rank 36 is a basis of W and
+   plays the role of the ball of a line. The line ball has 1.5e11 types because nothing in it is forced.
+3. The world of a short eigenvector is typed (every vertex by its numbers of neighbours in the two supports). Where the
+   typed part is RIGID (few induced graphs), the bases are few, and on each base the rank-37 conditions are the lottery
+   of 17.91: a short search.
+
+**Norm 14, pilot** (`work/c1_cost37_2026-10-09/fano37_pilot.py`, `OUTPUT_fano37_pilot_seed2.txt`; random bases, Python).
+* World (hand, 17.90): X, Y with the biplane; 70 boundary vertices; 15 far vertices forming a coclique.
+* The 14 core vectors have Gram rank 7 modulo 7 (the biplane has B B^T = 2I + 2J and 2 = 3^2 modulo 7) and span 13
+  dimensions with a 6-dimensional radical; core + far (29 vertices, universal) has Gram rank 21 and spans 27 dimensions
+  (relations: sum_X = sum_Y, and sum over the 22-coclique X + far = 0).
+* Base = core + far + the ten boundary neighbours B0 of x_0: a simple cubic graph on B0 whose 15 edges are the far
+  vertices, avoiding six pairs. EXACT number of labelled bases: 800 427 (backtracking). Three relations are automatic,
+  so the Seidel rank is at most 36: it is 36 for 111 of 120 random bases and 35 for 9.
+* The discriminant must be a non-residue (L23 in this basis): 64 of the 111.
+* Test on the ten boundary neighbours B1 of x_1 (labels and mutual adjacency known; a candidate = 3 far neighbours and
+  1 or 2 neighbours in B0; two exact covers; 45 prescribed products): 455 to 923 isotropic candidates per member;
+  **0 base with a complete cell**, 46 exhausted, 18 stopped at the cap of 150 000 nodes; deepest partial cell 4 members
+  (63 bases) or 5 (1 base); mean nodes by depth 419, 18 031, 95 351, 1139, 0.
+* Control: with the 45 products not tested, 8 bases of 8 have a complete cell: the products do the killing.
+So "rank 37 => no eigenvector of norm 14" is of the order of 8e5 bases x 1e5 to 2e5 nodes: one or two hours of one core
+in C. Missing before it is a statement: the C version, the exhaustive run, the bases of rank 35 (one free scalar), an
+independent audit of the model (asked to Codex).
+
+**Norm 16** (Codex, messages of the night of 09 to 10/10, its notes 166, 169 and 251 in preparation; not re-derived
+here). Five cores; 478 orbits of attachments of the 8 vertices D with two neighbours in each support; NEW: D has at
+most one edge, and the 11 far vertices Z induce a forest whose components are K1, K2, P3, P4, K1,3: 15 shapes (7 with 5
+edges, 8 with 6). Hence 75 known induced graphs on core + Z (27 vertices), of Seidel rank 20 to 26. Frame proposed by
+Codex: add the ten outside neighbours of a core point (2 in D, 8 simple): 37 positions, the 11 vertices of Z being 11
+distinct edges of a graph on these ten points. Rank and number of attachments: to be measured.
+
+**Norms 18 and 20.** Profiles known (binary, supports independent or with one edge each: Codex's notes 171, 176);
+cores not catalogued.
+
+Division proposed to Codex: it owns the catalogues, I write the rank-37 test for a typed base.

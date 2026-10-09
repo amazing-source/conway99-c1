@@ -1,0 +1,15 @@
+python fano37_pilot.py 2 120 150000      (one process, 260 s, Python)
+random bases 120; Seidel rank 36: 111; discriminant a non-residue: 64
+Seidel rank of the 39-vertex base, histogram: [(35, 9), (36, 111)]
+isotropic candidates per member (mean over the bases tested), members in the order of cell(1): 704 694 479 476 891 891 480 480 482 482
+bases with a complete cell: 0; dead: 46; stopped at the node cap 150000: 18
+nodes per base tested: 114940; mean nodes by depth: 419.0 18030.6 95350.7 1139.5 0.0 0.0 0.0 0.0 0.0 0.0
+bases by deepest partial cell: [(4, 63), (5, 1)]  [260 s]
+
+control: FANO37_NOGRAM=1 python fano37_pilot.py 2 12 400000   (the 45 products are not tested; 12 s)
+random bases 12; Seidel rank 36: 12; discriminant a non-residue: 8
+bases with a complete cell: 8; dead: 0; stopped at the node cap 400000: 0
+bases by deepest partial cell: [(10, 8)]
+
+number of bases: labelled simple cubic graphs on the 10 boundary neighbours of a core point avoiding the six forbidden
+pairs (exhaustive backtracking, 9 s): 800427
