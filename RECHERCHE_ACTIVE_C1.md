@@ -69,6 +69,21 @@ de candidats C1 remplaçant les 174 noyaux. Chercher une obstruction sur
 les arêtes entre profils forcés, ou un théorème imposant une grille
 dans le support positif ; ne pas relancer les mêmes tests spectraux.
 
+**Suite structurelle (LAB 437, note 229) :** le diagnostic couplé de LAB
+confirme que les bornes de collisions restent trop larges. Ne pas relancer
+une optimisation des seuls coefficients ni certifier ces plafonds éloignés.
+L'anticomplétude de supports positifs propres de valeur trois impose déjà
+leur projection normalisée ; leur antivoisinage Z a rayon spectral ≤3.
+Les composantes cubiques de Z ont taille multiple de huit : 8 ou 16
+pour un cubique huit, 8,16 ou 24 pour un moulin. Un partenaire moulin
+force le profil extérieur (23,48,20) du cubique ; tout degré extérieur
+≥3 interdit ce partenaire. Leur reste commun R a exactement seize points
+et rayon spectral ≤3. La note 229 donne aussi des interdictions de degrés
+et triangles dans Z. Ce sont des restrictions de partenaires, pas une
+nouvelle exclusion de noyaux C1. Le pilote des nouvelles équations
+d'arêtes entre cellules laisse ses cinq entrées ouvertes ; ne pas
+l'étendre automatiquement ni le présenter comme une avancée d'exclusion.
+
 Une autre piste porte sur les 33 sommets sans voisin dans le
 motif initial et les six classes restantes (52 sommets au total),
 avec les degrés et voisinages communs exacts de la note 221 §4.
@@ -123,6 +138,9 @@ Sources de travail :
   amélioration effective de C8 par Codex, sans coût forfaitaire des moulins ;
 - `notes/228_CODEX_MOULIN_CUBIQUE_NOYAU17.md` : réduction positive
   et 359 types nécessaires avec profils extérieurs forcés ;
+- `notes/229_CODEX_PARTENAIRES_ET_ANTIVOISINAGES.md` : confinement
+  spectral, divisibilité des partenaires, profil mixte forcé et pilote
+  d'arêtes sans exclusion supplémentaire ;
 - `code/codex/twisted_prism_core.py` et
   `data/codex_twisted_prism_core.json` : catalogue et certificats initiaux ;
 - `code/codex/twisted_prism_extension.py` et
