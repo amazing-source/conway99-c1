@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Message 482 et cible de degré deux :** LAP annonce `w49odd.py`, commit
+055a7e791 : sans normes16..24, chaque couche de chaque classe non nulle
+est centrée (somme vectorielle nulle). Exploitation note177 §8 : les
+anciennes bornes b2 imposent alors k≤2 lignes de racines et N26 par classe
+vaut329,343 ou357. Une couche intégrale de norme26 et second moment
+isotrope dans44 dimensions exigerait 11|N (car sum(x,y)^2=169N/11).
+Ni ces classes ni leur réunion de taille8N ne peuvent donc être des
+2-designs. Ceci identifie une obstruction conditionnelle, pas une exclusion :
+la moyenne nulle ne force pas l'isotropie. Un calcul quadratique sur V_-4
+pourrait cibler cette propriété, sans le confondre avec les harmoniques
+auxiliaires séparant les classes. Le programme cubique Z/9 utilise déjà
+des poids A8 impairs3,5,7,9 ; les entrées de la note241 sont ses coefficients
+côté L, linéaires dans les19 moments libres côté M. Ne pas refaire le
+même programme comme s'il ignorait l'annulation paire/impaire.
+
 **Message 481, raffinement par classes au rang 43 :** LAP annonce les 49
 séries de L1/(√7M), dimension44, 19 paramètres après les zéros, et six
 relations déterminant les classes de norme26 et deux classes de norme24.

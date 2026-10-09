@@ -205,3 +205,12 @@ autre série de coefficients ; leur effet dans ce programme n'a pas été
 Le même message apporte un contrôle entier sur le graphe existant
 srg(243,22,1,2) du mécanisme d'indice triangulaire annoncé au message 473 ;
 ce contrôle n'est pas refait ici.
+
+**Précision reçue au message 482.** LAP confirme que `z9cubic.py` emploie
+déjà des harmoniques A8 impaires de degrés 3,5,7,9, avec deux pôles.
+L'annulation signalée au §1 n'était donc pas une erreur de son programme.
+Nos coefficients D11,D12,D13,D14 sont du côté L de ce système, et chacun
+est une combinaison linéaire des dix-neuf moments libres du côté M.
+Les bornes géométriques ci-dessus restent des contraintes sur ces
+combinaisons, pas de nouvelles équations modulaires indépendantes ni
+une preuve que les paramètres libres sont supprimés.

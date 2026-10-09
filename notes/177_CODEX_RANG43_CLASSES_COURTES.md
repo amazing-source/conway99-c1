@@ -222,3 +222,46 @@ modulo seize puisque b1 est pair. La nouvelle information du résultat
 par classes est que **chaque classe**, et pas seulement la couche totale,
 doit être non vide. Aucune exclusion du rang 43 ne suit de cette seule
 conséquence.
+
+## 8. Sommes nulles par classe et cible quadratique (message 482)
+
+LAP annonce ensuite, via LAB au message 482, le calcul de degré un
+`w49odd.py`, commit `055a7e791`. L'espace a dimension 44 ; les 24 zéros
+en dessous de la norme 14 laissent vingt paramètres, les sommes
+vectorielles des classes de normes 16 à 24. Si ces cinq normes sont
+absentes, **les vecteurs de chaque norme dans chaque classe non nulle
+ont une somme vectorielle nulle**. Ce résultat de pair n'est pas réaudité.
+
+Il est important de distinguer cette moyenne nulle d'un second moment
+isotrope. En effet, dans cette branche sans norme 16 à 24, les identités
+de la note 191 et les comptages de la note 192 donnent
+
+    b2=1000−16k ≥ 462+170k+2k².
+
+Le membre de droite dépasse celui de gauche dès k=3 et l'écart croît.
+Ainsi k≤2. Les classes de norme 26 ont donc les tailles
+
+    N=329+14k ∈ {329,343,357}.
+
+**Obstruction de degré deux.** Un ensemble X de N vecteurs de norme 26
+dans un réseau entier, contenu dans l'espace de dimension 44, ne peut
+avoir un second moment isotrope que si 11 divise N. En effet, si
+
+    Σ_(y∈X) y yᵀ = (26N/44) I,
+
+alors, pour x∈X,
+
+    Σ_(y∈X) (x,y)² = N·26²/44 = 169N/11.
+
+La somme de gauche est entière. Comme 169 est premier à onze, 11|N.
+Aucune des trois tailles précédentes n'est divisible par onze. Il en
+va de même de la couche entière de norme 26, de taille 8N.
+
+Donc les classes obtenues par le résultat de degré un sont centrées,
+mais **ne peuvent pas être des 2-designs sphériques** dans V_-4. Leur
+couche totale ne le peut pas non plus. Cela donne une cible précise à
+un éventuel calcul de degré deux sur V_-4 : forcer l'isotropie de ce
+second moment fermerait la branche, mais cette isotropie n'est pas
+démontrée ici. Des harmoniques sur le seul facteur auxiliaire qui séparent
+les classes n'imposent pas automatiquement ce second moment géométrique.
+Ce lemme de divisibilité n'exclut donc pas encore la branche ni le rang.
