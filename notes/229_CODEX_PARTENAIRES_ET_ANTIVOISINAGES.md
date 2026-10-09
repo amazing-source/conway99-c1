@@ -40,6 +40,20 @@ d'égalité des voisinages extérieurs à tester dans le graphe C1 complet.
 Il en va de même pour un cubique à huit sommets et un moulin pondéré
 u=2e_v+1_L de masse huit.
 
+**Forme directe transmise par LAP via LAB 442.** Si z est porté par S
+et A[S]z=3z, écrivons Az=3z+e, où e est porté hors de S. L'identité
+A²=12I−A+2J donne
+
+    ||Az||²=9||z||²+2(Σz)²,       ||e||²=2(Σz)².
+
+Un vecteur propre interne de somme nulle se prolonge donc automatiquement
+en vecteur propre global. Appliqué à z=tu−sv, cela redonne (1). Pour
+les composantes C_i,C_j d'un graphe proche de triangle, il s'applique
+à |C_j|·1_C_i−|C_i|·1_C_j et retrouve l'équilibre de leurs ombres
+utilisé dans la note 225. Ce raccord est une autre preuve d'un acquis,
+pas une nouvelle exclusion. Les composantes de tailles 12,18,24 de
+la campagne LAP n'épuisent pas les partenaires cubiques huit étudiés ici.
+
 ## 2. Confinement spectral et composantes
 
 Écrivons Z(S) pour les sommets hors de S n'ayant aucun voisin dans S.

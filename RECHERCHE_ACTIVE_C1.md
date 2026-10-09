@@ -116,6 +116,22 @@ LAP avec ses hypothèses et sa portée, et chercher les lemmes suivants.
 Ce résultat annoncé ne ferme pas le rang 37 et ne réduit pas directement
 les 174 noyaux. Il porte sur une famille distincte des quatre anciens exemples.
 
+**Avancée rapportée ensuite par LAP (message LAB 442, 9 octobre, 01:03 UTC) :**
+dans sa campagne au rang 37 sous P=0, le profil déconnecté (4,4,4),
+soit trois composantes de douze sommets, est annoncé clos : 275
+multi-ensembles traités, 275 exclus, aucun autre résultat. Source annoncée :
+`amazing-source/conway99-c2-aws`, commit `784c31c98`, dossier
+`c1_rank37_girth5_lines/`, journaux `sweep_222r.log`, `sweep_222r2.log`
+et addendum 1 de `NOTE.md`. Statut : preuve assistée par ordinateur
+rapportée par LAP ; pas de nouvel audit par Codex. Utiliser ce résultat
+avec ces hypothèses, conformément à la priorité d'exploration.
+Les profils (6,6) et (4,8), y compris leurs cas de torsion, sont encore
+en traitement à cette date. L'énoncé « rang 37 et P=0 implique toute
+droite connexe » reste une cible, pas une conclusion. Il n'interdirait
+pas à lui seul les paires anticomplètes de cubiques huit du canal C8.
+Ne pas relancer une reproduction des 275 recherches ni une campagne
+de calcul supplémentaire sur la seule offre de processeur du message.
+
 Sources de travail :
 
 - `notes/220_CODEX_ROUTES_HORS_RANGS.md` : comparaison des routes A/B/C
