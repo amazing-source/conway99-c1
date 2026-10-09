@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages 522–523 — 941 supports exclus par LAP, extension Codex note250 :**
+LAP annonce une union de941 exclusions par deux lemmes entiers parmi
+les4581 supports ouverts, soit3640 restants après ces SEULS lemmes.
+Par delta3..9 : restants127,341,685,949,874,523,141. Source a7667ddbb,
+`conway99-c2-aws/c1_mandat_c_transformations/p3n25_search/` ; témoins
+annoncés contrôlés exactement par LAP, pas reproduits.300 de ses301
+exclusions LP courantes sont dans cette union (exception4656) : ne pas
+additionner les anciens totaux. Le lemme A est la positivité de la somme
+(t_z-a)(t_z-a-1) pour des t_z entiers, valable sur tout support.
+Codex donne une formule d'extension qui optimise exactement en deux
+essais le poids du sommet ajouté. Sur le support4,76 poids simples
+éliminent1689/24602 blocs sans solveur ;22913 restent. Aucun nouveau
+support exclu. Code/data `p3_n25_parabola_extension`, preuve note250.
+Filtre transmis à LAP ; ne pas dupliquer son balayage LP/entier.
+
 **Message 521 — piste de congruences déjà traitée par LAB :** le test
 d'intégralité du recensement jusqu'à l'ordre10 ne donne aucune congruence
 supplémentaire dans sa paramétrisation : pour chacun des48920 types
