@@ -313,3 +313,32 @@ Appui réel : les neuf graphes de base et le cas de valence 6 (SAT local). Reche
 
 **Conséquence pour un graphe à 99 sommets, si la loi des quadrilatères est vraie :** une condition d'un bit sur chaque
 configuration à quatre murs (48 sommets), et F(T) ≡ F(T') dès que T + T' est somme de quadrilatères. Rien n'est exclu.
+
+
+## 12. 9 octobre, 13:25 UTC : dossier externe « Convergences » (piste « couverture et cycles longs ») ; rien d'exclu
+
+Source : `Desktop/c1-imports/2026-10-09-convergences/DOSSIER_C1_CONVERGENCES/DOSSIER_C1_INTEGRE.md`, signalé par Codex
+(message du pont, 13:05 UTC) comme fourni par l'utilisateur. Lu comme donnée ; aucun de ses programmes n'a été exécuté.
+Sa piste « Claude 1 » : le cas sans cycle de transport de longueur quatre, les rubans longs, une loi propre à 99.
+
+**Lecture du transport comme flot géodésique (mienne).** Pour un sommet x, soit s_x la réflexion ponctuelle de la carte
+de x : elle fixe x, échange les deux voisins de chaque droite par x, et envoie le second voisin commun [u, v] de deux
+voisins non adjacents sur [u', v']. Le transport de non-arêtes du dossier est exactement : les centres consécutifs d'un
+cycle vérifient c_{i+1} = s_{c_i}(c_{i-1}). Un cycle de transport est donc une « géodésique » fermée par réflexions
+successives, partant d'un couple ordonné non adjacent ; dans un quotient de Hamming c'est une droite affine de direction
+de poids deux, de période 3 (les grilles). Il y a 99 × 42 = 4158 triplets (centre, paire antipodale), autant que de
+non-arêtes. Les s_x ne sont pas des automorphismes (sinon C1 serait faux) et la loi x ▷ y = s_x(y) n'est pas
+autodistributive.
+
+**Données** (`transport_cycles.py`, `antipodal_matrix.py`) : périodes des géodésiques — grille 3 ; t2_twisted 4, 6 ;
+t3_twisted 6, 13, 39 ; t3_twisted_42 4, 6, 8 ; BvLS 3 ; 243 tordu 3, 6, 8, 9, 16. Le multigraphe antipodal
+(nombre de centres où deux sommets sont antipodaux) vaut le complémentaire dans la grille et BvLS, mais prend les
+valeurs 0, 1, 3, 4 sur les non-arêtes du 243 tordu et ne commute pas avec A. Aucune loi universelle sur les périodes ni
+sur ce multigraphe ; pas de minoration du nombre de cycles de longueur quatre. Rien d'exclu.
+
+**Remarque non exploitée** (à ne pas présenter comme résultat) : la série thêta harmonique de degré 2 à valeurs
+tensorielles, Σ_y (y yᵀ − |y|²E/44) q^{|y|²/2} sur L1 et son analogue sur M, est une forme parabolique de poids 24 sur
+Γ₀(7) (dimension 15) qui s'annule à l'ordre 7 à l'infini ; les tenseurs d'écart au 2-design de toutes les couches de L1
+et de M sont donc combinaisons linéaires d'au plus neuf d'entre eux. Les couches « algébriques » (droites, différences
+de sommets) sont des 2-designs ; l'écart mesure l'inhomogénéité du graphe. Sans couche connue non homogène, aucune
+contradiction.
