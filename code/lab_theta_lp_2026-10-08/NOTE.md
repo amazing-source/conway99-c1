@@ -3055,3 +3055,126 @@ each pair of near points with K_ab = c > 0 needs at least c admissible B-balance
 this removes 95 to 99.6% of the subspaces of dimension 2 and all those of dimension >= 3 on its samples). As a
 cross-check of that filter, 65 representative balls of rank 2 are queued here WITHOUT it (parts 0 to 3 of 64).
 Laptop session, reported: (6,6) at P = 0, the 2887 torsion-free pairs all dead; torsion pairs running.
+
+### 17.79 A race that can fake a "dead" ball (found by the laptop session on its side); checked here: no trace (03:25 UTC, 09/10)
+
+Reported by the laptop session (03:23 UTC): it cancelled three of its runs by killing the workers before the parent;
+orphan workers survived and kept writing instance files under the names the restarted run uses. A solver that opens
+a file while another process rewrites it reads zeros and prints "cands 0 ... solutions 0 timeout 0", which a driver
+counts as dead. It withdrew its sentence "three balls of T = 4 done, all DEAD", restarted T = 4 and T = 3 from zero,
+and put the process id in the names of the temporary files (commit 8f6c57732 of `conway99-c2-aws`).
+
+Checked on the lab PC, 03:24 UTC:
+* the stop of 01:30 was `taskkill /PID 21596 /T /F` (the pool and its whole tree), followed by a count before the
+  restart: fast.exe 0, python processes running sweep48.py 0 (transcript, 01:30:08 UTC);
+* now: 23 python processes = 1 pool + 11 drivers + 11 workers, none whose parent no longer exists, the oldest
+  started at 01:30:23 UTC;
+* scan of every per-part log (`../c1_lap_sweep48_2026-10-09/scan_race_48.py`): 83 324 lines, 83 324 distinct balls,
+  none logged twice; on the torsion-free lines the smallest "cands" is 5184 and the smallest node count 25 690; no
+  line with cands < 2000 or nodes < 1000; no line that is neither dead nor TORSION.
+So the signature of the race is absent from the balls logged before and after the switch.
+
+Two remarks sent to the laptop session: its fix does not cover `run_both` in `fastlib.py` (line 209), the function
+`sweep48.py` calls; and the torsion logs carry totals per ball only, so there the guard is the absence of a second
+run, not a scan. Its fixed `sweep48t.py` is installed here for the torsion run (not started yet; the known line
+"48t 0 14 | t=1 sub-cases 3 dead 3 ... DEAD" is reproduced). The main sweep is not touched while it runs.
+Rate since the restart: about 53 parts a minute, so the main sweep ends about 04:45 UTC (not 04:30).
+
+### 17.80 NOT NEW (it is Codex's L23 of 25/09): the discriminant of V and the number of spanning trees modulo 7; what remains mine is corollary B (03:44 UTC, 09/10)
+
+**CORRECTION (03:49 UTC, 09/10).** I presented the lemma and corollary A below as new, to Codex, to the laptop session and
+in one line to the user. They are not: they are exactly **L23 of Codex's note 102** (`notes/102_FORME_BETA_SIGNE.md`,
+25/09, sections 0, 1.4, 4, 5), proved there with the form beta, with a control on 300 configurations, and with the
+same consequence (k = 22, that is r = 37, forces tau(G(L)) in {0, 3, 5, 6} mod 7 for every line). Its section 8 also
+has the Green formulation at rank 37 and the remark that the first moment is automatic. My search of the logs before
+writing was done with English key words on notes written in French; the file name appeared in a second listing and I
+did not open it. Codex pointed it out at once (its answer to my message 273).
+What the text below adds to note 102, and nothing more: (i) a second derivation of the sign by the oddity formula on
+Z^99 cap E_{-4}, which agrees; (ii) the exact value det(3J - H) = -3888 tau; (iii) **corollary B** (the class of the
+residue c0 is forced in the disconnected cases; Codex records it as a consequence, not as a correction of the
+sweeps); (iv) the rule with torsion and the automatic second and third moments, in the addendum at the end.
+The sentence 'a filter that removes about half of the generic connected line graphs' is therefore an old filter
+(Codex is putting it into its note 230), not a gain of tonight.
+
+
+New fact used: the genus of the lattice of integer eigenvectors (oddity formula) fixes not only the type of Q_r
+(section 7) but also the square class of the OTHER Jordan block, and that block is the space V in which the laptop
+session's star searches live. Hand derivation, not audited.
+
+**Lemma.** Let r = rank_7(A - 3I), Q = A - 3I + 3J and V = F_7^99 / ker Q with the form Q (dimension r - 1, non-
+degenerate; the space of the laptop session's note, point 1). Then disc(V) is a NON-square modulo 7 when r = 37 or
+41, and a square when r = 39 or 43.
+
+Proof. Let L = Z^99 cap E_{-4} (rank 44, even because its vectors have sum zero, positive definite), L* = E_{-4} Z^99.
+* 63 E_{-4} = 9 (3I - A) + J is an integer matrix, so 63 L* is inside L: the discriminant group is killed by 63.
+  Modulo 7, 63 E_{-4} = -2 Q, so the 7-part of L*/L is elementary of rank rank_7(Q) = r - 1.
+* The orthogonal complement of L in Z^99 is, 3-adically, (Z^99 cap E_3) + Z.1 with the first summand unimodular at 3
+  (77 E_3 is an integer matrix) and 1.1 = 99: the 3-part of the discriminant has order 9. The 2-part is trivial.
+  Hence det L = 9 . 7^(r-1) and, over Z_7, L = U + 7 U' with U, U' unimodular of ranks 45 - r and r - 1.
+* Oddity formula (Conway and Sloane, chapter 15): signature + sum of the p-excesses = oddity modulo 8. Here the
+  signature is 44, the oddity is 0 (even, odd determinant), the 3-excess is 8 = 0, and the 7-excess is 6 (r - 1) + 4k
+  with k = 1 exactly when det U' is a non-residue. So 44 + 6 (r - 1) + 4k = 0 modulo 8: r is odd, and k = 1 exactly
+  when r = 1 modulo 4. (Convention checked on the root lattice A_6: rank 6, determinant 7, the formula gives the
+  block 7^(-1), and indeed its discriminant form is generated by a vector of norm 6/7 with 6 a non-residue.)
+  Since det L / 7^(r-1) = 9 is a square, det U and det U' are in the same class: for r = 37, 39, 41, 43 this gives
+  back "Q_r is of minus type" (section 7), which is a second check of the convention.
+* V is the block U' : on Z_7^99, Q = -7 E_{-4} + 308 E_14; the image of Z_7^99 in the quotient by the kernel is
+  L* + Z_7.1, on which the form is -7 x.y on L* = U + (1/7) U' and a multiple of 7 on 1. Modulo 7 only (1/7) U'
+  survives, with the form -u' (u' the unimodular form of U'). So V = (U'/7U', -u') and disc(V) = det u' because the
+  dimension r - 1 is even. End of proof.
+
+**Corollary A (rank 37, connected lines).** If G(T) is connected and 7 does not divide its number of spanning trees
+tau, then tau is a quadratic NON-residue modulo 7: tau = 3, 5 or 6 (mod 7). So at rank 37 every connected line has
+tau(G(T)) in {0, 3, 5, 6} modulo 7.
+Proof: the 36 near vectors are then a basis of V with Gram matrix M0 = 3J - H, and det M0 = 108 . (-1)^35 . 36 tau =
+-3888 tau = 4 tau modulo 7 (eigenvalue 108 on the constants, -mu on the other eigenvectors of H, product of the
+non-zero mu equal to 36 tau). 4 is a square, so tau is in the class of disc(V).
+
+**Corollary B (rank 37, two components without torsion).** With the laptop session's model V = span{p_w} + <n>,
+<n, n> = c0: the span has discriminant 3 tau1 tau2 (sum-zero vectors of each component: (-1)^(s-1) s^2 tau; the
+constants of the two components: a line of norm 3 s1^2 after removing the radical z0), hence 3 tau1 tau2 c0 is a
+non-square and **c0 = tau1 tau2 modulo squares**: only one of the two classes c0 = 1, 3 searched by the laptop
+session can occur on a given ball. (Its sweeps try both, which is a superset: nothing to change in a running sweep.)
+
+**Corollary C (other ranks).** For a connected line without torsion at rank r, V = (near span) + R with R of
+dimension r - 37 and disc(R) = disc(V) tau modulo squares; at rank 39 the plane R is hyperbolic exactly when tau is
+a non-residue. No exclusion follows.
+
+Formula check on graphs only (`disc_tau_check.py`, seed 20261009, 3 seconds): for 200 random connected cubic
+layered graphs, det(3J - H) = -3888 tau exactly in all (tau modulo 7: zero 24, residue 97, non-residue 79); for 200
+torsion-free balls of the (4,8) profile, the radical of M0 has dimension 1 and the quotient has discriminant
+3 tau1 tau2 in all. This checks the two determinant formulas, not the lemma (no graph exists to test it on).
+
+What it is worth: a filter with no search that removes about half of the generic connected line graphs at rank 37
+(97 of 176 in the sample above), and half of the residue classes in the disconnected cases. Over F_7 a quadratic
+space is determined by its dimension and its discriminant, so one line gives no further invariant of this kind.
+It does not exclude rank 37.
+
+Context received while writing this:
+* the laptop session (03:34 UTC): 150 random connected balls without prism, 30 with 7 | tau; the 120 others all
+  have NO star at vertex 0 (median 867 000 nodes), about 20 s per ball; it estimates 1e10 ordered connected types,
+  so the obstacle is the number of types, not the weakness of the test;
+* Codex (message after my 443): for a connected line without torsion, a selection of 60 binary shadows with
+  N N^T = K, Green(n_f, n_f) = 6, Green(n_f, n_g) in {2, 3} and at most 240 edges in F = 3 - Green is automatically a
+  srg(99,14,1,2) of rank 37 (its note 230 in preparation, not read here). With the lemma above: **when tau(G) is a
+  quadratic residue modulo 7 no such selection exists**, whatever the search would say.
+
+Addendum to 17.80 (03:49 UTC, 09/10): the rule with torsion, asked by the laptop session; the moments.
+* General rule (hand, not audited; a consequence of L23). In the laptop session's model, V = (non-degenerate part
+  of the span of the near vectors) + one hyperbolic plane for each direction of the radical of the span + the residue
+  R. The non-degenerate part of the span is F_7^36 / R0 with the form M0, whatever the true relations are; call d0
+  its discriminant (computed from the ball alone: `disc_mod7` in `disc_tau_check.py` returns the rank 36 - dim R0
+  and d0). A hyperbolic plane has discriminant -1, a non-residue. Hence
+      disc(R) = (non-residue) . d0 . (-1)^(dim R0 - dim Tr)   modulo squares,   dim R = 2 dim Tr - dim R0.
+  For the (4,8) torsion driver (true relations z0 and B, dim B = beta, torsion rank t): dim R0 - dim Tr = t - beta,
+  rho = 2 beta - t + 1. rho = 0: the sub-case is possible only if d0 (-1)^(t - beta) is a non-residue; rho = 1:
+  c0 is in the class of (non-residue) d0 (-1)^(t - beta); rho = 2: the form <1,1> (discriminant 1) or <1,3>
+  (discriminant 3) is the one whose discriminant is in that class. Example t = 1: if d0 is a square, the sub-cases
+  left are (beta = 0) and (beta = 1, <1,3>); if d0 is a non-residue, only (beta = 1, <1,1>).
+  Checks of the rule against the two cases already written: two components without torsion, d0 = 3 tau1 tau2,
+  gives c0 = tau1 tau2; connected without torsion, d0 = 4 tau, gives tau non-residue.
+  **Not used in the runs of tonight**: the torsion follow-up queued here keeps the three sub-cases (a superset).
+* Moments (hand). With W = M0^(-1), K = N N^T and gamma_ff' = 1_S^T W 1_S' (6 on the diagonal, 2 + A_ff' elsewhere),
+  tr((WK)^k) = tr(gamma^k). I computed both sides for k = 1, 2, 3 for a triangle-free G: 3 = 3; 2 = 2 once e(F) = 240;
+  6 = 6 once the far graph has 32 triangles (the 32 far lines). So they give e(F) = 240 and 32 far triangles modulo 7
+  and nothing on G: no invariant of G alone comes out of the moments up to order 3. (k = 1 is in note 102, section 8.)
