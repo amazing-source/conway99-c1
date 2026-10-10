@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Note257 — huit attaches entières supplémentaires exclues, sans rang.**
+Le multigraphe C des intersections au cœur entre les huit doubles est
+nécessairement connexe, même avec des intersections impaires et une
+arête D. Pour une composante U de taille3 ou4, l'union des N_Z(d)
+a taille≥12>11 : |N_Z(d)|≥4, capacité des intersections 2−C_de.
+17 attaches non connexes, dont9 déjà fermées en256. Nouvelles :
+cas2/[45,50,51,52,53,54], cas3/[18,19]. Notes256+257 couvrent18
+attaches entières ; ce n'est pas un bilan de toutes les autres notes.
+Positions D_edge de255 :467→438. Quatre attaches connexes cas3/[0,1,21,22]
+ont une coupure4+4 de poids2 : D indépendant, chaque Z voit1 ou2D
+de chaque côté, chaque B au plus1D de chaque côté. Z sans étoileK1,3,
+donc forêts2,3,5,6,7. Ces quatre attaches restent ouvertes ; exploiter
+ces contraintes au lieu de recompter les mêmes relaxations.
+Limites archivées : moments couplés B/D/Z faisables en entiers sur les15
+combinaisons des cinq attaches C8 et des trois forêts. Pilote d'étoile
+isolée37 : UNKNOWN après30/120s, un seul couple par essai, aucun cadre
+PSD trouvé, aucune exclusion. Pas de nouveau cadre rang35. Aucun job
+actif. Dernier inbox lu :546, aucun nouveau message dans ce tour.
+
 **LAB546, lu et acquitté :** norme18 à signes non indépendants EXCLUE
 par un lemme manuel de comptage de chemins (rapport LAB, note17.98,
 commit d51cd51 ; pas de contre-audit). Donc la ligne e=1 de note171
