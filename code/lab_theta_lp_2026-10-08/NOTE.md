@@ -4064,3 +4064,43 @@ extra kernel vector is a true relation or a radical vector); not written.
 a_7 = b_1 = 0 its nine-class programme now reproduces the ladder: at least 22 vectors of norm 16, 18 or 20; at least
 82 of norm 18 or 20 if norm 16 is absent; at least 574 of norm 20 if 16 and 18 are absent. The figure 574 is thus
 obtained a second time from audited rows only (lines, differences, paths).
+
+### 17.100 Rank 37 in one line: 350 a_8 + 91 a_9 + 13 a_10 >= 7462 + 21 (b_3 - 24 948) + ... (exact identity) (01:36 UTC, 10/10)
+
+Status: an exact identity between theta coefficients at d = 36, extracted from the dual of the exact LP and
+re-verified by the program; the same row is already in the counting LP of 17.45 (it is its second theta row). New
+here: its reading after N14, and the agreement with the laptop session's independent LP. No rank excluded.
+
+`forced37.py` (exact rational simplex of `theta_lp_exact.py`, audited rows "ext", N = 84), with a_7 = 0:
+* min (a_8 + a_9 + a_10) = 533/25, so at least 22 vectors; min a_8 alone (a_9 = a_10 = 0) = 533/25;
+  min a_9 alone = 82; min a_10 alone = 574. (The laptop session finds 22, 82, 574 with its nine classes and my path
+  row, and min a_10 = 574 - 7K under a_9 <= K, a_8 = 0: the same facet. So 574 does not depend on the non-audited
+  rows of "ext2": the caveat of the precision after 17.98 was too cautious.)
+* One facet carries the three values. Its dual support is a_12 >= 0 [1/13], b_1 >= 0 [2429/13], b_2 >= 462 [476/13],
+  b_3 >= 24 948 [21/13], a_7 <= 0 [91]. Multiplied by 13 it is the IDENTITY, valid for every graph of rank 37:
+
+      13 a_10 + 91 a_9 + 350 a_8 + 1183 a_7  =  7462 + a_12 + 2429 b_1 + 476 (b_2 - 462) + 21 (b_3 - 24 948).
+
+  (a_n: vectors of L1 of norm 2n; b_n: vectors of M = sqrt7 L1* of norm 2n; both signs counted.)
+
+**Reading after N14** (a_7 = 0, hence b_1 = 0):
+
+      350 a_8 + 91 a_9 + 13 a_10  =  7462 + a_12 + 476 (b_2 - 462) + 21 (b_3 - 24 948).
+
+* With the audited b_3 >= 24 948 only: >= 7462. One vector of norm 16 is worth 26.9 of norm 20, one of norm 18 is
+  worth 7.
+* With Codex's certified b_3 >= 45 898 (its note 196, the reference number of 17.38 onwards): the right side is at
+  least 7462 + 21 . 20 950 = **447 412**. So a graph of rank 37 needs, for instance, 1280 vectors of norm 16, or 4918
+  of norm 18, or 34 418 of norm 20, or a mixture with these weights.
+* Seed bounds known today: a_8 <= 6930 (one vector per seed, Codex's note 173); a_9 <= 6160 c_18 (nine independent
+  seeds per vector, now that norm 18 has independent supports, 17.98); a_10 <= 7920 c_20. None of them contradicts
+  447 412 by itself (350 . 6930 = 2.4 million).
+* What each exclusion buys: N16 at rank 37 (a_8 = 0) leaves 91 a_9 + 13 a_10 >= 447 412; N16 and N18 leave
+  a_10 >= 34 418, against a_10 <= 7920 c_20: then "at most 4 vectors of norm 20 through an independent seed" would
+  finish rank 37 WITHOUT classifying the world of norm 20 (c_20 <= 4 gives 31 680 < 34 418). With independent
+  supports only (10 seeds per vector) c_20 <= 6 would do. Nobody has a bound on c_20.
+So the target for rank 37 is not "kill four worlds" but: N14 (done), N16 and N18 at rank 37, and a SEED BOUND for
+norm 20. The last one is a local statement about two or more norm-20 vectors sharing a vertex and its four
+neighbours of the other sign, of the kind already proved for norm 16 (uniqueness) and partly for norm 18.
+This is a restatement of a row of the counting LP, so it adds no constraint to that LP; it changes what has to be
+proved about norm 20.
