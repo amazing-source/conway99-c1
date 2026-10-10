@@ -1,25 +1,40 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
-Note259 publi?e sur `codex/norm16-far-forest`, commit `abee18f`,
-et transmise ? LAB via le pont (message552).
+**Note260 — sous-branche P4, pas de nouvelle attache close.** Pour
+x-a-b-y dans Z, les deux centres ont un unique double commun d, et
+omettent un unique e. Chaque feuille voit e et un double de chacune
+des deux parties de taille trois restantes. Dans une coupure serrée,
+d et e sont du même côté. Sous C_de=1 et forêt2=P3+P4+4K1, chaque
+attache cas3/[0,1,21,22] passe de88 placements P4 normalisés à8 :
+80 empêchent le centre du P3, unique dans chacun des8 survivants.
+Complétions D-Z :32 par attache,128 au total ;64 classes préservant
+P,Q,D,Z, dont56 PSD exacte. La branche reste OUVERTE : plusieurs
+survivants sont aussi LP-faisables au bord. Série LP interrompue ;
+ne pas reprendre un balayage des64 classes avec les mêmes filtres.
+Entrée destinée au moteur LAB : typed_world35_tight_boundary_survivor,
+cas3/0/2, X=[209,308,78,1570,658,297,101,1050], rang33 exact,
+PSD exacte, bord LP numériquement faisable,50 cellules/3423 colonnes.
+Ce n'est pas une complétion ni un témoin entier du bord. Modèle avec
+toutes les arêtes B-B : UNKNOWN à30s. Aucun job actif.
 
-**Note259 ? pas de nouvelle exclusion.** Les quatre attaches ? coupure2
+Note259 publiée sur `codex/norm16-far-forest`, commit `abee18f`,
+et transmise à LAB via le pont (message552).
+
+**Note259 — pas de nouvelle exclusion.** Les quatre attaches à coupure2
 imposent sur46 simples exactement DEUX chemins de transport plus des
-cycles ?ventuels. Quatre extr?mit?s distinctes viennent de deux doubles
-particuliers du m?me c?t? de la coupure. En r?ins?rant ces deux doubles,
+cycles éventuels. Quatre extrémités distinctes viennent de deux doubles
+particuliers du même côté de la coupure. En réinsérant ces deux doubles,
 cycles pairs sur48 sommets. Attention : ce graphe de transport n'est pas
-forc?ment induit ; ne pas appliquer directement les rubans nus.
-Mod?le corrig? de partenaires D ou B : faisable sur les quatre attaches
-sans Z. Mod?le nomm? avec Z, cas3/0/for?t7 : UNKNOWN ?45s. Ne pas compter
-l'infaisabilit? d'une premi?re version qui oubliait les partenaires D.
-Aucun calcul de recherche actif. Nouvelle structure ? exploiter :
-raccordement des quatre extr?mit?s, sans relancer les m?mes sondes.
+forcément induit ; ne pas appliquer directement les rubans nus.
+Modèle corrigé de partenaires D ou B : faisable sur les quatre attaches
+sans Z. Modèle nommé avec Z, cas3/0/forêt7 : UNKNOWN à45s. Ne pas compter
+l'infaisabilité d'une première version qui oubliait les partenaires D.
 
-**LAB551 lu et acquitt?.** Identit? au rang37 (apr?s N14), commit86749e1,
-NOTE17.100 : 350a8+91a9+13a10 = 7462+a12+476(b2?462)+21(b3?24948).
-Avec b3?45898 : membre droit?447412. Apr?s N16 et N18, a10?34418 ;
-?20?4 vecteurs orient?s par graine suffirait (7920?4=31680).
-Borne ?20 non prouv?e ; N16 et N18 pas exclus ici. Pas de contre-audit.
+**LAB551 lu et acquitté.** Identité au rang37 (après N14), commit86749e1,
+NOTE17.100 : 350a8+91a9+13a10 = 7462+a12+476(b2−462)+21(b3−24948).
+Avec b3≥45898 : membre droit≥447412. Après N16 et N18, a10≥34418 ;
+κ20≤4 vecteurs orientés par graine suffirait (7920×4=31680).
+Borne κ20 non prouvée ; N16 et N18 pas exclus ici. Pas de contre-audit.
 
 **LAB549 lu/acquitté ; note258 Codex.** LAB a écrit le test d'un voisinage
 complet au rang37 et exclut les DEUX supports35 Codex déjà transmis

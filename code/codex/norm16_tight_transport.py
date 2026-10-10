@@ -4,7 +4,9 @@ The 64 simple vertices are labelled by their two core neighbours. In each
 nonedge cell, the triangle partner at either core neighbour may be a D or
 a B vertex. D-incidences and local common-neighbour upper bounds are
 coupled to these partial matchings. Z vertices,
-and B-B edges outside those matchings, are omitted: SAT is only a relaxation.
+and B-B edges outside those matchings, are omitted by default. --forest
+adds Z incidences; --full-b introduces all B-B edges with exact core/B
+moments and necessary D/B bounds. SAT is still only a relaxation.
 """
 import argparse
 from collections import defaultdict
@@ -81,7 +83,43 @@ def add_far_vertices(m, bd, bs, transport, vv, u, v, fid):
     return x,y
 
 
-def solve(orbit=0, seconds=30, forest=None):
+def add_full_simple_edges(m, bd, bs, transport, vv, ac):
+    """Exact core/B moments, with all B edges and necessary D/B bounds.
+
+    Z is still absent. The residual D/B counts must be nonnegative and
+    sum to between 2(1+r_b) and 4(1+r_b), since every Z has 2..4 D neighbours.
+    """
+    edges=dict(transport)
+    for i,j in combinations(range(64),2):
+        p,q,_=bs[i];r,s,_=bs[j]
+        if p!=r and q!=s:
+            edges[i,j]=m.new_bool_var(f'full_edge_{i}_{j}')
+    neighbors=defaultdict(list)
+    for (i,j),edge in edges.items():
+        neighbors[i].append((j,edge));neighbors[j].append((i,edge))
+    def both(a,b,name):
+        t=m.new_bool_var(name);m.add_multiplication_equality(t,[a,b]);return t
+    for b,(p,q,k) in enumerate(bs):
+        for c in range(16):
+            m.add(sum(e for j,e in neighbors[b] if c in (bs[j][0],8+bs[j][1]))
+                  +sum(bd[b][d] for d in range(8) if vv[c,d])
+                  ==2-int(c in (p,8+q))-int(ac[c,p]+ac[c,8+q]))
+        residual=[]
+        for d in range(8):
+            common=[both(e,bd[j][d],f'full_bd_{b}_{d}_{j}') for j,e in neighbors[b]]
+            missing=m.new_int_var(0,2,f'missing_z_{b}_{d}')
+            m.add(missing==2-bd[b][d]-int(vv[p,d]+vv[8+q,d])-sum(common))
+            residual.append(missing)
+        m.add(sum(residual)>=2+2*sum(bd[b]))
+        m.add(sum(residual)<=4+4*sum(bd[b]))
+    for (i,j),edge in edges.items():
+        p,q,_=bs[i];r,s,_=bs[j]
+        common=[both(bd[i][d],bd[j][d],f'full_common_{i}_{j}_{d}') for d in range(8)]
+        m.add(sum(common)<=2-int(p==r)-int(q==s)-edge)
+    return edges
+
+
+def solve(orbit=0, seconds=30, forest=None, full_b=False):
     started = time.monotonic()
     cores, cases, _ = source_data()
     core = np.array(cores[3]['representatives'][0], dtype=int)
@@ -160,13 +198,15 @@ def solve(orbit=0, seconds=30, forest=None):
                   <= 2-int(c in (p,8+q))-common_core).only_enforce_if(gates['core_B_cap'])
     if forest is not None:
         x,y=add_far_vertices(m,bd,bs,transport,vv,u,v,forest)
+    if full_b:
+        full_edges=add_full_simple_edges(m,bd,bs,transport,vv,ac)
     print(json.dumps({'orbit':orbit,'vertices':64,'transport_edges':len(transport),
                       'build_seconds':time.monotonic()-started}),flush=True)
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = seconds
     solver.parameters.num_search_workers = 1
     status = solver.solve(m)
-    result = {'scope':__doc__,'case':3,'orbit':orbit,'forest':forest,'status':solver.status_name(status),
+    result = {'scope':__doc__,'case':3,'orbit':orbit,'forest':forest,'full_B_edges':full_b,'status':solver.status_name(status),
               'seconds':solver.wall_time,'branches':solver.num_branches}
     if status == cp_model.INFEASIBLE:
         indices = set(solver.sufficient_assumptions_for_infeasibility())
@@ -179,13 +219,17 @@ def solve(orbit=0, seconds=30, forest=None):
         if forest is not None:
             result['D_Z_row_masks']=[sum((1<<z)*int(solver.value(x[d][z])) for z in range(11)) for d in range(8)]
             result['B_Z_row_masks']=[sum((1<<z)*int(solver.value(y[b][z])) for z in range(11)) for b in range(64)]
+        if full_b:
+            result['full_B_edges_present']=[list(pair) for pair,e in full_edges.items() if solver.value(e)]
     return result
 
 
 if __name__ == '__main__':
     p=argparse.ArgumentParser(); p.add_argument('--orbit',type=int,default=0); p.add_argument('--seconds',type=float,default=30)
     p.add_argument('--forest',type=int)
-    args=p.parse_args(); result=solve(args.orbit,args.seconds,args.forest)
+    p.add_argument('--full-b',action='store_true')
+    args=p.parse_args(); result=solve(args.orbit,args.seconds,args.forest,args.full_b)
     suffix='' if args.forest is None else f'_forest{args.forest}'
+    if args.full_b:suffix+='_full_b'
     (ROOT/f'data/codex_norm16_tight_transport_{args.orbit}{suffix}.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('scope','B_vertices','transport_edges')}),flush=True)
