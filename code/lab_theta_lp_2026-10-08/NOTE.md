@@ -3865,3 +3865,55 @@ Codex's relation for norm 16, g = 3.1_core + 1_D - 1_Z with (A - 3I) g = 5.1, is
 with independent supports and s = 1_P + 1_Q, g = (A + 4I) s / 2 - 1 equals 3 on the core and t_v - 1 on an outside
 vertex with t_v neighbours in each support, and (A - 3I) g = (|core| - 11) 1 (norm 14: 3; norm 16: 5). Modulo 7 it
 is a combination of the stars of the core vertices and of the all-ones relation, supported off the simple vertices.
+
+### 17.97 The other three norms: cores of norms 18 and 20, and why the method of N14 does not carry over at the same price (00:33 UTC, 10/10)
+
+Status: catalogues of cores (exhaustive, with a control), one floating probe, and a cost assessment. Nothing excluded.
+
+**Cores with independent supports** (`work/c1_cost37_2026-10-09/cores1820.py`; m blocks of size 4 on m points, every
+point in 4 blocks, a pair of points in at most 2 blocks, two blocks sharing at most 2 points; up to permutations of
+the points and of the blocks):
+
+| norm | m | classes | up to the exchange of the two supports | time |
+|---|---|---|---|---|
+| 16 (control) | 8 | 5 | 5 | < 1 s |
+| 18 | 9 | 26 | 25 | < 1 s |
+| 20 | 10 | 1199 | 753 | 52 s |
+
+The control gives back Codex's five cores of norm 16 with the defect cycles 8, 6+2, 4+4, 4+2+2, 2+2+2+2 (its note 166).
+The defect multigraph M = 2I + 2J - B B^t is 4-regular on 9 points (norm 18) and 6-regular on 10 points (norm 20),
+always connected, and its eigenvalues other than the degree are at most 2 (checked on every class; it is the
+positivity of B B^t). Files `cores_norm18_independent.json`, `cores_norm20_independent.json` (incidence matrices,
+automorphism counts, dual class, defect data). The cores with one edge in each support are NOT listed yet.
+
+**Probe of the positivity conditions on the double vertices** (`core_psd_probe.py`, floating, two symmetric cores:
+"grid18" = cells and 2 x 2 subgrids of a 3 x 3 grid; "petersen20" = B = I + Petersen, 120 automorphisms).
+For outside vertices the E_{-4} condition is 3I - A_out - K >= 0 with K depending only on the core columns
+(K = 1/(2m - 9) between far vertices: 1/5, 1/7, 1/9, 1/11 for the norms 14 to 20, which gives back Codex's
+3I - A_Z - J/7), of rank at most 44 - 2m because the core block is positive definite. Every single double and every
+pair of doubles passes; sets of doubles die between 9 and 15 members in a capped depth-first search (D independent,
+no triple vertex; not exhaustive). So positivity is restrictive in these worlds, but only collectively.
+
+**Why this is not N14 again (cost assessment, with Codex's counts of the night).**
+* Norm 14: ONE core, 15 far vertices forming a coclique with no further structure: 33 508 bases of rank 35 / 36,
+  each killed by one cell in 26 ms.
+* Norm 16 (Codex, its note 254 and messages): after the exact positivity filter the 35-vertex worlds core + D + Z
+  number in the tens of millions (two attachments of the first core alone: 3110 and 68 241 survivors; three
+  attachments die completely), with Seidel rank 33 mostly, 32 or 31 otherwise. Rank 33 leaves a residual space of
+  dimension 3. One cell of 8 simple vertices then imposes "residual Gram of rank <= 3", 15 conditions modulo 7, against
+  domains of 97 to 252 columns per member (7^20 choices): a cell is NOT killed by itself (tens of solutions expected),
+  two cells are needed, and the search of the first cell alone is of the order of seconds per world. Order of
+  magnitude: years of one core, the same scale as the line-ball sweep, unless the catalogue shrinks by 10^4 or more.
+* Norms 18 and 20: 26 and 1199 cores (independent case), 18 and 30 double vertices; the worlds are far more numerous.
+* And the theta programme allows rank 37 to live on norm 20 alone (at least 574 vectors, section 10).
+So the route "four norms" has one case closed (N14) and three cases that are each at least as expensive as the
+sweep that was refused. A reduction of another kind is needed for them; none is in hand.
+
+**Counting LP again** (`lp_family.py`, option ROOTS_LE_FANO: b_1 <= a_7, valid because sqrt7 times a root of M is a
+vector of norm 14 of L1, hence of L; it was missing from the LP): with a_7 = 0, so b_1 = 0, the grid-free
+break-even is 27 684 (27 142 without that row) against the certified cap 31 976. Still short by 13 %.
+
+Codex's general remark (its note 254), checked here by hand for independent supports: with h = 1_P + 1_Q,
+g = (A + 4I) h / 2 - 1 and u = 1_P - (g - 3h) are integral, (A - 3I) g = (2m - 11) 1, (A + 4I) u = (18 - 2m) 1, both
+vanish on the simple vertices; for norm 18, u is an integral (-4)-eigenvector of norm 36 - 14 e with <f, u> = 9.
+(The constant of 17.96, written |core| - 11, is 2m - 11: the same number.)

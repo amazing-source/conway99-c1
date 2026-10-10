@@ -51,6 +51,7 @@ for p_ in [int(x) for x in os.environ.get("ZERO_PARAMS", "").split(",") if x]:  
 if os.environ.get("PCAP"): add(eP, [0] * 8, float(os.environ["PCAP"]))                 # what-if / case split: number of prisms P <= PCAP
 if os.environ.get("A7CAP") is not None: add(Z, [0, 1, 0, 0, 0, 0, 0, 0], float(os.environ["A7CAP"]))   # a_7 <= A7CAP (A7CAP=0: no integral vector of norm 14, lemma N14 of NOTE 17.95)
 if os.environ.get("A8CAP") is not None: add(Z, [0, 0, 1, 0, 0, 0, 0, 0], float(os.environ["A8CAP"]))   # what-if: a_8 <= A8CAP
+if os.environ.get("ROOTS_LE_FANO") is not None: add(Z, [0, -1, 0, 0, 0, 1, 0, 0], 0.0)                 # b_1 <= a_7: sqrt7 times a root of M is a Fano vector (sqrt7 M inside L1, norm 14 inside L)
 ext = vstack(rows0); bb = np.array(b0)
 for s in scen:
     m_ = re.match(r"m(\d+)s(\d+)k(\d+)(all|x63)?(n)?(z)?(?:r(\d+))?$", s); M, S, K, allc, x63 = int(m_.group(1)), int(m_.group(2)), int(m_.group(3)), bool(m_.group(4)), m_.group(4) == "x63"
