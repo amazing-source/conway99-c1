@@ -1,5 +1,20 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Note256 — dix attaches ENTIERES exclues, sans rang.** Quinze attaches
+ont C pair. La signature de255 force D indépendant, C=2L avec L2-régulier.
+C3+C5 serait impossible (12 incidences D-Z dans11 colonnes), et2C4
+force au moins10 paires au sein des composantes pour une capacité8.
+Neuf attaches2C4 exclues : cas2/[44,46,81,82,84,85], cas3/26,
+cas4/[0,3]. Pour C8, stables de taille4 complémentaires : aucun degré3
+ni P4 dans Z, donc seules forêts3,6,7. Cas0/52 exclu en plus par
+certificat entier sur cœur+D :3||v||²-vᵀAv=-470. C pair restant :
+cas0/[226,241,242], cas4/[1,2]. Aucun rang supposé, pas N16 fermé.
+Cas4/1 entièrement parcouru :30484 supports PSD complète(352,6852,23280),
+pas une exclusion ni un total global. Aucun job actif après ce pilote.
+Sonde E_3 numérique sans réduction. LAB545 annonce un moteur delta3
+BORNE au pilote à une arête, pas au catalogue D indépendant. Message545
+lu et acquitté. La correction de544 sur les faux « millions PSD » demeure.
+
 **Messages541–544 :** LAB a classé les cœurs18/20 à signes indépendants
 (26 et1199 avant échange des signes), commit e3cf31b, et poursuit à ma
 demande la branche à une arête par signe pour couvrir ces normes. LAB
