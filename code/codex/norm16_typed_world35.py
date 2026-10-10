@@ -1,5 +1,6 @@
 """Export a core+D+Z base passing 3I-A+J/9 PSD, with local domains for64 simples."""
 from itertools import combinations
+import argparse
 import json
 
 from norm16_independent_catalogue import adjacency
@@ -10,8 +11,8 @@ def mask(vertices):
     return sum(1 << v for v in vertices)
 
 
-def main():
-    source_file = ROOT/'data/codex_norm16_world35_seed.json'
+def main(source='data/codex_norm16_world35_seed.json', output='data/codex_norm16_typed_world35_0_3_2.json'):
+    source_file = ROOT/source
     item = json.loads(source_file.read_text())
     cores, cases, forests = source_data()
     ci, oi = item['case'], item['orbit']
@@ -19,8 +20,14 @@ def main():
     attachment = cases[ci]['orbits'][oi]['representative']
     forest = next(f for f in forests if f['id'] == item['forest'])
     a = adjacency(b, attachment, forest, item['D_Z_row_masks']).tolist()
+    edge = item.get('D_edge')
+    if edge is not None:
+        d, e = edge
+        a[16+d][16+e] = a[16+e][16+d] = 1
     row_masks = [mask(i for i, value in enumerate(row) if value) for row in a]
-    wb = 9-forest['wedges_Z']
+    wb = 9-5*forest['edges_D']-forest['wedges_Z']
+    saturated_pairs = [mask((i, j)) for i, j in combinations(range(35), 2)
+                       if (row_masks[i] & row_masks[j]).bit_count() == 2-a[i][j]]
     ext_masks = []
     for r in range(5):
         if r*(r-1)//2 > wb:
@@ -39,7 +46,7 @@ def main():
             for ext in ext_masks:
                 value = core_mask | ext
                 if all((value & row).bit_count() <= 2-((value >> i) & 1)
-                       for i, row in enumerate(row_masks)):
+                       for i, row in enumerate(row_masks)) and not any(value & pair == pair for pair in saturated_pairs):
                     candidates.append(value)
             domains.append({'cell': [p, q], 'multiplicity': copies,
                             'neighbour_masks': sorted(candidates)})
@@ -53,12 +60,15 @@ def main():
               'ambient_dimension': 36, 'residual_dimension_when_base_rank33': 3,
               'domains': domains, 'total_unknown_vertices': sum(d['multiplicity'] for d in domains),
               'WB_budget': wb,
+              'required_simple_neighbours_by_base_vertex': [14-sum(row) for row in a],
               'rules': [
                   'A domain corresponds to a cell(p,q); choose multiplicity DISTINCT vertices from it.',
+                  'Distinct vertices may have the SAME base neighbour mask; their residual vectors and mutual products must still be tested.',
                   'All D vertices are already in the base; the64 unknowns are all simple B vertices.',
                   'Each unknown has exactly the core neighbours p and Qq, and degree_Z=1+degree_D.',
                   'Sum over the64 simples of binom(degree_D,2) equals WB_budget.',
-                  'Each D vertex must receive6 simple neighbours; each Z vertex z must receive16-2*degree_D(z) simple neighbours.',
+                  'Each D vertex must receive6-2*degree_D(d) simple neighbours; each Z vertex z must receive16-2*degree_D(z) simple neighbours.',
+                  'The domain omits any pair whose common-neighbour quota is already saturated inside the base.',
                   'A simple with r D neighbours has11-2r neighbours among simples.',
                   'The eight simples with first cell index p, the two D neighbours of p, and the four Q neighbours of p induce7 disjoint edges.',
                   'Apply the analogous complete-neighbourhood condition for every Q vertex.',
@@ -66,7 +76,7 @@ def main():
                   'Seidel isotropy and mutual products in dimension36 are not imposed in these local domains.'
               ],
               'mask_convention': 'bit i = adjacency to base vertex i, bits0..34'}
-    target = ROOT/'data/codex_norm16_typed_world35_0_3_2.json'
+    target = ROOT/output
     target.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
     print(json.dumps({'file': str(target), 'vertices': result['total_unknown_vertices'],
                       'nonempty_cells': len(domains), 'total_candidate_columns_by_cell': sum(len(d['neighbour_masks']) for d in domains),
@@ -75,4 +85,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--source', default='data/codex_norm16_world35_seed.json')
+    parser.add_argument('--output', default='data/codex_norm16_typed_world35_0_3_2.json')
+    args = parser.parse_args()
+    main(args.source, args.output)

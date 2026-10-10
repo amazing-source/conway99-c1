@@ -1,5 +1,24 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Note255 — nouvelle réduction théorique norme16, sans rang :** si D
+porte de, son triangle a un troisième sommet z* ISOLÉ dans Z. Les
+deux sommets Z omis u,v ont degré2, sont non adjacents et n'ont aucun
+voisin Z commun ; ils voient les six autres D, avec exactement deux
+D communs j,k. Aucun degré3 dans Z : sinon les trois feuilles partagent
+un D et deux d'entre elles partagent aussi d ou e, donnant trois voisins
+communs. Branche e(D)=1 réduite de7 à4 forêts, IDs8,9,11,12 ; IDs10,13,14
+exclus. Signature C_dx+C_ex=(2,2,1,1,1,1), C_jk=0 et C_jx,C_kx<=1
+pour les quatre autres D. Positions d'arêtes2145→467 ; cœur(2,2,2,2)
+force D indépendant par parité de C.11 forêts au total, au plus51
+paires cœur/Z. Ne pas annoncer la norme16 exclue.
+Pilote cœur0/attache4 : une seule arête D(1,4),34 classes d'extrémités,
+33 supports après mineurs<=4,2 après PSD complète, tous forêt9/rang33.
+`codex_norm16_typed_world35_edge_0_4_9.json` :64 simples,48 cellules,
+1818 colonnes, budget W_B=1. Données pour moteur LAB, pas complétion.
+L'exporteur accepte D_edge, corrige le budget W_B dans cette branche,
+et écarte les paires déjà saturées à l'intérieur de chaque colonne.
+Aucun grand catalogue lancé. Message538 toujours dernier message lu.
+
 **Répartition confirmée aux messages538–540 :** Codex garde les deux
 branches d'attaches/PSD norme16 ; LAB prend les catalogues des cœurs18/20
 et le moteur de cellule sur les entrées Codex. Option(b) choisie : livrer

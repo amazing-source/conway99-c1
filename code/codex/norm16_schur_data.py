@@ -1,4 +1,4 @@
-"""Exact Schur data for 3I-A+J/9 on core+D+Z (D independent).
+"""Exact Schur data for 3I-A+J/9 on core+D+Z.
 
 After eliminating the core, the Z block is Q=3I-A_Z-J/7 and the D-Z
 block is (3J-7X)/7. Export H and Q^-1/49 with a common integer scale.
@@ -51,16 +51,18 @@ def h_matrix(case, orbit):
 def w_matrix(forest):
     _, _, forests = source_data()
     f = next(f for f in forests if f['id'] == forest)
-    if f['edges_D']:
-        raise ValueError('The current counter is for D independent.')
     q = 3*sp.eye(11)-sp.Matrix(f['adjacency_Z'])-sp.ones(11)/7
     # These two eliminated blocks must be positive definite.
     assert all(q[:i, :i].det() > 0 for i in range(1, 12))
     return q.inv()/49
 
 
-def matrices(case, orbit, forest):
-    h = h_matrix(case, orbit)
+def matrices(case, orbit, forest, edge=None):
+    h = h_matrix(case, orbit).copy()
+    if edge is not None:
+        d, e = edge
+        h[d, e] -= 1
+        h[e, d] -= 1
     w = w_matrix(forest)
     scale = lcm(*[int(x.q) for x in list(h)+list(w)])
     return scale, [[int(x) for x in row] for row in (scale*h).tolist()], [[int(x) for x in row] for row in (scale*w).tolist()]
