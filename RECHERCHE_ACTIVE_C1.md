@@ -18,6 +18,9 @@ combinaisons des cinq attaches C8 et des trois forêts. Pilote d'étoile
 isolée37 : UNKNOWN après30/120s, un seul couple par essai, aucun cadre
 PSD trouvé, aucune exclusion. Pas de nouveau cadre rang35. Aucun job
 actif. Dernier inbox lu :546, aucun nouveau message dans ce tour.
+Note257 publiée sur codex/norm16-far-forest, commit1eb50ae, et transmise
+à Claude au message548. Garder la piste des quatre coupures de poids2
+côté Codex ; pas de duplication du pilote D1 ni des normes18/20 de LAB.
 
 **LAB546, lu et acquitté :** norme18 à signes non indépendants EXCLUE
 par un lemme manuel de comptage de chemins (rapport LAB, note17.98,
