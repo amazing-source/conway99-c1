@@ -3735,3 +3735,91 @@ distinct edges of a graph on these ten points. Rank and number of attachments: t
 cores not catalogued.
 
 Division proposed to Codex: it owns the catalogues, I write the rank-37 test for a typed base.
+
+### 17.95 Rank 37 has no integral (-4)-eigenvector of norm 14: exhaustive computation (00:02 UTC, 10/10)
+
+Status: computer-assisted lemma, exhaustive, with positive controls and an independent cross-check; the model is
+re-derived by hand below; NOT audited by another session. It excludes no rank: by section 3 a graph of rank 37 has an
+integral (-4)-eigenvector of norm 14, 16, 18 or 20, and only the first of the four is treated here.
+
+**Lemma N14.** A srg(99,14,1,2) with rank_7(A - 3I) = 37 has no integral (-4)-eigenvector of norm 14.
+(The discriminant lemma L23 of 17.80 is NOT used.)
+
+**The world of a norm-14 eigenvector (hand; every step is a count of common neighbours).**
+1. |f_v| <= (2/3) |f| < 3. An entry 2 at v forces the 14 neighbours to sum to -8 with squares summing to at most 10:
+   eight entries -1 (then two more entries +-1 cannot bring the total sum to 0) or (-2, six -1) (sum -6): impossible.
+   So f = 1_X - 1_Y with |X| = |Y| = 7 (sum zero).
+2. a_Y(x) = 4 + a_X(x) on X, a_X(y) = 4 + a_Y(y) on Y, a_X = a_Y outside. Counting the paths x - y - x':
+   42 <= sum_y C(a_X(y), 2) <= 2 C(7,2) - e(X), so X is a coclique, every a_X(y) = 4, and two vertices of X have
+   their two common neighbours in Y; the same for Y. (X, Y) is the biplane 2-(7,4,2): x ~ y iff the point x is not on
+   the Fano line y.
+3. No outside vertex has two neighbours in X: 70 boundary vertices (one x, one y): the common neighbour e_xy of an
+   edge xy (28), the two common neighbours of a non-edge (42 "flags"); 15 far vertices with no neighbour in X + Y.
+4. N(x) is a perfect matching: y - e_xy (4 edges) and three edges among the six flags of x, never between twins: a
+   hexagon alternating twins and edges, unique up to the names of the twins.
+5. A far vertex has two common neighbours with every core vertex, all among its boundary neighbours: 7 x 2 = 14, so
+   the far vertices form a coclique, and each one is an EDGE on the ten boundary neighbours of each core vertex.
+   Counting the paths from a boundary vertex b to X: 13 = 4 + (number of boundary neighbours of b), so b has 9
+   boundary neighbours and exactly 3 far neighbours: the far vertices are the 15 edges of a cubic graph on the ten
+   boundary neighbours B0 of x_0. Two vertices of B0 have x_0 in common: at most one far vertex in common (simple
+   graph), none if they are adjacent (3 pairs) or twins (3 pairs).
+6. Base = X + Y + far + B0 (39 vertices), determined by that cubic graph: 800 427 labelled graphs (exact).
+   Three relations are automatic (sum_X = sum_Y; sum over the 22-coclique X + far = 0; the star of x_0), so the
+   Seidel rank is at most 36. Found: rank 36 for 689 967 bases, rank 35 for 110 460, never less.
+7. A boundary neighbour u of x_1 with label (1, j): neighbours in the base = x_1, y_j, three far vertices, and
+   1 + [0 on line j] vertices of B0 (two common neighbours with x_0); it is adjacent to a vertex of B0 of the same
+   line label only if j is the line through 0 and 1; with t in B0: [same label] + (common far neighbours) <= 1 if
+   u ~ t, <= 2 otherwise; a far neighbour of u has at most one end among the B0-neighbours of u; two B0-neighbours of
+   u are not adjacent, not twins, and have no common far neighbour. Two members u, u' of the cell B1 of x_1: adjacent
+   exactly on the three hexagon edges; common neighbours in far + B0: none if adjacent or twins, at most one
+   otherwise. Every far vertex has exactly two neighbours in B1, every t in B0 exactly 1 + [1 on the line of t].
+
+**The test.** Rank 37 <=> the vertices are isotropic vectors of a non-degenerate 36-dimensional space W over F_7 with
+product -1 on edges and +1 on non-edges (17.92 A).
+* Base of rank 36: 36 independent base vertices are a basis of W; a member of B1 is the vector with the prescribed
+  products; it must be isotropic; the 45 products inside B1 are prescribed. (The three dependent base vertices give
+  no condition: checked in the run, 0 inconsistent candidate.)
+* Base of rank 35: its span V is a non-degenerate hyperplane (a radical would lie in V-perp, of dimension 1), so
+  W = V + <n>, <n,n> = nu, and only the class of nu matters. A member is v + t n: v is given by the products with 35
+  independent base vertices, the 4 dependent base vertices must agree (one condition is not automatic),
+  t^2 nu = -<v,v>, and the products inside B1 are <v,v'> + t t' nu. BOTH classes nu = 1, 3 are searched.
+* Bases of rank 36 are searched whatever their determinant (residue or not): L23 is not used.
+* Symmetry: the 24 collineations of the Fano plane fixing the point 0 act on the bases (unique lift to the six
+  flags preserving twins and the hexagon). An image g(C) of a base C of a real graph is the base of the same graph
+  relabelled, so it is enough to kill one base per orbit: 33 508 orbits (the orbit sizes sum to 800 427, and the
+  ranks and determinants counted with the orbit sizes give back the labelled counts 689 967 / 110 460 / 300 824).
+
+**Result** (`work/c1_cost37_2026-10-09/fano37.c`, `OUTPUT_fano37_exhaustive_nodisc.txt`; eight runs of one process,
+110 to 130 s each, 977 s in all, about 60 MB, no node cap):
+
+| | orbits | searches | dead | alive |
+|---|---|---|---|---|
+| base of rank 36 | 28 875 | 28 875 | 28 875 | 0 |
+| base of rank 35 (nu = 1 and nu = 3) | 4 633 | 9 266 | 4 633 | 0 |
+
+No base has a complete cell B1; the deepest partial cell has 5, 6 or 7 members of 10 (lazy search); about 1.9e5
+nodes per search. Every orbit is dead, hence the lemma.
+
+**Controls** (`OUTPUT_fano37_controls.txt`).
+* Independent implementation `fano37_check.py` (numpy, explicit coordinates (c, t) and the explicit Gram matrix
+  diag(K_I, nu); it shares only the combinatorial rules): same numbers of candidates and of nodes at every depth as
+  `fano37 base ... fc` on 15 bases (rank 36: 5 complete searches; rank 35: 4 complete searches and 6 capped at
+  20 000 nodes, both classes of nu met). Earlier, the first version against the Python pilot on 24 bases: same
+  candidates; node counts equal up to the pilot's overshoot of its cap by 1 to 5 nodes.
+* Products not tested (FANO37_NOGRAM): 112 orbits of 112 have a complete cell, so the combinatorial rules alone are
+  satisfiable and it is the products that kill.
+* Planted cell (FANO37_PLANT: a cell found without the products, its own products declared the prescribed ones):
+  133 of 133 found again by the lazy search, 63 of 63 by the search with forward checking; at rank 35 exactly two
+  solutions appear (the cell and its mirror t -> -t), as they must.
+* Lazy and forward-checking searches give the same verdict on the 275 searches of two common slices.
+
+**What is not done.** No audit by another session of points 1 to 7 and of the program. The full labelled run without
+the symmetry (800 427 bases, about 6 hours of one core with both classes) has not been run and is not needed for the
+statement; it would be an independent confirmation of the orbit reduction.
+
+**Where rank 37 stands.** Excluding rank 37 by this route needs the same statement for the norms 16, 18 and 20.
+Norm 16: Codex has five cores, 478 attachments, 14 forests for the far vertices (a far isolated vertex always
+exists, its note 253), a first typed frame of 37 vertices (rank 35, never 36); the number of frames is not known
+and is certainly much larger than 33 508. Norms 18 and 20: cores not catalogued. The laptop session's exact LP
+(23:40 UTC, 09/10) says that its nine-class programme forces no other low object at rank 37, with or without the
+vectors of norm 14 and 16.
