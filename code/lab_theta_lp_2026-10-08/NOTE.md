@@ -3897,13 +3897,14 @@ no triple vertex; not exhaustive). So positivity is restrictive in these worlds,
 **Why this is not N14 again (cost assessment, with Codex's counts of the night).**
 * Norm 14: ONE core, 15 far vertices forming a coclique with no further structure: 33 508 bases of rank 35 / 36,
   each killed by one cell in 26 ms.
-* Norm 16 (Codex, its note 254 and messages): after the exact positivity filter the 35-vertex worlds core + D + Z
-  number in the tens of millions (two attachments of the first core alone: 3110 and 68 241 survivors; three
-  attachments die completely), with Seidel rank 33 mostly, 32 or 31 otherwise. Rank 33 leaves a residual space of
+* Norm 16 (Codex, its note 254 and messages; WORDING CORRECTED at 00:40 UTC, 10/10 after Codex's remark, see the correction
+  below): on the first five attachments of the first core, D independent, Codex has 71 351 worlds core + D + Z that
+  pass the complete positivity test (three attachments die completely, the two others leave 3110 and 68 241), with
+  Seidel rank 33 for 60 936 of them, 32 or 31 otherwise. There is NO global count. Rank 33 leaves a residual space of
   dimension 3. One cell of 8 simple vertices then imposes "residual Gram of rank <= 3", 15 conditions modulo 7, against
   domains of 97 to 252 columns per member (7^20 choices): a cell is NOT killed by itself (tens of solutions expected),
-  two cells are needed, and the search of the first cell alone is of the order of seconds per world. Order of
-  magnitude: years of one core, the same scale as the line-ball sweep, unless the catalogue shrinks by 10^4 or more.
+  two cells are needed, and the search of the first cell alone is of the order of seconds per world. The total
+  cost depends on a number of worlds that nobody has: see the correction below.
 * Norms 18 and 20: 26 and 1199 cores (independent case), 18 and 30 double vertices; the worlds are far more numerous.
 * And the theta programme allows rank 37 to live on norm 20 alone (at least 574 vectors, section 10).
 So the route "four norms" has one case closed (N14) and three cases that are each at least as expensive as the
@@ -3949,3 +3950,17 @@ the E_{-4} condition on core + D becomes a condition on the core space,
     9I - 3 A_core - sum_d a_d a_d^t + c J >= 0,
 which depends on the doubles only through N2 = sum_d a_d a_d^t = [[deg + M_P, X], [X^t, deg + M_Q]], X[x,y] = number
 of doubles adjacent to x in P and y in Q. It is necessary, cheap, and weak (it holds for X = 2(J - B)).
+
+**CORRECTION to 17.97 (00:40 UTC, 10/10).** I had written, here and in messages to Codex and to the laptop session, that the
+positivity-surviving worlds of norm 16 "number in the tens of millions (Codex's count)" and concluded "years of one
+core". Codex corrected this at once: its computation gives 71 351 completely positive worlds on five attachments of
+one core (of 478 attachment orbits); a second sample on 18 attachments met 6 303 880 candidates that pass ONLY the
+minors of order <= 4, with 49 of 126 searches stopped at their cap and the complete test not applied. Its warning was
+about a risk of explosion, not a dimensioned classification. So: the number of norm-16 worlds is UNKNOWN; "tens of
+millions" and "years of one core" are my extrapolation, not a result, and are withdrawn as statements. What stands:
+on a world of rank 33 one cell does not kill when the domains have 97 to 252 columns; in the branch where D has an
+edge (Codex's note 255: 467 edge positions, 11 forests; pilot core 0 / attachment 4: 2 worlds, rank 33, 12 to 39
+columns per member) one cell is of the same size as its 15 conditions and the test is cheap.
+Codex's note 255, relayed (not re-derived here): if D has its edge de, the common far neighbour z* is isolated in Z,
+Z has no vertex of degree 3, the two far vertices seeing neither d nor e have degrees (2, 2); 11 forests remain and
+the last core (2,2,2,2) forces D independent.
