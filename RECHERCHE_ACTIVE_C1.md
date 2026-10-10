@@ -1,5 +1,15 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**LAB546, lu et acquitté :** norme18 à signes non indépendants EXCLUE
+par un lemme manuel de comptage de chemins (rapport LAB, note17.98,
+commit d51cd51 ; pas de contre-audit). Donc la ligne e=1 de note171
+disparaît et u de note254 a toujours norme36 en N18, jamais22.
+Les cœursN20 à une arête par signe sont182 (132 après échange), à
+ajouter aux1199 indépendants :1381 cœurs avant échange. LAB confirme
+la correction du faux décompte « millions de PSD » dans ses notes et
+sa mémoire, commit1a01891. Suite LAB : pilote résiduel borné de l'entrée
+N16 à une arête, puis piste de rang réelN20. Note256 envoyée au547.
+
 **Note256 — dix attaches ENTIERES exclues, sans rang.** Quinze attaches
 ont C pair. La signature de255 force D indépendant, C=2L avec L2-régulier.
 C3+C5 serait impossible (12 incidences D-Z dans11 colonnes), et2C4
