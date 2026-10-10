@@ -308,11 +308,16 @@ static int canonical(void) {                        /* is the current graph the 
 }
 
 /* ---------- all the bases: simple cubic graphs on 10 vertices avoiding the six pairs ---------- */
-static int deg[10], used[10][10], ne; static long long MOD = 1, RES = 0, MAXB = 1LL << 60, ngraphs;
+static int deg[10], used[10][10], ne; static long long MOD = 1, RES = 0, MAXB = 1LL << 60, ngraphs; static FILE *fdump;
 static void gen(int v) {
     while (v < 10 && deg[v] == 3) v++;
     if (nproc >= MAXB) return;
-    if (v == 10) { ngraphs++; if (ORBIT && !canonical()) return; if (ORBIT) norb++; if (nbase % MOD == RES) process(); nbase++; return; }
+    if (v == 10) {
+        ngraphs++; if (ORBIT && !canonical()) return; if (ORBIT) norb++;
+        if (fdump) { fprintf(fdump, "%lld", cursize); for (int k = 0; k < 15; k++) fprintf(fdump, " %d %d", E[k][0], E[k][1]); fprintf(fdump, "\n"); }
+        if (nbase % MOD == RES) process();
+        nbase++; return;
+    }
     int need = 3 - deg[v], cand[10], n = 0;
     for (int w = v + 1; w < 10; w++) if (deg[w] < 3 && !forb[v][w] && !used[v][w]) cand[n++] = w;
     if (n < need) return;
@@ -340,6 +345,7 @@ int main(int argc, char **argv) {
     if (getenv("FANO37_CAP")) NODECAP = atoll(getenv("FANO37_CAP"));
     NODISC = getenv("FANO37_NODISC") != NULL; RANKONLY = getenv("FANO37_RANKONLY") != NULL; ORBIT = getenv("FANO37_ORBIT") != NULL;
     PLANT = getenv("FANO37_PLANT") != NULL; NOGRAM = getenv("FANO37_NOGRAM") != NULL; if (NOGRAM) STOPFIRST = 1;
+    if (getenv("FANO37_DUMP")) fdump = fopen(getenv("FANO37_DUMP"), "w");        /* every base enumerated (every orbit with FANO37_ORBIT): orbit size, then the 15 edges */
     double t0 = now();
     if (!strcmp(argv[1], "base")) {
         if (argc < 32) { fprintf(stderr, "30 integers expected\n"); return 1; }

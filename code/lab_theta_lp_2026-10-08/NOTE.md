@@ -3823,3 +3823,45 @@ exists, its note 253), a first typed frame of 37 vertices (rank 35, never 36); t
 and is certainly much larger than 33 508. Norms 18 and 20: cores not catalogued. The laptop session's exact LP
 (23:40 UTC, 09/10) says that its nine-class programme forces no other low object at rank 37, with or without the
 vectors of norm 14 and 16.
+
+### 17.96 After N14: three quick consequences tested (00:18 UTC, 10/10)
+
+New fact used in all three: a_7 = 0 at rank 37 (lemma N14, 17.95). Nothing is excluded by this section.
+
+**1. The rank-37 counting LP of 17.45 / 17.70 with a_7 = 0** (`lp_family.py`, new environment options A7CAP, A8CAP;
+floating HiGHS, Codex's collection "x63", supports <= 9, k = 2, grid-free corner rho = 0):
+
+| hypothesis | ceiling | break-even loss per twin pair | certified cap (non-grid twin pair) |
+|---|---|---|---|
+| none (17.45) | 15.13 M | 25 201 | 31 976 |
+| a_7 = 0 (N14) | 14.58 M | 27 142 (bracket 27 142 .. 28 256) | 31 976 |
+| a_7 = 0 and a_8 = 0 (WHAT-IF: norm 16 excluded too) | 12.85 M | 33 780 | 31 976 |
+
+So N14 alone does not close the grid-free corner (short by 15 % instead of 21 %). If norm 16 were excluded too, the
+break-even would pass the certified cap. Even then it would not be an exclusion: floating LP, the collisions of masses
+7 to 9 are not paid (17.70), and the corner with grids is short by a factor 2. Recorded as the value of N16 for that
+route, nothing more.
+
+**2. The spectral test on the norm-14 world** (`work/c1_cost37_2026-10-09/fano_psd.py`, `fano_psd_cell.py`; floating).
+Rank-free necessary conditions: on any vertex set U the blocks of E_{-4} - f f^t/14 and of E_3 - g' g'^t/|g'|^2 are
+positive semidefinite (f the eigenvector; g' = g - (3/11) 1, g = 3.1_core - 1_far, A g = 3 g + 3.1, |g'|^2 = 1470/11).
+* The 39-vertex base passes for ALL 33 508 orbits, with least eigenvalue 0 (kernel: f, the star of x_0, g).
+* Candidates of the cell of x_1 (40 x 40 blocks), 12 bases: 65 to 90 % of the combinatorial candidates pass. For
+  special bases the kernel is larger (first orbit: the cubic graph is K_4 on the four line vertices plus a cubic graph
+  on the six flags; kernel of dimension 4) and the extra relation removes 93 % of the candidates of a member.
+So the spectral conditions do not kill the norm-14 world (consistent with Fano vectors being excluded only for small
+ranks); they are not a useful pre-filter there. This is the opposite of what Codex reports for norm 16 (exact minors of
+order <= 4 during the construction: core 8 / attachment 0, D independent: 1696 -> 0 and 832 116 -> 0 incidences for
+two forests, 344 candidates left over the seven forests).
+
+**3. What the theta programme says about the other norms at rank 37** (sections 6 and 10, re-read, not recomputed): the
+norms <= 18 may be empty at rank 37, and then at least 574 vectors of norm 20 are needed. So the case of norm 20 cannot
+be avoided on this route, and it is the largest world (10 + 10 core, up to 30 double vertices).
+A rank-free remark for these large worlds: E_{-4} has rank 44, so for norm 20 (e = 0, h = j = 0) the 59 vertices of
+core + doubles + far carry at least 15 linear relations between their projections; for norm 18 (e = 0, h = 0) the 45
+vertices carry at least one beyond f. The real rank and the positivity bite there before the 7-rank does.
+
+Codex's relation for norm 16, g = 3.1_core + 1_D - 1_Z with (A - 3I) g = 5.1, is general: for a binary eigenvector
+with independent supports and s = 1_P + 1_Q, g = (A + 4I) s / 2 - 1 equals 3 on the core and t_v - 1 on an outside
+vertex with t_v neighbours in each support, and (A - 3I) g = (|core| - 11) 1 (norm 14: 3; norm 16: 5). Modulo 7 it
+is a combination of the stars of the core vertices and of the all-ones relation, supported off the simple vertices.
