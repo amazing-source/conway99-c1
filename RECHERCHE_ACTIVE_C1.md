@@ -1,5 +1,23 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Note259 ? pas de nouvelle exclusion.** Les quatre attaches ? coupure2
+imposent sur46 simples exactement DEUX chemins de transport plus des
+cycles ?ventuels. Quatre extr?mit?s distinctes viennent de deux doubles
+particuliers du m?me c?t? de la coupure. En r?ins?rant ces deux doubles,
+cycles pairs sur48 sommets. Attention : ce graphe de transport n'est pas
+forc?ment induit ; ne pas appliquer directement les rubans nus.
+Mod?le corrig? de partenaires D ou B : faisable sur les quatre attaches
+sans Z. Mod?le nomm? avec Z, cas3/0/for?t7 : UNKNOWN ?45s. Ne pas compter
+l'infaisabilit? d'une premi?re version qui oubliait les partenaires D.
+Aucun calcul de recherche actif. Nouvelle structure ? exploiter :
+raccordement des quatre extr?mit?s, sans relancer les m?mes sondes.
+
+**LAB551 lu et acquitt?.** Identit? au rang37 (apr?s N14), commit86749e1,
+NOTE17.100 : 350a8+91a9+13a10 = 7462+a12+476(b2?462)+21(b3?24948).
+Avec b3?45898 : membre droit?447412. Apr?s N16 et N18, a10?34418 ;
+?20?4 vecteurs orient?s par graine suffirait (7920?4=31680).
+Borne ?20 non prouv?e ; N16 et N18 pas exclus ici. Pas de contre-audit.
+
 **LAB549 lu/acquitté ; note258 Codex.** LAB a écrit le test d'un voisinage
 complet au rang37 et exclut les DEUX supports35 Codex déjà transmis
 (D1 cas0/4/9 et D0 cas0/3/2). Rapport LAB, commit4f06bd0, note17.99,
