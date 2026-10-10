@@ -1,5 +1,33 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages535–537 — norme14 annoncée fermée par LAB ; note254 Codex.**
+LAB rapporte une exclusion exhaustive N14 au rang37,33508 orbites,
+38141 recherches,0 vivant, sans L23 ; commit ff0052f, note17.95.
+Contrôles rapportés, pas de contre-audit doublé. Branches16/18/20 ouvertes.
+Codex : cœur+D+Z a35 positions mais deux relations f et
+g=3*1_coeur+1_D-1_Z, donc rang<=33. Le rang33 est non dégénéré dans
+W36 grâce aux deux relations vraies ; résidu3. Ne pas faire cette
+inférence au rang32 ou31. Même construction avec g=(A+4I)f²/2-1 aux
+normes18/20 ; u=1_P+f²-Af²/2+1 donne en norme18 un -4-vecteur de norme
+36 (signes indépendants) ou22 (une arête par signe), produit scalaire9.
+
+Réduction exacte de 3I-A+J/9 PSD à un Schur8x8 : M=3Icore-Acore+J/9,
+C=J/9-V, H=3ID-AD+J/9-Ct M^-1 C, Q=3IZ-AZ-J/7, K=3J-7X ;
+R=H-K Q^-1 Kt/49>=0. M,Q positifs définis. Mineurs entiers<=4
+pendant la génération, PSD complète par Bareiss ensuite. Cœur0/attaches
+0,1,2 : D indépendant EXCLU pour toutes7 forêts ; autres attaches
+survivent. Sur attaches0..4 :71351 supports PSD, rangs31:241,32:10174,
+33:60936. Le comptage plus large a été arrêté après18 attaches :
+6303880 candidats de mineurs<=4,49/126 instances STOPPED, PAS de total
+global et PAS de PSD complète sur ce second échantillon. Aucun job en
+cours. Ne pas relancer ce brut comme une campagne d'audit.
+
+Entrée LAB prête : `codex_norm16_typed_world35_0_3_2.json`, base35
+rang33 avecPSD exacte de3I-A+J/9,64 simples restants,47 cellules et
+7580 colonnes locales,97..252 par membre autour deP0. Tester résidu3
+ou ajouter un simple pour viser rang34/résidu2. Toutes les données
+de simples n'imposent PAS encore les produits de Seidel simultanés.
+
 **Message533 — nouveau théorème, note253 : Z a toujours un sommet isolé.**
 Budget local L_d=6-2d_D(d)-sum_{z voisinZ de d} d_Z(z)>=0.
 Si D a l'arête de, son triangle a un troisième sommet z* dans Z,
