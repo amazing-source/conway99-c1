@@ -3917,3 +3917,35 @@ Codex's general remark (its note 254), checked here by hand for independent supp
 g = (A + 4I) h / 2 - 1 and u = 1_P - (g - 3h) are integral, (A - 3I) g = (2m - 11) 1, (A + 4I) u = (18 - 2m) 1, both
 vanish on the simple vertices; for norm 18, u is an integral (-4)-eigenvector of norm 36 - 14 e with <f, u> = 9.
 (The constant of 17.96, written |core| - 11, is 2m - 11: the same number.)
+
+**Addendum to 17.97 (00:37 UTC, 10/10): degree identities for every norm, and the real rank in the world of norm 20** (hand).
+Independent supports, |P| = |Q| = m, no vertex with three or more neighbours in a support. From A^2 s = (12I + 2J - A) s
+with s = 1_P + 1_Q: an outside vertex v with t_v neighbours in each support has sum over its outside neighbours of
+t_w equal to 2m - 5 t_v. Hence, with d_Z, d_D the numbers of far and double neighbours,
+
+    double d:  d_Z(d) = d_D(d) + 20 - 2m;        far z:  d_D(z) = d_Z(z) + 2m - 14;
+
+    e(D, Z) = 2 e(D) + (20 - 2m) n_2 = 2 e(Z) + (2m - 14) n_0.
+
+| norm | n_0 far | n_2 doubles | consequence |
+|---|---|---|---|
+| 14 | 15 | 0 | far coclique |
+| 16 | 11 | 8 | e(Z) = e(D) + 5 (Codex) |
+| 18 | 9 | 18 | e(Z) = e(D) |
+| 20 | 9 | 30 | **e(D) = e(Z) + 27** |
+
+So in the world of norm 20 the doubles are NOT independent: at least 27 edges among 30 doubles, and every far vertex
+has at least 6 double neighbours. (The probe above assumed D independent; for norm 20 that branch is empty by this
+count, so the probe only says something for norm 18.)
+Real rank: E_{-4} has rank 44 and the block of the core is positive definite, so for ANY set S of outside vertices the
+Schur complement 3I - A_S - K_S is positive semidefinite of rank at most 44 - 2m. For norm 20 this is 24: among the
+30 doubles any 25 are already dependent, and from the 25th on every new double is DETERMINED (its Schur complement
+is exactly zero); with the 9 far vertices, 39 vectors in dimension 24. For norm 18 the bound is 26 against 18 + 9 = 27
+(one relation, the vector g); for norm 16 it is 28 against 19: no constraint. This is rank-free. It suggests that the
+world of norm 20, the one the theta programme needs at rank 37, may be the most rigid of the three for a search by
+positivity and real rank, in spite of its 1199 cores; not tested.
+A first-moment remark (valid when D is independent, so for norms 16 and 18 only): eliminating D instead of the core,
+the E_{-4} condition on core + D becomes a condition on the core space,
+    9I - 3 A_core - sum_d a_d a_d^t + c J >= 0,
+which depends on the doubles only through N2 = sum_d a_d a_d^t = [[deg + M_P, X], [X^t, deg + M_Q]], X[x,y] = number
+of doubles adjacent to x in P and y in Q. It is necessary, cheap, and weak (it holds for X = 2(J - B)).
