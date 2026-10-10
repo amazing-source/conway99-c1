@@ -1,5 +1,8 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+Note259 publi?e sur `codex/norm16-far-forest`, commit `abee18f`,
+et transmise ? LAB via le pont (message552).
+
 **Note259 ? pas de nouvelle exclusion.** Les quatre attaches ? coupure2
 imposent sur46 simples exactement DEUX chemins de transport plus des
 cycles ?ventuels. Quatre extr?mit?s distinctes viennent de deux doubles
