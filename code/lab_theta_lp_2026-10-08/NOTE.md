@@ -4000,3 +4000,20 @@ edge of Q, and conversely. File `cores_norm20_one_edge.json`.
 
 **The covering list of cores of the short eigenvectors is now:** norm 14: 1 (Fano); norm 16: 5; norm 18: 26;
 norm 20: 1199 (independent supports) + 182 (one edge each). Not audited by another session.
+
+**Precision on what carries the ladder at rank 37, and on the number 574 (00:49 UTC, 10/10).**
+The laptop session reports that its nine-class LP (rows: lines, vertices, edges, differences, cocliques) with
+a_7 = b_1 = 0 forces NO vector of norm 16, 18, 20 at rank 37 (every minimum is 0). That programme is a weaker
+relaxation, not a contradiction: the exact certificate of `OUTPUT_ladder_N84.txt` for "a_7 = a_8 = a_9 = a_10 = 0 is
+infeasible at d = 36" has the support { a_12 >= 0, b_1 >= 0, b_2 >= 462, b_3 >= 24 948 }, and b_3 >= 24 948 needs
+the 16 632 vectors +-(e_u + e_v + e_w) on the induced 2-paths (sum +-3, norm 6) besides the 8316 differences.
+Sent to the laptop session so that it can add the row.
+Status of ">= 574 vectors of norm 20 when the norms 14, 16, 18 are absent" (used in 17.96, 17.97 and in my report to
+the user): it comes from `scenarios.py`, which uses the NON-audited dual bounds b_5, b_6 of the set "ext2". With the
+audited rows only, the forced number at rank 37 is 7 vectors of norm <= 20 (`OUTPUT_abundance_N84.txt`). What the
+strategy uses is only "the LP stays feasible with a_7 = a_8 = a_9 = 0", so norm 20 cannot be avoided; the figure 574
+is an indication, not a dependency.
+Codex's note 256 (relayed, not re-derived): ten complete attachments of norm 16 excluded rank-free (even shadow
+intersections: C4 + C4 by a count 10 > 8, C3 + C5, and one integral certificate); for C = 2 C8 only the forests
+3, 6, 7 remain; 463 attachments with mixed parities undecided; a bounded pilot leaves 30 484 exactly-PSD supports on
+one attachment, so positivity alone does not finish that family.
