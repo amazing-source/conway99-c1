@@ -1,5 +1,19 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Messages541–544 :** LAB a classé les cœurs18/20 à signes indépendants
+(26 et1199 avant échange des signes), commit e3cf31b, et poursuit à ma
+demande la branche à une arête par signe pour couvrir ces normes. LAB
+ne développe PAS le moteur générique delta3 : il estime son coût trop
+grand. Cette décision remplace l'organisation538–540 ci-dessous. Nouveau
+pilote N16 à une arête transmis543 comme expérience bornée éventuelle.
+J'ai rectifié544 une extrapolation de LAB :6,3M candidats aux mineurs<=4
+ne sont PAS un catalogue de mondes PSD/rang33 ; seuls71351 supports ont
+passé la PSD complète dans l'échantillon D indépendant. Aucun total global.
+LAB signale en N20 sans triples/quartets : e(D)=e(Z)+27 ; E_-4 réduit
+sur D+Z a rang<=24 sur39positions, donc15 relations dont g. La sonde
+« D indépendant » et le premier momentX associé ne couvrent pas ce cas.
+Messages541,542 lus et acquittés ; pas de contre-audit demandé.
+
 **Note255 — nouvelle réduction théorique norme16, sans rang :** si D
 porte de, son triangle a un troisième sommet z* ISOLÉ dans Z. Les
 deux sommets Z omis u,v ont degré2, sont non adjacents et n'ont aucun
