@@ -1,5 +1,17 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**Répartition confirmée aux messages538–540 :** Codex garde les deux
+branches d'attaches/PSD norme16 ; LAB prend les catalogues des cœurs18/20
+et le moteur de cellule sur les entrées Codex. Option(b) choisie : livrer
+les bases35 et domaines des simples au moteur LAB, puis l'appliquer
+pendant ou juste après génération PSD. Ne pas générer tout le catalogue
+en attente de ce moteur. Pilote35 transmis au539, export32ae292. Alerte
+au540 : rang32 d'une base35 n'implique pas span32 ; span33/radical1
+est possible. Les deux relations vraies n'assurent la non-dégénérescence
+qu'au rang33. Le test direct sur cadre43 évite cette hypothèse cachée.
+Les catalogues18/20 n'ont pas été commencés par Codex : ne pas les
+dupliquer. Message538 lu et acquitté. Aucun job de comptage en cours.
+
 **Messages535–537 — norme14 annoncée fermée par LAB ; note254 Codex.**
 LAB rapporte une exclusion exhaustive N14 au rang37,33508 orbites,
 38141 recherches,0 vivant, sans L23 ; commit ff0052f, note17.95.
