@@ -31,6 +31,16 @@ struct Search {
     uint64_t nodes=0, count=0;
     bool stopped=false;
     double seconds=30;
+    ofstream solutions;
+    array<unsigned,8> chosen{};
+    array<int,8> chosen_index{};
+    bool spectral=false;
+    array<array<long long,8>,8> sh{};
+    array<array<long long,11>,11> sw{};
+    vector<vector<long long>> cost;
+    array<array<vector<Domain>,8>,8> spectral_pair;
+    array<Domain,8> spectral_domain;
+    uint64_t killed3=0,killed4=0;
     chrono::steady_clock::time_point started;
 
     void read(const string& path) {
@@ -81,12 +91,88 @@ struct Search {
         }
     }
 
+    void read_spectral(const string& path) {
+        ifstream in(path);
+        long long scale; in>>scale;
+        for(auto &r:sh) for(auto &x:r) in>>x;
+        for(auto &r:sw) for(auto &x:r) in>>x;
+        if(!in) throw runtime_error("Bad spectral input");
+        // K has entries3 or-4. Each cost has121 products, so this
+        // bound keeps all preprocessing sums safely inside signed64.
+        for(auto &r:sh) for(auto x:r)
+            if(x < -1000000000000LL || x > 1000000000000LL)
+                throw runtime_error("H input exceeds exact64 preprocessing bound");
+        for(auto &r:sw) for(auto x:r)
+            if(x < -1000000000000LL || x > 1000000000000LL)
+                throw runtime_error("Q inverse input exceeds exact64 preprocessing bound");
+        spectral=true;
+        vector<array<long long,11>> kw(masks.size()), k(masks.size());
+        for(size_t i=0;i<masks.size();++i) {
+            for(int z=0;z<11;++z) k[i][z]=3-7*int((masks[i]>>z)&1);
+            for(int z=0;z<11;++z) for(int w=0;w<11;++w) kw[i][z]+=k[i][w]*sw[w][z];
+        }
+        cost.assign(masks.size(),vector<long long>(masks.size()));
+        for(size_t i=0;i<masks.size();++i) for(size_t j=0;j<masks.size();++j)
+            for(int z=0;z<11;++z) cost[i][j]+=kw[i][z]*k[j][z];
+        for(int d=0;d<8;++d) for(size_t i=0;i<masks.size();++i)
+            if(sh[d][d]-cost[i][i]>=0) spectral_domain[d].set(i);
+        for(int d=0;d<8;++d) for(int e=0;e<8;++e) {
+            spectral_pair[d][e].resize(masks.size());
+            for(size_t i=0;i<masks.size();++i) for(size_t j=0;j<masks.size();++j) {
+                long long x=sh[d][d]-cost[i][i],y=sh[e][e]-cost[j][j],z=sh[d][e]-cost[i][j];
+                // Four-by-four determinant expansion uses at most24 products
+                // of four entries, each <1e9: it fits signed128 exactly.
+                if(abs(x)>=1000000000LL||abs(y)>=1000000000LL||abs(z)>=1000000000LL)
+                    throw runtime_error("Spectral scale exceeds exact128 bound");
+                if(x>=0&&y>=0&&(__int128)x*y-(__int128)z*z>=0)
+                    spectral_pair[d][e][i].set(j);
+            }
+        }
+    }
+
+    static __int128 det3(const array<array<long long,3>,3>& a) {
+        return (__int128)a[0][0]*( (__int128)a[1][1]*a[2][2]-(__int128)a[1][2]*a[2][1])
+              -(__int128)a[0][1]*( (__int128)a[1][0]*a[2][2]-(__int128)a[1][2]*a[2][0])
+              +(__int128)a[0][2]*( (__int128)a[1][0]*a[2][1]-(__int128)a[1][1]*a[2][0]);
+    }
+    long long entry(int d,int e) {return sh[d][e]-cost[chosen_index[d]][chosen_index[e]];}
+    bool partial_spectral(int d,unsigned placed) {
+        for(int i=0;i<8;++i) if((placed>>i)&1)
+            for(int j=i+1;j<8;++j) if((placed>>j)&1) {
+                array<int,3> labels{d,i,j}; array<array<long long,3>,3> m;
+                for(int u=0;u<3;++u) for(int v=0;v<3;++v) m[u][v]=entry(labels[u],labels[v]);
+                if(det3(m)<0) {++killed3;return false;}
+            }
+        for(int i=0;i<8;++i) if((placed>>i)&1)
+            for(int j=i+1;j<8;++j) if((placed>>j)&1)
+                for(int k=j+1;k<8;++k) if((placed>>k)&1) {
+                    array<int,4> labels{d,i,j,k}; __int128 det=0;
+                    for(int omit=0;omit<4;++omit) {
+                        array<array<long long,3>,3> m;
+                        for(int u=0;u<3;++u) {
+                            int col=0;
+                            for(int v=0;v<4;++v) if(v!=omit) m[u][col++]=entry(labels[u+1],labels[v]);
+                        }
+                        det+=(omit%2?-1:1)*(__int128)entry(d,labels[omit])*det3(m);
+                    }
+                    if(det<0) {++killed4;return false;}
+                }
+        return true;
+    }
+
     void visit(const array<Domain,8>& domains, unsigned remaining,
                const array<int,11>& columns, const array<int,55>& pairs,
                const vector<int>& group) {
         ++nodes;
         if((nodes&8191)==0 && elapsed()>seconds) {stopped=true; return;}
-        if(!remaining) {++count; return;}
+        if(!remaining) {
+            ++count;
+            if(solutions.is_open()) {
+                for(int i=0;i<8;++i) solutions<<(i ? " " : "")<<chosen[i];
+                solutions<<'\n';
+            }
+            return;
+        }
         int d=-1, best=1000;
         for(int i=0;i<8;++i) if((remaining>>i)&1) {
             int size=domains[i].count();
@@ -96,6 +182,8 @@ struct Search {
         unsigned next=remaining&~(1u<<d);
         int nleft=popcount(next);
         for(size_t j=0;j<masks.size()&&!stopped;++j) if(domains[d][j]) {
+            chosen_index[d]=j;
+            if(spectral&&!partial_spectral(d,255&~remaining)) continue;
             vector<int> stabilizer;
             bool canonical=true;
             for(int g:group) {
@@ -123,6 +211,7 @@ struct Search {
             auto nd=domains;
             for(int i=0;i<8;++i) if((next>>i)&1) {
                 nd[i]&=compatible[dc[d][i]][j]&~forbidden&required;
+                if(spectral) nd[i]&=spectral_pair[d][i][j];
                 if(nd[i].none()) good=false;
             }
             if(!good) continue;
@@ -134,7 +223,10 @@ struct Search {
                 }
                 if(nc[z]<lower||nc[z]>upper) good=false;
             }
-            if(good) visit(nd,next,nc,np,stabilizer);
+            if(good) {
+                chosen[d]=masks[j];
+                visit(nd,next,nc,np,stabilizer);
+            }
         }
     }
     double elapsed() {return chrono::duration<double>(chrono::steady_clock::now()-started).count();}
@@ -142,12 +234,15 @@ struct Search {
         Domain initial=all;
         for(int p=0;p<55;++p) if(!initial_pairs[p]) initial&=~containing_pair[p];
         array<Domain,8> domains; domains.fill(initial);
+        if(spectral) for(int i=0;i<8;++i) domains[i]&=spectral_domain[i];
         vector<int> group(images.size()); iota(group.begin(),group.end(),0);
         started=chrono::steady_clock::now();
         visit(domains,255,initial_columns,initial_pairs,group);
         cout<<"{\"status\":\""<<(stopped?"STOPPED":"EXHAUSTED")
             <<"\",\"count_mod_Aut_Z\":"<<count<<",\"nodes\":"<<nodes
-            <<",\"seconds\":"<<elapsed()<<",\"Aut_Z\":"<<images.size()<<"}\n";
+            <<",\"seconds\":"<<elapsed()<<",\"Aut_Z\":"<<images.size()
+            <<",\"spectral_minors_up_to\":"<<(spectral?4:0)
+            <<",\"killed3\":"<<killed3<<",\"killed4\":"<<killed4<<"}\n";
     }
 };
 int main(int argc,char**argv) {
@@ -155,5 +250,7 @@ int main(int argc,char**argv) {
     Search search;
     search.read(argv[1]);
     if(argc>2) search.seconds=stod(argv[2]);
+    if(argc>3&&string(argv[3])!="-") search.solutions.open(argv[3]);
+    if(argc>4) search.read_spectral(argv[4]);
     search.run();
 }
