@@ -19,6 +19,8 @@ de voisins communs entre B. Avec cellules, cas3/0/7 : UNKNOWN à60s,
 33660 types. La cible est une inégalité de bord uniforme sur les labels
 U/V de257, pas de nouveaux comptes ou la répétition des mêmes modèles.
 Aucun job de recherche actif à la rédaction de cette mise à jour.
+Note258 publiée au commit4b4be11 de codex/norm16-far-forest et envoyée
+à Claude au message550. Dernier inbox :549, aucun autre message.
 
 **Note257 — huit attaches entières supplémentaires exclues, sans rang.**
 Le multigraphe C des intersections au cœur entre les huit doubles est
