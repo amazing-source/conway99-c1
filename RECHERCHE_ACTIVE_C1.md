@@ -1,5 +1,10 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+Note260 publiée : commit `5100eac` de `codex/norm16-far-forest`.
+Entrée de bord survivante et réduction transmises à LAB au message553.
+Dernier inbox lu551, notification549–551 déjà traitée ; aucun nouvel
+accusé envoyé pour cette notification périmée.
+
 **Note260 — sous-branche P4, pas de nouvelle attache close.** Pour
 x-a-b-y dans Z, les deux centres ont un unique double commun d, et
 omettent un unique e. Chaque feuille voit e et un double de chacune
