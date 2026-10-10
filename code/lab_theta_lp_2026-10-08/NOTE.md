@@ -4104,3 +4104,12 @@ norm 20. The last one is a local statement about two or more norm-20 vectors sha
 neighbours of the other sign, of the kind already proved for norm 16 (uniqueness) and partly for norm 18.
 This is a restatement of a row of the counting LP, so it adds no constraint to that LP; it changes what has to be
 proved about norm 20.
+
+**Provenance of the two terms of 447 412 (01:41 UTC, 10/10).** The laptop session computed, over its nine-class polytope at rank 37
+with a_7 = b_1 = 0 (exact LP, no written certificate): min b_2 = 462, min b_3 = 24 948, min of
+476 (b_2 - 462) + 21 (b_3 - 24 948) = 0, min of 350 a_8 + 91 a_9 + 13 a_10 = 7462. So its programme confirms the
+identity and adds nothing to its right side: the theta programmes alone give 7462. The other 439 950 come ONLY from
+Codex's bound b_3 >= 45 898 (its note 196, section 5: rank-free, exact certificate with a rational point, on distinct
+vectors, using the collision analyses of its notes 179, 181, 186 and the nine-vertex census; re-read here, not
+re-derived). Everything said in 17.100 about 1280 / 4918 / 34 418 vectors and about "at most 4 per seed" depends on
+that bound; with the audited rows of this note alone the three numbers are 22, 82, 574.
