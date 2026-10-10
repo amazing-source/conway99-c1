@@ -78,7 +78,7 @@ def adjacency(core, attachment, forest, masks):
     return a
 
 
-def run(cases, orbits, seconds, directory, count_only=False, seed=None):
+def run(cases, orbits, seconds, directory, count_only=False, seed=None, executable='norm16_dz_catalogue.exe'):
     started = time.monotonic()
     cores, attachments, forests = source_data()
     forests = [f for f in forests if not f['edges_D']]
@@ -122,7 +122,7 @@ def run(cases, orbits, seconds, directory, count_only=False, seed=None):
                     scratch.write_text('\n'.join(top+[coreline]+tail)+'\n', encoding='ascii')
                     scale, h, w = matrices(ci, oi, f['id'])
                     spectral_file.write_text('\n'.join([str(scale)]+[' '.join(map(str, row)) for row in h+w])+'\n', encoding='ascii')
-                    command = [str(ROOT/'code/codex/norm16_dz_catalogue.exe'), str(scratch), str(seconds),
+                    command = [str(ROOT/'code/codex'/executable), str(scratch), str(seconds),
                                '-' if count_only else str(raw_file), str(spectral_file)]
                     completed = subprocess.run(command, check=True, capture_output=True, text=True)
                     result = json.loads(completed.stdout)
@@ -181,7 +181,8 @@ if __name__ == '__main__':
     parser.add_argument('--directory', default='data/codex_norm16_independent_catalogue')
     parser.add_argument('--count-only', action='store_true')
     parser.add_argument('--seed', help='Reuse exhausted results from this summary without recomputing them')
+    parser.add_argument('--executable', default='norm16_dz_catalogue.exe')
     args = parser.parse_args()
     run([int(x) for x in args.cases.split(',')],
         None if args.orbits is None else [int(x) for x in args.orbits.split(',')],
-        args.seconds, args.directory, args.count_only, args.seed)
+        args.seconds, args.directory, args.count_only, args.seed, args.executable)
