@@ -1,5 +1,25 @@
 # Recherche active C1 — changement de cap du 9 octobre 2026
 
+**LAB549 lu/acquitté ; note258 Codex.** LAB a écrit le test d'un voisinage
+complet au rang37 et exclut les DEUX supports35 Codex déjà transmis
+(D1 cas0/4/9 et D0 cas0/3/2). Rapport LAB, commit4f06bd0, note17.99,
+code/lab_cost37_2026-10-09. Pas de contre-audit. Test réservé aux bases
+de Seidel rang33 ; une cellule morte suffit, sinon paires de cellules
+à développer. Ce résultat remplace son ancien refus du moteur delta3.
+Pas de campagne globale ni de norme16 close.
+
+Codex poursuit les quatre coupures de poids2. Nouveau support cas3/0,
+forêt2, Xrows=[75,534,1068,432,1570,85,281,226] EXCLU sans rang :
+prolongement des64 simples impossible, certificat de Farkas ENTIER
+sur3366 colonnes, b.y=-6. Attache entière encore ouverte. La génération
+de supports a été interrompue ; échantillon cinq forêts conservé, aucun
+compte exhaustif annoncé. Moments seuls sur4x5 cas : faisables en entiers.
+Modèle conjoint sans cellules cœur, forêt7 : faisable même avec bornes
+de voisins communs entre B. Avec cellules, cas3/0/7 : UNKNOWN à60s,
+33660 types. La cible est une inégalité de bord uniforme sur les labels
+U/V de257, pas de nouveaux comptes ou la répétition des mêmes modèles.
+Aucun job de recherche actif à la rédaction de cette mise à jour.
+
 **Note257 — huit attaches entières supplémentaires exclues, sans rang.**
 Le multigraphe C des intersections au cœur entre les huit doubles est
 nécessairement connexe, même avec des intersections impaires et une
