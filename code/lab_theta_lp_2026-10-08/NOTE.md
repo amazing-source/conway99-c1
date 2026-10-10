@@ -4017,3 +4017,50 @@ Codex's note 256 (relayed, not re-derived): ten complete attachments of norm 16 
 intersections: C4 + C4 by a count 10 > 8, C3 + C5, and one integral certificate); for C = 2 C8 only the forests
 3, 6, 7 remain; 463 attachments with mixed parities undecided; a bounded pilot leaves 30 484 exactly-PSD supports on
 one attachment, so positivity alone does not finish that family.
+
+### 17.99 Norm 16 at rank 37: the test of one complete neighbourhood kills the two worlds exported by Codex; CORRECTION of 17.97 (01:24 UTC, 10/10)
+
+Status: a test, its C program, controls, and two worlds killed. NOT an exclusion of norm 16 (the catalogue of worlds
+is Codex's and is not complete), NOT audited by another session.
+
+**CORRECTION of 17.97.** I wrote there, and to Codex (message 320), that on a world of Seidel rank 33 "a cell is not
+killed by itself (tens of solutions expected)" and that I would not write the engine with residual dimension 3. The
+estimate ignored the exact covers of a complete neighbourhood; measured, cells do die, and the engine exists.
+
+**The test** (`work/c1_cost37_2026-10-09/n16cell.c`, Python original `n16_cell_test.py`, converter
+`n16_world_to_text.py`). World = core + D + Z (35 vertices) of Seidel rank 33; its two kernel vectors f, g are true
+relations, so its span V is non-degenerate of dimension 33 and the complement has dimension 3. A new vertex a is
+v_a + r_a; for a set S of new vertices R[a][b] = t_ab - <v_a, v_b> (t_aa = 0, t_ab = 6 on edges, 1 otherwise) is the
+Gram matrix of the r_a, so **rank_7(R) <= 3** (the Seidel rank of base + S is 33 + rank R).
+Cell of a core vertex c = its 8 simple neighbours. With the core and D neighbours of c they are all of N(c), so:
+every other base vertex x has EXACTLY (1 if x ~ c else 2) - |N(x) & N(c) & base| neighbours among the members; a
+member with no neighbour among the base neighbours of c is matched with another member, and these are the only
+adjacencies inside the cell; two members share at most 2 - [adjacent] base neighbours, exactly 2 inside one cell (p,q).
+Depth-first search on the 8 members with the rank test at every step. A cell with no completion kills the world.
+The discriminant of W is not used.
+
+**Results** (one process, C, no node cap):
+| world (Codex's export) | columns per member | cells dead / searched | nodes per cell | time per cell |
+|---|---|---|---|---|
+| edge branch, core 0 / attachment 4 / forest 9 / edge (1,4) | 11 to 67 | **16 / 16** | 3.5e5 to 5.6e6 | 0.1 to 1.0 s |
+| D independent, core 0 / attachment 3 / forest 2 | 34 to 192 | **4 / 16** (P3, P7, Q2, Q6) | 2.6e7 to 1.6e8 | 5 to 41 s |
+One dead cell is enough: both worlds are excluded at rank 37. In the second world the other 12 cells keep 2 to 21
+completions each; a world whose 16 cells all survive would need the pairs of cells (cheap once the completions are
+listed; not written).
+
+**Controls.** (i) C and Python give the same node counts at every depth on five cells. (ii) Rank not tested: the
+cells have completions (355, 80, 12, 2048 found in the first 2e7 nodes of four cells), so it is the rank that
+kills. (iii) `n16_rank_identity_check.py`: on 1000 random sets of columns with random adjacencies the direct Seidel
+rank of base + S equals 33 + rank(R); no column of the two domain files contradicts the relations f, g.
+No planted positive control exists for the rank itself (no graph to plant); (iii) stands in for it.
+
+**Cost of norm 16 by this route** = (number of positivity-surviving worlds, unknown: Codex has 71 351 on five
+attachments of one core, see the correction in 17.97) x (seconds per world: a few tenths in the edge branch, about a
+minute in the D-independent branch with this unoptimised program; pair-product tables and a choice of the cheapest
+cell should gain a factor 5 to 10). Worlds of Seidel rank 32 or 31 need the case analysis of Codex's note 254 (the
+extra kernel vector is a true relation or a radical vector); not written.
+
+**The laptop session's LP with my path row** (its message of 00:58 UTC, exact LP, not refereed): at rank 37 with
+a_7 = b_1 = 0 its nine-class programme now reproduces the ladder: at least 22 vectors of norm 16, 18 or 20; at least
+82 of norm 18 or 20 if norm 16 is absent; at least 574 of norm 20 if 16 and 18 are absent. The figure 574 is thus
+obtained a second time from audited rows only (lines, differences, paths).
