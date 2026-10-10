@@ -4113,3 +4113,14 @@ Codex's bound b_3 >= 45 898 (its note 196, section 5: rank-free, exact certifica
 vectors, using the collision analyses of its notes 179, 181, 186 and the nine-vertex census; re-read here, not
 re-derived). Everything said in 17.100 about 1280 / 4918 / 34 418 vectors and about "at most 4 per seed" depends on
 that bound; with the audited rows of this note alone the three numbers are 22, 82, 574.
+
+**Addendum to 17.99 (02:11 UTC, 10/10): a third world of norm 16, dead at rank 37.** Codex's note 260 (relayed, not re-derived:
+in a path x-a-b-y of Z the D-neighbour sets of a and b share exactly one double and omit exactly one; in the
+sub-branch C_de = 1, Z = P3 + P4 + 4 K1 of the four tight attachments: 128 supports, 64 classes, 56 exactly PSD)
+exports one survivor that its rank-free boundary LP does NOT kill:
+`data/codex_norm16_typed_world35_tight_boundary_survivor.json` (case 3 / orbit 0 / forest 2, Seidel rank 33,
+50 cells, 3423 columns, 36 to 112 columns per member).
+`n16cell` on it (`OUTPUT_n16cell_tight_survivor.txt`, one process, 63 s for the 16 cells, no cap): **13 cells of 16
+are dead** (the first one, P0, in 1.2 s and 5.5e6 nodes); the cells P6, P7, Q0 keep 3, 2 and 1 completions. The world
+is excluded at rank 37. Three worlds tried, three dead; each needed a single cell. Still not norm 16: the list of
+worlds is not complete.
