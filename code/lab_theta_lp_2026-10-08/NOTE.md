@@ -3964,3 +3964,39 @@ columns per member) one cell is of the same size as its 15 conditions and the te
 Codex's note 255, relayed (not re-derived here): if D has its edge de, the common far neighbour z* is isolated in Z,
 Z has no vertex of degree 3, the two far vertices seeing neither d nor e have degrees (2, 2); 11 forests remain and
 the last core (2,2,2,2) forces D independent.
+
+### 17.98 Cores with one edge in each support: none for norm 18 (hand proof), 182 for norm 20 (00:43 UTC, 10/10)
+
+Rank-free. Asked by Codex (option (i) of its message 544) to complete the covering list of cores.
+
+**Lemma (norm 18 has independent supports).** Let f = 1_P - 1_Q be an integral (-4)-eigenvector of norm 18 in a
+srg(99,14,1,2). Then P and Q are independent.
+Proof. By Codex's note 171 each support has at most one edge and the two have the same number. Suppose P has the
+edge p1 p2 and Q the edge q1 q2. A vertex v of a support has 4 + a_v neighbours in the other one (a_v its degree in its
+own support): 5 for p1, p2, q1, q2 and 4 for the others. Count the paths p1 - q - y with q in Q and y in P, y != p1:
+      sum over the neighbours q of p1 in Q of (deg_P(q) - 1)  =  sum over y of c(p1, y),
+where c is the number of common neighbours in Q. The right side is at most 2 . 7 + 1 = 15 (two for a non-adjacent
+pair, one for the adjacent pair p1 p2); the left side is at least 5 . 3 = 15, with equality only if no neighbour of p1
+has 5 neighbours in P, that is, p1 is adjacent to neither q1 nor q2. Equality holds, so c(p1, p2) = 1 as well. The
+same for p2. Hence N_Q(p1) and N_Q(p2) have 5 + 5 - 1 = 9 vertices together, none of them q1 or q2; but Q has only 9
+vertices. Contradiction. []
+(For norm 20 the same count gives 15 + (number of ends of the edge of Q adjacent to p1) <= 17: no contradiction.)
+Consequence: in Codex's table of note 171 the line e = 1 disappears, and the vector u of its note 254 always has norm
+36 for a vector of norm 18.
+
+**Enumeration** (`work/c1_cost37_2026-10-09/cores_edge.py`; block systems with two blocks of size 5, two points of
+degree 5, the pair of special points in exactly one block, the two special blocks sharing exactly one point, the
+conditions of the mixed pairs checked on the explicit 2m-vertex core graph; same method as `cores1820.py`):
+
+| norm | m | link types of p1 | labelled leaves | classes | up to the exchange of the supports |
+|---|---|---|---|---|---|
+| 16 (control: none, Codex's note 166) | 8 | 0 | 0 | 0 | 0 |
+| 18 | 9 | 1 | 0 | 0 (the lemma) | 0 |
+| 20 | 10 | 14 | 519 | 182 | 132 |
+
+Consistency check for m = 10: the generation is not symmetric in the two supports, and the dual of each of the 182
+classes is found among the 182. In all of them the third vertex of the triangle on the edge of P is not an end of the
+edge of Q, and conversely. File `cores_norm20_one_edge.json`.
+
+**The covering list of cores of the short eigenvectors is now:** norm 14: 1 (Fano); norm 16: 5; norm 18: 26;
+norm 20: 1199 (independent supports) + 182 (one edge each). Not audited by another session.
