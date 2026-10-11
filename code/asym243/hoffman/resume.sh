@@ -9,9 +9,9 @@ W=${1:-3}; T=${2:-1800}; D=cubes_alpha99
 [ -f $D/ledger.jsonl ] || { [ -f $D/ledger_snapshot.jsonl ] && cp $D/ledger_snapshot.jsonl $D/ledger.jsonl; }
 [ -f $D/ledger.jsonl ] || python3 cuberunner.py $D init
 mkdir -p $D/logs
-running=$(pgrep -fc "cuberunner.py $D work")
+running=$(pgrep -fc "^python3 cuberunner.py $D work")
 for i in $(seq $((running + 1)) $W); do
   nohup python3 cuberunner.py $D work $T >> $D/logs/worker_$i.out 2>&1 &
 done
-pgrep -f "autosave.sh" >/dev/null || nohup bash autosave.sh >> $D/logs/autosave.out 2>&1 &
-echo "workers: $(pgrep -fc "cuberunner.py $D work")"
+pgrep -f "^bash autosave.sh" >/dev/null || nohup bash autosave.sh >> $D/logs/autosave.out 2>&1 &
+echo "workers: $(pgrep -fc "^python3 cuberunner.py $D work")"
