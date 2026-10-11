@@ -12,13 +12,15 @@ démontré de brisure progressive de symétrie. Point de départ : BvLS et le ju
 | Bascule de ligne = 80 re-réglages de grilles AG(2,3) | **calculé** (exact) |
 | Étalement régulier ⇒ revêtement triple de BH = srg(81,20,1,6) | **démontré** (spectre + unicité de BH) |
 | Pas d'étalement régulier pour v = 99, 6273, 494019 | **démontré** (multiplicités non entières) |
-| Nouveau srg(243,22,1,2) n° 3, \|Aut\| = 864 | **certifié** (srg vérifié, nauty, invariants distincts) |
-| Grilles(Γ) = 270 + 3·(grilles plates de BH) | **vérifié sur 3 graphes**, preuve en §5 |
+| Nouveau srg(243,22,1,2) n° 3, \|Aut\| = 864 | **certifié** (srg vérifié, nauty + Schreier–Sims, invariants distincts) |
+| Nouveau srg(243,22,1,2) n° 4, \|Aut\| = 3888 | **certifié** (idem) |
+| Mécanisme : re-voltage invariant par Stab(S), S ⊂ BH | **implémenté** ; classifications complètes pour plusieurs S (§4 bis) |
+| Grilles(Γ) = 270 + 3·(grilles plates de BH) | **démontré** (§5), vérifié sur les 4 graphes |
 | Revêtements de Cayley sur un 3-groupe non abélien | **exclus** (recherche exhaustive après jauge) |
 | Phénomène « deux solutions » : seuil exact à la ligne | **calculé** (sommet ≥ 2000, arête ≈ 1900, ligne 2, 2 lignes 1, grille 1) |
 | Revêtement de BH : soit Z₃ (\|Aut\| divisible par 3), soit stabilisateur d'étalement = 2-groupe | **établi** (calcul, §6) |
 | Existence d'un S₃-revêtement (candidat asymétrique) | **OUVERT** (§6) |
-| srg(243,22,1,2) asymétrique | **non obtenu** à ce stade |
+| srg(243,22,1,2) asymétrique | **non obtenu** ; réduit à l'existence d'un S₃-revêtement ou d'un graphe sans étalement régulier |
 
 ## 1. La bascule comme rotation d'espaces propres
 Pour un srg(243,22,1,2), A = 9P₄ − 5I + J/9, où P₄ est le projecteur sur l'espace propre de 4. Deux srg de mêmes
@@ -63,7 +65,7 @@ décrit par une bijection σ_e entre fibres pour chaque arête e de BH, et il es
 
 Vérifications : BvLS est un revêtement pour ses 11 classes parallèles, Γ′ pour une seule (`cover.py`).
 
-## 4. Un troisième srg(243,22,1,2)
+## 4. Un troisième srg(243,22,1,2) (voir aussi Γ₄, §4 bis)
 Trouvé par SAT dans l'espace des re-réglages selon h₀ (`run_affine.py`, puis retrouvé par `ucover.py`).
 
 | | BvLS | Γ′ | **Γ₃ (nouveau)** |
@@ -78,6 +80,37 @@ Trouvé par SAT dans l'espace des re-réglages selon h₀ (`run_affine.py`, puis
 
 Les trois graphes sont deux à deux non isomorphes : le nombre de grilles suffit à les distinguer. Γ₃ réfute lui aussi
 la conjecture de Reimbayev (n₃ = 14 256 > 0). Fichier : `code/asym243/aff0_1.npy` (export `data/srg243/family/`).
+
+## 4 bis. Mécanisme dirigé par la symétrie, et un quatrième graphe
+Pour un ensemble S de fibres (de sommets de BH), soit K = Stab_{Aut BvLS}(étalement h₀, S) ; K contient toujours la
+translation h₀. On cherche, dans le modèle des droites affines (`stabcover.py`), les re-voltages **invariants par K** :
+on impose des égalités sur les orbites de K agissant sur les droites candidates.
+
+Plus K est petit, plus l'espace est grand. C'est le levier de brisure progressive, et chaque cas se résout en quelques
+secondes à quelques minutes.
+
+| S (sous-structure de BH) | \|K\| | classes obtenues | statut |
+|---|---|---|---|
+| sommet | 4320 | BvLS, jumeau | **complet** (INFEASIBLE ensuite) |
+| arête | 432 | BvLS, jumeau | complet |
+| ligne | 1296 | BvLS | complet |
+| grille 3×3 | 864 | BvLS | complet |
+| 3-coclique | 432 | BvLS | complet |
+| **paire non adjacente** | **144** | **Γ₄ (\|Aut\| = 3888)**, jumeau | 3 solutions |
+| K₂,₆ | 144 | Γ₄, jumeau | 3 solutions |
+| ligne + point | 24 | jumeau, **Γ₃** | 3 solutions |
+| aléatoires (\|K\| = 1296, 96, 54) | — | BvLS, jumeau, Γ₃ | complets |
+| aléatoires (\|K\| = 24, 18, 12, 6, 3) | — | voir le journal `stabrun2.log` | 12 solutions par cas |
+
+**Γ₄** : |Aut| = 3888 = 2⁴·3⁵, orbites 81 + 162, 837 grilles (31 par sommet), 189 grilles plates de BH, 9720 paires
+tordues, 5670 prismes, 4 990 410 hexagones, un seul étalement régulier. Fichiers :
+`data/srg243/family/gamma4_aut3888.{edges,g6,autgens}`.
+
+Observation : dans toutes ces recherches, il n'apparaît que 4 classes : BvLS, le jumeau, Γ₃ et Γ₄.
+**Conjecture : ce sont les seuls srg(243,22,1,2) Z₃-revêtements affines de BH.** Pour une classe générique (|Aut| = 3),
+l'orbite de solutions serait environ 1600 fois plus grosse que celle de Γ₃ ; un tirage aléatoire la rencontrerait donc
+d'abord. Or les tirages aléatoires sans symétrie (modèle affine, CP-SAT avec indices aléatoires, kissat avec
+contraintes) ne redonnent que Γ₃.
 
 ## 5. La torsion est une courbure
 Pour un revêtement de BH, appelons **plate** une grille 3×3 de BH (il y en a 405) dont l'holonomie autour de chaque
@@ -143,6 +176,36 @@ Candidats par ligne de la région lointaine, dans BvLS (`rowcands.py`) :
 
 La ligne est exactement le seuil. Sur Γ₃, les 7 orbites de triangles sont toutes rigides (`triswitch.py`).
 
+## 7 bis. Tableau vérifié de la famille, et symétrie locale contre globale
+Généré par `family_table.py` (`family_table.md`). Méthode :
+- srg vérifié sur les 29 403 paires, en Python pur ;
+- |Aut| calculé par nauty, chaque générateur vérifié comme automorphisme, puis l'ordre du groupe engendré recalculé
+  par Schreier–Sims (sympy) ;
+- non-isomorphisme par formes canoniques nauty et par le nombre de grilles.
+
+| graphe | \|Aut\| | orbites | grilles | grilles plates de BH | paires tordues | prismes | hexagones | étalements réguliers |
+|---|---|---|---|---|---|---|---|---|
+| BvLS | 3 849 120 | 243 | 1485 | 405 | 0 | 8910 | 4 980 690 | 11 |
+| jumeau Γ′ | 4 320 | 3, 60, 180 | 405 | 45 | 19 440 | 2430 | 5 000 130 | 1 |
+| **Γ₄** | **3 888** | 81, 162 | 837 | 189 | 9 720 | 5670 | 4 990 410 | 1 |
+| **Γ₃** | **864** | 27, 108, 108 | 621 | 117 | 14 256 | 4158 | 4 994 946 | 1 |
+
+*Local contre global.* Pour chaque orbite de sommets, on compare deux groupes :
+- le groupe du **graphe local des grilles**, sur les 11 lignes par x, deux lignes étant adjacentes si elles engendrent
+  une grille ;
+- le **stabilisateur global** de x.
+
+| graphe | arêtes du graphe local | \|Aut local\| | \|Stab(x)\| |
+|---|---|---|---|
+| BvLS | 55 (K₁₁) | 39 916 800 | 15 840 |
+| jumeau | 55 / 19 / 13 | 39 916 800 / 725 760 / 1152 | 1440 / 72 / 24 |
+| Γ₄ | 31 | 17 280 | 24 / 48 |
+| Γ₃ | 23 | 2 304 | 8 / 32 |
+
+La symétrie locale dépasse la symétrie globale par des facteurs de 300 à 2500. Dans tous les cas, la ligne d'étalement
+est adjacente aux 10 autres dans le graphe local (grilles « fibre × relevé »). La perte de symétrie globale vient des
+grilles transverses, c'est-à-dire de la courbure.
+
 ## 8. Ce qui se transfère à (99,14,1,2)
 1. **Chirurgie spectrale.** Deux srg(99,14,1,2) qui coïncident hors de F × F diffèrent par D = 7(P′₃ − P₃), une
    rotation dans E₃(F) ⊕ E₋₄(F). Le critère de rigidité (E₃(F) = 0 ou E₋₄(F) = 0 ⇒ complétion unique) s'applique tel
@@ -152,3 +215,30 @@ La ligne est exactement le seuil. Sur Γ₃, les 7 orbites de triangles sont tou
    Rien n'empêche donc, de ce côté, un graphe de Conway asymétrique (cas C1).
 3. **Torsion = courbure.** À 243, la torsion qu'exige Makhnev se réalise sans perte de régularité locale, comme une
    courbure d'une connexion Z₃. À 99, la torsion est obligatoire (Makhnev) mais elle ne peut pas venir d'un revêtement.
+4. **Où se loge la symétrie résiduelle.** À 243, tous les graphes connus gardent un Z₃ de revêtement, et le mécanisme
+   ne peut pas descendre sous ce plancher sans monodromie non abélienne (§6). À 99, le cas C1 (asymétrique) est le seul
+   restant. Le lemme 1 dit que ce graphe n'aurait aucune structure de revêtement, donc aucun « plancher » de ce type. Le
+   cas 243 n'est donc pas un modèle de C1 ; c'est plutôt un contre-modèle, qui montre comment la symétrie *survit*
+   quand une partition équitable en lignes existe.
+5. **Seuil de rigidité.** Le phénomène « 2 solutions exactement à la ligne » (§7) est la version 243 de la route Ω. À
+   99, la région lointaine d'un triangle a 60 sommets, et les dimensions forcées par comptage sont dim E₃(F) ≥ 54 − 39 =
+   15 et dim E₋₄(F) ≥ 44 − 39 = 5. La complétion de la route Ω est donc a priori une rotation entre un espace de
+   dimension ≥ 15 et un espace de dimension ≥ 5. Le critère de rigidité de §1 s'applique tel quel à chaque complétion
+   partielle.
+
+## 9. Bilan par rapport à l'objectif
+- **Objectif « |Aut| = 1 » : non atteint.** Ce qui est démontré (calcul) : un srg(243,22,1,2) asymétrique n'a pas
+  d'étalement régulier, **sauf** s'il existe un S₃-revêtement de BH, question ouverte (§6). Tous les mécanismes de
+  re-voltage aboutissent à des Z₃-revêtements, donc à |Aut| divisible par 3.
+- **Famille.** Deux nouveaux graphes (Γ₃ : 864, Γ₄ : 3888), certifiés, s'ajoutent à BvLS et au jumeau. Le mécanisme
+  qui les produit (re-voltage invariant par Stab(S)) est uniforme et explique le jumeau (S = sommet). Il donne des
+  classifications complètes sous symétrie (§4 bis), mais ne « descend » pas : on retombe toujours sur les mêmes 4
+  classes, d'où la conjecture de §4 bis.
+- **Ce que la recherche a établi en route** :
+  - la chirurgie spectrale et son critère de rigidité ;
+  - le seuil de rigidité exact (ligne) ;
+  - le dictionnaire étalement régulier ↔ revêtement de BH ;
+  - torsion = courbure (formule des grilles) ;
+  - la non-existence d'étalements réguliers à 99, 6273 et 494019 ;
+  - l'exclusion des revêtements de Cayley non abéliens ;
+  - la dichotomie Z₃ / 2-groupe, avec la relation linéaire de Jørgensen et l'absence de symétrie d'ordre impair.

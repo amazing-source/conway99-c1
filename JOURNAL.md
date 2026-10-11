@@ -663,3 +663,11 @@
     formalisation. Restent : un document de preuve unique et figé avec manifeste, une passe d'arbitre, et la décision
     sur les réseaux à enregistrements locaux au labo.
   - Avec C3 (Lean) et Behbahani–Lam : **tout srg(99,14,1,2) est asymétrique.** C1 est désormais tout le problème.
+
+## 11/10 — srg(243,22,1,2) : revêtements de BH, Γ₃ et Γ₄, dichotomie Z₃ / 2-groupe (note 165)
+- Bascule = rotation d'espaces propres (D = 9(P′₄ − P₄)) ; bascule de ligne = 80 re-réglages de grilles AG(2,3).
+- Étalement régulier ⇔ 3-revêtement de Brouwer–Haemers ; impossible à v = 99, 6273, 494019 (lemme spectral).
+- Deux nouveaux srg(243,22,1,2) : Γ₃ (|Aut| = 864) et Γ₄ (|Aut| = 3888), certifiés (`data/srg243/family/`).
+- Torsion = courbure : grilles = 270 + 3·(grilles plates de BH).
+- Revêtements S₃ (seuls candidats asymétriques avec étalement) : relation de Jørgensen, aucune symétrie d'ordre impair ;
+  existence OUVERTE. Objectif |Aut| = 1 non atteint.
