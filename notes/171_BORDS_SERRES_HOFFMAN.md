@@ -165,7 +165,8 @@ Kissat cannot save its state, so the α = 22 search is cut into **cubes** (`hoff
 - A solver killed with its worker leaves no orphan (PDEATHSIG). The cube of a dead worker is taken over automatically.
 - `hoffman/autosave.sh` copies the live ledger (ignored by git) to `ledger_snapshot.jsonl` every 20 min, then commits and
   pushes only that snapshot and `STATUS.txt`. `resume.sh` restores the ledger from the snapshot if the container was lost.
-- After a restart: `bash code/asym243/hoffman/resume.sh 3 1800` (idempotent). At most one cube of ≤ 30 min per worker
+- After a restart: `bash code/asym243/hoffman/resume.sh 3 900` (idempotent; 15 min since 11 Oct 22:10, because the
+  container restarts more often than every 30 min and the same cubes kept restarting from zero). At most one cube per worker
   can be lost.
 - Initial cubes: A and B split immediately into 4 + 4 children (block 25 fixed).
 
