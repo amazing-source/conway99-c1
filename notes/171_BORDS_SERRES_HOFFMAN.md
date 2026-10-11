@@ -87,7 +87,33 @@ BvLS design (one coclique): 198 distinct blocks, intersections 0 / 1 / 2 with mu
 - C++ enumerator `hoffman/rowdom.cpp`, exhaustive. Assembly `hoffman/assemble.py`: forward checking, no symmetry
   reduction.
 
-*Results: see §4 bis (to be filled in when the computation finishes).*
+### 4 bis. Result: total rigidity
+- Domains: 72 rows of 187 candidates, 90 of 191, 36 of 227 (38,826 candidates in total). The true row of BvLS is in each
+  domain (checked).
+- Exhaustive assembly, **with no symmetry reduction**: **1 single completion** (277 nodes, 1.8 s). It is a
+  srg(243,22,1,2) checked in integers and isomorphic to BvLS (nauty, |Aut| = 3,849,120).
+
+> **Theorem (exhaustive computation).** Every srg(243,22,1,2) containing a Hoffman coclique whose design is this
+> 2-(45,5,2) design of BvLS **is BvLS**. More precisely, the boundary determines the 198 other vertices **uniquely**:
+> there is no "second solution" here.
+
+**Comparison of rigidities:**
+
+| boundary | free vertices | completions |
+|---|---:|---:|
+| line + N(T) (note 165, dossier) | 180 | 2 (BvLS, twin) |
+| line + N(T) − 2 prisms (dossier) | 192 | 27,648 = 2 classes |
+| **Hoffman coclique + design** | **198** | **1 (BvLS)** |
+
+A tight boundary freezes more than a triangle boundary, even though it leaves more vertices free.
+
+**Reading.**
+1. The Hoffman coclique is the **most rigidifying** tight structure seen so far.
+2. In the known family it exists only in BvLS: the three less symmetric graphs have none (§3).
+3. By analogy with Paley 25, an asymmetric srg(243,22,1,2), if one exists, should be sought **without** a Hoffman
+   coclique and **without** an imposed partition.
+4. At 99 the same mechanism suggests the following. If α(Γ) = 22, Γ would probably be determined by its 2-(22,4,2)
+   design, so the sub-case reduces to designs. Hence the interest of the direct exact model of §5.
 
 ## 5. Conway-99: the sub-case α = 22 (structure proved here)
 **Bound.** 99·4/18 = **22**. A Hoffman coclique C (22) ⇔ (A + 4I)𝟏_C = 4·𝟏. Each of the 77 outside vertices then has
@@ -121,5 +147,8 @@ appears to be open.
 exact encoding plus WLOG symmetry breaking.
 - Positive controls: srg(9,4,1,2) SAT; srg(25,12,5,6) SAT (decoded and checked).
 - Conway: 2.04 M variables, 7.17 M clauses, with blocks 22 = {0,1,2,3} and 23 = {0,4,5,6} fixed (WLOG). Kissat
-  **pilot** launched (limit 6 h). **SAT** would mean a Conway graph. **UNSAT** would mean α(Γ) ≤ 21 for every
+  **pilot** launched (limit 6 h).
+  - Exhaustive split, WLOG: point 1 lies in exactly one other block through 0, say block 24 = {0,1,a,b}. Then
+    {a,b} ∩ {2,3} = ∅, and at most one of a, b lies in {4,5,6}. Case **A**: 24 = {0,1,4,7}; case **B**:
+    24 = {0,1,7,8}. Both run in parallel with the base instance. **SAT** would mean a Conway graph. **UNSAT** would mean α(Γ) ≤ 21 for every
   srg(99,14,1,2): a covering result for one sub-case, which would then need a certificate (DRAT).
