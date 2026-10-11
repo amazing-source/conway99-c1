@@ -41,8 +41,8 @@ def analyse(U, name):
         dist = np.min(np.abs(np.array([np.real(w ** k * z) - target for k in range(3)])), axis=0)
         out.append(f"{lab}: |[a,a^T]| = {np.linalg.norm(a @ a.T - a.T @ a):.2e}, max dist of eigenvalues to lines Re(w^k z) = {target:+.3f}: {dist.max():.2e}, |z| in [{np.abs(z).min():.4f}, {np.abs(z).max():.4f}]")
     print(name); [print("   ", o) for o in out]
-args = sys.argv[1:]
-for a in args:
+if __name__ == "__main__":
+  for a in sys.argv[1:]:
     if a.endswith(".npy") and "Ucurve" in a: analyse(np.load(a), a)
     else:
         path, pidx = a.split(":"); analyse(from_graph(path, int(pidx)), a)

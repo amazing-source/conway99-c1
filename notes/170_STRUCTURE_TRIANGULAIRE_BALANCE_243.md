@@ -100,6 +100,30 @@ V_z ⇔ s = 2|b| ⇔ spec α ⊂ ∂T. (The centre z = 0 is excluded: there βγ
   Y_BB = 0 for every grid B**.
 - Balance (R side and S side) ⇔ Y = 0.
 
+**(vii) Scalar form (proved).** α is normal, so α, αᵀ and the C_k = DᵏCD⁻ᵏ commute. On V_z we have
+Y_RR² = s² − 4|b|². By the factorisation x³ + y³ + z³ − 3xyz = ∏(x + ωᵏy + ω²ᵏz):
+
+  **Y_RR² = (8/3)·(8/27 − α³ − (αᵀ)³ − 2ααᵀ) = (8/3)·∏_k (1 − DᵏCD⁻ᵏ) ⪰ 0**  (checked to 10⁻¹⁵).
+
+The operator is positive semidefinite, so it vanishes iff its trace does:
+
+  **balance ⇔ tr(α³) + ‖α‖² = 16.**
+
+Both terms are **local**:
+- ‖α‖² = (8/729)·Σ_{pairs A~B} e_AB, where e_AB is the number of common edges of A and σ*B (Parseval, note 168);
+- tr(α³) = (24/729)·Σ_{triangles T} τ_R(T), where τ_R(T) = tr(a_AB a_BC a_CA) is the holonomy around the triangle,
+  compressed onto the line functions at each step.
+
+The lemma is therefore a **"Gauss–Bonnet"-type identity**:
+
+  **3 Σ_{T} τ_R(T) + Σ_{A~B} e_AB = 1458 = 2·3⁶**  (729 triangles, 243 pairs).
+
+It is checked to 10⁻¹² on the 4 graphs and on the deformed configurations. Example, BvLS: Σe = 4374, and 81 full
+triangles (τ = 4) plus 648 translation triangles (τ = −2).
+
+Also: per-cell orthogonality gives ‖a_AB‖ = ‖d_AB‖ for each block (CS decomposition), hence ‖α‖ = ‖δ‖. Together
+with the identities above, this makes **R-balance ⇔ S-balance**.
+
 **Where the proof stands.** Y is central with zero cell-diagonal blocks. If the cell projections belong to 𝒜, then Y
 commutes with them and is therefore zero; this covers the "irreducible" configurations. In general (graphs with
 symmetry), more work is needed. Numerically: |Y| < 10⁻¹⁴ on all 4 graphs and on every deformed configuration.
@@ -130,4 +154,5 @@ component in S_B ⊗ S_{B′}.
 - `follow.py`, `invariants.py`: continuation and gauge invariants (§2).
 - `chiral.py`, `pairing.py`, `normal.py`, `xstruct.py`: tripartite identities, part-weights, normality of α, triangle
   spectrum, structure of X and Y (§3).
+- `scalar_identity.py`: scalar form tr(α³) + ‖α‖² = 16 and the formula for Y_RR² (§3 vii).
 - `orthomodel.py`, `relax.py`: real relaxations (§5).
