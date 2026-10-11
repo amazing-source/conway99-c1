@@ -152,3 +152,15 @@ exact encoding plus WLOG symmetry breaking.
     {a,b} ∩ {2,3} = ∅, and at most one of a, b lies in {4,5,6}. Case **A**: 24 = {0,1,4,7}; case **B**:
     24 = {0,1,7,8}. Both run in parallel with the base instance. **SAT** would mean a Conway graph. **UNSAT** would mean α(Γ) ≤ 21 for every
   srg(99,14,1,2): a covering result for one sub-case, which would then need a certificate (DRAT).
+
+## 6. Crash-proof execution (since 19:45)
+Kissat cannot save its state, so the α = 22 search is cut into **cubes** (`hoffman/cuberunner.py`):
+- Each verdict (UNSAT, SAT, SPLIT) is written as soon as it is known to `hoffman/cubes_alpha99/ledger.jsonl`, with
+  fsync and a lock.
+- A cube that is not decided within 30 min is **split** by fixing one more block through point 0. The children cover
+  it exactly (signature symmetry, see the docstring), so its verdict is never lost.
+- A solver killed with its worker leaves no orphan (PDEATHSIG). The cube of a dead worker is taken over automatically.
+- `hoffman/autosave.sh` commits and pushes **only** the ledger and `STATUS.txt` every 20 min.
+- After a restart: `bash code/asym243/hoffman/resume.sh 3 1800` (idempotent). At most one cube of ≤ 30 min per worker
+  can be lost.
+- Initial cubes: A and B split immediately into 4 + 4 children (block 25 fixed).
