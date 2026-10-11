@@ -5,6 +5,7 @@ Usage: python3 conway_grids.py WORKERS TIME_LIMIT"""
 import sys, time, itertools, numpy as np
 from ortools.sat.python import cp_model
 from regluing import block_model
+from ortools.sat.python import cp_model as _cp
 from lib243 import is_srg, aut
 n = 99
 cells = [list(range(9 * i, 9 * i + 9)) for i in range(11)]
@@ -13,10 +14,10 @@ for c in cells:                                    # grid K3 x K3 on labels (r, 
     for a in range(9):
         for b in range(9):
             if a != b and (a // 3 == b // 3 or a % 3 == b % 3): G[c[a], c[b]] = 1
-for j in range(1, 11):                            # gauge: grid 0 -> grid j is the identity
-    for a in range(9): G[cells[0][a], cells[j][a]] = G[cells[j][a], cells[0][a]] = 1
-free = [(i, j) for i in range(1, 11) for j in range(i + 1, 11)]
+free = [(i, j) for i in range(0, 11) for j in range(i + 1, 11)]
 m, var, ncons = block_model(G, cells, free, k=14, lam=1, mu=2, forbid_original=False)
+from gridgauge import add_gauge
+add_gauge(m, var, cells, {j: 0 for j in range(1, 11)})   # valid Aut(grid) normalisation (not identity)
 # degree is automatic (4 inside + one per other grid)
 print(f"model: {len(free)} free matchings, {len(var)//2} edge variables, {ncons} pair constraints", flush=True)
 s = cp_model.CpSolver(); s.parameters.num_workers = int(sys.argv[1]); s.parameters.max_time_in_seconds = float(sys.argv[2])

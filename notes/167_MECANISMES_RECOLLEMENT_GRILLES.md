@@ -75,6 +75,19 @@ Données : 99 partitions en grilles (BvLS 55, jumeau 10, Γ₃ 15, Γ₄ 19).
    ne redonne que Γ₃ (`regluing.py`, `reglue_drive.py`). Les représentations en grilles sont **localement rigides** :
    la liberté est globale, pas locale.
 
+5. **Pas de loi locale déterministe type de vrillage → motif** (`twist_pattern.py`, toutes partitions) :
+
+   | vrillage (arêtes communes, droites communes) | motif 9 | motif 3+3+3 |
+   |---|---|---|
+   | (18, 6) aligné | 17073 | 396 |
+   | (12, 3) | 4104 | 0 |
+   | (12, 0) | 540 | 792 |
+   | (9, 3) | 720 | 0 |
+   | (8, 0) | 0 | 432 |
+
+   Quelques implications sont nettes : (8,0) ⇒ 3+3+3 ; (12,3) et (9,3) ⇒ 9. Mais l'aligné admet les deux motifs. Le
+   motif est donc une donnée *globale* (holonomie des triangles), non déterminée par le vrillage d'une seule paire.
+
 ## 4. Nécessaire contre artefact (bilan provisoire)
 | structure | statut |
 |---|---|
@@ -87,6 +100,18 @@ Données : 99 partitions en grilles (BvLS 55, jumeau 10, Γ₃ 15, Γ₄ 19).
 | plancher Z₃ | **artefact de la fibre-ligne** (disparaît en fibre-grille, Γ₃) |
 | partitions en grilles | **intrinsèque probable** : présentes dans les 4 graphes sans avoir été imposées, y compris hors des étalements de lignes |
 | loi des motifs 9 \| 3+3+3 | **observée partout**, à démontrer |
+
+## 4 bis. Erratum de normalisation et contrôle positif
+Une première version des modèles « à partir de zéro » fixait σ₀ⱼ = identité. Or chaque cellule porte la structure de
+grille standard : on ne peut la renommer que par un automorphisme de la grille (72 éléments), pas par une permutation
+quelconque. L'identité forçait donc des recollements **alignés**, et un UNSAT n'aurait rien prouvé.
+
+**Normalisation correcte** (`gridgauge.py`). Aut(K3×K3) est transitif sur les points, et le stabilisateur d'un point
+est transitif sur ses 4 voisins comme sur ses 4 non-voisins. On peut donc supposer σ_Rj(0) = 0 et σ_Rj(1) ∈ {1, 4},
+avec une cellule de référence R par cellule j.
+
+**Contrôle positif** (`validate_gridmodel.py`). BvLS (partition 0) et Γ₃ (partition 2, deck = 1), relabellisés selon
+cette normalisation, sont acceptés par le modèle (OPTIMAL) et redonnent le même graphe.
 
 ## 5. Expériences en cours
 - **243 « à partir de zéro ».** Revêtements de K_{9,9,9} à fibres grilles, sans structure affine ni étalement imposé

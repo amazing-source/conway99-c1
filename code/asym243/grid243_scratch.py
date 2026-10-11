@@ -6,6 +6,7 @@ Usage: python3 grid243_scratch.py SEED WORKERS TLIMIT NSOL [nudge]"""
 import sys, time, pickle, random, numpy as np
 from ortools.sat.python import cp_model
 from regluing import block_model
+from ortools.sat.python import cp_model as _cp
 from lib243 import *
 from spreads import regular_spreads
 seed, workers, tl, nsol = int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), int(sys.argv[4])
@@ -17,15 +18,11 @@ for c in cells:
     for a in range(9):
         for b in range(9):
             if a != b and (a // 3 == b // 3 or a % 3 == b % 3): G[c[a], c[b]] = 1
-fixed_pairs = set()
-for j in range(9, 27):
-    fixed_pairs.add((0, j))
-for j in range(1, 9):
-    fixed_pairs.add((j, 9))
-for (i, j) in fixed_pairs:
-    for a in range(9): G[cells[i][a], cells[j][a]] = G[cells[j][a], cells[i][a]] = 1
-free = [(i, j) for i in range(27) for j in range(i + 1, 27) if part[i] != part[j] and (i, j) not in fixed_pairs]
+free = [(i, j) for i in range(27) for j in range(i + 1, 27) if part[i] != part[j]]
 m, var, ncons = block_model(G, cells, free, k=22, lam=1, mu=2, forbid_original=False)
+from gridgauge import add_gauge
+ref = {j: 0 for j in range(9, 27)}; ref.update({j: 9 for j in range(1, 9)})
+add_gauge(m, var, cells, ref)
 print(f"model: {len(free)} free matchings, {len(var)//2} vars, {ncons} constraints", flush=True)
 rng = random.Random(seed)
 if len(sys.argv) > 5:          # random hints to diversify
