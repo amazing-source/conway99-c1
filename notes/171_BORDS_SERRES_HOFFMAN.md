@@ -241,7 +241,8 @@ b = 22 − rank₇(Q). Then det L = 3ᵃ7ᵇ.
 **Reading.** On its own the parity condition is no contradiction: it ties the 3-rank of the design to the 7-rank of
 the completion. It is a filter on designs that a lattice classification (even lattices of rank 22 and level 21, generated
 by norm-6 vectors forming a 2-design with inner products in {−3, …, 1}) could sharpen. The search stays open. This is
-the most structured new lead for α = 22, and it is complementary to the cube search of §6, which remains the covering
+the most structured new lead for α = 22 (followed up in note 172: no obstruction at the discriminant level), and it is
+complementary to the cube search of §6, which remains the covering
 route.
 
 **Paused (11 Oct 2026, 22:15 UTC).** The search was stopped on request, because container restarts kept killing the
