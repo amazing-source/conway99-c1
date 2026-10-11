@@ -243,3 +243,8 @@ the completion. It is a filter on designs that a lattice classification (even la
 by norm-6 vectors forming a 2-design with inner products in {−3, …, 1}) could sharpen. The search stays open. This is
 the most structured new lead for α = 22, and it is complementary to the cube search of §6, which remains the covering
 route.
+
+**Paused (11 Oct 2026, 22:15 UTC).** The search was stopped on request, because container restarts kept killing the
+cubes before they could finish. State at the pause: 8 SPLIT, 89 PENDING, and 3 stale RUNNING (A.0.0, B.2, B.3), with
+3.00 solver-hours banked. No cube is decided: no SAT, no UNSAT. To restart, run `resume.sh 3 900`; it reclaims the
+stale cubes. Since no cube is decided, the result says nothing about the α = 22 sub-case.
