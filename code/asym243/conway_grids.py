@@ -1,6 +1,6 @@
 """Sub-case (A) of C1 (note 166): srg(99,14,1,2) as 11 disjoint 3x3 grids with a perfect matching between any two
-grids (a 9-fold grid cover of K_11).  Unknowns: the 55 matchings.  Gauge: the matchings from grid 0 to grids 1..10 are
-the identity (relabelling the points of grids 1..10).  Uses the same exact model as regluing.py.
+grids (a 9-fold grid cover of K_11).  Unknowns: the 55 matchings.  Gauge: valid Aut(grid) normalisation of the
+matchings from grid 0 (gridgauge.py: sigma(0) = 0, sigma(1) in {1, 4}).  Uses the same exact model as regluing.py.
 Usage: python3 conway_grids.py WORKERS TIME_LIMIT"""
 import sys, time, itertools, numpy as np
 from ortools.sat.python import cp_model
