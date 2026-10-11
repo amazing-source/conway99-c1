@@ -110,10 +110,13 @@ A tight boundary freezes more than a triangle boundary, even though it leaves mo
 **Reading.**
 1. The Hoffman coclique is the **most rigidifying** tight structure seen so far.
 2. In the known family it exists only in BvLS: the three less symmetric graphs have none (§3).
-3. By analogy with Paley 25, an asymmetric srg(243,22,1,2), if one exists, should be sought **without** a Hoffman
-   coclique and **without** an imposed partition.
-4. At 99 the same mechanism suggests the following. If α(Γ) = 22, Γ would probably be determined by its 2-(22,4,2)
-   design, so the sub-case reduces to designs. Hence the interest of the direct exact model of §5.
+3. ~~By analogy with Paley 25, an asymmetric srg(243,22,1,2), if one exists, should be sought **without** a Hoffman
+   coclique and **without** an imposed partition.~~ **Withdrawn (§7):** this inference is false in general. An
+   asymmetric srg(25,12,5,6) has three Hoffman cocliques, and Paley(25) and an asymmetric graph share one Hoffman
+   coclique together with all its incidences. Rigidity was shown for one BvLS design only, not for every 2-(45,5,2).
+4. At 99, the α = 22 sub-case does reduce to designs plus completions (§5), but uniqueness of the completion is
+   **not** to be expected in general. By the extension lemma (§7), the completions with an asymmetric graph form free
+   orbits under Aut(design). The direct exact model of §5 makes no assumption either way.
 
 ## 5. Conway-99: the sub-case α = 22 (structure proved here)
 **Bound.** 99·4/18 = **22**. A Hoffman coclique C (22) ⇔ (A + 4I)𝟏_C = 4·𝟏. Each of the 77 outside vertices then has
@@ -165,3 +168,77 @@ Kissat cannot save its state, so the α = 22 search is cut into **cubes** (`hoff
 - After a restart: `bash code/asym243/hoffman/resume.sh 3 1800` (idempotent). At most one cube of ≤ 30 min per worker
   can be lost.
 - Initial cubes: A and B split immediately into 4 + 4 children (block 25 fixed).
+
+## 7. External dossier HOFFMAN_UPDATE (ChatGPT, 11 Oct 2026): integration and correction
+These results were read for context and are recorded as reported. They were not reproduced here. The dossier has its
+own reviewer and a fresh-folder reproduction, but no DRAT or Lean certificates.
+
+**Closed (as reported).** Under the hypothesis α = 22, the design of the coclique can have neither of the following.
+- **A transitive Z/22 action.** There are 80 normalised selections, 8 of which have a triple intersection; the other
+  72 have no completion.
+- **A group of order 21 fixing one point and regular on the other 21.** C21 is impossible directly: it would repeat the
+  unique short block orbit. For C7⋊C3 there are 236 selections, 37 of which have a triple intersection; the other 199
+  have no completion, and 12 of them already have an empty row domain.
+
+No symmetry is imposed on the completion D: each of the 77 rows has its own domain, and the pair rule (P) is the one
+of §5. The 72 and 199 are normalised labelled presentations, **not** isomorphism classes. Designs without these
+actions, asymmetric designs in particular, are not covered. These two families are sub-cases of the cube search of §6.
+If that search returns SAT, the design found cannot belong to them.
+
+**Correction to §4 bis (HOF-003).** "A Hoffman coclique excludes asymmetry" is false. See the counterexample in
+§4 bis.3: an asymmetric srg(25,12,5,6) has exactly three Hoffman cocliques of size 5. Moreover Paley(25) and an
+asymmetric graph share the same coclique {4,8,12,16,20} with all its incidences, a 2-(5,3,6) design with each block
+repeated. What the BvLS computation of §4 bis shows is **one design ⇒ one completion**. It does not show that every
+2-(45,5,2) design behaves this way. The 1,691 cocliques are a lower bound from an interrupted enumeration.
+
+**Extension lemma.** Let H = Aut(Y) act on the completions by D ↦ QDQᵀ. Then Stab_H(D) = Aut(Γ)_C. Consequences:
+- a unique completion of a design with H ≠ 1 gives a non-asymmetric graph;
+- the completions whose graph is asymmetric form free H-orbits, so their labelled number is a multiple of |H|;
+- Aut(Γ)_C = 1 does not imply Aut(Γ) = 1, since an automorphism can move C.
+
+For C1 this means: an asymmetric Conway graph with α = 22 has a design Y whose completions come in at least |Aut(Y)|
+labelled copies. A rigid design (unique completion) is compatible with C1 only if Aut(Y) = 1.
+
+**Check of the A/B split of §5.** The dossier confirms that cases A and B cover everything (THEORIE §6). It also
+confirms that YYᵀ = 12I + 2J; a coefficient of 18 given in an earlier ChatGPT answer was a mistake on its side.
+
+### 7.1 The Gram matrix Q, and what it is (derived here)
+The dossier introduces Q = 9I − 3D − N + J (N = YᵀY), with Q² = 21Q, QYᵀ = 0, Q𝟏 = 0 and diag 6. Off-diagonal
+entries: −3 for a mate edge, −2 for an edge between disjoint blocks, −1/0/1 for a non-edge with intersection 2/1/0.
+
+**Identification.** R⁷⁷ = 𝟏 ⊕ Yᵀ(𝟏^⊥) ⊕ ker Y, of dimensions 1 + 21 + 55. The eigenvalues are as follows.
+- D: 10 on 𝟏 (D𝟏 = 10·𝟏); −1 on Yᵀ(𝟏^⊥), since DYᵀ = 2J − Yᵀ; and 3 or −4 on ker Y, since D² + D = 12 there.
+- N: 56 on 𝟏; 12 on Yᵀ(𝟏^⊥); 0 on ker Y.
+- J: 77 on 𝟏; 0 on the other two.
+
+So Q vanishes on 𝟏 (9 − 30 − 56 + 77) and on Yᵀ(𝟏^⊥) (9 + 3 − 12). It equals 9 − 3·3 = 0 on the 3-eigenspace and
+9 + 12 = 21 on the −4-eigenspace of D in ker Y. Hence
+
+  **Q = 21·P₋₄**, where P₋₄ is the orthogonal projector onto the (−4)-eigenspace of D, of dimension 22.
+
+This is the part of the 44-dimensional (−4)-eigenspace of A that is supported on F. The 77 vectors vᵢ = √21·P₋₄eᵢ
+have norm 6 and sum 0, with Σ vᵢvᵢᵀ = 21·I₂₂: they form a tight frame and a spherical 2-design in R²².
+
+**Lattice.** Let L = ⟨vᵢ⟩_Z. Then L is even (norms 6), positive definite, of rank 22. Its dual L* satisfies 21L* ⊆ L.
+Moreover L*/L ≅ the torsion of coker Q, so the Smith invariants of Q lie in {1, 3, 7, 21}. Set a = 22 − rank₃(Q) and
+b = 22 − rank₇(Q). Then det L = 3ᵃ7ᵇ.
+
+**Elementary necessary conditions.** These are derived here and have not been tested by computation.
+1. *Parity.* An even lattice of even rank n with odd determinant d satisfies (−1)^{n/2}d ≡ 1 (mod 4). With n = 22 this
+   gives 3ᵃ7ᵇ ≡ 3 (mod 4), that is, **a + b odd**. Milgram's formula adds a sign condition on the Legendre symbols of the
+   3- and 7-parts.
+2. *a depends only on the design.* Mod 3, Q ≡ J − N ≡ Yᵀ(J₂₂ − I)Y; entrywise this is 16 − |B_b ∩ B_c|. Since
+   (J₂₂ − I)𝟏 = 21·𝟏 ≡ 0, we get rank₃(Q) ≤ 21, so a ≥ 1.
+3. *b is tied to a graph invariant.* The Schur complement of the block 4I (invertible mod 7) gives
+   rank₇(A + 4I) = 22 + rank₇(D + 4I − 2N). Also 2Q ≡ (D + 4I − 2N) + 2J (mod 7), with Q𝟏 = 0 and 𝟏ᵀ𝟏 ≡ 0 mod 7.
+   So rank₇(A + 4I) = 22 + rank₇(Q) + ε, with ε ∈ {−1, 0, +1}:
+   - ε = +1 if 𝟏 ∉ Im₇Q;
+   - otherwise, writing 𝟏 = Qw, ε = 0 if 𝟏ᵀw ≠ 1 and ε = −1 if 𝟏ᵀw = 1.
+
+   Note also that (A + 4I)² ≡ 2J mod 7, since (A − 3I)(A + 4I) = 2J; this gives rank₇(A + 4I) ≤ 50.
+
+**Reading.** On its own the parity condition is no contradiction: it ties the 3-rank of the design to the 7-rank of
+the completion. It is a filter on designs that a lattice classification (even lattices of rank 22 and level 21, generated
+by norm-6 vectors forming a 2-design with inner products in {−3, …, 1}) could sharpen. The search stays open. This is
+the most structured new lead for α = 22, and it is complementary to the cube search of §6, which remains the covering
+route.
