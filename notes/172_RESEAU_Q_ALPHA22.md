@@ -63,11 +63,32 @@ All have disc(Λ_C) = (Z/3)²¹ ⊕ Z/9 ⊕ (Z/7)²², exactly as predicted. **N
 ## 4. Verdict
 - These conditions are consistency conditions of the genus of a sublattice of Z⁷⁷ / Z⁹⁹. They hold as soon as the design
   is "normal" (full 3-rank). This explains why nothing breaks.
-- A design of deficient 3-rank must satisfy w − h ≡ 0 (mod 2). That is the only design filter obtained, and it is
-  probably rare.
+- ~~A design of deficient 3-rank must satisfy w − h ≡ 0 (mod 2). That is the only design filter obtained, and it is
+  probably rare.~~ **Withdrawn (§5):** ChatGPT proves h = 22 − w for every 2-(22,4,2) design. So w − h = 2w − 22 is
+  always even, and this "filter" excludes nothing.
 - **The discriminant arithmetic of the Q route does not obstruct α = 22.** An obstruction would need finer data than the
   genus:
   - the actual vectors, i.e. the 77 norm-6 vectors with prescribed inner products;
   - or the theta series. Λ is even of level 21, so θ is in M₁₁(Γ₀(21), χ₋₃), but we know too few coefficients.
 - I recommend not investing further in this route without a new idea. For α = 22, the covering route remains an exact
   search, with cubes or with the dossier's row domains, on a machine that does not restart.
+
+## 5. Addendum, 11 Oct 2026, 23:10: ChatGPT dossier C1_HOFFMAN_ARITHMETIQUE (reported, not reproduced)
+These results were relayed by the user. The zip is not on this machine; the dossier has its own `check_all.py`
+reviewer. Its notation: det L = 3ᵃ7ᵇ, so a = 22 − r₃ and b = 22 − r₇ with the r₃, r₇ of §3.
+- **Ternary relations of the design.** K = ker_{F₃}(Yᵀ) satisfies dim K = t ≤ 2, i.e. rank₃ Y ≥ 20.
+  - Every nonzero word of K has one of the profiles (10,6,6), (7,15,0), (7,0,15), (7,6,9) or (7,9,6).
+  - This yields **six relation types**: rank 22 (no relation), three types of rank 21, and two of rank 20. The
+    candidate blocks number 7,315, 2,455, 3,220, 2,437, 835 and 817 respectively.
+  - The proof checks seven classes by explicit congruences mod 9 or 27, plus a counting argument in PG(2,3).
+- **h = 22 − w.** This corrects §4 above: the parity condition is automatic. Hence **r₃ = 21 − 2t and a = 1 + 2t ∈
+  {1, 3, 5}**. This is consistent with r₃ = 21 on the 271 designs, which all have t = 0.
+- **7-adic part.** b ∈ {2, 4, …, 20}, and **rank₇(A + 4I) = 45 − b − 2η**, where η = [𝟏 ∈ Im₇Q].
+  - This refines §3.4: ε = +1 if 𝟏 ∉ Im₇Q, and ε = −1 otherwise. ε = 0 is impossible, because Qw ≡ 𝟏 forces
+    𝟏ᵀw ≡ 1 (mod 7).
+  - I checked that key step: from Qw = 𝟏 + 7v and Q = 21P, wᵀQw = (7|v|² − 11)/3, so 𝟏ᵀw ≡ −11·3⁻¹ ≡ 1 (mod 7).
+  - Within the rank window {37, 39, 41, 43}, this leaves a ∈ {1,3,5} and b ∈ {2,4,6,8}: 12 determinants.
+- **Cocliques at intersection 15.** Given a Hoffman coclique C, at most one other 22-coclique meets C in exactly 15
+  points. It exists iff K contains the indicator of a 15-set, which forces rank₃ Y = 21 (a = 3).
+- **Where the arithmetic stops.** For each of the 12 determinants there is an explicit even lattice with the right rank,
+  level and local signs. This confirms the verdict of §4: no contradiction can come from the determinant alone.
