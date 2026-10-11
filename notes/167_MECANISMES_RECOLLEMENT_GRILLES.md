@@ -118,3 +118,27 @@ cette normalisation, sont acceptés par le modèle (OPTIMAL) et redonnent le mê
   (`grid243_scratch.py`). Test décisif : les solutions ont-elles toujours un étalement de lignes régulier (donc le
   plancher Z₃) ?
 - **99, sous-cas (A).** Revêtements de K₁₁ (`conway_grids.py`).
+
+## 6. Chasse à l'asymétrique (demande du 11/10, après-midi)
+Trois attaques en parallèle, chacune avec contrôle positif.
+
+1. **S₃-revêtements** (fibres-lignes). C'est le squelette de parité renforcé : une variable par quadrangle, avec
+   « quadrangle impair ⇒ ses deux diagonales sont 3/3 » ; deux classes de motifs, sans perte de généralité ; jauge
+   correcte (`parity_cms2.py`, CryptoMiniSat). Les deux issues tranchent la question pour les graphes à étalement
+   régulier :
+   - **SAT** : un S₃-revêtement existe ; il est génériquement asymétrique, son stabilisateur d'étalement étant un
+     2-groupe ;
+   - **UNSAT** : tout graphe à étalement régulier a un automorphisme d'ordre 3.
+2. **Squelettes de type nouveau** (fibres-grilles). Les 4 graphes connus n'ont que des partitions en grilles de type
+   de squelette (81 triangles pleins, 0) ou (27, 162). Ces types ont été énumérés exhaustivement. Un squelette d'un
+   autre type fournit donc un **critère de nouveauté** : toute solution est un srg(243,22,1,2) non isomorphe aux
+   4 connus. Les squelettes sont construits à partir d'un carré latin aléatoire d'ordre 9 (`make_skeletons.py`) :
+   - type (54, 81) : triangles pleins (r, c, L(r,c)) pour L(r,c) ∉ R, et triangles à 3 droites (r, c, s) pour
+     L(r,c), s ∈ R, avec |R| = 3 ;
+   - type (0, 243) : triangles (r, c, L(r,c) + d), d ∈ {0, 3, 6}.
+
+   Les deux vérifient la loi des motifs.
+3. **CNF compact** (`grid243_cnf.py`). Pour une paire (u, w) et une grille tierce e, l'indicatrice y_e =
+   [σ(u) = σ′(w)] est définie par 2 clauses par point, sans variable auxiliaire (u n'a qu'un voisin dans e). On passe
+   ainsi de 47 M à 11,7 M clauses. Contrôle positif : Γ₃ fixé donne SAT en 3 s. *Note technique* : les modèles
+   CP-SAT à 243 dépassent 9 Go et ont été tués par manque de mémoire ; le CNF tient en moins de 2 Go.
