@@ -55,6 +55,7 @@ def block_model(G, part, free_pairs, k=22, lam=1, mu=2, forbid_original=True):
             ncons += 1
     if forbid_original:
         m.AddBoolOr([v.Not() for (x, y), v in var.items() if x < y and G[x, y]])
+    m._and = AND
     return m, var, ncons
 
 
