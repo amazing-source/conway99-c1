@@ -5,6 +5,8 @@
 cd "$(dirname "$0")"
 W=${1:-3}; T=${2:-1800}; D=cubes_alpha99
 [ -f alpha99.cnf ] || python3 alpha_cnf.py 99 14 1 2 22 alpha99.cnf alpha99.units
+# after a lost container: restore the live ledger from the last pushed snapshot
+[ -f $D/ledger.jsonl ] || { [ -f $D/ledger_snapshot.jsonl ] && cp $D/ledger_snapshot.jsonl $D/ledger.jsonl; }
 [ -f $D/ledger.jsonl ] || python3 cuberunner.py $D init
 mkdir -p $D/logs
 running=$(pgrep -fc "cuberunner.py $D work")
