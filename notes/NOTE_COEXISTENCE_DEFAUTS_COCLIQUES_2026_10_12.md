@@ -1080,3 +1080,191 @@ l'observateur ont continué. Le contrôle V4 confirme les13 conditions de
 capacité, leurs bornes renforcées, huit certificats de carrés, quatre preuves
 de transport complémentaires et les six sous-groupes propres du triplet.
 Les exemples de transport et certaines conditions excluent les mêmes bords.
+
+## 26. V5 : les copies sont effectivement partagées
+
+La reprise suivant le message586 attaque la frontière de§24. Dans
+`coclique_copy_sharing.py`, chaque type ij possède deux emplacements,
+actifs si et seulement si m_ij>=1 et m_ij=2. Les variables binaires
+x_(u,ij,c) désignent les MÊMES copies pour tous les u. On impose
+
+    x_(u,ij,0) + x_(u,ij,1) = y_(u,ij) <= 1,
+    x_(u,ij,c) + x_(v,ij,c) <= 1 si uv est saturée dans B.
+
+Chaque copie a au plus douze voisins dans W et au plus un partenaire
+auprès de chacun de ses deux ancrages non adjacents. Si les ancrages sont
+adjacents, aucun partenaire supplémentaire n'est permis. L'échange des
+deux noms de copies permet de fixer la première incidence sur la copie0.
+Il ne s'agit pas d'imposer un automorphisme au graphe.
+
+Deux pilotes à deux travailleurs sont terminés UNKNOWN :180,08s avec
+21 conditions, puis180,10s avec25 conditions et les quotas par copie de
+§28. Le premier fait1 020 466 branches et225 919 conflits ; le second
+639 560 branches et184 291 conflits. Ces compteurs ne sont ni un
+pourcentage de preuve ni la mesure d'une famille exclue. Les options
+supplémentaires `--gram` et `--partners` existent, mais n'ont pas été
+exécutées dans cette campagne ; ne pas leur attribuer un résultat.
+
+Pour exploiter la contrainte sans attendre davantage le même calcul,
+`coclique_copy_cycles.py` sépare les violations sur des bords variables.
+Avec une copie, il cherche une arête entre demandeurs ; avec deux,
+un cycle impair. Une coupe conditionnelle(18) est réinjectée sous les
+prédicats de saturation de ses arêtes. Tous les comptes sont recalculés
+sur le nouveau bord. L'absence de ces deux défauts équivaut exactement
+au partage des copies POUR LES CONTRAINTES DE SATURATION. Elle ne
+garantit pas les quotas individuels, les degrés ni tous les voisins
+communs du SRG. La séparation finie ci-dessous n'est pas allée jusqu'à
+une affectation satisfaisant tous ces contrôles.
+
+## 27. Des cycles sans corde donnent5<=4
+
+Le nouveau bord `copy_sharing_light_v5/border_000.json` satisfait les
+21 conditions V4 et possède des facteurs simples individuels. Dans
+les facteurs effectivement choisis, trois types doubles présentent
+les cycles sans corde suivants dans Gamma_B :
+
+| Type | Cycle des demandeurs | Demande | Capacité des deux copies |
+|---|---|---:|---:|
+| {5,8} | 24,29,19,43,50 | 5 | 4 |
+| {6,10} | 49,38,33,42,51 | 5 | 4 |
+| {8,15} | 28,23,20,26,29 | 5 | 4 |
+
+Une couleur peut occuper au plus deux sommets d'un C5. Deux copies
+servent donc au plus quatre demandeurs. Chaque sous-ensemble propre
+de chacun de ces cinq sommets est coloriable avec deux couleurs ;
+les témoins explicites sont dans le contrôle V5. Aucun triangle de
+saturation n'explique l'échec sur ces mêmes cinq sommets.
+
+Portée essentielle : c'est l'affectation de facteurs CHOISIE qui est
+exclue. Ce n'est pas une preuve que toute autre affectation sur ce
+bord échoue. Indépendamment, quatre nouvelles inégalités de carrés
+excluent le bord entier :15<17,24<26,14<16,14<16, avec des poids
+distincts. Ne pas confondre ces deux niveaux de certificat.
+
+## 28. L'égalité arithmétique force chaque copie
+
+La loi(19) donne davantage qu'une inégalité. Si elle est une égalité,
+
+    sum_t (c_t-k)(c_t-k-1) = 0,
+
+chaque terme entier non négatif est nul. Donc CHAQUE copie vérifie
+c_t dans {k,k+1}. De même,
+
+    Q - 2aT + M a² = sum_t (c_t-a)² = 0
+    implique c_t=a pour chaque copie, où M=99-|B|.            (20)
+
+Cette propagation d'une égalité globale vers toutes les colonnes
+ne suppose aucune coclique, aucun type de cycle ni automorphisme.
+
+Application aux voisinages complets : soit s dans B de degré14 dans B.
+Pour z=1_(N(s)), chaque sommet absent est non adjacent à s. Les seuls
+comptes du bord imposent T=2M et Q=4M. Ainsi(20), avec a=2, impose
+
+    |N(t) intersect N(s)| = 2 pour CHAQUE t absent.
+
+On peut aussi le lire directement dans mu=2. Le calcul de variance
+explique comment cet exemple s'insère dans la loi générale des charges.
+Pour les bords60 de cette campagne, les six voisinages complets donnent
+T=78, Q=156, variance nulle. Si t a le type ij et I_t est son ensemble
+de voisins dans W, sa contrainte exacte est
+
+    |I_t intersect N(s)| = q_s,ij := 2-|{i,j} intersect N(s)|.
+
+En sommant les copies, on obtient la réciprocité de colonne
+
+    sum_(u dans W intersect N(s)) y_(u,ij) = m_ij q_s,ij.     (21)
+
+Pour s=e et s=f, (21) donne respectivement
+
+    sum_(u dans U) y_(u,ij) + y_(z,ij) = 2 m_ij,
+    sum_(v dans V) y_(v,ij) + y_(z,ij) = 2 m_ij.
+
+La simple existence de chaque facteur individuel ne forçait pas(21).
+Le premier témoin V5 la viole sur127 couples(s,type), malgré ses
+quotas de lignes corrects. `coclique_closed_star_balance.py` impose
+(21) simultanément pour les six sommets0,1,2,3,16,17, en laissant le
+bord variable. Trois témoins nouveaux satisfont ces égalités agrégées ;
+cela ne remplace toujours pas les quotas COPIE PAR COPIE.
+
+## 29. Un chemin biparti peut encore être impossible
+
+Voici une obligation strictement au-delà de la seule bipartition.
+Fixer un type T à au plus deux copies, un demandeur u, et un sommet s
+dont le voisinage est complet. Si u demande une copie, TOUS ses
+voisins demandeurs dans Gamma_B doivent utiliser l'autre copie.
+Par conséquent, parmi ceux qui appartiennent aussi à N(s), il peut
+y en avoir au plus q_s,T. Sous ces hypothèses :
+
+    y_(u,T)=1 implique
+    sum_(v dans N_Gamma(u) intersect N(s)) y_(v,T) <= q_s,T.  (22)
+
+La nécessité de(22) ne dépend pas du profil(0,2) : elle vaut dès
+que l'on connaît les deux copies possibles, les saturations et le
+quota d'un voisinage complet. C'est une contrainte sur la coexistence
+de la coloration et des capacités, pas une recherche de rang.
+
+Un sous-ensemble de q+1 feuilles suffit à certifier une violation.
+Les q+2 demandeurs centre+feuilles ne peuvent tous choisir ce type :
+leur somme de y est au plus q+1. La coupe est activée seulement quand
+les arêtes de saturation et les attaches des feuilles à s sont présentes.
+`coclique_copy_stars.py` transporte cette règle sur les bords variables.
+
+Deux premiers exemples, sur `copy_cycle_closed_learning_v5/border_001.json` :
+
+| Type double | s | Centre | Feuilles | Quota d'une copie |
+|---|---:|---:|---|---:|
+| {5,15} | 1 | 25 | 21,48 | 1 |
+| {7,11} | 0 | 34 | 35,47 | 1 |
+
+Dans chaque cas Gamma_B induit un P3, donc il est biparti. Les deux
+feuilles doivent néanmoins prendre la même copie et occupent deux
+places d'un quota1 :2<=1. Chacun des six sous-ensembles propres non
+vides des trois demandeurs admet une coloration respectant ces
+capacités partielles ; les colorations sont sauvegardées. Il s'agit
+encore des contraintes indiquées, pas de voisinages SRG complets.
+Ces deux règles sont réinjectées ; le témoin suivant les satisfait
+mais donne deux nouvelles obstructions analogues. On n'abandonne donc
+pas le partage lorsqu'une coloration existe : on couple ses charges.
+
+## 30. Bilan reproductible V5 et frontière
+
+Les sept nouveaux bords sont obtenus en21,71 ;38,95 ;17,81 ;34,56 ;
+32,09 ;23,80 ;42,08 secondes. Les trois derniers imposent(21).
+Chacun est ensuite exclu par quatre nouveaux certificats entiers de
+carrés, indépendamment des coupures sur les choix de facteurs.
+Les deux modèles monolithiques de§26 sont UNKNOWN180s. Tous ces
+pilotes sont terminés ; aucun nouveau calcul V5 n'est laissé en cours.
+
+Fichier de reprise : `copy_star_learning_v5/cuts.json`,304 conditions :
+13 capacités V4,36 carrés dont28 nouveaux,251 capacités de cycles
+(208 arêtes,24 triangles,18 cycles5 et un cycle7), quatre capacités
+de voisinage complet(22). Il ne s'agit PAS de304 familles disjointes.
+Les255 règles sur copies concernent les variables de facteurs, donc
+leur fichier exige un modèle avec facteurs ; les49 autres portent
+sur le bord. Le dernier témoin en satisfaisait259 ;45 nouvelles règles
+l'ont rejeté. Aucun nouveau bord à304 conditions n'a été recherché.
+
+`check_coclique_coexistence_v5.py` vérifie indépendamment, en entiers
+et sans importer les séparateurs ni CP-SAT, les251 cycles,28 carrés,
+quatre capacités(22), les facteurs des sept témoins, les identités de
+variance, les colorations propres des trois C5 et des quatre P3.
+Six preuves locales supplémentaires forcent un type par des prix de
+degrés ; elles n'ont pas donné de cycle impair FORCÉ par les seuls
+quotas. Un contrôle positif sur la grille3x3 vérifie la propagation
+des égalités, avec123 cas d'égalité. Résultat : PASS.
+
+Les sondes CP-SAT sur un bord fixe sont documentées séparément dans
+`copy_sharing_light_v5/copy_probe.json`. Leurs UNSAT ne sont pas des
+certificats indépendants ; aucune nouvelle exclusion n'en est déduite.
+Les journaux bruts, paramètres et empreintes de code aux lancements
+sont conservés. Le pilote à copies réelles a été observé vers0,98Go
+de mémoire de travail ; la télémétrie n'est pas un relevé continu de
+pics pour tous les pilotes. Deux travailleurs étaient utilisés.
+
+Frontière précise : une coloration doit maintenant satisfaire ensemble
+les six vecteurs de quotas et les comptes de voisins communs entre tous
+les anciens sommets ; puis il reste à coupler les arêtes entre copies.
+Les quotas et les coupes ne constituent pas encore une complétion SRG.
+Aucune classe entière parmi les onze partitions n'est fermée par V5 ;
+(0,2), alpha21 et C1 restent ouverts. Le solveur co-Heawood et son
+observateur historiques ont continué sans intervention.

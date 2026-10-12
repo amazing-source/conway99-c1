@@ -32,6 +32,12 @@ def border_data(w):
 
 
 def evaluate(w,cut):
+    if cut.get('kind')=='copy_closed_star_capacity':
+        from coclique_copy_stars import evaluate as star_evaluate
+        return star_evaluate(w,cut)
+    if cut.get('kind')=='copy_cycle_capacity':
+        from coclique_copy_cycles import evaluate as copy_evaluate
+        return copy_evaluate(w,cut)
     if cut.get('kind')=='integer_residual_square':
         from coclique_residual_squares import evaluate as square_evaluate
         return square_evaluate(w,cut)
@@ -143,6 +149,12 @@ class Master:
         return self.cache[key]
 
     def install(self,cut):
+        if cut.get('kind')=='copy_closed_star_capacity':
+            from coclique_copy_stars import install
+            return install(self,cut)
+        if cut.get('kind')=='copy_cycle_capacity':
+            from coclique_copy_cycles import install
+            return install(self,cut)
         if cut.get('kind')=='integer_residual_square':
             from coclique_residual_squares import install
             return install(self,cut)
@@ -193,6 +205,7 @@ class Master:
                     status=solver.StatusName(status),seconds=solver.WallTime(),cuts=len(self.installed),
                     branches=solver.NumBranches(),conflicts=solver.NumConflicts(),workers=workers,limit_seconds=seconds,
                     local_integer_factors=bool(self.factors),
+                    closed_star_balances=getattr(self,'closed_star_balances',False),
                     factor_packing=self.all_pairs,triangle_capacity=bool(self.factors),simple_factors=self.simple,
                     model_stats=self.model.ModelStats(),response_stats=solver.ResponseStats())
         if status in (cp_model.OPTIMAL,cp_model.FEASIBLE):
@@ -206,6 +219,9 @@ class Master:
                 report['factors']=[dict(vertex=u,type=row,count=solver.Value(y)) for (u,row),y in self.factors.items() if solver.Value(y)]
                 report.update(factor_packing=self.all_pairs,triangle_capacity=True,simple_factors=self.simple)
                 verify(report)
+                if report['closed_star_balances']:
+                    from coclique_closed_star_balance import verify as verify_balances
+                    verify_balances(report)
             assert all(not evaluate(report,c).get('violated',False) for c in self.installed)
             report['verified']=True
         output.write_text(json.dumps(report,indent=2)+'\n')

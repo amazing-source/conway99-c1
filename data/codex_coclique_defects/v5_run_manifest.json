@@ -1,0 +1,143 @@
+{
+  "created_utc": "2026-10-12T20:38:25.188981+00:00",
+  "all_v5_variable_pilots_finished": true,
+  "runs": [
+    {
+      "file": "data\\codex_coclique_defects\\copy_sharing_v5\\result.json",
+      "configuration": "data\\codex_coclique_defects\\copy_sharing_v5\\config.json",
+      "status": "UNKNOWN",
+      "seconds": 180.0753281,
+      "cuts": 21,
+      "branches": 1020466,
+      "conflicts": 225919,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": true,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_sharing_light_v5\\border_000.json",
+      "configuration": "data\\codex_coclique_defects\\copy_sharing_light_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 21.7081513,
+      "cuts": 21,
+      "branches": 111555,
+      "conflicts": 16364,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_sharing_closed_v5\\result.json",
+      "configuration": "data\\codex_coclique_defects\\copy_sharing_closed_v5\\config.json",
+      "status": "UNKNOWN",
+      "seconds": 180.1031264,
+      "cuts": 25,
+      "branches": 639560,
+      "conflicts": 184291,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": true,
+      "copy_closed_stars": true
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\border_000.json",
+      "configuration": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 38.9460837,
+      "cuts": 58,
+      "branches": 283726,
+      "conflicts": 59971,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\border_001.json",
+      "configuration": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 17.8101656,
+      "cuts": 95,
+      "branches": 89942,
+      "conflicts": 4553,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\border_002.json",
+      "configuration": "data\\codex_coclique_defects\\copy_cycle_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 34.563016600000005,
+      "cuts": 134,
+      "branches": 231178,
+      "conflicts": 31435,
+      "workers": 2,
+      "closed_star_balances": false,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_cycle_closed_learning_v5\\border_000.json",
+      "configuration": "data\\codex_coclique_defects\\copy_cycle_closed_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 32.0851963,
+      "cuts": 172,
+      "branches": 134982,
+      "conflicts": 24386,
+      "workers": 2,
+      "closed_star_balances": true,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_cycle_closed_learning_v5\\border_001.json",
+      "configuration": "data\\codex_coclique_defects\\copy_cycle_closed_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 23.802649000000002,
+      "cuts": 214,
+      "branches": 65553,
+      "conflicts": 5826,
+      "workers": 2,
+      "closed_star_balances": true,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    },
+    {
+      "file": "data\\codex_coclique_defects\\copy_star_learning_v5\\border_000.json",
+      "configuration": "data\\codex_coclique_defects\\copy_star_learning_v5\\config.json",
+      "status": "OPTIMAL",
+      "seconds": 42.0831359,
+      "cuts": 259,
+      "branches": 188941,
+      "conflicts": 31725,
+      "workers": 2,
+      "closed_star_balances": true,
+      "actual_copy_sharing": false,
+      "copy_closed_stars": false
+    }
+  ],
+  "resume_file": "data\\codex_coclique_defects\\copy_star_learning_v5\\cuts.json",
+  "resume_sha256": "55d9aad461d3373f4c385a515f355d765f9c28cf9908bf423697811195baad5f",
+  "cut_counts": {
+    "weighted_capacity": 13,
+    "integer_residual_square": 36,
+    "copy_cycle_capacity": 251,
+    "copy_closed_star_capacity": 4
+  },
+  "cycle_lengths": {
+    "2": 208,
+    "3": 24,
+    "5": 18,
+    "7": 1
+  },
+  "checks": "data/codex_coclique_defects/checks_coexistence_v5.json",
+  "latest_border_conditions": 259,
+  "next_unsearched_conditions": 304,
+  "scope": "Allocation cuts and whole-border square obstructions are distinct; all complete cycle classes and (0,2) remain open",
+  "fixed_probe": "data/codex_coclique_defects/copy_sharing_light_v5/copy_probe.json",
+  "historical_solver": "CaDiCaL11428 and observer17796 left running"
+}
