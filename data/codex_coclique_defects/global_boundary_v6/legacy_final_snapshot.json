@@ -1,0 +1,92 @@
+{
+  "captured_utc": "2026-10-12T21:42:22.4889414Z",
+  "runs": {
+    "cadical_full": {
+      "pid": 11428,
+      "running": true,
+      "process": {
+        "threads": 1,
+        "name": "cadical",
+        "start_utc": "2026-10-12T11:08:18.4793828Z",
+        "pid": 11428,
+        "cpu_seconds": 37399.96875,
+        "private_bytes": 494403584,
+        "working_set_bytes": 392536064
+      },
+      "solver": {
+        "reported_samples": 3039,
+        "first": {
+          "cpu_seconds": 1.25,
+          "rss_mib_reported": 374.0,
+          "average_level": 0.0,
+          "reductions": 0.0,
+          "restarts": 0.0,
+          "average_decisions": 0.0,
+          "conflicts": 0.0,
+          "learned_clauses": 0.0,
+          "size_glue_ratio": 0.0,
+          "average_clause_size": 0.0,
+          "average_glue_slow": 0.0,
+          "tier1_limit": 2.0,
+          "tier2_limit": 6.0,
+          "trail_percent": 0.0,
+          "irredundant_clauses": 2386405.0,
+          "active_variables_including_auxiliaries": 646603.0,
+          "remaining_percent": 99.0,
+          "line": 40,
+          "event": "*"
+        },
+        "latest": {
+          "cpu_seconds": 37142.8,
+          "rss_mib_reported": 330.0,
+          "average_level": 45.0,
+          "reductions": 190.0,
+          "restarts": 912324.0,
+          "average_decisions": 1.0,
+          "conflicts": 27571130.0,
+          "learned_clauses": 401215.0,
+          "size_glue_ratio": 2.9,
+          "average_clause_size": 92.0,
+          "average_glue_slow": 31.0,
+          "tier1_limit": 1.0,
+          "tier2_limit": 2.0,
+          "trail_percent": 24.0,
+          "irredundant_clauses": 1597914.0,
+          "active_variables_including_auxiliaries": 247962.0,
+          "remaining_percent": 38.0,
+          "line": 3833,
+          "event": "t"
+        },
+        "windows": [
+          {
+            "requested_cpu_window_s": 60,
+            "actual_cpu_window_s": 234.02000000000407,
+            "conflicts_per_cpu_s": 323.41252884368294,
+            "conflicts_added": 75685.0,
+            "restarts_added": 12.0,
+            "active_variables_removed": 8.0,
+            "irredundant_clauses_removed": 317.0
+          },
+          {
+            "requested_cpu_window_s": 300,
+            "actual_cpu_window_s": 511.92000000000553,
+            "conflicts_per_cpu_s": 354.6569776527544,
+            "conflicts_added": 181556.0,
+            "restarts_added": 57.0,
+            "active_variables_removed": 8.0,
+            "irredundant_clauses_removed": 317.0
+          },
+          {
+            "requested_cpu_window_s": 600,
+            "actual_cpu_window_s": 745.2400000000052,
+            "conflicts_per_cpu_s": 386.37083355697223,
+            "conflicts_added": 287939.0,
+            "restarts_added": 73.0,
+            "active_variables_removed": 323.0,
+            "irredundant_clauses_removed": 2558.0
+          }
+        ]
+      }
+    }
+  }
+}

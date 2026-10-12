@@ -1268,3 +1268,212 @@ Les quotas et les coupes ne constituent pas encore une complétion SRG.
 Aucune classe entière parmi les onze partitions n'est fermée par V5 ;
 (0,2), alpha21 et C1 restent ouverts. Le solveur co-Heawood et son
 observateur historiques ont continué sans intervention.
+
+## 31. V6 : traiter la famille entière et éliminer le bloc restant
+
+Le recadrage relayé en589 demande de sortir de l'accumulation de sous-cas.
+La V6 n'ajoute donc pas un bord à la liste des304 coupures. Elle construit
+un modèle commun à TOUT(0,2), puis démontre un critère de complétion valable
+pour tout bord C1 contenant au moins un voisinage complet. Ce critère ne
+suppose ni coclique21/22, ni automorphisme, ni classe de cycles.
+
+Les quatre H forment le C4 déjà démontré. Deux H adjacents ont leur unique
+voisin commun X dans le support ; deux H opposés ont déjà leurs deux
+voisins communs H dans le support. Leurs voisins supplémentaires sont
+donc disjoints. Chaque H possède deux voisins dans C et six voisins de
+charge nulle hors de C, en plus de ses six voisins positifs. On peut
+numéroter ces quatre paires de C et ces quatre groupes de six sans
+restreindre les graphes. Ceci donne un SEUL bord :
+
+    B = C union H union L union Z_H,  |B|=21+4+12+24=61,
+    M = {e,f} union Z_0,             |M|=2+36=38.           (23)
+
+Les quatre voisinages H sont complets dans B. La coclique C entière est
+dans B. Les arêtes L-L, les incidences aux deux exceptions, le voisin
+commun z et les cycles4k restent variables. Les ordres de signatures
+utilisés dans le code ne sont que des choix de noms à l'intérieur des
+groupes échangeables ; ils ne sont pas stricts et autorisent les doublons.
+
+Un premier modèle exact sur99 sommets a terminé UNKNOWN240,32s :
+4230 variables d'arêtes,375693 produits,523748 branches,272164 conflits,
+deux travailleurs. Il impose les degrés14 et seulement les majorations
+de voisins communs c_uv<=2-a_uv. Elles suffisent : pour chaque u,
+la somme réelle vaut14*13=182 et la somme des majorants vaut également
+14*1+84*2=182. Toutes les inégalités sont donc des égalités. Le contrôle
+positif de cet encodeur sur la grille3x3 passe. Cela ne constitue aucune
+exclusion de(0,2).
+
+Le bord(23) permet une étape plus ciblée : chercher UNE matrice binaire D,
+61 lignes et38 colonnes, commune à tous les sommets, telle que
+
+    D D^t = K := 12I+2J-B-B².                              (24)
+
+Ici B désigne aussi sa matrice d'adjacence. (24) impose simultanément
+tous les degrés et tous les voisins communs des61 anciens sommets.
+Les38 sommets sont des colonnes réelles partagées ; des facteurs locaux
+individuellement réalisables ne suffisent pas. Les arêtes entre ces38
+sommets ne sont plus recherchées dans cette première étape : les§32–34
+décrivent EXACTEMENT les possibilités restantes.
+
+## 32. Théorème de fermeture d'une factorisation binaire
+
+Soit B une matrice d'adjacence sur n sommets, m=99-n>0. Supposons :
+
+* D est binaire de taille n par m et satisfait(24) ;
+* B contient un sommet s de degré14, donc son voisinage complet.
+
+Noter d=14*1-B1, F=2J-(B+I)D et D^+ l'inverse de Moore–Penrose.
+Définir
+
+    E0 = D^+ F,        P = I-D^+D.                         (25)
+
+P est le projecteur orthogonal sur ker D. Alors E0 est symétrique,
+E0 P=0, et toutes les complétions SRG de B,D sont EXACTEMENT les matrices
+
+    A = [ B    D  ],    E = E0+3P-7Q,                      (26)
+        [ D^t  E  ]
+
+où Q est un projecteur orthogonal vérifiant PQ=Q et où E est ENTIÈRE.
+Il n'est pas nécessaire d'ajouter séparément « diagonale nulle et
+coefficients0/1 » : l'intégralité les force, comme démontré au§34.
+
+En particulier, si ker D=0, il n'y a aucune arête restante libre :
+
+    E = (D^t D)^(-1) D^t [2J-(B+I)D],
+    complétion C1 <=> tous les coefficients de E sont entiers. (27)
+
+Ne pas escamoter l'hypothèse : la nullité peut être non nulle. (26),
+et non seulement(27), est le critère couvrant TOUS les cas. Il ne s'agit
+pas d'un catalogue de rangs : une seule formule décrit la liberté
+résiduelle et son couplage. Trouver D, puis éliminer la liberté de Q
+si elle existe, reste un travail mathématique réel.
+
+## 33. Preuve de la fermeture, y compris le cas singulier
+
+La diagonale de(24) et la binarité de D donnent D1=d. Un calcul direct
+fournit
+
+    KB-BK = 2(d1^t-1d^t),
+    K1 = -2m*1+(B+15I)d.                                 (28)
+
+Pour un sommet complet s, la ligne s de D est nulle. Poser w=B e_s,
+l'indicatrice de son voisinage. (28) donne Kw=2d et
+
+    w^t d=2m,    w^t K w=4m,
+    ||D^t w-2*1||²=0.
+
+Ainsi D^t w=2*1 et surtout 1_m appartient à im D^t. Cette conséquence
+de variance nulle, déjà rencontrée en V5, rend maintenant possible la
+fermeture de TOUT le bloc restant.
+
+Pour z dans ker D^t, on a d^t z=0, puis
+
+    D D^t Bz=KBz=2d(1^t z),
+    D[D^t Bz-2(1^t z)*1_m]=0.
+
+Le vecteur entre crochets appartient à im D^t, puisque 1_m y appartient.
+Il est aussi dans ker D ; il est donc nul. Par conséquent z^t F=0.
+Cela prouve que les colonnes de F appartiennent à im D : DE0=F.
+En outre F annule ker D, car ce noyau est orthogonal à1_m. Donc E0P=0.
+
+La matrice
+
+    F D^t = 2*1*d^t-(B+I)K
+
+est symétrique par(28). Comme E0 agit sur im D^t et y est déterminée
+par DE0=F, elle est elle-même symétrique. En utilisant la seconde
+identité(28), on obtient F1=D(14*1-D^t1), donc
+
+    E0*1=14*1-D^t1.                                     (29)
+
+Soit A0 le bloc(26) avec E=E0. Il est symétrique et régulier de degré14.
+Le défaut polynomial A0²+A0-12I-2J n'a que son bloc inférieur droit L
+éventuellement non nul. Il commute avec A0, d'où DL=0. Sur ker D,
+E0, D^tD et J sont nuls : L y vaut -12I. Par symétrie,
+
+    E0²+E0+D^tD = 12(I-P)+2J.                           (30)
+
+Toute autre solution symétrique de DE=F est E=E0+T avec T=PTP. Elle
+reste régulière puisque P1=0. L'équation polynomiale complète équivaut
+à T²+T=12P. Sur ker D, les seules valeurs propres possibles de T sont
+3 et-4 ; par le théorème spectral, T=3P-7Q, avec Q projecteur contenu
+dans P. Cela prouve(26) dans les deux sens au niveau réel.
+
+## 34. Pourquoi l'intégralité suffit et comment la vérifier
+
+Soit A une matrice symétrique ENTIÈRE vérifiant A1=14*1 et
+A²+A=12I+2J. Pour chaque ligne i, soustraire la somme de ligne à
+l'équation diagonale donne
+
+    a_ii² + sum_(j!=i) a_ij(a_ij-1) = 0.                 (31)
+
+Tous les termes sont des entiers non négatifs. Ils sont donc tous nuls :
+a_ii=0 et a_ij dans{0,1}. A est exactement une matrice d'adjacence C1. Appliqué
+à(26), cela démontre le critère d'intégralité, sans test supplémentaire
+de chacune des arêtes restantes. La même preuve vaut pour
+A²+A=(k-mu)I+mu J et A1=k*1, donc dépasse ce seul problème et les cocliques.
+
+Le cas singulier donne aussi des conditions nécessaires explicites.
+Si h=tr P, la diagonale nulle de E impose
+
+    Q_ii=(E0_ii+3P_ii)/7,
+    -3P_ii <= E0_ii <= 4P_ii,
+    (tr E0+3h)/7 est un entier entre0 et h.              (32)
+
+Ces contraintes ne remplacent pas Q²=Q. Elles servent à propager
+l'intégralité et les capacités d'une seule complétion commune.
+
+Implémentation : `coclique_global_completion.py`, calcul rationnel exact.
+Trois contrôles NOUVEAUX : grille3x3 avec bord5 (noyau de dimension1),
+grille3x3 avec bord6 (noyau nul), et application au graphe BvLS déjà
+disponible avec39 sommets effacés (noyau nul). Dans ce dernier contrôle,
+les741 arêtes potentielles entre les39 sommets sont reconstruites d'un
+seul calcul rationnel ; elles coïncident avec le bloc effacé. Ce n'est
+pas un nouvel audit des quatre graphes243 étudiés auparavant.
+
+Le contrôle singulier conserve les deux choix de projecteur. Le bon
+choix restitue le graphe ; l'autre donne une matrice de coefficients
+1/4 et3/4, bien qu'elle satisfasse les équations RÉELLES. Il illustre
+pourquoi l'intégralité est une obligation et ne peut pas être supposée.
+Certificats : `data/codex_coclique_defects/global_completion_v6/`.
+
+## 35. Calcul global V6 : portée et limite
+
+`coclique_global_boundary.py` utilise le bord(23) avec toutes les arêtes
+restantes variables et les38 colonnes partagées. Il impose(24), les
+comptes exacts de voisins dans C, les quatre voisinages H complets et
+leurs quotas par colonne. Ce modèle couvre TOUT(0,2) : aucun noyau,
+epsilon ou type de cycles n'est fixé. Il a3528 variables d'incidence
+et128106 produits, contre4230 et375693 dans le modèle sur99 complet.
+La taille du codage des produits est réduite d'environ66%, et non le
+nombre de graphes de la famille. Un témoin est nécessaire jusqu'au
+contrôle(26)/(27) ; le programme ne transforme pas SAT de(24) en SRG.
+La recherche de Q dans le cas singulier n'est pas encore implémentée.
+
+Le pilote à deux travailleurs termine UNKNOWN300,15s :1 617 370 branches,
+573 963 conflits, construction3,78s. Il n'a produit ni factorisation D
+ni certificat d'impossibilité. En particulier, le critère d'intégralité
+n'a pas encore été appliqué à un nouveau candidat C1 issu de ce pilote.
+La mémoire observée atteint environ1,11Go (pic du processus mesuré lors
+des échantillons), contre environ3,19Go observés pour le modèle complet.
+Les deux modèles étant différents, leurs débits de conflits ne mesurent
+pas un gain de vitesse de preuve. Tous les nouveaux pilotes V6 sont finis.
+
+Le contrôle indépendant `check_coclique_coexistence_v6.py` relit les
+trois nouveaux certificats rationnels sans importer le constructeur :
+PASS. Il vérifie aussi que l'autre choix de projecteur du contrôle
+singulier satisfait les équations réelles mais échoue à l'intégralité.
+Journaux et paramètres : `global_profile_v6/` et `global_boundary_v6/` ;
+certificats : `global_completion_v6/`, sous `data/codex_coclique_defects/`.
+
+Le théorème ne prouve pas que toute factorisation de(24) échoue :
+(0,2), alpha21 et C1 restent ouverts. Il fournit une obstruction globale
+précise à viser : l'existence d'une factorisation binaire dont la
+complétion forcée, ou sa correction par un unique Q, est entière.
+
+L'objectif calculatoire suivant est donc(24) sur le bord unique61/38,
+avec le critère(26) disponible pour fermer tout le bloc restant. Le
+modèle exact de99 et le modèle réduit ne doivent pas être relancés à
+l'identique sous prétexte que leur statut est UNKNOWN. Aucune nouvelle
+exclusion de bord ni nouvelle coupure particulière n'a été ajoutée aux304
+conditions de V5. Le solveur co-Heawood et son observateur restent actifs.
