@@ -51,3 +51,25 @@ classes is more than 700 CPU-hours: not feasible here.
 - **Open:** a proof of K7, which must use the Hoffman property (Paley(9) shows it is not automatic). I found no proof.
 - If K7 is proved, it should be combined with the ternary classification of note 172 §5 (six types). It could also be
   imposed at **all** 22 points at once, a far stronger constraint than one point.
+
+## 6. Addendum, 12 Oct 2026: ChatGPT dossier C1_K7_RESULTATS_PARTIELS
+Read, not reproduced. **K7 remains open**: neither (i) nor (ii) is excluded in general.
+- **Theorem 1 (proved; I checked the proof by hand). Γ_c ∪ M_c is connected, for every c ∈ C**, with no ternary
+  hypothesis.
+  - On W = N(c), Q[W,W] = 6I − 3M − G is the Laplacian of Γ_c (weight 1) ∪ M_c (weight 3).
+  - Suppose S is a proper component and u = 1_S. Then uᵀQu = 0, and Q² = 21Q gives Qu = 0.
+  - But Yu is even: its c-coordinate is |S|, which is even, and its other coordinates are 0 or 2. Hence Nu is even.
+  - For a ∈ S and b ∉ S, the vertex z_ab is a block with Du = 1 there, so (Qu)_z = |S| − 3 − (Nu)_z is odd.
+    Contradiction.
+
+  Corollaries: rank Q[W,W] = 13; the Schur complement on the 63 other blocks has rank 9; the split 3 + 4 of the 7
+  fibres is excluded.
+- **Reformulation.** Let w_e = v_a + v_{a′}. Then the Gram of the 7 vectors w_e is 6I − (n_ef). So **K7 ⇔ the w_e form a
+  regular simplex (Gram 7I − J)**. The defects are exactly the norms 8, 6, 4 of the 21 labelled sums w_e + w_f, with
+  Σ binom(n_ef, 2) = I_c + J_c.
+- **Theorem 2 (conditional, ternary type (7,15,0)).** At the 7 points of S = C∖Z we have n_ef ≤ 3 (n = 4 is excluded),
+  with an exact mixed/pure table. Nothing is claimed at the 15 points of Z or for the other types.
+- The local fixture (n_ef = 4, connected union) **is not a counterexample**: it leaves 3,276 edges undetermined.
+- My remark: K7 at every point ⇔ Σ_c Σ_{e<f} n_ef² = 22·21. This is a global quantity, but it involves the Hadamard
+  product M = D ∘ N. So it cannot be computed from the polynomial identities in D and N alone, which is why the
+  arithmetic of notes 172 and 175 cannot see it.
