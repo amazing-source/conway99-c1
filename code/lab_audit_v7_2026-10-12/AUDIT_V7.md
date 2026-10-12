@@ -80,3 +80,30 @@ verdict on Conway's graph (the alpha = 22 cubes: no cube decided; sub-case (A): 
   Neither is known to exist; neither is excluded.
 * For Conway's 99 nothing transfers as an obstruction: no regular spread exists there (lemma 1), so no symmetry floor
   of this kind.
+
+## 6. Comparison with Codex's independent audit (added 09:11 UTC, 12/10/2026)
+
+Codex froze its audit at commit `2b6df04` of branch `codex/asymmetry-audit-20261012`
+(`notes/AUDIT_CODEX_ASYMETRIE_2026_10_12.md`) before reading this one; its comparison addendum is `b17d9b4`. It used
+BLISS and Schreier-Sims; I used my own stabiliser chain. Neither of us used nauty or the campaign's library.
+
+**Agreement.** On every value we both computed: the four graphs are srg(243,22,1,2); full group orders 3 849 120,
+4320, 864, 3888; vertex orbits; grids 1485, 405, 621, 837; prisms; twisted pairs. On the arguments at 99 that we both
+examined (no regular spread, the two forms of equitable partition, the alignment theorem, the alpha = 22 structure,
+the binary weights 0 / 63 / 77): same verdict. Only I counted hexagons, regular spreads and grid partitions; only
+Codex checked the connectivity theorem of note 173.
+
+**Points found by Codex that this audit had missed.** I checked each before recording it.
+
+| Point | My check |
+|---|---|
+| Note 167 s.6 ("parity SAT: an S3-cover exists") and the closing equivalence of note 165 s.6 lack a LIFTING step: the sign conditions are only necessary. Six identity permutations pass the parity test and sum to 6I, not 2J. | Agreed. Section 3 above lists the dichotomy as resting on solver runs, but I had not flagged that the equivalence itself is unproved. With gains g(t) = s t + b, the six paths of a non-adjacent pair need the translations 0, 1, 2 twice each when the signs agree, once each in both sign classes when they split 3 + 3. |
+| An S3-cover has a trivial deck group, but its full automorphism group need not be trivial (spread stabiliser a possibly non-trivial 2-group; automorphisms may move the spread). "Generically asymmetric" is a heuristic. | Agreed. Section 5 above should be read with this: door (i) is a candidate, not a guarantee. |
+| Note 168 s.3: on Z the trace of M^2 is 880, not 990. | Agreed, hand: 990 on the whole space minus 100 + 10 on the functions constant on the cells. The symmetry of the multiplicities at the ends follows from dim R = dim S and tr(M on Z) = 0. I had verified the block identities and the theorem of s.4, not this line. |
+| Note 169 s.1: "sum of cos 2 theta = 0" is implied by the symmetry of the spectrum but is not equivalent to it. | Not checked in detail; plausible. |
+| Extension of the grid formula to S3 gains: grids = 270 + sum over the grids H of BH of the number of fixed points of the local monodromy. | Not checked. |
+| Centraliser formula of note 167 s.1 for grid fibres needs the intersection with the transported automorphism groups of the fibres. | Not checked. |
+
+**Consequence for the next step.** The route "regular spread" asks for a full S3 gain function (signs and
+translations), not for a sign pattern; and a solution would still have to be checked for automorphisms. Neither
+audit re-ran any UNSAT of the cloud session.
