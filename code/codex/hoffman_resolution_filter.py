@@ -6,14 +6,15 @@ Different selected rows have intersection at most two; column quotas are
 """
 
 
-def resolution(rows,quotas,max_nodes=10000):
+def resolution(rows,quotas,max_nodes=10000,patterns=None):
     n=len(rows);width=len(quotas)
     incidence=[[j for j in range(width) if row>>j&1] for row in rows]
     assert all(len(cols)==10 for cols in incidence)
     assert sum(quotas)==100
     by_col=[sum(1<<a for a,row in enumerate(rows) if row>>j&1) for j in range(width)]
-    compatibility=[sum(1<<b for b,other in enumerate(rows) if (row&other).bit_count()<=2)
-                   for row in rows]
+    compatibility=[sum(1<<b for b,other in enumerate(rows)
+                       if (row&other).bit_count()<=(2 if patterns is None or patterns[a]==patterns[b] else 1))
+                   for a,row in enumerate(rows)]
     quota=list(quotas);nodes=0;limited=False;witness=None
 
     def dfs(av,chosen):

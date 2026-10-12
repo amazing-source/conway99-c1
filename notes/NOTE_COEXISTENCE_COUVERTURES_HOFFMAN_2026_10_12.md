@@ -262,3 +262,64 @@ famille commune de couvertures, elle, reste valable.
 Le mécanisme de coexistence ne dépend donc pas intrinsèquement de α=22.
 Le cas de Hoffman est celui où toutes les couvertures ont la même taille,
 ce qui rend l'outil particulièrement concret et rapide à exploiter.
+
+## 9. Aller au-delà d'une résolution possible : les triangles doivent coexister
+
+Une résolution de dix lignes peut encore être faisable sans que ces lignes
+puissent représenter les voisins d'un même sommet. On peut imposer davantage
+de la géométrie commune, sans reconstruire le graphe entier.
+
+Fixons un candidat central R. Quatre de ses indices rencontrent B_i en un
+point ; les six autres lui sont disjoints. Puisque le voisinage d'un sommet
+de C1 est constitué de sept arêtes disjointes, ces six derniers indices
+doivent former trois paires : les trois triangles entièrement extérieurs
+passant par i. Les deux blocs d'une telle paire doivent être disjoints.
+
+Pour les lignes transportées S_j de la section4 :
+
+- si j est un des quatre indices de type intersection1, R∩S_j={j} ;
+- si {j,k} est une des trois paires de triangle, R∩S_j=R∩S_k={j,k},
+  et S_j∩S_k={j,k} ;
+- les lignes provenant de triangles différents ont intersection au plus un.
+  En effet, leurs centres j,k sont non adjacents et partagent déjà i,
+  donc |S_j∩S_k|=1-|B_j∩B_k|≤1.
+
+On doit donc faire coexister un candidat central, un couplage parfait des
+six indices, quatre lignes de type singleton et deux lignes pour chaque
+paire du couplage. Les dix lignes doivent toujours résoudre les40 indices
+de type intersection1 une fois et les30 disjoints deux fois. Les restrictions
+ne demandent aucun choix arbitraire : tout graphe complet produirait l'un
+des choix ainsi énumérés.
+
+**Résultat sur le même bord à cinq points libres.** Les seuls17 points
+conservés donnent1 173 candidats centraux. Le test épuise tous ces candidats
+et les4 367 couplages qui passent ses filtres élémentaires. Les résolutions
+exactes parcourent69 701 nœuds cumulés et sont toutes impossibles, sans
+aucun plafond atteint, en environ15,6s. Aucune incidence des cinq points
+libres n'est choisie pendant ce test.
+
+Cela donne une seconde preuve, plus directement géométrique, de l'exclusion
+de la même famille à cinq points libres. Les domaines projetés sont des
+sur-domaines, donc oublier ces incidences ne peut créer une fausse exclusion.
+La preuve porte sur les incidences conservées vers les77 sommets ; elle
+n'affirme pas l'existence d'un sous-graphe universel interdit sur11 sommets.
+
+Le sous-cas quatre points libres se termine en environ0,16s :333 candidats
+centraux,237 couplages,316 nœuds de résolution. Les cas à cinq et quatre
+points ne sont pas deux familles disjointes à additionner.
+
+Outil et reproduction :
+
+    python code/codex/hoffman_triangle_star.py --free 3,4,5,6,7
+
+Le fichier `triangle_star_37c3bb63972f_3-4-5-6-7/result.json` et son domaine
+projeté conservent les entrées et le résultat. L'outil commence par un
+témoin combinatoire positif de cette relaxation et une variante impossible,
+puis contrôle les multiplicités du témoin retourné. Ce témoin de test n'est
+pas un graphe de Conway. Un plafond de recherche conduit à UNKNOWN.
+
+Cette étape explique précisément pourquoi une résolution apparente ne
+suffit pas : ses lignes doivent aussi réaliser les mêmes triangles, avec
+les mêmes intersections. La prochaine extension doit conserver ce couplage
+pendant le choix du bord, plutôt que reprendre les parcours à six points
+avec les seules bornes de multiplicité.
