@@ -443,3 +443,102 @@ devient un problème de lignes de tailles variables, affectées aux centres,
 avec les mêmes obligations de triangles et de voisins communs. Le code
 actuel reste spécialisé au cas régulier22 ; cette extension est un lemme
 général, sans nouvelle exclusion numérique hors de ce cas.
+
+## 12. Les points manquants occupent des paires de voisins
+
+On peut rendre le soutien commun plus précis. Pour tout point p∈C\B_i,
+les deux voisins communs de p et i sont une paire de sommets de R_i.
+Cette paire ne peut être une arête du voisinage de i : ses extrémités
+auraient alors i et p comme deux voisins communs, contrairement à λ=1.
+Deux points distincts de C\B_i ne peuvent occuper la même paire : les
+extrémités auraient trois voisins communs avec i. On obtient donc un
+graphe simple L sur R_i, avec
+
+    |E(L)|=|C|-b_i,       deg_L(j)=b_j-|B_i∩B_j|.
+
+Dans le cas Hoffman, ses degrés sont3 sur les quatre sommets appariés
+avec C et4 sur les six autres. Entre triangles centraux différents,
+
+    [jk∈E(L)] = |B_j∩B_k| = 1-|S_j∩S_k|.
+
+Sur un bord partiel, les points conservés fixent déjà certaines arêtes
+de L. Les m points effacés doivent occuper m autres paires distinctes.
+Le graphe de ces paires manquantes a degré m_j à chaque centre j.
+Ainsi, une paire sans aucune incidence de point disponible impose
+|S_j∩S_k|=1-zF_jk ; réciproquement, cette égalité interdit à un point
+manquant d'occuper la paire. Une intersection inférieure d'une unité
+impose exactement un point manquant sur la paire.
+
+Le mode `--pair-slots` propage l'existence des paires, leur nombre m,
+et les égalités de voisinages dans les deux sens. Un témoin positif
+construit de la relaxation couplée passe ce filtre ; il n'est pas un SRG.
+Sur sept points, le pilote finit UNKNOWN300s après2039808 nœuds et20
+candidats centraux commencés. Il ne ferme pas la famille et son coût
+en bitsets dépasse le gain de branchement dans cette première version.
+Les équations de DEGRÉ m_j du graphe manquant sont une conséquence
+supplémentaire identifiée, pas encore un filtre spécifique du moteur.
+
+Elles donnent aussi une obstruction de parité uniforme. Après retrait des
+paires déjà forcées, poser δ_j=m_j-deg_forcé(j). Dans chaque composante
+du graphe des paires encore disponibles, la somme des δ_j doit être paire,
+car toutes les arêtes restantes de cette composante ont leurs deux
+extrémités dans celle-ci. Une composante de somme impaire exclut donc la
+configuration même si chaque sommet possède séparément assez de paires.
+Ce critère et la faisabilité du graphe de degrés imposés constituent une
+voie de renforcement ciblée, sans reprendre un catalogue de designs.
+
+## 13. Recollement obligatoire à d'autres centres
+
+Soit r un sommet extérieur tel que |B_i∩B_r|=2. Alors i et r sont
+non adjacents et n'ont aucun voisin commun extérieur. En posant
+T_r=N_D(r), on a
+
+    T_r∩R_i=∅,       |T_r∩S_j|=2-|B_r∩B_j|   pour chaque j∈R_i.
+
+En effet, r n'est adjacent à aucun j∈R_i, sinon j serait un troisième
+voisin commun de i,r. L'équation des deux voisins communs de r,j donne
+la deuxième égalité ; i et j n'appartiennent pas à T_r, donc remplacer
+N_D(j) par S_j ne change pas cette intersection. Ce lemme est encore
+valable pour une coclique quelconque, avec |T_r|=14-b_r.
+
+Si B_r est entièrement conservé, les dix seconds membres sont connus,
+même lorsque les blocs B_j comportent des points manquants. On peut donc
+propager un domaine du centre r contre TOUS les voisinages transportés,
+sans choisir ces points. Plusieurs centres r peuvent être imposés
+simultanément. Leurs lignes doivent aussi respecter la réciprocité et
+
+    |T_r∩T_s|+|B_r∩B_s|=2-[s∈T_r].
+
+Sur le premier survivant à sept points, le centre0 a3020 lignes compatibles
+avec le seul candidat central. Après les lignes transportées, le domaine
+tombe successivement à448,153,59,13,4,2,0. Ce témoin est donc exclu par
+un second mécanisme exact, sans reconstruire les points effacés.
+
+Le moteur `--no-points --extra-root 0` propage ce recollement pendant
+la recherche. Il trouve un autre témoin nécessaire au neuvième candidat
+central, après664247 nœuds et40,67s. Celui-ci ne se prolonge pas au centre71 :
+ses domaines successifs sont3117,850,293,88,7,5,2,1,0. Il ne permettrait
+par ailleurs que quatre incidences de point après ajout du voisinage du
+centre0, alors que sept points doivent être construits. Le filtre a donc
+déplacé l'obstacle, qui est précisément identifié.
+
+Le mode `--extra-roots 0,11,71` impose désormais les trois centres
+simultanément ; un témoin retourné doit aussi satisfaire leurs équations
+mutuelles. Les propagations entre les trois domaines supplémentaires
+eux-mêmes peuvent encore être renforcées : dans cette version, les
+équations mutuelles sont testées lors de leur choix final. Les résultats
+et témoins de chaque version sont conservés séparément, sans remplacement
+des précédents ni promotion d'un pilote incomplet en exclusion.
+
+Le pilote aux trois centres termine UNKNOWN à300,05s, avec2033664 nœuds,
+115 couplages commencés et21 candidats centraux commencés. Il n'est pas
+une couverture des13890 candidats. Ne pas relancer le même parcours avec
+un simple budget accru : propager les équations mutuelles des trois
+domaines avant leur choix final, ou utiliser les degrés/parités de la
+section12, est l'obstacle algorithmique identifié. Les témoins positifs
+du recollement à un puis deux centres passent ; en modifiant le nombre
+imposé de voisins communs entre les deux centres, le contrôle négatif
+est rejeté. Ces contrôles concernent des relaxations construites, pas des SRG.
+
+La famille six demeure le résultat exhaustif nouveau de cette étape.
+Les sept points restent une frontière de recherche précisément décrite.

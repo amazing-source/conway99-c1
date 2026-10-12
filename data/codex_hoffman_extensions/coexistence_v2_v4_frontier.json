@@ -1,0 +1,80 @@
+{
+  "exhaustive_family": "six free points 3..8",
+  "seven_free_points_closed": false,
+  "pilots": [
+    {
+      "folder": "coexistence_v2_37c3bb63972f_3-4-5-6-7-8-9",
+      "status": "UNKNOWN",
+      "centres_tested": 46,
+      "matchings_tested": 237,
+      "nodes": 5879808,
+      "seconds": 300.004,
+      "arguments": {
+        "prefix": "37c3bb63972f",
+        "free": "3,4,5,6,7,8,9",
+        "root": 10,
+        "seconds": 300.0,
+        "max_nodes": 100000000,
+        "no_points": false
+      }
+    },
+    {
+      "folder": "coexistence_v2_37c3bb63972f_3-4-5-6-7-8-9_slots",
+      "status": "UNKNOWN",
+      "centres_tested": 20,
+      "matchings_tested": 114,
+      "nodes": 2039808,
+      "seconds": 300.023,
+      "arguments": {
+        "prefix": "37c3bb63972f",
+        "free": "3,4,5,6,7,8,9",
+        "root": 10,
+        "seconds": 300.0,
+        "max_nodes": 100000000,
+        "no_points": false,
+        "pair_slots": true
+      }
+    },
+    {
+      "folder": "coexistence_v2_37c3bb63972f_3-4-5-6-7-8-9_no_points_extra0",
+      "status": "FEASIBLE_LABELLED_STAR_NOT_SRG",
+      "centres_tested": 9,
+      "matchings_tested": 54,
+      "nodes": 664247,
+      "seconds": 40.67,
+      "arguments": {
+        "prefix": "37c3bb63972f",
+        "free": "3,4,5,6,7,8,9",
+        "root": 10,
+        "seconds": 300.0,
+        "max_nodes": 100000000,
+        "no_points": true,
+        "pair_slots": false,
+        "extra_root": 0
+      }
+    },
+    {
+      "folder": "coexistence_v2_37c3bb63972f_3-4-5-6-7-8-9_no_points_extra0-11-71",
+      "status": "UNKNOWN",
+      "centres_tested": 21,
+      "matchings_tested": 115,
+      "nodes": 2033664,
+      "seconds": 300.045,
+      "arguments": {
+        "prefix": "37c3bb63972f",
+        "free": "3,4,5,6,7,8,9",
+        "root": 10,
+        "seconds": 300.0,
+        "max_nodes": 100000000,
+        "no_points": true,
+        "pair_slots": false,
+        "extra_root": null,
+        "extra_roots": "0,11,71"
+      }
+    }
+  ],
+  "next_obligations": [
+    "propagate mutual extra-centre constraints before final choices",
+    "realise missing-point pair graph with prescribed degrees and residual component parity"
+  ]
+}

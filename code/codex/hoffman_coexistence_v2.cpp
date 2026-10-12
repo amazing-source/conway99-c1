@@ -39,13 +39,25 @@ struct Search {
  std::vector<uint8_t> row_intersection;
  long long nodes=0,trials=0,arc_prunes=0,quota_prunes=0,point_prunes=0;
  int tested=0;
- bool limited=false,found=false,use_support=true;
+ bool limited=false,found=false,use_support=true,pair_slots=false;
+ long long slot_prunes=0;
+ long long extra_prunes=0;
+ bool has_extra=false;
+ struct Extra {
+  int root=-1,witness=-1;
+  std::array<int,V> overlap{};
+  std::vector<Mask> rows;
+  std::vector<std::array<Bits,3>> support;
+ };
+ std::vector<Extra> extras;
+ double last_report=0;
  double seconds=300;
  long long max_nodes=50000000;
  std::chrono::steady_clock::time_point start=std::chrono::steady_clock::now();
  std::array<int,10> centres{},patterns{},words{};
  std::array<std::vector<int>,10> domain;
  std::array<std::array<Bits,10>,10> compatible;
+ std::array<std::array<Bits,10>,10> compatible_zero,compatible_one,pair_points;
  std::array<std::array<Bits,V>,10> columns;
  int witness_central=-1;
  std::array<int,10> witness_centres{},witness_rows{};
@@ -68,6 +80,14 @@ struct Search {
   row_intersection.resize(size_t(n)*n);
   for(int a=0;a<n;++a)for(int b=0;b<=a;++b)
    row_intersection[size_t(a)*n+b]=row_intersection[size_t(b)*n+a]=pop(rows[a]&rows[b]);
+  if(has_extra){
+   for(auto&e:extras){e.support.resize(n);int we=(e.rows.size()+63)/64;
+   for(int r=0;r<n;++r){for(auto&b:e.support[r])b=Bits(we);
+    for(size_t a=0;a<e.rows.size();++a){int v=pop(rows[r]&e.rows[a]);
+     if(v<=2)e.support[r][v][a/64]|=U(1)<<(a%64);}
+   }
+   }
+  }
   if(!use_support||!erased)return;
   int wp=(np+63)/64;
   support.assign(n,Bits(wp));
@@ -96,24 +116,75 @@ struct Search {
    else{hi=1-known[j][k];lo=std::max(0,hi-std::min(missing[j],missing[k]));}
    compatible[x][y]=Bits(domain[x].size()*words[y]);
    compatible[y][x]=Bits(domain[y].size()*words[x]);
+   if(pair_slots){
+    compatible_zero[x][y]=Bits(domain[x].size()*words[y]);compatible_zero[y][x]=Bits(domain[y].size()*words[x]);
+    compatible_one[x][y]=Bits(domain[x].size()*words[y]);compatible_one[y][x]=Bits(domain[y].size()*words[x]);
+    pair_points[x][y]=point_columns[j];intersect(pair_points[x][y],point_columns[k]);
+   }
    for(size_t a=0;a<domain[x].size();++a)for(size_t b=0;b<domain[y].size();++b){
     int r=domain[x][a],s=domain[y][b],v=row_intersection[size_t(r)*n+s];
     if(r!=s&&lo<=v&&v<=hi){compatible[x][y][a*words[y]+b/64]|=U(1)<<(b%64);
-     compatible[y][x][b*words[x]+a/64]|=U(1)<<(a%64);}
+     compatible[y][x][b*words[x]+a/64]|=U(1)<<(a%64);
+     if(pair_slots){
+      bool needs=(patterns[x]!=patterns[y]&&1-known[j][k]-v==1);
+      auto&table=needs?compatible_one:compatible_zero;
+      table[x][y][a*words[y]+b/64]|=U(1)<<(b%64);table[y][x][b*words[x]+a/64]|=U(1)<<(a%64);
+     }
+    }
    }
   }
  }
- bool propagate(Domains&ds,Bits&pool){
+ bool propagate(Domains&ds,Bits&pool,std::vector<Bits>&extra_pools){
+  int state[10][10];for(auto&r:state)for(int&v:r)v=-1;
+  if(pair_slots)for(int x=0;x<10;++x)for(int y=x+1;y<10;++y)
+   if(patterns[x]==patterns[y]||known[centres[x]][centres[y]]){
+    state[x][y]=state[y][x]=0;
+    for(size_t w=0;w<pool.size();++w)pool[w]&=~pair_points[x][y][w];
+   }
   bool again=true;
   while(again){
    Domains before=ds;
+   bool slot_changed=false;
+   if(has_extra){
+    for(size_t ex=0;ex<extras.size();++ex){auto&e=extras[ex];auto&extra_pool=extra_pools[ex];
+    for(int x=0;x<10;++x){
+     Bits offered(extra_pool.size());int wanted=2-e.overlap[centres[x]];
+     for(int a:indices(ds[x])){
+      const Bits&sup=e.support[domain[x][a]][wanted];
+      if(!intersects(extra_pool,sup))ds[x][a/64]&=~(U(1)<<(a%64));
+      else for(size_t w=0;w<offered.size();++w)offered[w]|=sup[w];
+     }
+     if(!any(ds[x])){++extra_prunes;return false;}
+     for(size_t w=0;w<extra_pool.size();++w){U old=extra_pool[w];extra_pool[w]&=offered[w];slot_changed|=old!=extra_pool[w];}
+     if(!any(extra_pool)){++extra_prunes;return false;}
+    }
+    }
+   }
+   if(pair_slots){
+    int available=0,forced=0;
+    for(int x=0;x<10;++x)for(int y=x+1;y<10;++y){
+     bool exists=intersects(pool,pair_points[x][y]);
+     if(!exists){if(state[x][y]==1){++slot_prunes;return false;}state[x][y]=state[y][x]=0;}
+     available+=exists;forced+=state[x][y]==1;
+    }
+    if(available<erased||forced>erased){++slot_prunes;return false;}
+    for(int x=0;x<10;++x)for(int y=x+1;y<10;++y){
+     if(available==erased&&intersects(pool,pair_points[x][y]))state[x][y]=state[y][x]=1;
+     if(forced==erased&&state[x][y]!=1){
+      state[x][y]=state[y][x]=0;
+      for(size_t w=0;w<pool.size();++w){U old=pool[w];pool[w]&=~pair_points[x][y][w];slot_changed|=old!=pool[w];}
+     }
+    }
+   }
    std::deque<std::pair<int,int>> queue;
    for(int x=0;x<10;++x)for(int y=0;y<10;++y)if(x!=y)queue.emplace_back(x,y);
    while(!queue.empty()){
     auto[x,y]=queue.front();queue.pop_front();bool changed=false;
+    const Bits& relation=(!pair_slots||state[x][y]<0)?compatible[x][y]:
+                         state[x][y]?compatible_one[x][y]:compatible_zero[x][y];
     for(int a:indices(ds[x])){
      bool ok=false;size_t offset=size_t(a)*words[y];
-     for(int w=0;w<words[y];++w)if(compatible[x][y][offset+w]&ds[y][w]){ok=true;break;}
+     for(int w=0;w<words[y];++w)if(relation[offset+w]&ds[y][w]){ok=true;break;}
      if(!ok){ds[x][a/64]&=~(U(1)<<(a%64));changed=true;}
     }
     if(!any(ds[x])){++arc_prunes;return false;}
@@ -129,26 +200,59 @@ struct Search {
    if(use_support&&erased){
     // Only forced rows shrink the point pool here. This is weaker than the
     // Python union-of-domain filter and therefore cannot introduce exclusions.
-    for(int x=0;x<10;++x)if(count(ds[x])==1)intersect(pool,support[domain[x][indices(ds[x])[0]]]);
+    for(int x=0;x<10;++x)if(count(ds[x])==1){
+     const Bits& allowed=support[domain[x][indices(ds[x])[0]]];
+     for(size_t w=0;w<pool.size();++w){U old=pool[w];pool[w]&=allowed[w];slot_changed|=old!=pool[w];}
+    }
     if(!point_possible(pool))return false;
    }
-   again=ds!=before;
+   if(pair_slots){
+    for(int x=0;x<10;++x)for(int y=x+1;y<10;++y){
+     auto exists=[&](const Bits&rel){for(int a:indices(ds[x]))for(int w=0;w<words[y];++w)if(rel[size_t(a)*words[y]+w]&ds[y][w])return true;return false;};
+     bool can_zero=state[x][y]!=1&&exists(compatible_zero[x][y]);
+     bool can_one=state[x][y]!=0&&exists(compatible_one[x][y]);
+     if(!can_zero&&!can_one){++slot_prunes;return false;}
+     if(!can_one){
+      slot_changed|=state[x][y]!=0;state[x][y]=state[y][x]=0;
+      for(size_t w=0;w<pool.size();++w){U old=pool[w];pool[w]&=~pair_points[x][y][w];slot_changed|=old!=pool[w];}
+     }else if(!can_zero){slot_changed|=state[x][y]!=1;state[x][y]=state[y][x]=1;}
+    }
+   }
+   again=ds!=before||((pair_slots||has_extra)&&slot_changed);
   }
   return true;
  }
- bool dfs(Domains ds,Bits pool){
+ bool dfs(Domains ds,Bits pool,std::vector<Bits>extra_pools){
   ++nodes;
+  if(nodes%16384==0&&elapsed()-last_report>=10){last_report=elapsed();std::cout<<"LIVE centres "<<tested<<" matchings "<<trials<<" nodes "<<nodes<<" arc_prunes "<<arc_prunes<<" point_prunes "<<point_prunes<<" slot_prunes "<<slot_prunes<<" extra_prunes "<<extra_prunes<<" seconds "<<elapsed()<<std::endl;}
   if(nodes>max_nodes||(nodes%1024==0&&elapsed()>seconds)){limited=true;return false;}
-  if(!propagate(ds,pool))return false;
+  if(!propagate(ds,pool,extra_pools))return false;
   int best=-1,small=1000000000;
   for(int x=0;x<10;++x){int s=count(ds[x]);if(s>1&&s<small){best=x;small=s;}}
   if(best<0){
+   if(has_extra){
+    // All extra rows must describe the SAME graph, including their mutual
+    // adjacency and common-neighbour equations. Pools alone are insufficient.
+    auto choose=[&](auto&&self,size_t x)->bool{
+     if(x==extras.size())return true;
+     for(int a:indices(extra_pools[x])){
+      bool ok=true;Mask T=extras[x].rows[a];
+      for(size_t y=0;y<x&&ok;++y){Mask U=extras[y].rows[extras[y].witness];
+       int edge=int(T>>extras[y].root&1),back=int(U>>extras[x].root&1);
+       ok=edge==back&&pop(T&U)==2-known[extras[x].root][extras[y].root]-edge;
+      }
+      if(ok){extras[x].witness=a;if(self(self,x+1))return true;}
+     }
+     return false;
+    };
+    if(!choose(choose,0)){++extra_prunes;return false;}
+   }
    witness_centres=centres;for(int x=0;x<10;++x)witness_rows[x]=domain[x][indices(ds[x])[0]];
    witness_pool=pool;return true;
   }
   for(int a:indices(ds[best])){
    Domains child=ds;std::fill(child[best].begin(),child[best].end(),0);child[best][a/64]=U(1)<<(a%64);
-   if(dfs(std::move(child),pool))return true;
+   if(dfs(std::move(child),pool,extra_pools))return true;
    if(limited)return false;
   }
   return false;
@@ -160,6 +264,12 @@ struct Search {
    ++tested;Mask R=rows[central];auto singles=elements(R&one),zeros=elements(R&~one);
    if(singles.size()!=4||zeros.size()!=6)throw std::runtime_error("central type counts");
    Bits pool=(use_support&&erased)?support[central]:Bits();
+   std::vector<Bits>extra_pools;
+   if(has_extra){bool possible=true;for(auto&e:extras){Bits ep((e.rows.size()+63)/64);
+    for(size_t a=0;a<e.rows.size();++a)if(!(R&e.rows[a]))ep[a/64]|=U(1)<<(a%64);
+    if(!any(ep))possible=false;extra_pools.push_back(std::move(ep));}
+    if(!possible){++extra_prunes;continue;}
+   }
    if(!point_possible(pool))continue;
    std::vector<std::vector<int>> bins(V*V);
    for(int a=0;a<n;++a){Mask p=R&rows[a];int sz=pop(p);
@@ -180,7 +290,7 @@ struct Search {
      int x=0;for(int j:singles){centres[x]=j;patterns[x]=j*V+j;domain[x]=bins[patterns[x]];++x;}
      for(auto[j,k]:matching)for(int v:{j,k}){centres[x]=v;patterns[x]=j*V+k;domain[x]=bins[patterns[x]];++x;}
      ++trials;make_constraints();Domains ds;for(int a=0;a<10;++a)ds[a]=full(domain[a].size());
-     if(dfs(ds,pool)){found=true;witness_central=central;}return;
+     if(dfs(ds,pool,extra_pools)){found=true;witness_central=central;}return;
     }
     int j=left[0];for(size_t b=1;b<left.size();++b){int k=left[b];if(!allowed[j][k])continue;
      std::vector<int> rest;for(size_t a=1;a<left.size();++a)if(a!=b)rest.push_back(left[a]);
@@ -195,7 +305,11 @@ struct Search {
   std::ofstream out(path);std::string status=found?"FEASIBLE_LABELLED_STAR_NOT_SRG":limited?"UNKNOWN":"UNSAT_ALL_BOUNDARY_EXTENSIONS";
   out<<"{\n\"status\":\""<<status<<"\",\n\"centres_tested\":"<<tested<<",\n\"matchings_tested\":"<<trials<<",\n\"nodes\":"<<nodes
      <<",\n\"arc_prunes\":"<<arc_prunes<<",\n\"quota_prunes\":"<<quota_prunes<<",\n\"point_prunes\":"<<point_prunes<<",\n\"seconds\":"<<elapsed()
-     <<",\n\"point_support_enabled\":"<<(use_support?"true":"false");
+     <<",\n\"point_support_enabled\":"<<(use_support?"true":"false")
+     <<",\n\"pair_slots_enabled\":"<<(pair_slots?"true":"false")<<",\n\"slot_prunes\":"<<slot_prunes;
+  out<<",\n\"extra_prunes\":"<<extra_prunes<<",\n\"extra_roots\":[";
+  for(size_t x=0;x<extras.size();++x)out<<(x?",":"")<<extras[x].root;out<<"]";
+  if(found&&has_extra){out<<",\n\"extra_row_indices\":[";for(size_t x=0;x<extras.size();++x)out<<(x?",":"")<<extras[x].witness;out<<"]";}
   if(found){out<<",\n\"central_index\":"<<witness_central<<",\n\"assigned_centres\":[";for(int x=0;x<10;++x)out<<(x?",":"")<<witness_centres[x];
    out<<"],\n\"transported_indices\":[";for(int x=0;x<10;++x)out<<(x?",":"")<<witness_rows[x];out<<"],\n\"point_pool\":[";
    auto p=indices(witness_pool);for(size_t a=0;a<p.size();++a)out<<(a?",":"")<<p[a];out<<"]";}
@@ -206,6 +320,16 @@ struct Search {
 int main(int argc,char**argv){
  try{if(argc<3)throw std::runtime_error("usage: input output [seconds] [nodes] [support:0|1]");
   Search s;if(argc>3)s.seconds=std::stod(argv[3]);if(argc>4)s.max_nodes=std::stoll(argv[4]);if(argc>5)s.use_support=std::stoi(argv[5]);
-  s.read(argv[1]);s.prepare();std::cout<<"PREPARED "<<s.n<<" covers "<<s.np<<" point_rows seconds "<<s.elapsed()<<std::endl;s.solve();s.save(argv[2]);
+  if(argc>6)s.pair_slots=std::stoi(argv[6]);if(s.pair_slots&&!s.use_support)throw std::runtime_error("pair slots require point support");
+  s.read(argv[1]);
+  for(int file=7;file<argc;++file){
+   std::ifstream ex(argv[file]);Search::Extra e;int nr;ex>>e.root>>nr;s.has_extra=true;
+   for(int&v:e.overlap)ex>>v;
+   if(e.overlap[s.root]!=2)throw std::runtime_error("extra root must share exactly two retained C-points with primary root");
+   for(int a=0;a<nr;++a){Mask m=0;for(int t=0;t<10;++t){int j;ex>>j;m|=Mask(1)<<j;}if(pop(m)!=10)throw std::runtime_error("extra row");e.rows.push_back(m);}
+   if(!ex)throw std::runtime_error("extra file");
+   s.extras.push_back(std::move(e));
+  }
+  s.prepare();std::cout<<"PREPARED "<<s.n<<" covers "<<s.np<<" point_rows "<<s.extras.size()<<" extra_centres seconds "<<s.elapsed()<<std::endl;s.solve();s.save(argv[2]);
  }catch(const std::exception&e){std::cerr<<e.what()<<std::endl;return 1;}
 }
