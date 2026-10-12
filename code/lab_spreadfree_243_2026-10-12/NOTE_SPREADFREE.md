@@ -149,9 +149,43 @@ No flat line, hence no regular spread (section 4), independently of the Z3 and S
 A transitive 3-group of order 729 acts; its central elements of order 3 have cocliques as orbits (a central element
 with lines as orbits would give a regular spread).
 
+**It is a Cayley graph on non-abelian groups** (`regular_subgroups.py`): the Sylow 3-subgroup P of Aut (order 729,
+normal, Frattini subgroup of order 27) has 13 maximal subgroups, 9 of them act regularly on the vertices. All nine are
+non-abelian; by (number of elements of order 3, of order 9, order of the centre): (26, 216, 3) twice, (80, 162, 3)
+three times (two with a derived subgroup of order 9, one of order 3), (134, 108, 9) three times, (188, 54, 3) once.
+So there are partial difference sets with the parameters of the Golay one in non-abelian groups of order 243 whose
+Cayley graph is not BvLS. In such a group G the centre does not meet the connection set (a central element of order 3
+in it would give a regular spread).
+
+`cayley_census.py`: ALL partial difference sets (243,22,1,2) of these nine groups (CryptoMiniSat, 121 variables,
+solutions blocked with their conjugates under P). Done at 21:20 UTC for the three groups (134, 108, 9): 84 sets each
+up to conjugation, 66 giving the new graph and 18 giving BvLS (one representative of each local invariant tested by
+isomorphism), nothing else. The six other groups are running (results to be added).
+
+Literature (web, 12/10 20:38 UTC): Brouwer's table says for (243,22,1,2) "Berlekamp-vanLint-Seidel; not unique"
+(credited to Djematene + AI); I found no mention of a graph without regular spread or of a non-abelian Cayley
+construction. This is a search of a few minutes, not a bibliography.
+
 What is NOT established: an independent audit (another person / another implementation of the adjacency and of the
-checks); whether this graph is already in the literature (Brouwer's table lists (243,22,1,2) as not unique); whether it
-is a Cayley graph; the type II census; any statement about graphs without a semiregular Z_3^4.
+checks); a real literature search; the type II census; any statement about graphs without a semiregular Z_3^4.
+
+## 6b. Two regularities seen in all five graphs (not proved, `parallel_parity.py`)
+
+* (P1) two lines parallel to the same line L are joined by 0 or 3 edges, never 1 or 2. Equivalent form: if both
+  points of a line R through p are fixed by tau_L, then L and R span a 3x3 grid. The nine points alone do not force it
+  (no violation of lambda = 1, mu = 2 inside the configuration), so if it is a law it is not a local one.
+* (P2) the number of lines parallel to a line is even. With P1 the parallels of L are grid pairs plus "isolated"
+  parallels (972 incidences in the new graph, 864 in Gamma3, 1296 in Gamma4, none in the twin and BvLS); P2 says the
+  isolated ones come in even number.
+All five graphs are very symmetric, so this is weak evidence. If P1 and P2 held for every srg(v,k,1,2) they would be
+statements about Conway's graph too.
+
+## 6c. Sampling with a semiregular Z_3^3, nine orbits (`semireg_sample.py`, `quotient_types.py`)
+
+No normal form, so not a census. 3.76 million clauses. Free diagonal: BvLS twice (8 s each, all |D_ii| = 6), one call
+without decision in 170 s. Diagonal (6,6,6,0,0,0,0,0,0): Gamma4 (18 s). Diagonals (6,6,6,6,6,6,0,0,0) and all 0: no
+decision in 170 s. The possible 9x9 quotient matrices are constrained by Y = M + 5I - 3J, Y^2 = 9Y (row lists in
+`quotient_types.py`; the full list of matrices was not finished in 250 s). Nothing new found this way yet.
 
 ## 7. Next
 
