@@ -323,3 +323,123 @@ suffit pas : ses lignes doivent aussi réaliser les mêmes triangles, avec
 les mêmes intersections. La prochaine extension doit conserver ce couplage
 pendant le choix du bord, plutôt que reprendre les parcours à six points
 avec les seules bornes de multiplicité.
+
+## 10. V2 : les lignes doivent appartenir à leurs véritables centres
+
+La V1 de la section9 trouve un témoin de sa relaxation dès le troisième
+candidat central à six points libres. Il n'est pas prolongeable : une ligne
+du motif singleton {1} et une ligne du motif {14,75} partagent un indice
+extérieur, alors que chacun des centres14 et75 partage déjà un point
+conservé de C avec le centre1. Les deux centres sont non adjacents et ont
+déjà le sommet central en commun : trois voisins communs seraient imposés.
+
+**Renforcement démontré.** Affecter chaque ligne transportée à son centre
+réel j, y compris les deux affectations possibles au sein d'une paire de
+triangle. Pour deux centres de triangles différents, on doit avoir
+
+    |S_j ∩ S_k| + |B_j ∩ B_k| = 1.
+
+Pour les deux centres d'un même triangle, on doit avoir
+
+    S_j ∩ S_k = {j,k},   B_j ∩ B_k = ∅.
+
+La première égalité résulte des deux voisins communs de j,k, dont i est
+déjà un. La seconde résulte de l'unique voisin commun de deux sommets
+adjacents, qui est i. Elles renforcent la simple borne d'intersection≤1
+entre deux motifs différents, car les centres ont des incidences différentes.
+
+Sur un bord partiel F, poser zF_jk=|B_j∩B_k∩F| et
+m_j=4-|B_j∩F|. Pour des centres de triangles différents, cela impose
+
+    max(0, 1-zF_jk-min(m_j,m_k)) ≤ |S_j∩S_k| ≤ 1-zF_jk.
+
+Si un des blocs est entièrement connu, l'intersection est donc fixée
+exactement. Chaque paire de triangles doit respecter simultanément ces
+relations, et les dix lignes doivent toujours réaliser les quotas2-z_ik.
+Toutes ces conditions sont nécessaires ; aucune symétrie n'est imposée.
+
+**Exclusion nouvelle : six points libres {3,4,5,6,7,8}.** Conserver seulement
+les incidences des16 autres points du même bord source37c3bb63972f suffit
+maintenant à exclure TOUTES les extensions de Hoffman de ce bord partiel.
+
+- 3 998 candidats centraux, énumération EXHAUSTED ;
+- 16 365 couplages de triangles après les filtres élémentaires ;
+- 3 605 341 nœuds de recherche, aucun plafond atteint ;
+- UNSAT en177,94s avec les seules équations des voisinages affectés ;
+- les six points manquants ne sont pas construits dans cette preuve.
+
+Ce résultat contient la famille à cinq points libres ; les deux résultats
+ne doivent pas être additionnés comme des familles disjointes. Il s'agit
+toujours de la famille de toutes les extensions d'un bord d'incidence précis,
+pas de toutes les cocliques de22 de C1.
+
+Le moteur effectue une propagation de compatibilité entre les dix domaines
+affectés, des bornes de multiplicité des colonnes, puis une recherche finie
+exhaustive. Les domaines de paires de triangle autorisent toutes les
+affectations. Une limite de temps ou de nœuds produit explicitement UNKNOWN.
+Les entrées, statistiques, empreintes du source et journaux sont conservés.
+Un témoin positif de la relaxation et sa variante négative contrôlent le
+nouveau moteur ; le témoin positif n'est pas un SRG.
+
+    python code/codex/hoffman_coexistence_v2.py --free 3,4,5,6,7,8 --no-points
+
+Source : `code/codex/hoffman_coexistence_v2.cpp` ; résultat complet dans
+`data/codex_hoffman_extensions/coexistence_v2_37c3bb63972f_3-4-5-6-7-8_no_points/`.
+Une variante couplée aux domaines des points manquants termine aussi UNSAT,
+en186,68s avec le même nombre de nœuds. C'est la même exclusion ; le second
+calcul montre ici que ce couplage supplémentaire n'était pas indispensable.
+Les deux prototypes Python à300s étaient incomplets et ont été remplacés
+par ce parcours compilé exhaustif, sans réinterpréter UNKNOWN comme UNSAT.
+
+## 11. Même bord pour tous les voisinages, et transport non uniforme
+
+**Lemme de soutien commun.** Pour toute collection de voisinages fermés
+réalisés K, chaque point effacé p doit choisir une unique ligne d'incidence
+P_p de14 blocs telle que |P_p∩K|=2 pour TOUS les K de la collection.
+Ces deux blocs ne peuvent déjà partager un point conservé, par linéarité
+de K. S'il reste m points à construire, leurs m lignes sont distinctes,
+et chaque colonne j doit appartenir à exactement m_j d'entre elles.
+
+On peut donc intersecter les domaines de points permis par chaque voisinage
+au fur et à mesure de la recherche. Moins de m lignes disponibles, ou moins
+de m_j lignes contenant une colonne j, suffit à rejeter la configuration.
+Passer ces deux tests ne construit pas encore le bord : les lignes devront
+notamment se rencontrer deux à deux en exactement deux blocs.
+
+À sept points libres {3,4,5,6,7,8,9}, la seule V2 affectée trouve un témoin
+nécessaire en1,66s. Le domaine complet d'un point effacé a358 594 membres.
+Les onze voisinages du témoin le réduisent successivement à
+110696,35023,12430,3964,1185,386,105,32,10,7,7 membres, avant même d'utiliser
+la linéarité supplémentaire. Aucun des sept derniers membres ne contient
+la colonne5, qui demande deux incidences manquantes. Ce témoin est donc
+impossible. C'est une obstruction explicite du survivant, pas une clôture
+de toute la famille à sept points.
+Voir `seven_point_survivor_obstruction.json` et le témoin dans
+`coexistence_v2_37c3bb63972f_3-4-5-6-7-8-9_no_points/result.json`.
+
+**Le transport et les triangles s'étendent à une coclique quelconque.**
+On peut préciser la réserve de la section8 sans supposer |C|=22. Poser
+b_j=|B_j|. Pour un centre i, son voisinage extérieur R_i a14-b_i sommets.
+Parmi eux, b_i sont appariés avec les points de B_i ; les14-2b_i autres
+forment7-b_i paires de triangles extérieurs. Pour chaque j∈R_i,
+
+    S_j = ({j} ∪ N_D(j)) \ {i}
+    |S_j| = 14-b_j,       H 1_(S_j) = 2·1 - H_i.
+
+Toutes les lignes transportées satisfont donc la MÊME équation d'incidence,
+même lorsque leurs tailles diffèrent. Leur taille doit être attachée à leur
+centre réel. Pour k≠i, leurs multiplicités restent
+
+    Σ_(j∈R_i) [k∈S_j] = 2-|B_i∩B_k|.
+
+Les égalités d'intersection entre triangles de la section10 restent
+inchangées. Preuves : H(I+D)=2J donne l'équation transportée après retrait
+de la colonne i ; (D²+D)_ik=2-|B_i∩B_k| donne les multiplicités ; λ=1 et
+μ=2 donnent les intersections. Le nombre de triangles vient de N_G(i)=7K2.
+Les bornes b_j≤7 assurent encore la distinction des voisinages fermés.
+
+Ainsi, l'outil conceptuel n'est pas limité aux cocliques de Hoffman : il
+devient un problème de lignes de tailles variables, affectées aux centres,
+avec les mêmes obligations de triangles et de voisins communs. Le code
+actuel reste spécialisé au cas régulier22 ; cette extension est un lemme
+général, sans nouvelle exclusion numérique hors de ce cas.

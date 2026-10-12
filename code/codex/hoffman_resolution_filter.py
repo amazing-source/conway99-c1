@@ -6,21 +6,28 @@ Different selected rows have intersection at most two; column quotas are
 """
 
 
-def resolution(rows,quotas,max_nodes=10000,patterns=None):
+def resolution(rows,quotas,max_nodes=10000,patterns=None,pattern_bounds=None,
+               support=None,support_start=None):
     n=len(rows);width=len(quotas)
     incidence=[[j for j in range(width) if row>>j&1] for row in rows]
     assert all(len(cols)==10 for cols in incidence)
     assert sum(quotas)==100
     by_col=[sum(1<<a for a,row in enumerate(rows) if row>>j&1) for j in range(width)]
     compatibility=[sum(1<<b for b,other in enumerate(rows)
-                       if (row&other).bit_count()<=(2 if patterns is None or patterns[a]==patterns[b] else 1))
+                       if (row&other).bit_count()<=(pattern_bounds[patterns[a],patterns[b]]
+                           if pattern_bounds is not None else
+                           2 if patterns is None or patterns[a]==patterns[b] else 1))
                    for a,row in enumerate(rows)]
     quota=list(quotas);nodes=0;limited=False;witness=None
 
-    def dfs(av,chosen):
-        nonlocal nodes,limited,witness
+    support_prunes=0
+
+    def dfs(av,chosen,live_support):
+        nonlocal nodes,limited,witness,support_prunes
         nodes+=1
         if nodes>max_nodes:limited=True;return False
+        if support is not None and not support.possible(live_support):
+            support_prunes+=1;return False
         left=10-len(chosen)
         if left==0:
             assert not any(quota)
@@ -41,7 +48,8 @@ def resolution(rows,quotas,max_nodes=10000,patterns=None):
             for j in incidence[a]:
                 quota[j]-=1
                 if quota[j]==0:next_av &=~by_col[j]
-            found=dfs(next_av,chosen+[a])
+            next_support=(live_support&support.masks[rows[a]] if support is not None else None)
+            found=dfs(next_av,chosen+[a],next_support)
             for j in incidence[a]:quota[j]+=1
             if found:return True
         return False
@@ -49,6 +57,6 @@ def resolution(rows,quotas,max_nodes=10000,patterns=None):
     available=(1<<n)-1
     for j,q in enumerate(quota):
         if q==0:available &=~by_col[j]
-    sat=dfs(available,[])
+    sat=dfs(available,[],support_start)
     return dict(status='SAT_RESOLUTION_ONLY' if sat else 'UNKNOWN' if limited else 'UNSAT_RESOLUTION',
-                nodes=nodes,witness=witness)
+                nodes=nodes,witness=witness,support_prunes=support_prunes)
