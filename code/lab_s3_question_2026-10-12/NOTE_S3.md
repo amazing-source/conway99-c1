@@ -248,3 +248,27 @@ cadical: NO DECISION in 520 s. A single bounded run of three hours was started a
 having allowed longer tests on 12/10); its outcome is to be appended here.
 Also undecided with the parity chains or the grid layer: one flat pair, a non-isotropic line with one or three flat
 pairs, no flat pair at P, a pair of type B (85 to 130 s each).
+
+## 12. Addendum (18:27 UTC): three pictures of the same object, and what the relaxations show
+
+(a) **Curvature code.** `grid_relax.py`: on the 3645 grid squares the row/column relations of the 405 grids have rank
+2025 and, with the 9720 cube relations, rank 3185 = 3645 - 460: rows, columns and cubes cut out exactly the curvatures of
+the line-even signings. So a class is the same thing as a set O of odd grid squares obeying these relations.
+
+(b) **Cubic graph.** The pairs are the 2430 vertices of a cubic graph G whose 3645 edges are the grid squares (a square
+joins its two diagonals; each grid is a perfect matching of 9 edges; G is an 81-fold cover of the Tutte-Coxeter graph on
+the 30 non-isotropic directions, two directions being joined when orthogonal). O is a set of edges of G; a skeleton
+needs all degrees in {0, 1, 3} (flat, type B, type A). This grid-level relaxation alone is NOT enough: it is satisfied
+by the elementary classes (one line marked at one point: 36 odd squares, 72 pairs of degree 1, each of path weight 1).
+
+(c) **Cut field.** eps(w, w+s) = c_w(omega) + c_{w+s}(omega) for bits c_w(omega) attached to the flags (vertex, direction):
+a class is a field of cuts kappa_w of the ten directions, one at each vertex, modulo "flip omega along a line of direction
+omega". The parity of any closed walk is the number of its corners w whose cut separates the incoming and outgoing
+directions; a grid square of class {omega, omega'} is odd iff an odd number of its corners separate omega from omega'.
+
+(d) `flat_count.py` with longer limits: "at least 41 flat pairs at P" is UNSAT (123 s); 37 undecided (270 s). So at most
+40 flat pairs at each vertex. `parity_code2.c` (4 runs of 1.6e9 to 4.7e9 annealing moves): best split patterns of weight
+1660 to 1672, i.e. the parity alone seems to force about 760 flat pairs (about 19 per vertex); heuristic.
+(e) `family_hyperplanes.py`: the family "each direction unmarked, or all its lines marked on one affine hyperplane"
+(82^10 signings): no decision in 300 s.
+(f) The bounded three-hour cadical run on `full_ultimate.py` (started 17:56 UTC) is still running at the time of writing.
