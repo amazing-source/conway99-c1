@@ -52,3 +52,23 @@ Patterns:
 At 99 (Σℓ = 6), (L) and (P) would leave only the types 1⁶, 1³3, 1²4 (3² and 6 would have no prism). With the identities
 of §2, (P) gives t₃ ≥ 231 and t₂ ≤ 3465. No contradiction so far. The aim is a second, independent count of t₃ or of
 the long cycles that clashes at m = 7.
+
+## 4. Attempt to widen the test bench (12/10, `asym243/s3grid/z3rand.py`, `z3batch.sh`, `canon_cmp.py`)
+- I ran 12 Z₃-cover instances (full model restricted to A₃) with 12 random gains imposed. They are **all UNSAT at once**:
+  the forced gains clash with the tree gauge and with triangle consistency. This was a design flaw, kept in
+  `z3batch_try1_overconstrained.log`.
+- I then ran 10 instances varying only the solver seed. **All SAT in 4–6 min, all isomorphic to known graphs** (nauty
+  canonical forms): Γ₃ ×8, Γ₄ ×1, twin ×1, never BvLS, never a 5th graph.
+- This is empirical support, not a proof, for "4 classes of Z₃-covers". It also means the conjectures of notes 176–177
+  cannot be tested outside these 4 graphs this way.
+
+## 5. Status of the hand attack on (L2) (no ℓ = 2 cycle in B_xa)
+Suppose B_xa has an ℓ = 2 cycle: T₁, T₂ through x and T′₁, T′₂ through a. This gives an 8-cycle
+u₁v₁p₁q₁u₂v₂p₂q₂, alternating triangle edges and B edges, with x and a attached to the two halves. μ = 2 then forces, for
+each non-adjacent pair, a second common neighbour at distance 2 from both x and a. Examples: (p₁,q₂) have a and some w;
+(u₁,p₁) have v₁ and some y.
+
+The proof must therefore go one level deeper, with possible identifications between these new vertices. This is the
+same type of case tree as the classical uniqueness proofs. **Next tool:** a "completion with identification" engine (in
+the spirit of Todd–Coxeter) that explores these trees exhaustively at small depth. It is a microscope that produces a
+human-readable case analysis, not a solver verdict.
