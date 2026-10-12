@@ -173,3 +173,34 @@ hence that every regular-spread srg(243,22,1,2) is one of the four graphs. No S3
 Possible next steps, with their nature: (i) an exhaustive cube-and-conquer of the local problem with a block of type
 B (1560 variables; size unknown: the restriction of type B to 25 blocks falls in 23 s, to 45 blocks not in 285 s);
 (ii) the same with the gains in S3 (`s3_local.py`, heavier); (iii) a proof from the equations of 8(b).
+
+## 10. Addendum (16:16 UTC): no symmetry, no trivial vertex
+
+Complete problem in the hybrid encoding (`full_hybrid.py`: the 810 edge variables, so that all relations between
+cycles are present, plus one-hot states for the 2430 pairs).
+
+(S) **No non-trivial parity skeleton class is invariant under a non-identity automorphism of BH.**
+`sym_global_all.py`: Aut(BH) (order 233 280 = 2^6 3^6 5) has 41 conjugacy classes of non-identity elements; every
+element has a power of order 2, 3 or 5; for one representative sigma of each of the ten classes of elements of prime
+order (five of order 2, four of order 3, one of order 5), the complete problem with "the state of (sigma x, sigma y) is
+the image of the state of (x, y)" (the states do not depend on the gauge) and "some pair is split" is UNSAT, in 0.8 s
+to 6 s each. (The cloud note 165 had this for odd order from its own solver runs; this is an independent encoding and
+covers the involutions.)
+Consequence: let G be a distance-regular graph with intersection array {20,18,4,1;1,2,18,20} that is not a cyclic
+cover of BH. An automorphism of G preserves the antipodal classes, induces an automorphism of BH fixing the parity
+class of the gains, hence the identity of BH; it is then a deck transformation; the monodromy group is S3 (transitive
+on the three sheets because G is connected, and not inside A3), whose centraliser in Sym(3) is trivial. So
+**Aut(G) = 1: a non-cyclic cover, if it exists, is an asymmetric distance-regular graph**, and the corresponding
+srg(243,22,1,2) has no non-identity automorphism preserving that spread (it is asymmetric as soon as the regular
+spread is unique, as it is in the three graphs other than BvLS).
+
+(D) **In a non-trivial parity skeleton every vertex has a split pair** (hence, by G3, a split pair of type B).
+`dead_point.py` (local, 0.4 s, complete): a local solution in which the 18 blocks through one point u of N(P) are flat
+is trivial or the line solution of direction u. So a neighbour Z of a trivial vertex x is trivial or of line type
+along Zx, and line type is excluded by C2; by connectivity everything is trivial. Cross-check with the complete
+encoding: `global_tests.py trivialP` is UNSAT in 0.2 s.
+Same local lemma, other reading: for every edge {P, u} of BH some pair {P, R} with R adjacent to u is split.
+
+Not decided (120 s each): `global_tests.py allsplit` (no flat pair at all: a signing of BH with eigenvalues 5 and -4
+only) and `noflatP` (no flat pair at one vertex). The solver settles in seconds every case with enough flat pairs or
+with a symmetry, and none of the cases rich in split pairs.
