@@ -72,3 +72,19 @@ The proof must therefore go one level deeper, with possible identifications betw
 same type of case tree as the classical uniqueness proofs. **Next tool:** a "completion with identification" engine (in
 the spirit of Todd–Coxeter) that explores these trees exhaustively at small depth. It is a microscope that produces a
 human-readable case analysis, not a solver verdict.
+
+## 6. Local engine and edge types at 99 (12/10, `code/fx/rooted/`, `code/fx/psd_edge_types.py`)
+- **Exact rooted model** (`gen_rooted.py`). Since the diameter is 2, x, N(x) (m labelled mate pairs) and Δ_x (labelled
+  by the pairs z_uw) cover the whole graph. The only unknowns are the edges inside Δ_x. There is no residual symmetry.
+  - Controls: m = 2 SAT (Paley(9)), m = 3 UNSAT at once (srg(19,6,1,2) infeasible).
+  - But **m = 5 (srg(51,10,1,2), infeasible) is not refuted in 300 s**: the solver already struggles at 51 vertices on
+    impossible parameters.
+- **The 11 types of B_xa at 99** (partitions of 6), each imposed through π_a: **all UNKNOWN after 8 min** (`types.log`).
+  No type falls for an easily detected local reason.
+- **Euclidean test on the 27-vertex core N[x] ∪ N[a]**, whose induced subgraph is fully determined by the type of B_xa.
+  For every type, at 99 and at 243, the minimum eigenvalue of the two Gram matrices is **exactly 0**. This is
+  structural: Σ_{u∼x} p_u = θ p_x. The test distinguishes no type.
+
+**Conclusion.** Euclidean positivity and the counting identities are exhausted at the scale of an edge or a vertex.
+Solvers decide nothing at this size. A combinatorial argument, if one exists, is not local. It must link several local
+structures together, as the "21 = 21" of K₇ links the 7 triangles at a coclique point.
