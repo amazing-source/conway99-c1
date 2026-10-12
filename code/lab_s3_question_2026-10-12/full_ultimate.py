@@ -15,7 +15,8 @@ Encoding: full_hybrid.py (810 edge variables, one-hot states of the 2430 pairs) 
   * at P: some block outside Omega_25(R0) is of type B (C5).
 The redundant clauses are consequences of the constraints in a non-trivial skeleton; they only help the search.
 
-python full_ultimate.py <tmp dir> <seconds, 0 = only write the CNF> [cubes] [nolemmas] [noparity] [out=<file>] [args for cadical ...]
+python full_ultimate.py <tmp dir> <seconds, 0 = only write the CNF> [cubes] [nolemmas] [noparity] [split] [out=<file>] [args for cadical ...]
+  split: the cube is "the pair {P, R0} is split" (no lemma used at all; lemma clauses off)
 Memory: cadical on about 80 000 variables and 1 000 000 clauses: under 2 GB."""
 import sys, os, subprocess, time, itertools
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -53,8 +54,12 @@ def orbit_check():
     return True
 
 
-def build(cubes, lemmas, parity):
-    nv, cl, ev, xs = full_hybrid.build(["typeB"])
+def build(cubes, lemmas, parity, cube="typeB"):
+    """cube = "typeB": the pair {P, R0} is in its first type B state (needs the lemma: a non-trivial skeleton has a pair
+    of type B). cube = "split": the pair {P, R0} is split, any state (needs nothing but the transitivity of Aut(BH) on
+    the non-adjacent pairs); the lemma clauses must then be off."""
+    assert cube == "typeB" or not lemmas
+    nv, cl, ev, xs = full_hybrid.build([cube])
     nv, sq, ncube = full_grid.add_grid_layer(nv, cl, ev, xs, cubes)
     nvv = [nv]
     def new(): nvv[0] += 1; return nvv[0]
@@ -100,7 +105,9 @@ if __name__ == "__main__":
     cad_args = [a for a in rest if a.startswith("--")]
     CAD = os.environ.get("CADICAL", "C:/home/researcher/Desktop/Recherche_Conway/c1-codex/tools/win64/cadical.exe")
     assert orbit_check()
-    nv, cl, ev, xs = build(cubes, lemmas, parity)
+    cube = "split" if "split" in rest else "typeB"
+    if cube == "split": lemmas = False
+    nv, cl, ev, xs = build(cubes, lemmas, parity, cube)
     path = os.path.join(tmp, outname)
     with open(path, "w", newline="\n") as f:
         f.write("p cnf %d %d\n" % (nv, len(cl)))

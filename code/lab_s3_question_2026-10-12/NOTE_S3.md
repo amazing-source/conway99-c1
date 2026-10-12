@@ -272,3 +272,41 @@ directions; a grid square of class {omega, omega'} is odd iff an odd number of i
 (e) `family_hyperplanes.py`: the family "each direction unmarked, or all its lines marked on one affine hyperplane"
 (82^10 signings): no decision in 300 s.
 (f) The bounded three-hour cadical run on `full_ultimate.py` (started 17:56 UTC) is still running at the time of writing.
+
+## 13. RESULT (18:36 UTC): the type B instance is UNSAT — to be verified before it is called a theorem
+
+**cadical 3.0.1 answered `s UNSATISFIABLE` (exit code 20) on the instance of `full_ultimate.py` after 39 min 29 s**
+(started 17:56:48 UTC, ended 18:36:17 UTC, one process, default options, no proof file).
+Instance: 76 635 variables, 613 225 clauses, sha256 f72b45c2fea100389608434a2891d8c9d0f177abed6e0110dcd2a237f579e15f
+(the generator is deterministic: a second generation gives the same file).
+
+What the instance says: "there is a line-even signing of BH in which every non-adjacent pair has 0, 3 or 6 odd paths and
+the pair {P, R0} is in its first type B state", plus clauses that are consequences of this in a non-trivial skeleton:
+the definitions of the grid squares and their row/column relations, the 720 parity chains (P3), and the lemma clauses
+(a) to (e) of (P6).
+
+Chain of the argument, with the status of each link:
+1. a non-trivial skeleton has a pair of type B (G1: `local_cnf2.py nontrivial pairsA`, 0.1 s, at every vertex);
+2. Aut(BH) is transitive on the triples (ordered non-adjacent pair, type B state): orbit computation in
+   `full_ultimate.py` (the stabiliser of an ordered pair, order 48, permutes its six type B states transitively), and BH
+   has rank 3; so the pair can be taken to be {P, R0} in its first type B state;
+3. the lemma clauses hold in every non-trivial skeleton: checked again at 18:42 UTC by DIRECT runs on the complete
+   problem without any lemma clause (`lemma_checks.py`: complete problem + grid layer + parity + "some pair is split" +
+   the negation of the lemma at P): (d) UNSAT 5.5 s, (a) UNSAT 14.0 s, (b) UNSAT 2.1 s, (c) UNSAT 95.7 s; (e) is the local
+   run of `explore_typeB4.py` (UNSAT 23 s) with the same state and the same 25 blocks;
+4. the instance is UNSAT (the run above).
+Consequence IF every link holds: **every parity skeleton on BH is trivial; every 3-fold cover of BH that is a
+srg(243,22,1,2) is cyclic; with the classification of the cyclic covers (THEOREM_Z3_COVERS.md, exhaustive search of the
+project) the strongly regular graphs (243,22,1,2) with a regular spread, equivalently the distance-regular graphs with
+intersection array {20,18,4,1;1,2,18,20}, are exactly the four graphs BvLS, twin, Gamma3, Gamma4.**
+
+What is NOT yet secured (reliability first):
+* every UNSAT here is an answer of one solver without an independently checked proof certificate;
+* the encodings were validated only on positive controls (trivial skeleton, the ten line solutions) and by agreement
+  between three encodings (`local_vertex.py`, `local_cnf2.py`, `local_lib.py`/`full_hybrid.py`);
+* verification runs started at 18:39 UTC (each one process, three hours at most): V1 the same instance with the
+  internal proof checking of cadical (`--check`); V2 the type B instance WITHOUT any lemma clause; V3 "the pair {P, R0}
+  is split" without any lemma and without the type assumption (this one alone would give the statement, with only the
+  transitivity of Aut(BH) on the non-adjacent pairs). Their outcomes are to be appended here.
+* to do for a publishable proof: a DRAT/LRAT certificate checked by an independent checker, for the main run and for
+  the lemma runs; an independent re-implementation of the encoding (a second author of the CNF).
