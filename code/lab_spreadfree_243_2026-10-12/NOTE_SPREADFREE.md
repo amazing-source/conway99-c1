@@ -187,6 +187,32 @@ without decision in 170 s. Diagonal (6,6,6,0,0,0,0,0,0): Gamma4 (18 s). Diagonal
 decision in 170 s. The possible 9x9 quotient matrices are constrained by Y = M + 5I - 3J, Y^2 = 9Y (row lists in
 `quotient_types.py`; the full list of matrices was not finished in 250 s). Nothing new found this way yet.
 
+## 6d. A SIXTH graph, with a group of order 108, by a trade keeping one third of Gamma5 (`partial_symmetric_trades.py`)
+
+Setting: Gamma5 in its tri-Cayley form; the orbit 0 (81 vertices, a folded Hamming graph H(5,3)/<w>) is kept with ALL
+its adjacencies (inside and towards the other 162 vertices); the adjacency inside the 162 other vertices is free but
+must be invariant under a subgroup S of the 81 translations.
+
+| S | extra condition | result |
+|---|---|---|
+| <0010, 0001>, order 9 | none | 12 completions listed (limit): BvLS, Gamma4 and Gamma5 all occur, so **these three graphs share this third and its attachments**; they differ on 648 or 1296 pairs inside the 162 vertices |
+| <0010, 0001>, order 9 | not invariant under all 81 translations | **UNSAT** (54 s, repeated 51 s): with this boundary, invariance under S forces invariance under the 81 translations |
+| <0001>, order 3 | not invariant under all 81 translations | **SAT in 20 s: a new graph** |
+
+New graph: file `new243_trade_aut108.edges`, sha256 f49476e0726074e3d6328466594b7f32917b00be719a24eb27427f6cba927b2e.
+Checks (same scripts as for Gamma5): A^2 = 20I - A + 2J in integers, spectrum 22, 4^132, (-5)^110, lambda = 1 and
+mu = 2 pair by pair; lines parallel to a line: 2 (162 lines), 6 (108), 8 (459), 10 (108), 14 (54), never 20: no flat
+line, no regular spread (exhaustive search: 0); 17 grids through every vertex; 3240 prisms; **Aut of order 108**, with
+trivial vertex stabiliser on the orbit of 108; vertex orbits 27, 54, 54, 108; not isomorphic to BvLS, twin, Gamma3,
+Gamma4, Gamma5 (direct tests, controls pass). Holonomy cycle types now include odd cycles (1^8 5 7).
+P1 and P2 of section 6b hold in this graph too (parallels of a line joined by 0 or 3 edges; even numbers 2, 6, 8, 10,
+14), which makes them less likely to be artefacts of large symmetry.
+
+So the family is much richer than the four covers: symmetric trades produce new graphs in seconds, and the symmetry
+can be lowered step by step (2916, then 108). An enumeration of more completions with one translation is running
+(started 21:30 UTC); the search with NO symmetry imposed (13 041 free pairs, about 2 million products) is the
+natural route to an asymmetric member.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
