@@ -4124,3 +4124,117 @@ exports one survivor that its rank-free boundary LP does NOT kill:
 are dead** (the first one, P0, in 1.2 s and 5.5e6 nodes); the cells P6, P7, Q0 keep 3, 2 and 1 completions. The world
 is excluded at rank 37. Three worlds tried, three dead; each needed a single cell. Still not norm 16: the list of
 worlds is not complete.
+
+### 17.101 The co-Heawood branch without rank hypothesis, and the world of norm 18: what the "global" attack of 12/10 gave (11:57 UTC, 12/10)
+
+Status: hand derivations and bounded computations by the lab session (one process, at most five minutes each).
+**Nothing is excluded.** Not audited by another session. Files: `work/coheawood_2026-10-12/`.
+Context: on 12/10 Codex relayed a message of the user (peer relay, not read by me from the user): do not stop at
+"local constraints do not decide simultaneous compatibility"; attack the common system. Codex attacks the branch
+"two Hoffman cocliques meeting in 15 points" (= an integral (-4)-eigenvector of norm 14, the world of 17.95) with a
+solver and spectral cuts (its `NOTE_COHEAWOOD_DEUX_COCLIQUES.md`, commits 69a531e, db17c59). This section records what
+I tried on the same branch with other tools, and on the world of norm 18.
+
+**(0) CORRECTION of 17.94 (two numbers, no consequence for Lemma N14).** The Seidel matrix of the 14 core vertices
+has rank **8** modulo 7, not 7: its kernel is {(a, 5 B^t a) : a in F_7^X, sum a = 0}, of dimension 6, which contains
+the true relation 1_X - 1_Y (a = 1); so the core spans 13 dimensions with a radical of dimension **5** (not 6).
+Core + far (29 vertices): rank **22** (not 21), kernel {(a, tau 1 + 5 B^t a, tau 1)}, of dimension 7, span 27,
+radical 5. Checked by direct computation (one-off script in the session, ranks 8 and 22). Lemma N14 does not
+use these numbers: the ranks of the 39-vertex bases are computed by `fano37.c`.
+
+**(1) Structure of the world modulo 7 (hand).** Notation of 17.95; B = biplane incidence; a boundary vertex b lies
+in a cell (x, y) and has a triple T_b of far neighbours; q(b,b') = |T_b cap T_b'|; e = adjacency.
+* Radical of the core span: v_a = sum_x a_x xi_x + 5 sum_y (B^t a)_y xi_y (sum a = 0, modulo a = 1): a totally
+  isotropic space I of dimension 5, orthogonal to core + far; <v_a, xi_b> = -2 a_x - 3 (B^t a)_y depends only on the
+  cell of b.
+* With s = sum_X xi_x (isotropic, orthogonal to the far vectors), zeta_z = xi_z + s: the 15 vectors zeta_z have
+  pairwise product 1 and sum 0 (a non-degenerate space of dimension 14, orthogonal to the core), and the component
+  of xi_b in it is 2 sum_{z in T_b} zeta_z. Hence for rho_b = xi_b - 2 sum_{T_b} zeta_z:
+      <rho_b, rho_b'> = -2 e - 3 q  (b != b'),  <rho_b, rho_b> = 4:   Gram(rho) = -(2 A_B + 3 D^t D + I) mod 7
+  (A_B the adjacency on the 70 boundary vertices, D the 15 x 70 incidence far - boundary). Over Z that matrix has
+  eigenvalues 145, -1 +- 2 sqrt2 (6 each), 35 (14), 7 (27), -7 (16): the rank modulo 7 measures the glue.
+* Modulo the span of core + far (dimension 27), a boundary vertex has r - 28 free coordinates: 9, 11, 13, 15 for
+  r = 37, 39, 41, 43. One row (the ten boundary neighbours of a core point) fixes 9 of them: this is why the base of
+  17.95 spans W exactly at rank 37 and why nothing else is as cheap: at rank 39 two coordinates stay free per vertex.
+* Real side (Codex's matrix H, formula (1) of its note, re-derived here: H = 12 J + 63 I - 21 A_B - 7 D^t D - 9 Sigma
+  - 3 Beta is 147 times the projector on the 16-dimensional space of (-4)-eigenvectors vanishing on core + far;
+  in particular the E_-4 projections of core + far span 28 dimensions, not 29: 3.1_core - 1_far lies in E_3 + <1>).
+  `h_structure_check.py`: **modulo 7, H depends only on the cells and has rank 5** (it is the pairing with I);
+  modulo 3 it is -D^t D. One row: H_row = F - 7 A(G) with F fixed and G the cubic graph of the row; kernel 1,
+  squared Frobenius norm 15 024 whatever G; over the 33 508 base orbits: rank 9 (once 8: the base K_4 + ...),
+  eigenvalues in [0, 76.73]: **no base is excluded by the positivity of one row** (floating eigenvalues;
+  Codex had 2000 random samples, this is the whole catalogue). Two rows span at most 16 dimensions against
+  9 + 9: a real, rank-free condition on PAIRS of rows.
+
+**(2) The system of two rows without rank hypothesis: its true size** (`coh2rows.c`, `OUTPUT_coh2rows_sample.txt`).
+The cell B1 of x_1 is completed on a base with the combinatorial rules of `fano37.c` only (no condition modulo 7),
+by random dives (Knuth's estimator, 200 000 dives per base), and the rank of the 20 x 20 block of H is computed on
+every completed dive.
+
+| base (orbit number) | candidates per member | estimated number of complete cells | completed dives | rank of the block |
+|---|---|---|---|---|
+| 0 | 3369 to 6192 | 3.1e22 (standard error 1.3e21) | 1280 | 18 for all |
+| 1000 | 3369 to 6200 | 2.8e22 | 1194 | 18 for all |
+| 12345 | 3369 to 6216 | 2.3e22 | 1140 | 18 for all |
+| 30000 | 3369 to 6224 | 2.3e22 | 1127 | 18 for all |
+
+(An earlier run with 400 000 dives on three of these bases gave 3.0e22, 2.4e22, 2.3e22 and 2482 + 2319 + 2259
+completed dives, all of rank 18.) So there are about **3e22 combinatorial second rows per base** (the far vertices are
+named by the base, so the cubic graph of the second row comes with a bijection of its edges with the far vertices),
+against about 1.9e5 nodes for the rank-37 search of 17.95: the conditions modulo 7 on single vertices and on pairs
+are what makes the world enumerable at rank 37, and they are available at rank 37 only (zero free coordinate). The
+real condition "rank <= 16" is met by none of the 4741 + 7060 sampled cells (all have the generic rank 18), but it
+can be tested only on complete pairs of rows. **No exhaustive treatment of this branch without rank hypothesis is
+within reach of an enumeration**; my earlier guess of 1e11 per base (in the session, not written in this note) was
+wrong by eleven orders of magnitude (I had forgotten that the far vertices are labelled).
+At rank 39 the same engine with two free coordinates: about 1e7 pairs of reference members per base, each followed
+by a search of the rank-37 type; my estimate is of the order of a week of the whole lab PC for the 33 508 bases
+(not measured), and it would give "no norm-14 vector at rank 39", which no certificate needs: the identity of
+section 15 only gains from a_7 > 0. **The branch is not on the critical path of any rank above 37.**
+
+**(3) The same branch cut into 33 508 cases for a SAT solver** (`fano_cube.py`, `bases_orbits.txt` written by
+`fano37` with FANO37_DUMP). One case fixes the 150 pairs B0 - far (hence the names of the far vertices) and a
+standard matching in every row; the whole srg(99,14,1,2) is encoded, with the redundant cardinalities per row and
+per column. Case 0: 3000 undetermined pairs, 920 447 variables, 3 227 096 clauses; cadical: **no decision in 240 s**
+(terminal output of the session, 11:18 to 11:22 UTC). Not pursued: one row fixed is not enough for a solver either.
+
+**(4) The four known srg(243,22,1,2) have no analogue of this branch** (`work/c1_biplane_test_2026-10-07/biplane_test.py`
+on the two graphs found by the cloud session, edge lists of branch claude/v7-simultaneous):
+gamma3_aut864 and gamma4_aut3888: 3 592 512 candidates each, 0 configuration, 0 eigenvector of norm 22 for -5.
+With the result of 07/10 (BvLS and the twin: 0 and 0) and the classification of the Z3-covers
+(`work/audit_v7_2026-10-12/THEOREM_Z3_COVERS.md`): no srg(243,22,1,2) that is a Z3-cover of the Brouwer-Haemers
+graph has two Hoffman cocliques meeting in 34 points. So the 243-vertex graphs give no positive model of the
+co-Heawood world; they cannot serve as a control for a solver on this branch.
+
+**(5) Norm 18, rank-free: the world is not killed by positivity on the double vertices** (`n18_types.py`,
+`n18dfs.c`, `OUTPUT_n18_types.txt`, `OUTPUT_n18dfs_core23_slice0.txt`).
+* Outside vertex types for the 26 cores (single-vertex tests s4, s3 >= 0 of 17.97, floating): j = 0, 1, 2 always;
+  **j = 3 (a vertex with three neighbours in each support) has 160 candidate columns over 22 of the 26 cores, all
+  passing**; j = 4 has no candidate column at all. So "no triple vertex" is NOT a lemma for norm 18: the degree
+  identities of 17.97 and the count "18 doubles, 54 simple, 9 far" hold in the branch without triple only
+  (with n_3 triples: 18 - 3 n_3 doubles, 54 + 3 n_3 simple, 9 - n_3 far).
+* Branch "no triple, D independent", grid core (index 23, 216 candidate doubles): exhaustive search on the first
+  of the 12 candidates of the first defect pair, stopped at 3e8 tests (107 s): nodes by depth
+  1 2 9 47 467 3978 27319 143445 666084 2756559 5268179 13445071 33258829 39140358 42588533 24450038 12383006 2317413,
+  i.e. **2 317 413 complete sets of 18 doubles** passing both positivity tests in that part alone.
+  This CORRECTS the impression left by 17.97 ("sets of doubles die between 9 and 15 members in a capped search"):
+  that search had not reached the complete sets; they exist in millions.
+* Real rank (17.97): for norm 18 the 27 vertices doubles + far satisfy one relation (g) in a residual space of
+  dimension 26, so there is no rank condition inside the world; once a world spans, every simple vertex is
+  determined over Q. But the worlds (a set of doubles with its adjacencies, and the doubles as the 18 labelled edges
+  of a 4-regular multigraph on the 9 far vertices) are at least as numerous as the second rows of (2).
+  At rank 37 the conditions modulo 7 start after about ten doubles; with the far attachments this is far above
+  1e13 nodes per core by my count (not measured). **Norm 18 is not N14 again, at rank 37 or without rank.**
+
+**(6) What the identity of section 15 says about the critical path (no new computation).**
+2 a_8 + 16 a_9 + a_13 >= 329 (7^m + 1) and a_8 <= 6930 (coupled seed bound, Codex) give: at ranks 37, 39, 41 a
+graph has a vector of norm 18 or of norm 26 in L1 (a_9 = a_13 = 0 would need a_8 >= 395 129, 56 588, 8 225); at
+rank 43 it has one of norm 18 or 26, or at least 1316 of norm 16. So every exclusion of a rank by worlds passes
+through the worlds of norm 18 AND a bound on the vectors of norm 26; the world of norm 14 is needed at rank 37 only
+(done), and the worlds of norms 16 and 20 only to finish rank 37.
+
+**Summary for the record.** The only place where the passage from local to global has been made is 17.95 (rank 37,
+norm 14), and (1)-(2) explain why it was cheap there: zero free coordinate modulo 7 after one row, and a rigid
+catalogue of 33 508 rows. Every other brick examined today (the same world at higher rank or without rank; norm 18
+at rank 37 or without rank) costs at least 1e13 operations by enumeration, and the solvers do not decide one fixed
+row in minutes. A new reduction is needed; none was found today.
