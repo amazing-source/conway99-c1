@@ -274,6 +274,33 @@ minutes; log to be summarised here.
 Cayley census (section 6): stopped by its time limit at 21:54 UTC after four of the nine groups: three groups with
 (134, 108, centre 9): 84 sets each, only BvLS and Gamma5; one group with (26, 216, centre 3): 15 sets, only Gamma5.
 
+## 6g. State at 22:40 UTC: one boundary, seven graphs; towards an asymmetric member (not found)
+
+* Exploration by third trades (`thirds_bfs.py`, finished 22:22 UTC, 1129 s): 60 thirds tried over six graphs (lists
+  of thirds not complete: 25 s per solver call, at most 17 classes per graph). No new graph. Only the special thirds
+  are tradeable (the classes of size 2 or 3 under Aut); every other third tried is rigid.
+* Sweep of ten other translation directions for the trade on 162 vertices with one translation kept
+  (`partial_symmetric_trades.py`, three solutions per direction): Gamma4, Gamma3, the sixth, the seventh, the eighth,
+  nothing else. With section 6d this shows that **BvLS, Gamma3, Gamma4, Gamma5, the sixth, the seventh and the eighth
+  graph all contain the same third (a folded Hamming graph on 81 vertices) with the same attachments**; only the twin
+  is not known to.
+* Screening by linear algebra (`support_dims.py`): dimensions (w4, w5) of the eigenvectors supported in a region.
+  Tradeable thirds: (20, 10). Blocks 1 and 2 of the sixth graph: (6, 0), and they are rigid, as the criterion says.
+  Not sufficient: blocks of the twin (14, 4) and (12, 2) and 54-vertex regions (7, 2) are rigid for the solver.
+  Regions of the fifth graph: 108 vertices (27, 16), 135 vertices (40, 30), 162 vertices (61, 50).
+* Intermediate regions, NO symmetry imposed (`free_trade.py`): 108 free vertices (27 of block 1 + block 2) and 135
+  free vertices (54 of block 1 + block 2) have exactly the 6 completions of the third trade on block 2 (complete
+  lists, 50 s and 70 s; 15.6 million clauses for 135).
+* 162 free vertices, no symmetry, every translation forbidden: NO DECISION in 1200 s (30 million clauses). Not a
+  result. Recalibration: the forty big disjunctions were the likely obstacle; the census now running (22:39 UTC) drops
+  them and blocks each completion together with its images under the 972-ish automorphisms of the fifth graph that
+  preserve the kept third (`free_trade.py ... sym`); control on one third: 3 classes instead of 6 solutions.
+* Alternating projections on the Grassmannian of completions (`dm_trade.py`): on a third (dimension 200) 40 random
+  starts out of 40 converge to a completion in about 1.5 s each (Gamma5 23 times, Gamma4 17 times). On 162 vertices
+  (dimension 3050) no convergence in 20 000 iterations, from random starts or near the input. So this tool works for
+  small regions only, as it stands.
+* Asymmetric member: none found. Smallest automorphism group so far: 108.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
