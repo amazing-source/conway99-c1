@@ -1,0 +1,75 @@
+{
+  "status": "OPTIMAL",
+  "seconds": 0.01600000000325963,
+  "stats": {
+    "row_types": 5,
+    "typed_edge_variables": 20,
+    "large_products": 0,
+    "model": "satisfaction model '': (model_fingerprint: 0x5e7cd18a85125d05)\n#Variables: 41 (13 primary variables)\n  - 35 Booleans in [0,1]\n  - 6 constants in {0,1} \n#kBoolOr: 6 (#literals: 6)\n#kLinear0: 8\n#kLinear1: 26 (#enforced: 10)\n#kLinear2: 56\n#kLinear3: 23\n#kLinearN: 22 (#terms: 110)",
+    "enumeration_nodes": 10
+  },
+  "limit_seconds": 10.0,
+  "workers": 1,
+  "order": 9,
+  "coclique_size": 2,
+  "scope": "All row populations and reciprocal aggregate edges for this fixed core only; feasible does not prove an SRG",
+  "response_stats": "CpSolverResponse summary:\nstatus: OPTIMAL\nobjective: 0\nbest_bound: 0\nintegers: 0\nbooleans: 0\nconflicts: 0\nbranches: 0\npropagations: 0\ninteger_propagations: 0\nrestarts: 0\nlp_iterations: 0\nwalltime: 0.003054\nusertime: 0.003054\ndeterministic_time: 9.12e-06\ngap_integral: 0\nsolution_fingerprint: 0x6d876d6d34864e6a\n",
+  "selected_rows": [
+    {
+      "vertices": [
+        1,
+        3
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        1,
+        4
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        2,
+        3
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        2,
+        4
+      ],
+      "count": 1,
+      "coclique_count": 0
+    }
+  ],
+  "typed_edges": [
+    {
+      "a": 3,
+      "b": 4,
+      "count": 1
+    },
+    {
+      "a": 3,
+      "b": 6,
+      "count": 1
+    },
+    {
+      "a": 4,
+      "b": 9,
+      "count": 1
+    },
+    {
+      "a": 6,
+      "b": 9,
+      "count": 1
+    }
+  ],
+  "input_sha256": "1c9fcdf099cf0a3b687b90d79eaf6c0c05a8fdf2a4be3606a8d42232c14adc66",
+  "source_sha256": "3c4e735d1606190f1a6c77ace8166d733602f979261f9fa20d6e5bac140e37a0"
+}

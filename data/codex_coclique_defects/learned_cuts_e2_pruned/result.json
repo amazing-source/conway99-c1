@@ -1,0 +1,67 @@
+{
+  "core": "data\\codex_coclique_defects\\core_a0_e2.json",
+  "core_sha256": "449a63e61d346a5b484db5cdb7e8888645935213b28aaf3ceea47bc1302264ce",
+  "source_sha256": "52c92c70a1c5f4aacd89af2b7fe9c8d0bc16369a5ae6c27be63c9260ebbf644a",
+  "seconds": 152.29699999999139,
+  "iterations": 5,
+  "cuts": 4,
+  "pruned_oracle": true,
+  "trace": [
+    {
+      "step": 0,
+      "status": "OPTIMAL",
+      "seconds": 20.6474525,
+      "cuts": 0,
+      "products": 0,
+      "individually_feasible_vertices": 81,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 3.2039999999979045,
+      "kind": "shared_edge_polynomial",
+      "positive_terms": 8223
+    },
+    {
+      "step": 1,
+      "status": "OPTIMAL",
+      "seconds": 27.8649568,
+      "cuts": 1,
+      "products": 8223,
+      "individually_feasible_vertices": 81,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 3.64000000001397,
+      "kind": "shared_edge_polynomial",
+      "positive_terms": 7624
+    },
+    {
+      "step": 2,
+      "status": "OPTIMAL",
+      "seconds": 29.755372,
+      "cuts": 2,
+      "products": 10693,
+      "individually_feasible_vertices": 81,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 3.687999999994645,
+      "kind": "shared_edge_polynomial",
+      "positive_terms": 8163
+    },
+    {
+      "step": 3,
+      "status": "OPTIMAL",
+      "seconds": 29.3069749,
+      "cuts": 3,
+      "products": 12448,
+      "individually_feasible_vertices": 80,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 0.7650000000139698,
+      "kind": "conditional_cover",
+      "positive_terms": 27
+    },
+    {
+      "step": 4,
+      "status": "UNKNOWN",
+      "seconds": 30.785953900000003,
+      "cuts": 4,
+      "products": 12448
+    }
+  ],
+  "scope": "Cuts valid for all common populations of this fixed support; no global C1 claim"
+}

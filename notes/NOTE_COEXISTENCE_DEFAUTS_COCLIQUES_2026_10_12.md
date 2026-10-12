@@ -306,3 +306,281 @@ Sur le noyau témoin(0,2), les charges des deux composantes sont20 et-2 ;
 sur le noyau(0,3), le support est connexe, de charge18. Aucun de ces deux
 témoins n'est exclu par(6). La règle sert à contraindre directement les
 futurs noyaux, sans décider d'abord leurs bords ou leurs symétries.
+
+## 10. Deux défauts négatifs imposent un cycle et ses attaches
+
+Dans le profil (a,e)=(0,2), écrivons H pour les quatre sommets de charge2,
+L pour les douze de charge1 et E pour les deux de charge-1. Les sommets
+de E sont adjacents et sans voisin dans H union L : l'équation de charge
+en chacun impose deg_E=1+masse_positive_voisine, et deg_E<=1.
+
+Posons p=e(H), t=e(H,L), s=e(L). Les équations pondérées donnent
+
+    4p+t=32,     t+s=30.
+
+Pour chaque l dans L, 2deg_H(l)+deg_L(l)=5, donc deg_H(l)<=2 et t<=24.
+Ainsi p>=2. Les bornes sur les voisins communs interdisent un diamant,
+donc p<=4. Le budget de voisins communs des paires de H, après avoir
+compté leurs voisins déjà dans H, est
+
+    B=12-p-sum_{h dans H} binom(deg_H(h),2).
+
+Si n_j compte les sommets de L ayant j voisins dans H, alors
+n_2-n_0=t-12=20-4p. Chaque sommet compté par n_2 consomme une unité de B.
+Pour p=2, n_2>=12>B. Pour p=3, la somme des binomiaux vaut au moins2,
+donc n_2>=8>B. Pour p=4, il faut n_2>=4 et B>=4 ; le seul graphe
+admissible est C4 (l'autre graphe à quatre arêtes est la patte, avec B=3).
+Toutes les inégalités deviennent alors des égalités.
+
+Conclusion uniforme : H=C4, quatre sommets X de L occupent chacun une
+arête distincte de ce cycle, les huit autres sommets Y ont chacun un
+unique voisin dans H, et il y a deux Y par sommet de H. Chaque X a un
+voisin dans L ; chaque Y en a trois. Ceci décrit TOUT le profil (0,2),
+pas seulement un noyau témoin. Les arêtes internes de L restent libres
+sous les contraintes de voisins communs.
+
+La première énumération normalisée (`coclique_two_exceptions.py`) a
+rencontré 249 classes d'isomorphisme en60s, mais n'a PAS terminé.
+Ce nombre n'est donc ni un total, ni une exclusion. Le but de la
+normalisation est d'appliquer les obligations de coexistence à toute
+cette forme, et non de constituer un catalogue pour lui-même.
+
+## 11. Le bord de la coclique limite la densité des défauts négatifs
+
+Soit E l'ensemble des e sommets de charge-1, p=e(E), et d_i leurs
+degrés dans E. Chacun a cinq voisins dans C. Si t_c=|N(c) intersection E|,
+alors sum_{c dans C}t_c=5e et
+
+    sum_{c dans C} binom(t_c,2) >= 5e-21.
+
+Ces voisins communs doivent tenir dans le budget des paires de E :
+
+    5e-21 <= e(e-1)-p-sum_i binom(d_i,2).             (7)
+
+Pour e=6, p>=8 donnerait une somme des binomiaux au moins14 et un
+budget au plus8, inférieur à9 : donc p<=7. Pour e=5, p>=7 donnerait
+une somme au moins13 et un budget au plus0, inférieur à4 : donc p<=6.
+En particulier la masse positive totale attachée à E, égale à2p-e,
+est au plus8 pour e=6 et au plus7 pour e=5. Ces restrictions portent
+sur tous les noyaux de ces profils, indépendamment de leurs symétries.
+
+## 12. Exclusion d'une branche entière du profil (1,3)
+
+Dans ce profil, il y a un sommet u de charge3, dix-huit de charge1,
+trois de charge-1, et aucun de charge2. Supposons que les trois défauts
+négatifs E forment un triangle. Chaque sommet de E a une masse positive
+voisine égale à deg_E-1=1 ; u ne peut donc être adjacent à E.
+
+L'équation en u impose exactement onze voisins dans le support,
+tous de charge1, et donc trois voisins de charge nulle. Si z est l'un
+de ces trois derniers, sa colonne R=N(z) intersection supp(q) contient u
+et vérifie sum_R q=2. Elle doit contenir au moins un sommet de E, mais
+ne peut en contenir deux : une paire de E, déjà adjacente et ayant le
+troisième sommet de E comme voisin commun, n'en accepte pas d'autre.
+Par conséquent R={u,e} pour un e dans E.
+
+Aucun de ces trois z n'est donc adjacent à un voisin de u dans le
+support. Dans N(u)=7K2, les trois z devraient être appariés entre eux.
+C'est impossible. Le profil (1,3) avec E=K3 est ainsi EXCLU par parité,
+sans énumération des noyaux. Le cas E=P3 reste ouvert à ce stade.
+
+## 13. Pilotes de recollement réciproque et obligation manquante
+
+`coclique_defect_joint.py` choisit simultanément les populations de
+colonnes, leur appartenance à C et les nombres d'arêtes entre types.
+Un même nombre sert aux équations des deux extrémités. Le contrôle
+positif sur la grille3x3 passe. Les deux pilotes sur les noyaux témoins
+(0,2) et (0,3) terminent UNKNOWN à120s, sans exclusion ; ils ont
+respectivement 84047 et138996 variables de nombres d'arêtes. Leurs
+journaux montrent environ27s et38s de présolve : ce n'est pas une
+raison de relancer les mêmes modèles plus longtemps sans renforcement.
+
+Dans (0,2), les deux sommets de E ont un unique voisin commun z, de
+charge nulle. Sa colonne R contient E et une masse positive4. Les
+voisins de z hors du support ont tous une colonne sans E, donc de
+forme {h}, h dans H, ou {l,l'}, l,l' dans L. Les premiers ont des
+multiplicités imposées ; les seconds forment un graphe simple sur L
+avec les degrés h_i(R)=2-[i dans R]-|N_F(i) intersection R|.
+
+Le test de ces seuls facteurs (`coclique_negative_edge.py`, version1)
+laisse survivre les101 colonnes R du premier noyau témoin. Ce constat
+n'est pas une conclusion de faisabilité globale : il manque encore
+l'appariement effectif dans N(z), puis la coexistence de ces voisins
+avec une seule et même population extérieure.
+
+Le test d'appariement effectif (`coclique_defect_star.py`) laisse lui
+aussi survivre les101 racines seules. Son couplage au problème de
+population commune en exclut19 et laisse82 témoins, en24,41s, sans
+timeout. Portée : ce seul noyau F, pas tous les noyaux (0,2).
+Le contrôle positif sur la grille3x3 conserve ses quatre racines réelles.
+
+`coclique_defect_triangles.py` choisit ensuite les MÊMES arêtes pour tous
+les triangles centrés dans le support. Il interdit aussi un triangle
+extérieur dont une arête a déjà son voisin commun dans le support, et
+un chemin extérieur qui ajouterait un troisième voisin commun à une
+paire déjà saturée. Sur le noyau témoin, 36080 variables d'arêtes,
+58878 coupures de triangles et200500 coupures de chemins donnent encore
+une population admissible en33,16s. Mais cette population est impossible
+au recollement linéaire complet, même en autorisant à changer ses
+appariements. La section suivante en donne une preuve entière courte.
+
+## 14. Transformer une coexistence impossible en une coupure de famille
+
+Pour une colonne R choisie, la même liste de voisins extérieurs doit
+réaliser simultanément tous les nombres h_i(R). Pour N' son voisinage
+extérieur, toute pondération entière beta des coordonnées donne
+
+    sum_i beta_i h_i(R) = sum_{z dans N'} sum_{i dans R_z} beta_i.
+
+Si x_T est la population totale de type T, c_T sa partie dans C,
+et R est dans C, on obtient donc la condition nécessaire UNIFORME
+
+    sum_i beta_i h_i(R)
+        <= sum_{T voisin possible de R} max(0,sum_{i dans T}beta_i)
+                                                * (x_T-c_T).       (8)
+
+Il ne suffit plus que chaque quota dispose séparément d'assez de
+candidats. (8) compare toutes leurs superpositions avec une seule
+population. Elle s'applique à tout support de défaut, pas seulement à
+c=21. Pour R hors C, la version non colorée utilise x_T, en retirant
+R lui-même s'il appartient à un type candidat ; on peut aussi pondérer
+les équations de degré et les quatre voisins dans C.
+
+Exemple exact tiré de la population qui passe le couplage des triangles :
+le sommet extérieur numéro73 est dans C, de colonne R={9,13}.
+Prendre beta_7=beta_17=1, beta_10=beta_11=-1,
+beta_9=beta_13=-2, les autres coordonnées étant nulles.
+Les six équations donnent un membre gauche égal à2. Dans la population
+choisie, la seule arête autorisée de poids positif est (23,73), de
+poids1 ; toutes les autres ont un poids nul ou négatif. Il faudrait
+
+    2 <= d_{23,73} <= 1.
+
+C'est une contradiction entière, sans confiance nécessaire dans le
+verdict du solveur. Les six équations, leurs coefficients et les19
+arêtes de poids non nul sont conservés dans
+`core_a0_e2_triangles_farkas_sparse.json`. L'oracle LP ne sert qu'à
+TROUVER les coefficients ; `coclique_completion_certificate.py`
+reconstruit puis vérifie l'inégalité en arithmétique entière.
+
+Le gain méthodologique est de réinjecter (8) pendant la sélection de
+la population. La coupure exclut toute population qui contient ce
+type R dans C sans les ressources nécessaires, et pas seulement le
+témoin rejeté. Elle ne constitue pas à elle seule l'exclusion du noyau
+ou du profil. Les arêtes entre colonnes disjointes, leur réciprocité et
+les derniers quotas entre sommets extérieurs restent à imposer.
+
+## 15. Séparateurs globaux : les choix locaux existent et ne coexistent pas
+
+La boucle `coclique_defect_cut_loop.py` réalise maintenant le passage
+suivant, avec des témoins et des certificats sauvegardés à chaque étape :
+
+1. Choisir une population H satisfaisant le Gram, C et les capacités.
+2. Pour CHAQUE sommet extérieur, choisir séparément un vrai sous-ensemble
+   de voisins, satisfaisant son degré, son quota dans C et TOUS les
+   nombres de voisins communs avec le support. Ces choix sont binaires,
+   contrôlés en entiers ; ils ne sont pas seulement des comptes fractionnaires.
+3. Imposer une seule variable d_{uv}=d_{vu} aux deux extrémités, et
+   chercher un séparateur du système linéaire simultané.
+4. Transformer le séparateur en une inégalité valable pour toutes les
+   populations du même support, puis reprendre la sélection avec cette
+   nouvelle obligation.
+
+Dans `learned_cuts_e2_pruned`, les populations000,001,002 ont chacune
+81/81 choix individuels satisfaisants. Pourtant elles n'ont AUCUNE
+réalisation réciproque, même fractionnaire. Les trois certificats entiers
+donnent respectivement
+
+    920 <= 841,     637 <= 530,     1447 <= 1349.
+
+Les fichiers contiennent chaque coefficient entier de la preuve. Ces
+exemples matérialisent une incompatibilité de coexistence APRÈS la
+réussite de tous les tests individuels indiqués. Ils ne disent pas que
+tous les voisinages locaux SRG complets existent, ni que toutes les
+populations ont été exclues.
+
+### Inégalité globale valable pour toute taille de coclique
+
+Une cellule a est un type de colonne R_a avec son appartenance ou non
+à C ; sa population est p_a. Posons d_a=14-|R_a|, kappa_a=0 dans C et4
+hors C, et h_a=(h_i(R_a))_i. Choisissons des poids entiers alpha_a,
+gamma_a et beta_a. Définissons
+
+    L_a = alpha_a d_a + gamma_a kappa_a + beta_a . h_a,
+
+    K_ab = alpha_a+alpha_b + beta_a . 1_{R_b} + beta_b . 1_{R_a}
+           + gamma_a [b dans C] + gamma_b [a dans C].
+
+En sommant les équations pondérées de tous les sommets, le membre
+gauche est sum_a p_a L_a. Chaque arête réelle entre cellules a,b
+contribue exactement K_ab. Une paire de cellules distinctes porte au
+plus p_a p_b arêtes, et une même cellule au plus binom(p_a,2). Donc
+
+    sum_a p_a L_a <= sum_{a<b, admissibles} max(0,K_ab) p_a p_b
+                    + sum_{a, admissibles} max(0,K_aa) binom(p_a,2). (9)
+
+Les arêtes C-C, celles entre colonnes d'intersection>=2 et celles qui
+contredisent un h_i=0 sont inadmissibles. (9) est une conséquence de la
+réciprocité de TOUTES les arêtes, sans hypothèse de symétrie ou de rang.
+Elle vaut pour n'importe quel bord connu avec ces équations de
+recollement ; la restriction à un support de défaut sert à rendre les
+domaines plus petits. Elle n'est donc pas limitée à c=21 ou22.
+
+Un séparateur initial peut donner des poids différents à des copies
+d'une même cellule. On les moyenne dans la cellule, puis on multiplie
+par un dénominateur commun. Le membre gauche reste inchangé à facteur
+près, tandis que la convexité de max(0,x) assure que la borne droite
+ne croît pas. Le séparateur devient ainsi une véritable coupure en
+variables de populations, applicable aussi à des populations futures.
+
+Les produits sont créés seulement lorsqu'une coupure en a besoin et
+réutilisés dans les suivantes. La boucle conserve les certificats,
+les coupures, les choix locaux et les statistiques. Elle peut reprendre
+plusieurs dossiers antérieurs avec `--resume-from`, sans réapprendre
+les mêmes contradictions. Les timeouts restent des UNKNOWN, jamais
+des exclusions de noyaux.
+
+`check_coclique_coexistence_v2.py` reconstruit les nouvelles combinaisons
+linéaires et leurs bornes sans utiliser le code de l'oracle. Il contrôle
+aussi les choix individuels, les coupures de familles, la réduction C4
+sur les64 graphes à quatre sommets et la densité des défauts négatifs.
+La grille3x3 demeure admissible pour le maître et ne possède aucun
+séparateur impossible. Les anciens résultats ne sont pas réaudités.
+
+### Reprise des coupures et frontière entière
+
+Le premier pilote apprend trois coupures avant UNKNOWN au plafond20s.
+Le second élimine d'emblée les arêtes interdites par h_i=0, apprend
+quatre nouvelles coupures et termine UNKNOWN au plafond30s. Ces
+timeouts n'effacent aucun acquis : la reprise combinée recharge les
+sept certificats, puis en apprend trois autres. Elle s'arrête sur une
+population dont le système réciproque FRACTIONNAIRE est réalisable.
+Les temps de présolve observés sont autour de26s dans la reprise ; les
+plafonds20/30s étaient donc trop courts pour exploiter le modèle enrichi.
+La reprise emploie six workers,90s par sélection, et des journaux datés.
+
+Cette dernière population, `learned_cuts_e2_combined/population_003.json`,
+a encore81/81 choix locaux linéaires. De plus, les18 voisinages centrés
+dans le support admettent chacun séparément l'appariement requis.
+Cependant le système réciproque BINAIRE est INFEASIBLE en52,28s,
+avec1 386 507 branches et510 430 conflits. Le verdict entier est ici
+celui de CP-SAT, sans certificat DRAT/équivalent fourni ; il n'est pas
+présenté comme un certificat Farkas. La simple réduction modulo2 du
+système reste compatible, donc elle ne fournit pas l'explication de
+cette impossibilité entière. Ce test de parité ciblé n'est pas une
+reprise de la campagne des rangs.
+
+`coclique_defect_exact.py` ajoute aussi TOUS les quotas entre deux
+sommets extérieurs. Son contrôle positif reconstruit exactement la
+grille3x3. Sur cette même population C1, le modèle complet termine
+également INFEASIBLE en51,33s. C'est la même population exclue, pas
+une deuxième exclusion. On a2587 variables d'arêtes et166949 variables
+auxiliaires de voisins communs.
+
+La frontière suivante est donc précise : conserver les dix coupures
+de populations acquises, puis extraire de l'obstruction ENTIÈRE une
+coupure de famille supplémentaire. Une famille qui passe les seules
+inégalités fractionnaires n'est pas déclarée réalisable. Aucune
+exclusion de tous les noyaux (0,2), de toutes les cocliques21, ou de C1
+n'est acquise. En revanche l'exclusion analytique (1,3,E=K3), la forme
+C4 imposée à (0,2) et les règles (7)–(9) sont uniformes dans leur portée.

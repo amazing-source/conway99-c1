@@ -1,0 +1,168 @@
+0.000 
+0.000 Starting CP-SAT solver v9.15.6755
+0.000 Parameters: max_time_in_seconds: 60 log_search_progress: true num_search_workers: 4 log_to_stdout: false
+0.000 
+0.000 Initial satisfaction model '': (model_fingerprint: 0x54c5440b3e4b4637)
+#Variables: 37 (11 primary variables)
+  - 33 Booleans in [0,1]
+  - 4 constants in {0,1} 
+#kBoolOr: 6 (#literals: 6)
+#kLinear0: 16
+#kLinear1: 31
+#kLinear2: 38
+#kLinear3: 37
+#kLinearN: 30 (#terms: 134)
+0.000 
+0.000 Starting presolve at 0.00s
+0.000   1.72e-05s  0.00e+00d  [DetectDominanceRelations] 
+0.000   6.91e-04s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] #num_loops=1 #num_dual_strengthening=1 
+0.000   6.00e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::ExtractEncodingFromLinear] 
+0.000   5.80e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateColumns] 
+0.000   2.80e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraints] 
+0.000 [Symmetry] Graph for symmetry has 37 nodes and 0 arcs.
+0.000 [Symmetry] Symmetry computation done. time: 1.92e-05 dtime: 2.22e-06
+0.000   3.40e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraintsWithDifferentEnforcements] 
+0.000   1.38e-04s  4.24e-06d  [operations_research::sat::CpModelPresolver::Probe] #probed=32 
+0.000   8.90e-06s  0.00e+00d  [MaxClique] 
+0.000   1.30e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] 
+0.000   3.40e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::ProcessAtMostOneAndLinear] 
+0.000   9.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraints] 
+0.000   7.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraintsWithDifferentEnforcements] 
+0.000   4.20e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDominatedLinearConstraints] 
+0.000   1.80e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDifferentVariables] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::ProcessSetPPC] 
+0.000   1.07e-05s  0.00e+00d  [operations_research::sat::CpModelPresolver::TransformClausesToExactlyOne] 
+0.000   4.10e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectEncodedComplexDomains] 
+0.000   4.30e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindAlmostIdenticalLinearConstraints] 
+0.000   1.70e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigAtMostOneAndLinearOverlap] 
+0.000   7.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigVerticalLinearOverlap] 
+0.000   1.80e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigHorizontalLinearOverlap] 
+0.000   2.00e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::MergeClauses] 
+0.000   1.10e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] 
+0.000   9.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] 
+0.000   1.40e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateColumns] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraints] 
+0.000 [Symmetry] Graph for symmetry has 37 nodes and 0 arcs.
+0.000 [Symmetry] Symmetry computation done. time: 4.9e-06 dtime: 2.22e-06
+0.000   1.30e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraintsWithDifferentEnforcements] 
+0.000   4.95e-05s  4.24e-06d  [operations_research::sat::CpModelPresolver::Probe] #probed=32 
+0.000   1.00e-06s  0.00e+00d  [MaxClique] 
+0.000   1.10e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::ProcessAtMostOneAndLinear] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraints] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraintsWithDifferentEnforcements] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDominatedLinearConstraints] 
+0.000   6.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDifferentVariables] 
+0.000   7.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::ProcessSetPPC] 
+0.000   9.70e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::TransformClausesToExactlyOne] 
+0.000   1.00e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectEncodedComplexDomains] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindAlmostIdenticalLinearConstraints] 
+0.000   5.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigAtMostOneAndLinearOverlap] 
+0.000   6.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigVerticalLinearOverlap] 
+0.000   8.00e-07s  0.00e+00d  [operations_research::sat::CpModelPresolver::FindBigHorizontalLinearOverlap] 
+0.000   1.00e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::MergeClauses] 
+0.000   1.00e-06s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] 
+0.000   6.00e-07s  0.00e+00d  [MergeNoOverlap] 
+0.000   6.00e-07s  0.00e+00d  [MergeNoOverlap2D] 
+0.000 
+0.000 Presolve summary:
+0.000   - 15 affine relations were detected.
+0.000   - rule 'affine: new relation' was applied 15 times.
+0.000   - rule 'bool_or: always true' was applied 10 times.
+0.000   - rule 'linear1: x in domain' was applied 5 times.
+0.000   - rule 'linear2: convert ax + by != cte to clauses' was applied 4 times.
+0.000   - rule 'linear: always true' was applied 77 times.
+0.000   - rule 'linear: empty' was applied 51 times.
+0.000   - rule 'linear: fixed or dup variables' was applied 87 times.
+0.000   - rule 'linear: reduced variable domains' was applied 12 times.
+0.000   - rule 'linear: remapped using affine relations' was applied 70 times.
+0.000   - rule 'presolve: 22 unused variables removed.' was applied 1 time.
+0.000   - rule 'presolve: iteration' was applied 2 times.
+0.000 
+0.000 Presolved satisfaction model '': (model_fingerprint: 0xa5b85c5e198ed849)
+#Variables: 0 (0 primary variables)
+
+0.000 [Symmetry] Graph for symmetry has 0 nodes and 0 arcs.
+0.000 
+0.000 Preloading model.
+0.000 The solution hint is complete and is feasible.
+0.000 #Model   0.00s var:0/0 constraints:0/0
+0.000 
+0.000 Starting search at 0.00s with 4 workers.
+0.000 3 full problem subsolvers: [default_lp, max_lp, no_lp]
+0.000 1 first solution subsolver: [fj]
+0.000 2 interleaved subsolvers: [feasibility_pump, rins/rens]
+0.000 2 helper subsolvers: [neighborhood_helper, synchronization_agent]
+0.000 
+0.000 #1       0.00s default_lp
+0.000 
+0.000 Task timing                   n [     min,      max]      avg      dev     time         n [     min,      max]      avg      dev    dtime
+        'default_lp':         1 [223.30us, 223.30us] 223.30us   0.00ns 223.30us         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+  'feasibility_pump':         1 [ 41.70us,  41.70us]  41.70us   0.00ns  41.70us         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+                'fj':         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+            'max_lp':         1 [223.60us, 223.60us] 223.60us   0.00ns 223.60us         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+             'no_lp':         1 [161.20us, 161.20us] 161.20us   0.00ns 161.20us         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+         'rins/rens':         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns         0 [  0.00ns,   0.00ns]   0.00ns   0.00ns   0.00ns
+
+0.000 Search stats     Bools  Conflicts  Branches  Restarts  BacktrackToRoot  Backtrack  BoolPropag  IntegerPropag
+  'default_lp':      0          0         0         0                0          0           0              0
+      'max_lp':      0          0         0         0                0          0           0              0
+       'no_lp':      0          0         0         0                0          0           0              0
+
+0.000 SAT formula      Fixed  Equiv  Total  VarLeft  BinaryClauses  PermanentClauses  TemporaryClauses
+  'default_lp':      0      0      0        0              0                 0                 0
+      'max_lp':      0      0      0        0              0                 0                 0
+       'no_lp':      0      0      0        0              0                 0                 0
+
+0.000 SAT stats        ClassicMinim  LitRemoved  LitRemovedBinary  LitLearned  LitForgotten  Subsumed
+  'default_lp':             0           0                 0           0             0         0
+      'max_lp':             0           0                 0           0             0         0
+       'no_lp':             0           0                 0           0             0         0
+
+0.000 Vivification     Clauses  Decisions  LitTrue  Subsumed  LitRemoved  DecisionReused  Conflicts
+  'default_lp':        0          0        0         0           0               0          0
+      'max_lp':        0          0        0         0           0               0          0
+       'no_lp':        0          0        0         0           0               0          0
+
+0.000 Clause deletion    at_true  l_and_not(l)  to_binary  sub_conflict  sub_extra  sub_decisions  sub_eager  sub_vivify  sub_probing  sub_inpro  blocked  eliminated  forgotten  promoted  conflicts
+    'default_lp':        0             0          0             0          0              0          0           0            0          0        0           0          0         0          0
+        'max_lp':        0             0          0             0          0              0          0           0            0          0        0           0          0         0          0
+         'no_lp':        0             0          0             0          0              0          0           0            0          0        0           0          0         0          0
+
+0.000 LNS stats       Improv/Calls  Closed  Difficulty  TimeLimit
+  'rins/rens':           0/0      0%    5.00e-01       0.10
+
+0.000 Solutions (1)    Num   Rank
+  'default_lp':    1  [0,0]
+
+0.000 Solution repositories    Added  Queried  Synchro
+    'alternative_path':      0        0        0
+      'best_solutions':      1        0        1
+   'fj solution hints':      0        0        0
+        'lp solutions':      0        0        0
+                'pump':      0        0
+
+0.000 Clauses shared    #Exported  #Imported  #BinaryRead  #BinaryTotal
+   'default_lp':          0          0            0             0
+       'max_lp':          0          0            0             0
+        'no_lp':          0          0            0             0
+
+0.000 LRAT_status: NA
+0.000 CpSolverResponse summary:
+status: OPTIMAL
+objective: NA
+best_bound: NA
+integers: 0
+booleans: 0
+conflicts: 0
+branches: 0
+propagations: 0
+integer_propagations: 0
+restarts: 0
+lp_iterations: 0
+walltime: 0.0112646
+usertime: 0.0112647
+deterministic_time: 8.48e-06
+gap_integral: 0
+solution_fingerprint: 0x7836569ed1d122c4
+

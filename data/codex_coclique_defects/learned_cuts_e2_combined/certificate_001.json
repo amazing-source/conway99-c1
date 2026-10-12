@@ -1,0 +1,85 @@
+{
+  "lp_status": 0,
+  "lp_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "seconds": 0.4220000000204891,
+  "equations": 1599,
+  "variables": 2583,
+  "sparse": true,
+  "prune_incompatible": true,
+  "scope": "This fixed population; exact integer verification required",
+  "status": "EXACT_CONTRADICTION",
+  "verification": {
+    "valid": true,
+    "left": 3,
+    "upper_bound": 2,
+    "gap": 1,
+    "nonzero_equations": 2,
+    "positive_edge_terms": 2,
+    "negative_edge_terms": 2,
+    "edge_weights": [
+      {
+        "edge": [
+          2,
+          32
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          3,
+          32
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          68
+        ],
+        "weight": 1
+      },
+      {
+        "edge": [
+          32,
+          76
+        ],
+        "weight": 1
+      }
+    ]
+  },
+  "coefficients": [
+    {
+      "equation": 633,
+      "coefficient": 1,
+      "reason": [
+        "coclique_degree",
+        32
+      ],
+      "rhs": 4
+    },
+    {
+      "equation": 634,
+      "coefficient": -1,
+      "reason": [
+        "common_with_core",
+        32,
+        0
+      ],
+      "rhs": 1
+    }
+  ],
+  "active_vertices": [
+    {
+      "vertex": 32,
+      "core_neighbours": [
+        4,
+        5,
+        8,
+        11,
+        16,
+        17
+      ],
+      "in_coclique": false
+    }
+  ]
+}
