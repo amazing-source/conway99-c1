@@ -204,3 +204,47 @@ Same local lemma, other reading: for every edge {P, u} of BH some pair {P, R} wi
 Not decided (120 s each): `global_tests.py allsplit` (no flat pair at all: a signing of BH with eigenvalues 5 and -4
 only) and `noflatP` (no flat pair at one vertex). The solver settles in seconds every case with enough flat pairs or
 with a symmetry, and none of the cases rich in split pairs.
+
+## 11. Third attack (16:40 to 17:56 UTC): the linear algebra over F_2 (parity)
+
+Literature found on 12/10 (web search on the double cover that "all pairs split" would give): P. Cesarz and
+J. Williford, *Four class association scheme double covers of strongly regular graphs*, arXiv:2610.05420 (4 October
+2026): there is no distance-regular graph with intersection array {20,18,3,1;1,3,18,20}, i.e. **no signing of BH with
+all pairs split**; their tool is a parity count on "bundles" (the 12 edges x-z, z-y of a non-adjacent pair).
+Read only through the abstract page and an automatic summary of the HTML; what follows is re-derived and checked here.
+
+(P1) **Bundle parity.** For a non-adjacent pair p, [p split] = L_p(eps) := sum of eps over the bundle of p (the number
+of odd paths, 0, 3 or 6, has the parity of the number of negative edges of the bundle). Also L_p = g_1 + g_2 + g_3, the
+parities of the three grid squares of p. So the split pattern Sp = L(eps) is a LINEAR image of eps.
+
+(P2) **The code of split patterns.** `parity_code.py`: L is injective on H^1: C = L(H^1) has dimension 460 in F_2^2430.
+**A parity skeleton class is determined by its set of split pairs.** `dual_small.py`: the dual code has no word of
+weight 2, 3, 4 or 5 (exhaustive for 2, 3, 4; for 5 through one pair, the automorphism group being transitive on pairs).
+
+(P3) **Parity lemma (hand, checked on all cases by `parity_hybrid.py`).** v non-isotropic, d isotropic orthogonal to v,
+u = d + q(v) v, c in F_3, W(v,u,c) = the 27 pairs {x, x+v} with B(x,u) = c. The sum of the bundles of W is a sum of lines,
+so W contains an even number of split pairs: **each of the 720 families W(v,u,c) contains an odd number of flat pairs**,
+at least one; every direction contains at least three flat pairs, a skeleton at least 90. (Geometrically W is a
+3x3x3 cube of grid squares between two parallel non-tangent hyperplanes; the lemma is the vanishing of the row sums of
+the curvature of each grid.) With these 720 parity chains written explicitly, cadical proves "all pairs split" UNSAT
+in 0.2 s (it could not in 120 s without them; 22 s with the grid layer of `full_grid.py`).
+
+(P4) **Quadrics.** With rho_i = pi_i + pi_0 (i = 1..5), the weight of the six path parities is 0, 3 or 6 iff
+rho_i (1 + L_p) = 0 for all i and e_2(rho) + L_p = 0: the skeleton classes are the common zeros of 12 150 independent-
+looking quadrics on F_2^460 (`quad_setup.py`). `quad_xl.c` (linearisation at degree 2, 4 s): the quadratic parts have
+rank 12 130; the 20 extra dependencies are identities between the quadrics; **no linear consequence at degree 2**.
+
+(P5) **Flat pairs at a vertex.** `flat_count.py` (complete problem + parity chains + "at least k of the 60 pairs at P are
+flat" + one split pair): UNSAT for k = 55 (1.9 s) and k = 45 (16 s); no decision for k = 36 and 28 (130 s). So every
+vertex of a non-trivial skeleton has at most 44 flat pairs. Heuristic only: an annealing search (`parity_code.py`,
+4.8e7 moves) finds no codeword of C of weight above 1652, which would mean at least 778 flat pairs in any skeleton;
+a random code of these parameters would have maximal weight about 1840 (590 flat pairs). Not a proof in either direction.
+
+(P6) **The remaining question as one instance** (`full_ultimate.py`): hybrid encoding + grid layer + parity chains +
+the local lemmas as redundant clauses at every vertex (a pair of type B, an inner pair of type B, an inner pair of
+type A, a split pair above every neighbour) + "the pair {P, R0} is in one fixed type B state" (Aut(BH) is transitive
+on the triples (ordered pair, type B state): orbit computation in the script). 76 635 variables, 613 225 clauses.
+cadical: NO DECISION in 520 s. A single bounded run of three hours was started at 17:56 UTC (one process, the user
+having allowed longer tests on 12/10); its outcome is to be appended here.
+Also undecided with the parity chains or the grid layer: one flat pair, a non-isotropic line with one or three flat
+pairs, no flat pair at P, a pair of type B (85 to 130 s each).
