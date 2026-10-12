@@ -1,0 +1,359 @@
+{
+  "source": "data\\codex_coclique_defects\\variable_core_hcomplete_h1\\cycles_6.json",
+  "scope": "All completions and residual coclique colourings of this fixed induced border",
+  "vertices": 99,
+  "border": 60,
+  "fixture": {
+    "status": "PASS",
+    "graph": "3x3 rook",
+    "variables": 16,
+    "equations": 21
+  },
+  "stages": [
+    {
+      "mode": "matching",
+      "variables": 1795,
+      "equations": 182,
+      "packing": 0,
+      "lp_status": 2,
+      "lp_message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+      "seconds": 0.015000000013969839,
+      "status": "NO_CERTIFICATE"
+    },
+    {
+      "mode": "linear",
+      "variables": 1795,
+      "equations": 1539,
+      "packing": 0,
+      "lp_status": 2,
+      "lp_message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+      "seconds": 1.1089999999967404,
+      "status": "NO_CERTIFICATE"
+    },
+    {
+      "mode": "packing",
+      "variables": 1795,
+      "equations": 1539,
+      "packing": 3933,
+      "lp_status": 0,
+      "lp_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "seconds": 1.2969999999913853,
+      "status": "EXACT_CONTRADICTION",
+      "left": 2,
+      "upper": 0,
+      "certificate_equations": [
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            19,
+            4
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            26,
+            27,
+            28
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            19,
+            5
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            26,
+            29,
+            30,
+            31,
+            32,
+            33
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            19,
+            6
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            19,
+            8
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            29,
+            34,
+            35,
+            40
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            19,
+            9
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            30,
+            36,
+            41,
+            42
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            19,
+            10
+          ],
+          "star": true,
+          "rhs": 1,
+          "variables": [
+            31,
+            37,
+            43,
+            44
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            19,
+            11
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            38,
+            40,
+            41,
+            45
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            19,
+            13
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            27,
+            32,
+            39,
+            43,
+            45,
+            46
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            19,
+            15
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            28,
+            33,
+            42,
+            44,
+            46
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            30,
+            4
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            279,
+            280,
+            281
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            30,
+            6
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            282,
+            283,
+            284,
+            285,
+            286,
+            287
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            30,
+            8
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            282,
+            283,
+            288,
+            289
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            30,
+            9
+          ],
+          "star": false,
+          "rhs": 1,
+          "variables": [
+            284,
+            290,
+            291
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            30,
+            10
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            285,
+            292,
+            293
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            30,
+            11
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            286,
+            288,
+            290,
+            294,
+            295
+          ]
+        },
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            30,
+            13
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            279,
+            287,
+            292,
+            294
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            30,
+            14
+          ],
+          "star": false,
+          "rhs": 2,
+          "variables": [
+            280,
+            281,
+            289,
+            291,
+            293,
+            295
+          ]
+        }
+      ],
+      "certificate_packing": [
+        {
+          "coefficient": 2,
+          "reason": [
+            "saturated",
+            19,
+            30,
+            63
+          ],
+          "variables": [
+            27,
+            279
+          ],
+          "rhs": 1
+        },
+        {
+          "coefficient": 2,
+          "reason": [
+            "saturated",
+            19,
+            30,
+            90
+          ],
+          "variables": [
+            43,
+            292
+          ],
+          "rhs": 1
+        }
+      ],
+      "positive_edges": []
+    }
+  ]
+}

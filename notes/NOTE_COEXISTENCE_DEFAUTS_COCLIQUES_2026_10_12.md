@@ -824,3 +824,259 @@ La suite utile est de coupler les choix réels des39/40 sommets restants
 sur des bords variables, avec réemploi des contraintes de paires saturées.
 Un certificat sur un bord fixé doit devenir une condition sur ses variables
 avant de multiplier ces bords. La famille entière et C1 restent ouverts.
+
+## 21. Transporter les contradictions lorsque le bord varie
+
+Reprise du12 octobre au soir : conserver le cadre(0,2), une étape à la
+fois, avec les règles de coexistence globales comme objectif. Les nouveaux
+calculs ne modifient ni les anciens solveurs ni les travaux S3 du pair.
+
+Soit B le bord59/60 de§18, W=B\S, et M le multigraphe sur les douze L dont
+chaque arête ij représente un sommet restant de type{ i,j }. La multiplicité
+m_ij est forcée par(14), mais le bord et ces multiplicités restent variables.
+Pour u dans W poser
+
+    d_u = 14 - deg_B(u),
+    r_ui = 2 - [u~i] - |N_B(u) intersection N_B(i)|, i dans L.
+
+**Lemme des facteurs simultanés.** Les voisins futurs de u définissent un
+sous-multigraphe F_u de M, avec exactement d_u arêtes et degré r_ui en i.
+Si u,v ont déjà tous leurs voisins communs dans B, les arêtes de F_u et F_v
+doivent être disjointes, en distinguant les copies d'une même arête de M.
+
+Preuve : chaque voisin futur de u possède exactement deux attaches i,j
+dans L. Il contribue une fois au degré futur de u, et une fois à chacun
+des deux quotas de voisins communs u-i et u-j. Un voisin futur partagé
+par u,v augmenterait leur nombre de voisins communs au-delà du quota.
+
+Une copie de type ij n'est utilisable par u que si d_u>0, r_ui>0, r_uj>0,
+et si le graphe induit par{u,i,j} possède au plus une arête. Cette dernière
+condition vient de N(t)=7K2 pour le futur sommet t : trois de ses voisins
+ne peuvent contenir un chemin à deux arêtes. Noter A_u(ij) cette condition
+nécessaire d'utilisation, sans la présenter comme suffisante.
+
+**Triangles déjà fermés.** Si i~j, un sommet futur de type ij forme le
+triangle i-j-t. Dans N(i), son partenaire est déjà j ; il ne peut pas
+servir de partenaire à un autre voisin de i. Même propriété pour j.
+Plus généralement, si y_u,ij compte les copies utilisées par u :
+
+    sum_{u dans W, u~i} y_u,ij <= (1-[i~j]) m_ij,
+
+et de même avec j. Ce sont des capacités communes à tous les facteurs,
+pas seulement des tests indépendants pour chaque u.
+
+Le bord historique epsilon0 avec six cycles4 viole cette règle : l'arête
+27-12 n'a encore aucun voisin commun ; les seuls types encore possibles
+pour ce partenaire sont déjà fermés par un triangle. Le certificat exact
+de transport donne1<=0. Les deux autres bords testés donnent3<=1 et2<=0.
+Ces exclusions portent sur toutes les complétions de ces bords induits,
+sans fixer les couleurs des copies résiduelles dans la coclique.
+
+## 22. Une loi de capacité directement exprimée sur un bord variable
+
+Soit K un ensemble de sommets de W deux à deux saturés dans B. Pour chaque
+u dans K choisir des entiers alpha_u et beta_ui. Poser
+
+    D = sum_{u dans K} (alpha_u d_u + sum_i beta_ui r_ui),
+    s_u(ij) = alpha_u + beta_ui + beta_uj.
+
+Alors toute complétion impose
+
+    D <= sum_{ij} m_ij max(0, s_u(ij) : u dans K, A_u(ij)).   (16)
+
+Une copie d'une arête de M peut être utilisée par au plus un membre de K.
+Sa contribution à D est donc au plus le meilleur score positif autorisé.
+En sommant sur les copies on obtient(16), y compris pour des prix négatifs.
+
+**Différence de portée avec§16 :** ici m_ij, d_u, r_ui, A_u(ij) et la
+saturation des paires sont des expressions en arêtes du bord lui-même.
+L'inégalité est ajoutée conditionnellement à ces saturations, avec sa
+borne recalculée lorsque B change. Elle ne fige ni le noyau positif, ni
+les attaches aux cycles, ni les autres arêtes de B. Elle est aussi valable
+pour les autres répartitions de cycles et pour l'autre valeur d'epsilon,
+si les sommets nommés sont présents. Aucun automorphisme n'est supposé.
+
+`coclique_variable_border_cuts.py` extrait les prix par LP puis vérifie la
+contradiction en entiers. Le modèle variable réemploie les prix, pas les
+valeurs numériques m,d,r du témoin rejeté. Trois premières conditions
+viennent des bords précédents. Cinq sont apprises sur de nouveaux bords.
+Un modèle ajoutant tous les facteurs entiers individuels et les capacités
+de partenaires apprend encore quatre conditions de coexistence à deux.
+Enfin une condition à trois est extraite ci-dessous : treize conditions
+au total dans `variable_border_cuts_v4/combined_13_cuts.json`.
+
+Ce sont treize conditions sur des bords VARIABLES, distinctes des douze
+coupures antérieures sur les populations d'un support FIXÉ. On ne les
+additionne pas pour annoncer vingt-cinq familles disjointes exclues.
+Les contradictions peuvent se recouvrir et leur union ne couvre pas
+encore tous les bords(0,2).
+
+## 23. Chaque paire peut coexister, mais pas les trois
+
+Le bord `variable_border_cuts_v4/border_005.json` passe le premier oracle
+fractionnaire sur309 groupes de taille1 ou2. Le groupe K={21,23,42} est
+deux à deux saturé : ses paires, toutes non adjacentes, ont respectivement
+les voisins communs déjà présents{13,16}, {0,16}, {16,55}.
+
+Prendre les demandes pondérées
+
+    u=21 : r_21,10 + r_21,14 - r_21,12 = 2+2-1 = 3,
+    u=23 : r_23,10 + r_23,14           = 2+1   = 3,
+    u=42 : r_42,10 + r_42,14 - r_42,4 = 1+2-1 = 2.
+
+La demande totale vaut8. Après les interdictions d'utilisation, seules
+sept copies peuvent fournir une contribution positive, au plus1 chacune :
+
+    {5,14}, {6,10}, {7,10}, {8,14}, {9,10}, {10,13}, {13,14}.
+
+Toutes ont multiplicité1. L'inégalité(16) donne donc **8<=7**.
+Il s'agit d'un nouveau certificat sur un nouveau bord ; ne pas le confondre
+avec le précédent8<=7 de§19 sur une population fixée.
+
+`coclique_clique_witness.py` conserve en plus des témoins ENTIERS explicites
+pour les trois singletons et les trois paires de K. Ils réalisent tous les
+degrés d_u et les douze quotas r_ui, respectent A_u(ij), et les deux facteurs
+d'une paire ne partagent aucune copie. Même en interdisant à un sommet
+d'utiliser deux copies du même type, les six sous-groupes restent faisables.
+Les choix diffèrent selon la paire : les trois réalisations ne sont pas
+compatibles entre elles, exactement ce que prouve8<=7.
+
+Portée précise : coexistence des facteurs résiduels avec les contraintes
+énoncées ; pas existence de voisinages SRG complets ni de graphes à99.
+Le certificat est installé comme une condition(16) sur le bord variable,
+plutôt que comme l'interdiction de cette seule liste d'arêtes.
+
+## 24. Les types doubles imposent une bipartition
+
+Le lemme des paires saturées de§16 renforce encore les facteurs. Deux copies
+d'un type ij partagent déjà i et j. Elles ne peuvent partager aucun autre
+voisin. En particulier un u dans W ne peut choisir les deux copies :
+
+    y_u,ij <= 1.                                            (17)
+
+Chaque F_u est donc simple sur les types, même lorsque M a une arête double.
+Les premiers pilotes de facteurs autorisaient encore y<=m ; ils constituent
+une relaxation plus faible, conservée comme telle, et ne prouvent aucune
+réalisabilité. La variante `--simple` ajoute(17).
+
+Définir Gamma_B sur W en reliant les paires déjà saturées dans B. Pour un
+type ij, soit T_ij l'ensemble des u demandant une copie de ce type. Alors :
+
+- si m_ij=1, Gamma_B[T_ij] doit être sans arête ;
+- si m_ij=2, Gamma_B[T_ij] doit être biparti.
+
+Preuve : colorier un sommet demandeur par la copie réelle qu'il utilise.
+La copie est unique par(17), et deux sommets reliés dans Gamma_B ne peuvent
+utiliser la même. Réciproquement, une telle coloration suffit à distribuer
+les copies pour CES contraintes de saturation, pas pour toutes celles du SRG.
+
+Cette réduction montre exactement ce que les seuls contrôles par paires
+laissent manquer : avec deux copies, chaque paire de demandes peut se
+distribuer, mais un cycle impair de demandes incompatibles ne le peut pas.
+Pour un cycle impair Q de Gamma_B, on obtient la condition nécessaire
+
+    sum_{u dans Q} y_u,ij <= m_ij (|Q|-1)/2.                 (18)
+
+Dans(16), on peut également remplacer m_ij fois le meilleur score par la
+somme des m_ij meilleurs scores positifs admissibles DISTINCTS. C'est
+valable parce qu'un même u n'utilise pas deux copies. La variante `--simple`
+de l'oracle et du modèle encode cette borne renforcée.
+
+Plus généralement, pour un groupe K quelconque, la capacité d'un type est
+bornée par le meilleur poids d'un sous-ensemble admissible dont le graphe
+de saturation est coloriable avec m_ij couleurs. Cette formulation fournit
+une règle de coexistence pour des groupes plus grands qu'une paire ou une
+clique ; elle ne suppose aucune taille particulière de coclique C dans sa
+preuve, seulement les types et saturations connus du bord considéré.
+
+Contrôle nouveau `check_coclique_coexistence_v4.py` : treize conditions de
+bord, quatre certificats de transport complémentaires et les six témoins
+entiers des sous-groupes, vérifiés depuis les graphes et les entiers sans
+importer l'oracle ni un solveur. Les quatre certificats complémentaires ne
+sont pas quatre bords supplémentaires aux treize déjà cités.
+
+Les premiers modèles à facteurs tous couplés par paires atteignent90 puis
+120 secondes sans verdict. Les modèles à conditions apprises produisent
+des bords nécessaires en15–30 secondes. UNKNOWN reste distinct d'UNSAT.
+Le pilote à treize conditions et tous les couples termine UNKNOWN600,14s
+(2 068 112 branches,622 081 conflits). La variante à facteurs simples et
+dix-sept conditions termine UNKNOWN300,56s (165 849 branches,1022 conflits).
+Ces différences de compteurs ne mesurent pas un pourcentage de preuve.
+La famille(0,2), chaque répartition entière, alpha21 et C1 restent ouverts.
+
+## 25. Une obstruction arithmétique sans hypothèse de coclique
+
+La même question de coexistence peut se poser sans choisir de types :
+pour N'IMPORTE QUEL bord induit B d'un C1, noter A son adjacency et D
+l'incidence entre B et les sommets absents. L'identité SRG par blocs impose
+
+    K_B = 12I + 2J - A - A² = D D^t,
+    (K_B)_uu = d_u = 14-deg_B(u).
+
+Pour des poids ENTIERS z_u, chaque sommet absent t reçoit une charge
+entière c_t=sum_{u~t} z_u. On connaît déjà, à partir du seul bord,
+
+    Q = z^t K_B z = sum_t c_t²,
+    T = sum_u z_u d_u = sum_t c_t.
+
+Pour tout entier k, (c_t-k)(c_t-k-1)>=0. En sommant :
+
+    Q >= (2k+1)T - (99-|B|) k(k+1).                        (19)
+
+En particulier Q>=|T|. Cette obligation arithmétique est plus forte que
+la seule positivité Q>=0 sur le même vecteur. Elle porte sur une population
+COMMUNE de sommets absents ; des quotas séparément admissibles ne peuvent
+pas contourner une somme de carrés ou de produits consécutifs impossible.
+La preuve n'utilise ni coclique21/22, ni profil(0,2), ni automorphisme.
+
+`coclique_residual_squares.py` utilise des vecteurs propres flottants comme
+pistes de recherche, les arrondit puis réduit leur support. Seuls les
+entiers et la vérification de(19) fondent les certificats. Sur le bord
+`variable_border_cuts_v4/border_005.json`, quatre choix sur7 ou8 sommets
+pondérés donnent respectivement Q=9<11=|T|, 17<19, 16<18 et22<24.
+Les voisins communs et degrés utilisés sont ceux de TOUT le bord ; il ne
+s'agit pas d'interdire le seul sous-graphe induit sur les7/8 sommets pondérés.
+
+Les quatre inégalités sont exprimées linéairement dans les degrés et les
+comptes de voisins communs du modèle variable, déjà disponibles. Elles
+s'ajoutent aux treize conditions de capacité, soit dix-sept conditions
+réutilisables, sans supposer que leurs domaines d'exclusion sont disjoints.
+La variante `--square-cuts` permet d'apprendre les suivantes de la même façon.
+
+Le contrôle indépendant V4 vérifie les quatre nouveaux certificats en
+entiers. Un contrôle positif sur la grille3x3 vérifie l'identité par blocs
+et les inégalités sur243 vecteurs de poids dans{-1,0,1}, avec les paramètres
+SRG de cette grille. Il ne prétend pas disposer d'un exemple positif C1.
+
+### Réinjection effective et état final de V4
+
+Le modèle léger conservant les dix-sept conditions sur un bord variable
+trouve un nouveau bord en17,28s. Quatre NOUVEAUX certificats(19) le rejettent :
+Q=15<17,14<16,10<12,13<15. Ils sont ajoutés dans
+`variable_border_cuts_square_learning_v4/cuts.json`, qui contient désormais
+**21 conditions :13 de capacité et8 de carrés entiers**. Les nouveaux
+certificats sont vérifiés indépendamment. Un nouveau bord satisfaisant ces
+21 conditions n'a pas encore été recherché ; le dernier bord en satisfaisait
+17 et vient d'être exclu. Ce pilote léger ne contient pas les facteurs tous
+couplés du modèle plus fort resté UNKNOWN : ne pas mélanger leurs statuts.
+
+Les21 conditions ne comptent pas21 familles disjointes et ne couvrent pas
+encore tout(0,2). Elles montrent que la boucle extrait maintenant aussi
+des contraintes indépendantes de l'hypothèse de coclique, et les transporte
+lorsque le bord varie. Les trois familles de lois ont leurs preuves :
+facteurs et capacités communes ; répartition des copies et cycles impairs ;
+charges entières et produits de deux entiers consécutifs.
+
+L'interdiction des cycles impairs est prouvée en§24. Le modèle `--simple`
+impose déjà y<=1 et les capacités par paires ; il ne code PAS encore une
+coloration complète pour chaque type double. Cette étape et le renforcement
+par les nouveaux certificats(19) donnent une frontière précise, sans relancer
+à l'identique les pilotes90/120/600/300 secondes ni agrandir un catalogue.
+
+Tous les nouveaux pilotes V4 sont terminés. Journaux, configurations et
+mesures de ressources sont conservés ; les calculs couplés sont restés sous
+environ1Go de mémoire de travail au pic observé. Les solveurs historiques et
+l'observateur ont continué. Le contrôle V4 confirme les13 conditions de
+capacité, leurs bornes renforcées, huit certificats de carrés, quatre preuves
+de transport complémentaires et les six sous-groupes propres du triplet.
+Les exemples de transport et certaines conditions excluent les mêmes bords.

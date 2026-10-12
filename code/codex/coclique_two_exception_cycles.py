@@ -39,7 +39,7 @@ def cycle_edges(partition):
     return result
 
 
-def build(partition, *, colour=True, fixed_core=None, triangle=False, root_h=0, population=False, hcomplete=False):
+def build(partition, *, colour=True, fixed_core=None, triangle=False, root_h=0, population=False, hcomplete=False, context=None):
     # 0..15 positive support, 16/17 negative edge, 18..29 A,30..41 B,42 z.
     assert not (triangle and hcomplete)
     n=59+root_h if hcomplete else (51+root_h if triangle else 43)
@@ -105,9 +105,10 @@ def build(partition, *, colour=True, fixed_core=None, triangle=False, root_h=0, 
             v=model.NewBoolVar(f'and{len(ands)}')
             model.Add(v<=a);model.Add(v<=b);model.Add(v>=a+b-1);ands[key]=v
         return ands[key]
-    core_common={}
+    core_common={};all_common={}
     for i,j in combinations(range(n),2):
         terms=[product(edge(i,k),edge(j,k)) for k in range(n) if k!=i and k!=j]
+        if context is not None:all_common[i,j]=sum(terms)
         if j<16:core_common[i,j]=sum(terms)
         rhs=2-edge(i,j)
         if i in (16,17) or j in (16,17) or (triangle and 42 in (i,j)) or (hcomplete and i<4):
@@ -147,6 +148,8 @@ def build(partition, *, colour=True, fixed_core=None, triangle=False, root_h=0, 
             model.Add(sum(x for row,x,_ in populations if i in row)+partial_degree[i]==14)
             model.Add(sum(c for row,_,c in populations if i in row)
                       +sum(product(edge(i,u),colours[u]) for u in colours)==4-q[i])
+    if context is not None:
+        context.update(n=n,edge=edge,product=product,common=all_common,degree=partial_degree)
     return model,variables,fixed,colours,populations
 
 
