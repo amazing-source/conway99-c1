@@ -53,3 +53,27 @@ Regularities common to these five graphs may be artefacts of that construction. 
 - The plan is to prove (G), (E) and (L), or their correct versions, by local double counting with λ = 1 and μ = 2, then
   look for a counting or parity incompatibility specific to m = 7, the analogue of the "21 = 21" tightness of K₇.
   Each lemma must hold on the 5 known graphs (non-regression test).
+
+## 5. First attack on (G), (E), (L), 12/10 (scripts `fx_sign.py`, `fx_tau.py`, `psd_configs.py`)
+1. **Global sign for (E)** (each step of F_x changes the parity). This needs s: N(x) → F₂ with s(a′) = s(a)+1 and
+   s(π_a(b)) = s(b)+1. **It does not exist in general:**
+   - it exists everywhere in Paley(9) and BvLS;
+   - it exists at 63 of the 243 vertices of the twin, and at none of Γ₃ or Γ₄.
+
+   So if (E) is true, it holds for another reason.
+2. **Opposite-corner involution τ(z_ab) = z_{a′b′}.** It is an automorphism of F_x only at the twist-free vertices:
+   all of BvLS, 63 vertices of the twin, 27 of Γ₃, 81 of Γ₄. Elsewhere it scatters the long cycles. Not a mechanism for
+   (E).
+3. **Euclidean representation** (G_s, G_r PSD on every induced subgraph). The forbidden configurations of (G) (cases B
+   and C) and of (L2) have a completely determined induced subgraph on 9 to 11 vertices. **All pass the test**, at 99 as
+   at 243. The grid 3×3 sits on the boundary at 99 (eigenvalue 0 of G_s). Small configurations are too weak for this
+   tool.
+4. **Methodological diagnosis.** All the non-trivial data come from a single construction (covers of BH). F_x only sees
+   distance ≤ 2, so (G), (E) and (L) make sense for **every** graph with λ = 1 and μ = 2 at distance 2, even of diameter
+   > 2. Such graphs would make a test bench. But abelian Cayley graphs and Hamming quotients are "all grid" (L1, note
+   30), and twisting appears only when μ is reduced, as with the BH → 243 covers. Building non-grid examples outside
+   this family is itself a combinatorial problem.
+
+**Status:** (G), (E) and (L) are **open**, and **plausibly artefacts** of the cover construction. The most basic is
+(G): a non-grid 4-cycle of F_x creates two pairs of triangles joined by exactly 2 edges. This is not forbidden in itself
+(the twin has 19,440 such pairs), so a proof must use more of μ = 2, around the vertices z_{a0a2} and z_{a1a3}.
