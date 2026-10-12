@@ -308,3 +308,25 @@ accepte `--deps CHEMIN` si igraph est installé dans un dossier isolé. Les
 sorties JSON sont déposées avec ce rapport. Le pilote Hoffman, distinct,
 est fourni pour traçabilité et porte explicitement le statut incomplet ;
 il ne fait pas partie des vérifications déclarées achevées.
+
+## 9. Comparaison après gel des deux examens
+
+Cette section a été ajoutée **après** le gel Codex au commit `2b6df04` et la
+lecture de l'audit LAB, commit `6a3f036`, fichier
+`code/lab_audit_v7_2026-10-12/AUDIT_V7.md`. Elle ne modifie pas rétroactivement
+le périmètre des contrôles indépendants.
+
+| Point | Comparaison |
+|---|---|
+| Paramètres, groupes complets, orbites, grilles, prismes et paires tordues | Accord de toutes les valeurs communes. LAB emploie sa propre chaîne de stabilisateurs, Codex BLISS puis Schreier–Sims. |
+| Hexagones, étalements réguliers, partitions en grilles | LAB a couvert davantage : respectivement les quatre comptes d'hexagones annoncés, 11/1/1/1 étalements et 55/10/15/19 partitions en grilles. Codex conserve ces résultats comme apport de LAB et ne relance pas ces calculs. |
+| Réductions à 99 | Accord sur les énoncés examinés en commun. Conserver explicitement les hypothèses des partitions équitables de même taille **et même degré interne**. |
+| Résultats SAT et dossiers externes | Même séparation entre résultats établis ici et résultats rapportés. Le pilote Hoffman Codex n'ajoute aucun verdict d'unicité. |
+| « Pas d'erreur de substance », conclusion générale LAB | Accord pour les constructions déposées ; Codex demande néanmoins la correction des implications parité⇒revêtement et S₃⇒asymétrie dans les résumés anciens. La note 175 est plus prudente et ne résout pas ces implications. |
+| Formule des grilles et monodromie | Codex précise les hypothèses de la formule Z₃ et donne son extension `270+3n₁+n_C₂`. Le centralisateur doit respecter les structures internes des fibres-grilles. Ces points ne contredisent aucun des comptes numériques LAB. |
+| Balance | LAB ne l'a pas redérivée en détail. Codex relève l'équivalence trop forte de la note 169 et répare la justification de la symétrie ± de la note 168. Aucun des deux examens ne ferme le lemme de balance. |
+
+La convergence est donc complète sur les objets construits et les nombres
+communs. Les compléments Codex portent principalement sur les étapes encore
+nécessaires pour passer de ces objets à une construction asymétrique ou à
+une exclusion couvrante de C1.
