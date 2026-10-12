@@ -56,3 +56,20 @@ This reproduces, with numbers, the conclusion of note 175 ("the tree only grows"
   per pair they cut 98 % of the gain patterns against 66 % for the parities alone.
 
 Files: `parity_line.py` (CNF generator in line gauge, cubes, checker), `cube_probe.py`, `paritydfs.c`.
+
+## 4. Addendum (12:57 UTC): the order of the search matters by a factor of a thousand, not yet by enough
+
+Knuth estimates of the same search (unit propagation only) with other orders (`paritydfs.c`, options in its header):
+
+| order | estimated number of nodes |
+|---|---|
+| vertices by number of placed neighbours (order of the Z3 search) | 4.7e18 (20 000 dives) |
+| line order (l, layers, far) | 1.2e25 |
+| vertices closing pairs first: placed non-neighbours with >= 6 / 5 / 4 / 3 placed common neighbours (PARITY_CLOSE) | 1.2e17 / 1.3e17 / 4.7e18 / **1.6e16** |
+| dynamic choice of the edge lying in the most advanced pairs, weights 4^k / 8^k (PARITY_DYN=1 / 2; 3000 dives) | 7.6e17 / 8.2e16 |
+
+These estimates are noisy (heavy tails), but the range 1e16 to 1e17 for the better orders is stable. The credits
+available on AWS on 12/10 (about one core-year) correspond to roughly 1e13 nodes of this search. Missing factor:
+about a thousand. Candidates, in the order I would try them: Gaussian elimination over F_2 on the type equations
+(a flat pair makes its six path parities equal: five linear equations that unit propagation does not see); the
+stabiliser of a split pair (order 48) and of the line; the lifting conditions. Nothing launched on AWS.

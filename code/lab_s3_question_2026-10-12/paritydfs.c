@@ -72,16 +72,28 @@ static int propagate(void) {
 }
 static void undo(int mark) { while (ntrail > mark) val[trail[--ntrail]] = -1; }
 
+static int DYN, DYNW[7] = {0, 1, 4, 16, 64, 256, 0};
+static int pick(int k) {                             /* next decision edge: static order, or (PARITY_DYN) the edge in the most advanced pairs */
+    if (!DYN) { while (k < NE && val[order[k]] >= 0) k++; return k < NE ? order[k] : -1; }
+    static int known[NP]; long long best = -1; int be = -1;
+    for (int p = 0; p < NP; p++) { int c = 0; for (int t = 0; t < 6; t++) if (val[pslot[p][t][0]] >= 0 && val[pslot[p][t][1]] >= 0) c++; known[p] = c; }
+    for (int e = 0; e < NE; e++) if (val[e] < 0) {
+        long long sc = 0; for (int m = 0; m < nmem[e]; m++) sc += DYNW[known[emem[e][m]]];
+        if (sc > best) { best = sc; be = e; }
+    }
+    return be;
+}
+
 static void rec(int k, int depth) {
     if (stopped) return;
-    while (k < NE && val[order[k]] >= 0) k++;
-    if (k == NE) {
+    int e = pick(k);
+    if (!DYN) { while (k < NE && val[order[k]] >= 0) k++; }
+    if (e < 0) {
         nsol++; int w = 0; for (int e = 0; e < NE; e++) w += val[e];
         printf("SOLUTION %lld: %d negative edges%s\n", nsol, w, w ? "  ** NON-TRIVIAL **" : " (trivial class)");
         if (w) { for (int e = 0; e < NE; e++) putchar('0' + val[e]); putchar('\n'); }
         fflush(stdout); return;
     }
-    int e = order[k];
     for (int v = 0; v < 2; v++) {
         if (++nodes > CAP) { stopped = 1; return; }
         int mark = ntrail; qh = qt = 0;
@@ -94,6 +106,8 @@ static void rec(int k, int depth) {
 int main(int argc, char **argv) {
     if (argc > 1) CAP = atoll(argv[1]);
     int mode = argc > 2 ? atoi(argv[2]) : 0;
+    DYN = getenv("PARITY_DYN") != NULL;              /* PARITY_DYN=2: steeper weights */
+    if (DYN && atoi(getenv("PARITY_DYN")) == 2) { DYNW[2] = 8; DYNW[3] = 64; DYNW[4] = 512; DYNW[5] = 4096; }
     int X[NV][4]; for (int i = 0; i < NV; i++) { int t = i; for (int j = 3; j >= 0; j--) { X[i][j] = t % 3; t /= 3; } }
     int ne = 0; memset(eid, -1, sizeof eid);
     for (int i = 0; i < NV; i++) { int d = 0; for (int j = 0; j < NV; j++) { int df[4]; for (int c = 0; c < 4; c++) df[c] = (X[j][c] - X[i][c] + 3) % 3; adj[i][j] = (i != j && qf(df) == 0); if (adj[i][j]) nbr[i][d++] = j; } if (d != 20) return 2; }
@@ -106,7 +120,16 @@ int main(int argc, char **argv) {
     placed[np] = 0; pos[0] = np++;
     while (np < NV) {
         int best = -1, bc = -1, bcl = 99;
-        for (int v = 0; v < NV; v++) if (pos[v] < 0) { int c = 0; for (int d = 0; d < 20; d++) if (pos[nbr[v][d]] >= 0) c++; if (cls[v] < bcl || (cls[v] == bcl && c > bc)) { bcl = cls[v]; bc = c; best = v; } }
+        int closemode = getenv("PARITY_CLOSE") ? atoi(getenv("PARITY_CLOSE")) : 0;
+        for (int v = 0; v < NV; v++) if (pos[v] < 0) {
+            int c = 0; for (int d = 0; d < 20; d++) if (pos[nbr[v][d]] >= 0) c++;
+            if (closemode) {                         /* PARITY_CLOSE=t: first key = number of placed non-neighbours R of v with at least t placed common neighbours */
+                int cl2 = 0;
+                for (int i = 0; i < np; i++) { int R = placed[i]; if (adj[v][R]) continue; int k = 0; for (int d = 0; d < 20; d++) { int z = nbr[v][d]; if (pos[z] >= 0 && adj[z][R]) k++; } if (k >= closemode) cl2++; }
+                c += 100 * cl2;
+            }
+            if (cls[v] < bcl || (cls[v] == bcl && c > bc)) { bcl = cls[v]; bc = c; best = v; }
+        }
         int first = 1;
         for (int i = 0; i < np; i++) if (adj[best][placed[i]]) { eu[ne] = placed[i]; ev[ne] = best; eid[best][placed[i]] = eid[placed[i]][best] = ne; gauge[ne] = first; first = 0; order[ne] = ne; ne++; }
         placed[np] = best; pos[best] = np++;
@@ -137,9 +160,9 @@ int main(int argc, char **argv) {
         for (long long dv = 0; dv < dives; dv++) {
             double w = 1; int k = 0, depth = 0;
             for (;;) {
-                while (k < NE && val[order[k]] >= 0) k++;
-                if (k == NE) { printf("dive %lld reached a full assignment\n", dv); break; }
-                int e = order[k], okv[2], nok = 0;
+                int e = pick(k), okv[2], nok = 0;
+                if (!DYN) { while (k < NE && val[order[k]] >= 0) k++; }
+                if (e < 0) { printf("dive %lld reached a full assignment\n", dv); break; }
                 for (int v = 0; v < 2; v++) { int mark = ntrail; qh = qt = 0; if (set(e, v) && propagate()) okv[nok++] = v; undo(mark); }
                 if (!nok) break;
                 w *= nok; depth++; sumw[depth] += w; if (depth > maxd) maxd = depth;
