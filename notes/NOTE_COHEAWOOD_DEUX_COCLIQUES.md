@@ -236,3 +236,96 @@ commune explicite, au lieu de traiter ces lignes séparément.
 
 Aucune exclusion de toute la branche (7,15,0), ni de α=22, ni de C1
 n'est annoncée dans cette note.
+
+## 8. Attaque du système global
+
+Suite à la consigne de Dilan du 12 octobre : les faisabilités locales
+ne constituent pas un point d'arrêt. Les programmes ci-dessous portent
+sur un même graphe à 99 sommets, avec les sept lignes, les sept colonnes
+et les quinze points de Z simultanément.
+
+### Renommer tous les points de Z en une seule fois
+
+Fixons une ligne S, constituée de dix sommets de R. Chacun des quinze
+points z de Z touche exactement deux de ces dix sommets. Deux points
+distincts z,z' ne peuvent définir la même paire {r,r'} : cette paire
+aurait alors trois voisins communs, à savoir S, z et z'.
+
+On peut donc numéroter Z par ordre croissant des quinze masques binaires
+à dix bits de ces paires. Ceci supprime toute la liberté de permutation
+S_15 des points de Z, pour un étiquetage fixé de R. C'est une normalisation
+couvrante, sans hypothèse d'automorphisme ni choix d'un graphe cubique
+particulier. L'ancien modèle ne fixait que les trois voisins d'un seul r.
+
+L'essai complet avec cette normalisation reste UNKNOWN après 240 secondes
+(`global_canonical_z.json`). Ce résultat ne fournit aucune exclusion.
+
+### Deux contraintes spectrales suffisent globalement
+
+Voici un critère exact utilisé comme outil de recherche, sans revendication
+de nouveauté. Pour une matrice d'adjacence A d'un graphe simple 14-régulier
+sur 99 sommets, posons
+
+    P = 27I − 9A + J,       Q = 44I + 11A − 2J.
+
+Alors le graphe est un SRG(99,14,1,2) si et seulement si P et Q sont toutes
+deux positives semi-définies.
+
+**Preuve.** Les deux matrices annulent 1. Sur son orthogonal, leur
+positivité équivaut à −4 ≤ λ ≤ 3 pour chaque valeur propre λ de A.
+La régularité et la diagonale de A² donnent
+
+    somme λ = −14,       somme λ² = 99·14 − 14² = 1190,
+
+où les sommes portent sur les 98 valeurs propres orthogonales à 1.
+Par conséquent
+
+    somme (λ−3)(λ+4) = 1190 − 14 − 12·98 = 0.
+
+Chaque terme est négatif ou nul ; chacun est donc nul. A²+A−12I annule
+1-perp et vaut 198 sur 1, d'où A²+A=12I+2J. La réciproque découle du
+spectre du SRG. Ce critère assure toutes les compatibilités de paires,
+pas seulement celles de certains supports.
+
+### Coupes entières portant sur le graphe complet
+
+Un vecteur entier z fournit les deux inégalités nécessaires
+
+    18 somme_(u<v) z_u z_v A_uv ≤ 27 somme_u z_u² + (somme_u z_u)²,
+    22 somme_(u<v) z_u z_v A_uv ≥ 2(somme_u z_u)² − 44 somme_u z_u².
+
+Le moteur `coheawood_global_cuts.py` résout d'abord les équations linéaires
+du bord sur les 2 940 arêtes inconnues. Pour un candidat entier, les
+vecteurs propres flottants suggèrent des z ; seuls sont conservés les z
+dont la violation est confirmée en arithmétique entière. Les inégalités
+elles-mêmes sont exactes et valables pour chaque complétion possible.
+Elles sont ajoutées au problème commun, avec les équations des paires
+qui sont violées. Un graphe construit ne serait annoncé qu'après
+vérification de l'identité SRG en nombres entiers.
+
+Le premier essai révèle un coût de prétraitement excessif à partir de
+83 coupes. La reprise sans ce prétraitement utilise les coupes déjà
+obtenues et atteint 311 coupes, avec 132 équations supplémentaires de
+paires, en 90 secondes. Elle reste UNKNOWN. Les 311 coupes proviennent
+de onze candidats globaux rejetés ; ce n'est ni un nombre de familles
+C1 exclues, ni une estimation de la fraction restante.
+
+Ces coupes sont également réinjectables dans le modèle **complet** :
+
+```text
+python code/codex/coheawood_completion.py --canonical-z --no-presolve \
+  --cuts data/codex_coheawood/global_spectral_resume.json \
+  --seconds 120 --workers 4 \
+  --output data/codex_coheawood/global_complete_with_cuts.json
+```
+
+Le fichier de sortie distingue explicitement UNKNOWN d'INFEASIBLE et
+d'une construction. Les coupes accumulées sont conservées et peuvent
+être reprises ; le moteur corrigé ne répète plus automatiquement un
+solveur UNKNOWN sur un modèle identique avec le même budget.
+
+L'essai du modèle complet renforcé est terminé : **UNKNOWN** après
+121,3 secondes, avec les 2 940 variables d'arêtes, les 200 655 produits
+et les 311 coupes globales. Il ne ferme pas la branche. Aucun calcul
+n'est laissé actif et les essais ne seront pas prolongés à paramètres
+inchangés comme s'ils apportaient un nouveau résultat.

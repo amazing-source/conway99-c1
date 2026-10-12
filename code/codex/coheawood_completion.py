@@ -70,6 +70,11 @@ def main():
     ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--output', required=True)
     ap.add_argument('--linear-only', action='store_true')
+    ap.add_argument('--canonical-z', action='store_true',
+                    help='Order all 15 Z points by their distinct masks in the first S row')
+    ap.add_argument('--log-progress', action='store_true')
+    ap.add_argument('--cuts', help='JSON of exact global spectral cuts to reuse')
+    ap.add_argument('--no-presolve', action='store_true')
     args = ap.parse_args()
     start = time.monotonic()
     a, names, b, cells = boundary()
@@ -84,9 +89,19 @@ def main():
         m.Add(sum(a[u]) == 14)
     for u in range(14, 84):
         m.Add(sum(a[u][84:]) == 3)
-    # Permutations of the 15 vertices in Z are still free.
-    for z in range(84, 99):
-        m.Add(a[14][z] == int(z < 87))
+    # Every Z point has two neighbours in the first S row. These pairs
+    # are distinct: a repeated pair would have S[0] plus two Z common
+    # neighbours. Thus sorting their 10-bit masks removes the ENTIRE
+    # S_15 labelling freedom, without imposing a graph automorphism.
+    if args.canonical_z:
+        first_row = [r for t in range(7) for r in cells[0, t]]
+        masks = [sum((1 << i)*a[r][z] for i, r in enumerate(first_row))
+                 for z in range(84, 99)]
+        for left, right in zip(masks, masks[1:]):
+            m.Add(left < right)
+    else:
+        for z in range(84, 99):
+            m.Add(a[14][z] == int(z < 87))
     products = 0
     for u, v in combinations(range(99), 2):
         if args.linear_only and u >= 14 and v >= 14:
@@ -106,6 +121,13 @@ def main():
                 terms.append(y)
                 products += 1
         m.Add(sum(terms) + a[u][v] == 2)
+    cut_count = 0
+    if args.cuts:
+        from coheawood_global_cuts import add_spectral_cut
+        cuts = json.loads(Path(args.cuts).read_text(encoding='utf-8'))['spectral_cuts']
+        for cut in cuts:
+            add_spectral_cut(m, a, cut)
+        cut_count = len(cuts)
     build_seconds = time.monotonic()-start
     print(json.dumps(dict(event='built', edge_variables=len(edges), products=products,
                           build_seconds=build_seconds, linear_only=args.linear_only)), flush=True)
@@ -113,9 +135,13 @@ def main():
     solver.parameters.max_time_in_seconds = args.seconds
     solver.parameters.num_search_workers = args.workers
     solver.parameters.random_seed = 20261012
+    solver.parameters.log_search_progress = args.log_progress
+    solver.parameters.cp_model_presolve = not args.no_presolve
     status = solver.Solve(m)
     report = dict(status=solver.StatusName(status), scope='co-Heawood branch',
                   linear_only=args.linear_only, seconds=solver.WallTime(),
+                  canonical_z=args.canonical_z,
+                  spectral_cuts=cut_count, presolve=not args.no_presolve,
                   build_seconds=build_seconds, edge_variables=len(edges),
                   products=products, conflicts=solver.NumConflicts(),
                   branches=solver.NumBranches(), solver_stats=solver.ResponseStats())
