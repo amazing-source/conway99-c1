@@ -1,0 +1,24 @@
++ g++ -std=c++17 -O3 code/rows.cpp -o code/rows
++ g++ -std=c++17 -O3 code/cap_aut.cpp -o code/cap_aut
++ g++ -std=c++17 -O3 code/complete.cpp -o code/complete
++ g++ -std=c++17 -O3 code/complete_noquotient.cpp -o code/complete_noquotient
++ /opt/pyvenv/bin/python code/setup_bvls.py
+Verified all 29403 pairs; exact Git blob cfc398cea8d6d75905f1db06f264607abd9c2b68
++ code/cap_aut data/cap.txt data/linear_aut.txt
++ /opt/pyvenv/bin/python code/make_instance.py tri
+tri fixed 63 free 180 Rrange 0 2 degrees {np.int64(16): np.int64(180)}
+first fixed [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18, 19, 20, 27, 28, 29, 48, 49, 50, 54, 55, 56, 69, 70, 71, 81, 82, 83]
++ code/rows data/tri.inst data/tri 60 1000000
++ /opt/pyvenv/bin/python code/assemble.py tri --seconds 600
++ /opt/pyvenv/bin/python code/make_instance.py prism2 --release 3,4,5,6,7,8,9,10,11,18,19,20
+prism2 fixed 51 free 192 Rrange 0 2 degrees {np.int64(16): np.int64(24), np.int64(17): np.int64(96), np.int64(18): np.int64(60), np.int64(21): np.int64(12)}
+first fixed [0, 1, 2, 27, 28, 29, 48, 49, 50, 54, 55, 56, 69, 70, 71, 81, 82, 83, 105, 106, 107, 114, 115, 116, 120, 121, 122, 144, 145, 146]
++ /opt/pyvenv/bin/python code/orbit_domains.py prism2
++ /opt/pyvenv/bin/python code/prepare_csp.py prism2
+prism2 vertices 192 initial boundary-profile classes 183
++ code/complete data/prism2.csp data/prism2.sol 600 100000
++ code/complete_noquotient data/prism2.csp /dev/null 600 100000
++ /opt/pyvenv/bin/python code/certify_case.py prism2
++ /opt/pyvenv/bin/python code/coverage.py
++ /opt/pyvenv/bin/python code/verify_bundle.py
+REPRODUCTION COMPLETE: /mnt/data/BVLS_REPLAY_FINAL

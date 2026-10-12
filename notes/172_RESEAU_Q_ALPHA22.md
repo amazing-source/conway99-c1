@@ -9,7 +9,8 @@ obstruction to the α = 22 sub-case? Short answer: **no, at the level of discrim
 A contradiction, if one exists, needs finer information than the genus.
 
 Scripts are in `code/asym243/hoffman/lattice/`. `lamc.py` and `r3.py` read the `.inst` files of the dossier
-HOFFMAN_UPDATE_20261011; those files are not in this repo.
+HOFFMAN_UPDATE_20261011. They are in `dossiers_externes/archives/HOFFMAN_REPONSES_20261011.zip` (`data/`); see
+`dossiers_externes/INDEX.md` for the extraction command.
 
 ## 1. Clean identification of the lattices
 Notation: C is the coclique (22 vertices), F the other 77, and Y, D, N = YᵀY are as in note 171.
