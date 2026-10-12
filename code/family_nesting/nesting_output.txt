@@ -1,0 +1,44 @@
+== srg(99,14,1,2)  t=3  f=54 g=44
+   p=3    Fix=empty        feasible; a1 = 18 (mod 21), e.g. a1=18 chi_r=0
+   p=11   Fix=empty        feasible; a1 = 11 (mod 77), e.g. a1=11 chi_r=-1
+   p=7    Fix=K1           feasible; a1 = 0 (mod 49), e.g. a1=0 chi_r=-2
+   p=3    Fix=K3           feasible; a1 = 6 (mod 21), e.g. a1=6 chi_r=0
+   p=5    Fix=srg(9)       feasible; a1 = 10 (mod 35), e.g. a1=10 chi_r=4
+== srg(243,22,1,2)  t=4  f=132 g=110
+   p=3    Fix=empty        feasible; a1 = 0 (mod 27), e.g. a1=0 chi_r=-3
+   p=11   Fix=K1           feasible; a1 = 22 (mod 99), e.g. a1=22 chi_r=0
+   p=5    Fix=K3           feasible; a1 = 30 (mod 45), e.g. a1=30 chi_r=2
+   p=3    Fix=srg(9)       feasible; a1 = 9 (mod 27), e.g. a1=9 chi_r=3
+== srg(6273,112,1,2)  t=10  f=3280 g=2992
+   p=3    Fix=empty        feasible; a1 = 18 (mod 63), e.g. a1=18 chi_r=-5
+   p=17   Fix=empty        feasible; a1 = 102 (mod 357), e.g. a1=102 chi_r=-1
+   p=41   Fix=empty        feasible; a1 = 123 (mod 861), e.g. a1=123 chi_r=0
+   p=7    Fix=K1           feasible; a1 = 49 (mod 147), e.g. a1=49 chi_r=-3
+   p=5    Fix=K3           feasible; a1 = 90 (mod 105), e.g. a1=90 chi_r=0
+   p=11   Fix=K3           feasible; a1 = 132 (mod 231), e.g. a1=132 chi_r=2
+   p=3    Fix=srg(9)       feasible; a1 = 45 (mod 63), e.g. a1=45 chi_r=1
+   p=7    Fix=srg(99)      EXCLUDED by |Fix|(k-k') <= v-|Fix|  (9702 > 6174)
+   p=3    Fix=srg(243)     EXCLUDED by |Fix|(k-k') <= v-|Fix|  (21870 > 6030)
+   p=5    Fix=srg(243)     EXCLUDED by |Fix|(k-k') <= v-|Fix|  (21870 > 6030)
+== srg(494019,994,1,2)  t=31  f=250914 g=243104
+   p=3    Fix=empty        feasible; a1 = 81 (mod 189), e.g. a1=81 chi_r=-15
+   p=19   Fix=empty        feasible; a1 = 1026 (mod 1197), e.g. a1=1026 chi_r=0
+   p=107  Fix=empty        feasible; a1 = 963 (mod 6741), e.g. a1=963 chi_r=-1
+   p=7    Fix=K1           feasible; a1 = 49 (mod 441), e.g. a1=49 chi_r=-15
+   p=71   Fix=K1           feasible; a1 = 994 (mod 4473), e.g. a1=994 chi_r=0
+   p=31   Fix=K3           feasible; a1 = 930 (mod 1953), e.g. a1=930 chi_r=0
+   p=3    Fix=srg(9)       feasible; a1 = 171 (mod 189), e.g. a1=171 chi_r=-9
+   p=5    Fix=srg(9)       feasible; a1 = 45 (mod 315), e.g. a1=45 chi_r=-11
+   p=11   Fix=srg(9)       feasible; a1 = 297 (mod 693), e.g. a1=297 chi_r=-7
+   p=5    Fix=srg(99)      feasible; a1 = 0 (mod 315), e.g. a1=0 chi_r=34
+   p=7    Fix=srg(99)      feasible; a1 = 0 (mod 441), e.g. a1=0 chi_r=34
+   p=3    Fix=srg(243)     feasible; a1 = 54 (mod 189), e.g. a1=54 chi_r=108
+   p=3    Fix=srg(6273)    EXCLUDED by |Fix|(k-k') <= v-|Fix|  (5532786 > 487746)
+   p=7    Fix=srg(6273)    EXCLUDED by |Fix|(k-k') <= v-|Fix|  (5532786 > 487746)
+
+Hoffman point c: other coclique points (= edges of Gamma_c, t-regular on k vertices) vs pairs of triangles through c
+  t=1   v=9       alpha_H=3      points-1=2      pairs=1       2t vs k/2-1: 2 vs 1
+  t=3   v=99      alpha_H=22     points-1=21     pairs=21      2t vs k/2-1: 6 vs 6
+  t=4   v=243     alpha_H=45     points-1=44     pairs=55      2t vs k/2-1: 8 vs 10
+  t=10  v=6273    alpha_H=561    points-1=560    pairs=1540    2t vs k/2-1: 20 vs 55
+  t=31  v=494019  alpha_H=15408  points-1=15407  pairs=123256  2t vs k/2-1: 62 vs 496
