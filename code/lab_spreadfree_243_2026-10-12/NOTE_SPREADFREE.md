@@ -242,6 +242,38 @@ free memory on the PC. Cost to run it properly: about 5 GB of free RAM for one p
 A breadth-first exploration by one-block trades from the fifth and sixth graphs is running since 21:39 UTC
 (`trade_bfs.py`, at most 42 minutes); its log will be summarised here.
 
+## 6f. Third trades: the switching that links the graphs (`third_scan.py`, `thirds_bfs.py`)
+
+A THIRD of a graph is a set F of 81 vertices such that each vertex of F has 10 neighbours in F and each other vertex 6
+(1_F - 1/3 is an eigenvector for the eigenvalue 4; the blocks of a tri-Cayley graph of type I are thirds). A THIRD
+TRADE replaces the adjacency inside F by another strongly regular completion, everything else unchanged, no symmetry
+imposed; the list of completions is complete (cadical ends with UNSAT) and takes 10 to 45 seconds.
+
+Links found at 21:53 UTC with the thirds that are unions of orbits of Aut (`third_scan.py`), each line = one third:
+
+| graph | third | completions (complete list) |
+|---|---|---|
+| Gamma4 | its orbit of 81 | Gamma4 five times, **BvLS** once |
+| Gamma5 | each of its three blocks | Gamma5 four times, Gamma4 twice |
+| sixth | orbits 27 + 54 (first) | sixth, Gamma5 |
+| sixth | orbits 27 + 54 (second) | sixth four times, **Gamma3** twice |
+| sixth | block 0 | sixth, seventh, eighth, twice each |
+| seventh | its three orbits of 81 | itself (twice); itself and Gamma5; itself (twice) |
+| eighth | orbits 27 + 54 (first) | eighth, Gamma4 |
+| eighth | orbits 27 + 54 (second) | eighth four times, Gamma3, Gamma4 |
+| Gamma3, twin | no union of orbits is a third | - |
+
+So seven of the eight graphs (all but the twin) are connected by trades on 81 vertices: BvLS - Gamma4 - Gamma5 - sixth
+- Gamma3, with the seventh and the eighth attached. A cover of BH (Gamma3, Gamma4, BvLS) and a graph without regular
+spread can differ on a single third. This is the "census by switching" in a workable form.
+A graph has many more thirds than its orbit unions (`thirds_bfs.py` lists them with CryptoMiniSat: Gamma5 has at least
+12 classes under Aut, the sixth at least 5, the eighth at least 12; most of those tried so far are rigid). The full
+exploration (all thirds of every graph, all completions, new graphs queued) is running since 22:03 UTC, at most 58
+minutes; log to be summarised here.
+
+Cayley census (section 6): stopped by its time limit at 21:54 UTC after four of the nine groups: three groups with
+(134, 108, centre 9): 84 sets each, only BvLS and Gamma5; one group with (26, 216, centre 3): 15 sets, only Gamma5.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
