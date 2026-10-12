@@ -1,0 +1,169 @@
+{
+  "lp_status": 0,
+  "lp_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "seconds": 1.1560000000172295,
+  "equations": 1599,
+  "variables": 2513,
+  "sparse": true,
+  "prune_incompatible": true,
+  "scope": "This fixed population; exact integer verification required",
+  "status": "EXACT_CONTRADICTION",
+  "verification": {
+    "valid": true,
+    "left": 4,
+    "upper_bound": 3,
+    "gap": 1,
+    "nonzero_equations": 4,
+    "positive_edge_terms": 2,
+    "negative_edge_terms": 11,
+    "edge_weights": [
+      {
+        "edge": [
+          32,
+          36
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          39
+        ],
+        "weight": 2
+      },
+      {
+        "edge": [
+          32,
+          43
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          47
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          48
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          49
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          54
+        ],
+        "weight": 1
+      },
+      {
+        "edge": [
+          32,
+          55
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          59
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          72
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          74
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          76
+        ],
+        "weight": -1
+      },
+      {
+        "edge": [
+          32,
+          79
+        ],
+        "weight": -1
+      }
+    ]
+  },
+  "coefficients": [
+    {
+      "equation": 633,
+      "coefficient": 2,
+      "reason": [
+        "coclique_degree",
+        32
+      ],
+      "rhs": 4
+    },
+    {
+      "equation": 639,
+      "coefficient": -1,
+      "reason": [
+        "common_with_core",
+        32,
+        5
+      ],
+      "rhs": 1
+    },
+    {
+      "equation": 643,
+      "coefficient": -1,
+      "reason": [
+        "common_with_core",
+        32,
+        9
+      ],
+      "rhs": 2
+    },
+    {
+      "equation": 648,
+      "coefficient": -1,
+      "reason": [
+        "common_with_core",
+        32,
+        14
+      ],
+      "rhs": 1
+    }
+  ],
+  "active_vertices": [
+    {
+      "vertex": 32,
+      "core_neighbours": [
+        4,
+        5,
+        6,
+        15,
+        16,
+        17
+      ],
+      "in_coclique": false
+    }
+  ],
+  "source_sha256": "32c8827b68e930adabf4870647af76af205c384d8b17043aac115f14500813f0"
+}

@@ -584,3 +584,243 @@ inégalités fractionnaires n'est pas déclarée réalisable. Aucune
 exclusion de tous les noyaux (0,2), de toutes les cocliques21, ou de C1
 n'est acquise. En revanche l'exclusion analytique (1,3,E=K3), la forme
 C4 imposée à (0,2) et les règles (7)–(9) sont uniformes dans leur portée.
+
+## 16. Saturer les paires ferme le dernier ancien survivant
+
+Suite demandée par Dilan : attaquer toute la famille (0,2), en utilisant
+des sous-cas pour extraire des lois et des certificats réutilisables.
+
+**Lemme des paires saturées.** Si deux sommets extérieurs u,v ont déjà
+deux voisins communs dans le support, ils sont non adjacents et ne peuvent
+avoir aucun voisin commun supplémentaire. Pour tout sommet extérieur w :
+
+    d_uw + d_vw <= 1.                                      (10)
+
+La preuve est immédiate de lambda=1, mu=2. Cela couple les ressources
+utilisées par deux voisinages, même lorsque chacun peut remplir ses quotas
+séparément. En particulier deux copies d'une colonne de taille2 doivent
+avoir des voisinages extérieurs disjoints. Pour des poids quelconques sur
+les demandes de deux tels sommets, une ressource w contribue au plus le
+maximum de ses deux scores positifs, et non leur somme.
+
+Le dernier survivant de§15, `learned_cuts_e2_combined/population_003.json`,
+est maintenant exclu par un **certificat arithmétique indépendant du verdict
+CP-SAT**. On ajoute2288 inégalités(10) aux quotas réciproques. Le séparateur
+utilise finalement dix de ces inégalités et des équations de quotas ;
+la vérification entière donne
+
+    99 <= 97.
+
+Fichier `integer_frontier_probe/saturated_pair_certificate.json`, outil
+`coclique_saturated_pairs.py`. Ceci prouve l'impossibilité du graphe pour
+cette population en utilisant davantage de conditions SRG. Ce n'est PAS
+une certification du système linéaire binaire plus faible pris isolément.
+Les essais à une seule des dix inégalités ne donnent pas de certificat
+(certains atteignent6s) : ne pas annoncer une preuve à une seule paire.
+
+Pour Ax=b, Gx<=1, 0<=x<=1, le certificat est constitué d'entiers y et
+z>=0, et vérifie exactement
+
+    y.b - sum z > sum_j max(0,(yA-zG)_j).                    (11)
+
+Le LP trouve les coefficients ; seules les opérations entières fondent
+la contradiction. Le vérificateur reconstruit les équations et les
+intersections des colonnes depuis les fichiers d'entrée.
+
+### Une coupure de populations, pas seulement un témoin rejeté
+
+On moyenne y et z entre copies des mêmes cellules. Garder les notations
+L_a,K_ab et p_a de§15. Pour une paire de cellules saturées a,b et une
+cellule centrale c autorisant les deux arêtes, prendre un poids z_abc>=0.
+Nécessairement c diffère de a et b. Le nombre de triplets vaut
+
+    T_abc = p_a p_b p_c                 si a != b,
+    T_aac = binom(p_a,2) p_c            si a = b.
+
+La somme des inégalités(10) apporte, sur une arête entre a et c,
+le coefficient z_abc p_b si b!=a, ou z_aac(p_a-1) si b=a.
+Noter M_ac(p) la somme de ces contributions, et P_ac(p) le nombre
+de paires possibles entre cellules (p_a p_c ou binom(p_a,2)). Alors
+
+    sum_a p_a L_a <= sum_abc z_abc T_abc(p)
+                    + sum_ac max(0,K_ac-M_ac(p)) P_ac(p).   (12)
+
+Cette loi vaut pour tout support et toute population admissible. Les
+poids moyennés du certificat ne réduisent pas son écart : le membre
+gauche et les pénalités de triplets restent inchangés à facteur près,
+et la convexité de max(0,x) ne peut augmenter la borne des arêtes.
+On multiplie par un dénominateur commun pour obtenir des entiers.
+
+`coclique_packing_family_cut.py` réalise cette transformation. L'ancien
+survivant viole la coupure moyennée par659<=657. Elle est ajoutée aux
+dix anciennes coupures, avec2867 termes d'arêtes et dix termes de
+triplets. La portée de cette instanciation est TOUTES les populations
+du même support, pas tous les supports (0,2) à la fois.
+
+Le maître enrichi trouve encore une population en46,19s. Une nouvelle
+combinaison de trois quotas la rejette par2<=1 ; elle devient une
+douzième coupure. Le maître à douze coupures trouve un nouveau témoin
+en33,95s, qui passe la relaxation réciproque avec TOUTES les2329
+inégalités de paires saturées de cette population. Un nouveau candidat
+n'est donc pas présenté comme un SRG. Données : `learned_cuts_e2_packing/`
+et `learned_cuts_e2_packing_continuation/`.
+
+## 17. Toute la famille se réduit à onze répartitions de cycles
+
+Soient e,f les deux sommets négatifs et z leur unique voisin commun.
+Poser U=N(e)\{f,z} et V=N(f)\{e,z}. Ces ensembles sont disjoints et
+ont chacun12 sommets, tous de charge nulle. N(e)=7K2 impose un
+appariement parfait sur U ; de même sur V. Un u dans U est non adjacent
+à f et a déjà e comme voisin commun avec f. Il n'est pas adjacent à z,
+car e-z a déjà f comme voisin commun. Il a donc exactement un voisin
+dans V. La même propriété de l'autre côté donne un appariement parfait
+entre U et V.
+
+**Conclusion uniforme :** le graphe induit sur U union V est une union
+disjointe de cycles dont les longueurs sont multiples de4. En parcourant
+un cycle, les couleurs suivent U,U,V,V. Les longueurs sont4k_i avec
+sum k_i=6. Les onze partitions de6 donnent les onze répartitions
+possibles ; ce ne sont PAS onze graphes C1 ni onze familles exclues.
+
+On peut numéroter les appariements internes de U et les arêtes U-V,
+puis choisir une forme canonique de l'appariement interne de V pour
+chaque partition. Aucune symétrie du graphe complet n'est supposée.
+La réduction vaut en fait autour de n'importe quelle arête d'un
+SRG(99,14,1,2) ; la structure des défauts rend ici toutes les charges
+de U et V nulles et leurs attaches au support très contraintes.
+
+## 18. Le multiensemble résiduel est déterminé par le bord
+
+Noter H les quatre sommets du carré, L les douze sommets positifs
+restants, et B=S union U union V union {z}. On a |B|=43.
+Les voisinages de e et f sont déjà complets dans B.
+
+Tout sommet t hors B est de charge0 et n'est adjacent ni à e ni à f.
+La loi Aq=3q+2 impose donc une masse positive2 dans son voisinage :
+son attache au support est **soit un singleton {h}, h dans H, soit
+une paire {i,j}, i,j dans L**. Il n'existe aucun autre type.
+
+Poser R=N(z) intersection (H union L) et epsilon=|R intersection H|.
+La masse de R vaut4 ; epsilon vaut0 ou1, donc |R intersection L|=4-2epsilon.
+Pour chaque h dans H, le nombre de futurs sommets de type {h} est
+
+    m_h = 4 + [h dans R].                                (13)
+
+En effet h a six voisins dans le support, 2-[h dans R] dans chacun
+de U,V, et [h dans R] fois le voisin z. Son degré encore à remplir
+vaut14-(6+4-[h dans R]).
+
+Pour une paire i,j de L, sa multiplicité future est exactement
+
+    m_ij = 2 - [i~j] - |N_B(i) intersection N_B(j)|.        (14)
+
+Un futur sommet ne peut contribuer à cette paire que s'il est de ce
+type précis. Chaque m_ij est donc un entier0,1,2 (au plus1 si i~j).
+Les quotas de degrés, de nombre total et d'appartenance à C restent
+obligatoires ; leur vérification ne doit pas être omise.
+
+Il y a16+epsilon singletons et40-epsilon sommets de type paire. Le
+multigraphe des types paires sur L a donc40-epsilon arêtes comptées
+avec multiplicité. Ses degrés valent7+[i dans R] sur les quatre X,
+et6+[i dans R] sur les huit Y. Ces identités résultent du degré14,
+des degrés3/4 dans S et des4-[i dans R] voisins dans U union V union {z}.
+
+En ajoutant tous les singletons au bord, on obtient59 ou60 sommets
+et les voisinages des SIX centres H union {e,f} sont complets.
+Il ne reste que40 ou39 sommets, tous indexés par des paires de L.
+Leurs arêtes, leurs attaches aux sommets de charge0 du bord et leur
+appartenance à la coclique ne sont pas déterminées par(14).
+
+## 19. Exploitation effective sur tous les noyaux variables
+
+`coclique_two_exception_cycles.py` ne choisit aucun des249 anciens noyaux.
+Les arêtes libres de L, les attaches à U,V,z et la partie connue de C
+sont des variables. Les bornes de voisins communs sont imposées sur le
+graphe induit réel. Les modes et leur portée sont conservés séparément :
+
+- `variable_core_cycles` : un témoin nécessaire sur43 sommets dans
+  chacune des onze répartitions ; pas d'exclusion.
+- `variable_core_triangle_h0` : les trois voisinages e,f,z sont complets,
+  avec epsilon=0, donnant51 sommets ; onze témoins nécessaires. Ce test
+  ajoute d'autres contraintes que la fermeture des quatre H ci-dessous.
+- `variable_core_cycles_population` : ajout de la population résiduelle
+  forcée par(13)–(14) et de ses quotas de C ; onze témoins nécessaires.
+- `variable_core_hcomplete_h0` et `..._h1` : les six voisinages H,e,f
+  sont complets sur59/60 sommets, avec population résiduelle commune ;
+  chacune des onze répartitions a encore un témoin, soit22 au total.
+
+Tous ces témoins ont été vérifiés directement en comptant leurs
+voisinages et les résidus ; ils ne sont PAS des graphes à99 sommets.
+Ils montrent que ces niveaux précis de contraintes ne suffisent pas
+à exclure une répartition de cycles. Agrandir leur catalogue n'est
+pas l'étape suivante.
+
+Les témoins sont ensuite confrontés au recollement global :
+
+- Cinq populations issues des témoins à43 sommets sont rejetées par
+  des certificats arithmétiques (`negative_edge_population_certificates`).
+  Leurs nombres de choix locaux linéaires faisables sont79 ou80 sur81 :
+  ne pas les compter comme nouveaux exemples où les81 choix existent.
+- Sur quatre populations issues des témoins à59/60 sommets, les deux
+  témoins epsilon=1 testés donnent les contradictions8<=7 et2<=0.
+  La première utilise quatre inégalités de paires saturées ; la seconde
+  est déjà une combinaison de quotas d'un sommet. Les deux témoins
+  epsilon=0 passent cette relaxation. Portée : ces populations, pas
+  toutes les configurations epsilon=1 ou les répartitions concernées.
+- Un premier test des types résiduels du bord59 avec six cycles de4
+  laisse passer les37 types colorés requis face aux six voisinages
+  fermés. `coclique_closed_border.py` conserve ce résultat nécessaire.
+
+La frontière de la famille entière est désormais une coexistence
+commune des39/40 sommets de types paires avec ce bord, en faisant encore
+varier celui-ci. Les lois(10)–(14) sont acquises. Ni la famille(0,2),
+ni un des onze types de cycles pris dans toute sa généralité ne sont
+exclus à ce stade.
+
+## 20. Essais entiers conservés avec leur portée
+
+Le dernier ancien survivant passe séparément les appariements de tous
+les centres du support, leur couplage avec bornes supérieures et les
+capacités restantes. Le système linéaire binaire complet reste UNSAT
+(nouveau pilote23,05s). Son exclusion certifiée utile est maintenant§16.
+
+`coclique_parity_cuts.py` cherche des sommes d'équations modulo2 aux
+solutions fractionnaires. Si leur support impair est J et leur second
+membre vaut b modulo2, toute affectation F subset J de mauvaise parité
+donne la loi entière
+
+    sum_{j dans F}(1-x_j) + sum_{j dans J\F}x_j >= 1.       (15)
+
+1113 coupures ont été trouvées en douze étapes et vérifiées par XOR
+exact des équations sources. Elles coupent des solutions fractionnaires,
+sans fournir une contradiction de toute la population à ce plafond.
+Ce n'est pas une campagne de rangs modulaires.
+
+`coclique_neighbourhood_hull.py` explore également la loi des prix
+antisymétriques : dans un graphe réciproque, la somme des prix des
+voisinages vaut zéro ; elle doit appartenir à la somme des intervalles
+de prix des choix entiers admissibles. La génération de colonnes atteint
+1134 choix puis un plafond LP, sans certificat. Ne pas relancer ce
+pilote à l'identique ni annoncer une faisabilité de cette relaxation.
+
+### État final de cette étape et contrôle ciblé
+
+Le nouveau témoin à douze coupures,
+`learned_cuts_e2_packing_continuation/population_000.json`, passe la
+relaxation réciproque avec paires saturées, mais son modèle SRG complet
+est INFEASIBLE en45,84s (2585 variables d'arêtes,165181 auxiliaires,
+41664 branches,661 conflits). C'est un verdict CP-SAT, sans certificat
+indépendant pour ce NOUVEAU témoin. Ne pas lui attribuer le certificat
+99<=97 de l'ancien témoin. Tous les nouveaux pilotes sont terminés.
+
+`check_coclique_coexistence_v3.py` reconstruit les nouvelles combinaisons
+à partir des voisinages et les vérifie en entiers, indépendamment de
+l'oracle de séparation : PASS pour neuf certificats arithmétiques,
+les deux nouvelles coupures de populations,55 graphes induits témoins,
+les onze répartitions de cycles et1113 coupures de parité. Les anciens
+dossiers n'ont pas été réaudités. Rapport `checks_coexistence_v3.json`.
+
+La suite utile est de coupler les choix réels des39/40 sommets restants
+sur des bords variables, avec réemploi des contraintes de paires saturées.
+Un certificat sur un bord fixé doit devenir une condition sur ses variables
+avant de multiplier ces bords. La famille entière et C1 restent ouverts.
