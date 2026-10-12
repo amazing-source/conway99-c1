@@ -1,7 +1,8 @@
 # The spread-free world at 243 vertices (lab session, started 12 October 2026, 19:20 UTC)
 
-Status at 20:40 UTC: **a fifth strongly regular graph (243,22,1,2) has been found, and it has no regular spread**
-(section 6). Checked by two independent scripts of this session; not audited by a third party; literature not yet
+Status at 21:45 UTC: **four new strongly regular graphs (243,22,1,2) found today, none with a regular spread**: a
+fifth (vertex-transitive, Cayley on non-abelian groups, section 6), a sixth (Aut 108, section 6d), a seventh (Aut 162)
+and an eighth (Aut 108) (section 6e). With the four covers of BH that makes eight known graphs. Checked by two independent scripts of this session; not audited by a third party; literature not yet
 searched for it. Everything else here is own derivation of 12/10 unless a source is given.
 Direction (user, direct, 12/10): after Z3 (the four cyclic covers) and S3 (no other cover, certification postponed),
 look at the strongly regular graphs (243,22,1,2) WITHOUT regular spread, starting with a census by switching.
@@ -169,16 +170,13 @@ construction. This is a search of a few minutes, not a bibliography.
 What is NOT established: an independent audit (another person / another implementation of the adjacency and of the
 checks); a real literature search; the type II census; any statement about graphs without a semiregular Z_3^4.
 
-## 6b. Two regularities seen in all five graphs (not proved, `parallel_parity.py`)
+## 6b. Two tempting regularities, FALSE in general (`parallel_parity.py`)
 
-* (P1) two lines parallel to the same line L are joined by 0 or 3 edges, never 1 or 2. Equivalent form: if both
-  points of a line R through p are fixed by tau_L, then L and R span a 3x3 grid. The nine points alone do not force it
-  (no violation of lambda = 1, mu = 2 inside the configuration), so if it is a law it is not a local one.
-* (P2) the number of lines parallel to a line is even. With P1 the parallels of L are grid pairs plus "isolated"
-  parallels (972 incidences in the new graph, 864 in Gamma3, 1296 in Gamma4, none in the twin and BvLS); P2 says the
-  isolated ones come in even number.
-All five graphs are very symmetric, so this is weak evidence. If P1 and P2 held for every srg(v,k,1,2) they would be
-statements about Conway's graph too.
+In BvLS, the twin, Gamma3, Gamma4, Gamma5 and the sixth graph: (P1) two lines parallel to the same line are joined by
+0 or 3 edges, never 1 or 2; (P2) the number of lines parallel to a line is even. Both FAIL in the eighth graph
+(section 6e): 108 of its lines have 9 parallel lines, and 324 pairs of parallels of a common line are joined by exactly
+one edge. So neither is a law of the parameters (1,2); they were artefacts of the first six examples. Recorded so that
+nobody (me included) tries to prove them.
 
 ## 6c. Sampling with a semiregular Z_3^3, nine orbits (`semireg_sample.py`, `quotient_types.py`)
 
@@ -205,13 +203,44 @@ mu = 2 pair by pair; lines parallel to a line: 2 (162 lines), 6 (108), 8 (459), 
 line, no regular spread (exhaustive search: 0); 17 grids through every vertex; 3240 prisms; **Aut of order 108**, with
 trivial vertex stabiliser on the orbit of 108; vertex orbits 27, 54, 54, 108; not isomorphic to BvLS, twin, Gamma3,
 Gamma4, Gamma5 (direct tests, controls pass). Holonomy cycle types now include odd cycles (1^8 5 7).
-P1 and P2 of section 6b hold in this graph too (parallels of a line joined by 0 or 3 edges; even numbers 2, 6, 8, 10,
-14), which makes them less likely to be artefacts of large symmetry.
+P1 and P2 of section 6b hold in this graph too, but they fail in the eighth graph (section 6e).
 
 So the family is much richer than the four covers: symmetric trades produce new graphs in seconds, and the symmetry
 can be lowered step by step (2916, then 108). An enumeration of more completions with one translation is running
 (started 21:30 UTC); the search with NO symmetry imposed (13 041 free pairs, about 2 million products) is the
 natural route to an asymmetric member.
+
+## 6e. Trades with NO symmetry imposed on 81 vertices; a seventh and an eighth graph (`free_trade.py`, `trade_bfs.py`)
+
+Labelling: the blocks 0..80, 81..161, 162..242 are the three orbits of the tri-Cayley form of Gamma5 (and of the graphs
+derived from it). For a graph and a block, everything is kept except the adjacency inside the block (3240 free pairs,
+about 3 million clauses, a few seconds per solution, every solution blocked, end = UNSAT = complete list).
+
+| graph | free block | complete list of the completions |
+|---|---|---|
+| Gamma5 | block 2 (and blocks 0, 1: same counts) | 6: Gamma5 four times (one is the input), Gamma4 twice |
+| sixth graph | block 0 | 6: the sixth graph twice, a SEVENTH graph twice, an EIGHTH graph twice |
+| sixth graph | block 1, block 2 | rigid (only the input) |
+| twin, Gamma3 (stored labelling, cosets x4 = c) | each of the three blocks | rigid |
+
+So Gamma4 and Gamma5 differ only inside ONE block of 81 vertices (648 pairs: at each vertex of the block 8 neighbours
+leave and 8 come), a much smaller trade than BvLS -> twin (180 vertices) or BvLS -> Gamma4 (162).
+With all 40 translation directions forbidden, the one-block problem on Gamma5 is UNSAT (4 s): each of its completions
+keeps some translation.
+
+Seventh graph: `new243_trade_aut162.edges` (sha256 96d91c64...): Aut of order 162, vertex orbits 81, 81, 81; parallels
+2 (162 lines), 6 (81), 8 (459), 10 (189); 17 grids per vertex; 3186 prisms; no flat line.
+Eighth graph: `new243_trade_aut108_b.edges` (sha256 40877e45...): Aut of order 108, orbits 27, 54, 54, 108; parallels
+4 (162), 6 (54), 8 (162), 9 (108), 10 (270), 12 (81), 14 (54); 19 grids per vertex; 3834 prisms; no flat line.
+Both: A^2 = 20I - A + 2J in integers by the independent script; pairwise non-isomorphic to the six others (invariants
+and direct tests inside `trade_bfs.py`).
+
+The search with 162 free vertices and no symmetry (13 041 free pairs, 8.45 million variables, 29.9 million clauses,
+CNF of 674 MB) was started and STOPPED by me after two minutes without verdict: cadical took 3.9 GB and left 0.8 GB of
+free memory on the PC. Cost to run it properly: about 5 GB of free RAM for one process; duration unknown. Not a result.
+
+A breadth-first exploration by one-block trades from the fifth and sixth graphs is running since 21:39 UTC
+(`trade_bfs.py`, at most 42 minutes); its log will be summarised here.
 
 ## 7. Next
 
