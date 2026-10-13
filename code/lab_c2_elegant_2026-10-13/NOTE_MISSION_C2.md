@@ -94,3 +94,51 @@ closes (number of split outer lines between 123 and 140): no contradiction found
 Files: `weil_dimension.py`, `jacobi_tables.py`, `jacobi_e8.py`, `span_rank.py`, `forcing_exact.py`, `extremal_form.py`,
 `forcing_bound.py`, `forcing_region.py`, `forcing_lp.py` (first version, kept), logs `forcing_exact_2026-10-13.log`,
 `extremal_form_T12_2026-10-13.log`; agent reports `INVENTORY_C2_CAMPAIGNS.md`, `DIGEST_T16_T18_T20_ENGINE.md`.
+
+## 6. Addendum, 13 October 2026, 20:45 UTC
+
+### 6.1 Independent control of the 61-dimensional space (passed)
+`validate_d12.py`, log `validate_d12_2026-10-13.log`: the coefficient table of a lattice of another kind,
+U = D12+ + Z^12 with y1 = ((1/2)^12; 1,1,1,1), y2 = ((1/2)^6, (-1/2)^6; 1,1,-1,-1), computed by direct enumeration
+(with the shadow of D12+), lies in the span of the generators: 125 table entries tested, rank 61 before and after.
+The generators use only Z^j and E8, so this tests the dimension, the labelling of the classes and the shadow rule.
+
+### 6.2 RESULT 2: exact identities once the three existing lemmas are used
+Assume Theorem R, the shadow condition, and no integral vector with 1 <= E <= 10 (lemmas A.5, T16, T18, T20).
+Then every total below is an affine function of TWO numbers (`exact_identities.py`, exact rationals, log
+`exact_identities_T10_2026-10-13.log`):
+   n11 = number of integral vectors with E = 11,     s = number of shadow vectors with E = 11.5.
+With I(E), S(E) the numbers of integral and shadow vectors (one per class representative) and I0 = class 0 only:
+
+    I(12) = 4 - n11 + s/2          I(13) = 8 - n11 + 3s/2        S(13.5) = 48 - 2 n11 + s
+    I0(14) = s - 12                I(15) = 96 - n11 - s          S(15.5) = 240 + 6 n11 - s
+    I(16) = 164 + 2 n11 + s        I(17) = 312 + n11 + s/2       S(17.5) = 224 - 4 n11
+    I(18) = 592 + 4 n11 - 2s       I(19) = 1040 - 4 n11 - s      S(19.5) = 2656 - 4 n11 - s
+    I(20) = 1716 - 3 n11 - 5s/2    I0(21) = 688 + 2 n11 - s
+
+I0(14) is the number N_2 of roots of U orthogonal to y1, y2. So **s = 12 + N_2 >= 12**: at least six pairs +-a of
+"characteristic" eigenfunctions a = (+-2 on one block, 0 on the six others; +-1 on all 42 outer orbits), of sum of
+squares 46. Equivalently: a choice of one vertex in each outer orbit such that the 42 chosen vertices induce a graph
+of degree 4, except 3 vertices of degree 3 and 9 of degree 5 around one block. In that gauge N 1 = 4.1 + 2 eps R e_c.
+Other consequences: n11 <= 56, n11 + s <= 96, n11 <= 4 + s/2 (from I(12) >= 0).
+These identities are specific to 7 (they come from the rank-24 envelope): they are equations of the kind the trace
+and moment campaigns could not produce (inventory, class "trace, moment and counting identities").
+
+### 6.3 What the records say about this region (sub-agent report `KILL_STATISTICS_156.md`)
+* 135 of the 156 lattices have pair-level records (600,910,595 ordered pairs); by the first rule that fired:
+  characteristic trap 45.0 %, swap-covered 41.0 %, twin bookkeeping 6.1 %, "stage 1 empty" 4.3 %, E = 8 witness 2.2 %,
+  T18 0.9 %, T20 0.4 %. The characteristic trap is the shadow condition used here.
+* Among the 28 lattices with a lemma-only census, 2,652 pairs have no witness with E <= 10; 1,610 of them violate
+  the characteristic trap; the 1,042 others lie in the region of 6.2 and are closed by the frame search, almost all
+  at its FIRST stage: "no 7 h" (no seven orthogonal vectors of norm 4 hitting every shadow root as required).
+* So in the old proof the frame search is, in practice, the search for the seven vectors h. The lattices of the
+  region of 6.2 do not even contain the heptad.
+
+### 6.4 Next step chosen
+Put the heptad into the modular argument: Jacobi forms whose index contains H+ = sum Z h_c + Z (1/2) sum h_c next to
+J, symmetrised under the signed permutations of the h_c. The frame forces, for every shadow vector b,
+E(b) >= 10.5 + sum_c (b,h_c)^2 with sum_c (b,h_c) odd, which is stronger than the condition used so far for every
+class type except one. If the resulting linear system is infeasible with the three lemmas (or with A.5 alone), NOT-EX
+follows without the lattice list and without new lemmas. Cost: a larger space (a few hundred dimensions by a rough
+count) and generators with half-integer coordinates (E8, D12+ blocks) so that odd products with the h_c occur.
+Not done yet. A cheaper first probe: one vector h only (index J + <4>).
