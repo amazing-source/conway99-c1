@@ -2078,3 +2078,54 @@ son observateur enregistrait encore huit cœurs environ, sans résultat
 final. Lire son `result.json` et le manifeste daté pour l'état suivant.
 Le temps passé et les exemples de contrôle ne constituent pas un
 pourcentage de résolution de C1.
+
+## 50. Fin du run intégré : ce que le calcul apprend réellement
+
+13 octobre2026, vers15h44 heure de Paris : `global_integrated_v7`
+termine UNKNOWN après3602,089498s, sans D et sans nouvelle exclusion.
+Le processus23356 est terminé. Les quatre pilotes V7 sont maintenant
+tous terminés UNKNOWN ; aucune continuation identique n'a été lancée.
+
+À la question de l'utilisateur sur CaDiCaL : aucun CaDiCaL parallèle
+n'a été lancé pour ce modèle. CP-SAT a lui-même appris et partagé des
+clauses ENTRE ses travailleurs. Le programme ne sauvegarde pas leur
+base interne et ne la réimporte pas au prochain run. Les journaux
+conservent les compteurs, pas les clauses elles-mêmes. Un CaDiCaL
+indépendant ne partagerait pas automatiquement son apprentissage
+avec CP-SAT ; il faudrait un encodage et un échange explicitement conçus.
+
+`coclique_solver_diagnostics.py` produit `v7_solver_diagnostics.json` :
+portefeuille réellement choisi, compteurs par moteur, échanges de
+clauses, dimensions LP, ressources et évolution du modèle toutes les
+cinq minutes. Ce rapport est un diagnostic empirique, pas un certificat.
+
+Résultats du run intégré :
+
+* Somme des conflits rapportés par les moteurs :5698129. Les20378 de
+  la réponse principale ne sont PAS ce total. Une même difficulté peut
+  être rencontrée par plusieurs moteurs : pas5698129 cas disjoints exclus.
+* fs_random_no_lp :2822978 conflits ; no_lp :2206321 ;
+  quick_restart_no_lp :633009. Activité ne signifie pas efficacité
+  comparative démontrée.
+* Les compteurs d'exports de clauses totalisent306369 ; ces exports
+  ne sont pas déclarés tous distincts. Ils sont internes à CE run.
+* Dernière réduction du modèle enregistrée à3516,17s :213640 variables
+  restantes sur216633 après présolve. Ce sont aussi des auxiliaires,
+  pas une mesure du pourcentage de graphes exclus.
+* Pic mémoire5680218112 octets ; activité CPU proche de huit cœurs.
+
+Constat de réglage : exclure max_lp et probing_max_lp n'a pas éliminé
+tous les moteurs de grande relaxation. Le portefeuille a introduit
+**max_lp_sym**, avec623129 lignes et210770 colonnes LP. Il rapporte
+zéro résolution LP de statut OPTIMAL,434 conflits,1959 exports de
+clauses et25 améliorations de bornes partagées. Il a donc contribué,
+mais ce comportement justifie de comparer un portefeuille fixé
+explicitement. Il ne prouve pas à lui seul qu'enlever ce moteur accélère
+l'ensemble. Les autres moteurs LP ont effectivement produit des coupes.
+
+Pour une comparaison CP-SAT/CaDiCaL, il manque encore une traduction
+CNF/PB contrôlée, les correspondances de variables et un protocole à
+budget comparable. Aucun résultat de cette comparaison n'est inventé.
+Pour capitaliser entre runs, conserver des lemmes/coupes certifiées ou
+un état réutilisable explicite ; les seuls compteurs ne font pas cela.
+La clôture exacte V7 et les nouveaux outils V8 restent disponibles.
