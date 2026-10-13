@@ -3363,3 +3363,179 @@ d'une étoile ne doit pas employer des copies absentes de la population ni
 consommer deux fois une capacité saturée. Chercher un rejet exact ou une
 contrainte supplémentaire exploitable, pas une nouvelle liste de UNKNOWN.
 À ce point de reprise, aucune nouvelle exclusion C1 n'est annoncée.
+
+## 75. V15 : rang pair des différences et au plus deux complétions
+
+14 octobre2026. Reprenons le facteur B,D de§66, le noyau augmenté
+`ker C`, sa dimension h, et `E=E0+3P-7Q`. La diagonale nulle impose
+
+    q = rang Q = (trace(E0)+3h)/7.                       (75a)
+
+Si q n'est pas un entier de[0,h], aucune complétion n'existe. Si q=0 ou
+q=h, la matrice E est déjà unique. Si min(q,h-q)=1, deux complétions
+diffèrent d'une matrice de rang au plus2 : elles proviennent de deux
+projecteurs de rang1, ou de leurs complémentaires dans P. Par§70, toute
+différence non nulle est exactement un échange de deux sommets extérieurs.
+Cette conclusion ne suppose PAS h<=2.
+
+En fait, il existe **au plus deux complétions étiquetées** dans ce cas.
+Supposons trois matrices distinctes A0,A1,A2. Il existe des transpositions
+S,T,R telles que A1=S A0 S^t, A2=T A0 T^t et A2=R A1 R^t.
+Alors T^(-1)RS est un automorphisme de A0. Il est impair, donc non trivial,
+et déplace au plus six sommets. Mais un automorphisme non trivial déplaçant
+t sommets, envoyant a sur b!=a, donne à a,b au moins14-(t-1) voisins
+communs fixes. Comme mu=2 et lambda=1, t>=13. Contradiction pour t<=6.
+Les deux complétions éventuelles sont donc isomorphes, et si D a des
+colonnes toutes distinctes, il y en a au plus une.
+
+Autre conséquence structurelle : toute différence de deux matrices Conway
+a un rang PAIR. Sur 1^perp, elles valent3I-7Q et3I-7Q', où les projecteurs
+ont tous deux rang44. La différence de projecteurs de même rang a ses
+valeurs propres non nulles par paires opposées. Une preuve directe pose
+T=A'-A et S=A+A'+I : ST+TS=0 et S²+T²=49I sur1^perp. S apparie les
+valeurs propres t et-t lorsque |t|<7 ; les valeurs+7 et-7 ont la même
+multiplicité car trace T=0 et que les autres contributions s'annulent.
+Ainsi h<=3 implique encore que toute différence non nulle a rang2.
+La rigidité V14 et la borne de deux complétions s'étendent donc à h<=3.
+
+## 76. Un algorithme exact borné à8192 signes, sans solveur
+
+Dans le cas q=1, posons M=E0+3P ; toute complétion s'écrit
+
+    E=M-vv^t,    Cv=0,    v^t v=7.                      (76a)
+
+Dans le cas h-q=1, prendre M=E0-4P et E=M+vv^t, avec les mêmes conditions.
+Écrivons uniformément E=M+eta vv^t, eta=±1, et
+
+    a_i=-eta M_ii=v_i²,    a_i>=0,    sum a_i=7.         (76b)
+
+Les valeurs a_i sont FIXÉES avant toute recherche. Une coordonnée a_i=0
+force E_ij=M_ij ; celle-ci doit être binaire. Pour a_i a_j>0, les deux
+possibilités sont M_ij±sqrt(a_i a_j). Puisque M est rationnelle, une
+racine irrationnelle interdit les deux possibilités. Sinon, aucun signe
+admis rejette le facteur ; un seul impose une relation entre les signes
+de v_i et v_j ; deux signes admis signifient exactement
+
+    M_ij=1/2,    a_i a_j=1/4.                           (76c)
+
+Construisons le graphe des relations de signe forcées sur les coordonnées
+a_i>0. Un cycle contradictoire rejette le facteur. Dans chaque composante,
+tous les signes sont déterminés à un renversement global près. S'il reste
+c composantes, un signe global de v ne change pas vv^t : il reste2^(c-1)
+affectations à tester.
+
+Si c<=2, il n'y en a qu'une ou deux. Si c>=3, choisir un indice dans
+chacune de trois composantes. Tous les produits croisés valent1/4, donc
+leurs trois a_i valent1/2. En les comparant aux autres indices, on obtient
+a_i=1/2 pour TOUTES les coordonnées actives. L'identité sum a_i=7 impose
+EXACTEMENT14 coordonnées actives, donc c<=14 et
+
+    nombre d'affectations <= 2^13 = 8192.               (76d)
+
+Chaque affectation se contrôle par le seul système linéaire Cv=0. Les
+conditions de signe imposent déjà diagonale0 et binarité. En fixant une
+coordonnée de référence a_b>0, employer le vecteur rationnel
+w_i=sign_i*sqrt(a_b a_i) évite même les extensions algébriques : vérifier
+Cw=0 puis former E=M+eta ww^t/a_b. Comme w^t w=7a_b,§66 prouve alors
+les degrés et le polynôme SRG. Le code contrôle aussi exactement la
+matrice entière reconstruite. Aucun appel à CP-SAT n'est nécessaire.
+
+Pour lambda=mu-1 et deux valeurs propres entières r,s avec r-s=g,
+le même algorithme remplace7 par g et8192 par2^(2g-1). La borne de DEUX
+complétions de§75 reste spécifique aux paramètres Conway : elle ne doit
+pas être transférée aux petits graphes de contrôle.
+
+## 77. Un bord de43 sommets suffit pour atteindre cette réduction
+
+L'utilité pour C1 ne se limite pas aux facteurs dont le noyau a dimension
+deux ou trois. Pour un bord B de taille n, posons
+
+    H_-(B)=3I-B+J/9.                                   (77a)
+
+Si B est induit dans un Conway, H_-(B) est le bloc principal de sept fois
+le projecteur sur l'espace propre-4, de rang44. Les vecteurs de cet espace
+propre qui s'annulent sur le bord sont exactement les vecteurs(0,v), avec
+v dans im Q de§66. Le rang de la restriction au bord vaut donc44-q :
+
+    q = 44-rang H_-(B).                                (77b)
+
+Cette identité peut aussi être établie AVANT toute complétion binaire.
+La matrice réelle A0=[[B,D],[D^t,E0+3P]] est régulière et satisfait déjà
+le polynôme. Son projecteur-4 n'a aucun vecteur non nul s'annulant sur
+le bord, car E0+3P vaut3I sur ker C. Son rang égale donc rang H_-(B).
+Prendre la trace de ce projecteur donne exactement(77b) avec(75a).
+
+**Réduction uniforme.** Si n=43 et H_-(B) est définie positive, q=1.
+Pour CHAQUE facteur binaire D43x56 satisfaisant les degrés et le Gram,
+la complétion des56 sommets est donc entièrement décidée par§76, avec
+au plus8192 affectations et au plus deux complétions isomorphes. On peut
+éliminer ces1540 arêtes inconnues du solveur de complétion. À n=44 et
+H_-(B) définie positive, q=0 et la complétion réelle est unique.
+
+Tout graphe Conway éventuel possède de tels bords43 et44 : un projecteur
+PSD de rang44 possède44 coordonnées indépendantes et un mineur principal
+défini positif de taille44. Il suffit d'en prendre43. C'est une existence
+de bord dans tout graphe éventuel, PAS une affirmation que tout bord43
+convient. La condition(77a) doit être imposée ou vérifiée.
+
+Cette construction peut prolonger N'IMPORTE QUEL support de norme18 du
+cadre LAB. Écrivons son incidence bipartie N9x9,4-régulière. Le multigraphe
+de défaut L=2I+2J-NN^t a diagonale0, coefficients non négatifs et degré4.
+Sur1^perp, NN^t=2I-L ; comme les valeurs propres de L sont au moins-4,
+les valeurs singulières non principales de N sont au plus sqrt(6)<3.
+Pour B=[[0,N],[N^t,0]], H_-(B) vaut1 sur la direction constante,7 sur
+la direction(1,-1), et est strictement positif sur les autres directions.
+Ses18 coordonnées sont donc indépendantes dans l'espace propre-4 global.
+Elles peuvent être prolongées par25 coordonnées pour atteindre43, puis
+par une dernière pour44. Aucun des26 noyaux n'a besoin d'être revérifié
+ou exclu séparément pour cette preuve.
+
+Pour un bord43 satisfaisant(77a), la matrice M de§76 a en outre la formule
+directe, avec X=J_(43,56)/9-D,
+
+    M = 3I_56+J_56/9-X^t H_-(B)^(-1) X.               (77c)
+
+En effet, le projecteur-4 de A0 a le même rang43 que son bloc de bord ;
+son complément de Schur est nul. Ainsi la phase de reconstruction peut
+être calculée avec une inversion43x43, sans énumérer les arêtes restantes.
+
+**Portée exacte.** Ceci réduit et borne la phase de COMPLÉTION pour une
+classe de bords qui couvre tout graphe Conway éventuel, et tous les mondes
+de norme18 après agrandissement. La construction des bords B,D communs
+reste ouverte. Nous ne disposons pas d'une borne abordable pour leur
+énumération complète :8192 ne compte PAS la recherche de B,D et n'est
+pas un coût total annoncé pour C1. Aucune famille de graphes99 n'est exclue.
+
+## 78. Implémentation, contrôles courts et arrêt du pilote d'étoile
+
+`coclique_rank_one_completion.py` fournit `complete_rank_one`. Il traite
+exactement min(q,h-q)<=1, distingue un rejet de facteur d'un cas hors
+portée, et calcule tous les signes par relations binaires puis noyau
+linéaire. Le cas du mineur positif43/44 utilise directement(77c), sans
+pseudo-inverse du bord augmenté ; la concordance de cette formule avec
+E0+rP est aussi contrôlée sur les petits cas applicables.
+L'option `rank_one_first=True, regularity=True` de
+`coclique_affine_completion.binary_completions` l'utilise AVANT de
+construire le cadre affine ou un solveur ; le chemin historique est
+conservé par défaut. En cas hors portée, le chemin affine reste disponible.
+
+Sept contrôles ciblés PASS dans `rank_one_completion_v15/` : cinq bords
+de Petersen/grille9 sont reconstruits exactement et comparés à une
+énumération affine indépendante ; un bord hors portée reste explicitement
+non décidé ; le facteur Gram-valide impossible de V14 est rejeté par la
+NOUVELLE méthode. Le bord triangle de la grille a h=3,q=2, trois
+composantes de signes : quatre affectations donnent quatre complétions,
+contre huit affectations affines. Il contrôle la branche complémentaire,
+le cas d'au moins trois composantes et l'intégration au moteur. Quatre
+complétions sur cette grille ne contredisent pas la borne Conway de deux.
+Les deux contrôles Petersen h=3 donnent respectivement une et deux
+complétions. Aucune campagne243 ou relance des anciens solveurs.
+
+La cible initiale de§74 a aussi donné un petit modèle nécessaire
+`norm18_star_coexistence.py` : population entière, quotas d'une étoile,
+capacités des triples et appariement des voisins libres. Un SEUL pilote,
+premier type triple du noyau3, a été lancé : faisable en0,062s avec338
+variables et647 contraintes. Cela ne construit pas un graphe et n'exclut
+rien ; aucune campagne sur les26 noyaux n'a suivi. Le témoin est conservé
+dans `data/codex_norm18_star_v15/core3_first_triple.json`. Le résultat
+exploité de cette reprise est la réduction43/56 ci-dessus.

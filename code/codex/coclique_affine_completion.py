@@ -105,9 +105,19 @@ def parity_cuts(data, D, mu):
     return cuts
 
 
-def binary_completions(B, D, k=14, mu=2, seconds=60, enumerate_all=False, regularity=False):
+def binary_completions(B, D, k=14, mu=2, seconds=60, enumerate_all=False, regularity=False,
+                      rank_one_first=False):
     start = time.monotonic()
     B, D = sp.Matrix(B), sp.Matrix(D)
+    if rank_one_first:
+        if not regularity:
+            raise ValueError('rank_one_first requires the augmented regularity boundary')
+        from coclique_rank_one_completion import complete_rank_one
+        reduced = complete_rank_one(B, D, k, mu)
+        if reduced['status'] != 'NOT_APPLICABLE':
+            return dict(reduced, complete=True, seconds=time.monotonic()-start,
+                        quadratic_pairs=0, completion_method='rank_one_signs',
+                        verdict=reduced['status'])
     data = frame(B, D, k=k, mu=mu, regularity=regularity)
     summary = {key: value for key, value in data.items() if key not in ('base', 'basis', 'E0', 'P')}
     if data['status'] != 'AFFINE_FRAME':
