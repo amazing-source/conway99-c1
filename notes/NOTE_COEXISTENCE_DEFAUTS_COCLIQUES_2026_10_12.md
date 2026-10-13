@@ -2771,3 +2771,134 @@ acquises et au comptage des triangles partiellement présents. Ne pas
 réutiliser comme résultat acquis la proposition provisoire du message595.
 La poursuite utile doit ajouter une obligation entière ou combinatoire,
 ou exploiter ces relations sur un objet où elles ne sont pas déjà imposées.
+
+## 63. V12 : quatre formes pour chaque voisinage complet de H
+
+13 octobre2026, reprise après la configuration du téléphone, laissée en
+attente. On conserve la recherche de coexistence déjà autorisée, sans
+nouveau calcul AWS. L'identification des sommets par paires de voisins
+autour de l'arête négative est déjà présente dans les notes163/177 : elle
+n'est pas présentée comme une nouvelle réduction. Le gain effectif ici
+porte sur les QUATRE voisinages complets de H dans le modèle global.
+
+Fixons h_i. Deux triangles de N[h_i] sont déjà entièrement déterminés :
+
+    (h_i,h_{i-1},X_{i-1}), (h_i,h_{i+1},X_i).
+
+Après leurs quatre voisins, il reste dix voisins de h_i : les deux Y_i,
+les deux C_i dans C, et les six Z_i de charge nulle hors C. Ils induisent
+EXACTEMENT cinq arêtes disjointes. En effet, tout voisin de h_i possède
+exactement un voisin dans N(h_i), puisque lambda=1. Les deux C_i ne sont
+pas appariés entre eux, car C est indépendante.
+
+Les permutations des deux Y_i, des deux C_i et des six Z_i préservent
+toutes les données fixes du modèle. Elles donnent exactement quatre
+formes, suivant l'existence de Y_0Y_1, sinon le nombre de paires Y-C :
+
+| Forme | Cinq paires dans le voisinage restant |
+|---|---|
+| YY | Y0-Y1, C0-Z0, C1-Z1, Z2-Z3, Z4-Z5 |
+| YC0 | Y0-Z0, Y1-Z1, C0-Z2, C1-Z3, Z4-Z5 |
+| YC1 | Y0-C0, Y1-Z0, C1-Z1, Z2-Z3, Z4-Z5 |
+| YC2 | Y0-C0, Y1-C1, Z0-Z1, Z2-Z3, Z4-Z5 |
+
+**Preuve de couverture.** Si Y0 et Y1 sont appariés, les deux C doivent
+être appariés à deux Z distincts ; les quatre Z restants forment deux
+paires. Sinon, choisir les zero, une ou deux paires Y-C. Chaque Y ou C
+encore libre est apparié à un Z distinct ; les Z restants sont appariés
+entre eux. On nomme successivement les Y et C selon leur rôle, puis leurs
+mates Z, puis les paires Z-Z. Cela produit exactement le tableau.
+
+Les quatre ensembles de dix sommets sont disjoints. On peut donc faire
+ces renommages simultanément, en transportant TOUTES les arêtes du
+graphe, y compris celles vers les autres groupes et vers e,f. On ne
+suppose aucun automorphisme du graphe99 et on ne choisit pas quatre
+réalisations locales à recoller après coup.
+
+Il y a 9!!-7!!=840 appariements étiquetés admissibles. Les tailles des
+quatre orbites sont90,360,360,30. Un contrôle exhaustif distinct du
+raisonnement engendre les840 appariements et les orbites sous
+S2(Y) x S2(C) x S6(Z), puis vérifie leur égalité et leur disjonction.
+Les quatre sélections du véritable encodeur sont aussi contrôlées.
+Ce sont des contrôles de la NOUVELLE normalisation, pas une reprise
+des anciens audits ni840 configurations globales de C1.
+
+**Précaution nécessaire dans l'encodeur.** Les anciens ordres de
+signatures sur C_i et Z_i ne sont pas imposés en plus de ces formes :
+ils pourraient demander deux représentants incompatibles. Les ordres
+sur C13 et Z0 subsistent. Dans chaque forme choisie, on ordonne seulement
+les extrémités et les paires des arêtes Z-Z, par les permutations qui
+préservent cette forme et fixent les ancres H,L,e,f. La combinaison
+avec l'ancienne option de normalisation du triangle négatif est refusée
+tant qu'une preuve de compatibilité n'est pas donnée.
+
+## 64. Les quatre formes partagent le budget de l'arête négative
+
+Pour tout sommet v de C8 ou ZH, sa charge est nulle et son unique voisin
+dans H contribue2. La propagation des charges donne donc exactement
+
+    d_L(v) = [v~e]+[v~f].                                  (64a)
+
+Ainsi, une arête Y-C ou Y-Z dans un appariement de§63 impose que son
+extrémité de charge nulle soit voisine de e ou de f. Les placements dans
+les quatre étoiles utilisent ces mêmes deux sommets négatifs.
+
+Notons kappa_i le nombre de paires Y-C de la forme choisie. Il vaut
+respectivement0,0,1,2 pour YY,YC0,YC1,YC2. En sommant(64a) sur C8 et en
+utilisant r_e=1+d_C8(e), r_f=1+d_C8(f), on obtient
+
+    sum_i kappa_i <= r_e+r_f-2.                            (64b)
+
+Les deux règles sont des conséquences des équations du modèle global,
+rendues explicites sur les petits sélecteurs de formes ; elles ne sont
+pas présentées comme de nouvelles exclusions indépendantes de V10.
+Le nombre de quadruplets de formes autorisés par ce seul budget est
+la somme des coefficients de (2+x+x²)^4 jusqu'au degré r_e+r_f-2 :
+
+| Budget | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | au moins8 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Quadruplets | 16 | 48 | 104 | 160 | 209 | 237 | 251 | 255 | 256 |
+
+En particulier, dans les branches(1,1), chaque étoile est YY ou YC0.
+Cela ne ferme aucune branche : les arêtes entre les groupes et la
+factorisation binaire commune restent à construire.
+
+## 65. Taille réelle et essai court de la réduction V12
+
+`coclique_star_normal_form.py` impose quatre sélecteurs par étoile et
+fixe les arêtes communes aux quatre formes AVANT la création des produits.
+Sur132 entrées fixées dans les quatre étoiles, quatre étaient déjà les
+paires C-C nulles ;128 variables d'arêtes supplémentaires disparaissent.
+L'option `--canonical-stars` du moteur de partition est désactivée par
+défaut. Le modèle de référence conserve exactement son ancienne empreinte
+`5ef64ae6738739c13901aa3a3dba89b6b4009377c9bcd4a948cd312b5ee4267c`.
+
+Deux essais SUCCESSIFS sur tout(0,2), graine1, huit travailleurs, plafond
+60s, même portefeuille booléen, sans reprise de clauses :
+
+| Mesure | V10 de référence | V12, formes des étoiles |
+|---|---:|---:|
+| Variables totales | 272224 | 258064 |
+| Variables d'arêtes | 4231 | 4103 |
+| Variables de produits | 257271 | 243223 |
+| Contraintes | 843270 | 801267 |
+| Octets du modèle sérialisé | 42437412 | 40335649 |
+| Pic mémoire observé, Gio | 4,251 | 4,086 |
+| Temps solveur, s | 61,414 | 61,124 |
+| Verdict | UNKNOWN | UNKNOWN |
+
+Le gain certain de représentation est de14160 variables (-5,20%) et
+42003 contraintes. Le pic mémoire de CE passage baisse de3,88%.
+Les deux temps proches du plafond ne mesurent pas le temps jusqu'à une
+preuve. Aucun gain de ce dernier n'est établi. Les domaines resserrés
+concernent des représentants différents et ne sont pas comparés comme
+des exclusions de graphes. Pas de nouveau D, pas de contradiction C1.
+
+Les sources, empreintes, contrôles et mesures sont conservés dans
+`data/codex_coclique_defects/star_normal_form_v12/`. Les deux calculs
+sont terminés ; aucun calcul AWS n'a été relancé. Cette normalisation
+constitue une réduction modeste du coût du modèle, pas une résolution
+du goulot mathématique de la factorisation binaire. La suite doit relier
+les appariements des quatre étoiles aux mêmes cycles de ef et aux mêmes
+21 sommets de C, au-delà de leurs seuls budgets ; pas une nouvelle série
+identique de calibrations.

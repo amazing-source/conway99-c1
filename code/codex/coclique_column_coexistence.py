@@ -22,8 +22,8 @@ from ortools.sat.python import cp_model
 from coclique_global_boundary import build as original_build
 
 
-def build(mixed='coclique', saturated=True, triangles=False, rook_cut=False, center_kind='none'):
-    model, variables, fixed, B, M, oldedge, oldproducts = original_build()
+def build(mixed='coclique', saturated=True, triangles=False, rook_cut=False, center_kind='none', canonical_stars=False):
+    model, variables, fixed, B, M, oldedge, oldproducts = original_build(canonical_stars=canonical_stars)
     residual = {(u, v): model.NewBoolVar(f'e{u}_{v}') for u, v in combinations(M, 2)}
     def edge(u, v):
         if u == v: return 0

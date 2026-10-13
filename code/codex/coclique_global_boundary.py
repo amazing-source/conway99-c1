@@ -18,7 +18,7 @@ import time
 from ortools.sat.python import cp_model
 
 
-def build():
+def build(canonical_stars=False):
     C=list(range(21));H=list(range(21,25));L=list(range(25,37))
     E=[37,38];ZH=list(range(39,63));Z0=list(range(63,99))
     B=C+H+L+ZH;M=E+Z0
@@ -39,6 +39,9 @@ def build():
     for i,h in enumerate(H):
         for c in C:put(h,c,int(c in (2*i,2*i+1)))
         for z in ZH+Z0:put(h,z,int(39+6*i<=z<45+6*i))
+    if canonical_stars:
+        from coclique_star_normal_form import fixed_edges
+        for (u,v),value in fixed_edges().items():put(u,v,value)
     for u,v in combinations(range(99),2):
         if u in M and v in M:continue
         if (u,v) not in fixed:variables[u,v]=model.NewBoolVar(f'a{u}_{v}')
@@ -46,6 +49,10 @@ def build():
         if u==v:return 0
         key=tuple(sorted((u,v)))
         return fixed[key] if key in fixed else variables[key]
+    if canonical_stars:
+        from coclique_star_normal_form import add_constraints, add_negative_budget
+        star_selectors=add_constraints(model,edge)
+        add_negative_budget(model,edge,star_selectors)
     products={}
     def mul(a,b):
         if isinstance(a,int):return b if a else 0
@@ -72,8 +79,9 @@ def build():
         neighbours=[u for u in B if isinstance(edge(h,u),int) and edge(h,u)]
         assert len(neighbours)==14
         for v in M:model.Add(sum(edge(u,v) for u in neighbours)==2)
-    groups=[[2*i,2*i+1] for i in range(4)]+[list(range(8,21))]
-    groups+=[list(range(39+6*i,45+6*i)) for i in range(4)]+[Z0]
+    groups=([list(range(8,21)),Z0] if canonical_stars else
+            [[2*i,2*i+1] for i in range(4)]+[list(range(8,21))]
+            +[list(range(39+6*i,45+6*i)) for i in range(4)]+[Z0])
     for group in groups:
         anchors=H+L if group is Z0 else H+L+E
         signature=lambda u:sum((1<<(s-21))*edge(u,s) for s in anchors)

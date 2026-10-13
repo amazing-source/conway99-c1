@@ -80,7 +80,9 @@ def configure(solver, seconds, workers, seed, full_workers=None):
 
 
 def run_job(folder, branch, seconds, workers, seed, residual=True, keep_model=False, leaf_columns=False,
-            full_workers=None, canonical=False):
+            full_workers=None, canonical=False, canonical_stars=False):
+    if canonical and canonical_stars:
+        raise ValueError('Triangle label orders have not been combined with the H-star normal form')
     folder.mkdir(parents=True, exist_ok=False)
     source_files = [Path(__file__), Path(__file__).with_name('coclique_residual_partition.py'),
                     Path(__file__).with_name('coclique_global_boundary.py'),
@@ -90,9 +92,12 @@ def run_job(folder, branch, seconds, workers, seed, residual=True, keep_model=Fa
         source_files.append(Path(__file__).with_name('coclique_mixed_closure.py'))
     if canonical:
         source_files.append(Path(__file__).with_name('coclique_triangle_canonical.py'))
+    if canonical_stars:
+        source_files.append(Path(__file__).with_name('coclique_star_normal_form.py'))
     config = dict(start_utc=utc(), pid=os.getpid(), seconds=seconds, workers=workers,
                   seed=seed, branch=branch, residual_equations=residual, scope=SCOPE,
                   leaf_columns=leaf_columns, full_workers=full_workers, canonical=canonical,
+                  canonical_stars=canonical_stars,
                   platform=platform.platform(), python=platform.python_version(),
                   ortools=ortools.__version__, source_hashes={p.name:digest(p) for p in source_files},
                   reuse_learned_clauses=False, tightened_domains_reused=False)
@@ -102,7 +107,8 @@ def run_job(folder, branch, seconds, workers, seed, residual=True, keep_model=Fa
     monitor.start()
     try:
         started = time.monotonic()
-        model, B, M, edge, meta = build(None if branch == 'global' else branch, residual)
+        model, B, M, edge, meta = build(None if branch == 'global' else branch, residual,
+                                      canonical_stars=canonical_stars)
         if leaf_columns:
             from coclique_mixed_closure import add_leaf_columns
             meta.update(add_leaf_columns(model, B, M, edge))
@@ -175,7 +181,7 @@ def run_job(folder, branch, seconds, workers, seed, residual=True, keep_model=Fa
 
 
 def campaign(folder, seconds, workers, jobs, seed, selected=None, residual=True, leaf_columns=False,
-             full_workers=None, canonical=False):
+             full_workers=None, canonical=False, canonical_stars=False):
     folder.mkdir(parents=True, exist_ok=False)
     all_branches = branches()
     chosen = all_branches if selected is None else [x for x in all_branches if x['id'] in selected]
@@ -187,12 +193,12 @@ def campaign(folder, seconds, workers, jobs, seed, selected=None, residual=True,
                  'coclique_column_coexistence.py', 'coclique_global_boundary.py',
                  'coclique_calibration.py', 'coclique_solver_diagnostics.py',
                  'check_coclique_residual_partition.py', 'coclique_mixed_closure.py',
-                 'coclique_triangle_canonical.py'):
+                 'coclique_triangle_canonical.py', 'coclique_star_normal_form.py'):
         (source/name).write_bytes(Path(__file__).with_name(name).read_bytes())
     plan = dict(start_utc=utc(), seconds_per_branch=seconds, workers_per_job=workers,
                 concurrent_jobs=jobs, total_requested_workers=jobs*workers, seed=seed,
                 residual_equations=residual, leaf_columns=leaf_columns, full_workers=full_workers,
-                canonical=canonical,
+                canonical=canonical, canonical_stars=canonical_stars,
                 all_branches=all_branches, selected_branches=chosen,
                 source_hashes={p.name:digest(p) for p in source.iterdir()},
                 scope=SCOPE, persisted_clause_sharing_between_jobs=False,
@@ -213,6 +219,8 @@ def campaign(folder, seconds, workers, jobs, seed, selected=None, residual=True,
             command.extend(['--full-workers',str(full_workers)])
         if canonical:
             command.append('--canonical')
+        if canonical_stars:
+            command.append('--canonical-stars')
         with (folder/(item['id']+'.console.log')).open('w', encoding='utf-8') as out:
             proc = subprocess.run(command, stdout=out, stderr=subprocess.STDOUT)
         value = json.loads((run_folder/'result.json').read_text()) if (run_folder/'result.json').exists() else {}
@@ -249,10 +257,13 @@ if __name__ == '__main__':
     parser.add_argument('--leaf-columns', action='store_true')
     parser.add_argument('--full-workers', type=int)
     parser.add_argument('--canonical', action='store_true')
+    parser.add_argument('--canonical-stars', action='store_true')
     args = parser.parse_args()
     if args.mode == 'run':
         run_job(args.folder, args.branch, args.seconds, args.workers, args.seed,
-                not args.no_residual, args.keep_model, args.leaf_columns, args.full_workers, args.canonical)
+                not args.no_residual, args.keep_model, args.leaf_columns, args.full_workers,
+                args.canonical, args.canonical_stars)
     else:
         campaign(args.folder, args.seconds, args.workers, args.jobs, args.seed,
-                 args.select, not args.no_residual, args.leaf_columns, args.full_workers, args.canonical)
+                 args.select, not args.no_residual, args.leaf_columns, args.full_workers,
+                 args.canonical, args.canonical_stars)

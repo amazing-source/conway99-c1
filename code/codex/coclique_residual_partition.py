@@ -67,10 +67,10 @@ in principle; the actual performance must be measured.
     return mul
 
 
-def build(branch_id=None, residual=True):
+def build(branch_id=None, residual=True, canonical_stars=False):
     model, B, M, edge, meta = base_build(
         mixed='coclique', saturated=True, triangles=True,
-        rook_cut=True, center_kind='conditional')
+        rook_cut=True, center_kind='conditional', canonical_stars=canonical_stars)
     initial = (len(model.proto.variables), len(model.proto.constraints))
     mul = add_residual_block(model, M, edge) if residual else Products(model)
     residual_products = len(mul.cache)
@@ -116,4 +116,6 @@ def build(branch_id=None, residual=True):
                 extra_variables=len(model.proto.variables)-initial[0],
                 extra_constraints=len(model.proto.constraints)-initial[1],
                 invariant_partition_size=61, mixed_block_complete=False)
+    if canonical_stars:
+        meta.update(version='V12', canonical_H_stars=True)
     return model, B, M, edge, meta
