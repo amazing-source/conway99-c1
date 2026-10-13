@@ -186,3 +186,22 @@ them in the records is the absence of the seven vectors h.
   characteristic eigenfunctions (report expected in `LEMMAS_AGENT_REPORT.md`).
 * Not started: the nine-variable model (index J + H+). A second-moment (Venkov-type) variant with one frame vector u_o
   was considered and not built: the one-h probe suggests single-vector refinements do not cut.
+
+## 10. Report of the Opus sub-agent on the lemmas (13 October 2026, received 21:45 UTC): `LEMMAS_AGENT_REPORT.md`
+Not reread line by line by me; its own labels are kept.
+* NOT obtained: T22, T24, the exclusion of the characteristic eigenfunctions; no machine step of T16, T18, T20 was
+  replaced by a hand argument. No error found in the parts of the three proofs it read line by line.
+* PROVED there (hand): for E <= 12 every entry of an eigenfunction is 0, +1 or -1 (one proof for the five sizes); a
+  common skeleton for every size (active inner orbits k <= 2E/5, three identities, a parity law, the possible pairs
+  (k, e)); two real shortenings (E = 8: the case k = 2 in two lines; E = 9: one identity replaces two lemmas of T18);
+  the sizes split into two families modulo 7, {8, 9, 11, ...} and {10, 12, 13, ...}, so a proof for 11 may use T16 and
+  T18, a proof for 12 only T20.
+* Where the old method stops: for (k, e) = (0, 0) there are 23 orbit graphs left at E = 11 and 168 at E = 12, plus
+  the other pairs (k, e); T20 had 6 such graphs and needed about 17 million configurations. So T22 and T24 by the
+  method of T20 are machine enumerations, larger than T20's.
+* One rigid sub-case recorded at E = 12: an equitable partition of the 99 vertices of sizes (24, 60, 15) with
+  quotient [[4,10,0],[4,7,3],[0,12,2]]; not excluded.
+* A useful rewording of section 6.2: I(12) = 4 - n11 + s/2 and s = 12 + N_2 give
+      (pairs of eigenfunctions of size 11) + (pairs of size 12) = 10 + N_2/2 >= 10.
+  So, with T16, T18, T20, AT LEAST TEN PAIRS +-a of eigenfunctions of size 11 or 12 must coexist in the graph (in the
+  classes seen by the envelope); "at most nine" would close C2.
