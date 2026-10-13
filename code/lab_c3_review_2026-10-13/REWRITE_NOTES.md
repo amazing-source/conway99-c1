@@ -1,4 +1,4 @@
-# Rewrite of the C3 proof: status and choices (lab session, 13 October 2026, 22:40 UTC)
+# Rewrite of the C3 proof: status and choices (lab session, 13 October 2026, 22:38 UTC)
 
 File: `c3_proof_rewrite.tex` (this folder), about 870 lines, English, author line "Dilan Djematene".
 It replaces the argument of `pdf/preuve_c3.tex` (conway99-c3-experimental, 23 September 2026); the mathematics is the

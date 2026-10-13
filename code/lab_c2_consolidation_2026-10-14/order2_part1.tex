@@ -1,0 +1,866 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\tp}{\mathsf{T}}
+\newcommand{\sg}{\sigma}
+\newcommand{\Om}{\Omega}
+\newcommand{\Nb}{\Gamma}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{An involution of a strongly regular graph $(99,14,1,2)$\\ and a frame in a unimodular lattice of rank $24$\\[4pt]
+\large Part I of the exclusion of automorphisms of order two: the computer-free reduction}
+\author{Working draft, 14 October 2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\Gamma$ be a strongly regular graph with parameters $(99,14,1,2)$ and $\sg$ an automorphism of $\Gamma$ of
+order~$2$. We prove, without computer, that $\sg$ fixes exactly one vertex, and that the action of the adjacency
+matrix on the $\sg$-odd functions produces $49$ vectors forming a tight frame of rank $22$, which together with two
+orthogonal vectors of norm~$7$ lie in an odd unimodular lattice $U$ of rank~$24$ without vectors of norm~$1$. Every
+vector of $U$ outside the plane of the two vectors of norm~$7$ gives an integer-valued $\sg$-odd eigenfunction of the
+adjacency matrix for the eigenvalue $-4$, and has ``energy'' at least~$8$. This is the first half of the proof that
+$\Gamma$ has no automorphism of order~$2$; the second half, which is computer-assisted, shows that no lattice of this
+kind contains such a system of vectors. The present text contains every verification of the first half.
+\end{abstract}
+
+%======================================================================
+\section{Introduction}
+
+\subsection{The statement}
+A \emph{strongly regular graph with parameters $(99,14,1,2)$} is a graph with $99$ vertices in which every vertex has
+exactly $14$ neighbours, two adjacent vertices have exactly one common neighbour, and two distinct non-adjacent
+vertices have exactly two common neighbours. Whether such a graph exists is Conway's 99-graph problem. Throughout,
+$\Gamma$ is such a graph; all statements are about a hypothetical object.
+
+The result of this text is Theorem~\ref{thm:R} below. To state it we need three numbers attached to a vector $v$ of a
+lattice $U$ containing two fixed vectors $y_1,y_2$:
+\[
+E(v)=7\,(v,v)-(v,y_1)^2-(v,y_2)^2 ,
+\]
+which we call the \emph{energy} of $v$, and the two inner products $(v,y_1)$, $(v,y_2)$. The vocabulary of lattices is
+recalled in Section~\ref{sec:conv}.
+
+\begin{theorem}\label{thm:R}
+Let $\sg$ be an automorphism of order~$2$ of $\Gamma$. Then $\sg$ fixes exactly one vertex, and there exist an odd
+unimodular lattice $U$ of rank $24$ without vectors of norm~$1$ and vectors
+\[
+y_1,\ y_2,\qquad h_1,\dots,h_7,\qquad u_o\ \ (o\in O)
+\]
+of $U$, where $O$ is the set of the $42$ triples $(i,j,\varepsilon)$ with $1\le i<j\le7$ and
+$\varepsilon\in\{+1,-1\}$, such that:
+\begin{enumerate}[label=\textup{(R\arabic*)},leftmargin=3.2em]
+\item\label{R1} $(y_1,y_1)=(y_2,y_2)=7$, $(y_1,y_2)=0$, and $y_1$, $y_2$ are orthogonal to all $h_c$ and all $u_o$;
+\item\label{R2} $(h_c,h_d)=4\,\delta_{c,d}$; $(u_o,u_o)=3$; and for $o\ne o'$, $(u_o,u_{o'})\in\{0,1,-1\}$, with
+$(u_o,u_{o'})\ne0$ for exactly ten $o'$ for each $o$;
+\item\label{R3} for $o=(i,j,\varepsilon)$: $(h_i,u_o)=-1$, $(h_j,u_o)=-\varepsilon$, and $(h_c,u_o)=0$ for
+$c\notin\{i,j\}$;
+\item\label{R4} $3h_c=\sum_{o\in O}(h_c,u_o)\,u_o$ for every $c$;
+\item\label{R5} for every $v\in U\otimes\RR$:
+$\ \sum_c(v,h_c)^2+\sum_o(v,u_o)^2+(v,y_1)^2+(v,y_2)^2=7\,(v,v)$;
+\item\label{R6} if $v\in U$ and $E(v)=0$ then $v\in\ZZ y_1+\ZZ y_2$; if $v\in U$ and $E(v)\ne0$ then $E(v)\ge 8$;
+\item\label{R7} for every $v\in U$ there is a function $\varphi_v$ from the vertices of $\Gamma$ to $\ZZ$ such that
+$\varphi_v\circ\sg=-\varphi_v$, $A\varphi_v=-4\varphi_v$ (where $A$ is the adjacency matrix) and
+$\sum_x\varphi_v(x)^2=2E(v)$; its values on suitable representatives of the $49$ orbits of size two of $\sg$ are the
+$49$ integers $(v,h_c)$, $(v,u_o)$.
+\end{enumerate}
+\end{theorem}
+
+By the classification of Borcherds \cite{Bo}, there are exactly $156$ odd unimodular lattices of rank $24$ without vectors of
+norm~$1$, up to isometry. Theorem~\ref{thm:R} therefore reduces the exclusion of $\sg$ to a finite question about
+these lattices. That question is not treated here.
+
+\subsection{What is used}
+The proof is self-contained except for three standard facts, which are stated precisely where they are used:
+the oddity formula for integral quadratic forms (Section~\ref{sec:disc}); the classification of nondegenerate
+quadratic forms over a finite field of odd characteristic by dimension and determinant (Sections~\ref{sec:disc}
+and~\ref{sec:env}); and the structure of finitely generated modules over $\ZZ$. No computer is used.
+
+\subsection{Outline}
+Section~\ref{sec:fix} proves that $\sg$ fixes exactly one vertex $x_0$. Section~\ref{sec:local} describes the graph
+around $x_0$ and labels the $49$ orbits of size two. Section~\ref{sec:S} introduces the integer matrix $S$ by which $A$
+acts on the $\sg$-odd functions; it satisfies $S^2+S=12I$. Section~\ref{sec:frame} turns the eigenspace of $S$ for the
+eigenvalue $-4$ into a Euclidean space of dimension $22$ containing $49$ vectors with Gram matrix $3I-S$.
+Section~\ref{sec:lat} studies the lattice $N$ generated by these vectors and its dual. Section~\ref{sec:min} proves
+that the dual has no short vector. Section~\ref{sec:disc} determines the discriminant form of $N$ up to the one
+invariant that matters. Section~\ref{sec:env} glues an overlattice of $N$ to a plane and proves
+Theorem~\ref{thm:R}.
+
+%======================================================================
+\section{Conventions}\label{sec:conv}
+
+\paragraph{The graph.} $A$ is the adjacency matrix of $\Gamma$, indexed by the vertices; $J$ is the all-ones matrix
+and $\one$ the all-ones vector. We write $x\sim y$ when $x$ and $y$ are adjacent and $\Nb(x)$ for the set of
+neighbours of $x$. The definition of $\Gamma$ says that the entry $(x,y)$ of $A^2$ is $14$ if $x=y$, $1$ if
+$x\sim y$ and $2$ otherwise, that is, $A^2=14I+A+2(J-I-A)$, or
+\begin{equation}\label{eq:srg}
+A^2+A=12\,I+2J ,\qquad A\one=14\,\one .
+\end{equation}
+
+\begin{lemma}\label{lem:blocks}
+Let $x$ be a vertex. The $14$ neighbours of $x$ are partitioned into seven pairs of adjacent vertices, and two
+neighbours of $x$ in different pairs are not adjacent. We call these pairs the \emph{blocks at $x$}.
+\end{lemma}
+\begin{proof}
+Let $a\in\Nb(x)$. The neighbours of $a$ inside $\Nb(x)$ are the common neighbours of the adjacent vertices $x$ and
+$a$; there is exactly one. So the graph induced on $\Nb(x)$ is regular of degree~$1$: it consists of seven disjoint
+edges.
+\end{proof}
+
+\paragraph{Automorphisms.} An automorphism of $\Gamma$ is a permutation $g$ of the vertices with $gx\sim gy$ if and
+only if $x\sim y$. It maps $\Nb(x)$ onto $\Nb(gx)$, and the set of common neighbours of $x,y$ onto the set of common
+neighbours of $gx,gy$.
+
+\paragraph{Lattices.} A \emph{lattice} is a free $\ZZ$-module $L$ of finite rank with a positive definite symmetric
+bilinear form $(\ ,\ )$ with values in $\QQ$, extended to $L\otimes\RR$. The \emph{norm} of $v$ is $(v,v)$ (so norm
+means squared length). The \emph{dual} of $L$ is $L^*=\{w\in L\otimes\QQ : (w,v)\in\ZZ\text{ for all }v\in L\}$. The
+lattice is \emph{integral} if $(v,w)\in\ZZ$ for all $v,w\in L$, that is, $L\subseteq L^*$; \emph{unimodular} if
+$L=L^*$; an integral lattice is \emph{even} if all norms are even and \emph{odd} otherwise. The \emph{determinant}
+$\det L$ is the determinant of the Gram matrix of a basis; for an integral lattice, $\det L=|L^*/L|$. A sublattice
+$M\subseteq L$ is \emph{primitive} if $L/M$ has no torsion, equivalently if $M=L\cap(M\otimes\QQ)$. For an integral
+lattice $L$, the finite abelian group $L^*/L$ is its \emph{discriminant group}; it carries the bilinear form
+$(w+L,\,w'+L)\mapsto (w,w')\bmod\ZZ$ with values in $\QQ/\ZZ$, the \emph{discriminant form}, which is nondegenerate.
+
+%======================================================================
+\section{An involution fixes exactly one vertex}\label{sec:fix}
+
+This proposition is due to Makhnev and Minakova \cite{MM}, who obtain it from their classification of the subgraphs of fixed
+points. We give a direct proof.
+
+\begin{proposition}\label{prop:fix}
+Let $\sg$ be an automorphism of order $2$ of $\Gamma$. Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\sg$ fixes exactly one vertex $x_0$;
+\item $\sg$ exchanges the two ends of each of the seven blocks at $x_0$;
+\item a vertex $v$ with $v\sim\sg v$ is a neighbour of $x_0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Let $F$ be the set of fixed vertices and $f=|F|$. The other vertices form orbits of size~$2$, so $f\equiv99\pmod2$
+and $f\ge1$.
+
+\medskip\noindent\emph{Step 1: the blocks at a fixed vertex.}
+Let $x\in F$. Then $\sg$ permutes $\Nb(x)$ and maps blocks at $x$ to blocks at $x$. If one end $a$ of a block
+$\{a,a'\}$ is fixed, the other end is fixed too, because $a'$ is the unique common neighbour of $x$ and $a$ and
+$\sg a'$ is the unique common neighbour of $\sg x=x$ and $\sg a=a$. So each block at $x$ is of one of three kinds:
+\emph{fixed} (both ends fixed), \emph{exchanged} ($\sg$ exchanges its two ends) or \emph{moved} ($\sg$ maps it to
+another block). Let $s_x$ and $t_x$ be the numbers of fixed and of exchanged blocks; the moved blocks come in pairs,
+and we write $2r_x$ for their number. Thus
+\begin{equation}\label{eq:str}
+s_x+t_x+2r_x=7 .
+\end{equation}
+
+\medskip\noindent\emph{Step 2: the vertices not adjacent to $x$.}
+Let $x\in F$ and let $Z$ be the set of the $99-1-14=84$ vertices different from $x$ and not adjacent to $x$. Let
+$\mathcal P$ be the set of pairs $\{a,b\}$ of vertices of $\Nb(x)$ lying in different blocks; there are
+$\binom{14}{2}-7=84$ of them. For $z\in Z$ let $\pi(z)$ be the set of the two common neighbours of $x$ and $z$. The
+two elements of $\pi(z)$ are not adjacent: otherwise they would be the ends of a block, whose unique common
+neighbour is $x$, whereas $z\ne x$ is also a common neighbour. So $\pi(z)\in\mathcal P$. The map
+$\pi:Z\to\mathcal P$ is injective: a pair $\{a,b\}\in\mathcal P$ consists of two non-adjacent vertices
+(Lemma~\ref{lem:blocks}), which have exactly two common neighbours, namely $x$ and one other vertex; so
+$\pi(z)=\{a,b\}$ determines $z$. As $|Z|=|\mathcal P|=84$, $\pi$ is a bijection.
+
+Since $\sg x=x$, we have $\pi(\sg z)=\sg(\pi(z))$. Hence $z\in Z$ is fixed if and only if the pair $\pi(z)$ is
+mapped to itself by $\sg$. A pair $\{a,b\}\in\mathcal P$ is mapped to itself in exactly two cases: $a$ and $b$ are
+both fixed, or $b=\sg a$. In the first case $a,b$ are among the $2s_x$ ends of fixed blocks and lie in different
+blocks: $\binom{2s_x}{2}-s_x=2s_x(s_x-1)$ pairs. In the second case $a$ and $\sg a$ lie in different blocks, so $a$
+is one of the $4r_x$ ends of moved blocks: $4r_x/2=2r_x$ pairs. Counting also $x$ and its $2s_x$ fixed neighbours,
+\begin{equation}\label{eq:f}
+f=1+2s_x+2s_x(s_x-1)+2r_x=1+2s_x^2+2r_x\qquad\text{for every }x\in F .
+\end{equation}
+
+\medskip\noindent\emph{Step 3: two counts of non-fixed vertices.}
+Let $a_1$ be the number of vertices $v$ with $v\sim\sg v$. For such a $v$, the unique common neighbour $x$ of $v$
+and $\sg v$ is mapped by $\sg$ to the unique common neighbour of $\sg v$ and $v$, so $x\in F$, and $\{v,\sg v\}$ is
+an exchanged block at $x$. Conversely the two ends of an exchanged block at a fixed vertex are of this kind. Each
+such $v$ belongs to exactly one exchanged block, at exactly one fixed vertex. Hence
+\begin{equation}\label{eq:a1}
+a_1=2\sum_{x\in F}t_x .
+\end{equation}
+
+Let $X_2$ be the set of vertices that are an end of a moved block at some fixed vertex, and $n_2=|X_2|$. Let
+$v\in X_2$, in a moved block at $x\in F$. Then $v$ and $\sg v$ lie in different blocks at $x$, so they are distinct
+and not adjacent (Lemma~\ref{lem:blocks}), and they have exactly two common neighbours. The set of these two
+vertices is mapped to itself by $\sg$ and contains the fixed vertex $x$; so its other element $x'$ is fixed too.
+Every fixed neighbour of $v$ is also a neighbour of $\sg v$, hence is $x$ or $x'$. So $v$ has exactly two fixed
+neighbours, and $v$ is an end of a moved block at each of them (at $x'$ as at $x$: $v$ and $\sg v$ are distinct
+non-adjacent neighbours of $x'$). Counting the pairs $(x,v)$ with $x\in F$ and $v$ an end of a moved block at $x$ in
+two ways gives $\sum_{x\in F}4r_x=2n_2$, that is,
+\begin{equation}\label{eq:n2}
+n_2=2\sum_{x\in F}r_x .
+\end{equation}
+The vertices counted by $a_1$ and the vertices of $X_2$ are not fixed, and no vertex is of both kinds
+($v\sim\sg v$ for the first, $v\not\sim\sg v$ for the second). Therefore
+\begin{equation}\label{eq:a1n2}
+a_1+n_2\le 99-f .
+\end{equation}
+
+\medskip\noindent\emph{Step 4: a congruence modulo $3$.}
+A fixed block $\{a,a'\}$ at $x\in F$ gives a triangle $\{x,a,a'\}$ of fixed vertices, and this triangle is counted
+once at each of its three vertices (as the fixed block opposite to that vertex). Hence
+\begin{equation}\label{eq:mod3}
+\sum_{x\in F}s_x\equiv0\pmod3 .
+\end{equation}
+
+\medskip\noindent\emph{Step 5: a congruence modulo $7$.}
+By \eqref{eq:srg}, $A$ has the eigenvalues $14$ (on $\one$), and $3$ and $-4$ on the orthogonal complement of $\one$,
+where $A^2+A-12I=(A-3I)(A+4I)$ vanishes. Put
+\[
+\mathcal E=\tfrac17\,(3I-A)+\tfrac1{63}\,J .
+\]
+Then $\mathcal E\one=\frac17(3-14)\one+\frac{99}{63}\one=0$; on an eigenvector for the eigenvalue $3$ orthogonal to
+$\one$, $\mathcal E$ is $0$; on an eigenvector for $-4$, $\mathcal E$ is $\frac17(3+4)=1$. So $\mathcal E$ is the
+orthogonal projection on the eigenspace $W_{-4}$ of $A$ for the eigenvalue $-4$. Let $P$ be the permutation matrix
+of $\sg$. It commutes with $A$, so it preserves $W_{-4}$, and its restriction to $W_{-4}$ is an involution, with
+eigenvalues $\pm1$; its trace on $W_{-4}$ is therefore an integer. This trace is
+$\tr(P\mathcal E)=\frac17\bigl(3\tr P-\tr(PA)\bigr)+\frac1{63}\tr(PJ)$. Here $\tr P=f$; $\tr(PA)$ is the number of
+vertices $v$ with $v\sim\sg v$, that is $a_1$; and $\tr(PJ)=99$. Hence
+\begin{equation}\label{eq:trace}
+\tfrac17\,(3f-a_1+11)\in\ZZ .
+\end{equation}
+
+\medskip\noindent\emph{Step 6: the possible triples.}
+By \eqref{eq:str} and \eqref{eq:f}, the triple $(s_x,r_x,t_x)$ of a fixed vertex $x$ consists of non-negative
+integers with $s_x+2r_x\le7$, $t_x=7-s_x-2r_x$ and $f=1+2s_x^2+2r_x$. Listing them by $s_x$:
+\begin{center}
+\begin{tabular}{c|l}
+$s_x$ & $(s_x,r_x,t_x)$ and the value of $f$\\\hline
+$0$ & $(0,0,7)$: $1$;\quad $(0,1,5)$: $3$;\quad $(0,2,3)$: $5$;\quad $(0,3,1)$: $7$\\
+$1$ & $(1,0,6)$: $3$;\quad $(1,1,4)$: $5$;\quad $(1,2,2)$: $7$;\quad $(1,3,0)$: $9$\\
+$2$ & $(2,0,5)$: $9$;\quad $(2,1,3)$: $11$;\quad $(2,2,1)$: $13$\\
+$3$ & $(3,0,4)$: $19$;\quad $(3,1,2)$: $21$;\quad $(3,2,0)$: $23$\\
+$4$ & $(4,0,3)$: $33$;\quad $(4,1,1)$: $35$\\
+$5$ & $(5,0,2)$: $51$;\quad $(5,1,0)$: $53$\\
+$6$ & $(6,0,1)$: $73$\\
+$7$ & $(7,0,0)$: $99$
+\end{tabular}
+\end{center}
+The value $f=99$ means that $\sg$ is the identity, which is excluded. We show that every other value except $f=1$
+is impossible. Note that $f$ does not depend on $x$: the triples of all fixed vertices carry the same value of $f$
+in the table.
+
+\smallskip\noindent\emph{$f\in\{19,21,23,33,35,51,53,73\}$.} Each of these values occurs once in the table, so all
+fixed vertices have the same triple $(s,r,t)$, and by \eqref{eq:a1} and \eqref{eq:n2}, $a_1+n_2=2f(t+r)$. This gives
+$2\cdot19\cdot4=152$, $2\cdot21\cdot3=126$, $2\cdot23\cdot2=92$, $2\cdot33\cdot3=198$, $2\cdot35\cdot2=140$,
+$2\cdot51\cdot2=204$, $2\cdot53\cdot1=106$ and $2\cdot73\cdot1=146$ respectively. In each case
+$a_1+n_2>99-f$, contradicting \eqref{eq:a1n2}.
+
+\smallskip\noindent\emph{$f\in\{11,13\}$.} All fixed vertices have $s_x=2$, so $\sum_xs_x=2f\in\{22,26\}$, which is
+not a multiple of $3$, contradicting \eqref{eq:mod3}.
+
+\smallskip\noindent\emph{$f\in\{3,5,7\}$.} The fixed vertices have $s_x\in\{0,1\}$; let $k$ be the number of those
+with $s_x=1$. By \eqref{eq:mod3}, $k=\sum_xs_x$ is a multiple of $3$, and $0\le k\le f$. The table gives $t_x=5$ or
+$6$ for $f=3$, $t_x=3$ or $4$ for $f=5$, and $t_x=1$ or $2$ for $f=7$, the larger value when $s_x=1$. By
+\eqref{eq:a1}, $a_1=2(5\cdot3+k)=30+2k$ for $f=3$, $a_1=2(3\cdot5+k)=30+2k$ for $f=5$, and $a_1=2(7+k)=14+2k$ for
+$f=7$. Hence $3f-a_1+11$ equals $-10-2k$ with $k\in\{0,3\}$ for $f=3$, that is $-10$ or $-16$; $-4-2k$ with
+$k\in\{0,3\}$ for $f=5$, that is $-4$ or $-10$; and $18-2k$ with $k\in\{0,3,6\}$ for $f=7$, that is $18$, $12$ or
+$6$. None of these numbers is a multiple of $7$, contradicting \eqref{eq:trace}.
+
+\smallskip\noindent\emph{$f=9$.} The fixed vertices have triple $(1,3,0)$ or $(2,0,5)$; let $k$ be the number of
+those with triple $(2,0,5)$. Then $\sum_xs_x=9+k$, so $k\in\{0,3,6,9\}$ by \eqref{eq:mod3}; $a_1=2\cdot5k=10k$ by
+\eqref{eq:a1}; and $3f-a_1+11=38-10k\in\{38,8,-22,-52\}$. None is a multiple of $7$, contradicting
+\eqref{eq:trace}.
+
+\medskip\noindent\emph{Step 7: conclusion.}
+Hence $f=1$, which is (a), and the triple of the fixed vertex $x_0$ is $(0,0,7)$: all seven blocks at $x_0$ are
+exchanged, which is (b). For (c): if $v\sim\sg v$, the common neighbour of $v$ and $\sg v$ is fixed (Step~3), so
+it is $x_0$.
+\end{proof}
+
+%======================================================================
+\section{The graph around the fixed vertex}\label{sec:local}
+
+From now on $\sg$ is an automorphism of order~$2$ and $x_0$ its fixed vertex. The $14$ neighbours of $x_0$ are
+called \emph{inner} and the $84$ other vertices different from $x_0$ are called \emph{outer}. We number the blocks at
+$x_0$ from $1$ to $7$ and choose in the $i$-th block one end $a_i$; by Proposition~\ref{prop:fix}(b) the other end is
+$a_i'=\sg a_i$.
+
+\begin{lemma}\label{lem:outer}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Every outer vertex has exactly two inner neighbours, and they lie in two different blocks.
+\item For $1\le i<j\le7$ and for each of the four pairs $(a,b)$ with $a\in\{a_i,a_i'\}$ and $b\in\{a_j,a_j'\}$ there
+is exactly one outer vertex adjacent to $a$ and to $b$. These $4\binom72=84$ vertices are distinct and are all the
+outer vertices.
+\item Let $b_{ij}^{+}$ be the outer vertex adjacent to $a_i$ and $a_j$, and $b_{ij}^{-}$ the outer vertex adjacent
+to $a_i$ and $a_j'$. Then $\sg b_{ij}^{+}$ is the outer vertex adjacent to $a_i'$ and $a_j'$, and $\sg b_{ij}^{-}$
+the one adjacent to $a_i'$ and $a_j$. In particular the $84$ outer vertices form $42$ orbits
+$\{b_{ij}^{\varepsilon},\sg b_{ij}^{\varepsilon}\}$, indexed by the set $O$ of triples $(i,j,\varepsilon)$.
+\item An outer vertex $v$ is not adjacent to $\sg v$. The two common neighbours of $v$ and $\sg v$ are outer and
+form one orbit $\{w,\sg w\}$.
+\item An outer vertex $v$ has exactly $12$ outer neighbours. They consist of the orbit $\{w,\sg w\}$ of (d) and of
+ten vertices lying in ten different orbits, none of which is the orbit of $v$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) and (b) are Step~2 of the proof of Proposition~\ref{prop:fix} for $x=x_0$: the map $\pi$ is a bijection from the
+outer vertices to the pairs of inner vertices in different blocks.
+
+(c) The vertex $\sg b_{ij}^{+}$ is outer and adjacent to $\sg a_i=a_i'$ and $\sg a_j=a_j'$; by (b) it is the outer
+vertex attached to that pair. Similarly $\sg b_{ij}^{-}$ is adjacent to $a_i'$ and $\sg a_j'=a_j$. The four outer
+vertices attached to the blocks $i,j$ thus form the two orbits $\{b_{ij}^{+},\sg b_{ij}^{+}\}$ and
+$\{b_{ij}^{-},\sg b_{ij}^{-}\}$.
+
+(d) By Proposition~\ref{prop:fix}(c), $v\not\sim\sg v$, and $v\ne\sg v$; so $v$ and $\sg v$ have exactly two common
+neighbours. The set of these two vertices is mapped to itself by $\sg$ and does not contain $x_0$ (which is not
+adjacent to $v$); as $x_0$ is the only fixed vertex, the set is an orbit $\{w,\sg w\}$. If $w$ were inner, $w$ and
+$\sg w$ would be the two ends of a block and both adjacent to $v$, contradicting (a). So $w$ is outer.
+
+(e) By (a), $v$ has $14-2=12$ outer neighbours. If both vertices of an orbit $\{z,\sg z\}$ are adjacent to $v$,
+then $z$ is adjacent to $v$ and to $\sg v$ (because $\sg z\sim v$), so $z\in\{w,\sg w\}$. Hence apart from $w$ and
+$\sg w$ the outer neighbours of $v$ lie in different orbits, and there are ten of them. None is in the orbit of $v$
+because $v\not\sim\sg v$.
+\end{proof}
+
+\paragraph{The orbits and their representatives.} Let $I=\{1,\dots,7\}$ and $\Om=I\cup O$; $|\Om|=7+42=49$. The
+orbits of size two of $\sg$ are indexed by $\Om$: the \emph{inner orbit} $i\in I$ is $\{a_i,a_i'\}$, and the
+\emph{outer orbit} $o=(i,j,\varepsilon)\in O$ is $\{b_{ij}^{\varepsilon},\sg b_{ij}^{\varepsilon}\}$. For
+$\omega\in\Om$ we write $\rho_\omega$ for the chosen representative: $\rho_i=a_i$ and
+$\rho_{(i,j,\varepsilon)}=b_{ij}^{\varepsilon}$.
+
+%======================================================================
+\section{The matrix of the adjacency on odd functions}\label{sec:S}
+
+A real function $\varphi$ on the vertices is \emph{odd} if $\varphi\circ\sg=-\varphi$. An odd function vanishes at
+$x_0$ and is determined by its values on the representatives $\rho_\omega$. For $a\in\RR^{\Om}$ let $\hat a$ be the
+odd function with $\hat a(\rho_\omega)=a_\omega$ and $\hat a(\sg\rho_\omega)=-a_\omega$; the map $a\mapsto\hat a$ is
+a linear bijection from $\RR^{\Om}$ to the space of odd functions, and
+\begin{equation}\label{eq:norm2}
+\sum_x\hat a(x)^2=2\sum_{\omega\in\Om}a_\omega^2 .
+\end{equation}
+Define the matrix $S$, with rows and columns indexed by $\Om$ and integer entries, by
+\[
+S[\omega,\omega']=A[\rho_\omega,\rho_{\omega'}]-A[\rho_\omega,\sg\rho_{\omega'}] .
+\]
+
+\begin{lemma}\label{lem:S}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every $a\in\RR^{\Om}$, $A\hat a$ is odd and $A\hat a=\widehat{Sa}$.
+\item $S$ is symmetric and $S^2+S=12\,I$.
+\item In the decomposition $\Om=I\cup O$,
+\[
+S=\begin{pmatrix}-I_7&C\\ C^{\tp}&T\end{pmatrix},
+\]
+where the column $o=(i,j,\varepsilon)$ of the $7\times42$ matrix $C$ is $e_i+\varepsilon e_j$ ($e_1,\dots,e_7$
+being the standard basis of $\ZZ^7$), and where $T$ is a symmetric $42\times42$ matrix with zero diagonal, entries in
+$\{0,1,-1\}$ and exactly ten non-zero entries in each row.
+\item $CC^{\tp}=12\,I_7$, $\ CT=0$ and $\ T^2+T=12\,I_{42}-C^{\tp}C$.
+\item The eigenvalues of $S$ are $3$ and $-4$, with multiplicities $27$ and $22$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Since $\sg$ is an automorphism, the permutation matrix of $\sg$ commutes with $A$, so $A\hat a$ is odd. Its
+value at $\rho_\omega$ is $\sum_xA[\rho_\omega,x]\hat a(x)$; the vertex $x_0$ contributes $0$, and the two vertices
+$\rho_{\omega'}$, $\sg\rho_{\omega'}$ contribute
+$A[\rho_\omega,\rho_{\omega'}]a_{\omega'}-A[\rho_\omega,\sg\rho_{\omega'}]a_{\omega'}=S[\omega,\omega']a_{\omega'}$.
+So $(A\hat a)(\rho_\omega)=(Sa)_\omega$, and two odd functions with the same values on the representatives are equal.
+
+(b) Since $A$ is symmetric and invariant under $\sg$,
+$A[\rho_{\omega'},\sg\rho_\omega]=A[\sg\rho_{\omega'},\rho_\omega]=A[\rho_\omega,\sg\rho_{\omega'}]$; hence
+$S[\omega',\omega]=S[\omega,\omega']$. An odd function has sum zero, so $J\hat a=0$, and \eqref{eq:srg} gives
+$(A^2+A)\hat a=12\hat a$. By (a), $(A^2+A)\hat a=\widehat{(S^2+S)a}$. As $a\mapsto\hat a$ is injective,
+$(S^2+S)a=12a$ for all $a$.
+
+(c) \emph{Inner--inner block.} $S[i,i]=A[a_i,a_i]-A[a_i,a_i']=0-1=-1$. For $i\ne j$, $a_i$ is adjacent neither to
+$a_j$ nor to $a_j'$ (Lemma~\ref{lem:blocks}), so $S[i,j]=0$.
+
+\emph{Inner--outer block.} Let $o=(k,l,\varepsilon)\in O$ and $v=\rho_o=b_{kl}^{\varepsilon}$. By
+Lemma~\ref{lem:outer}, the inner neighbours of $v$ are $a_k$ and ($a_l$ if $\varepsilon=+1$, $a_l'$ if
+$\varepsilon=-1$), and the inner neighbours of $\sg v$ are $a_k'$ and ($a_l'$ if $\varepsilon=+1$, $a_l$ if
+$\varepsilon=-1$). Hence $S[k,o]=A[a_k,v]-A[a_k,\sg v]=1-0=1$; $S[l,o]=A[a_l,v]-A[a_l,\sg v]$ equals $1-0=1$ if
+$\varepsilon=+1$ and $0-1=-1$ if $\varepsilon=-1$; and $S[c,o]=0$ for $c\notin\{k,l\}$. This is the column
+$e_k+\varepsilon e_l$.
+
+\emph{Outer--outer block.} Let $o,o'\in O$, $v=\rho_o$, $z=\rho_{o'}$. Then
+$T[o,o']=A[v,z]-A[v,\sg z]\in\{0,1,-1\}$, and it is zero if and only if $v$ is adjacent to both or to neither of
+$z,\sg z$. For $o'=o$: $A[v,v]=0$ and $A[v,\sg v]=0$ by Lemma~\ref{lem:outer}(d), so $T[o,o]=0$. By
+Lemma~\ref{lem:outer}(e), exactly one orbit has both its vertices adjacent to $v$, and exactly ten orbits have
+exactly one vertex adjacent to $v$: ten non-zero entries in row $o$. $T$ is symmetric because $S$ is.
+
+(d) Compute $S^2+S$ by blocks with the form of (c):
+\[
+S^2+S=\begin{pmatrix}I_7+CC^{\tp}-I_7&-C+CT+C\\ -C^{\tp}+TC^{\tp}+C^{\tp}&C^{\tp}C+T^2+T\end{pmatrix}
+=\begin{pmatrix}CC^{\tp}&CT\\ TC^{\tp}&C^{\tp}C+T^2+T\end{pmatrix},
+\]
+and compare with $12I$.
+
+(e) By (b), every eigenvalue $\theta$ of the real symmetric matrix $S$ satisfies $\theta^2+\theta=12$, so
+$\theta\in\{3,-4\}$. Let $m_3,m_{-4}$ be the multiplicities. Then $m_3+m_{-4}=49$ and
+$3m_3-4m_{-4}=\tr S=-7$ by (c). Hence $7m_3=4\cdot49-7=189$, $m_3=27$ and $m_{-4}=22$.
+\end{proof}
+
+%======================================================================
+\section{The frame}\label{sec:frame}
+
+Put
+\[
+H=3\,I-S .
+\]
+By Lemma~\ref{lem:S}(b), $H$ is symmetric and $H^2=9I-6S+S^2=9I-6S+12I-S=7H$. Let $V\subset\RR^{\Om}$ be the
+eigenspace of $S$ for the eigenvalue $-4$; $\dim V=22$ by Lemma~\ref{lem:S}(e). On $V$ the matrix $H$ is
+multiplication by $7$, and on the orthogonal complement $V^\perp$ (the eigenspace for $3$) it is $0$. Thus
+$\frac17H$ is the orthogonal projection of $\RR^{\Om}$ on $V$, and $V=H\RR^{\Om}$.
+
+We give $\RR^{\Om}$ its standard inner product $(a,b)=\sum_\omega a_\omega b_\omega$, write $e_\omega$ for the
+standard basis, and define
+\[
+f_\omega=\tfrac1{\sqrt7}\,He_\omega\in V\qquad(\omega\in\Om).
+\]
+For $c\in I$ we also write $h_c=f_c$, and for $o\in O$, $u_o=f_o$.
+
+\begin{lemma}\label{lem:frame}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $(f_\omega,f_{\omega'})=H[\omega,\omega']$ for all $\omega,\omega'\in\Om$. Explicitly:
+$(h_c,h_d)=4\delta_{c,d}$; $(h_c,u_o)=-C[c,o]$; $(u_o,u_o)=3$ and $(u_o,u_{o'})=-T[o,o']$ for $o\ne o'$.
+\item For every $v\in V$ and $\omega\in\Om$, $(v,f_\omega)=\sqrt7\,v_\omega$. Consequently
+$\sum_{\omega\in\Om}(v,f_\omega)^2=7\,(v,v)$ for $v\in V$.
+\item The vectors $f_\omega$ span $V$.
+\item For every $c\in I$, $\ 3h_c+\sum_{o\in O}C[c,o]\,u_o=0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $(f_\omega,f_{\omega'})=\frac17e_\omega^{\tp}H^{\tp}He_{\omega'}=\frac17e_\omega^{\tp}H^2e_{\omega'}
+=e_\omega^{\tp}He_{\omega'}$. The explicit values follow from $H=3I-S$ and Lemma~\ref{lem:S}(c).
+
+(b) $(v,f_\omega)=\frac1{\sqrt7}v^{\tp}He_\omega=\frac1{\sqrt7}(Hv)^{\tp}e_\omega=\frac7{\sqrt7}v_\omega$, since
+$Hv=7v$. Summing the squares gives $7\sum_\omega v_\omega^2$.
+
+(c) $V=H\RR^{\Om}$ is spanned by the vectors $He_\omega$.
+
+(d) Let $c\in I$ and let $x\in\RR^{\Om}$ be the vector with inner part $3e_c$ and outer part $C^{\tp}e_c$. By
+Lemma~\ref{lem:S}(c),(d), the inner part of $Sx$ is $-3e_c+CC^{\tp}e_c=9e_c$ and its outer part is
+$3C^{\tp}e_c+TC^{\tp}e_c=3C^{\tp}e_c$ (because $TC^{\tp}=(CT)^{\tp}=0$). So $Sx=3x$ and $Hx=0$. Since
+$x=3e_c+\sum_oC[c,o]e_o$, dividing $Hx=0$ by $\sqrt7$ gives the relation.
+\end{proof}
+
+%======================================================================
+\section{The lattice of the frame and its dual}\label{sec:lat}
+
+Let
+\[
+K=\ZZ^{\Om}\cap V,\qquad N=\sum_{\omega\in\Om}\ZZ f_\omega\subset V .
+\]
+$K$ is the lattice of integer eigenvectors of $S$ for the eigenvalue $-4$, with the standard inner product; it is an
+integral lattice of rank $22$ (the space $V$ is the kernel of the rational matrix $S+4I$, so it has a basis of
+integer vectors). $N$ is the lattice generated by the frame; by Lemma~\ref{lem:frame}(a) it is integral, and by
+Lemma~\ref{lem:frame}(c) its rank is $22$. All duals are taken inside $V$.
+
+\begin{lemma}\label{lem:NK}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $K^*=\frac17H\ZZ^{\Om}$, the orthogonal projection of $\ZZ^{\Om}$ on $V$.
+\item $N=\sqrt7\,K^*$ and $N^*=\frac1{\sqrt7}K$.
+\item For $w\in N^*$, the vector $a=\sqrt7\,w$ belongs to $K$, its coordinates are $a_\omega=(w,f_\omega)$, and
+$\sum_\omega a_\omega^2=7\,(w,w)$. Conversely every $a\in K$ arises in this way from $w=a/\sqrt7\in N^*$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Let $x\in\ZZ^{\Om}$ and $k\in K$. Then $(\frac17Hx,k)=(x,\frac17Hk)=(x,k)\in\ZZ$, so $\frac17H\ZZ^{\Om}\subseteq
+K^*$. Conversely let $w\in K^*$. The group $\ZZ^{\Om}/K$ has no torsion (if $nx\in V$ with $n\ne0$ then $x\in V$), so
+it is free and $\ZZ^{\Om}=K\oplus K_1$ for some subgroup $K_1$. The linear form $k\mapsto(w,k)$ on $K$, extended by
+$0$ on $K_1$, is a linear form $\ZZ^{\Om}\to\ZZ$, hence of the form $z\mapsto(x,z)$ for some $x\in\ZZ^{\Om}$. For
+$k\in K$, $(w,k)=(x,k)=(\frac17Hx,k)$. As $w$ and $\frac17Hx$ are both in $V=K\otimes\RR$, they are equal.
+
+(b) $N=\frac1{\sqrt7}H\ZZ^{\Om}=\sqrt7\cdot\frac17H\ZZ^{\Om}=\sqrt7\,K^*$. The dual of $\sqrt7K^*$ is
+$\frac1{\sqrt7}(K^*)^*=\frac1{\sqrt7}K$.
+
+(c) By (b), $a=\sqrt7w\in K$. By Lemma~\ref{lem:frame}(b) applied to $w\in V$,
+$(w,f_\omega)=\sqrt7\,w_\omega=a_\omega$, and $\sum_\omega a_\omega^2=7\sum_\omega w_\omega^2$.
+\end{proof}
+
+\begin{lemma}\label{lem:det}
+Let $g$ be the rank of the matrix $H$ reduced modulo~$7$ (a matrix over $\FF_7$). Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $7K^*\subseteq K\subseteq K^*$, and $K^*/K$ is a vector space of dimension $g$ over $\FF_7$; so $\det K=7^{g}$.
+\item $N\subseteq N^*$, and the discriminant group $N^*/N\cong K/7K^*$ is a vector space of dimension $22-g$ over
+$\FF_7$; so $\det N=7^{\,22-g}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $K\subseteq K^*$ because $K$ is integral. $7K^*=H\ZZ^{\Om}$ consists of integer vectors of $V$, so
+$7K^*\subseteq K$. Hence $K^*/K$ is killed by $7$ and is an $\FF_7$-vector space. Reduction modulo $7$ maps
+$H\ZZ^{\Om}$ onto the image of $H$ acting on $\FF_7^{\Om}$, whose dimension is $g$; its kernel is
+$H\ZZ^{\Om}\cap7\ZZ^{\Om}$. Now $H\ZZ^{\Om}=7K^*$ and
+$7K^*\cap7\ZZ^{\Om}=7\,(K^*\cap\ZZ^{\Om})=7\,(K^*\cap V\cap\ZZ^{\Om})=7\,(K^*\cap K)=7K$. So
+$7K^*/7K\cong\FF_7^{\,g}$, that is, $K^*/K\cong\FF_7^{\,g}$, and $\det K=|K^*/K|=7^g$.
+
+(b) By Lemma~\ref{lem:NK}(b), multiplication by $\sqrt7$ maps $N^*=\frac1{\sqrt7}K$ onto $K$ and $N=\sqrt7K^*$ onto
+$7K^*$. So $N\subseteq N^*$ and $N^*/N\cong K/7K^*$, which is killed by $7$ because $7K\subseteq7K^*$. Its order is
+$[K^*:7K^*]/[K^*:K]=7^{22}/7^{g}$.
+\end{proof}
+
+%======================================================================
+\section{The dual lattice has no short vector}\label{sec:min}
+
+\begin{proposition}\label{prop:min}
+There is no non-zero $a\in\ZZ^{\Om}$ with $Sa=-4a$ and $\sum_\omega a_\omega^2\le7$. Equivalently:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item every non-zero $w\in N^*$ has $(w,w)\ge 8/7$;
+\item there is no non-zero odd function $\varphi$ with integer values such that $A\varphi=-4\varphi$ and
+$\sum_x\varphi(x)^2\le14$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The equivalence with (a) is Lemma~\ref{lem:NK}(c), and the equivalence with (b) is Lemma~\ref{lem:S}(a) together
+with \eqref{eq:norm2}. Suppose that $a\ne0$ is an integer vector with $Sa=-4a$ and $\sum_\omega a_\omega^2\le7$.
+
+\medskip\noindent\emph{Step 1: the entries of $a$ are $0$, $1$ or $-1$.}
+Suppose $|a_\omega|\ge2$ for some $\omega$. Then $|a_\omega|=2$ and the other entries satisfy
+$\sum_{\omega'\ne\omega}a_{\omega'}^2\le3$, hence $\sum_{\omega'\ne\omega}|a_{\omega'}|\le3$. Row $\omega$ of
+$Sa=-4a$ reads $S[\omega,\omega]a_\omega+\sum_{\omega'\ne\omega}S[\omega,\omega']a_{\omega'}=-4a_\omega$. The
+off-diagonal entries of $S$ have absolute value at most $1$, so the off-diagonal sum has absolute value at most $3$.
+But it equals $-4a_\omega$, of absolute value $8$, if $\omega$ is outer ($S[\omega,\omega]=0$), and $-3a_\omega$, of
+absolute value $6$, if $\omega$ is inner ($S[\omega,\omega]=-1$). Contradiction.
+
+\medskip\noindent\emph{Step 2: a count of common neighbours.}
+Let $\varphi=\hat a$, $P=\{x:\varphi(x)=1\}$ and $Q=\{x:\varphi(x)=-1\}=\sg P$. By Step~1 and \eqref{eq:norm2},
+$m:=|P|=\sum_\omega a_\omega^2$ satisfies $1\le m\le7$, and $\varphi$ vanishes outside $P\cup Q$. For $x\in P$ let
+$d_x$ be the number of neighbours of $x$ in $P$, and let $e=\frac12\sum_{x\in P}d_x$ be the number of edges inside
+$P$. The equation $(A\varphi)(x)=-4$ says that $x$ has $d_x+4$ neighbours in $Q$.
+
+Count the triples $(\{x,y\},z)$ where $x\ne y$ are in $P$ and $z$ is a common neighbour of $x$ and $y$. An adjacent
+pair has one common neighbour and a non-adjacent pair has two, so the number of triples is
+$2\binom m2-e=m(m-1)-e$. On the other hand a vertex $z$ belongs to $\binom{n_z}{2}$ triples, where $n_z$ is the
+number of neighbours of $z$ in $P$. For $z\in P$, $n_z=d_z$. For $z=\sg x\in Q$ with $x\in P$, the neighbours of
+$\sg x$ in $P$ are the images under $\sg$ of the neighbours of $x$ in $Q$, so $n_z=d_x+4$. Hence the vertices of
+$P\cup Q$ belong to
+\[
+\sum_{x\in P}\Bigl[\binom{d_x}{2}+\binom{d_x+4}{2}\Bigr]=\sum_{x\in P}\bigl(d_x^2+3d_x+6\bigr)
+=\sum_{x\in P}d_x^2+6e+6m
+\]
+triples, and the vertices outside $P\cup Q$ belong to
+\[
+D=m(m-1)-e-\sum_{x\in P}d_x^2-6e-6m=m(m-7)-7e-\sum_{x\in P}d_x^2
+\]
+triples. Since $D\ge0$ and $1\le m\le7$, we get $m=7$, $e=0$, all $d_x=0$, and $D=0$.
+
+\medskip\noindent\emph{Step 3: a matrix of size $7$.}
+Let $B$ be the matrix indexed by $P$ with $B[x,y]=1$ if $x\sim\sg y$ and $0$ otherwise. It is symmetric
+($x\sim\sg y$ if and only if $\sg x\sim y$), and its row sums are $d_x+4=4$. The entry $(x,y)$ of $B^2$ is the number
+of $z\in P$ with $x\sim\sg z$ and $\sg z\sim y$, that is, the number of common neighbours of $x$ and $y$ in $Q$. For
+$x=y$ it is $4$. For $x\ne y$: $x$ and $y$ are not adjacent ($e=0$), so they have exactly two common neighbours;
+none is outside $P\cup Q$ ($D=0$), and none is in $P$ (all $d_z=0$); so both are in $Q$. Hence
+\[
+B^2=2\,I_7+2\,J_7 .
+\]
+The eigenvalues of $B^2$ are $16$ on $\one$ and $2$ on the orthogonal complement of $\one$. As $B\one=4\one$, the
+eigenvalues of $B$ are $4$, and $\sqrt2$ and $-\sqrt2$ with multiplicities $\mu_+$ and $\mu_-$, $\mu_++\mu_-=6$. The
+trace of $B$ is an integer, $4+(\mu_+-\mu_-)\sqrt2$; so $\mu_+=\mu_-$ and $\tr B=4$. Thus exactly four vertices
+$x\in P$ satisfy $x\sim\sg x$.
+
+\medskip\noindent\emph{Step 4: contradiction.}
+By Proposition~\ref{prop:fix}(c) these four vertices are neighbours of $x_0$. Now $x_0\notin P\cup Q$ since
+$\varphi(x_0)=0$, and $x_0$ has at least four neighbours in $P$, so it belongs to at least $\binom42=6$ triples,
+contradicting $D=0$.
+\end{proof}
+
+%======================================================================
+\section{The discriminant form of the lattice of the frame}\label{sec:disc}
+
+\subsection{Two forms over the field with seven elements}
+By Lemma~\ref{lem:det}, $K^*/K$ and $K/7K^*$ are vector spaces over $\FF_7$, of dimensions $g$ and $22-g$. For
+$x,y\in K^*$ we have $7(x,y)\in\ZZ$ (because $7x\in K$), and for $a,b\in K$ we have $(a,b)\in\ZZ$. Define
+\begin{align*}
+\beta_0&:K/7K^*\times K/7K^*\to\FF_7,&\beta_0(a+7K^*,\,b+7K^*)&=(a,b)\bmod7,\\
+\beta_1&:K^*/K\times K^*/K\to\FF_7,&\beta_1(x+K,\,y+K)&=7\,(x,y)\bmod7 .
+\end{align*}
+Both are well defined: if $b\in7K^*$ then $(a,b)\in7\ZZ$ for $a\in K$; if $y\in K$ then $7(x,y)\in7\ZZ$ for
+$x\in K^*$. Both are symmetric bilinear forms. Both are nondegenerate: if $a\in K$ and $(a,b)\in7\ZZ$ for all
+$b\in K$, then $a/7\in K^*$; if $x\in K^*$ and $(x,y)\in\ZZ$ for all $y\in K^*$, then $x\in(K^*)^*=K$.
+
+Under the isomorphism $N^*/N\cong K/7K^*$, $w\mapsto\sqrt7\,w$, of Lemma~\ref{lem:det}(b), the form $\beta_0$ is $7$
+times the discriminant form of $N$: for $w,w'\in N^*$, $7\,(w,w')=(\sqrt7w,\sqrt7w')$.
+
+For a nondegenerate symmetric bilinear form $\beta$ on a finite-dimensional vector space over $\FF_7$, we write
+$\chi(\beta)\in\{1,-1\}$ for the Legendre symbol modulo $7$ of the determinant of its Gram matrix in a basis; it does
+not depend on the basis, a change of basis multiplying the determinant by a non-zero square. For the space $0$ we put
+$\chi=1$. Recall that the non-zero squares modulo $7$ are $1,2,4$; in particular $-1$ is not a square.
+
+\subsection{The norm of a characteristic vector}
+Let $\ZZ_{(2)}$ be the ring of rational numbers with odd denominator. Reduction modulo $8$ is a ring homomorphism
+$\ZZ_{(2)}\to\ZZ/8\ZZ$, and we write congruences modulo $8$ between elements of $\ZZ_{(2)}$ accordingly.
+
+\begin{lemma}\label{lem:char}
+Let $c=\frac17H\one\in V$. Then $7c\in K$; $(c,k)\equiv(k,k)\pmod2$ for every $k\in K$; and $(c,c)\equiv6\pmod8$.
+\end{lemma}
+\begin{proof}
+$7c=H\one$ is an integer vector of $V$, so $7c\in K$. For $k\in K$, $(c,k)=\frac17(\one,Hk)=(\one,k)=\sum_\omega
+k_\omega\equiv\sum_\omega k_\omega^2=(k,k)\pmod2$.
+
+Let $r_\omega=\sum_{\omega'}S[\omega,\omega']$ be the row sums of $S$ and $s=\sum_\omega r_\omega=\one^{\tp}S\one$.
+Since $S$ is symmetric, $\one^{\tp}S^2\one=(S\one)^{\tp}(S\one)=\sum_\omega r_\omega^2$, and $S^2+S=12I$ gives
+\begin{equation}\label{eq:588}
+\sum_{\omega\in\Om}r_\omega^2+s=12\cdot49=588 .
+\end{equation}
+\emph{Inner rows.} For $c'\in I$, $r_{c'}=-1+\sum_oC[c',o]$. Row $c'$ of $C$ has exactly $12$ non-zero entries (the
+triples $(i,j,\varepsilon)$ with $c'\in\{i,j\}$), each $\pm1$, so its sum is even and $r_{c'}$ is odd. Hence
+$r_{c'}^2\equiv1\pmod8$ and the seven inner rows contribute $7$ modulo $8$.
+
+\emph{Outer rows.} For $o=(i,j,\varepsilon)\in O$, $r_o=\gamma_o+\tau_o$, where $\gamma_o=1+\varepsilon\in\{0,2\}$ is
+the sum of column $o$ of $C$ and $\tau_o$ is the sum of row $o$ of $T$. Row $o$ of $T$ has ten non-zero entries; if
+$m_o$ of them are $-1$, then $\tau_o=10-2m_o$. So $r_o$ is even and $\frac12r_o=\frac12\gamma_o+5-m_o$. If
+$\frac12r_o$ is even then $r_o^2\equiv0\pmod8$, and if it is odd then $r_o^2\equiv4\pmod8$. The number of $o$ with
+$\frac12r_o$ odd is congruent modulo $2$ to
+\[
+\sum_{o\in O}\bigl(\tfrac12\gamma_o+5-m_o\bigr)\equiv21+42\cdot5-\sum_om_o\pmod2 ,
+\]
+because $\frac12\gamma_o=1$ for the $21$ triples with $\varepsilon=+1$ and $0$ for the others. The number
+$\sum_om_o$ of entries $-1$ of $T$ is even, because $T$ is symmetric with zero diagonal. So the number of $o$ with
+$\frac12r_o$ odd is odd, and the outer rows contribute $4$ modulo $8$.
+
+By \eqref{eq:588}, $s\equiv588-7-4=577\equiv1\pmod8$. Finally
+$(c,c)=\frac1{49}\one^{\tp}H^2\one=\frac17\one^{\tp}H\one=\frac17(3\cdot49-s)$, so $7(c,c)=147-s\equiv2\pmod8$, and
+multiplying by $7$ (as $49\equiv1$) gives $(c,c)\equiv14\equiv6\pmod8$.
+\end{proof}
+
+\subsection{The oddity formula}
+We use the following cited result. Let $p$ be an odd prime and $\ZZ_{(p)}$ the ring of rational numbers with
+denominator prime to $p$. For an integral lattice $L$, the $\ZZ_{(p)}$-module $L\otimes\ZZ_{(p)}$ has a basis in which
+the Gram matrix is a block diagonal matrix
+\[
+\mathrm{diag}\bigl(G_0,\ p\,G_1,\ p^2G_2,\ \dots\bigr),
+\]
+where each $G_a$ is a symmetric matrix with entries in $\ZZ_{(p)}$ whose determinant is a unit of $\ZZ_{(p)}$ (a
+\emph{Jordan decomposition}; some blocks may be empty). Let $n_a$ be the size of $G_a$ and $\varepsilon_a$ the
+Legendre symbol modulo $p$ of $\det G_a$. The \emph{$p$-excess} of $L$ is the class modulo $8$
+\[
+e_p(L)=\sum_{a\ge0}\Bigl(n_a\,(p^a-1)+4\,k_a\Bigr),\qquad k_a=\begin{cases}1&\text{if $a$ is odd and
+$\varepsilon_a=-1$,}\\0&\text{otherwise.}\end{cases}
+\]
+It does not depend on the Jordan decomposition, and $e_p(L)=0$ if $p$ does not divide $\det L$.
+
+\begin{theorem}[Oddity formula, {\cite[Chapter~15]{CS}}]\label{thm:oddity}
+Let $L$ be an integral lattice of rank $n$ and of odd determinant, and let $c\in L\otimes\ZZ_{(2)}$ be such that
+$(c,x)\equiv(x,x)\pmod2$ for every $x\in L$. Then
+\[
+n+\sum_{p\ \mathrm{odd\ prime}}e_p(L)\equiv(c,c)\pmod8 .
+\]
+\end{theorem}
+
+In \cite{CS} the formula reads ``signature $+$ sum of the $p$-excesses $\equiv$ oddity''. For a positive definite
+lattice the signature is the rank. For a lattice of odd determinant the oddity is the norm modulo $8$ of a vector $c$
+as in the statement: if $L\otimes\ZZ_{(2)}$ has a vector of odd norm, it has an orthogonal basis $b_1,\dots,b_n$ with
+odd norms $A_1,\dots,A_n$, the oddity is $A_1+\dots+A_n$, the vector $c$ has odd coordinates $c_i$ in this basis and
+$(c,c)=\sum c_i^2A_i\equiv\sum A_i\pmod 8$; otherwise the oddity is $0$, $c\in2\,(L\otimes\ZZ_{(2)})$, and $(c,c)$ is
+$4$ times an even number.
+
+\subsection{The invariant}
+
+\begin{proposition}\label{prop:disc}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $g$ is even and $g\le20$. Put $22-g=2m$, so that $m\ge1$.
+\item $\chi(\beta_0)=-(-1)^m$.
+\item There is a basis of the $\FF_7$-vector space $K/7K^*$ in which the Gram matrix of $\beta_0$ is
+\[
+\mathrm{diag}\Bigl(\underbrace{\begin{pmatrix}0&1\\1&0\end{pmatrix},\dots,\begin{pmatrix}0&1\\1&0\end{pmatrix}}_{m-1},
+\ \begin{pmatrix}1&0\\0&1\end{pmatrix}\Bigr).
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\emph{A Jordan decomposition of $K$ at $7$.} Take a Jordan decomposition of $K\otimes\ZZ_{(7)}$, with blocks
+$7^aG_a$ of sizes $n_a$. Let $K_a$ be the $\ZZ_{(7)}$-span of the basis vectors of the block $a$; then
+$K\otimes\ZZ_{(7)}$ is the orthogonal sum of the $K_a$ and $K^*\otimes\ZZ_{(7)}$ is the orthogonal sum of the
+$7^{-a}K_a$. Since $7K^*\subseteq K$ (Lemma~\ref{lem:det}), $7^{1-a}K_a\subseteq K_a$ for all $a$, so $K_a=0$ for
+$a\ge2$: only $G_0$ and $G_1$ occur, and
+\[
+K\otimes\ZZ_{(7)}=K_0\oplus K_1,\qquad K^*\otimes\ZZ_{(7)}=K_0\oplus\tfrac17K_1,\qquad
+7K^*\otimes\ZZ_{(7)}=7K_0\oplus K_1 .
+\]
+The quotients $K^*/K$ and $K/7K^*$ are finite groups of order a power of $7$, so they are unchanged by tensoring
+with $\ZZ_{(7)}$. Hence $K^*/K\cong\frac17K_1/K_1$, of dimension $n_1$ over $\FF_7$, and $K/7K^*\cong K_0/7K_0$, of
+dimension $n_0$. Therefore $n_1=g$ and $n_0=22-g$. In the basis of $K_0/7K_0$ given by the block $0$, the Gram matrix
+of $\beta_0$ is $G_0\bmod7$; in the basis of $\frac17K_1/K_1$ given by the basis vectors of the block $1$ divided by
+$7$, the Gram matrix of $\beta_1$ is $7\cdot\frac1{49}\cdot7G_1=G_1\bmod7$. Hence
+\begin{equation}\label{eq:chi}
+\chi(\beta_0)=\varepsilon_0,\qquad\chi(\beta_1)=\varepsilon_1 .
+\end{equation}
+Moreover $\varepsilon_0=\varepsilon_1$. Indeed the determinant of $K$ in a $\ZZ$-basis is $7^g$
+(Lemma~\ref{lem:det}), and in the Jordan basis it is $\det G_0\cdot7^{g}\det G_1$; the two differ by the square of
+the determinant of the change of basis, a unit of $\ZZ_{(7)}$. So $\det G_0\cdot\det G_1$ is the square of a unit,
+and the product of the two Legendre symbols is $1$.
+
+\emph{The oddity formula.} We apply Theorem~\ref{thm:oddity} to $L=K$, of rank $22$ and determinant $7^g$, with the
+vector $c$ of Lemma~\ref{lem:char} (note $c=\frac17\cdot7c\in K\otimes\ZZ_{(2)}$). For an odd prime $p\ne7$,
+$e_p(K)=0$. For $p=7$, the block $a=0$ contributes $n_0(1-1)+0=0$ and the block $a=1$ contributes
+$g\cdot6+4k_1$, where $k_1=1$ if $\varepsilon_1=-1$ and $k_1=0$ if $\varepsilon_1=1$. With $(c,c)\equiv6$ the formula
+reads
+\[
+22+6g+4k_1\equiv6\pmod8,\qquad\text{that is,}\qquad 3g+2k_1\equiv0\pmod4 .
+\]
+Hence $g$ is even; writing $g=2g'$ we get $6g'+2k_1\equiv0\pmod4$, that is, $k_1\equiv g'\pmod2$. So
+$\varepsilon_1=(-1)^{g/2}$, and by \eqref{eq:chi} and $\varepsilon_0=\varepsilon_1$,
+\[
+\chi(\beta_0)=(-1)^{g/2}.
+\]
+
+\emph{Proof of (a) and (b).} We have shown that $g$ is even; $g\le22$ because $g$ is the dimension of a quotient of
+$K^*\cong\ZZ^{22}$. If $g=22$, then $K/7K^*=0$ and $\chi(\beta_0)=1$ by convention, whereas
+$(-1)^{g/2}=(-1)^{11}=-1$; so $g\le20$ and $m=11-g/2\ge1$. Then $(-1)^{g/2}=(-1)^{11-m}=-(-1)^m$, which is (b).
+
+\emph{Proof of (c).} Let $\beta$ be the form on $\FF_7^{2m}$ with the Gram matrix displayed in (c). Each block
+$\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ has determinant $-1$, and the last block has
+determinant~$1$, so $\det\beta=(-1)^{m-1}$ and $\chi(\beta)=(-1)^{m-1}=-(-1)^m$, since $-1$ is not a square modulo
+$7$. By (b), $\beta_0$ and $\beta$ are nondegenerate symmetric bilinear forms of the same dimension $2m$ whose
+determinants differ by a square. Over a finite field of odd characteristic, two such forms are isometric
+\cite[Chapter~IV, \S1.7]{Se}. Transporting the standard basis by an isometry gives the required basis.
+\end{proof}
+
+\begin{corollary}\label{cor:Nmax}
+There is a lattice $N_{\max}$ with $N\subseteq N_{\max}\subseteq N^*$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $N_{\max}$ is integral, and $N_{\max}^*\subseteq N^*$;
+\item $N_{\max}^*/N_{\max}$ is a vector space of dimension $2$ over $\FF_7$, and it has a basis $\xi_1,\xi_2$,
+represented by vectors $w_1,w_2\in N_{\max}^*$, such that
+$7\,(w_1,w_1)\equiv7\,(w_2,w_2)\equiv1$ and $7\,(w_1,w_2)\equiv0\pmod7$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Transport the basis of Proposition~\ref{prop:disc}(c) to $N^*/N$ by the isomorphism $w\mapsto\sqrt7w$; we get
+classes $\eta_1,\eta_1',\dots,\eta_{m-1},\eta_{m-1}',\xi_1,\xi_2$ of $N^*/N$, represented by vectors
+$v_1,v_1',\dots,w_1,w_2$ of $N^*$, such that $7$ times the inner product of two of these vectors is congruent modulo
+$7$ to the corresponding entry of the Gram matrix of (c). Let
+\[
+N_{\max}=N+\ZZ v_1+\dots+\ZZ v_{m-1}.
+\]
+(a) The inner product of two vectors of $N$, or of a vector of $N$ with a vector of $N^*$, is an integer; and
+$7\,(v_i,v_j)\equiv0\pmod7$ for all $i,j$ (the entries of (c) between the first vectors of the hyperbolic blocks are
+$0$), so $(v_i,v_j)\in\ZZ$. Hence $N_{\max}$ is integral. As $N\subseteq N_{\max}$, $N_{\max}^*\subseteq N^*$.
+
+(b) A vector $w\in N^*$ belongs to $N_{\max}^*$ if and only if $(w,v_i)\in\ZZ$ for all $i$, that is, if and only if
+the class of $w$ is orthogonal, for the form of (c), to $\eta_1,\dots,\eta_{m-1}$. In the basis of (c) this
+orthogonal is spanned by $\eta_1,\dots,\eta_{m-1},\xi_1,\xi_2$ (the coordinate of a class on $\eta_i'$ is its
+product with $\eta_i$). So $N_{\max}^*/N$ has the basis $\eta_1,\dots,\eta_{m-1},\xi_1,\xi_2$, the subgroup
+$N_{\max}/N$ has the basis $\eta_1,\dots,\eta_{m-1}$, and $N_{\max}^*/N_{\max}$ has the basis $\xi_1,\xi_2$, with
+the stated products.
+\end{proof}
+
+%======================================================================
+\section{The envelope: proof of Theorem~\ref{thm:R}}\label{sec:env}
+
+\subsection{Gluing}
+
+\begin{lemma}\label{lem:glue}
+Let $L_1,L_2$ be integral lattices and $\psi:L_1^*/L_1\to L_2^*/L_2$ an isomorphism of groups such that
+\begin{equation}\label{eq:anti}
+(z_2,z_2')\equiv-(z_1,z_1')\pmod{\ZZ}
+\end{equation}
+whenever $z_1,z_1'\in L_1^*$, $z_2,z_2'\in L_2^*$, $\psi(z_1+L_1)=z_2+L_2$ and $\psi(z_1'+L_1)=z_2'+L_2$. In the
+orthogonal sum $(L_1\otimes\QQ)\oplus(L_2\otimes\QQ)$ let
+\[
+U=\{z_1+z_2 : z_1\in L_1^*,\ z_2\in L_2^*,\ \psi(z_1+L_1)=z_2+L_2\}.
+\]
+Then $U$ is an integral unimodular lattice of rank $\rk L_1+\rk L_2$ containing $L_1\oplus L_2$; moreover
+$U\cap(L_1\otimes\QQ)=L_1$, $U\cap(L_2\otimes\QQ)=L_2$, and the orthogonal projection of $U$ on $L_1\otimes\QQ$ is
+contained in $L_1^*$.
+\end{lemma}
+\begin{proof}
+$U$ is a subgroup of $L_1^*\oplus L_2^*$ containing $L_1\oplus L_2$ (take the classes $0$), so it is a free
+$\ZZ$-module of rank $\rk L_1+\rk L_2$. For $z_1+z_2$ and $z_1'+z_2'$ in $U$, the inner product is
+$(z_1,z_1')+(z_2,z_2')$, an integer by \eqref{eq:anti}; so $U$ is integral. The map
+$z_1+z_2\mapsto z_1+L_1$ is a homomorphism from $U$ onto $L_1^*/L_1$ (for every $z_1$ there is a $z_2$ in the class
+$\psi(z_1+L_1)$), and its kernel is $\{z_1+z_2:z_1\in L_1,\ z_2\in L_2\}=L_1\oplus L_2$, because $\psi$ is
+injective. So $[U:L_1\oplus L_2]=|L_1^*/L_1|=\det L_1$, and also $=|L_2^*/L_2|=\det L_2$ since $\psi$ is bijective.
+Therefore
+\[
+\det U=\frac{\det L_1\cdot\det L_2}{[U:L_1\oplus L_2]^2}=1 .
+\]
+A vector $z_1+z_2$ of $U$ lies in $L_1\otimes\QQ$ if and only if $z_2=0$; then $\psi(z_1+L_1)=0$, so $z_1\in L_1$.
+The same holds for $L_2$. The projection of $z_1+z_2$ on $L_1\otimes\QQ$ is $z_1\in L_1^*$.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:R}}
+The first assertion is Proposition~\ref{prop:fix}. We keep the notation of
+Sections~\ref{sec:local}--\ref{sec:disc}.
+
+\medskip\noindent\emph{The plane.} Let $\Pi=\ZZ y_1\oplus\ZZ y_2$ be a lattice of rank $2$ with
+$(y_1,y_1)=(y_2,y_2)=7$ and $(y_1,y_2)=0$. Then $\Pi^*=\frac17\Pi$, and for $z=\frac17(s_1y_1+s_2y_2)$,
+$z'=\frac17(s_1'y_1+s_2'y_2)$ with integers $s_a,s_a'$,
+\begin{equation}\label{eq:Pi}
+7\,(z,z')=s_1s_1'+s_2s_2' .
+\end{equation}
+
+\medskip\noindent\emph{The gluing map.} Let $N_{\max}$, $\xi_1,\xi_2$, $w_1,w_2$ be as in Corollary~\ref{cor:Nmax}.
+Define the homomorphism $\psi:N_{\max}^*/N_{\max}\to\Pi^*/\Pi$ of $\FF_7$-vector spaces by
+\[
+\psi(\xi_1)=\tfrac17(2y_1-3y_2)+\Pi,\qquad\psi(\xi_2)=\tfrac17(3y_1+2y_2)+\Pi .
+\]
+It is an isomorphism, because the matrix $\left(\begin{smallmatrix}2&3\\-3&2\end{smallmatrix}\right)$ has
+determinant $13$, prime to $7$. By \eqref{eq:Pi}, $7$ times the inner products of the two representatives
+$\frac17(2y_1-3y_2)$, $\frac17(3y_1+2y_2)$ are $4+9=13\equiv-1$, $6-6=0$ and $9+4=13\equiv-1$ modulo $7$, which are
+the opposites of the values $1,0,1$ of $7\,(w_a,w_b)$. By bilinearity, \eqref{eq:anti} holds for $L_1=N_{\max}$,
+$L_2=\Pi$ and $\psi$.
+
+\medskip\noindent\emph{The lattice.} Let $U$ be the lattice of Lemma~\ref{lem:glue} for $L_1=N_{\max}$, $L_2=\Pi$
+and this $\psi$, inside the Euclidean space $V\oplus(\Pi\otimes\RR)$ of dimension $24$. It is integral, unimodular,
+of rank $22+2=24$, and contains $N_{\max}\oplus\Pi$, hence the vectors $h_c,u_o\in N$ and $y_1,y_2$. It is odd
+because $(u_o,u_o)=3$.
+
+\medskip\noindent\emph{Properties \ref{R1}--\ref{R4}.} \ref{R1} holds by construction: $y_1,y_2$ are orthogonal to
+$V$. \ref{R2} and \ref{R3} are Lemma~\ref{lem:frame}(a) with the description of $C$ and $T$ in
+Lemma~\ref{lem:S}(c): $(h_c,u_o)=-C[c,o]$ and, for $o\ne o'$, $(u_o,u_{o'})=-T[o,o']\in\{0,1,-1\}$, non-zero for
+exactly ten $o'$. \ref{R4} is Lemma~\ref{lem:frame}(d), since $C[c,o]=-(h_c,u_o)$.
+
+\medskip\noindent\emph{Property \ref{R5}.} Let $v\in V\oplus(\Pi\otimes\RR)$ and write $v=v'+v''$ with $v'\in V$
+and $v''\in\Pi\otimes\RR$. Since the $h_c,u_o$ lie in $V$, Lemma~\ref{lem:frame}(b) gives
+$\sum_c(v,h_c)^2+\sum_o(v,u_o)^2=\sum_\omega(v',f_\omega)^2=7\,(v',v')$. Since $y_1,y_2$ form an orthogonal basis
+of $\Pi\otimes\RR$ with norms $7$, $v''=\frac17(v,y_1)y_1+\frac17(v,y_2)y_2$ and
+$(v,y_1)^2+(v,y_2)^2=7\,(v'',v'')$. Adding, we get $7\,(v',v')+7\,(v'',v'')=7\,(v,v)$. In particular
+\begin{equation}\label{eq:E}
+E(v)=7\,(v,v)-(v,y_1)^2-(v,y_2)^2=7\,(v',v')\qquad\text{for every }v .
+\end{equation}
+
+\medskip\noindent\emph{Properties \ref{R6} and \ref{R7}.} Let $v\in U$ and let $v'$ be its projection on $V$. By
+Lemma~\ref{lem:glue} and Corollary~\ref{cor:Nmax}(a), $v'\in N_{\max}^*\subseteq N^*$. By Lemma~\ref{lem:NK}(c), the
+vector $a=\sqrt7\,v'$ belongs to $K$, its coordinates are $a_\omega=(v',f_\omega)=(v,f_\omega)$, and
+$\sum_\omega a_\omega^2=7\,(v',v')=E(v)$ by \eqref{eq:E}. Let $\varphi_v=\hat a$. It is an odd function with integer
+values; by Lemma~\ref{lem:S}(a), $A\varphi_v=\widehat{Sa}=-4\varphi_v$; by \eqref{eq:norm2},
+$\sum_x\varphi_v(x)^2=2E(v)$; and its values on the representatives $\rho_\omega$ are the integers $(v,f_\omega)$,
+that is, the $(v,h_c)$ and $(v,u_o)$. This is \ref{R7}.
+
+If $E(v)=0$ then $v'=0$, so $v\in U\cap(\Pi\otimes\QQ)=\Pi$ by Lemma~\ref{lem:glue}. If $E(v)\ne0$ then $v'$ is a
+non-zero vector of $N^*$, so $(v',v')\ge8/7$ by Proposition~\ref{prop:min}(a), and $E(v)\ge8$. This is \ref{R6}.
+
+\medskip\noindent\emph{No vector of norm $1$.} Let $v\in U$ with $(v,v)=1$. Then $E(v)\le7$, so $E(v)=0$ by
+\ref{R6} and $v\in\Pi$. But a non-zero vector $s_1y_1+s_2y_2$ of $\Pi$ has norm $7(s_1^2+s_2^2)\ge7$. Contradiction.
+\qed
+
+\begin{remark}
+The lattice $U$ depends on choices (the subspace defining $N_{\max}$, the map $\psi$), and the value of $g$ is not
+determined by the argument; neither matters for the statement. What the proof uses about the graph beyond the
+identity $S^2+S=12I$ is: the block form of $S$ (Lemma~\ref{lem:S}(c)) in the parity computation of
+Lemma~\ref{lem:char}; and Proposition~\ref{prop:fix}(c) in the last step of Proposition~\ref{prop:min}.
+\end{remark}
+
+\begin{thebibliography}{CS}
+\bibitem[Bo]{Bo} R.\,E.~Borcherds, \emph{The 24-dimensional odd unimodular lattices}, Chapter~17 of \cite{CS}.
+\bibitem[CS]{CS} J.\,H.~Conway, N.\,J.\,A.~Sloane, \emph{Sphere Packings, Lattices and Groups}, 3rd ed., Grundlehren
+der mathematischen Wissenschaften~\textbf{290}, Springer, 1999.
+\bibitem[MM]{MM} A.\,A.~Makhnev, I.\,M.~Minakova, \emph{On automorphisms of strongly regular graphs with parameters
+$\lambda=1$, $\mu=2$}, Diskret.\ Mat.\ \textbf{16} (2004), no.~1, 95--104; English translation: Discrete Math.\ Appl.\
+\textbf{14} (2004), no.~2, 201--210.
+\bibitem[Se]{Se} J.-P.~Serre, \emph{A Course in Arithmetic}, Graduate Texts in Mathematics~\textbf{7}, Springer, 1973.
+\end{thebibliography}
+
+\end{document}
