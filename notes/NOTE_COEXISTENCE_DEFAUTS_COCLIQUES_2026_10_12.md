@@ -1848,3 +1848,233 @@ aux§36–43. Les182 contraintes sont des instances de deux lois uniformes,
 pas182 familles disjointes exclues. Les anciennes304 conditions V5 et
 les anciens certificats sont conservés. Aucun classement des rangs
 n'a été repris. C1 et la famille(0,2) restent ouverts.
+
+## 45. V8 : un corps convexe dont les points entiers sont exactement les graphes
+
+13 octobre2026. Recherche secondaire demandée pendant le calcul intégré V7.
+Le rapprochement utile est avec le **fantope**, employé notamment pour
+l'estimation de sous-espaces en statistique : l'enveloppe convexe des
+projecteurs de rang fixé s'écrit 0<=Q<=I, trace Q fixée. Source primaire :
+[Vu, Cho, Lei et Rohe, NeurIPS2013, section2](https://proceedings.neurips.cc/paper/2013/file/81e5f81db77c596492e6f1a5a792ed53-Paper.pdf).
+Les inégalités de ce paragraphe sont dans l'ordre des matrices symétriques,
+pas entrée par entrée. L'application à notre système est démontrée ici.
+
+Conserver les hypothèses EXACTES du§32 : B et D binaires, B symétrique
+à diagonale nulle, DD^t=12I+2J-B-B², les degrés, et une étoile complète
+dans B. E0 et P sont ceux du§32. Définir le corps de complétion
+
+    K(B,D) = { E=E^t : DE=F,
+               E0+3P-E >= 0,   E-E0+4P >= 0 }.             (43)
+
+Il est convexe et borné. Aucun nom de nouvelle théorie ni priorité
+historique n'est revendiqué : c'est un objet de travail adapté au bord.
+
+THÉORÈME. Les points ENTIERS de K(B,D) sont exactement les blocs E des
+complétions SRG(99,14,1,2). Il n'est pas nécessaire de supposer à l'avance
+leur diagonale nulle ou leurs entrées dans{0,1}.
+
+Preuve. Une solution symétrique DE=F a E=E0+H avec H=PHP. Les deux
+inégalités équivalent à -4P<=H<=3P. En posant
+
+    Q=(3P-H)/7,
+
+elles équivalent à 0<=Q<=P. En particulier PQ=Q. Le défaut du polynôme
+complet A²+A-12I-2J est nul hors du bloc
+
+    L = H²+H-12P = 49(Q²-Q) <= 0.                         (44)
+
+La régularité A1=14*1 résulte déjà de la fermeture linéaire et de
+l'étoile complète (§33), même avant d'imposer une diagonale nulle à E.
+Pour chaque sommet, elle donne l'identité exacte
+
+    (A²+A-12I-2J)_ii
+       = A_ii² + sum_(j!=i) A_ij(A_ij-1).                 (45)
+
+Si E est entière, tous les termes de droite sont des entiers positifs
+ou nuls. La semi-définie négativité de(44) impose donc une diagonale
+entièrement nulle. Une matrice semi-définie négative de trace nulle est
+nulle. Ainsi L=0 et chaque terme de(45) vaut0 : diagonale A nulle,
+coefficients hors diagonale0/1. Le graphe satisfait toutes les équations.
+Réciproquement une vraie complétion fournit le projecteur Q du§32,
+donc appartient à K(B,D).
+
+Cette preuve remplace la contrainte non convexe Q²=Q par deux inégalités
+convexes **en conservant l'intégralité**. Elle ne rend pas le problème
+entier convexe, ne fournit pas D, et ne prouve pas K(B,D) vide pour C1.
+Pour A²+A=(k-mu)I+mu J, la même preuve vaut avec les deux racines
+r>s de t²+t-(k-mu), et les bornes sP<=H<=rP.
+
+## 46. Identité de fractionnalité et version sur tout le graphe
+
+Si E appartient à K(B,D), a diagonale nulle et des coefficients dans[0,1],
+prendre la trace dans(44) donne
+
+    sum_(u,v) E_uv(1-E_uv) = 49 trace(Q-Q²).                (46)
+
+Le membre gauche compte les deux orientations de chaque arête. Les
+deux membres sont positifs ou nuls ; ils s'annulent simultanément.
+On obtient une identité quantitative entre le défaut de binarité des
+arêtes et le défaut d'idempotence du projecteur. Avec trace E=0,
+trace Q=(trace E0+3 dim ker D)/7 est fixée : la section de(43) est
+une section affine d'un fantope sur ker D, si cette trace est admissible.
+La constante49 devient(r-s)² pour les paramètres généraux.
+
+Le même argument existe SANS bord fixé, SANS D et SANS coclique.
+Pour une matrice entière symétrique A d'ordre99 telle que A1=14*1,
+les deux conditions
+
+    G_-(A)=A+4I-(2/11)J >= 0,
+    G_+(A)=3I-A+(1/9)J >= 0                               (47)
+
+sont équivalentes à A étant l'adjacence d'un SRG(99,14,1,2).
+Preuve : elles annulent1 et enferment le spectre sur1-perp dans[-4,3].
+Le défaut A²+A-12I-2J est alors semi-défini négatif, puis(45) l'annule.
+Le sens réciproque découle directement des trois valeurs propres.
+
+Pour tout vecteur entier z, (47) fournit des contraintes linéaires sur
+les arêtes, valables uniformément pour TOUS les éventuels Conway :
+
+    9 z^t A z <= 27 ||z||² + (sum z)²,
+    11 z^t A z >= 2(sum z)² - 44 ||z||².                  (48)
+
+Les supports de z peuvent être quelconques et ses signes mélangés.
+Ce n'est pas une nouvelle classification des rangs. Une direction
+négative trouvée dans un candidat fournit une coupe qui peut être
+réutilisée même lorsque B et D changent. Vérifier seulement quelques
+directions ne suffit pas ; vérifier les DEUX matrices complètes suffit.
+
+## 47. Séparation exacte, arrondi entier et coexistence à trois coordonnées
+
+`coclique_spectral_completion.py` implémente une seconde méthode exacte
+pour un B,D fixé. Elle conserve l'espace affine V7 et impose la binarité
+de toutes les entrées E. Le solveur propose un point ; on examine les
+deux matrices de(43), comprimées sur une base rationnelle N de ker D.
+Si elles sont positives, le théorème45 certifie la complétion ; sinon
+un vecteur rationnel z prouve une forme quadratique strictement négative.
+
+Ce vecteur donne une inégalité c+sum a_i x_i>=0, linéaire dans les
+arêtes libres. Après suppression des dénominateurs, si g est le pgcd
+des a_i, on peut renforcer l'inégalité en
+
+    sum (a_i/g)x_i >= ceil(-c/g).                          (49)
+
+Elle est valable pour TOUTE complétion du bord et rejette le candidat.
+Le procédé termine en un nombre fini d'étapes sur l'ensemble binaire
+si aucun budget n'est imposé ; aucune borne pratique favorable n'est
+affirmée. Les délais et dépassements du domaine numérique implémenté
+restent explicitement non concluants. Le prototype traite les racines
+r,s rationnelles et refuse explicitement les autres paramètres.
+
+Les témoins négatifs sont obtenus par élimination de Schur rationnelle,
+avec traitement des pivots nuls. Une valeur propre flottante n'est
+jamais utilisée comme certificat. Le module `global_separate` effectue
+aussi la séparation de(47) sur le graphe complet, sans bord fixé.
+
+Sur les HUIT points binaires linéaires de Petersen, cette méthode
+retrouve les quatre complétions en ajoutant exactement quatre coupes :
+
+    x<=y+z,    y<=x+z,    z<=x+y,    x+y+z<=2.              (50)
+
+Exemple : le témoin du point100 donne d'abord
+2-8x+8y+8z>=0 ; l'intégralité renforce cette coupe en x<=y+z.
+Ces quatre inégalités équivalent à la parité paire sur{0,1}³.
+Le solveur de ce contrôle ne contient AUCUN produit quadratique.
+
+Plus précisément, avec le N sauvegardé dans le contrôle V7,
+
+    N^t Q N = (2/3) [[1,1-2x,1-2y],
+                     [1-2x,1,1-2z],
+                     [1-2y,1-2z,1]].                     (51)
+
+Tous les mineurs principaux d'ordre1 ou2 sont positifs ou nuls pour
+les huit choix. Le déterminant est0 pour les quatre choix compatibles,
+et -32/27 pour les quatre autres. La compatibilité de chaque paire ne
+garantit donc pas celle des trois coordonnées. C'est un contrôle
+explicite du mécanisme global, PAS une exclusion de C1.
+
+Contre-exemple à une relaxation excessive : x=y=z=1/2 donne Q=P/3.
+Les deux bornes convexes sont satisfaites, mais Q²!=Q et E est
+fractionnaire. Une solution du seul système réel ne décide donc rien.
+
+Nouveaux contrôles exacts, dans `spectral_completion_v8/` :
+
+| Bord de contrôle | Libertés affines | Complétions | Coupes produites |
+| --- | ---: | ---: | ---: |
+| Grille3x3 |0|1|0|
+| Petersen |3|4|4|
+| Paley25 |2|1|0|
+| Paley49 |5|1|0|
+
+Dans les deux derniers cas, les contraintes de binarité de TOUT E
+laissent déjà une seule complétion. Leur inclusion teste la nouvelle
+procédure sur d'autres dimensions ; elle n'est pas présentée comme
+une nouvelle classification. Le contrôle séparé relit les témoins,
+les arrondis, les graphes complets, et les huit cas géométriques.
+
+## 48. Extraire les parités de combinaisons d'équations
+
+Le second rapprochement retenu concerne les systèmes booléens issus
+notamment de la cryptographie. La réduction x_i²=x_i permet d'écrire
+les équations comme des lignes de coefficients ; des combinaisons
+éliminent les monômes de degré2. Ce principe d'algèbre linéaire est
+documenté dans [Bardet, Faugère, Salvy et Spaenlehauer,
+section2.1](https://arxiv.org/pdf/1112.6263).
+Les fonctions booléennes et leur lien aux codes sont présentés par
+[Carlet, sections2–3](https://www.math.univ-paris13.fr/~carlet/chap-fcts-Bool-corr.pdf).
+Nous utilisons ici seulement des combinaisons constantes de lignes,
+pas tout l'algorithme de ces références ni ses bornes de complexité.
+
+Pour une présentation ENTIÈRE enregistrée f_j(x)=0, après réduction
+booléenne et passage modulo2, définir l'espace de parités
+
+    L(f) = span_F2{f_j} intersect {polynômes de degré<=1}.  (52)
+
+Le code affine C(f) est l'ensemble des x annulant toutes les formes
+de L(f). Toute vraie complétion y appartient. Une forme constante1
+dans L(f) est un certificat d'impossibilité. L'élimination des colonnes
+quadratiques, puis linéaires, calcule une base de L(f). Chaque ligne
+porte la liste des équations initiales dont elle est le XOR.
+
+`coclique_modular_coexistence.py` réalise cette extraction et le
+rejeu exact des preuves. Elle contient celle de V7, qui ne conservait
+que les équations dont la partie quadratique était déjà paire :
+des parties quadratiques NON nulles peuvent maintenant s'annuler
+entre plusieurs équations. L'espace(52) dépend de la présentation
+entière enregistrée ; il n'est pas déclaré invariant sous toutes
+les transformations rationnelles de générateurs.
+
+Contrôle non artificiellement ajouté au problème de graphe : remplacer
+les trois résidus Petersen f1,f2,f3 du§37 par le système équivalent
+sur les rationnels g1=(f1+f2)/2, g2=(f1+f3)/2, g3=(f2+f3)/2. Alors
+
+    g1=z(x+y-1),  g2=y(x+z-1),  g3=x(y+z-1).
+
+Aucune de ces trois lignes ne fournit individuellement un XOR par
+l'ancien critère. Leur SOMME modulo2 donne x+y+z=0. Le nouvel
+extracteur retrouve ce certificat, vérifié sur les huit affectations.
+Dans ce contrôle seulement, le code est aussi suffisant.
+
+Limite prouvée : pour l'unique équation xy=0, L(f)={0} et le code
+accepte aussi11, qui viole l'équation. En général ce code ne remplace
+ni la binarité affine ni les équations de complétion restantes.
+
+## 49. Portée pratique de cette recherche secondaire
+
+Deux transferts ont produit des résultats précis : une section de
+fantope dont les points entiers sont exactement les complétions, et
+un espace calculable de parités prouvées par combinaisons d'équations.
+Ce sont des adaptations démontrées d'outils existants ; aucune
+revendication de nouveauté bibliographique générale n'est faite.
+
+Le premier fournit un autre moteur de fermeture et des coupes valables
+sur tout C1 via(48). Le second renforce l'extraction algébrique V7.
+Les nouveaux contrôles passent, avec certificats rationnels et un
+contre-exemple explicite à la suppression de l'intégralité.
+
+Ces outils n'ont pas encore produit un D de C1 ni une exclusion
+supplémentaire de(0,2). Le programme V7 déjà en cours n'a pas été
+modifié ou arrêté pour cette exploration. À13h20UTC le13 octobre,
+son observateur enregistrait encore huit cœurs environ, sans résultat
+final. Lire son `result.json` et le manifeste daté pour l'état suivant.
+Le temps passé et les exemples de contrôle ne constituent pas un
+pourcentage de résolution de C1.
