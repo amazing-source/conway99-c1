@@ -2579,3 +2579,195 @@ préfixe EXACT de V10 :25395 variables et76900 contraintes ajoutées,
 empreinte globale `5ef64ae6738739c13901aa3a3dba89b6b4009377c9bcd4a948cd312b5ee4267c`.
 Les snapshots et données brutes sont conservés sans conversion des fins
 de ligne. Aucun certificat UNSAT n'existe dans cette campagne.
+
+## 59. V11 : une identité d'énergie pour chaque colonne du défaut
+
+13 octobre2026. Reprise mathématique demandée par Dilan, sans nouveau
+calcul AWS. Le pont avec Claude est rétabli, messages592–597. La question
+est de comprendre ce qu'un défaut mixte non nul serait obligé de porter,
+et de transformer cette obligation en contradiction.
+
+On conserve les hypothèses de§55 : A binaire, symétrique, diagonale nulle,
+k-régulier, mu entier, k²=mu(n-1), et les DEUX blocs diagonaux de
+T=A²+A-(k-mu)I-mu J nuls. Ainsi T=[[0,G],[G^t,0]]. Aucune hypothèse de
+rang, d'automorphisme ou de contrôlabilité n'est ajoutée.
+
+**Identité d'énergie.** Pour chaque colonne g=G_u et d=D_u :
+
+    ||g||² = d^t (2B+I) g.                                  (59a)
+
+Preuve. L'équation définissant le bloc mixte est
+
+    g=(B+I)d + sum_{v voisin de u dans E} D_v - mu*1.
+
+Le produit scalaire avec g annule le dernier terme, car 1^t g=0. Par
+D^tG=G^tD, on a D_v^t g=d^t G_v. Par BG=GE, leur somme vaut d^t B g.
+Le premier terme contribue d^t(B+I)g, ce qui prouve(59a). C'est une
+identité PAR COLONNE ; on n'affirme pas l'égalité matricielle obtenue en
+enlevant les produits diagonaux, qui demanderait une commutation de plus.
+
+**Lemme de fermeture entière.** Si Bg=0 ou Bg=-g, alors g=0.
+
+En effet(59a) donne ||g||²=+/-d^t g. Mais g est entier, sa somme est nulle,
+et d est binaire. Donc
+
+    |d^t g| <= ||g||_1/2 <= ||g||²/2.                         (59b)
+
+La première inégalité sépare les coordonnées positives et négatives de g,
+de masses égales. La seconde utilise |a|<=a² pour a entier. Un g non nul
+donnerait ||g||²<=||g||²/2, contradiction. Aucun calcul de voisins communs
+supplémentaire n'est nécessaire. L'intégralité est essentielle :
+g=(1/2,-1/2), d=(1,0) vérifie ||g||²=d^t g sans être nul.
+
+Plus généralement, si une colonne entière NON NULLE est un vecteur propre
+de B, sa valeur propre theta est rationnelle (lire une coordonnée non nulle),
+donc entière puisque B est une matrice entière. On a |2theta+1|>=2.
+En particulier theta=0 et theta=-1 sont impossibles.
+Cela n'interdit PAS une composante propre0 ou-1 dans une colonne qui
+mélange plusieurs modes. Le lemme porte bien sur une colonne entière.
+
+**Deux corollaires uniformes.** Si E est une coclique, BG=0 ferme toutes
+les colonnes. Si E est une clique, BG=G(J-I)=-G les ferme aussi. Les degrés
+et les deux blocs diagonaux exacts suffisent donc à fermer le système
+entier dans ces deux cas. Cela vaut pour tout paramètre lambda=mu-1
+satisfaisant les hypothèses, pas seulement pour Conway. Le prisme
+pentagonal de§55 reste un contre-exemple lorsque E est un cycle5.
+
+Il s'agit d'un nouveau résultat dans cette campagne. Aucune priorité
+bibliographique générale n'est revendiquée.
+
+## 60. Conséquences pour les colonnes négatives de tout le profil(0,2)
+
+Dans le modèle V10, les lignes mixtes C+H sont exactes. Puisque T commute
+avec A, T*1=0 et T*1_C=0, le vecteur
+q=4*1-(A+4I)*1_C satisfait aussi Tq=0. Or sa partie résiduelle vaut
+
+    q_M=-(e_e+e_f), d'où G_e+G_f=0.                          (60a)
+
+Une autre preuve utile passe par le transport des espaces de§61 :
+G D_C^t=0, et D_C^t*1_C=4*1_M+e_e+e_f, car les colonnes négatives
+ont cinq voisins dans C et les autres en ont quatre.
+
+**Toutes les11 branches a=1.** Si e est une feuille de E, son seul voisin
+résiduel est f. Donc BG_e=G_f=-G_e. Le lemme59 impose G_e=0, puis G_f=0.
+Les DEUX colonnes négatives sont exactes, même si f n'est pas une feuille.
+Les équations conditionnelles de§56 sont donc des conséquences de V10
+avec ses deux blocs diagonaux exacts et ses lignes C exactes. Elles
+peuvent accélérer la propagation d'un solveur ; elles ne suppriment pas
+une solution de V10 qui aurait un défaut dans ces colonnes.
+
+**Branche(2,2,Z0).** Les deux négatifs ont le même unique voisin z dans
+Z0, troisième sommet du triangle ef. On a
+
+    E(e_e+e_f)=e_e+e_f+2e_z.
+
+Par(60a) et BG=GE, G_z=0. Ensuite BG_e=G_f+G_z=-G_e, donc G_e=G_f=0.
+Trois colonnes sont automatiquement exactes dans cette douzième branche.
+
+**Propagation supplémentaire dans(1,2).** Après G_e=G_f=0, l'unique
+voisin z de f dans Z0 vérifie G_z=BG_f-G_e=0. Dans une branche(1,b)
+quelconque, la somme des défauts des b-1 voisins Z0 de f est nulle ;
+on ne conclut pas séparément si b-1>1 sans une autre contrainte.
+
+Les12 branches mentionnées ne sont PAS exclues. Le résultat exclut un
+type précis de défaut de coexistence qui semblait encore disponible.
+Les colonnes restantes et l'existence du bord B,D restent à résoudre.
+
+## 61. Propagation entre les deux blocs, puis fermeture entière
+
+Maintenir deux espaces prouvés U inclus dans ker(G^t) et V inclus dans
+ker(G). Les relations de commutation donnent quatre transports :
+
+    B U inclus dans ker(G^t),   D V inclus dans ker(G^t),
+    E V inclus dans ker(G),     D^t U inclus dans ker(G).       (61a)
+
+Par exemple G D^t x=D G^t x=0 pour x dans U. Les espaces initiaux
+contiennent1_B et1_M ; chaque ligne ou colonne mixte déjà exacte ajoute
+le vecteur unité correspondant. Les lignes C exactes apportent ainsi
+TOUS les vecteurs D_c^t au côté résiduel, pas seulement leur somme(60a).
+
+Après saturation linéaire par(61a), ajouter la règle suivante :
+
+    Si (E-theta I)e_u appartient à V pour theta=0 ou-1,
+    alors e_u appartient à ker(G).                           (61b)
+
+En effet BG_u=GE e_u=theta G_u, puis§59 ferme la colonne. La même règle
+avec B et U ferme des lignes, en échangeant les deux blocs. Répéter
+transport et fermeture jusqu'à stabilisation. Ce n'est pas simplement
+une nouvelle écriture de l'espace de marches : l'intégralité permet
+d'ajouter des vecteurs unités qui n'y appartenaient pas.
+
+Une classe de vrais jumeaux dans E (clique avec même voisinage extérieur)
+dont la somme des colonnes de G est nulle se ferme colonne par colonne :
+la somme des équations BG_u annule la contribution extérieure commune,
+puis BG_u=-G_u. Pour de faux jumeaux indépendants, on obtient BG_u=0.
+Ce sont des jumeaux DANS LE BLOC E ; aucune symétrie du graphe99 entier
+n'est supposée. Le cas(2,2,Z0) de§60 est une application à la paire e,f.
+
+Code exact : `coclique_integral_defect_closure.py`. Les graines doivent
+être justifiées par les hypothèses ; le propagateur n'utilise pas la
+valeur calculée de G pour inventer des graines. Le mode `certify` vérifie
+séparément les hypothèses et les conclusions sur un candidat concret.
+
+**Contrôles nouveaux ciblés.** Le Paley25 sauvegardé, repartitionné avec
+une paire adjacente dans M, donne des dimensions(U,V)=(1,1)->(2,1) par
+le seul transport linéaire : les deux colonnes restent indissociables.
+La règle entière ajoute les deux unités résiduelles, atteint V=R² et
+ferme tout G. Sur la grille3x3 avec deux sommets indépendants dans M,
+c'est le mode0 qui ferme les deux colonnes. Le prisme pentagonal conserve
+ses dimensions(1,1), son défaut non nul et aucune fermeture indue.
+Les85 vecteurs entiers de somme nulle dans[-2,2]^4 satisfont(59b) pour
+les16 choix binaires de d ; ce dernier contrôle illustre l'inégalité,
+dont la preuve pour toute dimension est donnée ci-dessus.
+
+Sortie : `integral_closure_v11/integral_closure_checks.json`, PASS.
+Aucun gros solveur, aucun nouveau candidat C1 et aucune branche C1
+déclarée impossible dans ces contrôles.
+
+## 62. Échange avec Claude : budgets de triangles et redondances identifiées
+
+Messages593–596. Soit N l'incidence sommets/triangles, avec231 triangles,
+sept par sommet. Alors NN^t=A+7I. Pour q de§2 avec delta=1, écrire
+q_L=sum_{v dans L}q_v. On obtient exactement
+
+    sum_L q_L=126,   sum_L q_L²=336.
+
+Il y a147 triangles rencontrant C21 et84 entièrement hors C ; leurs
+sommes de charges respectives sont42 et84. Le budget de variance240
+proposé par Claude est une réécriture de ces identités. Il ne constitue
+pas à lui seul une restriction nouvelle après la loi Aq=3q+2*1.
+
+Pour préciser cette redondance dans(0,2), poser r=#triangles H-Y-Y et
+b=#triangles entièrement dans L (donc dans Y, car chaque X a degré1
+dans L). Le nombre de triangles par charge est nécessairement :
+
+| Charge du triangle | Nombre |
+|---|---:|
+|5|4|
+|4|r|
+|3|8-2r+b|
+|2|26-3b|
+|1|44+2r+3b|
+|0|136-r-b|
+|-1|12|
+|-2|1|
+
+Preuve : les quatre arêtes H-H donnent les quatre triangles H-H-X.
+Les vingt autres triangles contenant H se répartissent en r H-Y-Y,
+8-2r H-Y-Z et12+r H-Z-Z, où Z signifie ici une charge nulle. L a14
+arêtes ; après celles des r triangles H-Y-Y et des b triangles L-L-L,
+il reste14-r-3b triangles L-L-Z. Compter les84 incidences de triangles
+aux12 sommets L donne44+2r+3b triangles L-Z-Z. Le triangle ef a charge-2,
+et les six autres triangles par négatif ont charge-1. Les moments126
+et336 sont identiques pour tout r,b : compter ces types seuls ne les
+renforce pas.
+
+Claude a aussi étudié la Gram des droites associée au projecteur propre
+-4 : diagonale4, entrée0 pour deux droites sécantes et1-j pour deux
+droites disjointes reliées par j arêtes. Il a retiré explicitement en
+message596 l'affirmation que sa borne supérieure fournirait une coupe
+indépendante : elle se ramène aux coupes spectrales de sommets déjà
+acquises et au comptage des triangles partiellement présents. Ne pas
+réutiliser comme résultat acquis la proposition provisoire du message595.
+La poursuite utile doit ajouter une obligation entière ou combinatoire,
+ou exploiter ces relations sur un objet où elles ne sont pas déjà imposées.
