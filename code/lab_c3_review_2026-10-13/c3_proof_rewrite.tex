@@ -1,0 +1,867 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\tp}{\mathsf{T}}
+\newcommand{\av}{\mathbf{a}}
+\newcommand{\tA}{\widetilde{A}}
+\newcommand{\tN}{\widetilde{N}}
+\newcommand{\tG}{\widetilde{G}}
+\newcommand{\td}{\widetilde{d}}
+\newcommand{\Jw}{J_w}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\oA}{|\Aut(\Gamma)|}
+
+\title{The Conway 99-graph has no automorphism of order 3}
+\author{Dilan Djematene}
+\date{Draft of 14 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\Gamma$ be a strongly regular graph with parameters $(99,14,1,2)$; whether such a graph exists is Conway's
+99-graph problem. We prove that $\Gamma$ has no automorphism of order~3. The proof is elementary linear algebra over
+$\ZZ$ and over the Eisenstein integers $\ZZ[\omega]$ and uses no computer. An automorphism of order~3 without fixed
+vertices yields a symmetric integer matrix $Q$ and a Hermitian matrix $M$ over $\ZZ[\omega]$, both of size~33, which
+are congruent modulo $1-\omega$. We compare the lattices of integral eigenvectors of $Q$ and of $M$ for the
+eigenvalue~3. Their Gram determinants are congruent modulo~3. But the first is congruent to~2, because of the prime~11
+in $\one^{\tp}\one=33$, and the second is a power of~7, hence congruent to~1. An automorphism of order~3 with fixed
+vertices has exactly three of them, and this case is excluded by the same method applied to a weighted form.
+\end{abstract}
+
+%======================================================================
+\section{Introduction}
+
+\subsection{The result}
+Throughout the paper, $\Gamma$ denotes a strongly regular graph with parameters $(99,14,1,2)$: a graph with $99$
+vertices in which every vertex has exactly $14$ neighbours, two adjacent vertices have exactly one common neighbour,
+and two distinct non-adjacent vertices have exactly two common neighbours. It is not known whether such a graph
+exists; this is Conway's 99-graph problem \cite{Co}. All statements below are statements about a hypothetical graph.
+
+\begin{theorem}\label{thm:main}
+$\Gamma$ has no automorphism of order~$3$.
+\end{theorem}
+
+Theorem~\ref{thm:main} is the conjunction of the following three statements.
+
+\begin{proposition}\label{prop:fix}
+Let $g$ be an automorphism of $\Gamma$ of order~$3$. Then either $g$ fixes no vertex, or $g$ fixes exactly three
+vertices and these are pairwise adjacent.
+\end{proposition}
+
+\begin{theorem}\label{thm:free}
+$\Gamma$ has no automorphism of order~$3$ without fixed vertices.
+\end{theorem}
+
+\begin{theorem}\label{thm:tri}
+$\Gamma$ has no automorphism of order~$3$ with exactly three fixed vertices.
+\end{theorem}
+
+Proposition~\ref{prop:fix} is proved in Section~\ref{sec:fix} by an elementary count; it is due to Makhnev and
+Minakova \cite{MM04}, who obtained it by character theory. Theorem~\ref{thm:free} is proved in
+Section~\ref{sec:free} and Theorem~\ref{thm:tri} in Section~\ref{sec:tri}.
+
+\subsection{Previous work}
+The following results are quoted from the
+literature; $\oA$ is the order of the automorphism group of $\Gamma$.
+\begin{itemize}[leftmargin=*]
+\item Makhnev and Minakova \cite{MM04}: $\oA$ divides $2\cdot3^3\cdot7\cdot11$, and an automorphism of order~3 fixes
+either no vertex or the three vertices of a triangle.
+\item Behbahani and Lam \cite{B09,BL11}, by a computer search based on orbit matrices: no prime other than $2$ and
+$3$ divides $\oA$, and an automorphism of order~3 has no fixed vertex \cite[Theorem~4.14]{B09}. The automorphisms of
+order~3 without fixed vertices are the one case of prime order that this search did not settle
+\cite[Table~21]{B09}.
+\item Crnkovi\'c and Maksimovi\'c \cite{CM20}, by computer: $\Aut(\Gamma)$ has no subgroup of order $6$ or $9$.
+\item Makhnev \cite[Corollary~2.4]{Mak10}: if $2$ divides $\oA$, then $\oA$ divides $42$.
+\item Cesarz and Woldar \cite{CW25}, without computer: if $7$ divides $\oA$, then $\Aut(\Gamma)\cong\ZZ/7\ZZ$.
+\item Ishida \cite[Proposition~8.7]{I26}: an automorphism of order~3 without fixed vertices has exactly six orbits
+that induce a triangle.
+\end{itemize}
+Theorem~\ref{thm:free} settles the case left open in \cite{B09,BL11}. Proposition~\ref{prop:fix} and
+Theorem~\ref{thm:tri} give a computer-free proof of the case with fixed vertices. The consequences for $\oA$ are
+stated in Section~\ref{sec:aut}.
+
+\subsection{Idea of the proof}
+Let $A$ be the adjacency matrix of $\Gamma$; its eigenvalues are $14$, $3$ and $-4$. Let $g$ be an automorphism of
+order~3 without fixed vertices. The eigenvectors of $A$ for the eigenvalue~$3$ that are invariant under $g$ are the
+eigenvectors of a $33\times33$ symmetric integer matrix $Q$, the quotient matrix of the orbit partition. Those on
+which $g$ acts as multiplication by a primitive cube root of unity $\omega$ are the eigenvectors of a $33\times33$
+Hermitian matrix $M$ with entries in $\ZZ[\omega]$. The two matrices are congruent modulo $\pi=1-\omega$, and
+$\ZZ[\omega]/\pi\ZZ[\omega]=\FF_3$.
+
+We consider the lattice $L=\ker(Q-3I)\cap\ZZ^{33}$ with the Gram matrix $G$ of a basis, and the $\ZZ[\omega]$-lattice
+$L'=\ker(M-3I)\cap\ZZ[\omega]^{33}$ with the Hermitian Gram matrix $G'$ of a basis. Two facts are proved.
+\begin{enumerate}[label=(\arabic*)]
+\item $\det G\equiv\det G'\pmod 3$. The reason is that a fixed multiple of the orthogonal projection on each
+eigenspace is an integral matrix (these are $N=11(Q+4I)-6J$ and $N'=M+4I$), that such a matrix determines the inverse
+of the Gram matrix, and that $N\equiv 2N'$ modulo $\pi$.
+\item $\det G'$ is a power of~$7$, whereas $\det G=7^{e_7}11^{e_{11}}$ with $e_{11}$ odd. The prime $11$ enters
+through the all-ones vector, which is orthogonal to $L$ and has norm $33=3\cdot11$.
+\end{enumerate}
+Since $7\equiv1$ and $11\equiv2\pmod3$, the two facts contradict each other. When $g$ has three fixed vertices the
+same argument is carried out for the $35\times35$ quotient matrix, which is self-adjoint for the form
+$\mathrm{diag}(3,\dots,3,1,1,1)$; the additional point is that the coordinates of the vectors of $L$ at the fixed
+vertices are divisible by~$3$.
+
+\subsection{Organisation}
+Section~\ref{sec:prelim} fixes the notation and proves four lemmas of linear algebra over $\ZZ$, $\ZZ[\omega]$ and
+$\FF_3$; they are stated in the generality needed for both cases, so that nothing has to be adapted later.
+Section~\ref{sec:fix} proves Proposition~\ref{prop:fix}. Section~\ref{sec:orbit} introduces the matrices attached to
+an automorphism of order~3. Sections~\ref{sec:free} and~\ref{sec:tri} prove Theorems~\ref{thm:free}
+and~\ref{thm:tri}. Section~\ref{sec:aut} states the consequences for $\Aut(\Gamma)$, and
+Section~\ref{sec:formal} describes the formal verification.
+
+%======================================================================
+\section{Preliminaries}\label{sec:prelim}
+
+\subsection{Notation}
+\paragraph{Matrices.} Vectors are column vectors. For a matrix $X$ we write $X^{\tp}$ for its transpose and, when
+its entries are complex numbers, $X^*=\overline{X}^{\tp}$ for its conjugate transpose. A square matrix $X$ is
+\emph{Hermitian} if $X^*=X$; for a real matrix this means symmetric. We write $I_n$ for the identity matrix of size
+$n$, $J_{p\times q}$ for the $p\times q$ matrix all of whose entries are $1$, $J_n=J_{n\times n}$, and $\one_n$ for the
+vector of length $n$ all of whose entries are $1$. The subscripts are omitted when the size is clear. For a ring $R$,
+$M_{p\times q}(R)$ is the set of $p\times q$ matrices with entries in $R$ and $M_n(R)=M_{n\times n}(R)$. We allow
+$p=0$ or $q=0$, with the usual conventions; in particular the determinant of the $0\times0$ matrix is~$1$. This
+avoids a separate treatment of the case where a kernel is zero.
+
+\paragraph{Eisenstein integers.} Let $\omega=e^{2\pi i/3}$, so that $\omega^2+\omega+1=0$ and
+$\overline{\omega}=\omega^2=\omega^{-1}$. The ring $\ZZ[\omega]=\{a+b\omega : a,b\in\ZZ\}$ is stable under complex
+conjugation. We put $\pi=1-\omega$. We use the following facts.
+\begin{enumerate}[label=(E\arabic*),leftmargin=3em]
+\item\label{E1} $\ZZ[\omega]$ is a Euclidean domain, hence a principal ideal domain \cite[Chapter~1, \S4]{IR}.
+\item\label{E2} $\ZZ[\omega]\cap\RR=\ZZ$. Indeed the imaginary part of $a+b\omega$ is $b\sqrt3/2$.
+\item\label{E3} The map $\rho:\ZZ[\omega]\to\FF_3$, $\rho(a+b\omega)=(a+b)\bmod 3$, is a ring homomorphism. It is
+additive and $\rho(1)=1$. For the products,
+$(a+b\omega)(c+d\omega)=(ac-bd)+(ad+bc-bd)\omega$ and $(ac-bd)+(ad+bc-bd)\equiv(a+b)(c+d)\pmod3$.
+On $\ZZ$ the map $\rho$ is the reduction modulo~$3$. Moreover $\rho(\pi)=0$, and $\rho(\overline z)=\rho(z)$ for all
+$z$, because $\overline{a+b\omega}=(a-b)-b\omega$ and $a-2b\equiv a+b\pmod 3$.
+\item\label{E4} If $X\in M_n(\ZZ[\omega])$ is Hermitian, then $\det X\in\ZZ$. Indeed
+$\det X=\det X^*=\overline{\det X}$, so $\det X$ is real, and \ref{E2} applies.
+\end{enumerate}
+For a matrix $X$ over $\ZZ[\omega]$ we write $\rho(X)$ for the matrix over $\FF_3$ obtained by applying $\rho$ to
+every entry. Since $\rho$ is a ring homomorphism, $\rho(XY)=\rho(X)\rho(Y)$ and $\rho(\det X)=\det\rho(X)$; by
+\ref{E3}, $\rho(X^*)=\rho(X)^{\tp}$. For two matrices $X,Y$ of the same size over $\ZZ[\omega]$ we write
+$X\equiv Y\pmod\pi$ if every entry of $X-Y$ lies in $\pi\ZZ[\omega]$; then $\rho(X)=\rho(Y)$.
+
+\paragraph{Convention.} In Lemmas~\ref{lem:basis} and~\ref{lem:gram}, $R$ denotes $\ZZ$ or $\ZZ[\omega]$ and
+$\KK\subset\CC$ its field of fractions. For $R=\ZZ$ complex conjugation is trivial on $R$ and $X^*=X^{\tp}$.
+
+\subsection{Bases of kernels}
+
+\begin{lemma}\label{lem:basis}
+Let $Y\in M_n(R)$ and $L=\{v\in R^n : Yv=0\}$. There exist an integer $r\ge0$ and matrices $B\in M_{n\times r}(R)$
+and $C\in M_{r\times n}(R)$ such that
+\begin{enumerate}[label=(\alph*)]
+\item the columns of $B$ form a basis of the $R$-module $L$;
+\item $CB=I_r$;
+\item $BCv=v$ for every $v\in L$.
+\end{enumerate}
+Moreover $r$ is the dimension of the $\KK$-vector space $\{v\in\KK^n : Yv=0\}$, and the columns of $B$ are linearly
+independent over $\CC$.
+\end{lemma}
+\begin{proof}
+The ring $R$ is a principal ideal domain (by \ref{E1} for $R=\ZZ[\omega]$). A submodule of a free module of finite
+rank over a principal ideal domain is free of finite rank \cite[Chapter~III, \S7]{La}. This applies to
+$L\subset R^n$, and to $R^n/L$, which is isomorphic to the submodule $Y(R^n)$ of $R^n$. Since $R^n/L$ is free, the
+projection $R^n\to R^n/L$ has an $R$-linear section; its image $L_1$ is a free submodule and $R^n=L\oplus L_1$. Let
+$b_1,\dots,b_r$ be a basis of $L$ and $b_{r+1},\dots,b_{n'}$ a basis of $L_1$. Then $b_1,\dots,b_{n'}$ is a basis of
+$R^n$, so $n'=n$, and the matrix $P\in M_n(R)$ with columns $b_1,\dots,b_n$ has an inverse $P^{-1}\in M_n(R)$. Let
+$B$ consist of the first $r$ columns of $P$ and $C$ of the first $r$ rows of $P^{-1}$. Then (a) holds by
+construction, and (b) is the upper left $r\times r$ block of the identity $P^{-1}P=I_n$. For (c), write $v=Bu$ with
+$u\in R^r$; then $BCv=B(CB)u=Bu=v$.
+
+Let $V_{\KK}=\{v\in\KK^n : Yv=0\}$. Then $L\subset V_{\KK}$, and every $v\in V_{\KK}$ has a multiple $sv$ with
+$s\in R\setminus\{0\}$ and $sv\in R^n$; this multiple lies in $L$. Hence $L$ spans $V_{\KK}$ over $\KK$. A
+$\KK$-linear relation between $b_1,\dots,b_r$ gives an $R$-linear relation after multiplication by a common
+denominator, so $b_1,\dots,b_r$ are linearly independent over $\KK$. Therefore $r=\dim_{\KK}V_{\KK}$. Finally the
+rank of the matrix $B$ is the same over $\KK$ and over $\CC$, so its columns are linearly independent over $\CC$.
+\end{proof}
+
+\subsection{The Gram identity}
+
+\begin{lemma}\label{lem:gram}
+Let $L\subset R^n$, $B\in M_{n\times r}(R)$ and $C\in M_{r\times n}(R)$ satisfy (a), (b), (c) of
+Lemma~\ref{lem:basis}, the columns of $B$ being linearly independent over $\CC$. Let $D\in M_n(\ZZ)$ be a diagonal
+matrix with positive diagonal entries. Let $X\in M_n(R)$ and let $c$ be a non-zero integer such that
+\begin{enumerate}[label=(G\arabic*),leftmargin=3em]
+\item\label{G1} $X^*=X$;
+\item\label{G2} every column of $X$ lies in $L$;
+\item\label{G3} $XDv=cv$ for every $v\in L$.
+\end{enumerate}
+Put $G=B^*DB\in M_r(R)$ and $K_X=CXC^*\in M_r(R)$. Then
+\begin{enumerate}[label=(\roman*)]
+\item $G$ and $K_X$ are Hermitian, and $G$ is positive definite;
+\item $X=BK_XB^*$;
+\item $GK_X=c\,I_r$;
+\item $\det G$ and $\det K_X$ are integers, $\det G>0$, and $\det G\cdot\det K_X=c^{\,r}$.
+\end{enumerate}
+In particular every prime dividing $\det G$ or $\det K_X$ divides $c$.
+\end{lemma}
+\begin{proof}
+(i) Since $D$ is real and diagonal, $D^*=D$, so $G^*=B^*D^*B=G$; and $K_X^*=CX^*C^*=K_X$ by \ref{G1}. Let
+$u\in\CC^r$, $u\ne0$. Then $Bu\ne0$ because the columns of $B$ are linearly independent over $\CC$, and
+$u^*Gu=(Bu)^*D(Bu)=\sum_iD_{ii}\,|(Bu)_i|^2>0$.
+
+(ii) By \ref{G2} and property (c) applied to each column of $X$, we have $BCX=X$. Taking conjugate transposes and
+using \ref{G1}, $X=X^*=X^*C^*B^*=XC^*B^*$. Hence
+\[
+X=BCX=BC\,(XC^*B^*)=B\,(CXC^*)\,B^*=BK_XB^*.
+\]
+
+(iii) By \ref{G3} applied to each column of $B$, we have $XDB=cB$. Taking conjugate transposes, and using
+$X^*=X$, $D^*=D$ and $c\in\ZZ$, we get $B^*DX=cB^*$. Therefore, using $BCX=X$ and then (b),
+\[
+GK_X=B^*DB\,CXC^*=B^*D\,(BCX)\,C^*=B^*DX\,C^*=c\,B^*C^*=c\,(CB)^*=c\,I_r .
+\]
+
+(iv) The determinants of the Hermitian matrices $G$ and $K_X$ are integers, trivially if $R=\ZZ$ and by \ref{E4}
+if $R=\ZZ[\omega]$. A positive definite Hermitian matrix has positive determinant. Taking determinants in (iii)
+gives $\det G\cdot\det K_X=c^{\,r}$.
+\end{proof}
+
+\subsection{A lattice and one more vector}
+
+\begin{lemma}\label{lem:index}
+Let $D\in M_n(\ZZ)$ be a diagonal matrix with positive diagonal entries. Let $L\subset L_W\subset\ZZ^n$ be
+subgroups, and let $B\in M_{n\times r}(\ZZ)$, $B_W\in M_{n\times(r+1)}(\ZZ)$ and $C_W\in M_{(r+1)\times n}(\ZZ)$ be
+such that the columns of $B$ form a basis of $L$, the columns of $B_W$ form a basis of $L_W$, and $B_WC_Wv=v$ for
+every $v\in L_W$. Let $e\in L_W$ be a non-zero vector such that $B^{\tp}De=0$. Put $G=B^{\tp}DB$ and
+$G_W=B_W^{\tp}DB_W$. Then there is a non-zero integer $t$ such that
+\[
+(e^{\tp}De)\cdot\det G=t^2\cdot\det G_W .
+\]
+\end{lemma}
+\begin{proof}
+Let $[B\,|\,e]\in M_{n\times(r+1)}(\ZZ)$ be the matrix $B$ with the extra column $e$, and put
+$T=C_W[B\,|\,e]\in M_{r+1}(\ZZ)$. Every column of $[B\,|\,e]$ lies in $L_W$, so $B_WT=B_WC_W[B\,|\,e]=[B\,|\,e]$.
+Hence
+\[
+T^{\tp}G_WT=(B_WT)^{\tp}D(B_WT)=[B\,|\,e]^{\tp}D[B\,|\,e]
+=\begin{pmatrix}B^{\tp}DB&B^{\tp}De\\ e^{\tp}DB&e^{\tp}De\end{pmatrix}
+=\begin{pmatrix}G&0\\0&e^{\tp}De\end{pmatrix},
+\]
+because $B^{\tp}De=0$ and $e^{\tp}DB=(B^{\tp}De)^{\tp}=0$. Taking determinants,
+$(\det T)^2\det G_W=(e^{\tp}De)\det G$. The right-hand side is not zero: $e^{\tp}De>0$ since $e\ne0$, and
+$\det G>0$ since $G$ is positive definite (the columns of $B$ are linearly independent). So $t=\det T$ is a non-zero
+integer with the required property.
+\end{proof}
+
+\subsection{A comparison over the field with three elements}
+
+\begin{lemma}\label{lem:F3}
+Let $n_0\ge1$ and $r,r'\ge0$ be integers, $P\in M_{n_0}(\FF_3)$ and $\varepsilon\in\FF_3\setminus\{0\}$. Let
+$H\in M_r(\FF_3)$ and $H'\in M_{r'}(\FF_3)$ be invertible matrices, and let $E\in M_{n_0\times r}(\FF_3)$,
+$F\in M_{r\times n_0}(\FF_3)$, $E'\in M_{n_0\times r'}(\FF_3)$, $F'\in M_{r'\times n_0}(\FF_3)$ be such that
+\begin{enumerate}[label=(C\arabic*),leftmargin=3em]
+\item\label{C1} $H=\varepsilon\,FPF^{\tp}$;
+\item\label{C2} $P=E'H'E'^{\tp}$;
+\item\label{C3} $H'=F'PF'^{\tp}$;
+\item\label{C4} $\varepsilon P=EHE^{\tp}$.
+\end{enumerate}
+Then $r=r'$ and $\det H=\varepsilon^{\,r}\det H'$.
+\end{lemma}
+\begin{proof}
+Substituting \ref{C2} in \ref{C1} gives $H=\varepsilon\,(FE')\,H'\,(FE')^{\tp}$, where $FE'$ has $r$ rows and $r'$
+columns. Since $H$ is invertible of size $r$, we get $r=\operatorname{rank}H\le\operatorname{rank}(FE')\le r'$.
+Substituting \ref{C4} in \ref{C3} gives $H'=\varepsilon^{-1}(F'E)\,H\,(F'E)^{\tp}$, where $F'E$ has $r'$ rows and
+$r$ columns, and in the same way $r'\le r$. Hence $r=r'$, the matrix $FE'$ is square, and
+\[
+\det H=\varepsilon^{\,r}\,\det(FE')^2\,\det H' .
+\]
+Since $\det H\ne0$, we have $\det(FE')\ne0$, and the square of a non-zero element of $\FF_3$ is $1$.
+\end{proof}
+
+%======================================================================
+\section{Fixed vertices: proof of Proposition~\ref{prop:fix}}\label{sec:fix}
+
+We write $x\sim y$ when the vertices $x$ and $y$ are adjacent, and $\Gamma(x)$ for the set of neighbours of $x$.
+
+\begin{proof}[Proof of Proposition~\ref{prop:fix}]
+Let $g$ be an automorphism of order~3 and $F$ its set of fixed vertices. Every orbit of the group generated by $g$
+has $1$ or $3$ elements. For $x\in F$ let $n_x=|\Gamma(x)\cap F|$.
+
+\medskip\noindent\emph{Step 1. A vertex adjacent to two distinct fixed vertices is fixed.}
+Let $v$ be adjacent to $a,b\in F$ with $a\ne b$. Then $gv$ and $g^2v$ are also adjacent to $a=ga$ and to $b=gb$, so
+the orbit of $v$ consists of common neighbours of $a$ and $b$. If $a\sim b$, there is exactly one common neighbour,
+so $gv=v$. If $a\not\sim b$, there are exactly two common neighbours; the orbit of $v$ has $1$ or $3$ elements and is
+contained in a set of two elements, so it has one element and $gv=v$.
+
+Consequently, a vertex that is not fixed has at most one fixed neighbour.
+
+\medskip\noindent\emph{Step 2. For every $x\in F$, $n_x\in\{2,8,14\}$.}
+Since $g$ fixes $x$, it permutes $\Gamma(x)$, and $\Gamma(x)\setminus F$ is a union of orbits of size~3. Hence
+$14-n_x\equiv0\pmod 3$, that is, $n_x\in\{2,5,8,11,14\}$. Next we show that $n_x$ is even. For $u\in\Gamma(x)\cap F$
+let $u^\circ$ be the unique common neighbour of the adjacent vertices $x$ and $u$. It is adjacent to the two distinct
+fixed vertices $x$ and $u$, so it is fixed by Step~1; thus $u^\circ\in\Gamma(x)\cap F$ and $u^\circ\ne u$. Moreover
+$u$ is a common neighbour of $x$ and $u^\circ$, so $(u^\circ)^\circ=u$. The map $u\mapsto u^\circ$ is therefore an
+involution of $\Gamma(x)\cap F$ without fixed element, and $n_x$ is even.
+
+\medskip\noindent\emph{Step 3. $15\,|F|\le 99+\sum_{x\in F}n_x$.}
+Count the pairs $(x,v)$ with $x\in F$, $v\notin F$ and $x\sim v$. Each $x\in F$ belongs to $14-n_x$ such pairs, and
+each $v\notin F$ to at most one, by Step~1. Hence $\sum_{x\in F}(14-n_x)\le 99-|F|$.
+
+\medskip\noindent\emph{Step 4. No $x\in F$ has $n_x=14$.}
+Suppose $n_x=14$, so that every neighbour of $x$ is fixed. Let $y$ be a vertex with $y\ne x$ and $y\not\sim x$. Its
+two common neighbours with $x$ are two distinct fixed vertices, so $y$ is fixed by Step~1. Thus every vertex is fixed
+and $g$ is the identity, which is not of order~3.
+
+\medskip\noindent\emph{Step 5. No $x\in F$ has $n_x=8$.}
+Suppose $n_x=8$. Let $S_1=\Gamma(x)\cap F$, so $|S_1|=8$, and $S_2=F\setminus(\{x\}\cup S_1)$, $s=|S_2|$; thus
+$|F|=9+s$.
+
+Let $u\in S_1$. A fixed neighbour of $u$ is $x$, or lies in $S_1$, or lies in $S_2$. A neighbour of $u$ in $S_1$ is a
+common neighbour of the adjacent vertices $x$ and $u$, and there is only one such vertex. Hence
+$n_u\le 2+|\Gamma(u)\cap S_2|$.
+
+Let $y\in S_2$. Then $y\ne x$ and $y\not\sim x$, since the fixed neighbours of $x$ are the elements of $S_1$. A
+neighbour of $y$ in $S_1$ is a common neighbour of $x$ and $y$, and there are exactly two common neighbours. Hence
+$|\Gamma(y)\cap S_1|\le2$. Counting the edges between $S_1$ and $S_2$ from both sides,
+\[
+\sum_{u\in S_1}|\Gamma(u)\cap S_2|=\sum_{y\in S_2}|\Gamma(y)\cap S_1|\le 2s,
+\qquad\text{so}\qquad \sum_{u\in S_1}n_u\le 16+2s .
+\]
+By Steps~2 and~4, $n_y\le8$ for every $y\in S_2$, so $\sum_{y\in S_2}n_y\le 8s$. Altogether
+\[
+\sum_{z\in F}n_z=n_x+\sum_{u\in S_1}n_u+\sum_{y\in S_2}n_y\le 8+(16+2s)+8s=24+10s .
+\]
+Step~3 now gives $15(9+s)\le 99+24+10s$, that is, $12+5s\le0$, which is impossible.
+
+\medskip\noindent\emph{Step 6. Conclusion.}
+Suppose $F\ne\emptyset$. By Steps~2, 4 and~5, $n_z=2$ for every $z\in F$. Let $x\in F$ and
+$\Gamma(x)\cap F=\{a,c\}$. By the pairing of Step~2, $a^\circ=c$, so $a\sim c$, and $\{x,a,c\}$ is a set of three
+pairwise adjacent fixed vertices. Suppose there is a fixed vertex $y\notin\{x,a,c\}$. Then $y\not\sim x$, because the
+fixed neighbours of $x$ are $a$ and $c$. So $x$ and $y$ have two common neighbours; each is adjacent to the two
+distinct fixed vertices $x$ and $y$, hence is fixed by Step~1, hence belongs to $\Gamma(x)\cap F=\{a,c\}$. So both $a$
+and $c$ are adjacent to $y$. Then $a$ has the three distinct fixed neighbours $x$, $c$ and $y$, contradicting
+$n_a=2$. Therefore $F=\{x,a,c\}$.
+\end{proof}
+
+%======================================================================
+\section{The orbit matrices}\label{sec:orbit}
+
+Let $A$ be the adjacency matrix of $\Gamma$, a symmetric $99\times99$ matrix with entries in $\{0,1\}$ and zero
+diagonal, indexed by the vertices. The definition of $\Gamma$ gives $A^2=14I+A+2(J-I-A)$, that is,
+\begin{equation}\label{eq:srg}
+A^2+A=12\,I+2J ,\qquad A\one=14\,\one .
+\end{equation}
+Let $g$ be an automorphism of $\Gamma$ of order~3, and let $f$ be the number of its fixed vertices. By
+Proposition~\ref{prop:fix}, $f\in\{0,3\}$ and the fixed vertices are pairwise adjacent. The other $99-f$ vertices form
+$m=(99-f)/3$ orbits of size~3; thus $(m,f)=(33,0)$ or $(32,3)$. We choose one vertex in each of these orbits and
+label the vertices of the $i$-th orbit $(i,b)$, $b\in\ZZ/3\ZZ$, so that
+\[
+g(i,b)=(i,b+1)\qquad(1\le i\le m,\ b\in\ZZ/3\ZZ).
+\]
+If $f=3$, the fixed vertices are denoted $t_1,t_2,t_3$. Since $g$ is an automorphism, $A[gx,gy]=A[x,y]$ for all
+vertices $x,y$.
+
+For $b\in\ZZ/3\ZZ$ let $A_b\in M_m(\ZZ)$ be defined by $A_b[i,j]=A[(i,0),(j,b)]$. Applying $g^{e}$ we get
+\begin{equation}\label{eq:shift}
+A[(i,e),(j,e+b)]=A_b[i,j]\qquad\text{for all }i,j\text{ and all }b,e\in\ZZ/3\ZZ .
+\end{equation}
+If $f=3$, let $\av\in M_{32\times3}(\ZZ)$ be defined by $\av[i,h]=A[(i,0),t_h]$; since $g$ fixes $t_h$,
+\begin{equation}\label{eq:shifta}
+A[(i,b),t_h]=\av[i,h]\qquad\text{for all }i,h\text{ and all }b\in\ZZ/3\ZZ .
+\end{equation}
+We put
+\[
+Q=A_0+A_1+A_2\in M_m(\ZZ),\qquad M=A_0+\omega A_1+\omega^2A_2\in M_m(\ZZ[\omega]).
+\]
+If $f=0$ we put $\tA=Q$ and $w=3\cdot\one_{33}$. If $f=3$ we put
+\[
+\tA=\begin{pmatrix}Q&\av\\ 3\av^{\tp}&J_3-I_3\end{pmatrix}\in M_{35}(\ZZ),\qquad
+w=(3,\dots,3,1,1,1)^{\tp}\in\ZZ^{35},
+\]
+where $w$ has $32$ entries equal to $3$. In both cases $\tA$ and $w$ have size $m+f$.
+
+\begin{lemma}\label{lem:orbit}
+With the notation above:
+\begin{enumerate}[label=(\roman*)]
+\item $A_b^{\tp}=A_{-b}$ for every $b\in\ZZ/3\ZZ$.
+\item For every $b\in\ZZ/3\ZZ$,
+\[
+\sum_{e\in\ZZ/3\ZZ}A_eA_{b-e}+\av\av^{\tp}=12\,\delta_{b,0}\,I+2J-A_b ,
+\]
+where $\delta_{b,0}=1$ if $b=0$ and $0$ otherwise, and where the term $\av\av^{\tp}$ is absent if $f=0$.
+\item $Q$ is symmetric, $M$ is Hermitian, and $Q\equiv M\pmod\pi$.
+\item $M^2+M=12\,I_m$.
+\item $\tA\,\one=14\,\one$ and $\tA^2+\tA=12\,I+2\,\one w^{\tp}$.
+\end{enumerate}
+In particular, if $f=0$, then $Q\one=14\one$ and $Q^2+Q=12I+6J$.
+\end{lemma}
+\begin{proof}
+(i) By the symmetry of $A$ and then \eqref{eq:shift} with $e=b$ and $-b$ in place of $b$,
+$A_b[j,i]=A[(j,0),(i,b)]=A[(i,b),(j,0)]=A_{-b}[i,j]$.
+
+(ii) Let $1\le i,j\le m$ and $b\in\ZZ/3\ZZ$. The entry of $A^2$ in row $(i,0)$ and column $(j,b)$ is the sum of
+$A[(i,0),z]\,A[z,(j,b)]$ over all vertices $z$. The vertices $z=(k,e)$ contribute, by \eqref{eq:shift},
+\[
+\sum_{e\in\ZZ/3\ZZ}\ \sum_{k=1}^{m}A_e[i,k]\,A_{b-e}[k,j]=\sum_{e\in\ZZ/3\ZZ}(A_eA_{b-e})[i,j] .
+\]
+If $f=3$, the vertices $z=t_h$ contribute, by \eqref{eq:shifta} and the symmetry of $A$,
+$\sum_{h}\av[i,h]\,\av[j,h]=(\av\av^{\tp})[i,j]$. On the other hand, by \eqref{eq:srg}, $A^2=12I+2J-A$, and the entry
+of $12I+2J-A$ in row $(i,0)$ and column $(j,b)$ is $12\,\delta_{b,0}\,\delta_{i,j}+2-A_b[i,j]$, because
+$(i,0)=(j,b)$ if and only if $i=j$ and $b=0$. This proves (ii).
+
+(iii) By (i), $Q^{\tp}=\sum_bA_{-b}=Q$ and
+$M^*=\sum_b\overline{\omega}^{\,b}A_b^{\tp}=\sum_b\omega^{-b}A_{-b}=M$. Moreover
+$Q-M=(1-\omega)A_1+(1-\omega^2)A_2=\pi\,\bigl(A_1+(1+\omega)A_2\bigr)$.
+
+(iv) Since $\omega^{e+e'}$ depends only on the class of $e+e'$ modulo~3, grouping the terms according to $b=e+e'$
+and using (ii) gives
+\begin{align*}
+M^2=\sum_{e,e'}\omega^{e+e'}A_eA_{e'}=\sum_{b}\omega^{b}\sum_{e}A_eA_{b-e}
+&=\sum_b\omega^b\bigl(12\,\delta_{b,0}I+2J-A_b-\av\av^{\tp}\bigr)\\
+&=12I-M+(1+\omega+\omega^2)\bigl(2J-\av\av^{\tp}\bigr),
+\end{align*}
+and $1+\omega+\omega^2=0$. (If $f=0$ the term $\av\av^{\tp}$ is absent.)
+
+(v) Let $\iota:\ZZ^{m+f}\to\ZZ^{99}$ be the map that sends $x$ to the vector with coordinate $x_i$ at each of the
+three vertices $(i,b)$ and, if $f=3$, coordinate $x_{t_h}$ at $t_h$ (we index the last three coordinates of
+$\ZZ^{35}$ by $t_1,t_2,t_3$). The map $\iota$ is additive and injective, and $\iota(\one)=\one$. We claim that
+\begin{equation}\label{eq:iota}
+A\,\iota(x)=\iota(\tA x)\qquad\text{and}\qquad J\,\iota(x)=\iota\bigl((w^{\tp}x)\,\one\bigr)
+\qquad\text{for all }x\in\ZZ^{m+f}.
+\end{equation}
+The coordinate of $A\,\iota(x)$ at $(i,b)$ is, by \eqref{eq:shift} and \eqref{eq:shifta},
+\[
+\sum_{j,b'}A[(i,b),(j,b')]\,x_j+\sum_hA[(i,b),t_h]\,x_{t_h}=\sum_jQ[i,j]\,x_j+\sum_h\av[i,h]\,x_{t_h},
+\]
+which is the $i$-th coordinate of $\tA x$. If $f=3$, the coordinate of $A\,\iota(x)$ at $t_h$ is
+\[
+\sum_{j,b'}A[t_h,(j,b')]\,x_j+\sum_{l\ne h}x_{t_l}=\sum_j3\,\av[j,h]\,x_j+\sum_{l\ne h}x_{t_l},
+\]
+because the fixed vertices are pairwise adjacent; this is the coordinate of $\tA x$ at $t_h$. Finally every
+coordinate of $J\,\iota(x)$ equals the sum of the coordinates of $\iota(x)$, which is $w^{\tp}x$. This proves
+\eqref{eq:iota}.
+
+Applying \eqref{eq:iota} to $x=\one$ and using \eqref{eq:srg}, $\iota(\tA\one)=A\one=14\,\one=\iota(14\,\one)$, so
+$\tA\one=14\one$. Applying \eqref{eq:iota} twice and \eqref{eq:srg},
+\[
+\iota\bigl((\tA^2+\tA)x\bigr)=(A^2+A)\,\iota(x)=12\,\iota(x)+2J\,\iota(x)=\iota\bigl(12x+2(w^{\tp}x)\one\bigr)
+\]
+for every $x$, and the injectivity of $\iota$ gives $\tA^2+\tA=12I+2\,\one w^{\tp}$. If $f=0$ then $\tA=Q$ and
+$\one w^{\tp}=3J$, which gives the last assertion.
+\end{proof}
+
+%======================================================================
+\section{No fixed vertex: proof of Theorem~\ref{thm:free}}\label{sec:free}
+
+By Lemma~\ref{lem:orbit} with $f=0$, Theorem~\ref{thm:free} follows from the next statement, in which no graph
+appears.
+
+\begin{theorem}\label{thm:freemat}
+There is no pair $(Q,M)$ with the following properties:
+$Q\in M_{33}(\ZZ)$ is symmetric, $Q\one=14\,\one$ and $Q^2+Q=12I+6J$;
+$M\in M_{33}(\ZZ[\omega])$ is Hermitian and $M^2+M=12I$;
+and $Q\equiv M\pmod\pi$.
+\end{theorem}
+
+\begin{proof}
+Suppose that $(Q,M)$ is such a pair. All matrices in this proof have size $33$ unless stated otherwise.
+
+\medskip\noindent\textbf{Step 1: the eigenspaces of $Q$.}
+Let $V=\{x\in\QQ^{33} : Qx=3x\}$ and $W=\{x\in\QQ^{33} : (Q-3I)(Q-14I)x=0\}$.
+
+\smallskip\noindent(1a) $QJ=JQ=14J$. Indeed $QJ=(Q\one)\one^{\tp}=14J$, and transposing gives $JQ=14J$ because $Q$
+and $J$ are symmetric.
+
+\smallskip\noindent(1b) If $x\in V$ then $\one^{\tp}x=0$. Indeed $\one^{\tp}Q=(Q\one)^{\tp}=14\,\one^{\tp}$, so
+$14\,\one^{\tp}x=\one^{\tp}Qx=3\,\one^{\tp}x$.
+
+\smallskip\noindent(1c) $\{x\in\QQ^{33} : Qx=14x\}=\QQ\one$. Let $Qx=14x$, and put $y=x-\frac{\one^{\tp}x}{33}\one$.
+Then $\one^{\tp}y=0$ and $Qy=14y$. Hence $Jy=0$ and $(Q^2+Q-12I)y=6Jy=0$, that is, $(196+14-12)\,y=0$, so $y=0$ and
+$x\in\QQ\one$. Conversely $Q\one=14\one$.
+
+\smallskip\noindent(1d) $W=V\oplus\QQ\one$; in particular $\dim W=\dim V+1$. Let $x\in W$. Then
+\[
+x=\tfrac1{11}\bigl((Q-3I)x-(Q-14I)x\bigr).
+\]
+The vector $(Q-3I)x$ is annihilated by $Q-14I$, so it lies in $\QQ\one$ by (1c); the vector $(Q-14I)x$ is
+annihilated by $Q-3I$, so it lies in $V$. Hence $W\subset V+\QQ\one$, and the reverse inclusion is clear. The sum is
+direct: if $x\in V\cap\QQ\one$ then $3x=Qx=14x$, so $x=0$.
+
+\medskip\noindent\textbf{Step 2: three matrices.}
+Put
+\[
+N=11(Q+4I)-6J,\qquad N'=M+4I,\qquad N_W=3(Q+4I)-J .
+\]
+\noindent(2a) $N$ is a symmetric integer matrix, $(Q-3I)N=0$, and $Nx=77x$ for every $x\in V$. Indeed
+$(Q-3I)(Q+4I)=Q^2+Q-12I=6J$ and $(Q-3I)J=11J$ by (1a), so $(Q-3I)N=66J-66J=0$. If $x\in V$, then $(Q+4I)x=7x$ and
+$Jx=\one(\one^{\tp}x)=0$ by (1b), so $Nx=77x$.
+
+\smallskip\noindent(2b) $N'$ is a Hermitian matrix over $\ZZ[\omega]$, $(M-3I)N'=M^2+M-12I=0$, and $N'y=7y$ for
+every $y\in\CC^{33}$ with $My=3y$.
+
+\smallskip\noindent(2c) $N_W$ is a symmetric integer matrix, $(Q-3I)(Q-14I)N_W=0$, and $N_Wx=21x$ for every
+$x\in W$. Indeed $(Q-3I)N_W=3\cdot6J-11J=7J$ and $(Q-14I)J=0$ by (1a); since $Q-3I$ and $Q-14I$ commute,
+$(Q-3I)(Q-14I)N_W=(Q-14I)\,7J=0$. If $x\in V$, then $N_Wx=3\cdot7x-\one(\one^{\tp}x)=21x$ by (1b). Also
+$N_W\one=3\cdot18\,\one-33\,\one=21\,\one$. By (1d) this gives $N_Wx=21x$ on $W$.
+
+\medskip\noindent\textbf{Step 3: three lattices.}
+Let
+\begin{align*}
+L&=\{v\in\ZZ^{33}:(Q-3I)v=0\},\\
+L'&=\{v\in\ZZ[\omega]^{33}:(M-3I)v=0\},\\
+L_W&=\{v\in\ZZ^{33}:(Q-3I)(Q-14I)v=0\}.
+\end{align*}
+Lemma~\ref{lem:basis} gives matrices $(B,C)$ for $L$, $(B',C')$ for $L'$ and $(B_W,C_W)$ for $L_W$. Let $r$ and
+$r'$ be the numbers of columns of $B$ and $B'$. By the last assertion of Lemma~\ref{lem:basis}, $r=\dim V$ and $B_W$
+has $\dim W=r+1$ columns, by (1d). We apply Lemma~\ref{lem:gram} three times, with $D=I$.
+\begin{itemize}[leftmargin=*]
+\item \emph{To $L$, with $X=N$ and $c=77$.} \ref{G1} holds because $N$ is symmetric. \ref{G2} holds because the
+columns of $N$ are integer vectors annihilated by $Q-3I$, by (2a). \ref{G3} holds because $L\subset V$ and $N$ acts
+on $V$ as multiplication by $77$, by (2a). Put $G=B^{\tp}B$, $K=CNC^{\tp}$ and $d=\det G$. Then
+\begin{equation}\label{eq:free-N}
+N=BKB^{\tp},\qquad GK=77\,I_r,\qquad d\cdot\det K=77^{\,r},
+\end{equation}
+and $d$ is a positive integer. Consequently $d=7^{e_7}\,11^{e_{11}}$ with integers $e_7,e_{11}\ge0$, and $\det K$ is
+an integer not divisible by~$3$.
+\item \emph{To $L'$, with $X=N'$ and $c=7$.} \ref{G1}, \ref{G2} and \ref{G3} hold by (2b). Put $G'=B'^*B'$,
+$K'=C'N'C'^*$ and $d'=\det G'$. Then
+\begin{equation}\label{eq:free-Np}
+N'=B'K'B'^*,\qquad G'K'=7\,I_{r'},\qquad d'\cdot\det K'=7^{\,r'},
+\end{equation}
+where $d'$ is a positive integer and $\det K'$ is an integer. Consequently $d'$ is a power of~$7$, so
+$d'\equiv1\pmod3$, and $\det K'$ is not divisible by~$3$.
+\item \emph{To $L_W$, with $X=N_W$ and $c=21$.} \ref{G1}, \ref{G2} and \ref{G3} hold by (2c), since
+$L_W\subset W$. Put $G_W=B_W^{\tp}B_W$. Then $\det G_W$ is a positive integer dividing $21^{\,r+1}$; in particular
+$11$ does not divide $\det G_W$.
+\end{itemize}
+
+\medskip\noindent\textbf{Step 4: the exponent $e_{11}$ is odd.}
+We apply Lemma~\ref{lem:index} with $D=I$, the lattices $L\subset L_W$, and $e=\one$. The hypotheses hold:
+$L\subset L_W$ because $Q-3I$ and $Q-14I$ commute; $\one\in L_W$ because $(Q-14I)\one=0$; and $B^{\tp}\one=0$ by
+(1b), since the columns of $B$ lie in $V$. As $\one^{\tp}\one=33$, there is a non-zero integer $t$ with
+\[
+33\,d=t^2\cdot\det G_W .
+\]
+Let $v_{11}$ denote the $11$-adic valuation. Since $v_{11}(33)=1$, $v_{11}(d)=e_{11}$ and $v_{11}(\det G_W)=0$ by
+Step~3, we get $1+e_{11}=2\,v_{11}(t)$. Hence $e_{11}$ is odd, and
+\[
+d=7^{e_7}\,11^{e_{11}}\equiv 1^{e_7}\cdot(-1)^{e_{11}}=-1\pmod 3 .
+\]
+
+\medskip\noindent\textbf{Step 5: $d\equiv d'\pmod3$.}
+Let $P=\rho(Q)+I\in M_{33}(\FF_3)$. Since $11\equiv2$, $4\equiv1$ and $6\equiv0\pmod3$, we have $\rho(N)=2P$. Since
+$Q\equiv M\pmod\pi$, we have $\rho(M)=\rho(Q)$ and $\rho(N')=P$. We apply Lemma~\ref{lem:F3} with $n_0=33$, this
+$P$, $\varepsilon=2$, and
+\[
+H=\rho(K),\quad H'=\rho(K'),\quad E=\rho(B),\quad F=\rho(C),\quad E'=\rho(B'),\quad F'=\rho(C').
+\]
+The matrices $H$ and $H'$ are invertible, because $\det H=\rho(\det K)$ and $\det H'=\rho(\det K')$ are not zero by
+Step~3. Applying $\rho$ to $K=CNC^{\tp}$ gives \ref{C1}: $H=2\,FPF^{\tp}$. Applying $\rho$ to $N=BKB^{\tp}$ gives
+\ref{C4}: $2P=EHE^{\tp}$. Applying $\rho$ to $N'=B'K'B'^*$ and to $K'=C'N'C'^*$, and using
+$\rho(X^*)=\rho(X)^{\tp}$, gives \ref{C2} and \ref{C3}: $P=E'H'E'^{\tp}$ and $H'=F'PF'^{\tp}$.
+Lemma~\ref{lem:F3} yields
+\[
+r=r'\qquad\text{and}\qquad\rho(\det K)=2^{\,r}\,\rho(\det K').
+\]
+Now apply $\rho$ to the last identities of \eqref{eq:free-N} and \eqref{eq:free-Np}, using $\rho(77)=2$,
+$\rho(7)=1$ and $r=r'$:
+\[
+\rho(d)\,\rho(\det K)=2^{\,r},\qquad \rho(d')\,\rho(\det K')=1 .
+\]
+Substituting $\rho(\det K)=2^{\,r}\rho(\det K')$ in the first identity and dividing by $2^{\,r}$ gives
+$\rho(d)\,\rho(\det K')=1=\rho(d')\,\rho(\det K')$. Hence $\rho(d)=\rho(d')$, that is, $d\equiv d'\pmod 3$.
+
+\medskip\noindent\textbf{Step 6: contradiction.}
+By Step~4, $d\equiv2\pmod3$. By Step~3, $d'\equiv1\pmod3$. This contradicts Step~5.
+\end{proof}
+
+\begin{remark}\label{rem:tau}
+Let $g$ be an automorphism of order~3 without fixed vertices and let $\tau$ be the number of its orbits that induce
+a triangle. The equality $r=r'$ of Step~5, which does not use Step~4, gives $\tau=6$; this is the result of
+Ishida \cite[Proposition~8.7]{I26}. Indeed $A_0$ has zero diagonal and $A_2[i,i]=A_1[i,i]$ by
+Lemma~\ref{lem:orbit}(i), and $A_1[i,i]=1$ exactly when the $i$-th orbit induces a triangle. Hence
+$\operatorname{tr}Q=2\tau$ and $\operatorname{tr}M=(\omega+\omega^2)\tau=-\tau$. By \eqref{eq:free-N},
+$\operatorname{tr}N=\operatorname{tr}(BKB^{\tp})=\operatorname{tr}(GK)=77r$, and similarly
+$\operatorname{tr}N'=7r'$ by \eqref{eq:free-Np}. On the other hand
+$\operatorname{tr}N=11(2\tau+132)-198$ and $\operatorname{tr}N'=132-\tau$. So $7r=2\tau+114$ and $7r'=132-\tau$,
+and $r=r'$ gives $\tau=6$ and $r=r'=18$.
+\end{remark}
+
+%======================================================================
+\section{Three fixed vertices: proof of Theorem~\ref{thm:tri}}\label{sec:tri}
+
+Throughout this section the coordinates of $\ZZ^{35}$ are indexed by $1,\dots,32,t_1,t_2,t_3$, and
+\[
+w=(3,\dots,3,1,1,1)^{\tp},\qquad D=\mathrm{diag}(w),\qquad \Delta=\mathrm{diag}(1,\dots,1,3,3,3),
+\]
+so that $D\Delta=\Delta D=3\,I_{35}$, $D\one=w$ and $w^{\tp}\one=99$. By Proposition~\ref{prop:fix} and
+Lemma~\ref{lem:orbit} with $f=3$, Theorem~\ref{thm:tri} follows from the next statement.
+
+\begin{theorem}\label{thm:trimat}
+There is no triple $(Q,\av,M)$ with the following properties:
+$Q\in M_{32}(\ZZ)$ is symmetric and $\av\in M_{32\times3}(\ZZ)$;
+the matrix
+\[
+\tA=\begin{pmatrix}Q&\av\\ 3\av^{\tp}&J_3-I_3\end{pmatrix}\in M_{35}(\ZZ)
+\]
+satisfies $\tA\,\one=14\,\one$ and $\tA^2+\tA=12\,I+2\,\one w^{\tp}$;
+$M\in M_{32}(\ZZ[\omega])$ is Hermitian and $M^2+M=12\,I$;
+and $Q\equiv M\pmod\pi$.
+\end{theorem}
+
+\begin{proof}
+Suppose that $(Q,\av,M)$ is such a triple. Put $\Jw=\one w^{\tp}\in M_{35}(\ZZ)$.
+
+\medskip\noindent\textbf{Step 1: the matrix $\tA$ and the form $D$.}
+Let $V=\{x\in\QQ^{35}:\tA x=3x\}$ and $W=\{x\in\QQ^{35}:(\tA-3I)(\tA-14I)x=0\}$.
+
+\smallskip\noindent(1a) The matrix
+\[
+D\tA=\begin{pmatrix}3Q&3\av\\ 3\av^{\tp}&J_3-I_3\end{pmatrix}
+\]
+is symmetric, because $Q$ is. Hence $\tA^{\tp}D=D\tA$, and
+$w^{\tp}\tA=\one^{\tp}D\tA=\one^{\tp}\tA^{\tp}D=(\tA\one)^{\tp}D=14\,w^{\tp}$. Consequently
+\[
+\tA\Jw=(\tA\one)w^{\tp}=14\,\Jw,\qquad \Jw\tA=\one(w^{\tp}\tA)=14\,\Jw .
+\]
+Moreover $D\Jw=ww^{\tp}$ is symmetric.
+
+\smallskip\noindent(1b) If $x\in V$ then $w^{\tp}x=0$. Indeed $14\,w^{\tp}x=w^{\tp}\tA x=3\,w^{\tp}x$ by (1a).
+
+\smallskip\noindent(1c) $\{x\in\QQ^{35}:\tA x=14x\}=\QQ\one$. Let $\tA x=14x$ and put
+$y=x-\frac{w^{\tp}x}{99}\one$. Then $w^{\tp}y=0$ and $\tA y=14y$. Hence $\Jw y=\one(w^{\tp}y)=0$ and
+$(\tA^2+\tA-12I)y=2\Jw y=0$, that is, $198\,y=0$, so $y=0$ and $x\in\QQ\one$. Conversely $\tA\one=14\one$.
+
+\smallskip\noindent(1d) $W=V\oplus\QQ\one$; in particular $\dim W=\dim V+1$. Let $x\in W$. Then
+$x=\frac1{11}\bigl((\tA-3I)x-(\tA-14I)x\bigr)$. The vector $(\tA-3I)x$ is annihilated by $\tA-14I$, so it lies in
+$\QQ\one$ by (1c); the vector $(\tA-14I)x$ is annihilated by $\tA-3I$, so it lies in $V$. Hence
+$W\subset V+\QQ\one$, and the reverse inclusion is clear. If $x\in V\cap\QQ\one$ then $3x=\tA x=14x$, so $x=0$.
+
+\medskip\noindent\textbf{Step 2: three matrices.}
+Put
+\[
+\tN=11(\tA+4I)-2\Jw,\qquad N_W=9(\tA+4I)-\Jw,\qquad N'=M+4I_{32}.
+\]
+\noindent(2a) $\tN\in M_{35}(\ZZ)$, $(\tA-3I)\tN=0$, $\tN x=77x$ for every $x\in V$, and $D\tN$ is symmetric. Indeed
+$(\tA-3I)(\tA+4I)=\tA^2+\tA-12I=2\Jw$ and $(\tA-3I)\Jw=11\Jw$ by (1a), so $(\tA-3I)\tN=22\Jw-22\Jw=0$. If $x\in V$
+then $(\tA+4I)x=7x$ and $\Jw x=\one(w^{\tp}x)=0$ by (1b), so $\tN x=77x$. Finally
+$D\tN=11\,D\tA+44\,D-2\,ww^{\tp}$ is symmetric by (1a).
+
+\smallskip\noindent(2b) $N_W\in M_{35}(\ZZ)$, $(\tA-3I)(\tA-14I)N_W=0$, $N_Wx=63x$ for every $x\in W$, and $DN_W$ is
+symmetric. Indeed $(\tA-3I)N_W=9\cdot2\Jw-11\Jw=7\Jw$ and $(\tA-14I)\Jw=0$ by (1a); since $\tA-3I$ and $\tA-14I$
+commute, $(\tA-3I)(\tA-14I)N_W=(\tA-14I)\,7\Jw=0$. If $x\in V$ then $N_Wx=9\cdot7x-\one(w^{\tp}x)=63x$ by (1b). Also
+$N_W\one=9\cdot18\,\one-99\,\one=63\,\one$. By (1d), $N_Wx=63x$ on $W$. Finally $DN_W=9\,D\tA+36\,D-ww^{\tp}$ is
+symmetric.
+
+\smallskip\noindent(2c) $N'$ is a Hermitian matrix over $\ZZ[\omega]$ of size $32$, $(M-3I)N'=M^2+M-12I=0$, and
+$N'y=7y$ for every $y\in\CC^{32}$ with $My=3y$.
+
+\smallskip\noindent(2d) Block form of $\tN$. Since
+$\Jw=\begin{pmatrix}3J_{32}&J_{32\times3}\\ 3J_{3\times32}&J_3\end{pmatrix}$ and
+$11(J_3-I_3+4I_3)-2J_3=9J_3+33I_3$,
+\begin{equation}\label{eq:blockN}
+\tN=\begin{pmatrix}11(Q+4I_{32})-6J_{32}&11\,\av-2J_{32\times3}\\[2pt]
+33\,\av^{\tp}-6J_{3\times32}&9J_3+33I_3\end{pmatrix}.
+\end{equation}
+
+\smallskip\noindent(2e) The matrices $X=\tN\Delta$ and $X_W=N_W\Delta$ are symmetric. Let $Y$ be $\tN$ or $N_W$. By
+(2a) and (2b), $DY$ is symmetric, that is, $Y^{\tp}D=DY$. Multiplying by $\Delta$ on the left and on the right and
+using $D\Delta=\Delta D=3I$ gives $3\,\Delta Y^{\tp}=3\,Y\Delta$, so $(Y\Delta)^{\tp}=\Delta Y^{\tp}=Y\Delta$.
+
+\medskip\noindent\textbf{Step 3: the coordinates at the fixed vertices are divisible by~$3$.}
+Let $L=\{v\in\ZZ^{35}:(\tA-3I)v=0\}$. By \eqref{eq:blockN}, every entry of the rows $t_1,t_2,t_3$ of $\tN$ is
+divisible by~$3$: these entries are $33\,\av[j,h]-6$ and $9+33\,\delta_{h,l}$. Let $v\in L$. By (2a), $77\,v=\tN v$,
+so for $h=1,2,3$ the integer $77\,v_{t_h}$ is a sum of multiples of~$3$. Since $77$ is prime to~$3$,
+\begin{equation}\label{eq:div3}
+3\ \text{divides}\ v_{t_h}\qquad\text{for every }v\in L\text{ and }h\in\{1,2,3\}.
+\end{equation}
+
+\medskip\noindent\textbf{Step 4: three lattices.}
+Let $L$ be as in Step~3, and
+\[
+L'=\{v\in\ZZ[\omega]^{32}:(M-3I)v=0\},\qquad L_W=\{v\in\ZZ^{35}:(\tA-3I)(\tA-14I)v=0\}.
+\]
+Lemma~\ref{lem:basis} gives matrices $(B,C)$ for $L$, $(B',C')$ for $L'$ and $(B_W,C_W)$ for $L_W$. Let $r$ and
+$r'$ be the numbers of columns of $B$ and $B'$. Then $r=\dim V$, and $B_W$ has $\dim W=r+1$ columns by (1d).
+\begin{itemize}[leftmargin=*]
+\item \emph{Lemma~\ref{lem:gram} for $L$, with the form $D$, $X=\tN\Delta$ and $c=231$.} \ref{G1} holds by (2e).
+\ref{G2} holds because each column of $X$ is a column of $\tN$ multiplied by $1$ or by $3$, and the columns of $\tN$
+are integer vectors annihilated by $\tA-3I$, by (2a). \ref{G3} holds because, for $v\in L\subset V$,
+$XDv=\tN\Delta Dv=3\,\tN v=231\,v$ by (2a). Put $G_D=B^{\tp}DB$ and $K=CXC^{\tp}$. Then
+\begin{equation}\label{eq:tri-X}
+X=BKB^{\tp},\qquad G_DK=231\,I_r .
+\end{equation}
+By \eqref{eq:div3} the last three rows of $B$ are divisible by~$3$: we can write
+$B=\begin{pmatrix}B_1\\3B_2\end{pmatrix}$ with $B_1\in M_{32\times r}(\ZZ)$ and $B_2\in M_{3\times r}(\ZZ)$. Then
+\[
+G_D=3\,B_1^{\tp}B_1+9\,B_2^{\tp}B_2=3\,\tG,\qquad \tG=B_1^{\tp}B_1+3\,B_2^{\tp}B_2\in M_r(\ZZ).
+\]
+The matrix $\tG$ is symmetric and positive definite, because $G_D$ is. Put $\td=\det\tG$. Dividing the second
+identity of \eqref{eq:tri-X} by $3$,
+\begin{equation}\label{eq:tri-G}
+\tG K=77\,I_r,\qquad \td\cdot\det K=77^{\,r},
+\end{equation}
+and $\td$ is a positive integer. Consequently $\td=7^{e_7}\,11^{e_{11}}$ with integers $e_7,e_{11}\ge0$, and
+$\det K$ is an integer not divisible by~$3$.
+\item \emph{Lemma~\ref{lem:gram} for $L'$, with $n=32$, $D=I_{32}$, $X=N'$ and $c=7$.} \ref{G1}, \ref{G2} and
+\ref{G3} hold by (2c). Put $G'=B'^*B'$, $K'=C'N'C'^*$ and $d'=\det G'$. Then
+\begin{equation}\label{eq:tri-Np}
+N'=B'K'B'^*,\qquad G'K'=7\,I_{r'},\qquad d'\cdot\det K'=7^{\,r'},
+\end{equation}
+where $d'$ is a positive integer and $\det K'$ is an integer. Consequently $d'$ is a power of~$7$, so
+$d'\equiv1\pmod3$, and $\det K'$ is not divisible by~$3$.
+\item \emph{Lemma~\ref{lem:gram} for $L_W$, with the form $D$, $X=X_W=N_W\Delta$ and $c=189$.} \ref{G1} holds by
+(2e). \ref{G2} holds because each column of $X_W$ is a column of $N_W$ multiplied by $1$ or by $3$, and the columns of
+$N_W$ are integer vectors annihilated by $(\tA-3I)(\tA-14I)$, by (2b). \ref{G3} holds because, for
+$v\in L_W\subset W$, $X_WDv=N_W\Delta Dv=3\,N_Wv=189\,v$ by (2b). Put $G_W=B_W^{\tp}DB_W$. Then $\det G_W$ is a
+positive integer dividing $189^{\,r+1}=(3^3\cdot7)^{r+1}$; in particular $11$ does not divide $\det G_W$.
+\end{itemize}
+
+\medskip\noindent\textbf{Step 5: the exponent $e_{11}$ is odd.}
+We apply Lemma~\ref{lem:index} with the form $D$, the lattices $L\subset L_W$, and $e=\one$. The hypotheses hold:
+$L\subset L_W$ because $\tA-3I$ and $\tA-14I$ commute; $\one\in L_W$ because $(\tA-14I)\one=0$; and
+$B^{\tp}D\one=B^{\tp}w=0$ by (1b), since the columns of $B$ lie in $V$. As $\one^{\tp}D\one=w^{\tp}\one=99$, there is a
+non-zero integer $t$ with
+\[
+99\cdot\det G_D=t^2\cdot\det G_W,\qquad\text{that is,}\qquad 99\cdot3^{\,r}\cdot\td=t^2\cdot\det G_W .
+\]
+Taking $11$-adic valuations, with $v_{11}(99)=1$, $v_{11}(\td)=e_{11}$ and $v_{11}(\det G_W)=0$ by Step~4, we get
+$1+e_{11}=2\,v_{11}(t)$. Hence $e_{11}$ is odd, and
+$\td=7^{e_7}\,11^{e_{11}}\equiv(-1)^{e_{11}}=-1\pmod3$.
+
+\medskip\noindent\textbf{Step 6: $\td\equiv d'\pmod3$.}
+Let $P=\rho(Q)+I_{32}\in M_{32}(\FF_3)$. By \eqref{eq:blockN},
+\[
+X=\tN\Delta=\begin{pmatrix}11(Q+4I_{32})-6J_{32}&3\,(11\,\av-2J_{32\times3})\\[2pt]
+33\,\av^{\tp}-6J_{3\times32}&3\,(9J_3+33I_3)\end{pmatrix}.
+\]
+The upper left block reduces to $2\rho(Q)+2I_{32}=2P$, because $11\equiv2$, $44\equiv2$ and $6\equiv0\pmod3$; every
+entry of the other three blocks is divisible by~$3$. Hence
+\[
+\rho(X)=\begin{pmatrix}2P&0\\0&0\end{pmatrix}.
+\]
+By \eqref{eq:div3}, $\rho(B)=\begin{pmatrix}E\\0\end{pmatrix}$ with $E=\rho(B_1)\in M_{32\times r}(\FF_3)$. Write
+$C=[\,C_1\,|\,C_2\,]$ with $C_1\in M_{r\times32}(\ZZ)$ and $C_2\in M_{r\times3}(\ZZ)$, and put $F=\rho(C_1)$. Since
+$Q\equiv M\pmod\pi$, $\rho(N')=\rho(M)+I_{32}=P$. We apply Lemma~\ref{lem:F3} with $n_0=32$, this $P$,
+$\varepsilon=2$, the matrices $E$ and $F$ just defined, and
+\[
+H=\rho(K),\qquad H'=\rho(K'),\qquad E'=\rho(B'),\qquad F'=\rho(C').
+\]
+The matrices $H$ and $H'$ are invertible, because $\det H=\rho(\det K)$ and $\det H'=\rho(\det K')$ are not zero by
+Step~4. Applying $\rho$ to $K=CXC^{\tp}$ gives
+\[
+H=\bigl[\,F\,\big|\,\rho(C_2)\,\bigr]\begin{pmatrix}2P&0\\0&0\end{pmatrix}
+\bigl[\,F\,\big|\,\rho(C_2)\,\bigr]^{\tp}=2\,FPF^{\tp},
+\]
+which is \ref{C1}. Applying $\rho$ to $X=BKB^{\tp}$ gives
+\[
+\begin{pmatrix}2P&0\\0&0\end{pmatrix}=\begin{pmatrix}E\\0\end{pmatrix}H\begin{pmatrix}E\\0\end{pmatrix}^{\tp}
+=\begin{pmatrix}EHE^{\tp}&0\\0&0\end{pmatrix},
+\]
+whose upper left block is \ref{C4}: $2P=EHE^{\tp}$. Applying $\rho$ to the identities $N'=B'K'B'^*$ and
+$K'=C'N'C'^*$, and using $\rho(X^*)=\rho(X)^{\tp}$, gives \ref{C2} and \ref{C3}: $P=E'H'E'^{\tp}$ and
+$H'=F'PF'^{\tp}$. Lemma~\ref{lem:F3} yields
+\[
+r=r'\qquad\text{and}\qquad\rho(\det K)=2^{\,r}\,\rho(\det K').
+\]
+Applying $\rho$ to the last identities of \eqref{eq:tri-G} and \eqref{eq:tri-Np}, with $\rho(77)=2$, $\rho(7)=1$ and
+$r=r'$,
+\[
+\rho(\td)\,\rho(\det K)=2^{\,r},\qquad\rho(d')\,\rho(\det K')=1 .
+\]
+Substituting $\rho(\det K)=2^{\,r}\rho(\det K')$ in the first identity and dividing by $2^{\,r}$ gives
+$\rho(\td)\,\rho(\det K')=1=\rho(d')\,\rho(\det K')$. Hence $\rho(\td)=\rho(d')$, that is, $\td\equiv d'\pmod3$.
+
+\medskip\noindent\textbf{Step 7: contradiction.}
+By Step~5, $\td\equiv2\pmod3$. By Step~4, $d'\equiv1\pmod3$. This contradicts Step~6.
+\end{proof}
+
+\begin{remark}
+The proof of Theorem~\ref{thm:trimat} contains that of Theorem~\ref{thm:freemat} as the case without fixed
+coordinates: there $D=3I$, $\Delta=I$, $\Jw=3J$, $\tN=N$, $\tG=G$, and Step~3 is empty. We have written the case
+without fixed vertices separately because it is the new result and its proof needs no weights.
+\end{remark}
+
+%======================================================================
+\section{Proof of Theorem~\ref{thm:main} and the automorphism group}\label{sec:aut}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $g$ be an automorphism of $\Gamma$ of order~3. By Proposition~\ref{prop:fix}, $g$ has no fixed vertex or exactly
+three. The first case is excluded by Theorem~\ref{thm:free} and the second by Theorem~\ref{thm:tri}.
+\end{proof}
+
+Together with the published results recalled in the introduction, Theorem~\ref{thm:main} has the following
+consequence. We have not re-derived the cited results.
+
+\begin{corollary}\label{cor:aut}
+Suppose that $\Gamma$ exists, and let $\oA$ be the order of its automorphism group.
+\begin{enumerate}[label=(\roman*)]
+\item By \cite{MM04}, \cite{Mak10} and \cite{CW25}, which use no computer: $\oA\in\{1,2,7,11\}$.
+\item By the computer search of \cite{B09,BL11} in addition: $\oA\in\{1,2\}$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:main}, $\Aut(\Gamma)$ has no element of order~3, so $3$ does not divide $\oA$ by Cauchy's theorem.
+
+(i) By \cite{MM04}, $\oA$ divides $2\cdot3^3\cdot7\cdot11$, hence $\oA$ divides $2\cdot7\cdot11$. If $7$ divides $\oA$,
+then $\Aut(\Gamma)\cong\ZZ/7\ZZ$ by \cite{CW25}, so $\oA=7$. Suppose that $7$ does not divide $\oA$. If $2$ divides $\oA$,
+then $\oA$ divides $42$ by \cite{Mak10}; as neither $3$ nor $7$ divides $\oA$, we get $\oA=2$. If $2$ does not divide $\oA$,
+then $\oA$ divides $11$.
+
+(ii) By \cite{BL11}, no prime other than $2$ and $3$ divides $\oA$. With (i) this leaves $\oA\in\{1,2\}$.
+\end{proof}
+
+%======================================================================
+\section{Formal verification}\label{sec:formal}
+
+The statements of Theorems~\ref{thm:main}, \ref{thm:free}, \ref{thm:tri}, \ref{thm:freemat} and~\ref{thm:trimat} and
+of Proposition~\ref{prop:fix} have been formalised and checked in Lean~4 \cite{dMU21} with the library Mathlib
+\cite{Mat20}, starting from Mathlib's definition of a strongly regular graph. The formal statements are
+\texttt{C3.no\_order3} (Theorem~\ref{thm:main}), \texttt{C3.no\_free\_order3} (Theorem~\ref{thm:free}),
+\texttt{C3.no\_triangle\_order3} (Theorem~\ref{thm:tri}), \texttt{C3.no\_order3\_fix\_le3} (at most three fixed
+vertices), \texttt{C3.no\_pair} (Theorem~\ref{thm:freemat}) and \texttt{C3.Tri.no\_triangle\_pair}
+(Theorem~\ref{thm:trimat}). Corollary~\ref{cor:aut} is not formalised, since it rests on the cited results. The
+sources and the verification logs are in the repository accompanying this paper.
+
+\paragraph{Acknowledgements.} The author used an AI assistant in the preparation of this work.
+
+{\small\raggedright
+\begin{thebibliography}{BVM22}
+\bibitem[B09]{B09} M.~Behbahani, \emph{On strongly regular graphs}, PhD thesis, Concordia University, Montreal, 2009.
+\bibitem[BL11]{BL11} M.~Behbahani, C.~Lam, \emph{Strongly regular graphs with non-trivial automorphisms}, Discrete
+Math.\ \textbf{311} (2011), no.~2--3, 132--144.
+\bibitem[CM20]{CM20} D.~Crnkovi\'c, M.~Maksimovi\'c, \emph{Construction of strongly regular graphs having an
+automorphism group of composite order}, Contrib.\ Discrete Math.\ \textbf{15} (2020), no.~1, 22--41.
+\bibitem[Co]{Co} J.\,H.~Conway, \emph{Five \$1,000 problems (update 2017)}, OEIS Foundation,
+\url{https://oeis.org/A248380/a248380.pdf}.
+\bibitem[CW25]{CW25} P.\,G.~Cesarz, A.\,J.~Woldar, \emph{On the automorphism group of a putative Conway 99-graph},
+Algebr.\ Comb.\ \textbf{8} (2025), no.~2, 379--398.
+\bibitem[dMU21]{dMU21} L.~de~Moura, S.~Ullrich, \emph{The Lean~4 theorem prover and programming language}, in
+\emph{Automated Deduction -- CADE~28}, Lecture Notes in Comput.\ Sci., Springer, 2021, 625--635.
+\bibitem[I26]{I26} Y.~Ishida, \emph{No involutions in the missing Moore graph}, arXiv:2606.29183v2, July 2026.
+\bibitem[IR]{IR} K.~Ireland, M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Graduate
+Texts in Mathematics~\textbf{84}, Springer, 1990.
+\bibitem[La]{La} S.~Lang, \emph{Algebra}, revised 3rd ed., Graduate Texts in Mathematics~\textbf{211}, Springer, 2002.
+\bibitem[Mak10]{Mak10} A.\,A.~Makhnev, \emph{On automorphisms of distance-regular graphs}, J.\ Math.\ Sci.\
+\textbf{166} (2010), no.~6, 733--742.
+\bibitem[Mat20]{Mat20} The mathlib Community, \emph{The Lean mathematical library}, in \emph{Proceedings of the 9th
+ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP~2020)}, ACM, 2020, 367--381.
+\bibitem[MM04]{MM04} A.\,A.~Makhnev, I.\,M.~Minakova, \emph{On automorphisms of strongly regular graphs with
+parameters $\lambda=1$, $\mu=2$}, Diskret.\ Mat.\ \textbf{16} (2004), no.~1, 95--104; English translation: Discrete
+Math.\ Appl.\ \textbf{14} (2004), no.~2, 201--210.
+\end{thebibliography}
+}
+
+\end{document}
