@@ -325,3 +325,19 @@ What is NOT yet secured (reliability first):
   full_grid.py, parity_hybrid.py, local_cnf2.py), the orbit computation used to fix the type B state, and the passage
   from "every parity skeleton is trivial" to "no non-cyclic cover". An independent re-implementation remains the
   missing check.
+
+## 15. Main proof checked (13 October 2026, 13:00 UTC)
+
+drat-trim on the main instance (CNF sha256 f72b45c2fea1..., 76 635 variables, 613 225 clauses) and the proof written by
+cadical 3.0.1 on 12/10 (1 754 513 284 bytes, sha256 8946fcf7305a096a87911b5b5526a9b885dc01315cc3efe511e183b123ff7a72): **`s VERIFIED`** (backward checking,
+about 66 minutes, 11:54 -> 13:00 UTC). Figures printed by the checker: 41 191 of the 613 225 clauses are in the
+unsatisfiable core; 10 488 335 of the 23 988 731 lemmas are used; 660 821 104 resolution steps; no RAT lemma (the proof
+is a pure resolution-by-unit-propagation proof). Log: `drat_trim_main_2026-10-13.log`; core: `ultimate_core_2026-10-13.cnf`
+(sha256 7454e40d2077df55fbce649b792482e93714752f706b38e5c640d12065e8fe2f). The "verification time: -322 seconds" printed by the checker is a
+counter overflow, not a result.
+
+So every solver verdict of the chain now has a machine-checked proof: the main instance and the lemma instances (a),
+(b), (c), (d), (e). What is still NOT covered is listed at the end of section 14: that the CNF files express the
+mathematical statement (the encoding scripts), the orbit computation fixing the type B state, and the passage from
+"no non-trivial parity skeleton" to "no non-cyclic cover". The core (6.7 % of the clauses) is the natural starting
+point for reading which constraints the refutation really uses.
