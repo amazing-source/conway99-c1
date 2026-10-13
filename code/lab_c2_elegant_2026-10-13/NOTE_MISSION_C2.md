@@ -187,7 +187,7 @@ them in the records is the absence of the seven vectors h.
 * Not started: the nine-variable model (index J + H+). A second-moment (Venkov-type) variant with one frame vector u_o
   was considered and not built: the one-h probe suggests single-vector refinements do not cut.
 
-## 10. Report of the Opus sub-agent on the lemmas (13 October 2026, received 21:45 UTC): `LEMMAS_AGENT_REPORT.md`
+## 10. Report of the Opus sub-agent on the lemmas (13 October 2026, received 21:42 UTC): `LEMMAS_AGENT_REPORT.md`
 Not reread line by line by me; its own labels are kept.
 * NOT obtained: T22, T24, the exclusion of the characteristic eigenfunctions; no machine step of T16, T18, T20 was
   replaced by a hand argument. No error found in the parts of the three proofs it read line by line.
