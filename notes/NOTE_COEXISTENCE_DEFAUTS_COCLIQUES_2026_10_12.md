@@ -3150,3 +3150,177 @@ affine. Il n'exclut aucune branche C1. Enfin, l'exclusion éventuelle des
 cocliques22 et de tous les profils de cocliques21 maximales n'impliquerait
 que alpha<=20 : aucune borne alpha>=21 n'est démontrée ici. Le critère
 général(66) n'utilise précisément aucune de ces hypothèses de coclique.
+
+## 70. V14 : une différence de rang deux est un échange de sommets
+
+Suite structurelle de V13, 13 octobre2026. On cherche à distinguer une
+ambiguïté de reconstruction d'une simple ambiguïté d'étiquettes. Le
+résultat ci-dessous porte sur tous les graphes de paramètres Conway,
+sans support de norme fixé et sans hypothèse sur une coclique.
+
+**Théorème.** Soient A et A' deux matrices d'adjacence SRG(99,14,1,2)
+sur le même ensemble étiqueté. Si rang(A'-A)=2, il existe une transposition
+S de deux sommets telle que A'=SAS^t. La différence porte exactement sur
+26 sommets et48 arêtes non orientées :24 ajoutées et24 retirées.
+
+Cela ne dit pas que S est un automorphisme de A : lorsque A'!=A, S ne
+fixe pas A. Il donne un isomorphisme entre les deux réalisations. Une
+modification de rang deux ne peut donc produire un graphe non isomorphe
+à un graphe de Conway donné. C'est un résultat conditionnel ; aucun
+graphe de Conway n'est construit ou exclu.
+
+**Forme générale d'une différence binaire de rang deux.** Posons T=A'-A.
+La symétrie, le rang2 et la trace nulle donnent T=l(xx^t-yy^t), l>0,
+avec x,y orthonormaux. La diagonale nulle impose x_i²=y_i². On partage
+les lignes non nulles en U, où x_i=y_i, et V, où x_i=-y_i. T est nul à
+l'intérieur de chaque partie, et toutes les entrées entre U et V sont
+non nulles. Puisque ces entrées valent+1 ou-1, leurs valeurs absolues
+imposent des amplitudes constantes sur chaque partie. On peut donc écrire
+
+    T = u v^t+v u^t,                                    (70a)
+
+où u,v ont des supports disjoints U,V et des coefficients non nuls+1/-1.
+La régularité donne T1=0, donc sum u=sum v=0. Notons
+
+    |U+|=|U-|=p,       |V+|=|V-|=q,       p,q>=1.
+
+Sur U x V, la binarité des deux graphes force
+
+    A_ij=(1-u_i v_j)/2,   A'_ij=(1+u_i v_j)/2.           (70b)
+
+## 71. Le polynôme et les deux voisins communs ferment le rang deux
+
+Soustraire les équations A²+A=12I+2J et A'²+A'=12I+2J donne
+
+    AT+TA+T²+T=0.                                       (71a)
+
+Pour z dans ker T, cela impose TAz=0. Ainsi A préserve ker T et,
+par symétrie, son orthogonal im T=span(u,v). La formule(70b) donne alors
+
+    Au=alpha*u-p*v,       Av=-q*u+beta*v,                 (71b)
+
+avec alpha,beta ENTIERS : on lit les coefficients sur une ligne de U
+ou V, où u_i ou v_i vaut+1/-1. Comme u et v sont orthogonaux à1,
+la restriction de A à ce plan vérifie le polynôme x²+x-12. Ses termes
+hors diagonale sont non nuls, d'où
+
+    alpha+beta=-1,
+    pq=12-alpha(alpha+1).                                (71c)
+
+Si p>=2, deux sommets de U+ ont les q sommets de V- comme voisins
+communs dans A. Ils ont au plus2 voisins communs, donc q<=2. De même,
+q>=2 impose p<=2. Si p et q sont tous deux au moins2, ils valent donc
+tous deux2. Mais(71c) demanderait alpha(alpha+1)=8, impossible dans Z.
+
+On a donc p=1 ou q=1. Quitte à échanger les parties, p=1. Écrivons
+U={a,b}, u=e_a-e_b et e=A_ab. Sur ces deux coordonnées, Au donne
+alpha=-e, donc alpha appartient à{0,-1}. L'équation(71c) force q=12.
+De plus(71b) impose A_za=A_zb pour tout z hors U union V. Échanger a,b
+renverse exactement les arêtes de(70b), conserve l'arête ab et ne change
+rien ailleurs : A'=SAS^t. Le support a2+24=26 sommets et la coupe
+U x V comporte2*24=48 arêtes modifiées. Cela prouve§70.
+
+La même analyse, pour des paramètres généraux(v,k,lambda,mu), donne
+
+    alpha+beta=lambda-mu,
+    pq=k-mu+(lambda-mu)alpha-alpha².                     (71d)
+
+Cette identité montre où les paramètres interviennent. Le théorème de
+rigidité n'est PAS étendu sans preuve à tous les graphes fortement réguliers.
+
+## 72. Conséquence pour la reconstruction d'un bord fixé
+
+Conservons B,D du théorème66 et C=[D;1^t]. Si E et E' sont deux
+complétions, leur différence T vérifie CT=0 et est symétrique ; ainsi
+
+    rang T <= dim ker C = h.
+
+Une matrice symétrique non nulle de diagonale nulle ne peut avoir rang1.
+Pour h<=2, toute différence non nulle a donc rang2. Les complétions de
+paramètres Conway sont alors toutes isomorphes par une transposition
+de deux sommets EXTÉRIEURS, fixant le bord point par point.
+
+Cette transposition ne change pas D : les deux colonnes correspondantes
+de D sont nécessairement identiques. En particulier :
+
+* si h<=2 et toutes les colonnes de D sont distinctes, la complétion
+  étiquetée est unique, lorsqu'elle existe ;
+* pour h<=2, il y a au plus deux complétions étiquetées, puisque§67
+  donne delta<=1 et que le coefficient libre peut être une arête binaire ;
+* si le bloc extérieur compte au plus25 sommets et h<=2, la complétion
+  étiquetée est unique, car la différence de§70 exige26 sommets.
+
+Ces conséquences concernent la multiplicité des complétions d'un MÊME
+facteur D. Elles ne construisent pas D et ne comparent pas deux facteurs
+indépendants. Elles ne supposent pas non plus h<=2 dans le modèle99
+actuel : cette condition doit être effectivement obtenue pour le bord
+considéré. On ne retourne pas à une énumération des rangs de Seidel.
+
+## 73. Le cas h=2 avec une colonne répétée se décide sans solveur
+
+Voici une exploitation algorithmique, valable plus généralement pour
+lambda=mu-1 et nu=k-mu>0, sous les hypothèses66. Supposons h=2 et
+D_a=D_b. Alors u=e_a-e_b appartient à ker C. La droite de ker C
+orthogonale à u est calculable AVANT toute complétion.
+
+S'il existe une complétion E, écrivons e=E_ab dans{0,1}. Le noyau ker C
+est invariant par E, car E=E0+PTP. Le vecteur
+
+    v=-Eu-eu
+
+est non nul, orthogonal à u, nul sur a,b, et a des coefficients0,+1,-1.
+Il a une somme nulle. Le polynôme appliqué à u donne
+
+    ||Eu||²+u^tEu=nu||u||²,
+    ||v||²=2nu,
+    Eu=-eu-v,          Ev=-nu*u+(e-1)v.                 (73a)
+
+Ainsi la droite orthogonale doit admettre un générateur v nul sur a,b,
+dont les coefficients non nuls ont tous la même amplitude ; une fois
+normalisé à+1/-1, il doit avoir exactement nu signes+ et nu signes-.
+Toute violation est un certificat d'impossibilité du facteur D.
+
+Il reste seulement à calculer E0 de§66 et
+
+    e=2(E0)_aa.                                         (73b)
+
+Si e n'est pas0 ou1, il n'y a pas de complétion. Sinon les SEULES
+matrices possibles sont
+
+    E_± = E0-(e/2)u u^t+((e-1)/(2nu))v v^t
+          ±(u v^t+v u^t)/2.                            (73c)
+
+La formule résulte de(73a) dans la base orthogonale(u,v). Réciproquement,
+ces deux matrices sont symétriques, ont les bons degrés et vérifient le
+polynôme : sur ker C, leur matrice est [[-e,±nu],[±1,e-1]], dont le
+carré plus elle-même vaut nu I. Sur l'orthogonal, c'est§66. Les deux
+matrices sont échangées par la permutation de a,b, car E0u=0 et v_a=v_b=0.
+Il suffit donc de vérifier l'INTÉGRALITÉ d'une seule d'entre elles.
+Si elle est entière,§66 impose la diagonale nulle et la binarité ; sinon
+aucune des deux ne convient. Pour Conway, v a12 signes+ et12 signes-.
+
+`coclique_rank_two_rigidity.py` implémente ce critère exact dans
+`complete_nullity_two_pair`. Il distingue explicitement un facteur
+impossible d'un cas auquel le critère ne s'applique pas. Un appel hors
+h=2 ou sans colonne répétée ne constitue jamais une exclusion.
+
+Les contrôles nouveaux sont conservés dans `rank_two_rigidity_v14/` :
+
+* trois échanges de sommets sur la grille3x3 et Petersen contrôlent
+  la décomposition(70a) et les identités(71d) ;
+* un bord de Petersen sans voisinage complet, avec h=2 et deux colonnes
+  identiques, est reconstruit exactement par(73c), sans solveur : deux
+  matrices étiquetées, un seul graphe à isomorphisme près ;
+* un facteur3x6 pour un bord de la grille satisfait BIEN le Gram et les
+  degrés, mais a deux paires de colonnes identiques. La droite orthogonale
+  n'a que deux coordonnées non nulles, au lieu des quatre requises : le
+  critère le rejette. C'est un exemple de contrôle, pas une branche C1 ;
+* une modification de rang2 de la grille4x4 donne deux SRG(16,6,2,2)
+  NON isomorphes, l'un avec huit cliques4 et l'autre sans clique4. Elle
+  a p=q=2,alpha=beta=0 et satisfait(71d). Ce contre-exemple confirme
+  que la conclusion de§70 dépend réellement des paramètres Conway.
+
+Tous les contrôles exacts passent. Aucun audit243 ni catalogue de noyaux
+n'est repris. Le résultat exploitable est une rigidité de reconstruction
+et un test complet dans le cas singulier spécifié, pas une résolution
+du problème d'existence C1.

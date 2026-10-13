@@ -1,0 +1,164 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "name": "rook_adjacent_swap",
+      "p": 1,
+      "q": 2,
+      "alpha": -1,
+      "beta": 0,
+      "u": [
+        1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        0,
+        -1,
+        1,
+        0,
+        -1,
+        1,
+        0
+      ],
+      "rank": 2,
+      "support_size": 6,
+      "transposition": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "rook_nonadjacent_swap",
+      "p": 1,
+      "q": 2,
+      "alpha": 0,
+      "beta": -1,
+      "u": [
+        1,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        -1,
+        1,
+        0
+      ],
+      "rank": 2,
+      "support_size": 6,
+      "transposition": [
+        0,
+        4
+      ]
+    },
+    {
+      "name": "petersen_nonadjacent_swap",
+      "p": 1,
+      "q": 2,
+      "alpha": 0,
+      "beta": -1,
+      "u": [
+        1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        -1,
+        -1,
+        0
+      ],
+      "rank": 2,
+      "support_size": 6,
+      "transposition": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "nonisomorphic_rank_two_control",
+      "p": 2,
+      "q": 2,
+      "alpha": 0,
+      "beta": 0,
+      "u": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        -1
+      ],
+      "v": [
+        0,
+        -1,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "rank": 2,
+      "support_size": 8,
+      "transposition": null
+    }
+  ],
+  "conway_nonswap_integer_cases": [],
+  "conway_conclusion": "Every nonzero rank-two difference is a vertex transposition on support 26",
+  "nullity_two_completion": "TWO_LABELLED_COMPLETIONS",
+  "gram_valid_rejection": "NO_SRG_COMPLETION",
+  "source_sha256": "5e8bf43bbbbc92ff4fb8e01f6a562b94f6335f8e21ba3e5c3ad4e096db572f11",
+  "scope": "Conditional rigidity theorem; no Conway adjacency matrix constructed or excluded"
+}
