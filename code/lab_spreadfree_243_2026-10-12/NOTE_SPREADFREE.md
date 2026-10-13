@@ -455,6 +455,21 @@ hours on one core, it splits over cores); 36 and 27 kept: more than 120 000 rows
 Started at 14:46 UTC: the same question with RANDOM kept sets of the eighth graph (45 then 38 vertices, no structure
 at all): if a random window stops determining the graph, the other completions are graphs on which nothing was imposed.
 
+## 6n. Random windows (13 October, 15:40 UTC): where the tool stops
+
+Kept sets taken at random in the eighth graph, no structure (`boundary_census.py`, mode random):
+* 55 random vertices: each of the 40 free vertices tested has exactly ONE candidate row (3.4 s per vertex): rigid;
+* 50 random vertices: the first two free vertices have one row each, but CryptoMiniSat needs about 90 s per vertex to
+  close the list; a census of the 193 free vertices would take about 5 hours;
+* 45 random vertices: the census did not finish the row lists of its first boundary in 45 minutes (NO RESULT);
+* 38 random vertices: more than 6000 candidate rows at the first vertex.
+So below about 50 random vertices the limit is the enumeration of the rows by the solver, not a mathematical fact.
+Nothing found, nothing excluded there.
+
+State of the asymmetry question after the descent: every configuration tried that shares at least 54 structured or 55
+random vertices (with their neighbourhoods) with a known graph gives back known graphs. No asymmetric member found; no
+proof that none exists; the tools of this note do not reach smaller windows.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
