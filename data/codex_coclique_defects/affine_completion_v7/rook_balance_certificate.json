@@ -1,0 +1,219 @@
+{
+  "status": "PASS",
+  "rook_adjacency": [
+    [
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0
+    ]
+  ],
+  "H": [
+    0,
+    1,
+    4,
+    3
+  ],
+  "X": [
+    2,
+    7,
+    5,
+    6
+  ],
+  "center": 8,
+  "profiles": [
+    {
+      "a": 0,
+      "e": 2,
+      "n2": 4,
+      "max_charge_on_nine": 13,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    },
+    {
+      "a": 0,
+      "e": 3,
+      "n2": 3,
+      "max_charge_on_nine": 12,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    },
+    {
+      "a": 0,
+      "e": 4,
+      "n2": 2,
+      "max_charge_on_nine": 11,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    },
+    {
+      "a": 0,
+      "e": 5,
+      "n2": 1,
+      "max_charge_on_nine": 10,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    },
+    {
+      "a": 0,
+      "e": 6,
+      "n2": 0,
+      "max_charge_on_nine": 9,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": true
+    },
+    {
+      "a": 1,
+      "e": 2,
+      "n2": 1,
+      "max_charge_on_nine": 12,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    },
+    {
+      "a": 1,
+      "e": 3,
+      "n2": 0,
+      "max_charge_on_nine": 11,
+      "charge_required_if_disjoint": 15,
+      "disjoint_impossible": true,
+      "intersection_three_possible_at_this_level": false
+    }
+  ],
+  "profile_02_center_outside_C": [
+    {
+      "center_charge": -1,
+      "actual_charge": 11,
+      "required_charge": 15
+    },
+    {
+      "center_charge": 0,
+      "actual_charge": 12,
+      "required_charge": 15
+    },
+    {
+      "center_charge": 1,
+      "actual_charge": 13,
+      "required_charge": 15
+    },
+    {
+      "center_charge": 2,
+      "actual_charge": 14,
+      "required_charge": 15
+    }
+  ],
+  "profile_02_center_inside_C": {
+    "actual_charge": 12,
+    "required_charge": 8
+  },
+  "family_cut": "A_x0x2+A_x1x3+sum_x_in_X A_vx <= 5",
+  "strengthened_cuts": [
+    "A_x0x2+sum_x_in_X A_vx <= 4",
+    "A_x1x3+sum_x_in_X A_vx <= 4"
+  ],
+  "strengthened_cut_external_dependency": {
+    "theorem": "Lou-Murin Theorem 2.1: no induced rook minus one edge",
+    "source": "https://math.mit.edu/research/highschool/primes/materials/2014/Lou-Murin.pdf",
+    "status": "Published-source theorem used; not independently re-proved by this arithmetic checker"
+  },
+  "scope": "No rook can contain the distinguished H in any (0,2) graph; whole (0,2) remains open"
+}

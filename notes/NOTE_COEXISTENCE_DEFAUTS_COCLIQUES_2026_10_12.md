@@ -1477,3 +1477,374 @@ modèle exact de99 et le modèle réduit ne doivent pas être relancés à
 l'identique sous prétexte que leur statut est UNKNOWN. Aucune nouvelle
 exclusion de bord ni nouvelle coupure particulière n'a été ajoutée aux304
 conditions de V5. Le solveur co-Heawood et son observateur restent actifs.
+
+## 36. V7 : les libertés affines portent aussi tout le défaut quadratique
+
+13 octobre2026, après redémarrage du PC. Les anciens processus co-Heawood
+et leur observateur se sont arrêtés avec le PC ; les mentions précédentes
+« restent actifs » décrivent le12 octobre, pas la situation du13.
+
+La formule à projecteur du§32 peut être transformée en un système discret
+fini, y compris lorsque D est singulière. On conserve EXACTEMENT les
+hypothèses du§32 ; aucune indépendance automatique des colonnes n'est supposée.
+
+Définir l'espace vectoriel rationnel
+
+    V_D = { T : T=T^t, diag T=0, D T=0 },   delta=dim V_D.     (33)
+
+Les solutions réelles symétriques à diagonale nulle de DE=F forment soit
+l'ensemble vide, soit un espace affine E_*+V_D. Si N est une base colonne
+de ker D, de dimension h, toute matrice symétrique annulée par D est de
+la forme NSN^t, S symétrique h par h. Par conséquent
+
+    delta = h(h+1)/2-rang[S -> diag(NSN^t)]
+          <= h(h-1)/2.                                      (34)
+
+La dernière borne vient de h lignes indépendantes de N : leurs produits
+extérieurs sont linéairement indépendants. En particulier h=1 implique
+delta=0 : un noyau non nul n'entraîne PAS nécessairement de liberté sur E
+une fois la symétrie et la diagonale nulle imposées.
+
+Choisir delta paires J={(u_i,v_i)} telles que l'évaluation T -> (T_uv)_J
+soit injective sur V_D. Ceci se fait par élimination rationnelle. On
+normalise une base T_i pour avoir (T_i)_(u_j,v_j)=1 si i=j,0 sinon. Il
+existe alors une matrice rationnelle E_base, nulle sur les paires J, telle
+que toutes les complétions linéaires s'écrivent
+
+    E=E_base+sum_i x_i T_i,     x_i=E_(u_i,v_i).              (35)
+
+Pour un graphe, les delta x_i sont binaires ; toutes les autres arêtes
+en sont des fonctions affines rationnelles. Il faut encore imposer que
+TOUTES ces entrées appartiennent à{0,1}, et non seulement les x_i.
+
+THÉORÈME. Parmi les matrices d'adjacence E satisfaisant DE=F, il suffit
+de vérifier l'équation des voisins communs sur les delta paires J :
+
+    (D^tD+E²+E)_(u,v)=2,                 (u,v) dans J.         (36)
+
+Toutes les autres équations du graphe entier en découlent.
+
+Preuve. La fermeture linéaire et le voisinage complet garantissent
+E1=14*1-D^t1, comme au§33. Construire A avec les trois blocs et poser
+L=D^tD+E²+E-12I-2J. Le défaut de A est nul hors de L. A est symétrique
+et régulière, donc son défaut polynomial commute avec A : DL=0. Puisque
+E est une matrice d'adjacence, la diagonale de L vaut le degré total
+moins14, donc zéro. Ainsi L appartient au MÊME espace V_D que les
+variations linéaires de E. (36) annule ses delta coordonnées injectives,
+donc L=0. Réciproquement toute vraie complétion satisfait ces conditions.
+
+Cette preuve vaut aussi pour A²+A=(k-mu)I+mu J avec les hypothèses de
+fermeture correspondantes. Elle ne remplace pas la binarité de E par
+l'intégralité seule : ici la diagonale du défaut est annulée grâce à
+la binarité, AVANT d'invoquer les équations quadratiques sélectionnées.
+
+Conséquences effectives : delta=0 donne au plus UNE complétion, même avec
+un noyau non nul ; delta=1 donne au plus DEUX candidats ; en général au
+plus2^delta affectations des arêtes libres. Le nombre d'équations
+quadratiques nécessaires est delta, contre m(m-1)/2 précédemment.
+Cela ne prouve pas que delta est petit pour tous les candidats C1.
+
+Implémentation exacte : `coclique_affine_completion.py`. Elle calcule
+l'espace affine, impose toutes les entrées binaires, puis seulement les
+paires J ; tout témoin est contrôlé sur le polynôme complet. La recherche
+du cas singulier, absente de V6, est ainsi implémentée sans paramétrer un
+projecteur réel. Un délai expiré reste UNKNOWN, pas une exclusion.
+
+## 37. Une fermeture quadratique se réduit réellement à une parité
+
+Nouveaux contrôles du mécanisme, distincts des anciens audits :
+
+* Grille3x3, bord formé d'une étoile fermée : h=1 mais delta=0,
+  complétion binaire unique ; aucune équation quadratique restante.
+* Petersen, même choix de bord : h=3, delta=3, trois arêtes libres x,y,z.
+  Les HUIT choix binaires donnent des matrices d'adjacence satisfaisant
+  toutes les équations linéaires, les degrés et les capacités D^tD+E<=mu.
+  Les trois défauts sélectionnés sont exactement
+
+      x-y-z+2yz,    y-x-z+2xz,    z-x-y+2xy.
+
+  Leur annulation simultanée équivaut à UNE loi : x+y+z=0 modulo2.
+  Quatre candidats passent, quatre échouent. Les trois choix individuels
+  et toutes leurs paires se prolongent ; leur coexistence triple porte
+  la seule obstruction. Cet exemple illustre une extraction complète,
+  pas une exclusion d'une famille du problème à99.
+* Paley13 et Paley17 : h=delta=0, complétions uniques retrouvées.
+
+Les certificats rationnels sont dans `affine_completion_v7/`. Le contrôle
+séparé `check_coclique_affine_completion.py` relit les données, vérifie les
+dimensions, l'injectivité des coordonnées, la totalité des huit choix
+Petersen et les équations complètes. Il ne réimporte pas le constructeur.
+
+## 38. Exiger aussi la coexistence des colonnes pendant la construction
+
+Le modèle V6 imposait surtout le bloc B-B. Des obligations nécessaires
+supplémentaires peuvent être imposées AVANT d'obtenir un D complet :
+
+    R=D^tD,     R_uv+E_uv<=2 pour u!=v,
+    E1=14*1-D^t1,
+    R_uv=2 => E_uw+E_vw<=1 pour tout w.                    (37)
+
+La première interdit trois voisins communs déjà dans B et interdit une
+arête lorsque deux voisins communs sont déjà présents. La troisième
+interdit alors TOUT voisin commun supplémentaire dans le bloc manquant.
+E est une seule matrice d'adjacence partagée, fournissant les degrés
+restants ; les choix de partenaires ne sont pas indépendants par sommet.
+
+Dans (0,2), E_ef=1. Pour chaque Z0, la loi des charges impose exactement
+sum_(l dans L) D_lu - E_eu-E_fu=2. Le nouveau modèle impose aussi TOUTES
+les équations mixtes pour les21 lignes de la coclique, avec le même E.
+Il couvre toujours la famille entière sans fixer un noyau, une classe
+de cycles ni epsilon. Il reste NÉCESSAIRE : un témoin doit être soumis
+au critère exact des§36–37 avant d'être appelé graphe SRG.
+
+Code `coclique_column_coexistence.py`, mesures de ressources intégrées.
+Construction :128106 anciens produits plus96945 nouveaux, soit225051 ;
+703 arêtes résiduelles,703 paires de colonnes. Un pilote de900s à huit
+travailleurs est lancé dans `global_columns_v7/`. Lire son `result.json`
+pour le verdict final ; une absence de fichier signifie qu'il n'est pas
+encore enregistré. Les journaux V6 ne sont pas écrasés.
+
+Le pilote `global_columns_v7` a terminé UNKNOWN901,503s : compteur de
+réponse582416 conflits/1769420 branches, pas de D. Ces compteurs sont
+ceux de la réponse d'un travailleur, PAS la somme du portefeuille.
+Le journal conserve les statistiques de chacun : fs_random_no_lp925362
+conflits, no_lp582416, quick_restart_no_lp158761. max_lp dépense son
+temps sur597447 lignes/198344 colonnes, sans aucune résolution LP
+OPTIMAL et avec392 conflits. Le pilote suivant conserve des moteurs LP
+mais écarte max_lp. Aucun débit n'est un pourcentage de résolution.
+
+## 39. Les arêtes résiduelles non couvertes doivent former des triangles
+
+Pour une vraie complétion avec lambda1, poser
+
+    U_uv = E_uv si (D^tD)_uv=0, et0 sinon.                 (38)
+
+Toute arête de E a soit son unique triangle déjà complété dans B,
+soit son unique triangle entièrement dans le bloc manquant. Dans le
+second cas les trois arêtes du triangle appartiennent à U : une arête
+ayant déjà un voisin commun dans B ne peut appartenir aussi à ce triangle.
+Le graphe U possède donc une partition de ses arêtes en triangles, et
+ceux-ci sont EXACTEMENT ses triangles. En particulier chaque degré de U
+est pair et |E(U)| est divisible par3. La partition est imposée avec une
+seule variable par triple, pas avec des choix indépendants par arête.
+
+Le mode `--triangles` impose8436 variables de triangles pour les38
+sommets, leur équivalence aux trois arêtes U et leur couverture unique.
+Il ajoute les conséquences de parité et de divisibilité et étend les
+paires saturées à R_uv+E_uv=2. Cela ferme exactement lambda1 pour toutes
+les arêtes internes à E, et mu2 pour les non-arêtes avec R_uv=2. Les
+autres non-arêtes et une partie des équations mixtes restent à fermer :
+il s'agit encore d'un modèle nécessaire, pas d'une nouvelle équivalence.
+
+Contrôle ciblé sur les anciens certificats, sans refaire leurs audits :
+le bloc39 du BvLS donne69 arêtes U, exactement23 triangles qui partitionnent
+ces arêtes, et tous les degrés pairs. Résultat sauvegardé dans
+`affine_completion_v7/triangle_cover_check.json`.
+
+Pilote `global_triangles_v7`,1800s,huit travailleurs, --no-max-lp, lancé
+après le pilote précédent. Les deux sources de calcul sont copiées dans
+leurs dossiers de sortie ; ressources et paramètres sont conservés.
+
+## 40. Une grille3x3 impose une loi de défauts et interdit une fermeture de H
+
+Cette conséquence est déduite des profils déjà établis, sans recherche
+de rang ni hypothèse d'automorphisme. Soit R une grille3x3 induite (le
+graphe des tours à9 sommets) dans un hypothétique graphe à99.
+
+Fait de départ déjà utilisé dans les dossiers C2 : chaque sommet hors
+de R a EXACTEMENT un voisin dans R. En effet, toutes les paires de R
+ont déjà dans R leurs1 ou2 voisins communs autorisés ; un sommet externe
+ne peut donc en toucher deux. Les9 sommets de R ont chacun10 voisins
+externes, soit90 incidences pour90 sommets externes, d'où l'égalité partout.
+
+Pour une coclique C de21 sommets, poser t=|C intersect R| et reprendre
+q=4*1-(A+4I)1_C. Le comptage des incidences entre C et R donne
+
+    sum_(r dans R) b_C(r) = 4t+(21-t)=21+3t,
+    sum_(r dans R) q_r = 15-7t.                           (39)
+
+Si C est maximale par inclusion, nos profils donnent a=n1<=1,
+b=n2=6-3a-e et2<=e=n5<=6. Hors de C, les charges sont3 (a fois),
+2 (b fois),1,0,-1. Sur NEUF sommets hors C leur somme est au plus
+9+2a+b=15-a-e<=13. Ainsi t=0, qui exigerait15, est impossible.
+Une grille rencontre donc toute coclique21 maximale. Comme t<=3,
+les possibilités sont t=1 ou2 ; t=3 exige une somme-6 sur les six
+sommets restants, donc tous les six sont négatifs. Cela force le profil
+(0,6) et le graphe négatif induit C6 (complément d'une coclique maximale
+dans la grille). Il ne s'agit pas d'exclure ce dernier profil.
+
+APPLICATION À TOUT(0,2). Les quatre H ont charge2 et les quatre X,
+uniques triangles des quatre arêtes de H, ont charge1. Si une grille
+contient H, elle contient nécessairement aussi les quatre X et un
+neuvième sommet v. La somme des charges y vaut12+q_v.
+
+* Si v n'est pas dans C, t=0 et(39) exige q_v=3, absent du profil(0,2).
+* Si v appartient à C, t=1 et(39) exige8, alors que la somme vaut12.
+
+CONCLUSION : le C4 distingué H ne peut appartenir à AUCUNE grille3x3
+induite. C'est une exclusion uniforme d'une extension de H, pas
+l'exclusion de toute la famille(0,2).
+
+Réinjection exacte. Noter X=(x0,x1,x2,x3) dans l'ordre cyclique des arêtes
+de H. Si les deux arêtes opposées x0x2 et x1x3 sont présentes, un sommet
+v adjacent aux quatre X compléterait cette grille. Il ne peut toucher H
+car les arêtes H-X ont déjà leur unique voisin commun dans H. Les autres
+arêtes entre X sont absentes car chacun a degré1 dans L. Donc, pour tous
+les91 sommets v hors H union X,
+
+    A_x0x2 + A_x1x3 + sum_(x dans X) A_vx <= 5.            (40)
+
+Ces91 inégalités sont disponibles dans `coclique_column_coexistence.py`
+avec --rook-cut. Elles valent sur les bords variables et ne fixent pas
+les deux arêtes : avec au plus une d'entre elles, l'inégalité est triviale.
+Les pilotes déjà lancés avant cette déduction ne les contiennent pas.
+
+## 41. Extraction automatique de parités et références de comparaison
+
+Le solveur affine construit les polynômes des défauts sélectionnés en
+réduisant x_i²=x_i. Après élimination des dénominateurs et du facteur
+commun entier, si tous les coefficients quadratiques sont pairs, il
+extrait l'équation XOR linéaire nécessaire. Ces contraintes s'ajoutent
+aux équations exactes ; elles ne les remplacent pas sans preuve de
+suffisance. L'exemple Petersen extrait trois fois la même parité, qui
+est dédupliquée. L'extraction facultative est bornée à delta<=24 ; le
+système exact demeure appliqué au-delà. Un dépassement des coefficients
+entiers supportés par CP-SAT est signalé explicitement, jamais UNSAT.
+
+Consultation bibliographique ciblée du13 octobre, sans importer de
+prétendue clôture :
+
+* Petro et Phillips, On Clique Graphs and Clique Regular Graphs,
+  https://arxiv.org/html/2502.17845v1 : référence pour le graphe des
+  triangles et ses contraintes spectrales. Pas de conséquence nouvelle
+  utilisée ici sans preuve.
+* Keramatipour, Approaching the Conway-99 problem using SAT solvers,
+  https://arxiv.org/html/2604.23037v2 : distingue l'interdiction d'un
+  motif Paley9 universel de la conjecture d'absence de tout Paley9.
+  Notre§40 n'utilise PAS cette conjecture ; son interdiction limitée à
+  la grille contenant H est démontrée par le comptage(39).
+
+La recherche porte encore sur l'existence d'un D admissible pour C1.
+Le théorème affine, la loi(39), les coupes(40) et la décomposition(38)
+complètent le critère global ; aucune impossibilité totale n'est annoncée.
+
+## 42. Renforcement par la grille moins une arête, et propagation du centre
+
+Lou et Murin, théorème2.1, prouvent qu'une grille3x3 privée d'UNE ARÊTE
+ne peut être un sous-graphe induit de Conway99 :
+https://math.mit.edu/research/highschool/primes/materials/2014/Lou-Murin.pdf
+La preuve porte sur neuf sommets, pas huit ; on ne suppose aucune
+complétion automatique d'une grille privée d'un sommet.
+
+Avec le§40, cela renforce(40) en DEUX contraintes pour chaque v :
+
+    A_x0x2 + sum_(x dans X) A_vx <= 4,
+    A_x1x3 + sum_(x dans X) A_vx <= 4.                    (41)
+
+Si une seule arête opposée était présente et v touchait les quatre X,
+les neuf sommets formeraient exactement la grille moins l'autre arête.
+Il n'y a pas d'arête supplémentaire cachée : les arêtes H-X saturées
+interdisent v-H et les arêtes entre deux X consécutifs. Si les deux
+opposées sont présentes, le§40 s'applique. Le mode --rook-cut impose
+donc maintenant182 inégalités(41), qui impliquent les91 anciennes(40).
+La nécessité de cette version renforcée cite expressément Lou-Murin.
+
+Le contrôle `check_coclique_rook_balance.py` construit la grille dans
+ses coordonnées naturelles, vérifie les identités et les sept profils,
+les comptes impossibles du centre, et la conséquence C6 pour t=3.
+Il ne prétend pas réauditer le théorème extérieur Lou-Murin. Son
+certificat est `affine_completion_v7/rook_balance_certificate.json`.
+
+La seule branche où un sommet v touche les quatre X a ainsi une structure
+supplémentaire forcée :
+
+1. v ne touche aucun H ; les quotas des étoiles excluent aussi Z_H.
+   Un Y ne peut toucher les quatre X car son degré dans L est3. Donc
+   v est dans C sans voisin H, ou dans Z0, et sa charge vaut0.
+2. La loi Aq=3q+2 impose alors |N(v) intersect L|-|N(v) intersect{e,f}|=2.
+   Comme les quatre X sont déjà présents, v touche exactement eux dans L
+   et touche e et f. C'est donc l'UNIQUE voisin commun de e et f.
+3. Les deux arêtes opposées de X sont absentes par(41). Dans le voisinage
+   de v, l'arête ef forme déjà une paire. Chaque x_i doit former une
+   autre paire avec un sommet w_i ; les quatre w_i sont distincts.
+4. Chaque w_i touche exactement un X (x_i), ne touche ni e ni f, et
+   appartient comme v à C sans voisin H ou à Z0. La loi des charges
+   impose donc exactement UN voisin supplémentaire dans Y.
+
+Ces quatre mates ne sont pas encore contradictoires ; ils constituent
+une obligation commune précise pour la branche restante. L'absence de
+contradiction à ce stade n'annule pas les exclusions(39)–(41).
+
+Pilote dédié `global_center_v7`,600s,quatre travailleurs, avec
+--triangles --no-max-lp --rook-cut --center-kind any. Il couvre TOUS
+les centres possibles (13 dans C sans voisin H,36 dans Z0), sans en
+fixer arbitrairement un malgré les ordres de signatures. La somme des
+49 indicatrices de centre vaut1. Les équations de ses quatre mates
+sont imposées conditionnellement ; aucune classe de cycles n'est fixée.
+Ce pilote porte seulement sur la branche « un voisin commun aux quatre X ».
+Il ne faut jamais attribuer son verdict éventuel à tout(0,2).
+
+Si ce centre v est dans Z0, quatre de ses voisins sont dans C, quatre
+dans X, deux sont e,f, et les quatre autres sont dans Z0 : les étoiles
+de H saturées excluent tous les autres emplacements. Si p des quatre
+mates w_i sont dans C, les quatre derniers voisins de v comprennent
+4-p sommets de C et p sommets de Z0 et doivent former deux arêtes.
+L'indépendance de C impose4-p<=p, donc p>=2. Si v est dans C, les
+quatre w_i sont tous dans Z0. Ces conséquences sont démontrées ici ;
+la borne p>=2 n'était pas ajoutée séparément au pilote déjà lancé.
+
+## 43. La loi de défauts vaut pour tous les ensembles réguliers concernés
+
+L'argument des grilles est un cas de la règle suivante. Si un ensemble
+de sommets R vérifie A1_R=3*1_R+b*1, alors |R|=9b par sommation.
+Pour toute coclique C de taille c, sans hypothèse c21/22, et
+q=4*1-(A+4I)1_C, on a
+
+    sum_(v dans R) q_v = b(36-c)-7|R intersect C|.         (42)
+
+Preuve : (A+4I)1_R=7*1_R+b*1, puis prendre le produit avec1_C.
+En notant delta=22-c, cela donne aussi
+
+    sum_R q = b(14+delta)-7|R intersect C|,
+    sum_R q = b*delta modulo7.
+
+Une grille3x3 a b=1. Une union de b grilles disjointes a aussi ce
+paramètre. À22, q=0 force exactement2b sommets de la coclique dans R ;
+à21, les charges restantes imposent(39) et ses exclusions. L'existence
+d'un tel R n'est PAS supposée pour tout Conway : la règle s'applique
+chaque fois que cette structure est présente ou forcée.
+
+## 44. Bilan des pilotes et poursuite intégrée
+
+Les trois premiers pilotes V7 sont terminés, tous UNKNOWN :
+
+| Modèle | Portée | Secondes | Pic mémoire observé |
+| --- | --- | ---: | ---: |
+| global_columns_v7 | Tout(0,2), colonnes et degrés partagés |901,503|4,35Gio|
+| global_triangles_v7 | Tout(0,2), triangles résiduels ajoutés |1801,568|4,92Gio|
+| global_center_v7 | Branche avec centre4X,49 positions possibles |601,439|2,94Gio|
+
+Aucun n'a produit de D, et aucun n'exclut sa portée. Les mesures ont été
+prises toutes les10s. Les statistiques par travailleur sont conservées :
+sur le pilote triangulaire, fs_random_no_lp984221 conflits, no_lp883786,
+quick_restart_no_lp213836. Les9511 conflits de la réponse finale ne sont
+pas le total du portefeuille. Malgré l'exclusion de max_lp, CP-SAT avait
+introduit probing_max_lp ; le nouveau réglage exclut explicitement les
+deux, tout en conservant des moteurs à relaxation linéaire plus limitée.
+
+Le pilote `global_integrated_v7` couvre à nouveau TOUT(0,2), avec toutes
+les obligations nouvelles : triangles,182 inégalités de grilles, et
+propagation CONDITIONNELLE des49 centres possibles. La somme des
+indicatrices de centre est au plus1, PAS égale à1 ; aucun centre n'est
+supposé. S'il existe, les mates, les quotas des voisins et la borne
+p>=2 sont propagés. Le mode --center-kind conditional conserve donc la
+famille entière. Budget3600s,huit travailleurs, observateur intégré.
+Lire son result.json pour le résultat final ; le lancement ne vaut pas
+verdict. Les sources exactes sont conservées dans chaque dossier.
+
+Le manifeste `v7_run_manifest.json`, produit par `coclique_v7_snapshot.py`,
+releve les portées, résultats, ressources et empreintes. Les preuves sont
+aux§36–43. Les182 contraintes sont des instances de deux lois uniformes,
+pas182 familles disjointes exclues. Les anciennes304 conditions V5 et
+les anciens certificats sont conservés. Aucun classement des rangs
+n'a été repris. C1 et la famille(0,2) restent ouverts.
