@@ -3324,3 +3324,42 @@ Tous les contrôles exacts passent. Aucun audit243 ni catalogue de noyaux
 n'est repris. Le résultat exploitable est une rigidité de reconstruction
 et un test complet dans le cas singulier spécifié, pas une résolution
 du problème d'existence C1.
+
+## 74. Reprise du14 octobre2026 : état durable et cible suivante
+
+Après les déconnexions de la session précédente, V14 a été retrouvée dans
+l'index Git et sauvegardée dans `dff5e84`. Les trois empreintes des sources
+concordent avec son manifeste ; ses contrôles ne sont pas relancés.
+Les modifications historiques co-Heawood et les données non suivies sont
+conservées séparément, sans les annexer à ce commit.
+
+Pont : le lecteur automatique vise maintenant la conversation
+`01a1379f-6e0a-7da2-8355-ea6b7c7eda46`. Sortant618, confirmation effective
+de Claude619 ; curseur lu619, lecteur actif, aucune erreur. Les messages
+614–617 ont été repris (615 était notre propre message V14). Aucun processus
+Claude n'a été arrêté. La question annexe C2 de616 est close : aucune
+référence identifiée dans le travail récupéré, sans affirmation d'absence.
+
+Consigne active : obtenir une exclusion ou une réduction effective pour C1,
+avec priorité à la coexistence globale ; aucun calcul payant. Sans borne
+alpha>=21, le seul cadre des cocliques21/22 ne couvre pas C1. Le support
+de norme18 est une cible utile, sans prétendre que son exclusion suffirait
+seule à C1 et sans reprendre les anciens catalogues de rangs.
+
+Les fichiers LAB sont présents sous
+`C:/home/researcher/Downloads/conway_c2_researcher2_start_2026_09_30/`
+`conway_c2_researcher2_start_2026_09_30/work/` :
+`c1_coclique_frame_2026-10-13/NOTE_COCLIQUE_FRAME.md`,
+`c1_cost37_2026-10-09/cores_norm18_independent.json` et
+`coheawood_2026-10-12/n18_types.py`.
+Les tests spectraux de colonnes individuelles et de paires sont déjà connus
+de LAB ; les répéter ne constituerait pas une avancée.
+
+Cible en cours : coupler la population entière des types extérieurs à la
+réalisation d'une étoile complète, avec capacités partagées. Un sommet
+extérieur de type d impose simultanément le vecteur de demandes
+`2*1-(B+I)d` et le degré `14-|d|` de ses voisins extérieurs. Le témoin
+d'une étoile ne doit pas employer des copies absentes de la population ni
+consommer deux fois une capacité saturée. Chercher un rejet exact ou une
+contrainte supplémentaire exploitable, pas une nouvelle liste de UNKNOWN.
+À ce point de reprise, aucune nouvelle exclusion C1 n'est annoncée.
