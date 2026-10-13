@@ -310,3 +310,18 @@ What is NOT yet secured (reliability first):
   transitivity of Aut(BH) on the non-adjacent pairs). Their outcomes are to be appended here.
 * to do for a publishable proof: a DRAT/LRAT certificate checked by an independent checker, for the main run and for
   the lemma runs; an independent re-implementation of the encoding (a second author of the CNF).
+
+## 14. Certification, state on 13 October 2026, 12:15 UTC
+
+* Second run of the main instance (same CNF, sha256 f72b45c2...), with the proof written to disk: `s UNSATISFIABLE`
+  again, 45 min 47 s (12/10 18:53:22 -> 19:39:09 UTC); proof `ultimate_run1.drat`, 1 754 513 284 bytes (scratchpad).
+* DRAT certificates checked by drat-trim (`s VERIFIED`), one per lemma family used as redundant clauses:
+  (a) 12/10, (b) 12/10, (d) 12/10, **(c) 13/10** (cadical 95.6 s, proof 129.6 MB, check 71.8 s, CNF sha256 a16253d94f11b26d...),
+  **(e) 13/10** (`lemma_e_cert.py`: the local instance of explore_typeB4.py, cadical 33.8 s, proof 60.4 MB, check 26.5 s,
+  CNF sha256 9907114a32e8bdad...). So the five lemma families have machine-checked proofs of the instances that state them.
+* Main proof: drat-trim started 13/10 11:56 UTC on the 1.75 GB proof, with extraction of the unsatisfiable core
+  (`ultimate_core.cnf`); result to be added here.
+* Still not covered by any certificate: that the CNF files say what the note says (the encoding itself: full_hybrid.py,
+  full_grid.py, parity_hybrid.py, local_cnf2.py), the orbit computation used to fix the type B state, and the passage
+  from "every parity skeleton is trivial" to "no non-cyclic cover". An independent re-implementation remains the
+  missing check.
