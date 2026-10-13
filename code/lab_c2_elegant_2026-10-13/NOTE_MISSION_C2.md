@@ -205,3 +205,25 @@ Not reread line by line by me; its own labels are kept.
       (pairs of eigenfunctions of size 11) + (pairs of size 12) = 10 + N_2/2 >= 10.
   So, with T16, T18, T20, AT LEAST TEN PAIRS +-a of eigenfunctions of size 11 or 12 must coexist in the graph (in the
   classes seen by the envelope); "at most nine" would close C2.
+
+## 11. Real region pairs: the identities hold on all of them; no uniform reason for the missing heptad
+(13 October 2026, 22:06 UTC; Sonnet sub-agent, `region_pairs/REGION_PAIRS_REPORT.md`, not reread line by line)
+* Census redone from the stored lattices: 2,652 pairs without witness E <= 10 in 28 lattices; 1,610 violate the
+  characteristic trap; 1,042 are region pairs (044: 896, 072: 96, 111: 32, 106: 16, 131: 2).
+* **The six identities of 6.2 that were tested (N2 = s - 12, I12, I13, I15, N3 = I0(21), S13.5) hold on 1042 of 1042
+  region pairs, by direct exact enumeration, and fail on every trap violator.** Eight patterns occur:
+  (n11, s, N2) = (0,24,12), (2,24,12), (0,32,20), (0,48,36), (2,48,36), (4,48,36), (8,60,48), (0,64,52).
+  Two relations the agent fitted on the data, I16 = 164 + 2 n11 + s and S15.5 = 240 + 6 n11 - s, are exactly two of
+  the identities of 6.2 that I had not given it. This is an independent confirmation, on real lattices from the
+  campaign, of sections 1 and 6 (space of dimension 61, classes, shadow rule, exact algebra).
+* Why these lattices carry no frame is NOT uniform:
+  - 106: counting. Every admissible h hits at least 8 of the s = 48 minimal shadow classes, and 7 x 8 > 48.
+  - 111, 131: no seven admissible h with disjoint hit sets covering the s classes (orthogonality not needed).
+  - 072: disjoint covers exist, none consists of pairwise orthogonal vectors.
+  - 044 (114 of 896 pairs sampled): its 144 norm-2 shadow vectors form a spherical 2-design, which leaves no slack
+    (every E = 13.5 root class must be hit exactly 3 times); one kind of pair dies there; for the two other kinds
+    seven vectors h satisfying EVERY shadow condition exist (64 and 320 sets per pair) and are removed only by the
+    next layer (some of the 42 cells for the norm-3 vectors u is empty).
+* Consequence for the mission: at the level of the lattice there is no single counting reason to turn into a lemma;
+  each lattice dies its own way, as in the old proof. "No seven h" is not even always true.
+* Admissible h are plentiful everywhere (84-91 % of about 5,600-5,900 norm-4 vectors; at least 14 pairwise orthogonal).
