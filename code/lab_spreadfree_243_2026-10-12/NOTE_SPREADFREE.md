@@ -393,6 +393,24 @@ Also closed on 13 October:
   carry the same number of elements of D_00, D_11, D_22, because the eigenspaces are defined over Q) the cyclic group
   has no graph of either type (8 s; without the constraint: no decision in 240 s); the other groups are running.
 
+## 6k. Type II over Z_3^4 closed by a trace argument: the graphs with a semiregular Z_3^4 are BvLS, Gamma4, Gamma5
+
+Type II: D_ii = +-{a_i, b_i}, two projective points of PG(3,3) for each of the three orbits. For a non-trivial
+character chi with kernel the hyperplane h, chi(D_ii) = 3 n_i - 2 where n_i = number of the points a_i, b_i in h. The
+3x3 Hermitian matrix (chi(D_ij)) has its eigenvalues in {4, -5} (chi-component of A^2 + A - 20I = 2J), so its trace
+3 (n_0 + n_1 + n_2) - 6 is 12, 3, -6 or -15: **every hyperplane contains 0, 3 or 6 of the six points a_0, b_0, a_1, b_1,
+a_2, b_2**. Exhaustive check (`type2_trace.py`, 608 400 pairs of pairs against 40 hyperplanes): with D_00 fixed the only
+possibility is D_11 = D_22 = D_00. Then the translation by a_0 maps every vertex to a neighbour: its orbits are lines,
+two of them are joined by 0 or 3 edges, so they form a regular spread whose deck group is that translation, and the
+graph is a Z_3-cover of the Brouwer-Haemers graph: one of the four covers (earlier theorem of the project, used with
+its status). Among them only BvLS and Gamma4 have 81 dividing the 3-part needed; the twin and Gamma3 have Sylow
+3-subgroups of order 27 (`sylow_info.py`), and the only fixed-point-free elements of order 3 of Gamma4 are its 80
+translations, whose group is of type I. So type II over Z_3^4 gives BvLS only.
+With the type I census of section 5: **a srg(243,22,1,2) with a semiregular elementary abelian group of order 81 is
+BvLS, Gamma4 or Gamma5.** (The SAT run for type II had found BvLS twice and then no decision in 900 s; the argument
+above replaces it.) The same trace condition for type I reads: every hyperplane contains a number of the 15 frame
+points divisible by 3.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
