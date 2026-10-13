@@ -116,7 +116,7 @@ With I(E), S(E) the numbers of integral and shadow vectors (one per class repres
     I(18) = 592 + 4 n11 - 2s       I(19) = 1040 - 4 n11 - s      S(19.5) = 2656 - 4 n11 - s
     I(20) = 1716 - 3 n11 - 5s/2    I0(21) = 688 + 2 n11 - s
 
-I0(14) is the number N_2 of roots of U orthogonal to y1, y2. So **s = 12 + N_2 >= 12**. CORRECTION (13/10, 20:50 UTC):
+I0(14) is the number N_2 of roots of U orthogonal to y1, y2. So **s = 12 + N_2 >= 12**. CORRECTION (13/10, 20:49 UTC):
 the totals I(E), S(E), n11, s count ONE class of each pair of opposite classes, i.e. they are numbers of PAIRS +-a
 (I0 alone counts both signs). So at least TWELVE pairs +-a of
 "characteristic" eigenfunctions a = (+-2 on one block, 0 on the six others; +-1 on all 42 outer orbits), of sum of
@@ -145,7 +145,7 @@ follows without the lattice list and without new lemmas. Cost: a larger space (a
 count) and generators with half-integer coordinates (E8, D12+ blocks) so that odd products with the h_c occur.
 Not done yet. A cheaper first probe: one vector h only (index J + <4>).
 
-## 7. Step 2, first probe: one vector h of the heptad in the index. NEGATIVE (13 October 2026, 21:00 UTC)
+## 7. Step 2, first probe: one vector h of the heptad in the index. NEGATIVE (13 October 2026, 20:49 UTC)
 
 Model: Jacobi forms in three variables for (U; y1, y2, h), h of norm 4 orthogonal to y1, y2 (`heptad1.py`); table
 entries indexed by the class ((v,y1), (v,y2)) mod 7, (v,h) mod 4 and D = 4E - 7 (v,h)^2.
