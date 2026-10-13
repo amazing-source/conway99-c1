@@ -1,6 +1,7 @@
 # The spread-free world at 243 vertices (lab session, started 12 October 2026, 19:20 UTC)
 
-Status at 21:45 UTC: **four new strongly regular graphs (243,22,1,2) found today, none with a regular spread**: a
+Status on 13 October 11:45 UTC: complete census of the graphs containing the common third: exactly seven (section 6h).
+Status on 12 October 21:45 UTC: **four new strongly regular graphs (243,22,1,2) found today, none with a regular spread**: a
 fifth (vertex-transitive, Cayley on non-abelian groups, section 6), a sixth (Aut 108, section 6d), a seventh (Aut 162)
 and an eighth (Aut 108) (section 6e). With the four covers of BH that makes eight known graphs. Checked by two independent scripts of this session; not audited by a third party; literature not yet
 searched for it. Everything else here is own derivation of 12/10 unless a source is given.
@@ -300,6 +301,44 @@ Cayley census (section 6): stopped by its time limit at 21:54 UTC after four of 
   (dimension 3050) no convergence in 20 000 iterations, from random starts or near the input. So this tool works for
   small regions only, as it stands.
 * Asymmetric member: none found. Smallest automorphism group so far: 108.
+
+## 6h. 13 October: COMPLETE census of the graphs containing the common third (`row_clique.py`)
+
+(The PC was switched off during the night; the SAT census of section 6g was lost after four solutions, all known.)
+
+Method, no big SAT instance. Keep the block R = 0..80 of the fifth graph with all its adjacencies; the adjacency inside
+the 162 other vertices F is unknown, no symmetry imposed. Every unknown condition is either on ONE row (the
+neighbourhood inside F of a vertex f, against the 81 vertices of R, and the degree) or on TWO rows (g in N(f) iff f in
+N(g); |N(f) & N(g)| = 2 - #(common neighbours in R) - [f ~ g]). So:
+
+1. the complete list of the rows allowed for one vertex: **930** for the vertex 81 and 930 for the vertex 162
+   (CryptoMiniSat on 161 variables, 1 second, list closed by UNSAT); the 81 translations give the lists of all vertices;
+2. a completion is exactly one row per vertex, pairwise compatible: depth-first search with forward checking;
+3. the row of the vertex 81 runs over one representative of each of the **191** orbits under the 6 automorphisms of
+   the input that preserve R and fix that vertex.
+
+Result (205 seconds, log `census_common_third_2026-10-13.log`): all 191 cases finished; 136 have no completion, 55 have
+exactly 6. The 330 completions are: the eighth graph 102, the sixth 102, the seventh 66, Gamma3 27, Gamma4 20,
+Gamma5 12, BvLS 1; counted with the orbit sizes, 1656 labelled completions. **No other graph.**
+
+So: a strongly regular graph (243,22,1,2) that contains this third with these attachments (81 vertices inducing the
+folded Hamming graph H(5,3)/<w>, joined to the 162 others as in BvLS) is one of SEVEN graphs: BvLS, Gamma3, Gamma4,
+Gamma5, the sixth, the seventh, the eighth. In particular this boundary has no asymmetric completion; the smallest
+group in the family is 108.
+
+Checks: the first case agrees with the SAT census of the same case (6 completions: BvLS once, Gamma4 five times,
+349 s with cadical against 3 s here); every completion is rebuilt and checked by A^2 = 20I - A + 2J before being
+identified (invariants, then isomorphism test). Not checked: the row lists by a second solver; the whole by a third
+party. What it does NOT say: nothing about graphs without such a third (the twin is not known to have one), nor about
+thirds attached differently.
+
+Other results of the morning:
+* sixth and eighth graphs, block 1 or block 2 kept, 162 vertices free, no symmetry (`free_trade.py ... sym`): complete
+  lists in 2 minutes each: only the sixth, seventh and eighth graphs (they differ inside block 0 only);
+* the twin has many thirds (classes of 240, 720, 1440 under its group), BvLS too (198 affine ones, and classes of
+  3960 up to 51 587): every third tried is rigid for the third trade, except the affine thirds of BvLS (-> Gamma4);
+* the line boundary (a line and its 60 neighbours kept, 180 free: the region of the BvLS - twin switch) has too many
+  candidate rows for this method as it stands (no list after 280 s): to be recalibrated, not a result.
 
 ## 7. Next
 
