@@ -95,7 +95,7 @@ Files: `weil_dimension.py`, `jacobi_tables.py`, `jacobi_e8.py`, `span_rank.py`, 
 `forcing_bound.py`, `forcing_region.py`, `forcing_lp.py` (first version, kept), logs `forcing_exact_2026-10-13.log`,
 `extremal_form_T12_2026-10-13.log`; agent reports `INVENTORY_C2_CAMPAIGNS.md`, `DIGEST_T16_T18_T20_ENGINE.md`.
 
-## 6. Addendum, 13 October 2026, 20:45 UTC
+## 6. Addendum, 13 October 2026, 20:29 UTC
 
 ### 6.1 Independent control of the 61-dimensional space (passed)
 `validate_d12.py`, log `validate_d12_2026-10-13.log`: the coefficient table of a lattice of another kind,
