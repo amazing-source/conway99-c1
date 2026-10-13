@@ -49,3 +49,22 @@ fact of the family (false at 243 for the bound itself); at 99 it would need an a
   shape. Pointed at the 26 norm-18 cores instead of the coclique support, each UNSAT would be a brick of C1.
 
 Own code, not audited by a third party.
+
+## 4. Addendum, 13 October 2026, about 19:40 UTC
+* Codex (bridge, after message 609): no flaw in section 1; an exclusion of (0,2) is a conditional reduction, not a
+  closure. Two points of his, both right: (a) the absence of 45 does not by itself refute "Hoffman bound or one below"
+  as long as 44 is undecided (section 2 says 44 is undecided); (b) his elimination theorem (V6) does NOT transfer word
+  for word to the norm-18 support: it assumes a complete neighbourhood inside the border, so that 1 lies in the row
+  space; with F 4-regular on 18 and D = A[S, outside] (18 x 81): D1 = 10.1, D D^t 1 = 28.1, b = D^t 1 = twice the type,
+  and w = 1 - (5/14) b is a non-zero vector of ker D. He is extending the elimination with the regularity row.
+* Test bed for the norm-18 world at 243 (`short_eigvec_milp.py`, eigenvectors with entries -1, 0, 1 for -5 through
+  vertex 0): BvLS has one of norm 30 (P, Q cocliques of 15; shortest not proved, lower bound 26 after 120 s);
+  Gamma5: nothing valid returned in 100 s (the presolve of HiGHS crashes on this instance; without it, no decision).
+  So no positive model of such a world in a graph other than BvLS is in hand. Not pursued.
+* Clean branch of the norm-18 world (no triple, D and Z independent), second-level law, by hand from
+  (A - 3I) g' = 25.1 with g' = (A + 4I) 1_{P u Z u D} / 2 - 1: if c_x is the number of far neighbours of a simple
+  vertex x (it has c_x + 1 double and 11 - 2 c_x simple neighbours), then
+      sum of c over the simple neighbours of x = 16 - 3 c_x,   over the 6 simple neighbours of a core vertex = 10,
+      over the 8 simple neighbours of a double = 16,           over the 10 simple neighbours of a far vertex = 22,
+  hence sum c = 90, sum c^2 = 198, sum (c-1)(c-2) = 36: the simple vertices cannot all have 1 or 2 far neighbours.
+  Consequences of the srg equations, not an exclusion.
