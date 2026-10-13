@@ -1,0 +1,166 @@
+{
+  "name": "r1_3_ZH",
+  "status": "UNKNOWN",
+  "seconds": 180.774281155,
+  "workers": 4,
+  "scope": "All coclique21 (0,2), partitioned by unordered negative degrees and triangle location",
+  "ignored_subsolvers": [
+    "*max_lp*",
+    "feasibility_pump",
+    "rins/rens"
+  ],
+  "actual_portfolio": [
+    "4 full problem subsolvers: [no_lp, portfolio_no_lp, probing_no_lp, quick_restart_no_lp]",
+    "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+  ],
+  "search_start_seconds": 33.35,
+  "search_stats": {
+    "no_lp": {
+      "Bools": 225197,
+      "Conflicts": 108423,
+      "Branches": 255690,
+      "Restarts": 14,
+      "BacktrackToRoot": 25580,
+      "Backtrack": 154927,
+      "BoolPropag": 634964400,
+      "IntegerPropag": 152292978
+    },
+    "portfolio_no_lp": {
+      "Bools": 225197,
+      "Conflicts": 115302,
+      "Branches": 516027,
+      "Restarts": 92,
+      "BacktrackToRoot": 29039,
+      "Backtrack": 215273,
+      "BoolPropag": 585818391,
+      "IntegerPropag": 182921070
+    },
+    "probing_no_lp": {
+      "Bools": 225357,
+      "Conflicts": 393,
+      "Branches": 741833,
+      "Restarts": 0,
+      "BacktrackToRoot": 739986,
+      "Backtrack": 740074,
+      "BoolPropag": 379113478,
+      "IntegerPropag": 324386863
+    },
+    "quick_restart_no_lp": {
+      "Bools": 225197,
+      "Conflicts": 29214,
+      "Branches": 4738212,
+      "Restarts": 2676,
+      "BacktrackToRoot": 30757,
+      "Backtrack": 98108,
+      "BoolPropag": 317097581,
+      "IntegerPropag": 189866264
+    }
+  },
+  "clauses_shared": {
+    "no_lp": {
+      "#Exported": 1918,
+      "#Imported": 1205,
+      "#BinaryRead": 301342,
+      "#BinaryTotal": 1270766
+    },
+    "portfolio_no_lp": {
+      "#Exported": 40842,
+      "#Imported": 4016,
+      "#BinaryRead": 1270763,
+      "#BinaryTotal": 1270766
+    },
+    "probing_no_lp": {
+      "#Exported": 1231021,
+      "#Imported": 7308,
+      "#BinaryRead": 1270766,
+      "#BinaryTotal": 1270766
+    },
+    "quick_restart_no_lp": {
+      "#Exported": 6604,
+      "#Imported": 4415,
+      "#BinaryRead": 1270766,
+      "#BinaryTotal": 1270766
+    }
+  },
+  "sat_stats": {
+    "no_lp": {
+      "ClassicMinim": 92389,
+      "LitRemoved": 2107673,
+      "LitRemovedBinary": 437205,
+      "LitLearned": 8176523,
+      "LitForgotten": 6153206,
+      "Subsumed": 11216
+    },
+    "portfolio_no_lp": {
+      "ClassicMinim": 87318,
+      "LitRemoved": 1438840,
+      "LitRemovedBinary": 543044,
+      "LitLearned": 6469524,
+      "LitForgotten": 4609440,
+      "Subsumed": 23447
+    },
+    "probing_no_lp": {
+      "ClassicMinim": 3,
+      "LitRemoved": 3,
+      "LitRemovedBinary": 38,
+      "LitLearned": 467,
+      "LitForgotten": 0,
+      "Subsumed": 19
+    },
+    "quick_restart_no_lp": {
+      "ClassicMinim": 14992,
+      "LitRemoved": 148035,
+      "LitRemovedBinary": 29294,
+      "LitLearned": 2366751,
+      "LitForgotten": 995294,
+      "Subsumed": 2517
+    }
+  },
+  "lp_dimensions": {},
+  "lp_stats": {},
+  "shared_bounds": {
+    "no_lp": {
+      "Num": 6,
+      "Sym": 0
+    },
+    "portfolio_no_lp": {
+      "Num": 1295,
+      "Sym": 0
+    },
+    "probing_no_lp": {
+      "Num": 1101,
+      "Sym": 0
+    },
+    "quick_restart_no_lp": {
+      "Num": 205,
+      "Sym": 0
+    }
+  },
+  "total_worker_conflicts": 253332,
+  "model_update_count": 129,
+  "model_samples_5min": [],
+  "last_model_update": {
+    "seconds": 166.61,
+    "variables_left": 223437,
+    "variables_total": 225943,
+    "constraints_left": 260477,
+    "constraints_total": 261949
+  },
+  "final_resource": {
+    "utc": "2026-10-13T15:47:00.987629+00:00",
+    "pid": 6691,
+    "cpu_seconds": 599.125441693,
+    "working_set": 3564765184,
+    "peak_working_set": 3564765184,
+    "average_cpu_cores": 3.9586280296261545
+  },
+  "peak_working_set": 3564765184,
+  "persisted_learned_clause_database": false,
+  "cautions": [
+    "UNKNOWN is not a nonexistence certificate",
+    "Counters do not measure the fraction of graphs excluded",
+    "Worker conflicts measure activity, not comparative effectiveness",
+    "Different models and time budgets prevent a controlled speed comparison",
+    "Shared clauses are exchanged within this run, not saved as a reusable database"
+  ]
+}

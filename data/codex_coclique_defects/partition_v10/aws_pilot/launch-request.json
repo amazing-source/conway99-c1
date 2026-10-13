@@ -1,0 +1,71 @@
+{
+  "ImageId": "ami-09d835910a77f135c",
+  "InstanceType": "c7a.32xlarge",
+  "MinCount": 1,
+  "MaxCount": 1,
+  "KeyName": "codex-conway-v10-20261013T151331Z",
+  "InstanceInitiatedShutdownBehavior": "stop",
+  "MetadataOptions": {
+    "HttpTokens": "required",
+    "HttpEndpoint": "enabled"
+  },
+  "NetworkInterfaces": [
+    {
+      "DeviceIndex": 0,
+      "SubnetId": "subnet-0e1603ed9b6044789",
+      "Groups": [
+        "sg-0f8fe73746c45c974"
+      ],
+      "AssociatePublicIpAddress": true
+    }
+  ],
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "/dev/sda1",
+      "Ebs": {
+        "VolumeSize": 30,
+        "VolumeType": "gp3",
+        "Encrypted": true,
+        "DeleteOnTermination": true
+      }
+    }
+  ],
+  "UserData": "IyEvYmluL2Jhc2gKc2V0IC1ldQpzeXN0ZW1kLXJ1biAtLXVuaXQ9Y29ud2F5LWJ1ZGdldC1zdG9wIC0tb24tYWN0aXZlPTQwbSAtLXRpbWVyLXByb3BlcnR5PUFjY3VyYWN5U2VjPTFzIC91c3Ivc2Jpbi9zaHV0ZG93biAtaCBub3cKZXhwb3J0IERFQklBTl9GUk9OVEVORD1ub25pbnRlcmFjdGl2ZQphcHQtZ2V0IHVwZGF0ZQphcHQtZ2V0IGluc3RhbGwgLXkgcHl0aG9uMy12ZW52Cm1rZGlyIC1wIC9vcHQvY29ud2F5CnB5dGhvbjMgLW0gdmVudiAvb3B0L2NvbndheS92ZW52Ci9vcHQvY29ud2F5L3ZlbnYvYmluL3BpcCBpbnN0YWxsIC0tbm8tY2FjaGUtZGlyIG9ydG9vbHM9PTkuMTUuNjc1NSBudW1weSBzeW1weQpjaG93biAtUiB1YnVudHU6dWJ1bnR1IC9vcHQvY29ud2F5CnRvdWNoIC9vcHQvY29ud2F5L1JFQURZCg==",
+  "TagSpecifications": [
+    {
+      "ResourceType": "instance",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "codex-conway-v10-20261013T151331Z"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "Conway-V10"
+        },
+        {
+          "Key": "AutoStopMinutes",
+          "Value": "40"
+        }
+      ]
+    },
+    {
+      "ResourceType": "volume",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "codex-conway-v10-20261013T151331Z"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "Conway-V10"
+        },
+        {
+          "Key": "AutoStopMinutes",
+          "Value": "40"
+        }
+      ]
+    }
+  ],
+  "ClientToken": "codex-conway-v10-20261013T151331Z"
+}

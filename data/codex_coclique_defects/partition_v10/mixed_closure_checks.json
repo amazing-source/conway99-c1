@@ -1,0 +1,89 @@
+{
+  "check": "PASS",
+  "prism_counterexample": {
+    "residual_walk_determinant": "0",
+    "residual_walk_dimension": 1,
+    "residual_size": 5,
+    "full_mixed_verified": false,
+    "completion_forced_by_residual_walks": false,
+    "common_characteristic_factor": "t**5 - 5*t**3 + 5*t - 2",
+    "mixed_defect": [
+      [
+        0,
+        1,
+        -1,
+        -1,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        1,
+        0,
+        1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        -1,
+        -1,
+        1,
+        0
+      ]
+    ]
+  },
+  "petersen": {
+    "residual_walk_determinant": "0",
+    "residual_walk_dimension": 1,
+    "residual_size": 5,
+    "full_mixed_verified": true,
+    "completion_forced_by_residual_walks": false,
+    "known_rows": [
+      0,
+      1
+    ],
+    "border_control_dimensions": [
+      3,
+      5
+    ],
+    "completion_forced_by_border_control": true
+  },
+  "paley25": {
+    "residual_walk_determinant": "18761760",
+    "residual_walk_dimension": 10,
+    "residual_size": 10,
+    "full_mixed_verified": true,
+    "completion_forced_by_residual_walks": true,
+    "missing": [
+      1,
+      2,
+      5,
+      7,
+      10,
+      11,
+      15,
+      16,
+      20,
+      22
+    ]
+  },
+  "leaf_encoder": {
+    "positive_status": "OPTIMAL",
+    "traded_status": "INFEASIBLE",
+    "all_degrees_preserved": true
+  },
+  "scope": "Conditional completion theorem controls, no new C1 exclusion"
+}

@@ -1,0 +1,28 @@
+random_seed: 1
+max_time_in_seconds: 180
+log_search_progress: true
+linearization_level: 0
+fill_tightened_domains_in_response: true
+log_to_stdout: false
+log_subsolver_statistics: true
+num_workers: 4
+subsolvers: "no_lp"
+subsolvers: "quick_restart_no_lp"
+subsolvers: "probing_no_lp"
+subsolvers: "portfolio_no_lp"
+subsolvers: "auto_no_lp"
+subsolvers: "quick_alt_no_lp"
+ignore_subsolvers: "*max_lp*"
+ignore_subsolvers: "feasibility_pump"
+ignore_subsolvers: "rins/rens"
+subsolver_params {
+  linearization_level: 0
+  name: "auto_no_lp"
+}
+subsolver_params {
+  search_branching: PORTFOLIO_WITH_QUICK_RESTART_SEARCH
+  linearization_level: 0
+  search_random_variable_pool_size: 5
+  name: "quick_alt_no_lp"
+}
+num_full_subsolvers: 4

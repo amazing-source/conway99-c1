@@ -2275,3 +2275,307 @@ Il n'existe ici aucune preuve de configuration optimale. On capitalise
 sur les modèles, les preuves et le protocole, pas sur une reprise fictive
 de l'apprentissage interne du run d'une heure. Détails et commandes :
 `calibration_v9/protocol.json`, `report.json`, `recommendation.json`.
+
+## 53. V10 : conservation et fermeture du bloc résiduel
+
+13 octobre2026. Nouvelle étape demandée par l'utilisateur : utiliser les
+réductions mathématiques pour structurer une recherche parallèle, sans
+confondre puissance de calcul et preuve. Le système était déjà fini ;
+l'objectif est de le rendre effectivement traitable.
+
+**Lemme de fermeture par les plafonds.** Soit A une matrice d'adjacence
+binaire symétrique, de diagonale nulle, k-régulière, sur n sommets. Supposons
+k²+k=(k-mu)+mu*n. Posons T=A²+A-(k-mu)I-mu*J. Si le bloc T_BB est nul et
+si T_uv<=0 pour toutes les paires distinctes u,v dans M, alors T_MM=0.
+
+Preuve. T*1=0 par la relation sur les paramètres, et diag(T)=0 par les
+degrés. Écrire T=[[0,G],[G^t,L]]. Les lignes du bord donnent G*1=0.
+La somme des lignes de M donne 1^t*L*1=-1^t*G^t*1=0. Les termes de L
+sont tous négatifs ou nuls et leur somme est nulle : chacun vaut zéro.
+Il s'agit d'une contrainte de coexistence de TOUS les plafonds, pas d'une
+vérification indépendante de chaque colonne. Les équations mixtes G=0
+ne sont pas déduites de ce seul argument.
+
+Application Conway : k=14,mu=2. Pour u!=v dans M, les plafonds sont
+
+    (D^t*D)_uv + (E²)_uv + E_uv <= 2.
+
+V10 impose directement les703 égalités correspondantes. Les anciennes
+contraintes de saturation et de triangles ne contrôlaient pas tous les
+nombres de voisins communs des paires NON adjacentes du bloc M. L'ajout
+emploie25308 produits binaires, mutualisés entre ces équations. Les38
+moments de§51 deviennent des conséquences des égalités individuelles et
+ne sont donc pas ajoutés une deuxième fois dans cette variante.
+
+Contrôle neuf : le Paley25 repartitionné de§51 satisfait aussi bien
+l'encodage par plafonds que celui par égalités. Son échange d'arêtes à
+degrés conservés, avec B,D inchangés, conserve la somme totale nulle du
+défaut résiduel mais donne des entrées -1 et+1 : les deux encodages le
+rejettent. Ce contrôle ne prétend pas exhiber un modèle V7 de C1.
+Code : `coclique_residual_partition.py`, contrôle
+`check_coclique_residual_partition.py` ; sortie
+`partition_v10/mathematical_checks.json`.
+
+## 54. V10 : partition exhaustive en61 branches intrinsèques
+
+Notons e,f les deux sommets de charge négative, qui sont adjacents, et
+r_e,r_f leurs degrés dans M={e,f}+Z0. Par§51,
+
+    r_e=1+d_C8(e), r_f=1+d_C8(f), 1<=r_e,r_f<=6.
+
+Leurs voisinages dans C ont chacun cinq sommets, donc
+d_C13(e)=6-r_e et d_C13(f)=6-r_f. Ils ont un UNIQUE voisin commun t.
+Les ensembles H et L sont anticomplets à e,f ; ainsi t appartient
+exactement à l'une des quatre classes C8,C13,ZH,Z0.
+
+Posons (a,b)=(min(r_e,r_f),max(r_e,r_f)). Leurs voisinages dans C8
+ont tailles a-1,b-1, dans un ensemble de taille8, et leur intersection
+a taille au plus1. Par conséquent a+b<=11. Le couple(6,6) est exclu.
+Les autres conséquences utilisées sont :
+
+* t dans C8 ou Z0 exige a>=2 ;
+* t dans C13 exige b<=5 ;
+* a+b=11 force t dans C8, par le même comptage d'intersection.
+
+Il reste20 couples non ordonnés et61 triplets (a,b,classe(t)). Ce sont
+des cas nécessaires, pas61 familles dont on affirme la réalisabilité.
+Tout graphe de la famille(0,2) se trouve dans EXACTEMENT une branche.
+Dans une branche a<b, l'encodage conserve les DEUX affectations
+(r_e,r_f)=(a,b) et(b,a) ; aucune nouvelle hypothèse de symétrie e/f
+n'est introduite dans les signatures ordonnées existantes.
+
+Un centre adjacent aux quatre X, s'il existe, est t d'après§41. Ainsi
+les branches t dans C8 ou ZH excluent tous ces centres ; dans les deux
+autres classes, seuls les centres de la bonne classe sont possibles.
+Ces conséquences sont ajoutées explicitement à la propagation.
+
+Le dénombrement61 est contrôlé indépendamment par les contraintes
+d'intersection d'ensembles de tailles(a-1,b-1) dans C8 et(6-a,6-b) dans
+C13, avec les deux orientations de e,f. Cela vérifie la couverture du
+découpage, sans remplacer sa preuve ci-dessus ni affirmer l'existence
+d'un graphe dans une branche. Le couple(6,6) était déjà incompatible
+avec les équations exactes sur e,f : on explicite une réduction utile,
+on ne la présente pas comme une nouvelle exclusion indépendante de V7.
+
+`coclique_partition_campaign.py` affecte ces branches à des processus
+distincts, de1/2/4/8 travailleurs CP-SAT. Les clauses sont partagées
+seulement à l'intérieur d'un processus. Les UNKNOWN restent ouverts ;
+les journaux, empreintes de modèles, paramètres et sources permettent
+de reprendre la campagne et de comparer des réglages sans prétendre
+recharger les clauses internes. Un candidat doit encore satisfaire les
+équations mixtes restantes ou passer la complétion exacte de V7.
+
+## 55. Propagation du défaut mixte et contrôlabilité
+
+Toujours sous les hypothèses de§53, avec les DEUX blocs diagonaux du
+défaut T nuls, écrire T=[[0,G],[G^t,0]]. Puisque A est régulier, il
+commute avec J, donc avec T. Le bloc mixte de AT=TA donne
+
+    B*G=G*E.                                                    (55a)
+
+Les sommes de lignes donnent G*1=0 et G^t*1=0. Par récurrence,
+
+    G*E^j*1=0 pour tout j>=0.                                  (55b)
+
+**Critère de fermeture.** Si W_E=[1,E1,...,E^(m-1)1] est inversible,
+alors G=0 : les deux blocs diagonaux et les degrés suffisent déjà à
+certifier le graphe complet. Il n'est PAS supposé que tout E admissible
+satisfasse cette hypothèse. L'asymétrie seule ne l'implique pas.
+
+Version utilisant les équations déjà imposées : si G a ses lignes S
+nulles, alors G^t annule chaque B^j*e_s, s dans S, et chaque B^j*1.
+Si ces vecteurs engendrent tout l'espace du bord, G=0. Dans V10,
+S=C+H est connu, soit25 lignes exactes. Sinon, G est confiné aux
+compléments de ces espaces ; il n'est pas déclaré nul par défaut.
+Une propagation combinatoire possible : une ligne déjà nulle, dont
+le sommet a exactement un voisin encore inconnu dans B, force cette
+dernière ligne à zéro via(55a). C'est la règle usuelle de zero forcing.
+
+Ces outils de marches/contrôlabilité sont classiques. La contribution
+ici est leur application au défaut mixte de notre système, après la
+fermeture du bloc résiduel. Références primaires consultées :
+Chris Godsil, *Controllable Subsets in Graphs*, arXiv:1010.3231,
+https://arxiv.org/abs/1010.3231 ; Burgarth et al., *Zero forcing, linear
+and quantum controllability for systems evolving on networks*,
+https://arxiv.org/abs/1111.1475. Aucun résultat de ces articles n'est
+présenté comme une preuve de nonexistence de Conway.
+
+Autre conséquence exacte : G non nul implique que B et E partagent
+une valeur propre, puisque(55a) est une équation de Sylvester. Les
+espaces de marches permettent d'écarter de ce défaut tous les modes
+qu'ils engendrent. Ce critère sert à la complétion et à l'analyse de
+candidats ; on ne lance pas un nouveau catalogue de rangs de Seidel.
+
+**Contrôle positif et limite indispensable.** Le prisme pentagonal
+A=[[C5,I],[I,C5]], régulier de degré3, satisfait les deux blocs
+diagonaux de A²+A=2I+J mais pas le bloc mixte : G=2C5+I-J est non nul.
+Sa matrice W_E a dimension1. Remplacer le deuxième C5 par son
+complément donne Petersen, et deux lignes mixtes exactes (0,1)
+engendrent ici tout le bord par B. Sur une partition explicite du
+Paley25 sauvegardé, M=[1,2,5,7,10,11,15,16,20,22], on obtient
+det(W_E)=18761760, donc une fermeture complète par(55b).
+Calculs exacts : `coclique_mixed_closure.py`,
+`check_coclique_mixed_closure.py`, `partition_v10/mixed_closure_checks.json`.
+Ces nouveaux contrôles vérifient la portée du critère, pas C1.
+
+## 56. Colonnes feuilles : renforcement ciblé sans fixer un bord
+
+Dans les11 branches de§54 avec a=1, au moins un des deux sommets
+négatifs est une feuille de E. Si c'est e, son seul voisin résiduel
+est f (l'arête ef est obligatoire). Toutes les équations mixtes de la
+colonne e se simplifient en
+
+    (B+I)*D_e + D_f = 2*1.                                    (56a)
+
+Cela détermine D_f à partir de B,D_e. Si les DEUX degrés valent1,
+en posant s=D_e+D_f et d=D_e-D_f, les deux colonnes se ramènent à
+
+    (B+2I)*s=4*1,   B*d=0.                                    (56b)
+
+Autres contraintes immédiates dans ce double cas : D_e^t D_f=1,
+D_Z0^t*d=0 et D_Z0^t*s=4*1. Les deux premières colonnes ont chacune
+poids13, donc ||d||²=24 et ||s||²=28. Toutes sont des conséquences
+exactes du même graphe, sans choisir indépendamment les voisinages.
+
+L'option `--leaf-columns` ajoute(56a) conditionnellement pour CHACUN
+des deux sommets, en gardant les deux orientations du découpage.
+Les25 lignes C+H étaient déjà exactes ; on ajoute72 égalités
+conditionnelles pour les36 autres lignes, avec des produits binaires
+mutualisés. Ce renforcement est mesuré séparément des deux portefeuilles
+sur V10 identique. Il ne suppose pas l'existence d'une feuille hors
+des branches correspondantes et ne prétend pas déjà les exclure.
+
+Un contrôle de ce NOUVEL encodage utilise la grille3x3 et un bloc M de
+trois sommets dont deux feuilles adjacentes. Le bon graphe passe ;
+l'échange de deux incidences B-M, conservant tous les degrés, est rejeté.
+La sortie figure dans `mixed_closure_checks.json`, champ leaf_encoder.
+
+## 57. Choix constructif des labels autour du triangle négatif
+
+On peut réduire les étiquetages sans supposer A symétrique au sens
+des automorphismes. Voici une procédure applicable à TOUT graphe(0,2).
+
+1. Appeler e le négatif de plus petit degré résiduel et f l'autre.
+   En cas d'égalité, garder une orientation arbitraire.
+2. Si leur unique voisin commun t est dans C8 ou ZH, il a un unique
+   voisin dans H. Choisir celui-ci comme h0 en tournant les labels du C4.
+   Tourner simultanément X, les quatre paires Y, les paires C8 et les
+   quatre groupes ZH, de façon à conserver toutes les incidences fixes.
+3. Réordonner indépendamment chaque paire C8, le groupe C13, chaque
+   groupe ZH et Z0 selon les signatures déjà utilisées. Ces groupes
+   ne contiennent AUCUN sommet ancre H+L+{e,f}, donc leurs tris ne se
+   perturbent pas mutuellement. Pour Z0, garder H+L comme clé principale
+   et ajouter les deux bits e,f comme clé secondaire seulement.
+
+Dans C8,C13 et ZH, les deux bits e,f sont les PLUS SIGNIFICATIFS de la
+signature. Un sommet adjacent aux deux dépasse donc tout sommet qui
+ne l'est pas. Comme t est unique, après le tri il est le dernier de
+son groupe. D'où les représentants possibles, sans perte de graphes :
+
+    r_e<=r_f ; t=1 si t dans C8 ; t=20 si t dans C13 ;
+    t=44 si t dans ZH.
+
+Le cas C13 était déjà une conséquence du tri précédent. Les deux
+autres utilisent aussi le choix de h0. Pour Z0, aucun label unique de
+t n'est imposé : les ancres H+L gardent la priorité. La clé secondaire
+4*signature_HL+A_ze+2*A_zf respecte STRICTEMENT le tri précédent.
+
+Cela ne dit PAS qu'échanger e,f ou tourner H soit un automorphisme
+du graphe. La procédure produit un autre étiquetage du même graphe,
+puis rétablit les conventions du modèle. Les61 branches de§54 restent
+une couverture de tous les graphes ; on garde maintenant au moins un
+représentant par graphe, et non tous ses étiquetages précédemment permis.
+
+L'option `--canonical` ajoute seulement42 contraintes et aucune variable
+auxiliaire : une orientation des degrés, six implications sur t, et35
+tris secondaires. `coclique_triangle_canonical.py` contient aussi la
+permutation constructive new-label -> old-label. Quatre contrôles sur
+le squelette fixe vérifient les permutations, toutes les incidences
+fixes et les représentants t, avec validation du modèle. Ils ne sont
+pas des exemples de graphes C1 et ne remplacent pas la preuve ci-dessus.
+La comparaison de domaines après cette réduction concerne des
+représentants DIFFÉRENTS : ne pas en tirer des propriétés universelles.
+
+## 58. Bilan V10 :255 recherches courtes sur AWS, toutes UNKNOWN
+
+13 octobre2026, pilote borné à40minutes, région Stockholm, instance
+c7a.32xlarge :128 cœurs physiques (un thread par cœur),256Gio de RAM.
+L'instance a été lancée à15:13:40UTC ; terminaison demandée15:51:35UTC,
+état terminé et nettoyage vérifiés15:53:16UTC. Les données ont été
+récupérées et leurs empreintes vérifiées AVANT la terminaison.
+Coût de calcul estimé jusqu'à la demande de terminaison :4,4441USD,
+au tarif AWS vérifié de7,03232USD/h ; ce n'est pas une facture et les
+petits frais EBS/IPv4 s'ajoutent. Aucun disque de l'expérience ne reste.
+
+Chaque recherche avait un budget solveur de180s. Les campagnes étaient
+successives pour séparer les mesures ; à l'intérieur d'une campagne,
+la file distribuait des branches DISJOINTES à des processus séparés.
+
+| Campagne | Cas | Processus × travailleurs | Temps total | CPU moyen échantillonné | Pic RSS cumulé estimé |
+|---|---:|---:|---:|---:|---:|
+| V10,3 moteurs principaux |61|32×4|375,09s|100,66 cœurs|101,55Gio|
+| V10,6 moteurs principaux |61|16×8|750,31s|98,21 cœurs|79,08Gio|
+| V10,4 moteurs principaux |61|32×4|375,35s|101,60 cœurs|109,99Gio|
+| Colonnes feuilles§56 |11|11×8|188,10s|71,63 cœurs|52,58Gio|
+| Labels canoniques§57 |61|32×4|376,03s|100,74 cœurs|110,37Gio|
+
+TOUS les255 résultats sont UNKNOWN, sans candidat D ni exclusion de
+branche. Ce sont255 recherches, PAS255 familles distinctes : plusieurs
+réglages sont comparés sur les mêmes61 branches. Aucun pourcentage
+d'exclusion n'est déduit de leurs compteurs. Le test local global V10
+reste aussi UNKNOWN181,57s, pic4,64Gio et476260 conflits sommés.
+
+Les valeurs CPU du tableau proviennent de mesures toutes les10s ; elles
+sous-estiment les dernières secondes de chaque processus. L'instrument
+amélioré des trois dernières campagnes mesure aussi le CPU en sortie
+de solveur : moyennes respectives105,29,74,40 et104,58 cœurs. Les pics
+RSS sont des estimations par agrégation temporelle, pas des mesures
+exactes au même instant. Le prétraitement, la construction et la dernière
+vague de29jobs expliquent une partie de l'écart à128 cœurs.
+
+**Comparaison des moteurs.** Les61 empreintes de modèles correspondent
+exactement entre les trois premières campagnes. Doubler les travailleurs
+par branche double ici presque le coût total du passage, et augmente
+l'activité de recherche ; aucun temps jusqu'à une preuve n'est mesuré.
+Le quatrième moteur à4travailleurs augmente les conflits médians
+(130744->233802) et la mémoire, mais ne produit aucun verdict. Ni les
+conflits ni les domaines d'arêtes ne permettent de le déclarer optimal.
+Le portefeuille4travailleurs initial n'avait que3moteurs principaux,
+ce qui a motivé cette comparaison explicite plutôt qu'une extrapolation.
+
+**Renforcements mathématiques.** Les colonnes feuilles ajoutent3192
+produits et72 égalités conditionnelles. Sur les11 paires comparées à
+8travailleurs, le nombre de domaines d'arêtes réduit varie de-8 à+10,
+médiane+1 ; aucun gain jusqu'à preuve n'est établi. La concurrence
+était11processus contre16 pour le passage de référence : ne pas traiter
+leurs temps CPU comme une comparaison parfaitement isolée du modèle.
+Les labels canoniques ajoutent42 contraintes et zéro variable auxiliaire.
+La médiane de domaines réduits passe ici de314 à345, mais cela concerne
+des représentants différents ; ce n'est pas une nouvelle propriété de
+graphes ni une mesure du nombre de graphes exclus.
+
+**Choix opérationnel.**32 processus de4travailleurs constituent un
+point de départ mesuré pour une recherche par branches : un passage
+de61 essais de3minutes en6min15, avec une marge mémoire importante.
+Le réglage optimal pour une preuve reste inconnu. Le prochain calcul
+doit viser une réduction mathématique nouvelle ou une branche précise,
+pas une nouvelle série identique motivée par les seuls conflits.
+Les clauses ne sont pas échangées entre processus, ni sauvegardées
+comme un apprentissage réutilisable. Les255 recherches ne sont pas
+une seule recherche continue de12h45 avec clauses cumulées.
+
+Les critères de§53–57 restent acquis indépendamment de ces UNKNOWN :
+plafonds collectifs, couverture61, propagation BG=GE, colonnes feuilles
+et choix de représentants. La contrôlabilité est une condition de
+complétion, pas une hypothèse imposée sans preuve au E recherché.
+Conway, C1 et la famille(0,2) restent ouverts.
+
+Artéfacts : `partition_v10/campaign_summary.json`, les trois rapports
+`aws_comparison.json`, `aws_leaf_comparison.json`,
+`aws_canonical_comparison.json`, et les255 dossiers de jobs sous
+`aws_pilot/results/`. Le contrôle d'intégrité vérifie les trois archives,
+les sources et tous les retours de jobs. L'ancien modèle V7 est un
+préfixe EXACT de V10 :25395 variables et76900 contraintes ajoutées,
+empreinte globale `5ef64ae6738739c13901aa3a3dba89b6b4009377c9bcd4a948cd312b5ee4267c`.
+Les snapshots et données brutes sont conservés sans conversion des fins
+de ligne. Aucun certificat UNSAT n'existe dans cette campagne.
