@@ -34,8 +34,9 @@ How the new graphs are obtained
 Census facts (computer, this session; details and limits in NOTE_SPREADFREE.md)
 
 * graphs with a semiregular group Z_3^4 with three orbits, type (10 inside, 6 between): BvLS, Gamma4, the fifth;
-* graphs containing the block 0..80 of the fifth graph with its attachments (a folded Hamming graph on 81 vertices):
-  exactly BvLS, Gamma3, Gamma4 and the fifth to eighth graphs (exhaustive search, 13 October);
+* graphs containing an INDUCED folded Hamming graph H(5,3)/<11111> on 81 vertices (the block 0..80 of the fifth graph;
+  its attachment to the rest is then forced, NOTE section 6j): exactly BvLS, Gamma3, Gamma4 and the fifth to eighth
+  graphs (exhaustive search, 13 October);
 * graphs containing a line of BvLS with its 60 neighbours and their attachments: exactly BvLS and the twin.
 
 Check a file:  python -I verify_new_graph.py <name>.edges      (prints the identity, the spectrum, the parallel lines)

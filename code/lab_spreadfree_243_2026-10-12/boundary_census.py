@@ -13,7 +13,7 @@ Driver: python boundary_census.py <out dir> <seconds per boundary> <mode> <graph
    mode thirds:<k>  : R = each of the first k thirds found in the graph (classes under Aut), F = the 162 other vertices
    mode line:<k>    : R = a line and its 60 neighbours, for k lines taken in different classes of "number of parallels"
    mode list:a-b,.. : R = the given vertices
-environment PYLIB = directory of pycryptosat.      Memory: small."""
+environment PYLIB = directory of pycryptosat; SKIP = class sizes of thirds to skip (comma separated).      Memory: small."""
 import sys, os, time, itertools, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 if os.environ.get("PYLIB"): sys.path.insert(0, os.environ["PYLIB"])
@@ -101,7 +101,8 @@ if __name__ == "__main__":
     if mode.startswith("thirds:"):
         import thirds_bfs as TB
         o, gens, base, sizes = T.aut_group(A0); reps, complete = TB.thirds(A0, gens, maxn=int(mode[7:]))
-        jobs = [("third of class size %d" % sz, Fset) for Fset, sz in reps]
+        skip = [int(t) for t in os.environ.get("SKIP", "").split(",") if t]            # class sizes already treated elsewhere
+        jobs = [("third of class size %d" % sz, Fset) for Fset, sz in reps if sz not in skip]
     elif mode.startswith("line:"):
         lines = sorted({tuple(sorted((x, y, next(iter(adj[x] & adj[y]))))) for x in range(n) for y in adj[x] if x < y}); byf = {}
         for L in lines:

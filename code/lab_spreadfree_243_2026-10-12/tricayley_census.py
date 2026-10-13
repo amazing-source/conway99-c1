@@ -86,6 +86,11 @@ def encode(typ):
     for v, b in fixed.items(): cl.append([v] if b else [-v])
     for i in range(3): exactly([U[i][g] for g in REPS], dsize // 2)
     for p in V: exactly(list(V[p].values()), osize)
+    if typ == 2:
+        # redundant but propagating (proved in the note): D_01 and D_02 are transversals of U_0 = <e1, e2>
+        for p in [(0, 1), (0, 2)]:
+            for c in itertools.product(range(3), repeat=2):
+                exactly([V[p][g] for g in H if g[2:] == c], 1)
     for i in range(3):
         for j in range(i, 3):
             for d in (REPS if i == j else H):
@@ -109,7 +114,8 @@ def identify(adj):
     grids = tuple(trade_census.grids_profile(243, adj))
     lines = sorted({tuple(sorted((x, y, next(iter(adj[x] & adj[y]))))) for x in range(243) for y in adj[x] if x < y})
     flat = sum(1 for (p, u, us) in lines if all(c == 1 for c in line_holonomy.cycle_type(line_holonomy.holonomy(adj, p, u, us))))
-    known = {((55, 243),): "BvLS", ((13, 180), (19, 60), (55, 3)): "twin", ((23, 243),): "Gamma3", ((31, 243),): "Gamma4"}
+    known = {((55, 243),): "BvLS", ((13, 180), (19, 60), (55, 3)): "twin", ((23, 243),): "Gamma3", ((31, 243),): "Gamma4",
+             ((25, 243),): "fifth (Gamma5)", ((17, 243),): "sixth or seventh", ((19, 243),): "eighth"}
     return known.get(grids, "NEW ?"), grids, flat
 
 

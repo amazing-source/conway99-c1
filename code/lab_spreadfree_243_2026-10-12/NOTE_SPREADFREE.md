@@ -357,6 +357,42 @@ Other results of the morning:
   set-based check passes for all eight.
 * S3: the drat-trim check of the main proof (1.75 GB) is running since 11:56 UTC with a memory guard.
 
+## 6j. A statement without "attachments": graphs containing an induced folded Hamming graph (13 October)
+
+Let X = H(5,3)/<11111> = Cay(Z_3^4, +-{e1, e2, e3, e4, e1+e2+e3+e4}) (81 vertices, valency 10; every edge in one
+triangle; two non-adjacent vertices have 0 or 2 common neighbours: 1215 pairs with 0, "distance 3", and 1620 with 2).
+
+**Proposition (hand + one finite check).** If a srg(243,22,1,2) Gamma contains X as an induced subgraph on a set R, then
+the adjacency between R and the 162 other vertices is determined up to the names of these vertices.
+Proof. (1) Two adjacent vertices of R have their common neighbour inside R (the third point of their triangle), so the
+set S(f) of neighbours in R of an outside vertex f is a coclique of X. (2) Two non-adjacent vertices of R have 2 common
+neighbours in Gamma, of which 0 or 2 are in R; so two vertices of S(f) are at distance 3 in X, and every pair at
+distance 3 has exactly 2 common outside neighbours. (3) Sum of |S(f)| = 81 x 12 = 972 and sum of C(|S(f)|, 2) =
+2 x 1215 over 162 vertices: mean 6 and mean square 36, so |S(f)| = 6 for all f. (4) The distance-3 graph of X has
+exactly 12 cliques of size 6 through each vertex (`attachment_unique.py`), 162 in all; f -> S(f) is injective (two
+outside vertices with the same 6 neighbours would have 6 common neighbours); so the outside vertices are exactly the
+162 six-cliques of the distance-3 graph. QED. In particular R is automatically a third and a subspace.
+
+**Consequence, with the exhaustive search of section 6h:** a strongly regular graph (243,22,1,2) containing an induced
+folded Hamming graph on 81 vertices is one of exactly seven graphs: BvLS, Gamma3, Gamma4, Gamma5, the sixth, the
+seventh, the eighth. The hypothesis is purely graph-theoretic; no symmetry and no spread is assumed. The twin does not
+satisfy it: its subspace thirds (classes of 30 and 60) induce other graphs (`subspace_thirds.py`), and Gamma3, Gamma4
+also have subspace thirds inducing other graphs (boundary invariants (18,4), (12,2), (14,2), (14,4), (12,0), (16,6),
+(14,8), (16,4) against (20,10) for the folded Hamming ones).
+Status: the proposition is a hand proof plus the count of cliques; the "exactly seven" rests on row_clique.py (own
+code, one run, agreeing with cadical on the first case). Not audited.
+
+Also closed on 13 October:
+* line boundaries of the twin: the lines with 2 and with 4 parallel lines are rigid; its flat line (0,1,2) gives the
+  twin and BvLS (same boundary as the BvLS line);
+* thirds kept, second batch (`boundary_census.py`): fifth graph (11 other classes), Gamma4 (7), sixth (4), seventh
+  (3), BvLS (5 non-affine): complete lists, only known graphs;
+* type II over Z_3^4 with the transversal constraints: two classes (both BvLS), then NO DECISION in 900 s: still open;
+* tri-Cayley over the other groups of order 81 (`groups81.py` builds the 15 groups by extensions, 15 classes of
+  invariants found; `tricayley_groups.py`): with the rationality constraint (conjugacy classes in one rational class
+  carry the same number of elements of D_00, D_11, D_22, because the eigenspaces are defined over Q) the cyclic group
+  has no graph of either type (8 s; without the constraint: no decision in 240 s); the other groups are running.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
