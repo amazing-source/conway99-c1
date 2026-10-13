@@ -340,6 +340,23 @@ Other results of the morning:
 * the line boundary (a line and its 60 neighbours kept, 180 free: the region of the BvLS - twin switch) has too many
   candidate rows for this method as it stands (no list after 280 s): to be recalibrated, not a result.
 
+## 6i. 13 October, continued: other boundaries (`boundary_census.py`), rigidity, data sheet
+
+* **Line boundary of BvLS** (a line and its 60 neighbours kept with all their adjacencies, 180 vertices free, no
+  symmetry): each free vertex has exactly 2 candidate rows; the search is complete (558 s, almost all spent listing
+  rows): **exactly 2 completions, BvLS and the twin**. So a srg(243,22,1,2) containing a line with its 60 neighbours
+  attached as in BvLS is BvLS or the twin. (Line boundaries of the twin, the fifth and the eighth graph: running.)
+* Thirds of the twin kept (five classes, among them the small classes 30 and 60): the twin is the only completion.
+  Thirds of Gamma3 kept: the class of size 12 has 4 completions (Gamma3 three times, Gamma4 once), the classes of
+  size 288 are rigid.
+* Random kept sets in the eighth graph: with 81 or 60 random vertices kept, every free vertex tested has exactly ONE
+  candidate row (its own); with 45, one row for most vertices, 2 or 4 for a few. So such a graph is determined, row by
+  row, by a random window of about 60 vertices with their adjacencies; the non-rigid boundaries are very special sets.
+* All 81 translations checked as automorphisms of the fifth graph on all pairs (assumption of section 6h).
+* Data sheet of the eight graphs: `NEW_GRAPHS_2026-10-13.md` (table, graph6 files, connection sets); a third,
+  set-based check passes for all eight.
+* S3: the drat-trim check of the main proof (1.75 GB) is running since 11:56 UTC with a memory guard.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
