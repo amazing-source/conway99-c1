@@ -1,0 +1,35 @@
+{
+  "updated_utc": "2026-10-13T14:15:43.431662+00:00",
+  "workers": 8,
+  "seconds_per_search": 180,
+  "sequential": true,
+  "original_run": "global_integrated_v7: UNKNOWN3602.0894979s; diagnostics only, no clause checkpoint",
+  "model_scope": "All (0,2); no core/cycles/required center fixed",
+  "reference_model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+  "phase1": [
+    "legacy_s1",
+    "balanced_s1",
+    "boolean_s1"
+  ],
+  "adaptation": "After phase1 all UNKNOWN with same reduced edge domains; test legacy and boolean on seed2 to assess observed resource/setup gains, not time-to-proof",
+  "phase2": [
+    "presolve_s1",
+    "legacy_s2",
+    "boolean_s2",
+    "boolean_moments_s1"
+  ],
+  "model_change": "38 residual row moments in the last experiment only",
+  "comparison_metrics": [
+    "verdict/candidate",
+    "observed peak memory",
+    "presolve time",
+    "edge domains versus reference presolve",
+    "per-worker activity and exports, not proof coverage"
+  ],
+  "deterministic": false,
+  "clause_database_reused": false,
+  "limits": "A few exploratory samples on one difficult instance cannot establish an optimal configuration. UNKNOWN is no exclusion.",
+  "completed": true,
+  "machine_exclusive": false,
+  "run_control": "Only this campaign uses sequential processes; the workstation was not reserved exclusively"
+}

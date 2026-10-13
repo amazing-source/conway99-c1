@@ -2129,3 +2129,149 @@ budget comparable. Aucun résultat de cette comparaison n'est inventé.
 Pour capitaliser entre runs, conserver des lemmes/coupes certifiées ou
 un état réutilisable explicite ; les seuls compteurs ne font pas cela.
 La clôture exacte V7 et les nouveaux outils V8 restent disponibles.
+
+## 51. Budgets de coexistence des colonnes : moments résiduels
+
+13 octobre2026. À la demande de calibration courte, on distingue les
+changements de moteur des renforcements mathématiques. Un renforcement
+peu coûteux s'obtient en sommant les équations encore manquantes.
+
+**Lemme.** Soit A=[[B,D],[D^t,E]] l'adjacence d'un graphe fortement
+régulier avec lambda=mu-1. Posons m=|M|, r=E1 et R=D^t D. Pour tout
+u dans M,
+
+    sum_{v dans M, v!=u} R_uv + sum_{w dans M} E_uw r_w = mu(m-1).  (51)
+
+Preuve : pour v!=u, R_uv+(E²)_uv+E_uv=mu. En sommant sur v!=u,
+le terme E² donne (Er)_u-r_u, car (E²)_uu=r_u. La somme des E_uv
+redonne r_u et ces deux termes s'annulent. Dans notre bord61/38,
+le second membre vaut74. Tous les calculs sont entiers.
+
+Il s'agit d'une obligation commune sur le MÊME E et ses degrés,
+pas du choix indépendant d'un voisinage pour chaque colonne. Le terme
+E_uw r_w se code par une variable entière y, avec y=r_w si E_uw=1
+et y=0 sinon. On ajoute38 variables de degrés,1406 produits orientés
+et38 budgets, sans développer tous les produits d'arêtes nécessaires
+aux équations mixtes individuelles. Les bornes finales utilisées sont
+1<=r_e,r_f<=6 et2<=r_z<=8 ; leur justification suit.
+
+Précision sur la portée : avec R_total=A²+A-(k-mu)I-mu J et A régulier,
+R_total*1=0. Si le bloc B-B est nul, (51) équivaut à la nullité des
+SOMMES DE COLONNES du défaut mixte B-M. Elle ne force pas toutes ses
+entrées à être nulles. Si toutes les équations mixtes sont déjà imposées,
+ces budgets sont redondants. Leur gain sur V7 doit être mesuré ; aucune
+preuve qu'ils renforcent strictement toute sa conjonction n'est supposée.
+
+Leur SOMME est déjà nulle : le défaut total a des sommes de lignes
+nulles ; son bloc B-B nul impose des sommes de lignes mixtes nulles,
+et donc une somme totale nulle dans M-M. Les38 budgets ne sont ainsi
+pas annoncés indépendants. Ils imposent la bonne répartition colonne
+par colonne d'un total déjà correct. Le contrôle suivant conserve ce
+total tout en donnant des budgets individuels non nuls.
+
+Contrôle neuf de l'encodage, `check_coclique_residual_moments.py` :
+on réutilise un graphe Paley25 sauvegardé et déplace deux sommets dans
+le bord. Le bloc résiduel correct passe. Un échange de deux arêtes,
+qui garde B, D et TOUS les degrés résiduels inchangés, donne le défaut
+de moments (2,1,-1,-2,0,0,0,0,0,0) et est rejeté. Le certificat exact
+figure dans `calibration_v9/moment_control.json`. Ce test distingue
+la nouvelle obligation des seuls degrés ; ce n'est pas un témoin
+satisfaisant toutes les autres contraintes V7 ni une exclusion C1.
+
+**Quotas déduits des quatre étoiles complètes.** Notons C8 les huit
+sommets de C adjacents à H, C13 les treize autres. Pour v hors H,
+la somme des nombres de voisins communs de v avec les quatre h de H
+donne
+
+    d_C8(v)+2d_H(v)+2d_X(v)+d_Y(v)+d_ZH(v)=8-d_H(v).
+
+En effet chaque h a deux voisins dans H, chaque X touche deux h,
+chaque Y, C8 ou ZH touche un h, les autres sommets aucun. Cette égalité
+est une combinaison d'équations DÉJÀ présentes, donc pas une exclusion
+supplémentaire. Elle rend explicites des contraintes utiles au codage :
+
+* pour x dans X : d_ZH(x)=1-d_X(x)-d_C8(x), donc d_Z0(x)>=7 ;
+* pour y dans Y : d_ZH(y)=2-d_X(y)-d_C8(y), donc d_Z0(y)>=5 ;
+* pour e ou f : d_ZH(e)=8-d_C8(e) et d_Z0(e)=d_C8(e),
+  donc r_e=1+d_C8(e), avec1<=r_e<=6 ;
+* pour z dans Z0 : d_ZH(z)=6-d_{e,f}(z)-d_X(z)-d_C8(z),
+  donc r_z=2+d_X(z)+d_C8(z)>=2. Les quatre voisins de C et
+  au moins deux voisins de L donnent aussi r_z<=8.
+
+Ces identités expliquent pourquoi des choix qui conservent les degrés
+peuvent encore modifier les budgets de voisins communs. L'encodage
+des moments utilise les intervalles de r resserrés ci-dessus ; les
+autres égalités restent ici des conséquences explicitées, pas des
+équations ajoutées dans les comparaisons de moteurs.
+
+## 52. Calibration V9 terminée : six essais de trois minutes
+
+13 octobre2026, vers16h27 Paris. Campagne autorisée par l'utilisateur,
+terminée sans D. Six recherches de180s, huit travailleurs chacune,
+dans des processus successifs ; un septième contrôle s'arrête après
+le présolve. Tous les verdicts sont UNKNOWN. Les secondes légèrement
+supérieures à180 incluent la terminaison du solveur. Aucune recherche
+longue supplémentaire n'est lancée automatiquement.
+
+| Portefeuille / modèle | Graine | Présolve (s) | Pic observé (Gio) | Conflits sommés | Domaines d'arêtes réduits |
+|---|---:|---:|---:|---:|---:|
+| ancien V7 |1|36,48|4,912|278079|288|
+| sans tous les max_lp |1|37,22|4,339|259327|288|
+| sans LP |1|24,28|3,940|552959|288|
+| ancien V7 |2|37,49|4,902|259726|290|
+| sans LP |2|37,34|3,892|524147|290|
+| sans LP + moments§51 |1|38,55|3,941|758547|290|
+
+Le contrôle de présolve seul prend35,37s et réduit272 domaines d'arêtes.
+Les trois runs de graine1 sur V7 ont EXACTEMENT les mêmes16 réductions
+supplémentaires en sortie, pas seulement le même nombre. Les deux runs
+de graine2 ont aussi les mêmes domaines entre eux. La variante moments
+retrouve exactement les290 domaines de l'ancien modèle avec graine2.
+Ses deux réductions supplémentaires par rapport à la graine1 V7 ne
+sont donc pas présentées comme une nouvelle avancée de famille.
+
+**Conclusion empirique mesurée.** Le portefeuille sans LP économise
+environ20% de mémoire dans les deux comparaisons à graine égale. Son
+gain initial de présolve ne se répète pas avec la seconde graine.
+Les conflits augmentent, mais les domaines d'arêtes sont identiques
+à graine égale : ni accélération du temps jusqu'à preuve, ni progression
+mathématique supplémentaire démontrée. Le portefeuille intermédiaire
+garde les petits moteurs LP et enlève max_lp_sym ; il économise environ
+12% de mémoire sur l'unique graine essayée. Il reste une alternative
+pour des recherches complémentaires, sans classement de puissance établi.
+
+La variante moments ajoute1444 variables et2888 contraintes à246829
+variables/766370 contraintes. Son pic mémoire reste voisin de3,94Gio.
+Elle a donc un coût de stockage faible dans ce test ; l'amélioration du
+temps jusqu'à solution reste inconnue. Les budgets sont démontrés,
+mais ne suffisent pas à clore(0,2), a fortiori C1.
+
+**Traçabilité et limites.** Les cinq comparaisons de moteur utilisent
+le même export binaire SHA256
+`5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc`.
+L'export renforcé a le SHA256
+`973c76b6d0c630573f5c685286a05f68d7a6201ac8a7e935804d778e49247516`.
+Une lecture indépendante des protobufs vérifie que le préfixe des
+variables et contraintes est strictement identique et que seuls les
+ajouts annoncés apparaissent. Les snapshots de sources sont vérifiés
+par leurs hashes, `artifact_check.json`. Contrôle d'encodage§51 PASS.
+
+L'instrumentation conserve les ressources toutes les10s, les événements
+de réduction, un résumé toutes les30s et les statistiques finales par
+travailleur. Elle n'accède pas à une base persistante de clauses. Les
+domaines resserrés sont DIAGNOSTIQUES : le présolve peut choisir des
+représentants, puisque keep_all_feasible_solutions_in_presolve=false.
+Ne pas combiner ces listes entre runs ni les promouvoir en propriétés
+universelles de graphes. La documentation primaire précise ce point :
+https://raw.githubusercontent.com/google/or-tools/v9.15/ortools/sat/cp_model.proto
+(champ tightened_variables). Les portefeuilles sont définis dans
+https://raw.githubusercontent.com/google/or-tools/v9.15/ortools/sat/cp_model_search.cc
+et les paramètres sauvegardés dans chaque parameters.textproto.
+
+Choix provisoire : portefeuille sans LP pour les prochains essais courts
+à mémoire réduite ; conserver le portefeuille intermédiaire pour des
+comparaisons avec LP. Tester les renforcements mathématiques à part.
+Il n'existe ici aucune preuve de configuration optimale. On capitalise
+sur les modèles, les preuves et le protocole, pas sur une reprise fictive
+de l'apprentissage interne du run d'une heure. Détails et commandes :
+`calibration_v9/protocol.json`, `report.json`, `recommendation.json`.
