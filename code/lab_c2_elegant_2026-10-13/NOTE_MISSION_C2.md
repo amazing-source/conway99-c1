@@ -162,3 +162,27 @@ entries indexed by the class ((v,y1), (v,y2)) mod 7, (v,h) mod 4 and D = 4E - 7 
 * Reading: second moments of the products with the h_c carry no information beyond the model of section 1.
   If the heptad obstructs, it is through the JOINT distribution of the seven products (index J + H+, nine variables),
   which this probe does not see. Not computed.
+
+## 8. A tempting idea that is NOT new information (13 October 2026, 21:09 UTC; nothing computed)
+Idea: mark a minimal characteristic vector z (norm 8, E(z) = 46, forced by section 6.2) as a third elliptic variable.
+Its eigenfunction a_z has entries +-1 on the 42 outer orbits and +-2 on one block, so for every v of U
+|E(v,z)| = |<a_v, a_z>| <= 2|a_c| + sum_o |a_o| <= E(v) (an l1 bound; the parity of sum_c a_c removes the value E + 1).
+This looks like about forty new vanishing conditions in a space of about 135 dimensions.
+It is not: every shadow vector is b = v + z/2 with v in U, and E(b) = E(v) + E(v,z) + 11.5, so the shadow condition
+"E(b) >= 11.5 for all b" IS "|E(v,z)| <= E(v) for all v". The l1 bound is the characteristic trap rewritten. The real
+lattices of the region of 6.2 have such vectors z and satisfy it. Model not built. General lesson: any condition that
+only involves y1, y2 and vectors the real lattices of that region already have cannot exclude them; what excludes
+them in the records is the absence of the seven vectors h.
+
+## 9. Where the obstruction must be, and what is running (13 October 2026, 21:15 UTC)
+* Everything that involves only y1, y2 (section 1), one vector h with averaged heptad conditions (section 7), or a
+  minimal characteristic vector (section 8) is satisfied by real lattices of the region of 6.2, or adds nothing.
+  In the records these lattices are excluded because the seven vectors h do not exist in them.
+* So the next information needed is concrete: in a real region pair, WHY is there no heptad? (how many norm-4 vectors
+  orthogonal to y1, y2 are admissible, how they hit the s pairs of minimal shadow vectors, what the largest orthogonal
+  admissible set is). A sub-agent is extracting this from the stored lattices for a few region pairs, and at the same
+  time checks the identities of 6.2 on them (report expected in `region_pairs/REGION_PAIRS_REPORT.md`).
+* In parallel an Opus sub-agent rereads T16, T18, T20, tries to shorten and link them, and attacks E = 11, 12 and the
+  characteristic eigenfunctions (report expected in `LEMMAS_AGENT_REPORT.md`).
+* Not started: the nine-variable model (index J + H+). A second-moment (Venkov-type) variant with one frame vector u_o
+  was considered and not built: the one-h probe suggests single-vector refinements do not cut.
