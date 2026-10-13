@@ -60,8 +60,8 @@ forms); that is not a proof of novelty.
 Hope: the conditions "no integral vector with 1 <= E <= 10" + shadow would already be contradictory, so that T16, T18,
 T20 and Theorem R would suffice. FALSE: the solution space has dimension 7 and contains non-negative tables
 (`forcing_bound.py`, `forcing_region.py`); and the records already contain thousands of real pairs with min E >= 11.
-In that region (floating LP): number of vectors with E = 11 between 0 and 34.7, with E = 12 between 0 and 52, with
-E = 13 at least 16; shadow vectors with E = 11.5 between 12 and 96; norm-3 vectors of N between 592 and 696 (the
+In that region (floating LP; numbers of PAIRS +-v, see the correction in 6.2): vectors with E = 11 between 0 and 34.7, with
+E = 12 between 0 and 52, with E = 13 at least 16; shadow vectors with E = 11.5 between 12 and 96; norm-3 vectors of N between 592 and 696 (the
 frame gives 84); roots of N between 0 and 84. So with the three lemmas, **at least 12 shadow vectors with E = 11.5
 are forced**: sigma-odd eigenfunctions with values +-2 on one block, 0 on the other inner vertices and +-1 on all 84
 outer vertices (a bipartition of the outer graph exchanged by sigma, each outer vertex having 4 neighbours on its
@@ -116,7 +116,9 @@ With I(E), S(E) the numbers of integral and shadow vectors (one per class repres
     I(18) = 592 + 4 n11 - 2s       I(19) = 1040 - 4 n11 - s      S(19.5) = 2656 - 4 n11 - s
     I(20) = 1716 - 3 n11 - 5s/2    I0(21) = 688 + 2 n11 - s
 
-I0(14) is the number N_2 of roots of U orthogonal to y1, y2. So **s = 12 + N_2 >= 12**: at least six pairs +-a of
+I0(14) is the number N_2 of roots of U orthogonal to y1, y2. So **s = 12 + N_2 >= 12**. CORRECTION (13/10, 20:50 UTC):
+the totals I(E), S(E), n11, s count ONE class of each pair of opposite classes, i.e. they are numbers of PAIRS +-a
+(I0 alone counts both signs). So at least TWELVE pairs +-a of
 "characteristic" eigenfunctions a = (+-2 on one block, 0 on the six others; +-1 on all 42 outer orbits), of sum of
 squares 46. Equivalently: a choice of one vertex in each outer orbit such that the 42 chosen vertices induce a graph
 of degree 4, except 3 vertices of degree 3 and 9 of degree 5 around one block. In that gauge N 1 = 4.1 + 2 eps R e_c.
@@ -142,3 +144,21 @@ class type except one. If the resulting linear system is infeasible with the thr
 follows without the lattice list and without new lemmas. Cost: a larger space (a few hundred dimensions by a rough
 count) and generators with half-integer coordinates (E8, D12+ blocks) so that odd products with the h_c occur.
 Not done yet. A cheaper first probe: one vector h only (index J + <4>).
+
+## 7. Step 2, first probe: one vector h of the heptad in the index. NEGATIVE (13 October 2026, 21:00 UTC)
+
+Model: Jacobi forms in three variables for (U; y1, y2, h), h of norm 4 orthogonal to y1, y2 (`heptad1.py`); table
+entries indexed by the class ((v,y1), (v,y2)) mod 7, (v,h) mod 4 and D = 4E - 7 (v,h)^2.
+* Generators: 449 patterns in Z^j and 560 with a part in E8 (`heptad1_gen.py`, `heptad1_e8.py`): rank 234, stable
+  over the last 300 generators. No dimension formula computed for this space; control: the table of
+  (D12+ + Z^12; y1, y2, h) obtained by direct enumeration lies in the span (`validate_d12_h.py`, 485 entries tested).
+* Conditions on the AVERAGE of the seven tables (one per h_c), all linear (`heptad1_lp.py`): N, I (E <= 10), the
+  refined shadow condition E >= 10.5 + t^2 + [t even] for t = (b,h), positivity, and the three conditions coming
+  from the sum over the seven orthogonal vectors (H1: sum of t^2 <= E - 10.5 on shadow vectors; H2: at least one odd
+  product; H3: sum of t^2 <= 4E/7 and even on integral vectors).
+* Verdict (floating LP): FEASIBLE at T = 10. The ranges of the totals are exactly those of the model without h
+  (pairs with E = 11: 0 to 34.7; shadow pairs with E = 11.5: 12 to 96; E = 13: at least 16). The only effect of the
+  heptad rows is on the distribution of t (for instance shadow vectors with E = 11.5 and t = +-1: one seventh).
+* Reading: second moments of the products with the h_c carry no information beyond the model of section 1.
+  If the heptad obstructs, it is through the JOINT distribution of the seven products (index J + H+, nine variables),
+  which this probe does not see. Not computed.
