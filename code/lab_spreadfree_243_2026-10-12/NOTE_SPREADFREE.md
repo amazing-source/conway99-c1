@@ -441,6 +441,20 @@ After 201 of the 2288 first rows: 14 families, all different from the input; 13 
 no candidate row), one extends to 4 graphs: the eighth graph three times and Gamma4 once, i.e. known graphs in which the
 54 kept vertices lie in another third. The full stage 1 (about one hour) and stage 2 are running (13:42 UTC).
 
+## 6m. The rung at 54 kept vertices is closed (13 October, 14:30 UTC): still only the family
+
+Stage 1 complete (C, 2652 s, 44 968 430 nodes): 83 pairwise compatible families of rows for the 27 freed vertices of the
+block, 82 of them different from the input. Stage 2 on the 82 (log `staged54_2026-10-13.log`): 57 do not extend (some
+outside vertex has no candidate row), 25 extend, to 40 completions in all: the eighth graph 27 times, Gamma4 7 times,
+Gamma3 6 times. **No new graph.** So a srg(243,22,1,2) that contains these 54 vertices of the block with their
+neighbourhoods (two cosets of a hyperplane of the block, 22 % of the vertices) is one of the seven graphs: either the
+block is intact (section 6h) or the 54 vertices are completed by another third, and the graph is Gamma3, Gamma4 or the
+eighth graph again.
+Next rungs measured: 45 kept: 23 591 candidate rows for a freed block vertex (stage 1 would take hours to tens of
+hours on one core, it splits over cores); 36 and 27 kept: more than 120 000 rows, out of reach as it stands.
+Started at 14:46 UTC: the same question with RANDOM kept sets of the eighth graph (45 then 38 vertices, no structure
+at all): if a random window stops determining the graph, the other completions are graphs on which nothing was imposed.
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is

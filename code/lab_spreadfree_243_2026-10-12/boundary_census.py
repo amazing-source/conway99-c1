@@ -13,6 +13,7 @@ Driver: python boundary_census.py <out dir> <seconds per boundary> <mode> <graph
    mode thirds:<k>  : R = each of the first k thirds found in the graph (classes under Aut), F = the 162 other vertices
    mode line:<k>    : R = a line and its 60 neighbours, for k lines taken in different classes of "number of parallels"
    mode list:a-b,.. : R = the given vertices
+   mode random:<size>:<s0>:<s1> : R = a random set of that size, for each seed from s0 to s1 (no structure, no symmetry)
 environment PYLIB = directory of pycryptosat; SKIP = class sizes of thirds to skip (comma separated).      Memory: small."""
 import sys, os, time, itertools, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -114,6 +115,11 @@ if __name__ == "__main__":
             byf.setdefault(cnt, L)
         for cnt, L in sorted(byf.items())[:int(mode[5:])]:
             jobs.append(("line %s with %d parallel lines and its 60 neighbours" % (L, cnt), sorted(set(L) | set().union(*[adj[x] for x in L]))))
+    elif mode.startswith("random:"):
+        import random
+        _, size, s0, s1 = mode.split(":")                                  # random:<size>:<first seed>:<last seed>
+        for seed in range(int(s0), int(s1) + 1):
+            jobs.append(("random set of %s vertices, seed %d" % (size, seed), sorted(random.Random(100000 * int(size) + seed).sample(range(n), int(size)))))
     else:
         jobs = [("given set", [v for part in mode[5:].split(",") for v in range(int(part.split("-")[0]), int(part.split("-")[1]) + 1)])]
     print("%s: %d boundaries to treat" % (os.path.basename(path), len(jobs)), flush=True)
