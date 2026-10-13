@@ -5,6 +5,8 @@ D_ij, D_ji = D_ij^-1, D_ii = D_ii^-1 without the identity. For all i <= j and d:
     sum_k #{a in D_ik : a^-1 d in D_kj} + [d in D_ij] = 2,
 type I: |D_ii| = 10, |D_ij| = 6; type II: |D_ii| = 4, |D_ij| = 9 (the only two possibilities, group-independent).
 Normalisation: the identity is in D_01 and in D_02 (right translation of the orbits 1 and 2).
+Second redundant global constraint (NOTRACE to switch it off): for every linear character the trace of its 3x3
+component is 12, 3, -6 or -15.
 Redundant global constraint (environment NORATIONAL to switch it off): rationality of the eigenspaces, i.e. conjugacy
 classes in the same rational class contain the same total number of elements of D_00, D_11, D_22.
 For each group and type, cadical is called with a new seed and a shuffled clause order; each solution is rebuilt,
@@ -120,6 +122,61 @@ def encode(Tb, e, typ):
                 if c1 == c0 or (c0, c1) in done or (c1, c0) in done: continue
                 done.add((c0, c1)); a, b = cnt(c0), cnt(c1)
                 for j in range(1, min(len(a), len(b))): cl.extend([[-a[j], b[j]], [a[j], -b[j]]])
+    # TRACE of the linear characters (redundant, global): for a homomorphism phi : K -> Z_81 and chi = exp(2 i pi phi / 81),
+    # the 3x3 matrix (chi(D_ij)) has its eigenvalues in {4, -5}, so its trace sum_i chi(D_ii) is 12, 3, -6 or -15. With
+    # the rationality above the primitive 9th, 27th, 81st roots cancel, and the trace is m0 - m3/2, m0 = number of elements
+    # of the D_ii in ker(phi), m3 = number of those with phi(d) of order 3. In pairs {d, d^-1}: 2 P0 - P3 in {12, 3, -6, -15}.
+    if os.environ.get("NOTRACE") is None:
+        gens = []
+        for x in range(N):
+            if x not in G81.generated(Tb, gens, e): gens.append(x)
+        word = {e: []}; frontier = [e]
+        while frontier:
+            nxt = []
+            for x in frontier:
+                for gi, g in enumerate(gens):
+                    y = Tb[x][g]
+                    if y not in word: word[y] = word[x] + [gi]; nxt.append(y)
+            frontier = nxt
+        ordg = [G81.order(Tb, e, g) for g in gens]; seen = set()
+        import itertools as _it
+        for imgs in _it.product(*[[a for a in range(81) if (a * og) % 81 == 0] for og in ordg]):
+            phi = [sum(imgs[gi] for gi in word[x]) % 81 for x in range(N)]
+            if any(phi[Tb[a][b]] != (phi[a] + phi[b]) % 81 for a in gens for b in range(N)): continue
+            ker = frozenset(x for x in range(N) if phi[x] == 0); lev3 = frozenset(x for x in range(N) if phi[x] != 0 and (3 * phi[x]) % 81 == 0)
+            if len(ker) == N or (ker, lev3) in seen: continue
+            seen.add((ker, lev3))
+            l0 = [U[i][g] for i in range(3) for g in reps if g in ker]; l3 = [U[i][g] for i in range(3) for g in reps if g in lev3]
+            top = 3 * (dsize // 2)
+            def un(lits):
+                prev = [None] + [None] * (top + 1)
+                first = True; prevv = None
+                for l in lits:
+                    cur = [None] + [new() for _ in range(top + 1)]
+                    for j in range(1, top + 2):
+                        pj = prevv[j] if prevv else None
+                        if pj is not None: cl.append([-pj, cur[j]])
+                        if j == 1: cl.append([-l, cur[j]])
+                        elif prevv: cl.append([-l, -prevv[j - 1], cur[j]])
+                        c = [-cur[j]] + ([pj] if pj is not None else [])
+                        cl.append(c + [l])
+                        if j > 1: cl.append(c + ([prevv[j - 1]] if prevv else []))
+                    prevv = cur
+                return prevv                                   # prevv[j] <-> at least j (j = 1..top+1), or None if no literal
+            a0, a3 = un(l0), un(l3)
+            def eq(a, k):
+                """clause part saying 'count != k' as a list of literals, or None if count == k is impossible / True if certain"""
+                if a is None: return [] if k == 0 else None      # count is 0: 'count != 0' is false (empty list), 'count != k>0' is true
+                lits = []
+                if k >= 1: lits.append(-a[k])
+                if k + 1 <= top + 1: lits.append(a[k + 1])
+                return lits
+            for p0 in range(0, top + 1):
+                for p3 in range(0, top + 1):
+                    if 2 * p0 - p3 in (12, 3, -6, -15): continue
+                    c0, c3 = eq(a0, p0), eq(a3, p3)
+                    if c0 is None or c3 is None: continue          # this combination cannot occur anyway
+                    cl.append(c0 + c3)
     free = sorted(set(v for i in range(3) for v in U[i].values()) | set(v for p in V for v in V[p].values()))
     return nv[0], cl, U, V, free, inv
 

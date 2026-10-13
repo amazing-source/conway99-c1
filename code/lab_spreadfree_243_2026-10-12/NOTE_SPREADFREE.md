@@ -411,6 +411,36 @@ BvLS, Gamma4 or Gamma5.** (The SAT run for type II had found BvLS twice and then
 above replaces it.) The same trace condition for type I reads: every hyperplane contains a number of the 15 frame
 points divisible by 3.
 
+## 6l. 13 October afternoon: the goal is ASYMMETRY; descent below the block (`shrink_census.py`, `staged_census.py`, `stage1_search.c`, `stage2_complete.py`)
+
+User (direct, 13/10 about 13:10 UTC): the aim is an asymmetric member; a census of symmetric graphs does not serve it.
+The tri-Cayley pass over the 15 groups of order 81 was therefore STOPPED by me at 13:13 UTC. What it had given, with the
+rationality and trace constraints: no graph of either type over Z_81, Z_27 x Z_3, Z_9 x Z_9 (UNSAT, 5 to 93 s each);
+Z_9 x Z_3^2: no decision in 300 s for both types; Z_3^4: the three known graphs; the ten non-abelian groups not treated.
+
+What an asymmetric srg(243,22,1,2) would have to be, given the results above: a ninth graph, with no regular spread (a
+spread gives a symmetry of order 3), without the induced folded Hamming block (the seven graphs containing it have groups
+of order at least 108), and without a line attached as in BvLS.
+
+No script can decide the question completely with the present means: with only a vertex and its 22 neighbours fixed (the
+part common to all graphs) the candidate rows are the (1,1,1,1,2,...,2)-factors of a 22-point pair graph, far too many.
+The exact method needs a large kept part. Hence a DESCENT: keep less and less of the block, list every completion in
+which the block is destroyed, no symmetry imposed. The kept configuration (some vertices of the block with all their
+adjacencies) is the same in the seven graphs, so the starting graph does not matter.
+
+| kept vertices of the block | candidate rows | result |
+|---|---|---|
+| 81 | 930 per outside vertex | seven graphs (section 6h) |
+| 72 | 1 for the freed vertex tested, about 2700 outside | census not run; block expected forced |
+| 63 | 2 per freed vertex of the block, about 3600 outside | **complete: no completion with the block destroyed** (1033 s): 63 vertices of the block force the block |
+| 54 | 8830 per freed vertex of the block, more than 20 000 outside | staged search, running |
+
+Staged search at 54: stage 1 = the 27 freed vertices of the block alone (pairwise compatible rows; C program, first row
+over 2288 orbit representatives); stage 2 = each family gives 81 complete rows, then the outside is completed as in 6h.
+After 201 of the 2288 first rows: 14 families, all different from the input; 13 do not extend (some outside vertex has
+no candidate row), one extends to 4 graphs: the eighth graph three times and Gamma4 once, i.e. known graphs in which the
+54 kept vertices lie in another third. The full stage 1 (about one hour) and stage 2 are running (13:42 UTC).
+
 ## 7. Next
 
 1. finish type II; the other 14 groups of order 81; semiregular groups of order 27 (9 orbits) where the search is
