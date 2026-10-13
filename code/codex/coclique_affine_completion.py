@@ -4,6 +4,8 @@ Given a valid binary boundary factor and one complete neighbourhood, let
 V={T: T=T.T, diag(T)=0, D*T=0}. Both differences of linear completions
 and the polynomial defect of a binary linear completion belong to V.
 Consequently dim(V) selected edge equations suffice for the entire graph.
+With regularity=True, append 1.T to D and use V={T: T=T.T,
+diag(T)=0, D*T=0, T*1=0}; no complete neighbourhood is then required.
 This implements the singular case without searching continuous projectors.
 """
 from itertools import combinations
@@ -15,13 +17,16 @@ import time
 import sympy as sp
 from ortools.sat.python import cp_model
 from coclique_global_completion import eliminate, encode
+from coclique_regular_completion import eliminate_regular
 
 
-def frame(B, D, k=14, mu=2):
+def frame(B, D, k=14, mu=2, regularity=False):
     B, D = sp.Matrix(B), sp.Matrix(D)
-    data = eliminate(B, D, k=k, mu=mu)
+    data = (eliminate_regular if regularity else eliminate)(B, D, k=k, mu=mu)
+    constraints = data['constraint_matrix'] if regularity else D
+    rhs = data['constraint_rhs'] if regularity else data['F']
     E0 = data['E0']; m = D.cols
-    columns = D.nullspace()
+    columns = constraints.nullspace()
     N = sp.Matrix.hstack(*columns) if columns else sp.zeros(m, 0)
     h = N.cols
     pairs = [(a, b) for a in range(h) for b in range(a, h)]
@@ -30,6 +35,9 @@ def frame(B, D, k=14, mu=2):
     target = -sp.Matrix([E0[i, i] for i in range(m)])
     report = dict(rank=data['rank'], nullity=h, diagonal_rank=diagonal.rank(),
                   dimension=len(pairs)-diagonal.rank(), kernel=encode(N))
+    if regularity:
+        report.update(regularity=True, boundary_rank=data['boundary_rank'],
+                      regularity_rank_gain=data['regularity_rank_gain'])
     try:
         solution, parameters = diagonal.gauss_jordan_solve(target)
     except ValueError:
@@ -55,10 +63,10 @@ def frame(B, D, k=14, mu=2):
         basis = [sum((basis[i]*inverse[i, j] for i in range(delta)), sp.zeros(m))
                  for j in range(delta)]
     base = particular - sum((particular[u, v]*T for (u, v), T in zip(chosen, basis)), sp.zeros(m))
-    assert D*base == data['F'] and base == base.T
+    assert constraints*base == rhs and base == base.T
     assert all(base[i, i] == 0 for i in range(m))
     for a, T in enumerate(basis):
-        assert T == T.T and D*T == sp.zeros(D.rows, m)
+        assert T == T.T and constraints*T == sp.zeros(constraints.rows, m)
         assert all(T[i, i] == 0 for i in range(m))
         assert [T[u, v] for u, v in chosen] == [int(a == b) for b in range(delta)]
     return dict(**report, status='AFFINE_FRAME', base=base, basis=basis,
@@ -97,10 +105,10 @@ def parity_cuts(data, D, mu):
     return cuts
 
 
-def binary_completions(B, D, k=14, mu=2, seconds=60, enumerate_all=False):
+def binary_completions(B, D, k=14, mu=2, seconds=60, enumerate_all=False, regularity=False):
     start = time.monotonic()
     B, D = sp.Matrix(B), sp.Matrix(D)
-    data = frame(B, D, k=k, mu=mu)
+    data = frame(B, D, k=k, mu=mu, regularity=regularity)
     summary = {key: value for key, value in data.items() if key not in ('base', 'basis', 'E0', 'P')}
     if data['status'] != 'AFFINE_FRAME':
         return dict(**summary, completions=[], complete=True, seconds=time.monotonic()-start)

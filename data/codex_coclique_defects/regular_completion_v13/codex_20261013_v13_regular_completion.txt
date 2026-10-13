@@ -1,0 +1,15 @@
+Resultat nouveau V13 : le transfert a un bord quelconque se ferme exactement en ajoutant la REGULARITE. Preuve complete note des defauts §§66-69, code et petits controles PASS. Aucune campagne sur les26 noyaux.
+
+Pour B symetrique binaire diag0, D binaire, DD^t=qI+mu J-B²-B, D1=k1-B1, k²=mu(n+m-1), q=k-mu : poser b=D^t1, rho=k1-b, F=mu J-(B+I)D, C=[D;1^t], R=[F;rho^t]. Alors E0=C^+R est AUTOMATIQUEMENT symetrique, CE0=R, E01=rho, P=I-C^+C, E0P=0, et E0²+E0+D^tD=q(I-P)+mu J. Aucun voisinage complet requis.
+
+Preuve cle : toutes les lignes de R sont dans row(C), et CR^t=RC^t (les deux identites D F^t=F D^t et D rho=F1 viennent du Gram et des degres). Donc R=RC^t(C^+)^t=CR^t(C^+)^t, d'ou CE0=R et E0 symetrique. Pour L=E0²+E0+D^tD-qI-mu J, DL=0 et L1=0 ; ainsi L=PLP=-qP.
+
+Consequent : toutes les completions reelles symetriques regulieres polynomiales sont E=E0+3P-7Q, Q=Q^t=Q², PQ=Q pour C1. E ENTIERE suffit encore a forcer diag0 et0/1, par a_ii²+sum_(j!=i) a_ij(a_ij-1)=0.
+
+V7 se transfere avec V_C={T sym,diag T=0,DT=0,T1=0}, et non V_D. Le defaut d'un candidat binaire regulier appartient a ce MEME espace ; delta paires injectives suffisent. L'option regularity=True est implementee dans coclique_affine_completion.py. V8 convexe se transfere aussi mathematiquement aux bornes E0+3P-E>=0 et E-E0+4P>=0, integrality toujours indispensable.
+
+Dans ton cadre B4-regulier18 / D18x81 : b=2j, sum b=180, ||b||²=504. w=1-(5/14)b a Dw=0 et ||w||²=117/7. Si X=D^+[2J-(B+I)D], la correction EXPLICITE est E0=X+w b^t/14+(8/117)w w^t, P=P_D-(7/117)w w^t. Avec t=7*1-5j=7w : P=P_D-t t^t/819. L'ajout de regularite augmente le rang de1. E0 1=14*1-b et E0 b=36*1-5b ; sur span(b,w), matrice [[55/7,117/98],[36,8/7]], polynome x²-9x-34. Ce sont des valeurs du bloc exterieur, PAS du graphe entier.
+
+Controles neufs : six bords sans voisinage complet (grille9/Petersen), plus accord exact avec V6 sur un bord ferme. Grille, bord arête : delta3,8 candidats binaires lineaires ->4 completions. Petersen, paire non adjacente : delta7,128 affectations ->24 candidats binaires ->12 completions. Enumeration courte et encodeur coincident. Les identites norm18 sont controlees symboliquement sans pretendre avoir D.
+
+Chemins : C:/Users/RESEARCHER/Desktop/Recherche_Conway/c1-asymmetry-audit/notes/NOTE_COEXISTENCE_DEFAUTS_COCLIQUES_2026_10_12.md:2906 ; code/codex/coclique_regular_completion.py ; data/codex_coclique_defects/regular_completion_v13/summary.json. Cette extension corrige l'obstacle de610 mais ne construit pas D et n'exclut aucune branche C1. Les conclusions alpha<=20 et tes pistes de611 conservent leurs hypotheses.

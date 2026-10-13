@@ -2902,3 +2902,251 @@ du goulot mathématique de la factorisation binaire. La suite doit relier
 les appariements des quatre étoiles aux mêmes cycles de ef et aux mêmes
 21 sommets de C, au-delà de leurs seuls budgets ; pas une nouvelle série
 identique de calibrations.
+
+## 66. V13 : complétion exacte sur un bord quelconque avec régularité
+
+13 octobre2026. L'échange609–611 avec Claude a identifié une hypothèse
+indispensable de la formule V6 telle qu'elle était écrite : le voisinage
+complet fournit la régularité du bloc extérieur. Sur un autre bord,
+appliquer simplement D^+ au bloc mixte peut donner une matrice NON
+symétrique. Voici l'extension, qui incorpore cette régularité au système
+linéaire et supprime toute hypothèse de voisinage complet.
+
+Soient n,m>0, v=n+m, des entiers k>=mu>0 avec k²=mu(v-1), et q=k-mu.
+On suppose seulement B symétrique binaire de diagonale nulle, D binaire,
+de tailles n x n et n x m, satisfaisant
+
+    D1 = k1-B1,       DD^t = K = qI+mu J-B²-B.             (66a)
+
+Les vecteurs1 et les matrices J ont les dimensions indiquées par les
+produits. Posons
+
+    b = D^t1,        rho = k1-b,
+    F = mu J-(B+I)D,
+    C = [ D  ],      R = [ F     ],
+        [ 1^t]          [ rho^t ],
+    E0 = C^+ R,      P = I-C^+ C.                         (66b)
+
+Le symbole C désigne ici la matrice augmentée, pas une coclique.
+Les identités suivantes sont AUTOMATIQUES sous(66a) :
+
+    CE0=R,  E0=E0^t,  P=P^t=P²,  CP=0,  E0P=PE0=0,
+    E0 1=rho,
+    E0²+E0+D^tD = q(I-P)+mu J.                          (66c)
+
+Si r,s sont les deux racines distinctes de x²+x-q, toutes les complétions
+réelles symétriques régulières satisfaisant le polynôme SRG sont
+EXACTEMENT
+
+    E = E0+rP+(s-r)Q,   Q=Q^t=Q²,   PQ=QP=Q.             (66d)
+
+Il existe une complétion SRG si et seulement si l'une de ces matrices E
+est ENTIÈRE. L'intégralité seule impose alors la diagonale nulle et les
+entrées0/1. Pour Conway, r=3,s=-4, donc E=E0+3P-7Q.
+Le facteur binaire COMMUN D reste une hypothèse, jamais remplacée par
+une collection de facteurs locaux ou par K positif.
+
+**Preuve des identités linéaires.** Toutes les lignes de R appartiennent
+à l'espace des lignes de C : cela se lit directement dans F et rho.
+Ainsi RP=0. De plus,
+
+    D F^t = F D^t,       D rho = F1.                     (66e)
+
+La première identité résulte de K=qI+mu J-B²-B et D1=k1-B1 ; la seconde
+utilise en plus k²=mu(v-1). Elles donnent CR^t=RC^t. Écrivons C^+ pour
+la pseudo-inverse de Moore-Penrose. Puisque RP=0,
+
+    R = R C^t(C^+)^t = C R^t(C^+)^t.
+
+Les colonnes de R sont donc dans l'image de C et CC^+R=R. Enfin
+
+    C^+R = C^+C R^t(C^+)^t = R^t(C^+)^t,
+
+car les colonnes de R^t sont dans l'image de C^t. Cela prouve la symétrie
+de E0 et CE0=R. La définition de P et RP=0 donnent les autres identités
+linéaires, notamment P1=0 et E0 1=rho.
+
+**Preuve du polynôme comprimé.** Posons
+
+    L = E0²+E0+D^tD-qI-mu J.
+
+En utilisant DE0=F, E0 1=rho et K, on obtient
+
+    DL = mu 1 rho^t-BF+(K-qI)D-mu(D1)1^t
+       = mu 1(rho+b)^t-mu(B1+D1)1^t = 0.
+
+D'autre part E0 b=F^t1, donc
+
+    L1 = (k+1)rho-F^t1+D^t(D1)-q1-mu m1
+       = (k+1)(rho+b)-(mu v+q)1
+       = [k²-mu(v-1)]1 = 0.
+
+Ainsi CL=0. Par symétrie L=PLP ; mais LP=-qP, puisque E0P=DP=JP=0.
+Par conséquent L=-qP, ce qui est(66c).
+
+**Paramétrisation et intégralité.** Si E est symétrique et CE=R, alors
+E=E0+T avec T=PTP. Son défaut polynomial vaut T²+T-qP. L'annulation
+équivaut à ce que T ait seulement les valeurs propres r,s sur ker C,
+d'où(66d), dans les deux sens. Pour E entière, la matrice complète
+A=[[B,D],[D^t,E]] est entière, symétrique, k-régulière et vérifie le
+polynôme. Soustraire la somme de sa ligne i de son équation diagonale :
+
+    a_ii² + sum_(j!=i) a_ij(a_ij-1) = 0.                 (66f)
+
+Chaque terme est un entier positif ou nul. Ainsi a_ii=0 et toutes les
+autres entrées valent0 ou1. C'est la même fermeture entière qu'en V6,
+désormais applicable à tout bord satisfaisant(66a).
+
+Lorsque B contient un voisinage complet, 1^t est déjà dans l'espace
+des lignes de D. L'augmentation ne change alors ni E0 ni P : V6 est
+exactement retrouvée. Elle peut aussi être redondante sur d'autres
+bords ; en général son gain de rang vaut0 ou1.
+
+## 67. Les réductions affine et convexe survivent sur le bord augmenté
+
+Pour étendre V7, il faut employer le BON noyau homogène :
+
+    V_C = {T=T^t : diag T=0, DT=0, T1=0}.                (67a)
+
+Prendre ker D seul après avoir corrigé E0 laisserait de nouveau varier
+les degrés. Les complétions linéaires symétriques de diagonale nulle,
+DE=F et E1=rho, forment un espace vide ou E_*+V_C.
+
+Si h=dim ker C et N est une base colonne de ker C, alors
+
+    delta = dim V_C
+          = h(h+1)/2-rang[S -> diag(NSN^t)]
+          <= h(h-1)/2.                                  (67b)
+
+En effet, h lignes indépendantes de N donnent h formes quadratiques
+indépendantes dans cette application diagonale, comme en V7. On choisit
+delta paires dont l'évaluation est injective sur V_C ; les autres
+entrées de E sont des fonctions affines rationnelles de ces arêtes.
+
+Pour toute complétion linéaire BINAIRE de diagonale nulle, son défaut
+
+    Delta = D^tD+E²+E-qI-mu J
+
+appartient lui aussi à V_C. Les calculs DL=0 et L1=0 de§66 ne demandent
+que CE=R et la symétrie ; ils restent valables pour E. La diagonale de
+Delta est nulle par la binarité et les degrés. Il suffit donc d'annuler
+les delta coefficients sélectionnés pour annuler TOUT Delta. Le critère
+affine demeure exact, sans voisinage complet et sans projecteur continu.
+
+V8 s'étend également : pour E symétrique et CE=R, les deux contraintes
+
+    E0+rP-E >= 0,      E-E0-sP >= 0                     (67c)
+
+dans l'ordre PSD placent le spectre de T=E-E0 dans[s,r]. Elles donnent
+Delta=T²+T-qP <= 0. Si E est entière, chaque diagonale de Delta est la
+somme positive(66f), donc vaut0. Une matrice négative PSD de diagonale
+nulle est nulle : les points ENTIERS de ce corps convexe sont exactement
+les complétions. La faisabilité réelle seule ne suffit toujours pas.
+
+Implémentation : `coclique_regular_completion.py` calcule(66b) exactement.
+`coclique_affine_completion.py` expose `regularity=True` dans `frame` et
+`binary_completions`, et utilise alors ker C, y compris pour sa base
+homogène. Le comportement par défaut de V6/V7 est conservé. Le transfert
+convexe(67c) est prouvé ici ; aucune nouvelle option du solveur spectral
+n'est annoncée comme implémentée.
+
+## 68. Application uniforme au support régulier de18 sommets
+
+Dans le cadre de norme18 discuté avec Claude, B est4-régulier sur18
+sommets, D a81 colonnes et B,D doivent toujours satisfaire(66a). Les
+colonnes touchent j sommets de chacune des deux parties, donc b=2j.
+Les identités ci-dessous n'exigent aucun choix parmi les noyaux du pair.
+
+    D1=10*1,      K1=28*1,
+    sum b=180,    b^t b=504,
+    w=1-(5/14)b,  Dw=0,
+    1^t w=w^t w=117/7.                                  (68a)
+
+La projection de1 sur l'espace des lignes de D est(5/14)b : en effet
+D b=28*1. Ainsi w est exactement la composante de1 dans ker D. Sa norme
+non nulle impose que l'ajout de la ligne1^t augmente le rang de1.
+
+L'ancienne formule X=D^+[2J-(B+I)D] vérifie
+
+    X-X^t = (b1^t-1b^t)/14 != 0.                         (68b)
+
+Pour le voir, D^+=D^tK^+ et K commute avec B, car B est régulier. Donc
+
+    X = b1^t/14-D^tK^+(B+I)D,
+
+dont le second terme est symétrique. Le vecteur b ne peut être constant :
+sinon b^t b=(sum b)²/81=400, contre504. Le transfert littéral de V6
+échoue donc pour TOUT facteur de ce cadre, pas seulement pour un exemple.
+
+La correction explicite donnée par§66 est
+
+    E0 = X + w b^t/14 + (8/117)w w^t,
+    P  = P_D-(7/117)w w^t,       P_D=I-D^+D.             (68c)
+
+Pour vérifier la première formule, son ajout à X rétablit la symétrie
+par(68b) ; D fois la correction est nul. De plus X1=rho-14w,
+(w b^t/14)1=(90/7)w et ((8/117)w w^t)1=(8/7)w. Elle a donc la bonne
+somme de lignes, et elle annule ker D intersect 1^perp. Cela caractérise
+E0 de§66. La seconde formule est l'intersection orthogonale des noyaux.
+
+On peut éviter les fractions dans le mode retiré :
+
+    t=7*1-5j=7w,   t^t t=819,   P=P_D-t t^t/819.         (68d)
+
+Pour les colonnes j=0,1,2,3 du cadre de Claude, t vaut respectivement
+7,2,-3,-8. Ces valeurs ne constituent pas une preuve supplémentaire
+de l'absence de j>=4 ;(68a–d) ne dépendent pas de cette exclusion.
+
+Le plan engendré par b,w est forcé, avec
+
+    E0 1=14*1-b,       E0 b=36*1-5b.
+
+Dans la base(b,w), sa matrice est
+
+    [55/7   117/98]
+    [36       8/7],
+
+de polynôme caractéristique x²-9x-34. Cela décrit un bloc du graphe
+extérieur E, pas des valeurs propres nouvelles de la matrice A entière.
+La correction enlève une direction de liberté artificielle ; elle ne
+fabrique ni le facteur binaire D ni le projecteur entier de complétion.
+Aucune campagne sur les26 noyaux n'est lancée.
+
+## 69. Contrôles ciblés de V13 et portée restante
+
+`check_coclique_regular_completion.py` contrôle la NOUVELLE extension
+en arithmétique rationnelle, sur six bords sans voisinage complet :
+un sommet de la grille3x3, une arête de cette grille, un bord irrégulier
+de trois sommets, un bord injectif de cinq sommets, un sommet de Petersen
+et une paire non adjacente de Petersen. Un septième cas, voisinage fermé
+de la grille, vérifie seulement l'identité avec l'ancienne formule.
+
+Sur les deux bords réduits à un sommet, l'ancienne formule est effectivement
+non symétrique ; la correction explicite pour un bord régulier et son
+projecteur sont contrôlés. Chaque bloc connu est reconstruit par(66d).
+
+| Bord sans voisinage complet | h | delta | Affectations des arêtes libres | Candidats binaires linéaires | Complétions exactes |
+|---|---:|---:|---:|---:|---:|
+| Arête de la grille3x3 |4|3|8|8|4|
+| Bord irrégulier de la grille |2|0|1|1|1|
+| Bord injectif de la grille |0|0|1|1|1|
+| Paire non adjacente de Petersen |5|7|128|24|12|
+
+Pour chaque affectation binaire du cadre affine, on vérifie la régularité.
+Pour chaque matrice binaire obtenue, le défaut appartient bien à V_C et
+l'annulation sur les paires sélectionnées équivaut à son annulation
+totale. Les résultats de l'encodeur coïncident exactement avec cette
+énumération courte. Le verdict OPTIMAL de ces petits contrôles signifie
+que leurs complétions sont toutes énumérées, pas une exclusion C1.
+
+Les moments et la correction de§68 sont aussi contrôlés symboliquement
+dans leur plan de dimension2 ; aucun facteur99 n'est supposé construit.
+Résultats PASS dans `data/codex_coclique_defects/regular_completion_v13/`.
+Pas de répétition de l'audit243, pas de nouveau calcul long ou AWS.
+
+Le résultat nouveau est la suppression de l'hypothèse de voisinage complet
+dans les critères exacts de complétion, avec implémentation de la version
+affine. Il n'exclut aucune branche C1. Enfin, l'exclusion éventuelle des
+cocliques22 et de tous les profils de cocliques21 maximales n'impliquerait
+que alpha<=20 : aucune borne alpha>=21 n'est démontrée ici. Le critère
+général(66) n'utilise précisément aucune de ces hypothèses de coclique.
