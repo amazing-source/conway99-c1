@@ -5,10 +5,11 @@ It replaces the argument of `pdf/preuve_c3.tex` (conway99-c3-experimental, 23 Se
 same, the writing is new. The review that motivated it is `REVIEW_C3_PROOF.md`.
 
 ## Status
-* **Not compiled.** There is no LaTeX on the lab PC. A script checked: braces, environments, labels and references,
-  citations, dollar signs, custom macros, ASCII only. The first compilation has to be done elsewhere (the laptop).
-* **Not yet read by anyone else.** A referee pass by a fresh agent was started after writing; its report is to be
-  `REFEREE_AGENT_REPORT.md` in this folder.
+* **Compiled** on 13 October 2026, 22:48 UTC, with MiKTeX installed that evening on the lab PC: 14 pages, no error,
+  two lines overfull by half a point (`c3_proof_rewrite.pdf` in this folder).
+* **Not read by anyone else.** A referee pass by a fresh agent was started and then stopped by the user: A. Woldar and
+  P. Cesarz are rewriting Sections 1-3 of the order-3 text themselves (their mail of 13 October). This file is
+  therefore a working document; its Section 6 (three fixed vertices) covers the part they have not reached yet.
 * The Lean files were not opened. Section 8 only repeats the names of the formal statements given in the old text.
 
 ## What changed

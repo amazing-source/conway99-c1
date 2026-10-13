@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\sg}{\sigma}
+\newcommand{\Nb}{\Gamma}
+
+\title{Odd eigenfunctions of squared norm $16$ on a strongly regular graph $(99,14,1,2)$ with an involution\\[4pt]
+\large Part II.A of the exclusion of automorphisms of order two: the computer-free steps of the first lemma}
+\author{Working draft, 14 October 2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\Gamma$ be a strongly regular graph with parameters $(99,14,1,2)$, $\sg$ an automorphism of order $2$ and $A$ the
+adjacency matrix. The first of the three lemmas used in the second half of the exclusion of $\sg$ says that there is
+no integer-valued function $\varphi$ with $\varphi\circ\sg=-\varphi$, $A\varphi=-4\varphi$ and
+$\sum_x\varphi(x)^2=16$. This text contains, with every verification, the part of its proof that needs no computer:
+such a function takes the values $0,\pm1$, its support avoids the neighbours of the fixed vertex, and the bipartite
+graph between its positive and negative supports is the complement of the cube or the complement of the Wagner
+graph; the cube is impossible. The complement of the Wagner graph is the one case that the existing proof settles by
+a (small) exhaustive enumeration; it is not treated here.
+\end{abstract}
+
+%======================================================================
+\section{Setting and statement}
+
+We use the notation and the results of Part~I: $\Gamma$ is a strongly regular graph with parameters $(99,14,1,2)$;
+$x\sim y$ means that $x,y$ are adjacent and $\Nb(x)$ is the set of neighbours of $x$; two adjacent vertices have
+exactly one common neighbour and two distinct non-adjacent vertices exactly two; $\sg$ is an automorphism of order
+$2$. We use three facts proved in Part~I.
+\begin{enumerate}[label=\textup{(F\arabic*)},leftmargin=3em]
+\item\label{F1} $\sg$ fixes exactly one vertex $x_0$. The $14$ neighbours of $x_0$ (the \emph{inner} vertices) form
+seven pairs $\{a,\sg a\}$ of adjacent vertices, the \emph{blocks}; two inner vertices in different blocks are not
+adjacent. The $84$ other vertices different from $x_0$ are called \emph{outer}.
+\item\label{F2} A vertex $v$ with $v\sim\sg v$ is inner.
+\item\label{F3} An outer vertex has exactly two inner neighbours, in two different blocks.
+\end{enumerate}
+A function $\varphi$ on the vertices is \emph{odd} if $\varphi\circ\sg=-\varphi$; then $\varphi(x_0)=0$.
+
+\begin{theorem}\label{thm:A}
+Let $\varphi$ be an odd function with integer values such that $A\varphi=-4\varphi$ and $\sum_x\varphi(x)^2=16$. Put
+$P=\{x:\varphi(x)=1\}$ and $Q=\{x:\varphi(x)=-1\}$. Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\varphi$ takes only the values $0,1,-1$; $|P|=|Q|=8$ and $Q=\sg P$;
+\item no two vertices of $P$ are adjacent, no two vertices of $Q$ are adjacent, and every vertex of $P$ has exactly
+four neighbours in $Q$;
+\item all vertices of $P\cup Q$ are outer;
+\item the graph $\mathcal C$ on $P$ in which two distinct vertices $x,y$ are joined when $x\not\sim\sg y$ is
+isomorphic to the Wagner graph (the cycle of length $8$ with its four long diagonals).
+\end{enumerate}
+\end{theorem}
+
+The graph $\mathcal C$ is well defined as an undirected graph because $x\sim\sg y$ if and only if $\sg x\sim y$.
+Theorem~\ref{thm:A} leaves one configuration; that it does not occur either is the remaining part of the lemma.
+
+%======================================================================
+\section{Values, independence, and the matrix $B$}
+
+Throughout, $\varphi$ is as in Theorem~\ref{thm:A}.
+
+\begin{lemma}\label{lem:values}
+$\varphi$ takes only the values $0,1,-1$.
+\end{lemma}
+\begin{proof}
+A value of absolute value at least $3$ at $x$ would give $\varphi(x)^2+\varphi(\sg x)^2\ge18>16$. Suppose
+$|\varphi(x)|=2$. Then $\varphi(\sg x)=-\varphi(x)$, and the other vertices satisfy
+$\sum_{y\ne x,\sg x}\varphi(y)^2=8$. The equation $(A\varphi)(x)=-4\varphi(x)$ reads
+$\sum_{y\sim x}\varphi(y)=-4\varphi(x)$, of absolute value $8$. If $x\sim\sg x$, the neighbour $\sg x$ contributes
+$-\varphi(x)$ and the other neighbours must contribute $-3\varphi(x)$, of absolute value $6$; otherwise they
+contribute $-4\varphi(x)$, of absolute value $8$. Now the vertices $y\ne x,\sg x$ come in pairs $\{y,\sg y\}$ with
+$\varphi(\sg y)=-\varphi(y)$ (and $\varphi(x_0)=0$). A pair with both vertices adjacent to $x$ contributes $0$ to
+the sum; a pair with one vertex adjacent to $x$ contributes $\pm\varphi(y)$. So the absolute value of the
+contribution of the neighbours other than $\sg x$ is at most $\sum|\varphi(y)|$ over one vertex $y$ per pair, and
+$\sum|\varphi(y)|\le\sum\varphi(y)^2=4$ over these representatives. This is less than $6$. Contradiction.
+\end{proof}
+
+By Lemma~\ref{lem:values}, $\sum_x\varphi(x)^2=16$ says $|P|+|Q|=16$, and $Q=\sg P$ since $\varphi$ is odd. This is
+Theorem~\ref{thm:A}(a). Since $\varphi$ vanishes outside $P\cup Q$, for every vertex $z$,
+\begin{equation}\label{eq:eig}
+(A\varphi)(z)=|\Nb(z)\cap P|-|\Nb(z)\cap Q| .
+\end{equation}
+
+\begin{lemma}\label{lem:indep}
+No two vertices of $P$ are adjacent, and every vertex of $P$ has exactly four neighbours in $Q$. The same holds with
+$P$ and $Q$ exchanged.
+\end{lemma}
+\begin{proof}
+For $x\in P$ let $d_x=|\Nb(x)\cap P|$, and let $e=\frac12\sum_{x\in P}d_x$ be the number of edges inside $P$. By
+\eqref{eq:eig} and $(A\varphi)(x)=-4$, $x$ has $d_x+4$ neighbours in $Q$.
+
+Count the triples $(\{x,y\},z)$ with $x\ne y$ in $P$ and $z$ a common neighbour of $x$ and $y$. Adjacent pairs have
+one common neighbour and the others two, so there are $2\binom82-e=56-e$ triples. A vertex $z$ is in
+$\binom{n_z}2$ triples, where $n_z=|\Nb(z)\cap P|$. For $z\in P$, $n_z=d_z$. For $z=\sg x\in Q$, the neighbours of
+$\sg x$ in $P$ are the images under $\sg$ of the neighbours of $x$ in $Q$, so $n_z=d_x+4$. The vertices of $P\cup Q$
+are therefore in
+\[
+\sum_{x\in P}\Bigl[\binom{d_x}2+\binom{d_x+4}2\Bigr]=\sum_{x\in P}(d_x^2+3d_x+6)=\sum_{x\in P}d_x^2+6e+48
+\]
+triples, and the number of triples with $z\notin P\cup Q$ is
+\begin{equation}\label{eq:D}
+D=56-e-\sum_{x\in P}d_x^2-6e-48=8-7e-\sum_{x\in P}d_x^2\ \ge0 .
+\end{equation}
+Since $d_x^2\ge d_x$ and $\sum_xd_x=2e$, we get $0\le D\le8-9e$, so $e=0$ and all $d_x=0$. The statement for $Q$
+follows by applying $\sg$.
+\end{proof}
+
+This is Theorem~\ref{thm:A}(b). We record the value $D=8$ in \eqref{eq:D}:
+\begin{equation}\label{eq:D8}
+\text{exactly $8$ triples $(\{x,y\},z)$ with $x\ne y$ in $P$ have their common neighbour $z$ outside $P\cup Q$.}
+\end{equation}
+
+\paragraph{The matrix $B$.} Let $B$ be the matrix with rows and columns indexed by $P$ and
+\[
+B[x,y]=\begin{cases}1&\text{if }x\sim\sg y,\\0&\text{otherwise.}\end{cases}
+\]
+For $x\in P$ we call $\mathrm{row}(x)=\{y\in P:B[x,y]=1\}$ the \emph{row} of $x$.
+
+\begin{lemma}\label{lem:B}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $B$ is symmetric, and every row has exactly four elements.
+\item $x\in\mathrm{row}(x)$ if and only if $x$ is inner.
+\item For $x\ne y$ in $P$, $|\mathrm{row}(x)\cap\mathrm{row}(y)|$ is the number of common neighbours of $x$ and $y$
+in $Q$; it is at most $2$, and at most $1$ if $x$ and $y$ have a common neighbour outside $Q$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $x\sim\sg y$ if and only if $\sg x\sim y$, that is, $y\sim\sg x$. The row of $x$ is in bijection with
+$\Nb(x)\cap Q$ by $y\mapsto\sg y$, and $|\Nb(x)\cap Q|=4$ by Lemma~\ref{lem:indep}.
+(b) $B[x,x]=1$ means $x\sim\sg x$; by \ref{F2} this implies that $x$ is inner, and conversely an inner vertex is
+adjacent to its image by \ref{F1}.
+(c) $y'\in\mathrm{row}(x)\cap\mathrm{row}(y)$ means that $\sg y'\in Q$ is adjacent to $x$ and to $y$. By
+Lemma~\ref{lem:indep}, $x\not\sim y$, so $x$ and $y$ have exactly two common neighbours.
+\end{proof}
+
+%======================================================================
+\section{The support avoids the neighbours of the fixed vertex}
+
+Let $k$ be the number of inner vertices in $P$. Since each block is an orbit $\{a,\sg a\}$, a block contains a
+vertex of $P$ if and only if it contains a vertex of $Q$, and then exactly one of each; so $k$ is the number of
+blocks meeting $P\cup Q$, and two inner vertices of $P$ lie in different blocks.
+
+\begin{lemma}\label{lem:k02}
+$k\in\{0,2\}$.
+\end{lemma}
+\begin{proof}
+\emph{$k$ is even.} The sum of all entries of $B$ is $8\cdot4=32$ by Lemma~\ref{lem:B}(a). Since $B$ is symmetric
+with entries $0$ and $1$, this sum is the number of $x$ with $B[x,x]=1$ plus twice the number of unordered pairs
+$\{x,y\}$, $x\ne y$, with $B[x,y]=1$. By Lemma~\ref{lem:B}(b) the first number is $k$. So $k$ is even.
+
+\emph{$k\le3$.} Let $a\in P$ be inner. Its $14$ neighbours are $x_0$, the vertex $\sg a\in Q$ and $12$ outer
+vertices. By Lemma~\ref{lem:indep}, $a$ has exactly four neighbours in $Q$; so exactly three outer vertices of $Q$
+are adjacent to $a$. Count the pairs $(a,y)$ with $a\in P$ inner, $y\in Q$ outer and $a\sim y$: there are $3k$ of
+them. On the other hand there are $8-k$ outer vertices in $Q$, and each has exactly two inner neighbours by
+\ref{F3}. Hence $3k\le2(8-k)$, that is, $5k\le16$.
+\end{proof}
+
+\begin{lemma}\label{lem:k0}
+$k=0$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:k02} it suffices to exclude $k=2$. Suppose $k=2$ and let $p_0,p_1$ be the two inner vertices of
+$P$; they lie in different blocks. By
+Lemma~\ref{lem:B}(b), $p_0\in\mathrm{row}(p_0)$, $p_1\in\mathrm{row}(p_1)$, and $x\notin\mathrm{row}(x)$ for the six
+other vertices $x$ of $P$; let $R$ be the set of these six.
+
+\emph{$p_1\notin\mathrm{row}(p_0)$}: $p_0$ and $\sg p_1$ are inner vertices in different blocks, so they are not
+adjacent by \ref{F1}.
+
+\emph{$|\mathrm{row}(p_0)\cap\mathrm{row}(p_1)|\le1$}: $p_0$ and $p_1$ have the common neighbour $x_0$, which is not
+in $Q$; apply Lemma~\ref{lem:B}(c).
+
+So $\mathrm{row}(p_0)=\{p_0\}\cup A_0$ and $\mathrm{row}(p_1)=\{p_1\}\cup C_0$ with $A_0,C_0\subset R$,
+$|A_0|=|C_0|=3$ and $|A_0\cap C_0|\le1$.
+
+\medskip\noindent\emph{Case $A_0\cap C_0=\emptyset$.} Let $a\in A_0$. By symmetry of $B$, $p_0\in\mathrm{row}(a)$
+and $p_1\notin\mathrm{row}(a)$; also $a\notin\mathrm{row}(a)$. So $\mathrm{row}(a)$ consists of $p_0$ and three
+elements of $(A_0\setminus\{a\})\cup C_0$. Now $\mathrm{row}(a)\cap\mathrm{row}(p_0)$ contains $p_0$ and
+$\mathrm{row}(a)\cap A_0$; by Lemma~\ref{lem:B}(c), $|\mathrm{row}(a)\cap A_0|\le1$. And
+$\mathrm{row}(a)\cap\mathrm{row}(p_1)=\mathrm{row}(a)\cap C_0$ has at most two elements. Hence
+$|\mathrm{row}(a)\cap A_0|=1$ for every $a\in A_0$: the relation ``$a'\in\mathrm{row}(a)$'' is a graph on the three
+elements of $A_0$ in which every vertex has degree $1$. This is impossible, since the sum of the degrees is even.
+
+\medskip\noindent\emph{Case $|A_0\cap C_0|=1$.} Write $A_0=\{s,a,b\}$, $C_0=\{s,c,d\}$ and let $t$ be the sixth
+element of $R$.
+
+(1) \emph{$\mathrm{row}(t)=\{a,b,c,d\}$.} Since $t\notin A_0\cup C_0$, $p_0,p_1\notin\mathrm{row}(t)$, and
+$t\notin\mathrm{row}(t)$; so $\mathrm{row}(t)$ consists of four of the five elements $s,a,b,c,d$. By
+Lemma~\ref{lem:B}(c), $|\mathrm{row}(t)\cap A_0|\le2$ and $|\mathrm{row}(t)\cap C_0|\le2$. If $s\in\mathrm{row}(t)$,
+the sum of these two numbers would be $2+3=5$. So $s\notin\mathrm{row}(t)$.
+
+(2) \emph{After exchanging $a,b$ and $c,d$ if necessary, $\mathrm{row}(s)=\{p_0,p_1,a,c\}$.} We have
+$p_0,p_1\in\mathrm{row}(s)$, $s\notin\mathrm{row}(s)$, and $t\notin\mathrm{row}(s)$ by (1) and symmetry. So
+$\mathrm{row}(s)$ contains two elements of $\{a,b,c,d\}$. As $\mathrm{row}(s)\cap\mathrm{row}(p_0)$ contains $p_0$
+and $\mathrm{row}(s)\cap\{a,b\}$, at most one of $a,b$ is in $\mathrm{row}(s)$; similarly at most one of $c,d$.
+
+(3) \emph{$b\notin\mathrm{row}(a)$ and $d\notin\mathrm{row}(c)$.} $\mathrm{row}(a)$ contains $p_0$ and $s$ (by (2)
+and symmetry), which both belong to $\mathrm{row}(p_0)=\{p_0,s,a,b\}$; by Lemma~\ref{lem:B}(c), $b\notin\mathrm{row}(a)$.
+The same argument with $p_1$ gives $d\notin\mathrm{row}(c)$.
+
+(4) \emph{$\mathrm{row}(b)=\{p_0,t,c,d\}$ and $\mathrm{row}(d)=\{p_1,t,a,b\}$.} $\mathrm{row}(b)$ contains $p_0$ and
+$t$ (by (1)); it does not contain $b$, $p_1$ (as $b\notin C_0$), $s$ (by (2)) or $a$ (by (3)). Only $c,d$ remain,
+and the row has four elements. Similarly $\mathrm{row}(d)$ contains $p_1$ and $t$, and does not contain $d$, $p_0$,
+$s$ or $c$; so it contains $a$ and $b$.
+
+(5) \emph{Contradiction.} $\mathrm{row}(a)$ contains $p_0$, $s$, $t$ (by (1)) and $d$ (by (4)); so
+$\mathrm{row}(a)=\{p_0,s,t,d\}$. Then $\mathrm{row}(a)\cap\mathrm{row}(b)\supseteq\{p_0,t,d\}$ has three elements,
+contradicting Lemma~\ref{lem:B}(c).
+\end{proof}
+
+This is Theorem~\ref{thm:A}(c): all vertices of $P\cup Q$ are outer, and $B$ has zero diagonal.
+
+%======================================================================
+\section{The complement of $B$ is the cube or the Wagner graph}
+
+By Lemma~\ref{lem:k0} and Lemma~\ref{lem:B}, the graph $\mathcal C$ of Theorem~\ref{thm:A}(d) has adjacency matrix
+$J-I-B$, and every vertex of $\mathcal C$ has $7-4=3$ neighbours.
+
+\begin{lemma}\label{lem:C}
+$\mathcal C$ has no triangle. Moreover, for $x\ne y$ in $P$, the number of common neighbours of $x$ and $y$ in $Q$
+is $2$ if $x,y$ are adjacent in $\mathcal C$, and equals the number of common neighbours of $x,y$ in $\mathcal C$
+otherwise.
+\end{lemma}
+\begin{proof}
+Let $M=J-I-B$. Then $B=J-I-M$, $J^2=8J$ and $JM=MJ=3J$, so
+\[
+B^2=J^2-2J+I-JM-MJ+2M+M^2=I+2M+M^2 .
+\]
+For $x\ne y$ the entry $(x,y)$ of $B^2$ is $|\mathrm{row}(x)\cap\mathrm{row}(y)|$, the number of common neighbours
+of $x,y$ in $Q$ (Lemma~\ref{lem:B}(c)), and it is at most $2$. So $2M[x,y]+M^2[x,y]\le2$: if $x,y$ are adjacent in
+$\mathcal C$ they have no common neighbour in $\mathcal C$ and the count is $2$; otherwise the count is $M^2[x,y]$.
+\end{proof}
+
+\begin{lemma}\label{lem:cubic}
+A graph on $8$ vertices in which every vertex has degree $3$ and which has no triangle is isomorphic to the cube
+$Q_3$ or to the Wagner graph $M_8$ (vertices $0,\dots,7$ modulo $8$, $i$ adjacent to $i\pm1$ and to $i+4$).
+\end{lemma}
+\begin{proof}
+Let $v$ be a vertex, $a,b,c$ its neighbours and $R$ the set of the four other vertices. As there is no triangle,
+$a,b,c$ are pairwise non-adjacent, so each has two neighbours in $R$: six edges between $\{a,b,c\}$ and $R$. The
+sum of the degrees of the vertices of $R$ is $12$, so $R$ contains $(12-6)/2=3$ edges. A graph with four vertices,
+three edges and no triangle is a star (one vertex adjacent to the three others) or a path with four vertices.
+
+\emph{Star.} Let $r_0$ be the centre. It has no neighbour among $a,b,c$, and each of the three leaves has two.
+Each of $a,b,c$ has two neighbours among the leaves. The bipartite graph between $\{a,b,c\}$ and the leaves has all
+degrees $2$ and six vertices, so it is a cycle of length $6$. The graph is then determined up to isomorphism; it is
+the cube, with $v$ and $r_0$ opposite.
+
+\emph{Path.} Let $R$ be the path $r_0,r_1,r_2,r_3$. Then $r_0,r_3$ have two neighbours among $a,b,c$ and $r_1,r_2$
+have one. The two neighbours in $R$ of each of $a,b,c$ are not adjacent, so they form one of the pairs
+$\{r_0,r_2\}$, $\{r_0,r_3\}$, $\{r_1,r_3\}$. If these pairs are used $n_{02},n_{03},n_{13}$ times, the degrees give
+$n_{13}=1$ (for $r_1$), $n_{02}=1$ (for $r_2$), and $n_{02}+n_{03}=2$ (for $r_0$), so $n_{03}=1$. Up to the names of
+$a,b,c$: $a\sim r_0,r_2$; $b\sim r_0,r_3$; $c\sim r_1,r_3$. The map
+\[
+v\mapsto0,\quad c\mapsto1,\quad r_1\mapsto2,\quad r_0\mapsto3,\quad b\mapsto4,\quad r_3\mapsto5,\quad
+r_2\mapsto6,\quad a\mapsto7
+\]
+is an isomorphism onto $M_8$: the edges $vc$, $cr_1$, $r_1r_0$, $r_0b$, $br_3$, $r_3r_2$, $r_2a$, $av$ become the
+cycle $0,1,\dots,7$, and the edges $vb$, $cr_3$, $r_1r_2$, $r_0a$ become $\{0,4\}$, $\{1,5\}$, $\{2,6\}$, $\{3,7\}$.
+\end{proof}
+
+%======================================================================
+\section{The vertices outside the support}
+
+For a vertex $z\notin P\cup Q$, \eqref{eq:eig} and $(A\varphi)(z)=0$ give $|\Nb(z)\cap P|=|\Nb(z)\cap Q|$; we call
+this number $d_z$, and we let $X_d$ be the set of $z\notin P\cup Q$ with $d_z=d$. Since $\sg$ exchanges $P$ and $Q$,
+$d_{\sg z}=d_z$: each $X_d$ is mapped to itself by $\sg$. The fixed vertex $x_0$ is in $X_0$, because its neighbours
+are inner and $P\cup Q$ consists of outer vertices.
+
+\begin{lemma}\label{lem:X}
+$d_z\le2$ for every $z\notin P\cup Q$, and $|X_0|=11$, $|X_1|=64$, $|X_2|=8$.
+\end{lemma}
+\begin{proof}
+Suppose $z$ is adjacent to three vertices $x_1,x_2,x_3$ of $P$. They are pairwise non-adjacent, so two of them have
+exactly two common neighbours, one of which is $z\notin Q$; hence their sets of neighbours in $Q$, of size $4$ each,
+meet pairwise in at most one vertex. The union of these three sets has at least $12-3=9$ elements, but $|Q|=8$.
+
+Each $x\in P$ has $14-4=10$ neighbours outside $P\cup Q$, so $\sum_{z\notin P\cup Q}d_z=80$. By \eqref{eq:D8},
+$\sum_{z\notin P\cup Q}\binom{d_z}2=8$; as $d_z\le2$ this says $|X_2|=8$. Then $|X_1|=80-2\cdot8=64$ and
+$|X_0|=99-16-8-64=11$.
+\end{proof}
+
+For $z\notin P\cup Q$ let $\alpha_z$, $\beta_z$, $\gamma_z$ be the numbers of neighbours of $z$ in $X_2$, $X_1$,
+$X_0$.
+
+\begin{lemma}\label{lem:abc}
+For $z\in X_d$: $\ \beta_z+2\alpha_z=16-5d$ and $\gamma_z=\alpha_z+3d-2$. In particular $\alpha_z\ge2$ and
+$\gamma_z=\alpha_z-2$ for $z\in X_0$, and $\gamma_z=\alpha_z+4$ for $z\in X_2$.
+\end{lemma}
+\begin{proof}
+Count the pairs $(w,s)$ with $w\sim z$, $s\in P\cup Q$ and $w\sim s$. For a fixed $s$, the number of $w$ is the
+number of common neighbours of $z$ and $s$: $1$ for the $2d$ vertices $s$ adjacent to $z$ and $2$ for the
+$16-2d$ others; total $2d+2(16-2d)=32-2d$. For a fixed $w\in\Nb(z)$, the number of $s$ is the number of neighbours of
+$w$ in $P\cup Q$: $4$ if $w\in P\cup Q$ (Lemma~\ref{lem:indep}), $2d'$ if $w\in X_{d'}$. So
+$4\cdot2d+4\alpha_z+2\beta_z=32-2d$, which is the first identity. The degree of $z$ is
+$14=2d+\alpha_z+\beta_z+\gamma_z$; substituting $\beta_z=16-5d-2\alpha_z$ gives the second.
+\end{proof}
+
+\begin{corollary}\label{cor:ten}
+$\sum_{z\in X_0}(\alpha_z-2)\ge10$.
+\end{corollary}
+\begin{proof}
+Let $\tau$ be the number of edges inside $X_2$, so $\sum_{z\in X_2}\alpha_z=2\tau$. The number of edges between
+$X_0$ and $X_2$ is $\sum_{z\in X_2}\gamma_z=\sum_{z\in X_2}(\alpha_z+4)=2\tau+32$, and also
+$\sum_{z\in X_0}\alpha_z$. As $|X_0|=11$, $\sum_{z\in X_0}(\alpha_z-2)=2\tau+32-22=10+2\tau$.
+\end{proof}
+
+%======================================================================
+\section{The cube is impossible}
+
+\begin{proposition}\label{prop:cube}
+$\mathcal C$ is not isomorphic to the cube.
+\end{proposition}
+\begin{proof}
+Suppose it is, and label the vertices of $P$ by the elements of $\FF_2^3$ so that two vertices are adjacent in
+$\mathcal C$ exactly when their labels differ in one coordinate. Two distinct vertices of the cube at distance $1$
+are adjacent; at distance $2$ they have two common neighbours; at distance $3$ (\emph{antipodal} vertices) they have
+none. By Lemma~\ref{lem:C}, two distinct vertices of $P$ have two common neighbours in $Q$ unless they are antipodal,
+in which case they have none. Recall that two distinct vertices of $P$ have exactly two common neighbours in
+$\Gamma$, none of them in $P$ (Lemma~\ref{lem:indep}). Hence:
+\begin{equation}\label{eq:anti}
+\begin{minipage}{0.86\textwidth}
+a vertex outside $P\cup Q$ adjacent to two distinct vertices $x,y$ of $P$ exists only if $x,y$ are antipodal, and
+for each of the four antipodal pairs there are exactly two such vertices.
+\end{minipage}
+\end{equation}
+
+\medskip\noindent\emph{Step 1: the vertices of $X_2$ are the arcs of a $4$-cycle.}
+Let $T_0,T_1,T_2,T_3$ be the four antipodal pairs of $P$. By \eqref{eq:anti}, for every $z\in X_2$ the set
+$\Nb(z)\cap P$ is one of the $T_i$, and each $T_i$ arises from exactly two vertices of $X_2$. For $z\in X_2$ let
+$i(z)$ be the index with $\Nb(z)\cap P=T_{i(z)}$, and $j(z)=i(\sg z)$; then
+$\Nb(z)\cap Q=\sg\bigl(\Nb(\sg z)\cap P\bigr)=\sg T_{j(z)}$. Note that $z\ne\sg z$ for $z\in X_2$, since
+$x_0\in X_0$; and $i(\sg z)=j(z)$, $j(\sg z)=i(z)$.
+
+\emph{$i(z)\ne j(z)$.} Otherwise $z$ and $\sg z$ would both be adjacent to the two vertices of $T_{i(z)}$ and to the
+two vertices of $\sg T_{i(z)}$: two distinct vertices with four common neighbours.
+
+\emph{The map $z\mapsto(i(z),j(z))$ is injective on $X_2$.} Two distinct vertices of $X_2$ with the same image
+would have the same four neighbours in $P\cup Q$.
+
+So $X_2$ is identified with a set of $8$ ordered pairs $(i,j)$, $i\ne j$, closed under $(i,j)\mapsto(j,i)$, in
+which each $i$ occurs exactly twice as first entry. The $4$ unordered pairs $\{i,j\}$ form a graph without loops
+or repeated edges on $\{0,1,2,3\}$ in which every vertex has degree $2$: a cycle of length $4$. Renumbering the
+$T_i$, we may assume that it is the cycle $0,1,2,3$; so
+\[
+X_2=\{z_{ij}:\{i,j\}\in\{\{0,1\},\{1,2\},\{2,3\},\{3,0\}\}\},\qquad
+\Nb(z_{ij})\cap P=T_i,\quad\Nb(z_{ij})\cap Q=\sg T_j .
+\]
+
+\medskip\noindent\emph{Step 2: two cycles of length $4$ on $X_2$.}
+Two distinct vertices $z_{ij}$, $z_{i'j'}$ have, as common neighbours in $P\cup Q$, the two vertices of $T_i$ if
+$i=i'$, the two vertices of $\sg T_j$ if $j=j'$, and none otherwise (the $T_i$ are pairwise disjoint; $i=i'$ and
+$j=j'$ do not both hold). Call them \emph{linked} when $i=i'$ or $j=j'$. The four vertices
+$z_{01},z_{03},z_{21},z_{23}$ are linked along the cycle
+\[
+z_{01}\ -\ z_{03}\ -\ z_{23}\ -\ z_{21}\ -\ z_{01}
+\]
+(common first index, common second index, alternately), and $z_{01},z_{23}$ are not linked, nor are
+$z_{03},z_{21}$. The four vertices $z_{10},z_{30},z_{12},z_{32}$ are linked along the cycle
+$z_{10}-z_{30}-z_{32}-z_{12}-z_{10}$ in the same way. A vertex of the first group and a vertex of the second are not
+linked: their first indices have different parities, and so have their second indices. So ``linked'' consists of two
+disjoint cycles of length $4$. We call \emph{diagonals} the four pairs
+$\{z_{01},z_{23}\}$, $\{z_{03},z_{21}\}$, $\{z_{10},z_{32}\}$, $\{z_{30},z_{12}\}$ of opposite vertices of these
+cycles.
+
+\medskip\noindent\emph{Step 3: the neighbours in $X_2$ of a vertex of $X_0$.}
+Let $z\in X_0$. It has no neighbour in $P\cup Q$. If $z$ were adjacent to two linked vertices of $X_2$, these two
+distinct vertices would have three common neighbours: two in $P\cup Q$ and $z$. So in each of the two cycles the
+neighbours of $z$ are pairwise not linked: there are $r_z\le2$ of them in the first cycle and $s_z\le2$ in the
+second, and when there are two they form a diagonal. Let $q_z$ be the number of diagonals both of whose vertices are
+adjacent to $z$. Then $q_z=\binom{r_z}2+\binom{s_z}2$, and since $\binom r2\ge r-1$ for $r\in\{0,1,2\}$,
+\[
+q_z\ \ge\ r_z+s_z-2=\alpha_z-2 .
+\]
+
+\medskip\noindent\emph{Step 4: contradiction.}
+By Corollary~\ref{cor:ten}, $\sum_{z\in X_0}q_z\ge\sum_{z\in X_0}(\alpha_z-2)\ge10$. But there are four diagonals,
+and the two vertices of a diagonal are distinct, so they have at most two common neighbours:
+$\sum_{z\in X_0}q_z\le4\cdot2=8$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:A}]
+(a) is Lemma~\ref{lem:values}, (b) is Lemma~\ref{lem:indep}, (c) is Lemma~\ref{lem:k0}. For (d): by
+Lemma~\ref{lem:C} and the remark before it, $\mathcal C$ is a graph on $8$ vertices, regular of degree $3$, without
+triangle; by Lemma~\ref{lem:cubic} it is the cube or the Wagner graph; by Proposition~\ref{prop:cube} it is not the
+cube.
+\end{proof}
+
+\end{document}
