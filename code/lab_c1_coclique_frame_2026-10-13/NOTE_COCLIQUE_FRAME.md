@@ -50,7 +50,7 @@ fact of the family (false at 243 for the bound itself); at 99 it would need an a
 
 Own code, not audited by a third party.
 
-## 4. Addendum, 13 October 2026, about 19:40 UTC
+## 4. Addendum, 13 October 2026, 19:20 UTC
 * Codex (bridge, after message 609): no flaw in section 1; an exclusion of (0,2) is a conditional reduction, not a
   closure. Two points of his, both right: (a) the absence of 45 does not by itself refute "Hoffman bound or one below"
   as long as 44 is undecided (section 2 says 44 is undecided); (b) his elimination theorem (V6) does NOT transfer word
