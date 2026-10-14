@@ -1,0 +1,46 @@
+{
+  "status": "Derived theoretical solver cut; not implemented in the solver, no search run or actual Conway branch eliminated",
+  "context": "Combines the majority flip theorem with a certified upper bound on labelled completions. It does not assert that a boundary with the required properties exists in every hypothetical Conway graph.",
+  "setup": {
+    "parameters": "SRG(1+2t^2,2t,1,2), with a fixed root and the canonical labels by its t star pairs",
+    "instance": "A partial labelled graph and any additional search constraints. Omega is its set of completed labelled SRGs.",
+    "group": "L is a binary linear subgroup of pure star-pair flips preserving the ENTIRE search instance, including all decided entries and additional constraints.",
+    "forbidden_fixers": "S consists of the nonzero elements of L of weight less than ceil(t/2). By the majority theorem, every s in S acts without fixed points on Omega."
+  },
+  "small_support_subgroup": {
+    "statement": "If H <= L has every nonzero word of weight less than ceil(t/2), its action on Omega is free. Thus |Omega| is divisible by |H|, even when the completed graphs themselves have automorphisms.",
+    "proof": "A stabilizer in H cannot contain a nonzero element: such an element would be a forbidden pure-flip automorphism of the completed SRG. Apply orbit-stabilizer to each H-orbit.",
+    "individual_flips": "If r individual pair flips preserve the instance and r < ceil(t/2), their independent subgroup has order 2^r and every nonzero word has weight at most r. Hence |Omega| is divisible by 2^r.",
+    "Conway99": "Two preserved individual flips force a multiple of four completions; three force a multiple of eight. This is stronger for such a subgroup than the generic |L|/8 orbit lower bound."
+  },
+  "two_completion_character_test": {
+    "statement": "If S is nonempty and the equations b dot s = 1 over F2, for all s in S, are inconsistent, every L-orbit in Omega has size at least four. Thus |Omega| is divisible by four.",
+    "unknown": "b is a vector of t binary coordinates. Every linear functional on L extends to F2^t, so these coordinates represent all relevant characters of L.",
+    "proof": [
+      "An orbit of size one is impossible because any s in S has no fixed points.",
+      "On an orbit of size two, the action homomorphism L -> Sym(2)=F2 is a linear functional chi.",
+      "Every s in S must act as the nonidentity transposition, so chi(s)=1 for all s.",
+      "If the displayed linear system is inconsistent, no orbit of size two exists. Since L is a finite 2-group, every remaining orbit has size divisible by four."
+    ],
+    "short_certificate": "Inconsistency is equivalent to an odd collection of words of S having XOR zero. For example, s, u, s+u all in S form a three-word certificate.",
+    "limit": "Consistency only means this obstruction does not apply; it does not supply any completion."
+  },
+  "solver_rules": [
+    "Given a certified upper bound U on ALL labelled completions of the invariant instance, reject the branch if U < |H| for a subgroup H as above.",
+    "If the character test is inconsistent, a certified U <= 3 excludes all SRG completions.",
+    "For Conway, a boundary in the already established at-most-two-completions regime is impossible if it preserves two distinct individual pair flips. Their sum has weight two, so the three-word obstruction applies.",
+    "Separately, in the C1 asymmetric branch, any instance group L acts freely on the asymmetric completions. Hence U < |L| excludes all C1 completions, even if symmetric SRG completions remain."
+  ],
+  "spectral_connection": {
+    "accepted_existing_bound": "The existing coclique_rank_one_completion.py framework gives at most two labelled Conway completions in its certified residual-eigenspace-rank-at-most-one regime, including positive spectral boundaries of size 43 with their full cross rows fixed.",
+    "peer_689": "The peer's 49-row reconstruction criterion is conditional on the indicated restricted spectral rank being 44. That rank has not been established for every such configuration.",
+    "full_rank_case": "A certified unique completion (U=1) cannot coexist with even one invariant low-weight flip, since that flip would send the completion to a distinct one.",
+    "not_claimed": "No assertion that the rigid Gamma6 root skeleton is uniquely completable; no assertion that all 49-row configurations have full rank; no new global rank classification."
+  },
+  "implementation_cautions": [
+    "Preserving the root star or its transport skeleton alone is insufficient when other entries or constraints have been added: the group must preserve the entire instance counted by U.",
+    "Blocking only one labelled known solution may destroy the group action. Orbit-based cuts require an invariant blocking set, or an upper bound and action applied before that blocking.",
+    "The available Gamma6 root0 target has a rigid rooted skeleton, so these nontrivial local-flip cuts do not apply there.",
+    "No solver integration, timing improvement, or exclusion of an encountered branch has been demonstrated."
+  ]
+}

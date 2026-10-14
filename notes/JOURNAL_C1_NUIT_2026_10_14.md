@@ -1725,3 +1725,48 @@ de Claude impliquerait que l'absence de lignes plates force deja cette
 distance minimale dans C_K ; exclure seulement les flips individuels est
 plus faible. Aucun contre-exemple de SRG a S etabli ici.
 Preuve complete : pure_flip_majority_theorem.json. Aucun solveur lance.
+
+### Consequence pour le solveur : combiner majorite et nombre de completions
+
+Claude689 apporte un critere CONDITIONNEL de reconstruction par49 lignes :
+si le rang spectral restreint atteint44, ces lignes determinent G. Ce rang
+n'est pas prouve pour toute configuration. Pas de nouveau resultat global
+de rang annonce, et pas de nouvelle campagne lancee.
+
+NOUVELLE COUPURE PAR ORBITES : soit Omega l'ensemble des completions SRG
+et L un groupe de retournements purs preservant TOUTE l'instance fixee.
+Pour Conway, chaque element non nul de poids1,2 ou3 agit sans point fixe,
+par le theoreme de majorite. Si r retournements INDIVIDUELS preservent
+l'instance, avec r<=3, leur sous-groupe agit librement : |Omega| est un
+multiple de2^r, meme si les graphes completes ont d'autres automorphismes.
+
+En particulier, DEUX retournements individuels donnent quatre elements :
+0,s,u,s+u. Les trois non nuls ont poids1,1,2 et aucun ne peut fixer une
+completion. Donc |Omega| est multiple de4. Si un certificat donne au plus
+DEUX completions etiquetees, la branche est impossible pour TOUT SRG,
+pas seulement dans C1. Cela combine directement le theoreme de majorite
+avec notre ancien regime de completion residuelle de rang au plus1
+(coclique_rank_one_completion.py, dont les bords43 spectraux positifs).
+
+Version plus generale : S={s dans L : 0<poids(s)<ceil(t/2)}. Une orbite
+de taille2 definirait une forme lineaire chi sur L avec chi(s)=1 pour
+tout s dans S. Tester b.s=1 sur F2 (t inconnues) suffit. Une dependance
+impaire XOR-zero entre ces mots est un certificat d'incompatibilite.
+Elle exclut les orbites1 et2 ; toutes les orbites restantes ont taille
+multiple de4. Un majorant certifie U<=3 donne alors Omega vide.
+Un test compatible ne prouve aucune existence.
+
+Pour C1 uniquement, la regle generale est encore plus simple : tout
+groupe L de l'instance agit librement sur ses completions asymetriques.
+Si le nombre total de completions est majore par U<|L|, aucune completion
+C1 n'existe. Une completion symetrique peut rester, sauf si la coupure
+par petits retournements ci-dessus l'exclut egalement.
+
+PORTEE : groupe de l'instance ENTIERE, pas seulement du squelette lorsque
+d'autres contraintes ont ete ajoutees. Bloquer une seule matrice connue
+peut casser cette invariance. Le squelette rigide Gamma6 n'offre aucun
+retournement non trivial a exploiter. Aucune branche concrete reunissant
+le majorant et ces symetries n'est fournie ici ; aucune exclusion de C1,
+aucune acceleration mesuree et aucun ajout au solveur. Preuves et regles
+precises : flip_orbit_completion_filter.json. Le resultat est une coupure
+conditionnelle finie, pas une borne sur le cout total de recherche.
