@@ -1,0 +1,29 @@
+{
+  "status": "PROVED",
+  "title": "Exact rank-two transitions out of a rank30 three-star boundary",
+  "hypotheses": [
+    "T is real symmetric PSD of rank30 on34 coordinates; its kernel is the span of the three forced star indicators and one additional vector q.",
+    "a and b are independent and orthogonal to all three forced star indicators. A binary rectangle trade changes T to T'=T-sigma*(a*b^t+b*a^t), with sigma=+1 or-1.",
+    "Put r=a^t*q, s=b^t*q, delta=-2*sigma*r*s, and w=s*a-r*b. Then w belongs to the image of T."
+  ],
+  "theorem": {
+    "negative_old_kernel_energy": "If delta<0, T' is not PSD, since q^t*T'*q=delta.",
+    "zero_old_kernel_energy": "If delta=0 and exactly one of r,s is nonzero, T' is not PSD: q has zero energy but T'*q is nonzero. If r=s=0, the old kernel persists and an ordinary rank-two update on the image applies.",
+    "positive_old_kernel_energy": "If delta>0, let eta=delta-w^t*T^+*w. Then eta>0 gives PSD rank31; eta=0 gives PSD rank30 with a new extra kernel relation; eta<0 gives one negative eigenvalue on the quotient by the three star relations."
+  },
+  "proof": [
+    "Work on the31-dimensional orthogonal complement of the three forced stars. Subtract their projection from q and normalize it. The restriction of T has block diag(H,0), where H is positive definite of size30.",
+    "Write a=(a1,a0), b=(b1,b0) in this decomposition. The lower-right entry of T' is d=-2*sigma*a0*b0=delta/||q_projected||^2, which is positive in the case considered.",
+    "Taking its Schur complement gives exactly H-z*z^t/d, where z=b0*a1-a0*b1. This follows by expanding the off-diagonal block -sigma*(b0*a1+a0*b1).",
+    "The positive-definite rank-one downdate criterion is z^t*H^-1*z<=d. Multiplying by ||q_projected||^2 gives w^t*T^+*w<=delta, independently of the chosen representative of q modulo the three star indicators.",
+    "Strict inequality leaves a positive-definite30-dimensional Schur complement and adds the positive scalar pivot, giving rank31. Equality gives a rank29 PSD Schur complement and the positive scalar pivot, giving rank30. The opposite inequality gives exactly one negative eigenvalue."
+  ],
+  "exact_implementation": {
+    "normalization": "M=8T. For a principal basis I and w in image(T), w^t*T^+*w=8*w[I]^t*M[I,I]^-1*w[I].",
+    "reason": "Solve M*z=w by setting z outside I to zero and z[I]=M[I,I]^-1*w[I]. Since w is in the image and I is a column basis, this solves every row. Pairing with w makes the value independent of the kernel ambiguity.",
+    "producer_data": "The seed PSD and rank30 certifications are accepted. Only the new inverse and trade energies needed for this research are calculated.",
+    "implementation": "code/codex/three_star_connected_repairs.py",
+    "own_formula_checks": "Three exact3-by-3 constructed examples exercise eta positive, zero and negative. No peer seed rank is audited."
+  },
+  "connection_to_H3_double_prime": "For a seed with exactly two Q components, a membership-preserving rectangle with r,s both nonzero and positive delta joins the two components whenever it is binary legal. If eta=0, and the new local caps and complementary Gram U are valid, the new boundary is a counterexample to local assertion(A). Failure to find eta=0 in a finite batch is not a proof of(A)."
+}

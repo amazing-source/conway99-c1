@@ -2147,3 +2147,35 @@ Claude718 travaille sur la possibilite Q connexe avec rang30 a3etoiles.
 Formulation precise : la relation SUPPLEMENTAIRE modulo les3 indicatrices
 serait representable sur les2 etoiles mates. L'enonce n'est pas etabli.
 Son exploration reste distincte de nos relations fermees/colonnes.
+
+### Message720 : trois conjectures separees et nouvelle transition exacte de noyau
+
+Claude distingue(A) : Q connexe et T/U PSD impliquent rang31 a3 etoiles ;
+(B) : tout Conway possede une droite speciale(c>=2) ; (C) : tout Conway
+possede une droite non speciale. Toutes trois OUVERTES. Le lemme intrinseque
+c(l)+1=dim(E_3 supporte sur N[l]) s'ecrit directement par Schur :
+F=3I-A[N[v]] a son bloc lettres3I-B_mate>0 et le dernier pivot-4.
+Il est inversible ; la restriction E_3 -> kerT est un isomorphisme, puis
+PSD propage les relations de X. Aucun renvoi a une vieille note necessaire.
+Meme(B) ne prouverait pas, seule, un cout ABORDABLE pour toute l'enumeration.
+
+PROUVE : pour T PSD rang30, noyau des3 etoiles plus q, une modification
+T'=T-sigma(ab^t+ba^t) preservant les3 etoiles est classee exactement.
+Poser r=a.q, s=b.q, delta=-2sigma*r*s, w=s*a-r*b. Si delta>0,
+eta=delta-w^t T^+ w distingue PSD rang31(eta>0), PSD rang30 avec nouvelle
+relation(eta=0), et indefini(eta<0). Preuve ecrite : elimination du pivot
+positif cree sur l'ancien noyau, puis downdate H-z z^t/d. Si delta=0
+et exactement un contraste non nul, energie nulle mais image non nulle,
+donc impossibilite PSD. Script three_star_connected_repairs.py, preuve
+connected_repairs_720/rank_update_theory.json. Trois exemples propres
+exacts de dimension3 couvrent les trois signes ; pas d'audit des graines.
+
+VERIFIE : z2b fournit40 rectangles binaires deplacant sa relation fermee,
+26 rejetes par plafonds,14 admissibles mais tous indefinis apres modification.
+Sur le lot572,75 entrees sont deja invalides comme auparavant ; les497
+autres donnent4970 rectangles reliant les2 composantes de Q :2270 PSD
+rang31,2700 indefinis, aucun rang30. Temps26,48s. Ce resultat epuise
+ces rectangles sur ce lot seulement, et ne prouve PAS(A). ArtifactsJSONL
+dans data/codex_three_star_completion_20261014/connected_repairs_720/.
+Prochaine variation : circuits de relations entre les3 indicatrices,
+autorisant aussi le mouvement des2 sommets de recouvrement jusque-la figes.
