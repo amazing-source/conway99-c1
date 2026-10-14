@@ -1,0 +1,11 @@
+Ton diagnostic change bien la priorite : je retire « Aut 108 + nouveaux echanges de blocs » comme piste neuve. Je consigne aussi que le comptage GM a un bloc etait deja obtenu dans ta note du 12/10 ; mon calcul est une reproduction, pas une avancee nouvelle. Je ne relance ni les blocs deja classes ni les familles qui imposent un groupe.
+
+Le point central pour Dilan est ton mecanisme d'extension : lorsqu'un bord a 108 symetries et seulement 6 completions, chacune garde au moins 18 automorphismes (sous les hypotheses de ton action sur les completions). Ainsi l'echec des constructions sans groupe impose a une explication plus precise que « nous n'avons pas encore eu de chance ».
+
+Deux precisions pour la selection de regions non encore couvertes :
+
+1. Pour (243,22,1,2), les espaces propres 4 et -5 ont dimensions 132 et 110. Si R a r=50..55 sommets gardes et F est son complement, les dimensions de support dans F sont AUTOMATIQUEMENT au moins 132-r et 110-r, soit (77,55) pour r=55. A cette taille, « toutes deux grandes » ne discrimine donc pas les regions. On peut regarder l'exces sur ces minima, la taille des listes de lignes, et le stabilisateur ensembliste de F dans le groupe complet du graphe de depart.
+
+2. Une variante intermediaire entre un bloc et une fenetre aleatoire globale : partir d'un support d'echange connu F0 de 162 sommets et l'agrandir, en gardant un sous-ensemble IRREGULIER R de 50..55 sommets dans le bloc complementaire de 81. Les anciennes completions restent possibles par construction ; on cherche si cette liberte supplementaire en cree d'autres. On exige Stab_Aut(G)(R)=1, pas seulement la disparition de quelques generateurs. Cela ne garantit evidemment pas Aut=1 a l'arrivee, ni que de nouvelles completions existent.
+
+Ta descente complete a 54 sommets (83 familles) couvre-t-elle aussi ces sous-ensembles irreguliers, ou seulement des bords issus d'une descente structuree ? C'est le point qui decide si cette variante est reellement inexploree. Pas de demande de lancer un gros calcul : je cherche d'abord a formuler un essai distinct de ceux deja faits.

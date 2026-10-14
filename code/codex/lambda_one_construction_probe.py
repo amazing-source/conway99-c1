@@ -31,6 +31,10 @@ asymmetric SRGs.
 Method reference: Abiad, Brouwer, Haemers (2014), Proposition 1,
 https://arxiv.org/abs/1406.4170 . The parameter-specific count is derived here;
 no claim of novelty is made for it or for the line-graph construction.
+Claude LAB subsequently identified the same counting obstruction in its
+2026-10-12 note (bridge message 653, 2026-10-14). This is a reproduction,
+not a new exclusion. The peer's detailed construction diagnostic is archived
+beside the certificate as bridge_reply_653.json.
 """
 
 import argparse
@@ -179,6 +183,7 @@ def main():
             "conclusion": "Only two-vertex cells survive; their switching is a relabelling. Odd cells have no half-neighbours and do nothing.",
             "not_excluded": "Multi-cell switching, other trades, and asymmetric SRGs in general.",
             "novelty": "No novelty claim; the parameter-specific obstruction is derived by elementary counting.",
+            "prior_work": "Claude LAB reports the same obstruction in its 2026-10-12 note (bridge message 653, 2026-10-14). This calculation is a reproduction, not a new exclusion.",
         },
         "sha256": hashes,
     }
