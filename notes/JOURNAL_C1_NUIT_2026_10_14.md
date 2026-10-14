@@ -2680,3 +2680,73 @@ nouvelle exclusion H4', aucun graphe Conway/C1 construit ou exclu,
 aucune enumeration globale abordable demontree. Messages742 et744
 transmettent la division du travail et cette reduction. Artifacts :
 data/codex_three_star_completion_20261014/four_star_join_741/.
+
+### Messages745/746 : lot52 epuise, couplage exact et100 coupes strictes
+
+745 et746 lus/acquittes ; aucun re-audit des objets certifies du pair.
+Nouveau resultat de Claude : un bord44 localement admissible avec T/U
+PSD existe, rangT34, rangU40, c(l)=3 et c(m)=4. L'impossibilite de toute
+positivite sur quatre etoiles est donc FAUSSE. Ce rang34 ne convient pas
+a Conway. H4' (deux Q connexes et rangT<=30) reste ouvert. La proposition
+(A4), positivite forcant les deux droites speciales, est une CONJECTURE
+du pair ; on ne l'impose pas comme contrainte demontree.
+
+Claude laisse a Codex les51 autres germes de counterexamples_A_all.json.
+Test NOUVEAU de leur prolongement : elimination rationnelle pour les
+bases de colonnes, aucune certification PSD repetee. Index38 saute car
+deja exclu par Claude. Les51 autres bases ont dimension30. Pour{4,6},
+410745 profils satisfont les equations du noyau ;5771 satisfont aussi
+les capacites de l'ancien bord. Parmi ces derniers,303 ont une norme
+strictement inferieure a20,5468 une norme strictement superieure, ZERO
+la norme20 requise par le prolongement de rang30. Domaines tous complets,
+2,844s au total. Les51 sont exclus, donc les52 entrees fournies sont
+non prolongeables avec le resultat du pair. Pas d'hypothese de symetrie
+sur la completion, pas de classification de toute la famille h3.
+Code three_star_extension_batch.py ; donnees lab745_extension_batch/.
+
+NOUVEAU THEOREME DE COUPLAGE. Reprise de l'identite exterieure de745,
+sans la re-auditer. Pour q=D_ext^t z avec z entier mate-symetrique de
+somme0, Tq=q-Gamma q. Pour z mate-antisymetrique, Tq=2q-Gamma q.
+Ecrire alpha=1 ou2, h=(alpha||q||^2-q^tGamma q)/2, entier,
+et s_i=alpha q_i-(Gamma q)_i, entier. Comme T_ii=5/2, le mineur PSD
+sur(q,e_i) impose5h>=s_i^2. A saturation h=0, Gamma q=alpha q est
+donc FORCE. Sinon w=2q-sign(s_i)e_i donne exactement
+w^t(8T)w=20-32|s_i|<=-12 : petit temoin entier, sans vecteur propre
+numerique de la matrice fine.
+
+Pour tout entier t, s_i^2>=(2t+1)s_i-t(t+1) sur les ENTIERS. D'ou
+la coupe LINEAIRE 5h>=(2t+1)s_i-t(t+1), valable sur Gamma binaire.
+Au point entier courant, choisir t=s_i separe toute violation du mineur.
+Attention : Gamma q=alpha q est CONDITIONNEL a h=0 ; les coupes entieres
+ne sont pas annoncees valides pour une matrice fractionnaire quelconque.
+Implementation four_star_coupling_cuts.py, directions courtes25 sym et
+121 anti, plus noyaux exacts des compressions4x4/5x5. Notre fixture
+algebrique (pas un germe admissible) donne le temoin exact-12.
+
+NOUVEAU THEOREME DE POSITIVITE STRICTE. N=15U satisfait Nq=48q+15Gamma q
+dans le secteur symetrique de somme0, et Nq=40q+15Gamma q dans le secteur
+antisymetrique. Si U est PSD et q non nul de valeur quadratique nulle,
+Nq=0 donnerait une valeur propre de Gamma egale a-16/5 ou-8/3.
+Impossible : une valeur propre rationnelle d'une matrice ENTIERE est
+entiere. Les DEUX compressions de U sur ces secteurs sont donc DEFINIES
+POSITIVES (separement ; pas d'affirmation sur tous leurs melanges).
+Cette preuve vaut pour tout q reel du secteur, pas seulement les courts.
+
+100 RENFORCEMENTS LINEAIRES explicites :
+-40 directions anti, trois coefficients non nuls dans{+-1} sur cinq
+paires, modulo signe global : ||q||^2=24, q^tNq=960+30E(q), ou
+E(q)=somme_{i<j}q_i q_j Gamma_ij. La positivite stricte et l'integralite
+donnent E(q)>=-31 ; la seule inegalite PSD donnait>=-32.
+-60 directions sym, permutations de(2,1,0,-1,-2) modulo signe global :
+||q||^2=80, q^tNq=3840+30E(q), donc E(q)>=-127 au lieu de>=-128.
+Generateur strict_upper_cuts(), export disponible. Valides sans groupe
+suppose ni connexite Q imposee. Pas de gain de temps solveur mesure.
+
+Controles exacts de nos identites, comptes25/121 et40/60, ainsi que du
+temoin de saturation : PASS. Transmissions747,748,749 au pair. Donnees
+four_star_coupling_745/. Pas de germe survivant a joindre dans le lot,
+aucun graphe SRG asymetrique nouveau, aucun Conway/C1 exclu. Les100
+coupes sont un renforcement demontre des contraintes, pas une preuve
+qu'elles terminent le solveur.
+Export portable des100 lignes, avec l'ordre des44 labels :
+../lab_exchange_2026-10-14/four_star_strict_upper_100.json (451123 octets).
