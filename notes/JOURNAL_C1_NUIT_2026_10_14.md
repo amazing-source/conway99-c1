@@ -396,3 +396,108 @@ de moyenne mais échoue à la nouvelle contrainte quadratique. Ces graphes
 sont des contrôles du filtre, pas des types locaux réalisables de C1.
 Exécution autonome :0,4s environ, sans paquet externe ni solveur.
 Rapport : `data/codex_night_20261014/prism_spectral_cut.json`.
+## 04h37 — Une fermeture de prisme en P3 est impossible ; 598 types éliminés
+
+**Lemme nouveau, élémentaire.** Soient deux triangles disjoints
+T={a0,a1,a2}, U={b0,b1,b2} formant un prisme, avec arêtes transversales
+ai-bi. Soit ci l'unique voisin commun de ai et bi. Alors les trois ci
+ne peuvent pas induire un chemin P3 (exactement deux arêtes). Leur graphe
+induit a zéro, une ou trois arêtes.
+
+Les ci sont distincts et extérieurs au prisme. De plus ci ne touche aucun
+aj,bj pour j!=i : sinon une arête de T ou U aurait deux voisins communs.
+Supposons c0-c1-c2 un P3. Le sous-graphe S sur ces neuf sommets a17 arêtes.
+Ses degrés sont4 sur les six ai,bi et sur c1, et3 sur c0,c2. Posons s=1_S,
+
+    f = (3I-A)s + 1.
+
+Les seules équations A²+A=12I+2J et A1=14*1 donnent
+
+    Af=-4f, sum f=0,
+    |f|² = 21*9 -7*(2*17) +2*9² -22*9 +99 =14.
+
+Sur S, f vaut1 aux deux extrémités c0,c2 et0 ailleurs. Hors S, f vaut
+1-d_S(x). Ainsi toutes ses coordonnées positives valent1. Sa masse
+positive totale est au plus7, puisque f est entier, de somme nulle et
+|f|²=14. Si f_x<=-2, l'équation Af=-4f exigerait une somme >=8 dans son
+voisinage, impossible avec une masse positive totale <=7. Donc f est
+exactement +1 sur sept sommets, -1 sur sept, et0 ailleurs.
+
+Chaque sommet négatif a au moins quatre voisins positifs. En comptant
+les paires positives partageant un sommet négatif, on obtient au moins
+7*C(4,2)=42 incidences. Les21 paires positives ont chacune au plus deux
+voisins communs dans tout G : au plus42 incidences au total. Il y a donc
+égalité partout ; aucune paire positive ne peut avoir de voisin commun
+hors du support négatif. Or c0,c2 sont positifs et ont déjà le voisin
+commun c1 de valeur0. Contradiction. Aucun catalogue de supports ni
+solveur n'intervient dans cette preuve.
+
+### Conséquence forte pour un triangle à douze prismes
+
+Dans la normalisation Xa-Xb=Xa-Xc=identité, p(T)=12 impose également
+Xb-Xc=identité. On a douze triangles Ui={a_i,b_i,c_i}. Les trois
+appariements internes de Xa,Xb,Xc deviennent Ma,Mb,Mc sur douze indices.
+
+Si Ma et Mb contiennent tous deux l'arête {i,j}, les deux triangles
+{a,a_i,a_j}, {b,b_i,b_j} forment un prisme. Les trois sommets qui
+complètent leurs arêtes transversales sont c,c_i,c_j. Les deux arêtes
+c-c_i et c-c_j existent. Le lemme impose c_i-c_j, donc Mc contient
+également {i,j}. Même raisonnement pour chaque paire de couleurs :
+
+    une arête présente dans deux appariements est présente dans les trois.
+
+Le multigraphe cubique coloré Ma+Mb+Mc est donc une réunion de graphes
+cubiques simples et de composantes isolées à deux sommets et trois arêtes
+parallèles. Il n'a aucune arête de multiplicité exactement deux.
+
+**Réduction calculée :790 types ->192 types nécessaires.** Un programme
+standard-library autonome retrouve les790 classes à permutation des
+indices et des trois couleurs près, puis en élimine598 par ce seul lemme.
+Les192 survivants se répartissent selon le nombre de composantes triples :
+157 avec0,23 avec1,8 avec2,2 avec3,1 avec4 et1 avec6. Ce sont des types
+locaux non éliminés, jamais des témoins de Conway. Aucun des192 types
+n'est déclaré complétable, et la famille p(T)=12 reste ouverte.
+
+**Couverture finie.** Fixer Ma=(01)(23)...(10,11). La réunion de Ma,Mb
+est une réunion de cycles alternés, dont les demi-longueurs forment une
+partition de6 (onze possibilités). Pour chacun des onze couples standards,
+on parcourt les10395 appariements Mc. Le stabilisateur du couple est
+engendré par la rotation de deux crans et la réflexion de chaque cycle,
+et par les échanges de cycles de même longueur ; ces générateurs sont
+construits explicitement. Le parcours des orbites couvre chaque fois les
+10395 appariements, et donne3580 classes à couleurs ordonnées. Les deux
+échanges de couleurs adjacentes engendrent S3 ; la renormalisation des
+cycles alternés puis l'union des classes donne790 classes. Le critère
+« aucune multiplicité deux » est invariant sous tous ces changements.
+Il reste724 classes à couleurs ordonnées,192 après oubli des couleurs.
+Les représentants sont conservés dans le JSON.
+
+**Coupure SAT directement disponible.** Avec Ma fixé et B_ij,C_ij les
+variables des deux autres appariements :
+
+- sur les six arêtes de Ma, imposer B_ij=C_ij (douze clauses binaires) ;
+- sur les soixante autres paires, imposer non(B_ij et C_ij) (soixante clauses).
+
+Les72 clauses binaires sont exportées en DIMACS. Ce fichier est uniquement
+la nouvelle coupure ; il suppose que le modèle appelant impose déjà les
+deux appariements parfaits. La satisfaction de ces clauses a été comparée
+au critère combinatoire sur les3580 représentants à couleurs ordonnées.
+
+Artefacts : `code/codex/night_20261014/prism_closure_types.py`,
+`data/codex_night_20261014/prism_closure_types.json`,
+`data/codex_night_20261014/prism12_no_double_cut.cnf`.
+Exécution complète :0,7s environ. Verdict et preuve courte transmis à LAB
+au message632. Aucun calcul payant ni relance d'une campagne UNKNOWN.
+
+**Autre structure de p(T)=12 pour la suite.** Chaque sommet y parmi les
+60 non-voisins de T touche six sommets de X, deux dans chaque Xa,Xb,Xc.
+Ces six voisins sont deux à deux non adjacents : une paire d'un même X
+ne peut être son arête d'appariement, et y ne touche qu'un sommet de chaque
+triangle Ui. Dans les sept arêtes du voisinage de y, ces six voisins de
+X sont donc appariés à six voisins distincts de Y ; les deux derniers
+voisins de Y sont appariés ensemble. Ainsi G[Y],8-régulier, possède
+exactement vingt triangles qui partitionnent ses60 sommets. Les autres
+arêtes de G[Y] forment un graphe6-régulier, et chacune de ces arêtes a
+son unique voisin commun dans X. Cela peut servir à une réduction de la
+complétion des192 types ; aucune borne abordable sur cette complétion
+n'est encore démontrée.
