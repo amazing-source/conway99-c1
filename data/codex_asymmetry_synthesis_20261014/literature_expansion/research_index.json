@@ -1,0 +1,172 @@
+{
+  "date": "2026-10-14",
+  "scope": "Approfondissement de la littérature sur les SRG asymétriques, demandé par Dilan avant de revenir aux pistes propres à Conway.",
+  "main_conclusion": "La régularité forte et un catalogue dominé par des exemples symétriques ne constituent pas un argument contre l'asymétrie. Les contraintes lambda=1, mu=2 exigent une comparaison plus fine : voisinages tous isomorphes et condition à quatre sommets.",
+  "sources": [
+    {
+      "id": "mendelsohn_1978_via_babai",
+      "original_reference": "E. Mendelsohn, Every (finite) group is the group of automorphisms of a (finite) strongly regular graph, Ars Combinatoria 6 (1978), 75–86.",
+      "original_metadata_url": "https://www.math.utoronto.ca/mendelso/Ericref.html",
+      "checked_source": "L. Babai, Automorphism groups, isomorphism, reconstruction, Theorem 4.3 and its proof, printed page 49.",
+      "url": "https://people.cs.uchicago.edu/~laci/papers/hbk94.pdf",
+      "local_pdf": "babai_automorphism_handbook.pdf",
+      "verification": "Théorème et argument de transfert lus dans le chapitre de Babai ; article original de 1978 non récupéré.",
+      "facts": [
+        "Tout groupe fini est le groupe complet d'automorphismes d'un SRG fini.",
+        "Le transfert utilise un système de triples de Steiner de groupe prescrit et son graphe d'intersection de blocs, avec reconstruction du système.",
+        "Le groupe trivial est inclus ; aucun choix arbitraire des paramètres (v,k,lambda,mu) n'est permis par ce théorème."
+      ]
+    },
+    {
+      "id": "haemers_spence_2001",
+      "reference": "W. H. Haemers and E. Spence, The Pseudo-Geometric Graphs for Generalised Quadrangles of Order (3,t), European Journal of Combinatorics 22 (2001), 839–845.",
+      "url": "https://research.tilburguniversity.edu/en/publications/the-pseudo-geometric-graphs-for-generalized-quadrangles-of-order-/",
+      "pdf_url": "https://repository.tilburguniversity.edu/bitstreams/72834f55-205f-4aba-91bd-a4e2e6715be3/download",
+      "local_pdf": "haemers_spence_2001_64.pdf",
+      "version": "FEW Research Memorandum 794 (2000), version préparatoire avec annexe, téléchargée depuis Tilburg.",
+      "location": "Theorem 2, printed page 6; Appendix A, printed page 7.",
+      "parameters": [64, 18, 2, 6],
+      "census": "complete",
+      "total_graphs": 167,
+      "asymmetric_graphs": 1,
+      "graphs_with_an_involution": 166,
+      "vertex_transitive_graphs": 8,
+      "facts": [
+        "Les voisinages sont des unions de cycles dont les longueurs sont multiples de 3 ; huit types apparaissent.",
+        "Tous les graphes sauf un admettent une involution ; l'exception a un groupe complet trivial.",
+        "Le catalogue contient donc une exception asymétrique réelle au milieu d'une très grande majorité symétrique."
+      ],
+      "catalogue_url": "https://www.maths.gla.ac.uk/~es/SRGs/64-18-2-6",
+      "catalogue_file": "spence_64_18_2_6.txt.bz2",
+      "independent_certificate": "spence_g167_certificate.json"
+    },
+    {
+      "id": "coolsaet_degraer_spence_2006",
+      "reference": "K. Coolsaet, J. Degraer and E. Spence, The strongly regular (45,12,3,3) graphs, Electronic Journal of Combinatorics 13 (2006), R32.",
+      "url": "https://eprints.gla.ac.uk/12858/",
+      "pdf_url": "https://eprints.gla.ac.uk/12858/1/12858.pdf",
+      "local_pdf": "coolsaet_degraer_spence_2006_45.pdf",
+      "location": "Table 2, printed page 7, PDF page 8.",
+      "verification": "Texte extrait puis tableau vérifié visuellement.",
+      "parameters": [45, 12, 3, 3],
+      "census": "complete",
+      "total_graphs": 78,
+      "asymmetric_graphs": 8,
+      "asymmetric_graphs_maximum_clique_size": 4,
+      "facts": [
+        "Les huit exemples asymétriques ont tous une clique maximale de taille 4 et aucune clique de taille 5.",
+        "Aucun des 24 graphes contenant une clique de taille 5 n'est asymétrique."
+      ]
+    },
+    {
+      "id": "maksimovic_rukavina_2022",
+      "reference": "M. Maksimović and S. Rukavina, New regular two-graphs on 38 and 42 vertices, Mathematical Communications 27 (2022), 151–161.",
+      "url": "https://www.mathos.unios.hr/mc/index.php/mc/article/view/4417",
+      "pdf_url": "https://www.mathos.unios.hr/mc/index.php/mc/article/download/4417/835",
+      "local_pdf": "maksimovic_rukavina_2022_twographs.pdf",
+      "location": "Theorems 2 and 5; Remark 1 following Theorem 5.",
+      "counts": [
+        {
+          "parameters": [37, 18, 8, 9],
+          "nontrivial_automorphism_graphs_exact": 40,
+          "asymmetric_graphs_at_least": 6762,
+          "total_graphs_at_least": 6802
+        },
+        {
+          "parameters": [41, 20, 9, 10],
+          "nontrivial_automorphism_graphs_exact": 7152,
+          "asymmetric_graphs_at_least": 11287,
+          "total_graphs_at_least": 18439
+        }
+      ],
+      "interpretation": "La classification peut être complète pour les graphes ayant des automorphismes non triviaux alors que de nombreux graphes asymétriques existent et que la classification totale reste incomplète.",
+      "date_scope": "Bornes inférieures publiées en 2022, sans affirmation qu'elles sont les meilleures bornes actuelles.",
+      "additional_analogy": "La remarque 1 explique que toute configuration fortement régulière de paramètres (41_5,9,10) obtenue par leur méthode à partir d'un SRG encore inconnu devrait provenir d'un SRG asymétrique. C'est une condition nécessaire, pas une contradiction."
+    },
+    {
+      "id": "brouwer_ihringer_kantor_4vertex",
+      "reference": "A. E. Brouwer, F. Ihringer and W. M. Kantor, Strongly regular graphs satisfying the 4-vertex condition, Combinatorica 43 (2023), 257–276.",
+      "url": "https://doi.org/10.1007/s00493-023-00005-y",
+      "pdf_url": "https://aeb.win.tue.nl/preprints/4v14o.pdf",
+      "published_pdf_url": "https://darkwing.uoregon.edu/~kantor/PAPERS/BrouwerIhringerKantor23.pdf",
+      "local_pdf": "brouwer_ihringer_kantor_4vertex.pdf",
+      "version": "Prépublication datée du 30 juin 2021 ; numérotation ci-dessous propre à cette version.",
+      "facts": [
+        "La condition à trois sommets correspond à la régularité forte ; la condition à v sommets correspond à une action de rang 3 (rang du groupe, pas rang d'une matrice).",
+        "Proposition 2.1 : la condition à quatre sommets équivaut à la constance du nombre d'arêtes dans N(x) intersection N(y), séparément pour les paires adjacentes et non adjacentes.",
+        "Si ces deux constantes sont alpha et beta, alors k*(binomial(lambda,2)-alpha) = beta*(v-k-1).",
+        "Tout SRG avec lambda <= 1 satisfait la condition à quatre sommets, avec alpha=beta=0.",
+        "La section 7.4 présente 280 exemples non de rang 3 sur 63 sommets satisfaisant cette condition : aucun n'est transitif sur les sommets, mais tous ont un groupe non trivial, le plus petit ordre étant 4.",
+        "La construction par permutation des hyperplans conserve un sous-groupe : le stabilisateur point par point de U, de taille q^(d*(d+1)/2)*(q-1) dans le cas symplectique."
+      ],
+      "limitations": [
+        "Non-transitivité n'est pas asymétrie.",
+        "L'article ne fournit pas ici de théorème disant que la condition à quatre sommets impose un automorphisme non trivial.",
+        "La condition à quatre sommets ne doit pas être identifiée à la stabilité sous 3-WL."
+      ]
+    },
+    {
+      "id": "bondarenko_radchenko_2013",
+      "reference": "A. V. Bondarenko and D. V. Radchenko, On a family of strongly regular graphs with lambda=1, Journal of Combinatorial Theory B 103 (2013), 521–531.",
+      "url": "https://doi.org/10.1016/j.jctb.2013.05.005",
+      "verification": "Résumé de l'éditeur lu ; résultat également repéré dans la monographie de Brouwer–Van Maldeghem.",
+      "scope": "Famille de paramètres ((n^2+3n-1)^2, n^2*(n+3), 1, n*(n+1)).",
+      "facts": [
+        "Les seuls graphes de cette famille sont ceux de paramètres (9,4,1,2), (81,20,1,6) et (729,112,1,20).",
+        "Ce résultat n'est pas une classification de tous les SRG avec lambda=1 et ne s'applique pas aux paramètres de Conway."
+      ]
+    }
+  ],
+  "independent_computation": {
+    "script": "code/codex/asymmetric_srg_64_refinement.py",
+    "graph": "Graphe 167, numérotation à partir de 1, du catalogue de Spence pour (64,18,2,6).",
+    "checks": "Simplicité, symétrie de la matrice, degré 18 et nombres exacts de voisins communs 2/6 vérifiés sur toutes les paires du graphe sélectionné.",
+    "initial_invariant": "Type d'isomorphisme de chaque voisinage, décrit par la partition de 18 en longueurs de cycles.",
+    "unique_local_type_vertex": "Le sommet 0 est le seul dont le voisinage est six triangles disjoints.",
+    "refinement_class_counts": [8, 57, 64],
+    "proof": "Tout automorphisme conserve les couleurs intrinsèques puis les multisets de couleurs voisines. La partition finale discrète impose de fixer les 64 sommets.",
+    "four_vertex_condition": false,
+    "adjacent_common_neighbour_edge_histogram": {"0": 432, "1": 144},
+    "nonadjacent_common_neighbour_edge_histogram": {"0": 1008, "1": 432},
+    "not_claimed": "Le scan n'est pas une vérification indépendante de la classification ni des groupes des 166 autres graphes."
+  },
+  "derived_observations": [
+    {
+      "statement": "Aucun SRG(96,19,2,4) ne satisfait la condition à quatre sommets.",
+      "status": "Déduction élémentaire du critère de Sims, non présentée comme un nouveau résultat de recherche.",
+      "proof": [
+        "alpha est un entier entre 0 et 1 ; l'identité donne 19*(1-alpha)=76*beta.",
+        "La seule solution entière est alpha=1, beta=0.",
+        "Les deux voisins communs de toute arête sont alors adjacents.",
+        "Dans chaque voisinage, graphe 2-régulier, les deux voisins de tout sommet sont adjacents : les composantes sont des triangles.",
+        "Cela exigerait que 19 soit divisible par 3, contradiction."
+      ],
+      "meaning": "Les nombreux exemples asymétriques à 96 sommets déjà recensés ne reproduisent pas cette propriété automatique de Conway."
+    },
+    {
+      "statement": "Les huit SRG asymétriques (45,12,3,3) de la classification ne satisfont pas la condition à quatre sommets.",
+      "proof": [
+        "12*(3-alpha)=32*beta avec alpha dans {0,1,2,3} force alpha=3 et beta=0.",
+        "Le voisinage commun de toute arête serait alors un triangle, formant avec cette arête une clique de taille 5.",
+        "Or les huit graphes asymétriques ont pour clique maximum une clique de taille 4."
+      ]
+    },
+    {
+      "statement": "Le certificat local du graphe à 64 sommets ne se transpose pas directement à lambda=1.",
+      "proof": [
+        "Avec lambda=1, chaque voisinage est un graphe 1-régulier, donc une union d'arêtes disjointes.",
+        "Dans Conway, tous les voisinages sont 7K2 ; l'invariant initial est identique partout.",
+        "Un raffinement fondé seulement sur cette couleur constante et les couleurs des voisins reste constant dans un graphe régulier.",
+        "Cette impossibilité d'utiliser ce certificat ne prouve aucune existence d'automorphisme."
+      ]
+    }
+  ],
+  "search_limits": [
+    "Pas d'exemple asymétrique à lambda=1 identifié dans les sources consultées pendant cette recherche ; ce constat n'est pas un théorème d'absence.",
+    "Pas d'exemple asymétrique satisfaisant la condition à quatre sommets identifié ici ; la question générale n'est pas tranchée par cette recherche.",
+    "Les discussions MathOverflow sur la stabilité sous 3-WL et les généralisations quadrangulaires ont servi de pistes, pas de preuves.",
+    "La recherche n'est pas une bibliographie exhaustive de tous les SRG asymétriques.",
+    "Aucun résultat de non-existence de C1 n'est établi."
+  ],
+  "concrete_research_direction": "Comparer les mécanismes qui rendent les sommets intrinsèquement distincts dans les témoins asymétriques, puis déterminer lesquels restent possibles lorsque tous les voisinages sont des couplages et que les comptes à quatre sommets sont uniformes. Ne pas conclure à une symétrie à partir de la seule absence d'un invariant distinctif."
+}
