@@ -422,3 +422,24 @@ with (i)-(iii) and c_8 <= 360360 verified exactly (`theta7_cert_log.txt`, last l
 **20.5 Next.** At b = 30 the programme forces at least 3.0 * 10^7 vectors of norm 24 in B and at least 1.4 * 10^8 of
 norm 12 in A (`theta7_need.py`, `theta7_min.py`): an upper bound below either kills b = 30. Lower bounds (a_6 >=
 185000 from three orthogonal lines, a_3, a_5) do not help there.
+
+## 21. Checks, a corrected optimiser, forced short vectors (03:53 UTC)
+**21.1 Independent check of the Fricke matrix on the whole space** (`theta7_numcheck.py`): for the 15 basis forms,
+(sqrt7 t)^(-22) F(-1/(7t)) = (F|W)(t) evaluated from the q-expansions: relative discrepancy 3e-7 in double precision
+at 4 complex points, 4e-19 in 80-digit arithmetic at 3 points of the imaginary axis (truncation of 60 terms). A
+wrong W would give discrepancies of order 1.
+**21.2 Optimiser bug (exploration only).** `exact_lp.optimum` kept basic artificial variables in phase 2, so some
+minima printed before 04:10 UTC could be too small (one case seen: "min c_9 = 0 with c_7 = c_8 = 0" at b = 30, the
+corrected value is 1.33e6). Fixed (artificials driven out, rows removed if redundant, optimal point re-checked
+exactly). The exclusions do not depend on it: they rest on `feasible` (point asserted) and on Farkas certificates
+checked exactly. Exploration logs re-run after the fix: theta7_ranges2_log, theta7_c8_log, theta7_need30_log,
+theta7_min_log, theta7_forced_min_log, theta7_b30_log.
+**21.3 Forced short vectors for the remaining ranks** (`theta7_forced_min.py`, uses `feasible` only, no
+certificate): B must contain a nonzero vector (an integral -4-eigenvector) of norm <= 18 if b = 30, <= 20 if
+b = 32, 34, <= 24 if b = 36, 38, 40, <= 26 if b = 42.
+**21.4 Small improvement (not needed).** In 20.2 every positive has x_p in {5, 6} (2 x_p + y_p = 12, x_p + y_p <= 7)
+and the number with x_p = 6 is 2x - 40, so a type-A vector has at least 2 such positives: c_8 <= 2 * 27720 + 249480
+= 304920.
+**21.5 Literature (quick web search, not exhaustive):** no published bound on the 7-rank of A + 4I for a putative
+srg(99,14,1,2) found (Brouwer - van Eijl 1992 give the general framework; arXiv 1910.07686 treats the Laplacian
+critical group, where 7 plays no role).

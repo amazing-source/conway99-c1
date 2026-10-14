@@ -24,12 +24,13 @@ def system(b, nmax=40, low=None):
     return MA, MWB, E, e, G, g
 
 
-for b in range(26, 44, 2):
-    MA, MWB, E, e, G, g = system(b)
-    out = []
-    for n in (1, 2, 3, 4):
-        v = X.optimum(MA[n], E, e, G, g, 15, sense=-1)
-        out.append("min a_%d = %s" % (n, "%.1f" % float(v) if v not in (None, "unbounded") else v))
-    v = X.optimum(MWB[7], E, e, G, g, 15, sense=-1)
-    out.append("min c_7 = %s" % ("%.1f" % float(v) if v not in (None, "unbounded") else v))
-    print("b = %d: " % b + ", ".join(out), flush=True)
+if __name__ == "__main__":
+    for b in range(26, 44, 2):
+        MA, MWB, E, e, G, g = system(b)
+        out = []
+        for n in (1, 2, 3, 4):
+            v = X.optimum(MA[n], E, e, G, g, 15, sense=-1)
+            out.append("min a_%d = %s" % (n, "%.1f" % float(v) if v not in (None, "unbounded") else v))
+        v = X.optimum(MWB[7], E, e, G, g, 15, sense=-1)
+        out.append("min c_7 = %s" % ("%.1f" % float(v) if v not in (None, "unbounded") else v))
+        print("b = %d: " % b + ", ".join(out), flush=True)

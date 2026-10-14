@@ -152,7 +152,27 @@ def optimum(c, E, e, G, g, n, sense=1):
     if p1 is None:
         return None
     T, basis, ncols, ncols_base, d = p1
-    # drop artificial columns (all non-basic at value 0 or basic at 0; keep simple: forbid them from entering)
+    # Drive every artificial variable that is still basic (necessarily at value 0) out of the basis: pivot on any
+    # non-artificial column with a nonzero entry in its row; if there is none the row is redundant and is removed.
+    # Then delete the artificial columns, so that phase 2 can never make an artificial positive.
+    i = 0
+    while i < len(T):
+        if basis[i] >= ncols_base:
+            piv = next((j for j in range(ncols_base) if T[i][j] != 0), None)
+            if piv is None:
+                del T[i]
+                del basis[i]
+                continue
+            pv = T[i][piv]
+            T[i] = [x / pv for x in T[i]]
+            for k in range(len(T)):
+                if k != i and T[k][piv] != 0:
+                    f = T[k][piv]
+                    T[k] = [x - f * y for x, y in zip(T[k], T[i])]
+            basis[i] = piv
+        i += 1
+    T = [row[:ncols_base] + [row[-1]] for row in T]
+    ncols = ncols_base
     cK = [sum(Fraction(ci) * kv[k] for k, ci in enumerate(c)) for kv in K]
     c0 = sum(Fraction(ci) * a for ci, a in zip(c, a0))
     full = [-sense * x for x in cK] + [sense * x for x in cK] + [Fraction(0)] * (ncols - 2 * d)
@@ -161,13 +181,18 @@ def optimum(c, E, e, G, g, n, sense=1):
         if obj[b] != 0:
             f = obj[b]
             obj = [o - f * x for o, x in zip(obj, T[i])]
-    for j in range(ncols_base, ncols):
-        if all(b != j for b in basis):
-            for row in T:
-                row[j] = Fraction(0)
-            obj[j] = Fraction(0)
     TT = T + [obj]
     st = _simplex(TT, basis, len(T), ncols)
     if st == "unbounded":
         return "unbounded"
-    return c0 + sense * (TT[-1][-1])
+    # recover the optimal point and check it exactly against the original constraints
+    val = [Fraction(0)] * ncols
+    for i, b in enumerate(basis):
+        val[b] = TT[i][-1]
+    t = [val[j] - val[d + j] for j in range(d)]
+    a = [a0[k] + sum(t[j] * K[j][k] for j in range(d)) for k in range(n)]
+    assert all(sum(Fraction(x) * y for x, y in zip(row, a)) >= v for row, v in zip(G, g))
+    assert all(sum(Fraction(x) * y for x, y in zip(row, a)) == v for row, v in zip(E, e))
+    value = sum(Fraction(ci) * y for ci, y in zip(c, a))
+    assert value == c0 + sense * (TT[-1][-1])
+    return value
