@@ -1,4 +1,4 @@
-# Constructing an asymmetric strongly regular graph with lambda = 1 (started 14/10/2026, about 15:00 UTC)
+# Constructing an asymmetric strongly regular graph with lambda = 1 (started 14/10/2026, about 13:00 UTC)
 
 User (direct, 14/10): "personne ne parle de trouver un tel lambda 1 existant, je parle d'en construire 1, un SRG
 asymetrique de parametre lambda 1. La 2eme condition, 2, pas necessaire pour l'instant." Codex works on the same goal
@@ -41,3 +41,46 @@ every pair meeting the kept set fixed:
 | union of 4 sets X_m | 228 and 229 / 150 | 1 | only the input |
 | random | 290 / 88 | row listing did not finish in 290 s | - |
 The graph is rigid down to 150 structured kept vertices. Codex runs random kept sets of 90 and 75 on it.
+
+## 4. Why the S3 graph is rigid (user's question, 14/10 ~14:00 UTC): the concentration criterion (rigidity378.py)
+**Lemma (proved here).** Let A, A' be srg with the same parameters, eigenvalues r > s, equal on every pair meeting
+R = V - F. Let P (resp. P') be the orthogonal projection onto the s-eigenvectors of A (resp. A') that vanish on R. Then
+(1) A' - A = (r - s)(P - P'); (2) P and P' have the same diagonal; (3) every changed pair {i,j} satisfies
+P_ii P_jj >= 1 / (2(r - s))^2; (4) at most 4 (r - s)^2 P_ii pairs change at the vertex i. The same with the
+r-eigenvectors.
+Proof. A = r E_r + s E_s + (k/v) J and E_r + E_s = I - J/v for both graphs, so Delta = A' - A = (r - s)(E_s - E'_s).
+Column x of Delta is 0 for x in R, so E_s e_x = E'_s e_x: the two projections agree on U = span{E_s e_x : x in R},
+and Im E_s = U + Y, Im E'_s = U + Y' with Y = {y in Im E_s : y_x = 0 for x in R} (because <y, E_s e_x> = y_x) and the
+same for Y'. Hence Delta = (r - s)(P - P') (1). Delta has a zero diagonal (2). Cauchy-Schwarz on the positive
+semidefinite P and P' gives |Delta_ij| <= (r - s)(sqrt(P_ii P_jj) + sqrt(P'_ii P'_jj)) = 2 (r - s) sqrt(P_ii P_jj)
+(3), and |Delta e_i|^2 <= (r - s)^2 (|P e_i| + |P' e_i|)^2 = 4 (r - s)^2 P_ii (4). QED
+(This sharpens the support criterion of NOTE_SPREADFREE section 3: a trade needs eigenvectors of both eigenvalues
+supported in F, AND concentrated enough.) Here r - s = 15: a pair can change only if P_ii P_jj >= 1/900.
+Data on the S3 graph (s = -11, eigenspace of dimension 104 out of 378):
+| region F | |F| | dim of (-11)-eigenvectors on F | best P_ii P_jj | verdict |
+|---|---|---|---|---|
+| X_m u X_m' | 138 | 1 (entries +-1/sqrt(120)) | 0.00007 | rigid (proved) |
+| unions of 3, 4, 5 sets X_m | 183-256 | 2, 3, 4 | <= 0.00055 | rigid (proved) |
+| union of 6 sets X_m | 277 / 291 | 5 / 17 | 0.0008 / 0.011 | rigid / not excluded |
+| random | <= 270 | 0 | - | rigid (support criterion) |
+| random | 280, 285, 290, 300, 310 | 6, 11, 16, 26, 36 | 0.004 - 0.036 | not excluded |
+| geometric kept sets: N[v] (53 kept), N[v] u N[w] (98), X_m (78) | | similar to random sets of the same size | | no gain |
+So on this graph a trade needs about 280 free vertices or more (98 kept or fewer), whatever the geometry: the
+(-11)-eigenspace is small and its vectors are spread out (the X_m differences have support 120 with equal entries;
+l1-minimal vectors through a vertex have support 275).
+**Second layer (combinatorial).** Even where the criterion allows a trade, each free row is pinned by its counts with
+the kept vertices: with 98 kept (N[v] u N[w]) every free vertex tested has ONE candidate row; Codex finds the same with
+60, 75, 90 random kept vertices (only at 45 do the row lists stop closing). Information count: with mu = 8 a count with
+a kept vertex carries about 3 bits, a row of a free vertex about 190 bits, so about 60 kept vertices determine it.
+Conclusion: a local modification of this graph would have to free more than about 85 % of its vertices.
+
+## 5. A unification: both multi-member lambda = 1 families are 3-ovoids of generalized quadrangles
+An m-ovoid O of a GQ(s,t) (every line meets O in m points) has m(st + 1) points and induces a regular graph with
+k = (t+1)(m-1), lambda = m - 2. For m = 3 (lambda = 1) the srg parameter identity forces mu = 4(t+1)/(3s-2).
+GQ(2,2) -> (15,6,1,3), GQ(2,4) -> (27,10,1,5) (O = all points); GQ(5,25) -> (378,52,1,8) (hemisystems, mu automatic
+by Cameron-Delsarte-Goethals); GQ(8,10) -> (243,22,1,2) (mu = 44/22 = 2; GQ(8,10) = Payne-derived / Ahrens-Szekeres
+for q = 9: Codex's construction of 14/10, mu not automatic there). The families (q,q), (q,q^2), (q-1,q+1), (q^2,q),
+(q^2,q^3) give no other integer mu. Conway's (99,14,1,2) is not of this form (st = 32 and 2t = 3s - 4 have no common
+solution). So the stabiliser of O in Aut(GQ) acts on the srg (equality for the S3 graph), and an asymmetric member of
+either family coming from a 3-ovoid needs a 3-ovoid with trivial stabiliser: at 378 none exists in the two known GQs
+(Bamberg-Giudici-Royle classification); at 243 the question is open and is exactly Codex's search.
