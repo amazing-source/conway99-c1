@@ -238,6 +238,32 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   PSD structure (lambda_perp 0.032, exact rank 39) after about 110 000; being reproduced with the full model.
 - Without positivity, mixed relations exist: Z5 four-star structures with nullity 6 (5 of 300), parity pattern.
 
+## 14/10 LATE EVENING (22:25-23:05 UTC): the four-star level is satisfiable; arithmetic and extension kill the object
+- E1 (VERIFIED exactly; verify_counterexample.py night_urep_PSD_100.json edges 0,1,2,3): an ADMISSIBLE four-star
+  structure with T >= 0 of rank EXACTLY 30 (30 x 30 block positive definite, LDL) and U >= 0 of rank 40, c = (5,5),
+  family G1, sector nullities (10,1,1,2) (found by the U-repair walk sym4g.py urepair from sc_7; 586 hits, one
+  spectral fingerprint). So admissibility + T, U >= 0 + rank <= 30 at ONE four-star object cannot exclude Conway.
+- E2 (VERIFIED exactly; ext4.py, log ext4_urep100.log): rank 30 means the 44 vectors span the whole 30-space, so every
+  outer label u has its vector fixed by its profile nb = N(u) n S4: (Tr) p = T(S,u) orthogonal to ker T_S (exact integer
+  test) and (Tn) p^T T_S^+ p = 5/2 (Fractions). For ALL 40 outer labels: 995 to 3055 admissible profiles, 0 to 16 pass
+  (Tr), 0 pass (Tn). The object is in no Conway graph. (This is the star-complement reconstruction for the eigenvalue
+  3: N[v] u I with T_I nonsingular is a star complement, 45 = 99 - 54 vertices.)
+- E3 (VERIFIED; disc_test.py and latdisc.py agree): lattice of the 44 vectors, Gram 8T: disc = 2^73 3 5^5 17^2;
+  Gram 15U (rank 40): disc = 2^12 3^42 5^35 7^11 17. Mod 7: rank_7(8T_S4) = 30.
+- NOT NEW (principle): Codex's L17 (det K_-4 = 2^21 7^k, det K_3 = 3^8 5^6 7^k, notes/80, 25/09) gives for the label
+  lattice disc(Lambda_8T(v)) = 2^69 7^(30-k) and disc(Lambda_15U(v)) = 3^32 5^34 7^(40-k); L4/L23 (notes/102) give
+  rank_7 of every principal block of 8T <= k <= 28 (L22). Any full-rank label set S then has disc = (that) x square
+  (same square-class test as Codex's note 217 on eight far points). I re-derived disc in {2,7}-only from T^2 = 7T and
+  checked it on two real srg(243,22,1,2) (disc243_check.py: all-label lattice 3^100 5^76 and 3^114 5^76, only the
+  primes of 9c = 135; random full-rank subsets give index 1).  Applied to our objects (new use, old lemmas): the
+  four-star object fails at 3, 5, 7, 17 and has rank_7 = 30 > 28; all 52 three-star (A) structures fail T-DISC and
+  have rank_7 in {29, 30} > 28. Sample of 3500 saved PSD four-star structures: rank_7 in 30..34, never <= 28.
+- CONSEQUENCE / TARGET (OPEN): a Conway four-star structure needs T, U >= 0, rank_Q <= 30 AND rank_7(8T_S4) <= k <= 28.
+  Our searches never imposed the 7-adic condition. 'PSD at four stars forces rank_7 >= 29' would exclude Conway
+  (k <= 28); 'forces rank_7 >= 23' would exclude k = 22 (r = 37).
+- Literature (3 quick web queries, not exhaustive): star complements (Cvetkovic-Rowlinson-Simic 1999; Rowlinson
+  2007, 2012) are known; no application to (99,14,1,2) found.
+
 ## OPEN (none of these is established)
 - (A) Every admissible three-star structure with T >= 0, U >= 0 and c(l) = 1 has rank 31 (no relation beyond the
   stars unless l is special). Evidence: no counterexample in 11 seeds x all rectangles (Codex), 6 812 exact
