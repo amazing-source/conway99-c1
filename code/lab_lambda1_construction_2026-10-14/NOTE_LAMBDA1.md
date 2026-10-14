@@ -79,8 +79,11 @@ An m-ovoid O of a GQ(s,t) (every line meets O in m points) has m(st + 1) points 
 k = (t+1)(m-1), lambda = m - 2. For m = 3 (lambda = 1) the srg parameter identity forces mu = 4(t+1)/(3s-2).
 GQ(2,2) -> (15,6,1,3), GQ(2,4) -> (27,10,1,5) (O = all points); GQ(5,25) -> (378,52,1,8) (hemisystems, mu automatic
 by Cameron-Delsarte-Goethals); GQ(8,10) -> (243,22,1,2) (mu = 44/22 = 2; GQ(8,10) = Payne-derived / Ahrens-Szekeres
-for q = 9: Codex's construction of 14/10, mu not automatic there). The families (q,q), (q,q^2), (q-1,q+1), (q^2,q),
-(q^2,q^3) give no other integer mu. Conway's (99,14,1,2) is not of this form (st = 32 and 2t = 3s - 4 have no common
+for q = 9: Codex's construction of 14/10, mu not automatic there). Scan of all orders (s,t) <= 2000 passing the GQ
+divisibility and Higman conditions (ovoid_params.py): among the orders of KNOWN GQs, integer mu occurs only for
+(2,2), (2,4), (4,4), (5,25), (8,10); for GQ(4,4) it gives srg(51,10,1,2), which is not feasible (irrational
+eigenvalues), so no 3-ovoid of GQ(4,4) has constant mu. Other hits are orders of no known GQ (e.g. (3,6), whose
+srg(57,14,1,4) does not exist either). Conway's (99,14,1,2) is not of this form (st = 32 and 2t = 3s - 4 have no common
 solution). So the stabiliser of O in Aut(GQ) acts on the srg (equality for the S3 graph), and an asymmetric member of
 either family coming from a 3-ovoid needs a 3-ovoid with trivial stabiliser: at 378 none exists in the two known GQs
 (Bamberg-Giudici-Royle classification); at 243 the question is open and is exactly Codex's search.
