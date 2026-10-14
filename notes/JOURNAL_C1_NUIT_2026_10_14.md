@@ -2819,3 +2819,95 @@ orthogonalite et types des etoiles controles sans lire de graphe : PASS.
 Restriction a la famille LOCALE G1 ; aucune symetrie du graphe complet
 n'est supposee. Transmissions753/755. Donnees four_star_columns_752/.
 Aucun calcul local restant, aucun Conway/C1 exclu, aucune construction SRG.
+
+### Messages756-762 : quotient c55 et catalogue exact de deux secteurs
+
+756/757 lus/acquittes. Claude donne les nullites(9,1,1,1) de son meilleur
+bord PSD c44 et reprend ses recherches par caracteres. Le germe null13
+n'etait pas exporte au debut de ce tour ; aucun audit entrepris. Message758 :
+rappeler que c55 donne SIX cibles minimales, et qu'une nullite totale13
+reste un rang31 meme si un seuil non trivial est satisfait. Demande d'export.
+759 (lu lors du saut de sequence760) fournit lui-meme la nouvelle analyse :
+null13=(10,1,1,1), non PSD ; sc_7_null14=(10,1,1,2), T PSD rang30,
+mais U negatif dans10/01. Ces certifications sont acceptees sans re-audit.
+
+LEMME C55 NON GRILLE. Les11 orbites regulieres sont O (recouvrement),
+L_i et R_i, i=0..4. Soit D_ij la valence de l'orbite i vers j et H le
+bloc trivial de T, dans la base des indicatrices d'orbites divisees par2.
+H_ii=2-D_ii. Hors diagonale : -D_ij sur chaque droite et vers O ;
+H_Li,Rj=1-[i=j]-D_Li,Rj. Identite issue directement de K8, controlee.
+Dans chaque droite, c=5 signifie une composante de taille2 et quatre
+singletons. Si O n'est pas une grille, les deux paires actives sont
+{O,L_p}, {O,R_q}, de meme poids t=2-D_OO dans{1,2}. Les huit autres
+diagonales nulles imposent leurs lignes nulles par positivite. Le coeur
+est [[t,-t,-t],[-t,t,e],[-t,e,t]], determinant -t(e-t)^2. Donc e=t.
+Comme e<=1-[p=q], on obtient t=1, p!=q et D_Lp,Rq=0. Ainsi H=ww^t,
+w=e_O-e_Lp-e_Rq, rang1/nullite10. Les20 choix(p,q) sont equivalents
+par renommage des paires exterieures : fixer p=0,q=1 est complet ici.
+Le recouvrement grille est explicitement HORS de cette reduction.
+
+Construction propre par CP-SAT du quotient normalise : variables de
+couplages G1, equations des quatre etoiles completes, capacites de voisins
+communs. Premier bord59 en0.95s ; controles directs de son residual,
+des cinq lignes completes et du quotient : PASS. Il n'est pas T/U PSD.
+Un essai borne de30 candidats,101 coupes PSD rationnelles exactes,
+27.44s, reste UNKNOWN (limite de30 tours atteinte). Tous echouent en T11 :
+observation seulement, contredite comme enonce universel par sc_7_null14.
+Transmission760 du lemme et des exports, sans nouvelle exclusion.
+
+CATALOGUE EXACT DES SECTEURS10/01. Pour10, ordonner les coordonnees
+gauche O,L0,...,L4 puis droite R0,...,R4. e=1 sur les six gauches,
+v=e_O-e_L0. La matrice U vaut
+ [4I+s vv^t-(2/3)ee^t, B^t ; B, diag(2,4+d,2,2,2)],
+et T vaut
+ [3I-s vv^t-(1/2)ee^t, -B^t ; -B, diag(5,3-d,5,5,5)],
+avec s,d dans{+-1}. Chaque ligne de B a quatre signes, deux+ et deux-,
+sur un support impose. La ligne1 porte O et L2,L3,L4 ; les autres
+portent les quatre L_i avec i different de l'indice de ligne. Modulo
+son signe global, chaque ligne a3 partitions. Les inversions de lignes
+sont des congruences simultanees, donc les4*3^5=972 cas couvrent tout.
+
+Eliminer le bloc droit positif et enlever la coordonnee O (e est dans
+le noyau). Les Schur5x5, multiplies par6(4+d) pour U et10(3-d) pour T,
+sont ENTIERS. Catalogue complet par pivots rationnels/temoins entiers :
+ (s,d)    U PSD      T ET U PSD
+ (-1,-1)   18/243      18/243
+ (-1,+1)   18/243      18/243
+ (+1,-1)   72/243      72/243
+ (+1,+1)   72/243      18/243
+Total180 U,126 conjoints. Dans les126 cas conjoints, les DEUX Schur
+sont definis positifs de rang5. Donc T10,U10 ont rang10, une seule
+relation d'etoile. Meme resultat en01, en echangeant les deux droites
+et les indices exterieurs0/1. Le secteur trivial est fixe : T rang1,
+U rang9, PSD (calcul exact de la matrice constante, pas d'audit de germe).
+
+CONSEQUENCE LOCALE PROUVEE : tout objet de cette sous-famille avec T/U
+PSD a les nullitesT=(10,1,1,k). RangT<=30 force k>=2 EN11. Les autres
+cibles ajoutant une relation en10 ou01 sont impossibles ici. Ce n'est
+pas un theoreme imposant G1 ou c55 a un Conway eventuel.
+
+La table126 est integree deux fois au CP-SAT, avec les MEMES variables
+de couplage, dix variables de partitions ternaires. Controles propres :
+correction K/upper par caracteres, singleton=grille via capacites locales,
+972 cas exacts, canalisation des deux tables sur un bord construit : PASS.
+Code four_star_g1_c55.py / four_star_g1_c55_upper.py ; artefacts
+four_star_g1_c55_756/. Le catalogue contient rangs et temoins negatifs.
+
+Construction intermediaire avec les tablesU : bord59 local valide,
+U entierement PSD, T PSD en00/10/01 et negatif en11. Il montre que les
+quatre grilles par droite ne forcent pas a elles seules U negatif.
+La positivite SIMULTANEE de T reste essentielle. Export portable
+codex_c55_Upsd_T11negative.json. Avec tablesU et coupes,50 candidats,
+79 coupes,41.69s : UNKNOWN (limite50), aucune famille exclue. Le dernier
+pilote de la table conjointe126 trouve un bord local en0.77s ; cela ne
+certifie pas le secteur11. Aucun gain global de solveur mesure.
+
+761/762 lus/acquittes lors du saut763. Contributions du pair acceptees :
+rang quatre-etoiles=30-delta, delta multiplicite de-4 sur les40 exterieurs ;
+conjecture de transversales t(l)>=8 sous les conditions locales completes,
+et question sur une borne inferieure globale de P. Rien de cela n'est
+re-audite ni transforme en instruction autonome. Aucune preuve que tout
+Conway doit entrer dans G1/c55 ; aucune exclusion C1. Transmission763 :
+catalogue exact, cible unique11, construction U PSD avec T11 negatif.
+Les bornes inferieures globales sur P restent a examiner, pas resolues ici.
+Pas de processus local restant, aucun nouveau SRG construit.
