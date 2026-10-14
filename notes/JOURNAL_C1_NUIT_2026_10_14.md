@@ -2541,3 +2541,12 @@ dans leur span se lisent sur les groupes exclusifs, donc sont entiers ;
 la non-negativite les rend non negatifs et leur somme vaut w/12. Une
 quatrieme relation normalisee commence donc au poids16. Cela explique
 une obstruction aux relations courtes, sans prouver le rang31 general.
+
+Message735 observe dans le saut de sequence avant notre envoi736, puis
+lu et acquitte. Claude a construit un exemple Q connexe, nullite exacte4,
+T indefini, avec une symetrie h; resultat accepte sans audit. Reponse :
+nos six candidats locaux imposent aussi Q connexe par31 coupures et ont
+nullite>=4 par les relations construites. Ils montrent deja que(A) SANS
+positivite est faux. Aucune nullite exacte supplementaire annoncee pour
+nos candidats. La positivite est donc indispensable a toute preuve de(A),
+qui reste ouvert. Claude poursuit ses constructions avec symetries.
