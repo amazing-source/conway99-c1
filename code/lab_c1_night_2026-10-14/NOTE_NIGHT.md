@@ -523,3 +523,28 @@ distinctness is not automatic beyond support 8 (twin prisms give integral 3-eige
 **25.5 Control of the counting formulas** (`shell_counts_check.py`, log `shell_counts_check_log.txt`): on the real
 srg(243,22,1,2) the general formulas (only lambda = 1, mu = 2 used) agree with brute force: independent triples
 1773090, triples with one edge 534600, induced paths 53460, lines 891, far set of an edge 200 vertices with 1810 edges.
+
+## 26. Supports 5 and 6: b = 32 excluded (04:26 UTC)
+**26.1 Distinctness up to support 12.** Lemma: a nonzero integral 3-eigenvector v with entries in {0, +-1, +-2] has
+support >= 12. Proof: for p in P (positive part), the positive neighbour mass is >= 3 v_p, so
+sum_{w in P} v_w (deg_P(w) - 3) >= 0: the v-weighted average degree inside P is >= 3; on <= 5 vertices the admissible
+graphs (no edge in two triangles, no two vertices with 3 common neighbours: at most C4, paw, house, bowtie) give at
+most 2.67 with weights 1 or 2. So |P| >= 6, likewise |N| >= 6. If the support is exactly 12 with entries +-1, P and
+N are 6-vertex graphs of minimum degree 3: prisms, with no edge between them ("twin prisms", 1_P - 1_N in V_3).
+So vectors sqrt7 E z, sqrt7 E z' with supports <= 6 coincide only when z - z' = 1_P - 1_N for twin prisms.
+**26.2 Twin prisms are few.** Twinness is an equivalence relation on the P <= 1151 prisms (Cauchy-Schwarz bound,
+19.2 (v)); two distinct twins are disjoint (support 12), so a class has <= 16 prisms and there are at most
+71 C(16,2) + C(15,2) = 8625 twin pairs.
+**26.3 New norm-8 families** (entries +-1): C4 + a vertex far from it (2079 * 51 * 2 = 212058), paw + far vertex
+(8316 * 50 * 2 = 831600), two lines with exactly one edge between them (>= 2 * 16632), a line and an induced path in
+its far set (sum_l (1584 + 3p(l)) pairs: 60 far vertices, 8-regular, each far vertex z on alpha_z + 1 lines inside the
+far set with sum alpha_z = 36 - 3p; >= 2 * 365904 vectors). Coincidences only inside the last family, through twin
+prisms: at most 48 per twin pair (2 lines x 12 induced paths, both orientations, each coincidence identifying u with
+-u'). Total: a_4 >= 354816 + 212058 + 831600 + 33264 + 731808 - 48 * 8625 = 1749546.
+**26.4 Result.** `theta7_cert2.py 32 "a2>=462,a3>=24948,a4>=1749210,a5>=3415104,a6>=10869012,a7>=6503112,
+a8>=1555092,c7<=7920,c8<=360360" 30`: INFEASIBLE, certificate verified exactly (cert_b32.json). b = 34 feasible.
+Counting formulas for P4 (1015740) and claws (320760) also checked by brute force on srg(243,22,1,2).
+**Theorem (26.4).** If srg(99,14,1,2) exists then rank_{F_7}(A + 4I) is odd and at least 35 (b in {34, ..., 42}).
+**26.5 b = 34** needs a_3 > 9.8e5, or a_4 > 1.4e7, or a_5 > 3.0e8 (`theta7_b32.py 34`). Candidates: supports 7
+(bowtie or house + a far edge) and 8 (two 4-sets with 4 edges far apart), where coincidences can come from integral
+3-eigenvectors of support up to 16 (grids sharing a line, twin prisms, ...): to be bounded.

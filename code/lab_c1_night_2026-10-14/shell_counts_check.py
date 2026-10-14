@@ -33,3 +33,24 @@ R = n - 2 * k + 1
 eR = ((k - 2) * (k - 3) + (R - (k - 2)) * (k - 4)) // 2
 print("formulas:    independent", comb(n, 3) - lines - paths - one, "one edge", one, "paths", paths, "lines", lines,
       "far set / far edges", (R, eR))
+
+# induced P4 (a-b-c-d with a!~c, b!~d, a!~d), counted as undirected paths, versus n (C(k,2) - k/2)(k - 3)
+p4 = 0
+for b_ in range(n):
+    for a_ in nb[b_]:
+        for c_ in nb[b_]:
+            if c_ == a_ or adj(a_, c_):
+                continue
+            for d_ in nb[c_]:
+                if d_ in (a_, b_) or adj(d_, b_) or adj(d_, a_):
+                    continue
+                p4 += 1
+print("induced P4: brute force", p4 // 2, " formula", paths * (k - 3))
+# claws (center with 3 pairwise non-adjacent neighbours) versus n * C(k/2, 3) * 8
+claw = 0
+for v in range(n):
+    L = sorted(nb[v])
+    for a_, b_, c_ in itertools.combinations(L, 3):
+        if not adj(a_, b_) and not adj(a_, c_) and not adj(b_, c_):
+            claw += 1
+print("claws: brute force", claw, " formula", n * comb(k // 2, 3) * 8)
