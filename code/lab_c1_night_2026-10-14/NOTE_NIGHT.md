@@ -593,3 +593,9 @@ form with "- 1" instead of "- (k/2 - 6)", which coincide only for k = 14; the Co
 * No edge lies in three pairwise orthogonal co-Heawoods; orthogonal co-Heawood families have size <= 12; the class-0
   sublattice of A has <= 24 roots.
 These are what the supports 7-8 count of 27 would need next (integral 3-eigenvectors of support <= 16).
+* (Codex, later) every integral h with Ah = 3h and |h|_1 <= 16 belongs to 48 configurations, at most 313434 signed
+  vectors (norm 12 <= 5742, 14 <= 8316, 16 <= 278586, weighted 18/20 <= 20790). For the supports 7-8 families of 27
+  this bounds the kernel vectors h = z - z', but each h may have several representations z - z'; with an
+  estimated family total of about 1.2e7 against the target 1.4e7, a loss of order R * 3e5 (R representations per h)
+  leaves no margin unless R is very small. Assessment: b = 34 not reachable by this route without an exact count of
+  the support-7/8 configurations (not determined by the parameters) and of R. Stopped here.
