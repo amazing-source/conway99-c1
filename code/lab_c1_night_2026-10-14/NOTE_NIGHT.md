@@ -398,3 +398,27 @@ huge coefficients): no floating result is used.
 **19.5 What would exclude b = 28.** With (i)-(iv) the programme at b = 28 forces c_8 >= 1.06 * 10^6 (vectors of
 norm 16 in B: integral eigenvectors 1_P - 1_N with |P| = |N| = 8) and c_11 >= 1.1 * 10^8. An upper bound below
 these (a counting argument like (iii)) would remove b = 28. `theta7_ranges2.py` prints the ranges for b >= 28.
+
+## 20. Vectors of norm 16 and the exclusion of b = 28 (03:48 UTC)
+**20.1 Structure.** A vector of norm 16 of B lies in K_- (cosets have norm >= 22) and has entries 0, +-1 (an entry
++-2 costs >= 4 + 8 + 6 = 18): f = 1_P - 1_N, |P| = |N| = 8. With e(P) = e(N) = eps (count the P-N edges two ways)
+and pi(n) = 4 + nu(n): sum_n C(pi(n), 2) = 48 + 7 eps + (1/2) sum nu^2 >= 48 + 7 eps + eps^2/4, while the 28 pairs
+of positives have at most 56 - eps common neighbours in N. So eps = 0: P and N are cocliques and the bipartite
+graph H between them is 4-regular with codegrees <= 2; the codegree-2 pairs of positives number x, 20 <= x <= 24.
+For a positive p, x_p = number of positives sharing two negatives with p, 2 x_p + y_p = 12, x_p <= 6.
+**20.2 Type A (some positive with x_p = 6) is determined by p and its 4 negatives.** The six positives w_ij are the
+second common neighbours of the pairs of negatives of p; the eighth positive r shares none; each of the other four
+negatives m sees r and three w's; any three of the six pairs contain two pairs sharing an index i, so m is the
+second common neighbour of those two w's besides n_i; r is the second common neighbour of two m's. Hence at most
+99 * 560 = 55440 such vectors, and as many again for vectors whose negatives contain a vertex with x = 6 (pass to -f).
+**20.3 Type B (every vertex of H has x = 5).** `h16_types.py`, `h16_count.py`, log `h16_log.txt`: exhaustive list
+of the 8 x 8 skeletons of type B with first row {0,1,2,3}: 720 matrices, 5 labelled patterns per missing pair; the
+reconstruction from p, its 4 negatives and the missing pair (each new vertex is a common neighbour of two known
+non-adjacent vertices: at most 2 candidates, exactly 1 if the other common neighbour is known) has candidate
+product 1, 1, 1, 1, 2. Counting each vector from its 8 positives: N_B <= 99 * 560 * 36 / 8 = 249480.
+**20.4** So c_8 <= 55440 + 55440 + 249480 = 360360. The programme at b = 28 needs c_8 >= 1.06 * 10^6: certificate
+with (i)-(iii) and c_8 <= 360360 verified exactly (`theta7_cert_log.txt`, last line). b = 30, 32 stay feasible.
+**Theorem (20.4).** If srg(99,14,1,2) exists then rank_{F_7}(A + 4I) = b + 1 is odd and at least 31.
+**20.5 Next.** At b = 30 the programme forces at least 3.0 * 10^7 vectors of norm 24 in B and at least 1.4 * 10^8 of
+norm 12 in A (`theta7_need.py`, `theta7_min.py`): an upper bound below either kills b = 30. Lower bounds (a_6 >=
+185000 from three orthogonal lines, a_3, a_5) do not help there.
