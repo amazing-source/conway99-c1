@@ -673,3 +673,152 @@ n'est annoncée. Enfin une grille consomme six paires de droites en prisme,
 et une telle paire détermine sa grille de manière unique par les troisièmes
 sommets de ses trois arêtes transversales. La borne globale de 1150 prismes
 donne donc **au plus 191 grilles**.
+
+## 05h56 — Intersections orthogonales et exclusion de trois co-Heawoods sur une arête
+
+**Verdict.** Une arête de C1 ne peut appartenir à trois co-Heawoods dont
+les vecteurs signés sont deux à deux orthogonaux. Le troisième forcerait
+un quatrième; cette dernière famille est exclue par une réduction exacte
+à 16 cas locaux, puis 15552 lignes d'incidence possibles. Aucun solveur SAT
+n'est utilisé. Un co-Heawood isolé et C1 restent ouverts.
+
+### A. Un petit lemme de norme 28
+
+Pour un vecteur entier `h` de l'espace -4, de norme carrée 28, soit `a`
+la plus grande valeur absolue. La masse `M` de chaque signe vérifie `M>=4a`,
+et le coefficient de valeur absolue `a` ajoute `a²-a` à la norme l1.
+Donc `28>=a²+7a`, d'où `a<=2`. Si `t` est le nombre total de coefficients
+de valeur absolue deux, on a `M+t=14`.
+
+Deux coefficients +2 demanderaient chacun une masse négative voisine d'au
+moins huit. Leurs voisinages ont au plus deux points communs, donc une
+masse commune au plus quatre : `M>=12`, puis `t<=2`. Les deux coefficients
+de valeur absolue deux seraient alors précisément ces deux coefficients
+positifs. La masse négative commune serait au plus deux, d'où `M>=14`,
+contradiction à `M+t=14`. Il y a donc **au plus un +2 et au plus un -2**.
+Les trois types, à changement de signe près, sont :
+
+    14(+1),14(-1) ; 1(+2),11(+1),13(-1) ;
+    1(+2),1(-2),10(+1),10(-1).
+
+### B. Deux co-Heawoods orthogonaux partagent 0, 2 ou 4 sommets
+
+Appliquer A à `f+g` et `f-g` montre qu'il y a au plus un sommet de chacun
+des quatre types de signes `++,+-,-+,--` dans l'intersection. L'orthogonalité
+équilibre les produits de signes, d'où les tailles 0, 2 ou 4.
+
+**À la taille quatre, les deux couples de signes opposés sont des arêtes.**
+Tous les autres couples sont non adjacents, car ils partagent un même signe
+dans au moins un co-Heawood. Supposons les points `u=++`, `v=--` non adjacents.
+Le vecteur entier
+
+    h=7P(e_u-e_v)-f-g
+
+a norme 14, est orthogonal à `f,g`, et vaut +1 en u, -1 en v. Nous aurions
+donc trois co-Heawoods orthogonaux contenant u et v avec ces mêmes signes.
+Dans chacun, u a quatre voisins négatifs. Ces douze voisins sont distincts :
+une répétition donnerait un deuxième sommet de type `--` pour une paire
+de vecteurs, alors que v occupe déjà ce type. Les deux voisins communs de
+u et v sont extérieurs aux trois supports, puisqu'un support biparti ne
+contient pas de voisin commun à deux points de signes opposés. Ils occupent
+les deux places restantes dans le voisinage de u.
+
+Chacun de ces deux voisins communs a déjà son unique voisin positif u et
+son unique voisin négatif v dans chaque support. Il ne peut donc rencontrer
+aucun des douze autres voisins de u. Le voisinage de u étant sept arêtes
+disjointes, les deux voisins communs doivent être adjacents entre eux.
+Leur arête aurait alors u et v comme deux voisins communs, contradiction.
+Ainsi l'intersection de taille quatre induit exactement **deux arêtes
+disjointes**, entre signes opposés. Aucun antécédent entier dans L n'est
+nécessaire pour ce résultat.
+
+### C. Trois vecteurs orthogonaux sur une arête en forcent quatre
+
+Orienter les trois vecteurs pour qu'ils valent +1 en u et -1 en v, avec
+`u~v`. Le vecteur `d=7P(e_u-e_v)` est entier, de norme carrée 56, et son
+produit avec chacun des trois vecteurs vaut 14. Donc
+
+    f_4=d-f_1-f_2-f_3
+
+est un quatrième vecteur entier de norme 14, orthogonal aux trois premiers,
+et il vaut également +1 en u et -1 en v.
+
+### D. Quatre vecteurs sur une arête : seulement 16 squelettes
+
+Supposons désormais quatre vecteurs `f_i`, `i=0..3`, valant +1 en u et -1
+en v. Pour chaque paire i,j, le point B impose un point `q_ij` de signe
+positif dans i, négatif dans j, et le point `q_ji` de signes opposés;
+ces deux points sont adjacents. Les douze `q_ij` sont distincts et n'ont
+aucun autre signe non nul : un troisième signe répéterait un type déjà
+occupé par u ou v pour l'une des paires de vecteurs.
+
+Chaque support conserve trois points positifs propres et trois négatifs
+propres. Notons `P_i`, `N_i` ces groupes de trois. Les voisins de u sont
+v, les douze points des `N_i`, et le troisième point d de l'arête uv.
+Symétriquement pour v et les `P_i`. Le point d ne rencontre aucun autre
+point des quatre supports, ayant déjà un voisin de chaque signe dans chacun.
+L'union avec d compte donc **39 sommets**.
+
+Pour i!=j, le point `q_ij` rencontre deux des trois points de `N_i`;
+ce sont ses deux voisins communs avec u. Le point exceptionnel de `N_i`
+doit avoir, dans le support j, un voisin négatif dans `N_j`, car son voisin
+positif est déjà u. Ce voisin est nécessairement son partenaire dans le
+voisinage de u. Chaque point de `N_i` peut être exceptionnel pour un seul j.
+On peut ainsi les nommer `n_ij`, avec `n_ij~n_ji`, et
+`q_ij~n_ik` exactement lorsque k!=i,j. La même argumentation donne
+`p_ij~p_ji`, et `q_ij~p_jk` exactement lorsque k!=i,j.
+
+Dans le support i, chaque `q_ij` est joint à `q_ji` et à exactement un
+autre `q_ki`. Cela définit un dérangement des trois indices différents de i,
+donc un cycle `epsilon_i` de longueur trois, avec deux choix. Le comptage
+des deux voisins communs des points positifs `p_ij` et `q_ik` impose
+`n_ij~p_i,epsilon_i^(-1)(j)`. Il reste donc `2^4=16` configurations.
+
+Les seules arêtes encore possibles entre les `q` concernent des indices
+disjoints. Pour `q_ij`, poser `k=epsilon_i(j)` et `l=epsilon_j^(-1)(i)`.
+Si k=l, ses signes dans les autres supports sont déjà équilibrés et ces
+deux arêtes sont interdites. Si k!=l, l'équilibre impose l'arête vers `q_lk`.
+Le script ajoute ces arêtes puis contrôle toutes les équations `Af_i=-4f_i`.
+Six cas échouent. Huit autres dépassent lambda=1 ou mu=2. Les deux derniers
+sont explicitement isomorphes par permutation des quatre indices.
+
+Il reste un graphe induit unique de 39 sommets et 117 arêtes, de degrés
+`14^2,7^12,5^24,2^1`. Le code produit sa liste d'arêtes et l'isomorphisme.
+
+### E. Aucun voisin extérieur possible pour d
+
+La matrice principale `B=27I-9A_S+J`, d'ordre 39, a un noyau de dimension
+cinq calculé sur les rationnels. Pour toute base entière c de ce noyau,
+la positivité du projecteur global force `Pc=0`, même hors du squelette.
+Un sommet extérieur z doit donc satisfaire
+
+    sum_{x~z, x in S} c_x = sum(c)/9.
+
+Supposons `z~d`. Comme u et v ont déjà leurs quatorze voisins, z ne leur
+est pas adjacent. Les deux voisins communs de z avec u, respectivement v,
+sont d et exactement un point n des douze N, respectivement un point p
+des douze P. Sa partie restante dans S est un sous-ensemble des douze q.
+Le sommet z étant extérieur à chaque co-Heawood, il rencontre au plus un
+point positif et un point négatif de chacun, en nombres égaux. Sur les
+arcs q_ij, cela signifie un sous-ensemble avec degrés entrant et sortant
+au plus un. Il y en a **108**, obtenus en parcourant les 4096 masques.
+
+Le script parcourt donc exactement `12*12*108=15552` lignes. Parmi elles,
+1512 équilibrent les quatre signes et 864 respectent aussi le plafond d'un
+voisin de chaque signe. **Aucune des 864 ne satisfait les cinq équations
+du noyau principal.** Or d n'a que deux voisins dans S et doit en avoir
+douze au dehors. Contradiction. La famille de quatre est exclue, donc aussi
+celle de trois par C.
+
+**Reproduction.** `orthogonal_root_intersections.py` effectue en 0,11 s
+les calculs exacts : 16 configurations, isomorphisme explicite, base entière
+du noyau, et toutes les lignes d'incidence. Le rapport
+`orthogonal_root_intersections.json` contient les témoins d'échec des 14 cas
+locaux et les cinq vecteurs du noyau avec leurs seconds membres.
+`four_root_edge_graph.txt` contient le squelette avant exclusion.
+
+**Contrôle exploratoire distinct.** Le programme C++ `dense_nine_scan.cpp`
+a parcouru ses 211915132 sous-ensembles de neuf sommets en 0,39 s : maximum
+14 arêtes. Le résultat est dans `four_root_edge_dense9.json`. N9 n'exclut
+donc pas ce squelette; c'est bien l'extension par les équations du projecteur
+qui donne la contradiction. Le binaire est temporaire et n'est pas commité.
