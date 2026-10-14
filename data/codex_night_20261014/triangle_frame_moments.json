@@ -1,0 +1,76 @@
+{
+  "projectors": {
+    "constant": [
+      "1/231",
+      "1/231",
+      "1/231",
+      "1/231",
+      "1/231",
+      "1/231"
+    ],
+    "zero": [
+      "4/21",
+      "0",
+      "1/21",
+      "0",
+      "-1/21",
+      "-2/21"
+    ],
+    "seven": [
+      "18/77",
+      "1/11",
+      "-9/385",
+      "-1/110",
+      "2/385",
+      "3/154"
+    ],
+    "minus_three": [
+      "4/7",
+      "-2/21",
+      "-1/35",
+      "1/210",
+      "4/105",
+      "1/14"
+    ]
+  },
+  "counts": [
+    "1",
+    "18",
+    "32 - t",
+    "3*t + 144",
+    "36 - 3*t",
+    "t"
+  ],
+  "trace_per_triangle": {
+    "constant,constant,constant": "1/53361",
+    "constant,constant,zero": "0",
+    "constant,constant,seven": "0",
+    "constant,constant,minus_three": "0",
+    "constant,zero,zero": "4/4851",
+    "constant,zero,seven": "0",
+    "constant,zero,minus_three": "0",
+    "constant,seven,seven": "6/5929",
+    "constant,seven,minus_three": "0",
+    "constant,minus_three,minus_three": "4/1617",
+    "zero,zero,zero": "-2*(t - 10)/3087",
+    "zero,zero,seven": "(11*t + 408)/56595",
+    "zero,zero,minus_three": "(t + 48)/2205",
+    "zero,seven,seven": "-(t - 192)/17150",
+    "zero,seven,minus_three": "-(t - 192)/7350",
+    "zero,minus_three,minus_three": "-(t - 192)/3150",
+    "seven,seven,seven": "3*(121*t + 178368)/20751500",
+    "seven,seven,minus_three": "(t + 408)/24500",
+    "seven,minus_three,minus_three": "(11*t + 10488)/115500",
+    "minus_three,minus_three,minus_three": "(49*t + 37992)/220500"
+  },
+  "cubic_tensors": {
+    "vertex_cube_norm": 1471932,
+    "mixed_inner_product": -8316,
+    "triangle_cube_norm": "-1386*(t - 10)",
+    "norm_lower_bound": "2772/59",
+    "mean_prism_degree_upper_bound": "588/59",
+    "unordered_prism_upper_bound": 1151,
+    "some_triangle_has_at_most": 9
+  },
+  "explanation": "Every trace expression must be >=0 for t equal to the average number of disjoint triangles joined by three edges. The mixed cubic tensor inequality strengthens this to t<=588/59<10."
+}
