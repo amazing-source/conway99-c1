@@ -575,3 +575,101 @@ les quatre grilles privées d'une arête et les tables de vérité des clauses.
 Le rapport est `data/codex_night_20261014/local_prism_propagation.json`.
 Exécution :0,06s. Il s'agit de propagation nécessaire, pas d'une nouvelle
 campagne UNKNOWN ni d'une exclusion de la famille des192 types restants.
+
+## 05h27 — Vecteurs entiers minimaux : angle interdit et au plus 28 racines orthogonales
+
+Résultat nouveau de cette reprise, indépendant des campagnes SAT. On conserve
+`P=(27I-9A+J)/63`, projecteur orthogonal sur l'espace propre -4, de dimension 44.
+Il ne s'agit pas d'une exclusion de C1 ni d'un co-Heawood isolé.
+
+**1. Minimum entier.** Tout vecteur entier non nul `f` tel que `Af=-4f`
+a une norme carrée au moins 14. En effet `sum f=0`. Si `a=max |f_v|`,
+la masse de chaque signe est au moins `4a`, donc `||f||²>=8a`.
+Pour une norme au plus 14, toutes les entrées non nulles valent donc +1 ou -1.
+Avec `p` entrées de chaque signe, chaque sommet négatif a au moins quatre
+voisins positifs. Le comptage des paires positives donne
+
+    6p <= 2*C(p,2), donc p>=7.
+
+À la norme 14, toutes ces inégalités sont des égalités : les deux supports
+de taille sept sont indépendants, le graphe entre eux est 4-régulier et
+chaque paire d'un côté a deux voisins communs de l'autre côté. C'est le
+complément de l'incidence du plan de Fano, donc le co-Heawood.
+Chaque sommet extérieur a au plus un voisin dans chaque signe, et autant
+dans les deux signes : zéro ou un de chaque. La réciproque pour un
+co-Heawood induit découle du quotient de Rayleigh égal à la valeur propre
+minimale -4.
+
+**2. L'angle de produit scalaire 7 est impossible.** Soient `f,g` deux tels
+vecteurs de norme 14, distincts et non opposés. Le minimum précédent impose
+`|f.g|<=7`. Supposons `f.g=7`, quitte à changer le signe de `g`. Alors
+`h=f-g` est encore de norme 14. Il ne peut avoir d'entrée de valeur absolue
+deux : les supports de `f,g` se rencontrent donc en exactement sept sommets,
+avec les mêmes signes. Écrivons `I` pour l'intersection, `F` pour le support
+propre de `f`, et `G` pour celui de `g`; chacun a sept sommets.
+
+Pour un sommet de `G` de signe epsilon dans `g`, ses voisins dans `I`
+doivent avoir le signe -epsilon, et ses voisins dans `F` le signe epsilon
+(en utilisant `h`). Comme il est extérieur au co-Heawood de `f`, il a au
+plus un voisin de chaque signe dans `I+F`. Ses degrés dans les supports de
+`g` et `h` valent tous deux quatre; son degré dans `G` est donc au moins
+trois. Or le graphe induit sur `G` est biparti sur sept sommets, avec degré
+minimum trois. Ses parts ont tailles trois et quatre, et les quatre sommets
+d'une part sont tous joints aux trois de l'autre. Deux d'entre eux ont
+trois voisins communs, contradiction à mu=2. Ainsi
+
+    f != +/-g  =>  |f.g| <= 6.
+
+Cela interdit notamment deux co-Heawoods partageant exactement sept sommets
+avec des bipartitions compatibles. Une intersection de taille sept avec
+des signes incompatibles n'est pas exclue par cet argument.
+
+**3. Toute famille orthogonale a au plus 28 membres, à un signe près.**
+Plaçons les vecteurs de norme 14 d'une telle famille dans les colonnes de
+`F`, posons `R=F F^t`, et notons `k_v=R_vv` le nombre de supports passant
+par `v`. Les relations `AR=-4R`, `R²=14R`, `R1=0` donnent, pour la matrice
+entière `T=2A-6I+R`,
+
+    T1=22*1,  T²=8J-14T,  T_vv=k_v-6.
+
+Par conséquent,
+
+    sum_{w!=v} T_vw*(T_vw-1) = 28-k_v*(k_v+1).
+
+Chaque terme du membre de gauche est non négatif, puisqu'il est entier.
+Donc `k_v<=4` pour tout sommet, et `14*r=sum k_v<=396`, soit `r<=28`.
+Cette borne vaut pour toute famille orthogonale de co-Heawoods signés,
+sans hypothèse de provenance dans un réseau particulier.
+
+**4. Application au réseau entier naturel.** Considérons
+
+    L = { (7P c)/sqrt(7) : c entier, sum(c) multiple de 9 }.
+
+Si `sum(c)=9k`, alors `f=7Pc=(3I-A)c+k*1` est entier. Le réseau `L`
+est entier et pair, car le produit de deux de ses vecteurs vaut
+
+    3*c.d-c^t*A*d+sum(c)*sum(d)/9,
+
+et la norme est paire par réduction modulo deux. Une racine de norme deux
+correspond donc à un `f` de norme 14. Entre deux racines distinctes non
+opposées, `f.g` est multiple de sept; le point 2 force `f.g=0`.
+Le système de racines est ainsi `A_1^r`, avec `r<=28`, donc au plus 56
+racines en comptant les deux signes. **La condition d'antécédent entier
+sur c est nécessaire ici : nous ne prétendons pas que tous les co-Heawoods
+de C1 sont mutuellement orthogonaux.**
+
+**Contrôles.** `integral_root_obstructions.py` vérifie exactement les
+identités dans l'algèbre engendrée par `I,A,J,R`, le comptage de norme minimale,
+le petit obstacle biparti, et l'incidence complémentaire du plan de Fano.
+Le rapport est `data/codex_night_20261014/integral_root_obstructions.json`.
+Exécution réussie en 0,05 s, sans solveur externe. Les contrôles finis
+accompagnent les preuves ci-dessus; ils ne sont pas un certificat SAT global.
+
+**Autres observations de ce tour.** Le théorème N9 communiqué par LAB au
+message 635 (aucun neuf-ensemble à 17 arêtes) a été lu et acquitté. Sur le
+squelette fixé des 192 types à douze prismes, il retrouve seulement la coupe
+« pas exactement deux appariements superposés » : aucune nouvelle exclusion
+n'est annoncée. Enfin une grille consomme six paires de droites en prisme,
+et une telle paire détermine sa grille de manière unique par les troisièmes
+sommets de ses trois arêtes transversales. La borne globale de 1150 prismes
+donne donc **au plus 191 grilles**.
