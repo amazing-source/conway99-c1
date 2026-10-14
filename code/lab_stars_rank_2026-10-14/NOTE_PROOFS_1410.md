@@ -171,6 +171,40 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   direction is spread over all line pairs (no small forbidden subgraph). Walking on the plateau 'nullity >= 14 and
   T >= 0' (urepair) never raised lambda_U above -0.0746. The real local condition (T, U >= 0, rank <= 30) is neither
   found nor excluded; in asymmetric families positivity at four stars was never reached at all.
+- FORCED-PROPERTY PROGRAMME (user, 14/10 about 21:50 UTC: no more 'nothing says Conway must...'; find what every Conway
+  graph MUST have and why). Exact forced identity (G9 of CONWAY_CONSTRAINTS): rank T_S4 = 30 - delta, delta = mult of -4
+  on the 40 outer labels, so mixed relations = 12 - c(l) - c(m) + [grid] + delta exactly; rank T_S3 = 30 - delta'.
+  Bridge target (OPEN): transversals t(l) = fixed points of sigma_l, P = (1/2) sum t(l) <= 852 (Codex's order-9 census,
+  11088/13) forces mean t <= 7.38. If the four-star condition (T, U >= 0, rank <= 30) forced t(l) + t(m) >= 15 at every
+  pair of lines, summing over the 21 pairs at each vertex gives sum_l t(l) >= 1732.5, i.e. P >= 867 > 852: no Conway.
+  Data (G1 only): every PSD four-star structure has t(l) + t(m) >= 10 ((4,6) once, (6,6) 89 times); with t <= 4 per
+  line no PSD after 10 000 moves (tcap2, tcap4a/b), with t <= 6 PSD but nullity <= 12; the rank-30 T-PSD structure
+  has (8,8). Caveat: in G1 relations come from grids (two transversals per grid); in an asymmetric graph rank 30 could
+  come from mixed coincidences without transversals; the no-symmetry runs with forced transversals (nosym_t*) test
+  the positivity part. odd_gram.py: the T-Gram of e_x = 1_{0x} - 1_{1x}, f_y = 1_{2y} - 1_{3y} is
+  [[6I - J/2 - P_tau0 - P_tau1 + P_sigma + P_sigma^T, -C], [-C^T, ...]] (transversals add 2 on the diagonal); the
+  resulting nuclear-norm inequality ||C||_* <= sqrt((66 + 2t(l))(66 + 2t(m))) is forced but far from binding (30-44
+  vs 66-86).
+- WHY local spectral statements keep failing (analysis, 14/10 22:10 UTC). For a symmetric matrix M on a label set, the
+  local conditions 'T_S >= 0, U_S >= 0, rank T_S <= 30, rank U_S <= 40' are the necessary conditions for M to be a
+  principal block of SOME real matrix 7P (P an orthogonal projector of rank 30 inside the 70-dimensional fine space),
+  and by the dilation theorem for contractions they are close to sufficient for such a REAL extension (the precise
+  completion statement with the fixed Pi is not proved here). So the local conditions test 'spectral realizability'; the real
+  obstruction of the Conway problem is that the dilation must also have the 0/1 shape of an srg. This is why every
+  purely spectral local statement we tested ((A), H4) turned out satisfiable once a symmetry made the coincidences
+  cheap, and why random searches without symmetry never even reach positivity at four stars (the spectrum of a
+  'random' piece is spread, the dilation needs it concentrated in [0,7]). Consequence for the method: a contradiction
+  must use the 0/1 structure (codes, counts, extension conditions) together with the spectrum, e.g. the bridge
+  'positivity => transversals' combined with the census bound P <= 852.
+- No-symmetry four-star searches (identity group, psd mode, about 6000 moves, cooled): best min(lambda_T, lambda_U)
+  -0.38 with no constraint; -0.49 / -0.51 with 6 / 8 transversals imposed per line (prisms alone do not help);
+  -0.20 / -0.17 / -0.14 with 2 / 3 / 4 grids imposed per line (FORCE_GRID_L/M; one 3-grid structure has U >= 0);
+  forced (2,2,2) closed configurations without grids stay near -1.0 (their column conditions are not met by random
+  moves: a kernel vector of T_X with T_{B,X} y != 0 makes T_S4 indefinite, so PSD requires the P4 column conditions).
+  No PSD four-star structure without symmetry so far. G1 transversal caps (tcap*): t <= 2 or 4 per line never PSD in
+  15 000 moves; t <= 6 PSD with nullity <= 12. EVIDENCE for the grid bridge, not a proof.
+- Sanity check of the complementary identity G9 on a real srg(243,22,1,2) (twin243_switched, v = 0, three pairs of
+  lines): dim(E_4 n R^Sigma) = 5 = |Sigma| - 111 + mult_-5(complement) = 99 - 111 + 17 in all three cases.
 - NEXT (Codex, message 754 reply, not re-audited): in G1 the 44 labels form 11 regular Klein-4 orbits, four character
   blocks of size 11; stars give nullities (2,1,1,0) in (++,-+,+-,--); the trivial block has rank >= 6 - min(c_l, c_m),
   so rank T <= 30 forces the three non-trivial blocks to carry nullity >= 9 - min(c_l, c_m); ten minimal targets

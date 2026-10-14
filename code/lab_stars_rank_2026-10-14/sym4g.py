@@ -164,7 +164,37 @@ def main():
             out.append(len(blk) - exact_rank(blk))
         return out
 
-    import os
+    tmax = int(os.environ["TMAX"]) if os.environ.get("TMAX") else None
+    # FORCE_SPLIT_L / FORCE_SPLIT_M: groups of letters separated by '/', e.g. "4,5,6,7/8,9,10,11/12,13,2,3": the base graph
+    # of l (resp. m) has no edge between labels whose outer letters lie in different groups (closed configurations)
+    for env_name, centre in (("FORCE_SPLIT_L", (0, 1)), ("FORCE_SPLIT_M", (2, 3))):
+        if os.environ.get(env_name):
+            groups = [set(int(t) for t in g.split(",")) for g in os.environ[env_name].split("/")]
+            gof = {x: k for k, g in enumerate(groups) for x in g}
+            cs = set(centre)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if not (S[i] & cs) or not (S[j] & cs):
+                        continue
+                    xi = [y for y in S[i] if y not in cs]
+                    xj = [y for y in S[j] if y not in cs]
+                    if len(xi) == 1 and len(xj) == 1 and gof.get(xi[0]) != gof.get(xj[0]):
+                        sol.add_clause([-e[(i, j)]])
+    # FORCE_GRID_L / FORCE_GRID_M: even letters x (pair {x, x+1}) such that l (resp. m) spans a 3x3 grid with the line
+    # {v, x, x+1}: the closed square z_ax ~ z_ax', z_a'x ~ z_a'x', z_ax ~ z_a'x, z_ax' ~ z_a'x' is imposed (straight grid)
+    for env_name, (a0, a1) in (("FORCE_GRID_L", (0, 1)), ("FORCE_GRID_M", (2, 3))):
+        if os.environ.get(env_name):
+            for x in [int(t) for t in os.environ[env_name].split(",")]:
+                y = x ^ 1
+                for (p, q) in (((a0, x), (a0, y)), ((a1, x), (a1, y)), ((a0, x), (a1, x)), ((a0, y), (a1, y))):
+                    sol.add_clause([e[(idx[frozenset(p)], idx[frozenset(q)])]])
+    # FORCE_TL / FORCE_TM: letters x at which the transversal of l (z_0x ~ z_1x) / of m (z_2x ~ z_3x) is imposed
+    for env_name, (a0, a1) in (("FORCE_TL", (0, 1)), ("FORCE_TM", (2, 3))):
+        if os.environ.get(env_name):
+            for x in [int(t) for t in os.environ[env_name].split(",")]:
+                sol.add_clause([e[(idx[frozenset((a0, x))], idx[frozenset((a1, x))])]])
+    trans_l = [(idx[frozenset((0, x))], idx[frozenset((1, x))]) for x in range(2, 14)]
+    trans_m = [(idx[frozenset((2, x))], idx[frozenset((3, x))]) for x in list(range(0, 2)) + list(range(4, 14))]
     init = os.environ.get("INIT")            # warm start from a saved structure (same labels and group)
     if init:
         di = json.load(open(init))
@@ -218,6 +248,10 @@ def main():
         cl = 23 - exact_rank([[int(M8[i][j]) for j in Xl] for i in Xl])
         cm = 23 - exact_rank([[int(M8[i][j]) for j in Xm] for i in Xm])
         both = (cl == 1) if cl1 else ((cl <= 2) if cl2 else ((cl == 1 and cm == 1) or anyc))
+        tl = sum(1 for (i0, i1) in trans_l if G[i0, i1])
+        tm = sum(1 for (i0, i1) in trans_m if G[i0, i1])
+        if tmax is not None and max(tl, tm) > tmax:
+            both = False
         lt = perp_min(T)
         lu = perp_min(7 * PiS - T)
         if min(lt, lu) > -1e-9:
@@ -225,8 +259,8 @@ def main():
             json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt, "lambda_U": lu,
                        "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
                       open(out + "_PSD_%d.json" % npsd, "w"))
-            print("move %d: T AND U PSD (c(l)=%d, c(m)=%d), lambda_T %.4f, lambda_U %.4f, numerical nullity %d"
-                  % (mv, cl, cm, lt, lu, nul_num), flush=True)
+            print("move %d: T AND U PSD (c(l)=%d, c(m)=%d), lambda_T %.4f, lambda_U %.4f, numerical nullity %d, t = (%d,%d)"
+                  % (mv, cl, cm, lt, lu, nul_num, tl, tm), flush=True)
         if both and (best_psd is None or min(lt, lu) > best_psd):
             best_psd = min(lt, lu)
             json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt, "lambda_U": lu,
@@ -255,8 +289,8 @@ def main():
                 if mode == "urepair":
                     s2 -= 1.0
             if nul_num >= 13 and min(lt, lu) > -0.05:
-                print("move %d: near target: numerical nullity %d, sector nullities %s, lambda_T %.4f, lambda_U %.4f, c = (%d,%d)"
-                      % (mv, nul_num, sector_nullities(M8), lt, lu, cl, cm), flush=True)
+                print("move %d: near target: numerical nullity %d, sector nullities %s, lambda_T %.4f, lambda_U %.4f, c = (%d,%d), t = (%d,%d)"
+                      % (mv, nul_num, sector_nullities(M8), lt, lu, cl, cm, tl, tm), flush=True)
                 key = (nul_num, min(lt, lu))
                 if best_near is None or key > best_near:
                     best_near = key
