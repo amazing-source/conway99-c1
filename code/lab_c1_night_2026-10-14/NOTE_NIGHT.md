@@ -219,3 +219,36 @@ Codex's independent method).
 **Proof status.** Hand: the reduction to the two matchings (section 11) and the class list. Machine: 1970 calls
 of cadical, no certificate kept; encoder controlled on 9 and on 243 vertices (section 13). Not confirmed by a
 second method, not read by a third party.
+
+## 15. What the solver can and cannot do in the local view (01:53 UTC)
+* **Random local types are NOT refuted.** With M_1, ..., M_j chosen uniformly at random (j = 1, ..., 14) cadical
+  gives no answer in 30 s at any j (`prefix_depth.py`, `prefix_log.txt`, seed 1), and the complete random type
+  (all 14 matchings, 2562 free pairs left) is not refuted in 240 s either (`full_random_type.py`,
+  `fulltype_log.txt`). So the one-second refutations of sections 7 and 14 come from the rigidity of grid-rich
+  types, not from the method, and "choose the 14 matchings, then call the solver" is NOT an affordable complete
+  search: about 10^50 types up to symmetry, each a hard instance. (I had started to write a Knuth estimate of that
+  tree, `knuth_probe.py`; it is pointless after this measurement and was not run.)
+* **Grid-rich families do fall, with fewer and fewer prescriptions as the hypothesis weakens** (`kkN_probe.py`,
+  `kkN_probe_log.txt`, random choices, 40-50 s limit):
+  kk5 + one of its four free matchings: UNSAT in 17-30 s (3 seeds); kk5 + two: 1.5 s;
+  kk4 + one: undecided; + two: undecided; + three: UNSAT in 40 s;
+  kk3 + two: undecided; kk3 + four: undecided.
+* Consequence: kk5 (ten grids through a vertex, five lines pairwise) reduces to the classes of ONE matching M_11
+  under the block symmetries: `kk5_all.py`, launched 01:53 UTC, limit 600 s per class.
+
+## 16. Family kk5 (ten grids through x, five lines pairwise): PARTIAL RESULT (02:27 UTC)
+First pass (`kk5_all.py`, `kk5_range.py`, `kk5_classes.txt`, `kk5_all_log.txt`): the 10,395 matchings M_11 form 19
+classes under the symmetries of the hypothesis fixing the vertex 11 (blocks 1..5 permuted and flipped, 13 and 14
+exchanged). **The 12 classes in which M_11 does not pair 13 with 14 are all refuted in 1.5-1.7 s**; the 7 classes
+in which it does are not decided (600 s for one of them, 45 s for the others).
+**Statement proved (machine, 12 calls).** If five lines through x pairwise span grids, then M_11 pairs 13 with 14;
+by the symmetries of the hypothesis on {11,12,13,14} the same holds for M_12, and M_13, M_14 pair 11 with 12:
+**the two remaining lines also span a grid.** In terms of the grid graph on the seven lines through a vertex:
+a K_5 forces the edge on the two other vertices (and K_6, K_7 do not occur).
+Second pass, not conclusive (`kk5_step.py`, `kk5_step_log.txt`): with that eleventh grid added, cadical does not
+decide in 50-120 s any of: nothing more; one matching of blocks 1..5 completed "crosswise"; all ten of them
+respecting all blocks; M_11 fully prescribed (three of the seven classes tried); M_11 and M_12, or M_11 and M_13,
+fully prescribed (five trials). The remaining family "K_5 plus the opposite edge" has about 10^12 complete types
+up to symmetry; no cheap case split found. Not pursued further tonight.
+* Launched 02:27 UTC: kk4 (six grids, four lines pairwise) with one random M_9, 25 minutes of solver time, to see
+  whether the forcing mechanism of the first pass exists one level down (`kk4_long.out`).
