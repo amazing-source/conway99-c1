@@ -1410,3 +1410,62 @@ mais ne donne pas encore le minorant de |D| nécessaire, ni l'exclusion du
 rang modulaire suivant. Ne pas ajouter ce minorant à ceux d'autres familles
 sans traiter leurs collisions croisées. Script et rapport :
 `norm_eight_collision_multiplicities.py/json`; exécution complète <2 s.
+
+### 07h41 — Comptes exacts dans les anti-voisinages de petits motifs
+
+Message LAB649 lu et acquitté : le blocage principal du prochain rang est
+bien le nombre de supports garantis, déjà insuffisant avant collisions.
+Pas de relance du calcul des mêmes multiplicités. L'exploitation directe
+de A² et A³ donne néanmoins des contraintes locales plus fortes.
+
+Pour un motif induit S de taille s, noter X son voisinage extérieur, Y son
+anti-voisinage extérieur, `j(x)=|N(x) inter S|`, et `R={x dans X:j(x)>=2}`.
+Chaque sommet y de Y vérifie exactement
+`deg_Y(y)=14-2s+somme_{r dans R voisin de y}(j(r)-1)`.
+On obtient aussi
+`e(Y)=C+somme_{rr' dans E(R)}(j(r)-1)(j(r')-1)`.
+La constante C dépend seulement du motif et des profils multiples réalisés.
+
+Preuve de l'identité d'arêtes : poser d=A_S*1 et
+`W=somme_{xx' dans E(X)} j(x)j(x')`. L'identité
+`A³=13A-12I+26J`, puis `A²=12I-A+2J`, déterminent W à partir de S :
+`2W=26e(S)-12s+26s²-d^t A_S d
+     -2*somme_v d_v(12+2s-d_v-(A_S d)_v)`.
+Pour x dans X, la somme des poids j sur ses voisins de X vaut
+`2s-j(x)-somme_{v dans S voisin de x}d_v`.
+Multiplier par j(x)-1 et sommer donne D. Sur une arête de X, W-D contribue
+`1-(j(x)-1)(j(x')-1)`. Donc `e(X)=W-D+correction` et
+`e(Y)=693-e(S)-14|X|+e(X)`, d'où C.
+
+Les profils multiples sont forcés par les capacités résiduelles de voisins
+communs dans S. Ils sont de taille deux, sauf pour la maison : son unique
+profil de taille trois est réalisé ou non, selon delta=1 ou 0. Le sommet
+de ce profil complète la maison en prisme. Le script énumère toutes les
+possibilités (au plus 64 sélections de profils et 1024 graphes sur R).
+Les intervalles ci-dessous sont des conditions nécessaires, pas des
+affirmations que toutes leurs valeurs s'étendent à C1.
+
+| Motif S | Taille Y | Identité pour e(Y) | Correction possible |
+|---|---:|---:|---:|
+| C4 | 51 | 173 + e(R) | 0,1,2 |
+| paw | 50 | 164 + e(R) | 0,1 |
+| moulin/bowtie | 40 | 96 + e(R) | 0,1,2,3,4 |
+| maison, delta=0 | 41 | 103 + e(R) | 0,1,2 |
+| maison, delta=1 | 40 | 99 + e(R_2) | 0,1 |
+
+Dans le dernier cas, R comprend le sommet de poids deux et deux sommets
+R_2 de poids un; le premier n'est adjacent à aucun des deux autres, donc
+la correction se réduit à l'arête éventuelle de R_2.
+
+Il y a 2079 moulins : centre puis deux des sept paires de son voisinage.
+Il y a 8316 maisons : un C4 puis l'une de ses quatre arêtes, dont le
+compléteur fournit le toit et ne peut être adjacent aux deux autres sommets.
+Chaque prisme contient six maisons, et chacune a au plus un compléteur en
+prisme. Ainsi `somme delta=6p`, où p est le nombre total de prismes.
+Le nombre de z signés de support sept, somme ±3 et norme projetée huit,
+obtenus par un moulin ou une maison positif et une arête négative éloignée,
+est donc au moins `2*(2079*96+8316*103-24p)`, soit **2057064** en utilisant
+p<=1150. C'est un compte brut : ne pas le lire comme un minorant de a_4
+sans retrancher les collisions. Le gain seul ne comble pas l'écart du rang.
+
+Code et rapport `small_antineighborhoods.py/json`, calcul <0,1 s.
