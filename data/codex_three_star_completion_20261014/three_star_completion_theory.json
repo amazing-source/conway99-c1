@@ -44,6 +44,16 @@
     "remaining_work": "Selection of one profile per label satisfying all simultaneous moments and all induced 0/1 pair compatibilities is not implemented. A complete candidate would still be checked against the SRG equations; no existing peer graph is re-audited.",
     "count_bound": "When residual rank is30, the product of exact necessary domain sizes is a certified upper bound on labelled SRG completions. It is generally far too large unless domains collapse; an empty exact necessary domain or incompatible marginal proves that supplied boundary cannot extend."
   },
+  "fractional_relaxation_witness": {
+    "formula": "Gamma0_yz=(2-|y intersect z|-mate_incidence(y,z))/10, with entries0,1/10,1/5.",
+    "spectral_identity": "For full root incidence D, Pi=I-D^t(DD^t)^(-1)D and T0=3I-Gamma0-K=3Pi. Thus0<=T0_SS<=3I<=7I.",
+    "exact_checks": "All three-star equations, all natural off-diagonal boundary caps (B^2)_ij<=2-B_ij, and degrees<=14 hold. The smallest cap slack among far pairs in S is16/100.",
+    "rank": "T0_SS has rank31 and nullity3. It therefore violates the rank<=30 necessary for a true Conway boundary.",
+    "meaning": "The continuous relaxation with these local counts/caps and PSD cuts is feasible. Integrality and the additional kernel relation remain essential; no SRG or binary49-vertex object has been obtained. Other extra constraints can change the relaxation.",
+    "provenance": "An explicit specialization of the previously derived forced operator E0; not a new general spectral-completion theorem.",
+    "artifact": "fractional_psd_witness.json",
+    "script": "code/codex/three_star_fractional_witness.py"
+  },
   "implementation": {
     "path": "code/codex/three_star_column_domains.py",
     "input": "JSON with labels as34 pairs of integers0..13, and gamma (or adjacency) as a34 by34 binary symmetric matrix. Centres are0,1,2; mates are c xor1. Labels may be in any order and are normalized.",

@@ -1829,3 +1829,38 @@ lineaire supplementaire12100/1210, norme rationnelle creuse contre dense,
 conditions de Hall sur les degres. Pas de nouvel audit de graphe du pair.
 SymPy1.14.0 installe dans c1-lambda1-env pour ce calcul exact. Sources,
 preuves et rapports dans data/codex_three_star_completion_20261014/.
+
+### Limite exacte de la relaxation continue a trois etoiles
+
+Claude695 : aucun Gamma34 PSD dans40 tirages ; coupes MILP toujours sans
+temoin ; passage a une relaxation continue. Pas de reproduction de ses
+tirages. Construction de MON cote d'un temoin fractionnaire explicite,
+specialisation de l'ancien operateur force E0, transmise au pont696.
+
+Sur les84 labels, Gamma0_yz=(2-|y inter z|-m(y,z))/10, m comptant les
+incidences de mates. Les entrees sont0,1/10,1/5 et la diagonale0.
+Avec D l'incidence14x84, DD^t=11I+J-B_matching et
+(DD^t)^(-1)=(11I+B_matching)/120-J/240. On obtient exactement
+  T0=3I-Gamma0-K=3Pi, Pi=I-D^t(DD^t)^(-1)D.
+Donc0<=T0_SS<=3I<=7I. Le temoin satisfait les trois comptes d'etoiles,
+les plafonds naturels (B49^2)_ij<=2-B49_ij et les degres<=14.
+
+Mais rang(T0_SS)=31, pas30. Un vecteur dans ker(Pi_SS), prolonge par zero,
+est D^t f porte sur S. Les50 paires restantes imposent f_c+f_d=0 sur les
+11 lettres hors des centres. Leur graphe est connexe et contient un
+triangle, donc tous ces poids sont nuls ; restent les3 poids des centres.
+Nullite exactement3. Il manque donc bien une quatrieme relation.
+
+Consequence : les comptes/plafonds continus annonces et les coupes PSD
+SEULS ne peuvent pas exclure ce point. L'integralite et la condition
+non convexe de rang<=30 restent des obstacles distincts. D'eventuelles
+contraintes supplementaires du LP du pair peuvent changer la relaxation ;
+aucun jugement sur son implementation, aucun nouvel audit de ses calculs.
+
+Certificat exact entier/rationnel produit en2,57s par
+code/codex/three_star_fractional_witness.py : Pi^2=Pi, D Pi=0, identite
+T0=3Pi, rang31 et plafonds verifies pour NOTRE temoin. Marge minimale sur
+les plafonds des paires de S :16/100. Matrices sauvegardees dans
+data/codex_three_star_completion_20261014/fractional_psd_witness.json.
+Ce fichier est volontairement fractionnaire, non accepte comme entree
+binaire du preprocesseur de colonnes. Aucun graphe99 construit ou exclu.
