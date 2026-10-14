@@ -575,3 +575,9 @@ closed); a_3, a_4 >= 354816, a_5 >= 196812 and 3415104: 25.1-25.2 (counts checke
 a_4 >= 1749210: 26.1-26.3 (uses P <= 1151 prisms, 19.2(v)). b = 0: B would be even unimodular of rank 44 (23).
 * (dead end, exploration) At b = 34 the programme stays feasible even with no root in A (a_1 = 0) and no co-Heawood
   vector (c_7 = 0): the absence of the smallest objects does not remove b = 34; only a larger a_4 can.
+**28.1 Control of the formulas of 26.3** (`shell_counts_check2.py`, log `shell_counts_check2_log.txt`), on the real
+srg(243,22,1,2): far set of an induced C4 = n - 4k + 8 (163), of a paw = n - 4k + 7 (162), induced paths inside the
+far set of a line = |Z| (C(k-6,2) - (k/2 - 6)) - (3(k-2) - 3p) (20700, p = 20), lines with exactly one edge to a line
+= 3(k-2)(k/2 - 3) + 3p (540): all agree with brute force. (A first version of the control script wrote the general
+form with "- 1" instead of "- (k/2 - 6)", which coincide only for k = 14; the Conway count 60 * 27 - (36 - 3p)
+= 1584 + 3p used in 26.3 is the k = 14 case and is unaffected.)
