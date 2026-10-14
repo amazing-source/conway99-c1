@@ -57,7 +57,53 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   would be adjacent to z_ab' and to z_a'b', two labels containing b', while mu(z_ab, b') = 2 allows exactly one (the
   second common neighbour after b). The generator's partial counts (C1') exclude it.
 
+- P10 (spectral form of our positivity conditions; LAB, message 731 to Codex). For Sigma = N[v] u S (S a set of labels)
+  and A_Sigma the induced graph: nullity T_S = multiplicity of 3 in A_Sigma; T_S >= 0 iff lambda_2(A_Sigma) <= 3;
+  U_S = 7 Pi_S - T_S is the Schur complement of 4I + A_Sigma with respect to N[v], so U_S >= 0 iff lambda_min(A_Sigma)
+  >= -4 and nullity U_S = multiplicity of -4. Proof: Haynsworth inertia; A[N[v]] = F7 (windmill) has spectrum
+  (1 +- sqrt 57)/2, 1^6, -1^7, so 3I - F7 has exactly one negative eigenvalue and 4I + F7 > 0;
+  (3 - X)^-1 + (4 + X)^-1 = 7 (12 - X - X^2)^-1 and the letter block of (12 - X - X^2)^-1 is (11I + J - Mt)^-1 =
+  (D D^T)^-1, hence T + Schur(4I + A) = 7 Pi. Consequences: (i) interlacing gives, in a Conway graph, mult_3(A_Sigma) >=
+  |Sigma| - 45 and mult_-4(A_Sigma) >= |Sigma| - 55; (ii) for F = {p : N(p) contained in Sigma}, the vectors
+  (A + 4I)(e_p - e_q) and (A - 3I)(e_p - e_q), p, q in F, are eigenvectors of A_Sigma for 3 and -4 (direct check using
+  A^2 = 12I - A + 2J on the columns of F); at three stars F = {v, a, a', b} gives 3 + 3, so the only forced excess is ONE
+  3-eigenvector (four stars: ten, as P6); (iii) every eigenvector of A_Sigma for 3 or -4 that is orthogonal to 1 is a
+  global eigenvector in any extension (Rayleigh), whence column conditions on both sides. Second subconstituent form:
+  Gamma (84 labels) preserves St = span(1_{L_x}); Conway iff D Gamma = 2J - D - Mt D and Gamma^2 + Gamma - 12I =
+  2J - D^T D; on ker D, Gamma has only the eigenvalues 3 (x40) and -4 (x30).
+- P11 (grids are perfect codes). A 3x3 grid G (induced K3 x K3) in a Conway graph is mu-closed, so no outside vertex has
+  two neighbours in G (adjacent pair: lambda; non-adjacent pair: mu); counting 9 x 10 = 90 = 99 - 9, every outside vertex
+  has EXACTLY one neighbour in G. Equitable partition {g} u O_g (O_g = the 10 outside neighbours of g): O_g - O_h is a
+  perfect matching if g ~ h and 2-regular bipartite if g, h are non-adjacent; quotient spectrum 14, 3^9, -4^8.
+  11 * 1_G - 1 lies in E_3; N pairwise disjoint grids need N <= 9 (Gram matrix in E_3).
+- P12 (F2 code; Codex's lemma, checked by hand, strengthened). A = E1 (mod 2) since E1 = (A + 4I)(A - 14I)/(-77) is
+  2-integral and 14 E0 - 4 E2 = 14J/99 - 2(A - 3I)(A - 14I)/63 is even; so C = im_F2(A) = Fix(A) has dimension exactly 54,
+  F2^99 = C + ker_F2(A) (orthogonal), every primitive integral 3-eigenvector has >= 8 odd coordinates (Codex: words of C
+  have even weight w >= 2 + (k - 2)/mu = 8), and ker_F2(A) also has minimum weight >= 8.
+- P13 (rank form of specialness). With N_l the 36 x 60 incidence between H_l and the far set of l:
+  N_l N_l^T = 12I - A_H - A_H^2 + 2J - P_groups, which equals (3 - A_H)(4 + A_H) on the group-sum-zero space (A_H
+  preserves it), so rank N_l = 35 - c(l) and ker N_l (dimension 25 + c(l)) is the sum of the 3- and -4-eigenspaces of the
+  far graph D_l. Remark: the coincidence 'degree of H_l = eigenvalue r = 3' happens only for k = 14 in the family
+  srg(k^2/2 + 1, k, 1, 2); for k = 22 (243 graphs) the analogous factor (4 - A_H)(5 + A_H) is definite, so 'special'
+  (H_l disconnected) has no spectral meaning there.
+
+## LITERATURE (checked 14/10 evening; statuses are those of the sources, not re-proved here)
+- Makhnev, Mat. Zametki 44(5) (1988) 667-672 'Strongly regular graphs with lambda = 1': according to Reimbayev
+  (arXiv 2409.10620, 2508.03377), srg(99,14,1,2) does not exist if every pair of triangles joined by two edges is joined
+  by three (i.e. n_2 = 0 below). With n_e = number of pairs of disjoint lines joined by e edges, a Conway graph has
+  n_2 + 3 n_3 = 4158 (= 2 x 2079 quadrangles; checked), hence n_2 > 0 and at most 1385 prisms. Not read in the original.
+- Lou and Murin (MIT PRIMES 2014, 'On the strongly regular graph of parameters (99,14,1,2)', Thm 2.1): the 3x3 grid
+  minus an edge is not an induced subgraph (completion lemma via the Wilbrink-Brouwer identity). High-school report,
+  proof not re-checked. It does NOT exclude grids.
+- Reimbayev (arXiv 2508.03377): all 6-vertex induced subgraph counts of srg(n,k,1,2) are affine in one free parameter
+  (n_2 in our notation); 7-vertex counts (arXiv 2608.19410) in two parameters.
+- Thakkar-Severini (arXiv 2608.11211): the 84-vertex reduction, CP-SAT inconclusive, interlacing listed as future work.
+- No source found on 3x3 grids, special lines, or spectral positivity of local objects.
+
 ## VERIFIED (exact computations; files in this folder)
+- line_pairs.py on the eight srg(243,22,1,2): n_2 = 0 only for BvLS (8910 prisms, 1485 grids, every prism in a grid);
+  the seven others have n_2 = 9720 to 19440 and 405 to 837 grids, yet every line is special in all eight. So the census
+  below is not an artefact of the extreme case n_2 = 0; but by P13 it has no spectral analogue for 99 either.
 - Census (line_components.py): in the EIGHT known srg(243,22,1,2) every one of the 891 lines is special, and every line
   lies in at least one grid (a 6-vertex component of H_l). Caveat: the eight graphs are related (covers, trades); the
   similar observations of notes 176-177 (grids, prisms) stayed unproved and may be artefacts of the construction.
