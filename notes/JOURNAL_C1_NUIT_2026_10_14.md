@@ -1508,3 +1508,81 @@ Fin des deux essaisR40 : seeds902/903,359/347noeuds,80/70s, seul le graphe
 de depart reconstruit,17 enumerations incompletes dans chaque essai. Aucun
 nouveau SRG, aucune exclusion de ces bords. Bilan des essais et sources :
 data/codex_lambda_one_construction_20261014/construction_run_summary.json.
+
+### 14 octobre : mecanisme d'asymetrie par les triangles et circuits
+
+Priorite precisee par Dilan : comprendre fondamentalement l'asymetrie des
+SRG, en particulier lambda=1. Pas de sondages repetes du pont vide, ni de
+verification independante des resultats de Claude. Les graphes et leurs
+groupes complets deja fournis sont acceptes. Les calculs suivants portent
+sur de NOUVEAUX objets derives ; aucun groupe complet n'est recalcule.
+
+Pour une racine x, F=V\N[x]. T_x retient l'arete yz de G[F] lorsque son
+unique triangle est complete dans N(x). T_x est mu-regulier et sans triangle.
+En effet, chaque a dans N(x) intersection N(y) fournit exactement un tel z,
+necessairement dans F ; deux a ne peuvent fournir le meme z (lambda=1).
+Aucune arete de T_x n'appartient a un triangle dans F. Le graphe residuel
+U_x=G[F]-T_x est donc (k-2mu)-regulier, et chacune de ses aretes appartient
+encore a un unique triangle dans U_x. Si mu=2, T_x est une union de cycles
+de longueur au moins quatre.
+
+K_x retient les aretes touchant N[x] et celles de T_x, avec x distingue.
+Aut(G)_x est un sous-groupe de Aut(K_x,x). Si un invariant intrinseque de x
+definit une classe de taille m et si |Aut(K_x,x)|=h, alors |Aut(G)|<=m*h.
+Un sommet intrinsequement unique avec un squelette enracine rigide suffit
+donc a certifier l'asymetrie. Rigidite apres fixation et impossibilite de
+deplacer la racine sont deux problemes differents.
+
+Calcul nouveau sur les huit243 et hemi378 (1,7s). Invariant : longueurs des
+cycles de T_x pour mu2, histogramme des nombres de C4 aux sommets de T_x
+pour mu8. BvLS garde tout le groupe local 2^11*11!=81749606400 dans K_x.
+Gamma5 : m243,h12. Gamma6 et Gamma8 : m27,54,54,108 et h4,2,2,1.
+Gamma7 : trois classes81 avec h2. Hemi378 : 59 classes6,h1 ; 5 classes3,h2 ;
+4 classes2,h3 ; une classe1,h6. Tous les produits valent6. La racine unique
+est375 ; 354 sommets ont un squelette enracine rigide. Les bornes retrouvent
+les ordres COMPLETS deja fournis pour Gamma5-8 et hemi378, sans les recalculer.
+Donc lambda1, meme avec mu2, ne force PAS un stabilisateur de point non trivial.
+
+Reduction explicite pour mu2 : S=N(x) a son appariement P. Chaque sommet
+de F est l'unique second voisin commun d'une paire non appariee {a,b} de S.
+F s'identifie aux aretes de H=K_k-P. Les triangles passant par a apparient
+les aretes de H incidentes a a ; ils definissent un systeme de transitions,
+dont les circuits sont precisement les cycles T_x. Le mot d'un circuit
+enumere les couleurs a de ses aretes. Ses lettres consecutives donnent les
+paires etiquetant les sommets de F. Aut(K_x,x) est exactement le groupe des
+permutations de S preservant P et la collection non orientee de ces mots.
+
+CRITERE FINI : un circuit de longueur L unique parmi ces circuits, utilisant
+les k lettres, reduit le stabilisateur a au plus 2L alignements dihedraux.
+Chaque alignement doit respecter l'egalite des lettres repetees, puis P,
+puis les autres circuits. Sur Gamma6, racine0, le seul circuit de longueur68
+utilise les22 lettres et les repetitions eliminent A ELLES SEULES les135
+alignements non identiques. Sur Gamma8, racine0, longueur40 : les79 autres
+sont elimines de la meme facon. Ce sont des explications combinatoires de
+la rigidite, sans solveur de groupes. Les temoins de rejet sont sauvegardes.
+
+Limite importante : les huit243 ont des cycles de longueur divisible par4,
+mais ce n'est pas une consequence des seules contraintes de la premiere
+etoile. Une construction PARTIELLE sur99 sommets, apres31 petits echanges,
+donne des cycles4,11,69 et un squelette enracine rigide. Les lignes de N[x]
+sont completes, chaque arete presente a un voisin commun, et toute autre
+paire en a au plus deux. Chaque sommet de F a encore10 voisins inconnus.
+Ce n'est PAS un SRG, et sa completabilite n'est pas etablie. Ne pas imposer
+la divisibilite par4 a un SRG inconnu sans une preuve globale supplementaire.
+
+Scripts : asymmetry_triangle_transport.py, triangle_transport_words.py,
+triangle_transport_local_experiment.py. Donnees et preuves detaillees dans
+data/codex_asymmetry_mechanisms_20261014/. Aucun nouveau SRG asymetrique
+construit ; aucun argument d'inexistence de Conway obtenu.
+
+Corollaire utile pour CONSTRUIRE : si la borne m*h est saturee par l'ordre
+connu de Aut(G), et si m compte les racines ayant le meme invariant du
+SQUELETTE LUI-MEME, tout isomorphisme entre K_x et un K_y compatible est
+deja la restriction d'un automorphisme de G. En effet l'orbite de x a
+taille m et le stabilisateur taille h. Comme K_x contient tous les sommets,
+une completion SRG differente, gardant exactement ce squelette etiquete,
+ne peut pas etre isomorphe a G. Cela s'applique a Gamma5-8 et hemi378
+(les invariants initiaux donnent deja les classes utilisees). On peut
+donc bloquer le seed etiquete seul dans une telle recherche : toute autre
+completion serait une nouvelle classe d'isomorphisme. Elle ne serait pas
+automatiquement asymetrique. Aucune telle completion construite ici.
