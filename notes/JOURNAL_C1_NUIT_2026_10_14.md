@@ -1067,3 +1067,110 @@ ne dépend pas du calcul des 4480 supports.
 Les constantes, les 21 C4 et le résidu de norme dix sont intégrés au script
 `coheawood_angle_bound.py` et au rapport correspondant. Preuve globale
 élémentaire; pas d'annonce d'exclusion de C1.
+
+**Corollaires locaux.** Chaque sommet est sur 84 C4, et chaque co-Heawood
+qui le contient utilise six de ces C4 : au plus 56 co-Heawoods par sommet.
+Chaque arête est sur 12 C4, et chaque co-Heawood qui la contient en utilise
+trois : au plus 16 co-Heawoods par arête. Ces bornes sont uniformes.
+
+**Relais LAB 643 et 645, lus et acquittés à 06h38.** LAB annonce aussi
+l'exclusion de b=32 (commit `e5805a1`), soit `rang_F7(A+4I)>=35`. Les
+petits vecteurs projetés donnent a4>=1749546 après contrôle des collisions
+par prismes jumeaux. Pour b=34, son programme reste faisable même en
+remplaçant notre borne c7<=792 par zéro; il lui faut surtout augmenter a4,
+vers 1,4e7. LAB a vérifié le calcul C4/résidu de norme dix mais n'a pas encore
+relu les deux lemmes préalables sur les coefficients et les angles. Notre
+borne 792 est donc transmise avec sa preuve, sans prétendre à une validation
+indépendante de tout l'argument par LAB.
+
+### 06h54 — Petites couches entières de valeur propre +3
+
+**Attention au signe de la valeur propre :** cette section traite +3, et
+non les co-Heawoods de valeur propre -4. Elle vise les collisions entre
+petits vecteurs projetés dont LAB a besoin pour b=34.
+
+Pour Ah=3h entier non nul, de masse M de chaque signe et a=max|h|, le sommet
+extrémal requiert au moins 3a de masse de son propre signe parmi ses voisins.
+Donc M>=4a, et de nouveau `||h||^2>=a^2+7a`. Jusqu'à la norme 16 incluse,
+les coefficients sont nécessairement 0,+1,-1. Si p est la taille de chaque
+signe, les deux graphes induits ont degré minimum trois, et un sommet de
+degré interne d a exactement d-3 voisins de l'autre signe.
+
+Un graphe induit de n sommets et de degré minimum trois a degré maximum
+`floor((2n-2)/3)` : les d voisins d'un sommet induisent un couplage, chacun
+requiert au moins un voisin parmi les n-d-1 non-voisins du sommet, et chacun
+de ces derniers peut en desservir au plus deux. Ainsi d<=2(n-d-1).
+En particulier p>=6, et d<=4 pour p<=8.
+
+**Classification finie exacte.** Le script `small_positive_three_supports.py`
+énumère les graphes cubiques par degrés, puis les graphes avec un sommet de
+degré quatre en fixant ce sommet, le couplage parmi ses quatre voisins et
+les incidences restantes. Les  n! réétiquetages donnent le quotient exact.
+Tous les couples sont ensuite reliés par les couplages possibles entre
+leurs sommets de degré quatre, et les bornes lambda/mu sont contrôlées.
+
+- p=6 : un seul type, le prisme triangulaire; aucune arête entre les signes.
+- p=7 : un seul type H7, degrés (4,3,3,3,3,3,3). Son centre a deux paires
+  de voisins; ses deux non-voisins sont adjacents et se partagent les quatre
+  voisins, un de chaque paire chacun. Deux H7 sont reliés par leurs centres.
+- p=8 : sept types induits, dont trois cubiques, trois de degrés (4,4,3^6),
+  et un de degrés (4^4,3^4), ce dernier étant une grille privée d'un sommet.
+  Treize couples de types et 42 couplages étiquetés subsistent. Les 42 ne sont
+  pas annoncés comme des classes non isomorphes de supports complets.
+
+**Calcul d'extension qui ne conclut pas.** Pour chacun des 44 supports
+(1+1+42), toutes les lignes d'incidence extérieure sont énumérées. Elles
+équilibrent les deux signes, ne violent aucun compte de voisins communs
+dans le support ou avec le nouveau sommet, et ont au plus 14 incidences.
+Les multiplicités de ces lignes doivent satisfaire les degrés restants et
+tous les comptes de voisins communs des paires du support. Les 44 systèmes
+ont une solution rationnelle : chaque solution a été reconstruite en
+fractions et vérifiée exactement, et est enregistrée dans le rapport. Les
+solutions trouvées sont entières pour 27 supports, fractionnaires pour 17.
+Cela **n'est pas** une extension en C1 : les arêtes entre sommets extérieurs
+ne sont pas construites. Ne pas relancer ce même LP en espérant une exclusion.
+
+**Au plus 2871 paires de prismes jumeaux.** Pour un prisme P, posons
+`b_P=A 1_P-3 1_P`. Sur P il vaut zéro. Dehors, un sommet ne peut toucher
+deux sommets de P que s'ils forment l'une des trois arêtes transversales;
+toutes les autres paires ont déjà leur quota de voisins communs dans P.
+Les trois compléteurs de ces arêtes sont distincts. Ainsi b_P vaut deux sur
+trois sommets, un sur 60 sommets, zéro sur 36 sommets, P compris.
+
+Deux prismes de même b_P sont disjoints : sinon leur différence serait un
+vecteur propre +3 dont chaque signe a moins de six sommets. Tous les prismes
+d'une même classe sont contenus dans les mêmes 36 zéros, donc une classe
+en contient au plus six. Avec notre borne globale de 1150 prismes, le nombre
+maximal de paires est `191*C(6,2)+C(4,2)=2871`, et le nombre de vecteurs
+entiers propres +3 de norme 12 est **au plus 5742**, opposés compris. La
+borne de 8625 paires utilisée par LAB peut donc être abaissée à 2871.
+
+Si une classe contient six prismes, ses trois compléteurs forment une
+droite à p=12. En effet `(A+4I)b_P=12*1`; sur un compléteur cela donne
+`nombre_voisins_zero = 10 + nombre_voisins_parmi_les_trois_completeurs`.
+Les six prismes imposent déjà douze voisins zéros, donc les deux autres
+compléteurs sont voisins. Les six prismes donnent alors les six grilles
+contenant cette droite. Ce cas reste autorisé, sous les contraintes p=12
+déjà obtenues cette nuit.
+
+**Au plus 8316 vecteurs entiers propres +3 de norme 14.** Le nombre de H7
+induits est au plus `99*C(7,2)*2=4158`. Pour son centre, on choisit deux
+arêtes de son voisinage; il reste deux façons de répartir leurs extrémités
+entre les deux sommets non voisins du centre, chacun déterminé par mu=2.
+Pour la fonction `b_H=A 1_H-3 1_H`, deux H7 de même b_H sont disjoints :
+une intersection laisserait au plus six sommets dans chaque signe de leur
+différence; avec six, retirer un sommet à H7 laisse toujours un degré deux,
+et avec moins de six le degré minimum trois est impossible.
+Les centres de deux H7 de même b_H sont nécessairement adjacents et
+constituent l'unique arête entre eux. Les centres d'une classe forment donc
+une clique, de taille au plus trois par lambda=1. Il y a au plus 4158 paires
+de H7 d'une même classe, donc au plus **8316 vecteurs signés de norme 14**.
+
+La couche de norme 16 a ses 42 supports nécessaires, mais aucun majorant de
+son nombre n'est obtenu ici. Les vecteurs de support <=16 avec coefficients
+de module deux et de norme supérieure ne sont pas encore classifiés. La
+distinction complète demandée pour les projections de LAB reste donc ouverte.
+
+Fichiers : `small_positive_three_supports.py` et
+`data/codex_night_20261014/small_positive_three_supports.json`. Énumération
+et vérification rationnelle locales en environ 2,5 secondes; aucun SAT.
