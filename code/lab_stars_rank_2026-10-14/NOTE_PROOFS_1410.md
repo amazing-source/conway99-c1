@@ -43,7 +43,28 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   eta = delta - w^T T^+ w > 0: PSD rank 31; = 0: PSD rank 30 with a new relation; < 0: indefinite.
 - Earlier today: flip theorem and Codex's majority theorem (NOTE_ASYM_WINDOW.md sections 3 and 6).
 
+- P8 (special = disconnected; interlacing). For a line l, the 36 vertices adjacent to l (off l) induce a cubic graph
+  H_l (each has its line-mate and one neighbour in each of the two other groups). l is special iff H_l is
+  disconnected iff lambda_2(H_l) = 3. Proof: lambda_2(H_l) <= lambda_2(A) = 3 by interlacing; if equal, the second
+  eigenvector y (orthogonal to 1) extended by zero has Rayleigh quotient 3 and is orthogonal to 1, so it lies in E_3
+  (Courant-Fischer equality, 14 > 3 > -4); conversely a 3-eigenvector of A supported on N(l) - l is constant on the
+  components of H_l. Components have 6 mu vertices (mu lines through each point of l) and every vertex at distance 2
+  from l has exactly mu neighbours in each component. (Same count as Codex's c(l): components of H_l project onto the
+  orbits of <mates, pi_a, pi_a', sigma>.) Spectral corollary: the 60 vertices far from l induce an 8-regular graph with
+  eigenvalue 3 of multiplicity exactly 18 and -4 of multiplicity exactly 7 + c(l) (eigenvalue correspondence
+  theta <-> -1 - theta between complementary vertex sets of an srg; checked with trace and trace of squares).
+- P9 (no twisted squares). A 6-vertex component (mu = 1) is always a straight 3x3 grid: in the twisted square, z_ab
+  would be adjacent to z_ab' and to z_a'b', two labels containing b', while mu(z_ab, b') = 2 allows exactly one (the
+  second common neighbour after b). The generator's partial counts (C1') exclude it.
+
 ## VERIFIED (exact computations; files in this folder)
+- Census (line_components.py): in the EIGHT known srg(243,22,1,2) every one of the 891 lines is special, and every line
+  lies in at least one grid (a 6-vertex component of H_l). Caveat: the eight graphs are related (covers, trades); the
+  similar observations of notes 176-177 (grids, prisms) stayed unproved and may be artefacts of the construction.
+  Paley 9 (m = 2): every H_l is connected (one 6-vertex component).
+- Four stars, positivity: forced grid on (l, m) (best lambda_perp -0.35), both lines forced decomposable (best -0.31 to
+  -0.47): still never PSD; the only PSD four-star structure seen came from the Z5 enumeration with the old model (being
+  re-checked with C1' and U).
 - Z5-invariant three-star structures: rank 30 by the forced grid; 595 PSD and 572 with T and U PSD among the first
   10 000 (z5_valid_all.json). Codex's column filter kills all 572 (75 by a cap, 496 empty domain at {3,4}, 1 at {3,5}),
   plus EX0, EX2, V0, V7, V15 earlier.

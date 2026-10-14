@@ -33,6 +33,32 @@ def main():
     sol = Solver(options={"polar": "rnd", "seed": str(seed)})
     for c in F.clauses:
         sol.add_clause(c)
+    import os
+    sq = os.environ.get("FORCE_SQUARE")         # "grid" or "twisted": impose a closed square on the cross labels
+    if sq:
+        X4 = [idx[frozenset(p)] for p in [(0, 2), (0, 3), (1, 2), (1, 3)]]
+        pairs4 = [(0, 1), (2, 3), (0, 2), (1, 3)] if sq == "grid" else [(0, 1), (2, 3), (0, 3), (1, 2)]
+        for a_, b_ in pairs4:
+            sol.add_clause([e[(X4[a_], X4[b_])]])
+    def force_partition(centre, Mset):
+        cs = set(centre)
+        for i in range(n):
+            for j in range(i + 1, n):
+                li, lj = S[i], S[j]
+                if not (li & cs) or not (lj & cs):
+                    continue
+                xi = [y for y in li if y not in cs]
+                xj = [y for y in lj if y not in cs]
+                if len(xi) != 1 or len(xj) != 1:
+                    continue
+                if (xi[0] in Mset) != (xj[0] in Mset):
+                    sol.add_clause([-e[(i, j)]])
+    part = os.environ.get("PARTITION")          # e.g. "4,5,6,7": letters of M; forces Q(v,l) to split along M
+    if part:
+        force_partition((0, 1), set(int(t) for t in part.split(",")))
+    part_m = os.environ.get("PARTITION_M")      # same for the line m = {2,3}
+    if part_m:
+        force_partition((2, 3), set(int(t) for t in part_m.split(",")))
     Ks = np.array([[kval(a, b) for b in S] for a in S])
     Z = np.array([[1.0 if y in l else 0.0 for l in S] for y in stars]).T
     Qz, _ = np.linalg.qr(Z)
