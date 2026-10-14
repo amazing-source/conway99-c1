@@ -1,0 +1,29 @@
+{
+  "status": "exact checks pass",
+  "ambient_dimension": 44,
+  "harmonic_cubic_gram": "60I - 6P - M/23",
+  "necessary_psd": "10I - P - M/138 - (2/13629)J",
+  "prism_spectral_radius": "strictly less than 10",
+  "prism_graph_degeneracy_at_most": 9,
+  "mean_prism_degree_at_most": "588/59",
+  "quadratic_degree_bound": "sum_T (59*p(T)+2)^2 <= 231*590^2",
+  "unordered_prism_bound": 1150,
+  "integer_checks": {
+    "1150": {
+      "minimum_score": 80293434,
+      "budget": 80411100,
+      "pass_cut": true
+    },
+    "1151": {
+      "minimum_score": 80426184,
+      "budget": 80411100,
+      "pass_cut": false
+    }
+  },
+  "fixtures": {
+    "K10": "passes necessary cut; not a C1 witness",
+    "K11": "rejected: spectral radius 10",
+    "K9_12": "rejected despite empty 10-core",
+    "circulant_minus_4_edges": "1151 edges: old mean passes, new square cut fails"
+  }
+}

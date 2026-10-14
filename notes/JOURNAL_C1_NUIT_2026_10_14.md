@@ -279,3 +279,120 @@ formule de parité commune, puis assouplir la configuration des21 carrés.
 Claude travaille indépendamment sur les sous-familles à moins de
 grilles et sur un seul triangle à12 prismes. Dernier message envoyé627,
 02h33 environ ; aucun retour d'accusé attendu.
+
+## 04h20 — Reprise courte et contrainte spectrale sur TOUS les prismes
+
+Nouvelle session après la panne : `01a13828-ddc7-74a1-9684-acd17b8ee4e9`.
+Lectures de reprise limitées au log des huit commits et à ce journal ; les
+anciennes notes de recherche n'ont pas été ouvertes. Le lecteur du pont a
+été arrêté proprement, son état sauvegardé, reciblé puis relancé caché.
+Messages LAB628–629 lus et acquittés ; message de vie630 envoyé. Le résultat
+LAB « pas de K6 dans le graphe des grilles d'un sommet » est pris avec sa
+portée annoncée, sans refaire son audit. La factorisation autour d'un
+triangle n'a pas encore fourni de nouvelle exclusion locale.
+
+**Nouveau théorème.** Soit R le graphe sur les231 triangles, deux triangles
+étant adjacents lorsqu'ils forment un prisme (trois arêtes entre eux).
+Sa matrice d'adjacence, aussi notée R, vérifie
+
+    10I - R - M/138 - (2/13629)J >= 0,
+
+au sens des matrices positives, où M est la Gram des q_T définie plus haut.
+En particulier :
+
+1. rho(R)<10 ; toute sous-famille non vide contient un triangle ayant au
+   plus neuf partenaires DANS cette sous-famille. Le graphe R est donc
+   9-dégénéré : l'effeuillage des degrés <=9 doit retirer tous les sommets.
+2. sum_T (59 p(T)+2)^2 <= 231*590^2.
+3. Le nombre total de prismes non ordonnés est au plus1150 (contre1151
+   dans la première borne de cette nuit).
+
+Ce sont des conditions nécessaires supplémentaires, pas une exclusion de
+C1. La première borne porte sur chaque sous-famille et ne dit pas que tous
+les degrés individuels p(T) sont <=9.
+
+### Preuve par cubes sans trace
+
+L'espace propre -4 a dimension44. Pour un vecteur x de cet espace,
+écrivons g pour le tenseur métrique et posons
+
+    h(x) = x tensor x tensor x
+           - |x|^2/46 * (x_i delta_jk + x_j delta_ik + x_k delta_ij).
+
+La contraction sur deux indices vaut zéro, et un calcul direct donne
+
+    <h(x),h(y)> = <x,y>^3 - 3 |x|^2 |y|^2 <x,y>/46.
+
+Puisque |q_T|^2=4, leur Gram harmonique est M^{circ3}-(24/23)M.
+Sur les six relations (égalité, intersection, j=0,1,2,3 arêtes entre
+triangles disjoints), les valeurs de M sont (4,0,1,0,-1,-2). Donc
+
+    M^{circ3} = 60I + M - 6R,
+    Gram(h(q_T)) = 60I - 6R - M/23.
+
+Le tenseur V=sum_x u_x^{tensor3} a lui aussi une contraction nulle,
+car |u_x|^2=28 et sum_x u_x=0. Les comptes déjà démontrés donnent
+
+    |V|^2=1471932,
+    <h(q_T),V>=<q_T^{tensor3},V>=3*64-36*8+60=-36.
+
+Projeter chaque h(q_T) orthogonalement à V soustrait
+1296/1471932 J = (4/4543)J à sa Gram. Sa positivité, divisée par6,
+est exactement l'inégalité matricielle annoncée.
+
+Posons beta=2/13629 et K=R+beta J. En oubliant le terme M/138>=0,
+on obtient 10I-K>=0. K est symétrique à coefficients positifs, donc
+son rayon spectral est <=10 et toutes ses valeurs propres sont dans
+[-10,10] (on peut remplacer un vecteur par ses valeurs absolues dans
+le quotient de Rayleigh). Or
+
+    K1 = p + (2/59)1.
+
+L'inégalité |K1|^2<=100|1|^2 donne exactement la contrainte quadratique.
+Pour un total de1151 arêtes, la somme des degrés vaut2302 ; la convexité
+entière minimise la somme des carrés avec223 degrés10 et huit degrés9.
+Cela donne80426184 > 231*590^2 = 80411100. Les totaux supérieurs sont
+également impossibles ; le maximum autorisé par ce seul test est1150.
+
+Enfin un vecteur propre de Perron v>=0 non nul de R vérifie
+
+    (10-rho(R))*|v|^2 >= beta*(sum v)^2 > 0.
+
+D'où rho(R)<10. Une sous-famille dont tous les degrés internes sont >=10
+contredirait cette borne par son quotient de Rayleigh.
+
+### Filtre exact, utilisable pendant une recherche
+
+`code/codex/night_20261014/prism_spectral_cut.py` accepte un JSON avec
+`order` et `edges` d'un graphe PARTIEL de prismes, jusqu'à231 sommets.
+Les degrés et arêtes déjà forcés suffisent : ajouter des arêtes ne peut
+faire décroître ni le score quadratique ni le rayon spectral d'une
+matrice symétrique non négative. Les sommets absents sont complétés par
+des sommets isolés pour le score. Le filtre vérifie successivement la
+borne12 des degrés, le score quadratique, l'absence d'un noyau de degré
+minimum10, puis la coupure spectrale rationnelle.
+
+Le dernier test exige B=10I-R>0 et
+
+    1^t B^{-1}1 <= 13629/2.
+
+C'est le complément de Schur de la matrice entière
+
+    [[2B, 2*1], [2*1^t, 13629]].
+
+Élimination de Bareiss, sans nombres flottants : tous les mineurs
+principaux initiaux jusqu'à B doivent être positifs, le dernier peut
+être nul. C'est équivalent au test 10I-R-beta J>=0 dans notre classe
+non négative. Sur une sous-famille, c'est une condition principale
+nécessaire ; sur un sous-graphe partiel, la monotonie de Perron assure
+la couverture. La réussite du filtre n'est jamais un témoin de C1.
+
+**Contrôles courts.** Formule harmonique vérifiée directement en
+coordonnées, dont la dimension44 ; six relations vérifiées en fractions ;
+borne entière calculée exhaustivement. Le filtre spectral rejette K(9,12)
+malgré son noyau de degré minimum10 vide. Un graphe circulant de degré10
+sur231 sommets, privé de quatre arêtes disjointes, passe l'ancienne borne
+de moyenne mais échoue à la nouvelle contrainte quadratique. Ces graphes
+sont des contrôles du filtre, pas des types locaux réalisables de C1.
+Exécution autonome :0,4s environ, sans paquet externe ni solveur.
+Rapport : `data/codex_night_20261014/prism_spectral_cut.json`.
