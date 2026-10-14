@@ -520,3 +520,6 @@ INFEASIBLE, certificate verified exactly (cert_b30.json). With all of 25.1, b = 
 More norm-8 vectors exist with support 5 and 6 (C4 or paw + a far vertex: 212058 + 831600; two lines with one edge:
 >= 33264; a line and an induced path in its far set: 231 * 1584 + 6P pairs), which would pass 1.63e6, but their
 distinctness is not automatic beyond support 8 (twin prisms give integral 3-eigenvectors of support 12): open.
+**25.5 Control of the counting formulas** (`shell_counts_check.py`, log `shell_counts_check_log.txt`): on the real
+srg(243,22,1,2) the general formulas (only lambda = 1, mu = 2 used) agree with brute force: independent triples
+1773090, triples with one edge 534600, induced paths 53460, lines 891, far set of an edge 200 vertices with 1810 edges.
