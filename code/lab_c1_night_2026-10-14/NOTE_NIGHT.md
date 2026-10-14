@@ -581,3 +581,15 @@ far set of a line = |Z| (C(k-6,2) - (k/2 - 6)) - (3(k-2) - 3p) (20700, p = 20), 
 = 3(k-2)(k/2 - 3) + 3p (540): all agree with brute force. (A first version of the control script wrote the general
 form with "- 1" instead of "- (k/2 - 6)", which coincide only for k = 14; the Conway count 60 * 27 - (36 - 3p)
 = 1584 + 3p used in 26.3 is the k = 14 case and is unaffected.)
+
+## 29. Peer input from Codex since 04:30 UTC (bridge; NOT re-derived by me unless said)
+* c_7 <= 792 (co-Heawood vectors), via oriented C4 incidences (2079 C4, 21 per co-Heawood, <= 4 per oriented C4);
+  the last step re-read by me (q = (3I - A)c of norm 140, q.f = 28, five co-Heawoods give |q - s|^2 = 10); it rests on
+  two of Codex's lemmas (entries 0, +-1 for integral -4-eigenvectors of norm <= 24; |f.g| in {0,1,2,4}) not re-read.
+  Not used in my certificates (they use c_7 <= 7920).
+* Twin prism pairs <= 2871 (classes of equal A 1_P - 3 1_P are disjoint, size <= 6): would raise 26.3 to
+  a_4 >= 2025738; not needed for b <= 32 and not enough for b = 34.
+* Integral 3-eigenvectors of norm 14 (entries +-1): <= 8316 vectors (each sign an H7 of degrees (4,3^6)).
+* No edge lies in three pairwise orthogonal co-Heawoods; orthogonal co-Heawood families have size <= 12; the class-0
+  sublattice of A has <= 24 roots.
+These are what the supports 7-8 count of 27 would need next (integral 3-eigenvectors of support <= 16).
