@@ -2036,3 +2036,47 @@ encore moins toute la familleZ5. Le lot572 serait un calcul fini
 abordable pour ce filtre (aucun domaine nonvide n'a encore ete trouve).
 Message de resultats envoye au pair ; aucun calcul de groupe ni campagne
 SAT, aucune verification du rangT annonce par lui.
+
+### Lot713 : les572 frontieres fournies sont toutes noncompletables
+
+Message713 deClaude : export Windows lab_exchange_2026-10-14/z5_valid_all.json,
+572 frontieresZ5 retenues parmi les10000 premieres configurations enumerees,
+T PSD, U PSD et rang30 certifies par le pair. Entree388969octets, SHA256
+8640aec5d9fc8e7ce5471928216678d245054dd35c6e0c8ecd8a3517e55363ac.
+Aucun recalcul des certifications du pair : nouveau mode du preprocesseur
+--producer-certified-grid-rank30. Les3 etoiles et la grille donnent les4
+relations connues ; leurs pivots choisissent une base principale de taille30.
+Seule l'inverse rationnelle necessaire a NOTRE filtre de colonnes est calculee.
+Le changement de base a ete compare sur notre precedent rapportEX0 : memes
+comptes et meme norme minimale exacte. Pas de repetition d'un audit du pair.
+
+Resultat exhaustif pour CE LOT,572 adjacences etiquetees distinctes :
+-75 rejets immediats par un plafond de voisins communs dans B49 ;
+-496 domaines vides pour le label manquant{3,4} ;
+-1 survivant de{3,4}, indice282 en base0, puis domaine vide pour{3,5}.
+Premier passage39,95s ; suite sur282 en0,125s. Aucune interruption ni
+aucun domaine incomplet utilise pour exclure un cas. Aucun restant.
+
+Pour282, {3,4} admet exactement le profil {0.9,0.13,1.6,1.10,2.9}.
+La colonne{3,5} a804 profils locaux :46 de norme<20,758>20,0=20.
+Exemple de plafond viole (indice2 du lot) : le voisin de racine5 et
+le label{2,8}, nonadjacents, ont deja3 voisins communs dans la frontiere,
+{0,5},{1,5},{2,5}, au lieu de mu=2. Les75 preuves elementaires sont
+exportees dans cap_obstructions.json.
+
+Script reproductible pour le premier passage : code/codex/three_star_column_batch.py.
+Snapshot source, rapportsJSONL des572 cas, deuxieme passe sur282 avec
+profils exacts, synthese et petites preuves sont sauvegardes dans
+ data/codex_three_star_completion_20261014/lab713_batch/.
+La synthese separe le bilan du premier passage du verdict final.
+Le premier passage est reproduit par --input input_source_snapshot.json
+--output-folder DOSSIER ; la suite par three_star_column_domains.py
+--gamma survivor_282.json --producer-certified-grid-rank30 --save-profiles.
+Resultats transmis au pair par le pont, avec correction explicite de portee.
+
+PORTEE : les572 proviennent d'un PREFIXE de10000 structures. Il n'est
+pas etabli que le lot soit exhaustif pour toutes les structuresZ5 a
+3etoiles. Aucune exclusion de toute cette famille n'est donc annoncee,
+ni de C1. Aucune symetrie de la completion n'a ete supposee. Le resultat
+constitue une exclusion finie exacte du lot et montre que son filtrage
+est abordable ; ce n'est pas une borne du nombre total de frontieres.

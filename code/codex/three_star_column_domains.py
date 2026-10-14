@@ -138,7 +138,7 @@ def boundary_degree_statistics(gamma):
                 degree8_position_upper_bound=(40 if double else 1)*comb(10, bp_double_degree))
 
 
-def prepare(gamma):
+def prepare(gamma, producer_certified_grid_rank30=False):
     # Full induced 49 by 49 boundary: root, its 14 neighbours, then S.
     boundary = [[0]*49 for _ in range(49)]
     for c in range(14):
@@ -157,32 +157,46 @@ def prepare(gamma):
         if sum(boundary[centre]) != 14 or any(residual[centre, j] for j in range(49)):
             raise ValueError('The four closed neighbourhoods are not complete/consistent.')
     statistics = boundary_degree_statistics(gamma)
-    upper = analyse_ambient_upper(gamma)
-    if not upper['complementary_gram']['psd']:
-        witness = upper['complementary_gram']
-        raise ValueError('Complementary Gram 7Pi_SS-T_SS is not PSD: '
-                         f'integer quadratic witness value {witness["quadratic_value"]} for 15U; '
-                         f'vector {witness["integer_witness"]}.')
     M = sp.Matrix(34, 34, lambda i, j:
                   24*(i == j) - 8*gamma[i][j] - k8(S[i], S[j]))
-    reduced, basis = M.rref()
-    rank = len(basis)
-    if rank > 30:
-        raise ValueError(f'Exact residual spectral rank {rank} exceeds 30.')
-    kernels = []
-    for j in range(34):
-        if j not in basis:
-            v = [sp.Integer(0)]*34
-            v[j] = sp.Integer(1)
-            for i, pivot in enumerate(basis):
-                v[pivot] = -reduced[i, j]
-            kernels.append(primitive(v))
+    if producer_certified_grid_rank30:
+        # This path consumes the producer's rank and BOTH Gram certifications.
+        # The four known relations determine a principal basis without auditing
+        # the seed rank or repeating its PSD computations.
+        grid = {(0, 2), (0, 3), (1, 2), (1, 3)}
+        kernels = [tuple(int(c in p) for p in S) for c in CENTRES]
+        kernels.append(tuple(int(p in grid) for p in S))
+        relation_matrix = sp.Matrix(kernels)
+        assert M*relation_matrix.T == sp.zeros(34, 4), 'Producer grid/label contract mismatch.'
+        excluded = relation_matrix.rref()[1]
+        basis = tuple(i for i in range(34) if i not in excluded)
+        rank = 30
+        assert len(basis) == rank
+    else:
+        upper = analyse_ambient_upper(gamma)
+        if not upper['complementary_gram']['psd']:
+            witness = upper['complementary_gram']
+            raise ValueError('Complementary Gram 7Pi_SS-T_SS is not PSD: '
+                             f'integer quadratic witness value {witness["quadratic_value"]} for 15U; '
+                             f'vector {witness["integer_witness"]}.')
+        reduced, basis = M.rref()
+        rank = len(basis)
+        if rank > 30:
+            raise ValueError(f'Exact residual spectral rank {rank} exceeds 30.')
+        kernels = []
+        for j in range(34):
+            if j not in basis:
+                v = [sp.Integer(0)]*34
+                v[j] = sp.Integer(1)
+                for i, pivot in enumerate(basis):
+                    v[pivot] = -reduced[i, j]
+                kernels.append(primitive(v))
     principal = M.extract(basis, basis)
     # A nonsingular principal block of a PSD matrix must be positive definite.
     # Exact LDL pivots certify that property without floating tolerances.
     lower = [[sp.Integer(i == j) for j in range(rank)] for i in range(rank)]
     diagonal = []
-    for i in range(rank):
+    for i in range(0 if producer_certified_grid_rank30 else rank):
         pivot = principal[i, i] - sum(lower[i][j]**2*diagonal[j] for j in range(i))
         if pivot <= 0:
             raise ValueError('The residual spectral matrix is not positive semidefinite.')
@@ -197,6 +211,8 @@ def prepare(gamma):
                 rank=rank, basis=basis, kernels=kernels, inverse=numerator,
                 denominator=denominator, statistics=statistics,
                 complementary_gram_psd=True,
+                spectral_properties_source=('producer certification' if producer_certified_grid_rank30
+                                            else 'exact local preparation'),
                 M=[[int(x) for x in M.row(i)] for i in range(34)])
 
 
@@ -320,17 +336,19 @@ def degree_obstructions(columns, expected):
     return violations
 
 
-def analyse(gamma, seconds=30, keep_profiles=False, label_indices=None):
+def analyse(gamma, seconds=30, keep_profiles=False, label_indices=None,
+            producer_certified_grid_rank30=False):
     started = time.monotonic()
     report = dict(status='NECESSARY_DOMAINS_ONLY', input_labels=S, remaining_labels=U,
                   full_srg_constructed=False, solver_or_group_audit_run=False)
     try:
-        prepared = prepare(gamma)
+        prepared = prepare(gamma, producer_certified_grid_rank30)
     except ValueError as error:
         report.update(status='NO_COMPLETION', reason=str(error), seconds=time.monotonic()-started)
         return report
     report.update(spectral_rank=prepared['rank'], kernel_dimension=len(prepared['kernels']),
                   complementary_gram_psd=prepared['complementary_gram_psd'],
+                  spectral_properties_source=prepared['spectral_properties_source'],
                   full_rank_reconstruction_available_after_columns=(prepared['rank'] == 30),
                   spectral_basis=prepared['basis'], kernels=prepared['kernels'],
                   inverse_numerator=prepared['inverse'], inverse_denominator=prepared['denominator'],
@@ -443,6 +461,8 @@ def main():
     parser.add_argument('--label-indices', type=int, nargs='+')
     parser.add_argument('--self-test', action='store_true')
     parser.add_argument('--universal-counts', action='store_true')
+    parser.add_argument('--producer-certified-grid-rank30', action='store_true',
+                        help='Consume a producer certification of rank30, both PSD Grams, and the fixed grid; do not re-audit them.')
     args = parser.parse_args()
     if args.self_test:
         result = self_test()
@@ -455,7 +475,8 @@ def main():
             parser.error('Remaining-label indices must lie in 0..49.')
         if args.label_indices is not None and len(set(args.label_indices)) != len(args.label_indices):
             parser.error('Remaining-label indices must not be repeated.')
-        result = analyse(load_gamma(args.gamma), args.seconds, args.save_profiles, args.label_indices)
+        result = analyse(load_gamma(args.gamma), args.seconds, args.save_profiles, args.label_indices,
+                         args.producer_certified_grid_rank30)
     rendered = json.dumps(result, indent=2)
     if args.output:
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
