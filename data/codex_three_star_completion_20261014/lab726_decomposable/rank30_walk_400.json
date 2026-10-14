@@ -1,0 +1,42 @@
+{
+  "status": "BOUNDED_RANK30_CIRCUIT_WALK",
+  "processed_states": 400,
+  "queued_states": 5000,
+  "discovered_states": 5802,
+  "counts": {
+    "binary_legal": 191937,
+    "locally_admissible": 50328,
+    "kernel_moving_indefinite": 13636,
+    "local_cap_rejections": 141609,
+    "old_kernel_immediately_forbids_PSD": 7636,
+    "kernel_preserving_indefinite": 16474,
+    "kernel_preserving_PSD30": 10252,
+    "kernel_moving_PSD31": 2330,
+    "reflection_incidence_four_cycles": 62400,
+    "reflection_fixes_closed_relation": 43200,
+    "reflection_moves_closed_relation": 19200,
+    "reflection_nonzero_diagonal_after_conjugation": 9372,
+    "reflection_nonintegral_after_conjugation": 9828,
+    "states_not_queued_at_memory_bound": 402
+  },
+  "candidates": [],
+  "seed_paths": [
+    "data/codex_three_star_completion_20261014/lab726_decomposable/dec_81.json",
+    "data/codex_three_star_completion_20261014/lab726_decomposable/dec_82.json",
+    "data/codex_three_star_completion_20261014/lab726_decomposable/dec_83.json",
+    "data/codex_three_star_completion_20261014/lab726_decomposable/dec_84.json"
+  ],
+  "maximum_states": 400,
+  "seconds_budget": 55.0,
+  "maximum_queue": 5000,
+  "patterns_per_state": 67730,
+  "elapsed_seconds": 24.400927700000466,
+  "details": "data\\codex_three_star_completion_20261014\\lab726_decomposable\\rank30_walk_400.jsonl",
+  "scope": [
+    "Seed rank30 and both PSD certifications are accepted from their producer.",
+    "Only exact PSD rank30 states with a two-star closed-set relation are queued.",
+    "No upper-Gram audit is performed on intermediate states; final candidates require U PSD.",
+    "A generalized inverse is used only for vectors in the image, including w=s*a-r*b.",
+    "A bounded search is not an exclusion and does not prove assertion(A)."
+  ]
+}

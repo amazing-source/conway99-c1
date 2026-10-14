@@ -2246,3 +2246,39 @@ sans recalcul des rangs sources :637 mouvements binaires,192 locaux,
 les7 graines historiques valides pour cette nouvelle famille de mouvements.
 Synthese six_seed_circuit_summary.json. Aucun processus de recherche
 reste en cours a la fin de ce passage ; aucune campagne globale lancee.
+
+### Nouvelles bases du pair726 :2+4 avec b dans4, puis3+3
+
+SourceWindows lab_exchange_2026-10-14/dec_seeds.json, SHA256
+ceb0ec8edef6e227e836707b5db7ce3f8634d5cfd431df21d9ec3aeec4337192.
+dec81/82 : composanteM={2,3} en indices de paires, b dans l'autre ;
+dec83/84 : M={2,3,4}. Les4 certifications T/U PSD, rang30,c2 etplafonds
+sont acceptees du producteur. Snapshot et travail dans lab726_decomposable/.
+
+VERIFIE : chacune est exclue par la colonne manquante{3,4}. Les comptes
+complets (local ; norme<20,=20,>20) sont81:(1013;48,0,965),
+82:(1452;102,0,1350),83:(881;74,0,807),84:(779;47,0,732).
+Temps par enumeration0,078-0,109s. Les2+4 ont12320 profils de noyau,
+les3+3 en ont12510. Les50 domaines ne sont pas tous parcourus puisqu'un
+seul domaine VIDE suffit. Ce n'est pas une exclusion des types entiers.
+
+Les192 reflets4cycles mobiles des4 graines echouent tous a produire une
+adjacence binaire sans boucles(89 diagonales non nulles,103 non entiers).
+Les192 rectangles mobiles donnent82 rejets de plafonds,96 indefinis,
+14 PSD31,aucun rang30. Nouvelle marche three_star_rank30_walk.py :
+les circuits disjoints r=s=0 utilisent le critere determinant sur l'image
+de rang30 ; les circuits mobiles utilisent eta. Le pseudo-inverse sur
+une base principale n'est applique qu'a des vecteurs de l'image, notamment
+w=s*a-r*b. Controle propre sur deux projecteurs rationnels construits,
+sans aucune matrice du pair :4 identites exactes PASS.
+
+VERIFIE/BORNE :400 etats explores en24,40s ;5000 en file,402 ecartes a
+la borne de stockage.50328 mouvements locaux :10252 PSD30 conservant le
+noyau,2330 PSD31,13636 indefinis en deplacant le noyau,16474 indefinis en
+le conservant,7636 impossibles par energie nulle/negative de l'ancien noyau.
+Aucun nouveau noyau de rang30,aucun rang29.19200 reflets mobiles sur
+ces etats,aucun binaire. Ne pas annoncer une composante epuisee. U n'est
+pas filtre sur les etats intermediaires ; il serait exige sur un candidat.
+La marche est terminee, pas en arriere-plan. Correction defensive du
+scanner : un nouveau rang30 peut avoir Q encore deconnecte ; il est
+classe ainsi, sans l'annoncer comme contre-exemple a(A).

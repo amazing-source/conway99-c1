@@ -8,6 +8,7 @@ No seed rank or PSD check is repeated.
 import argparse
 from collections import Counter
 from itertools import combinations
+from functools import lru_cache
 from pathlib import Path
 import json
 import sys
@@ -17,6 +18,7 @@ from three_star_rank_repairs import LABELS, load_gamma, boundary_masks
 from three_star_connected_repairs import classify_gamma
 
 
+@lru_cache(maxsize=1)
 def four_cycles():
     index = {p:i for i, p in enumerate(LABELS)}
     result = set()

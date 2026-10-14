@@ -78,7 +78,13 @@ def scan(gamma, closed_pairs, candidate_directory):
             counts['PSD_rank30'] += 1
             new_gamma = switched(gamma, rectangle)
             new_structure = classify_gamma(new_gamma)
-            assert new_structure['component_count'] == 1
+            if new_structure['component_count'] != 1:
+                counts['rank30_Q_disconnected'] += 1
+                candidates.append(dict(rectangle=rectangle, sign=sign,
+                                       component_count=new_structure['component_count'],
+                                       components=new_structure['outer_pair_components'],
+                                       disposition='The kernel changed but Q remains disconnected; this is not a counterexample to(A).'))
+                continue
             upper = analyse_upper(new_gamma)
             record = dict(rectangle=rectangle, sign=sign,
                           component_count=1, rank_T_by_update_theorem=30,
