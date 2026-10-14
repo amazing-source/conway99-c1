@@ -91,6 +91,15 @@ def main():
     assert dict(histogram) == {10: 21, 12: 49, 13: 14, 14: 1}
     excluded = [dot for dot in range(3, 8) if histogram[14-dot] == 0]
     assert excluded == [3, 5, 6, 7]
+    # For a fixed signed C4, q=7P c is integral, ||q||^2=140,
+    # and <q,f>=28 for every co-Heawood containing it. Such f have
+    # pairwise inner product 4. Five of them would leave norm ten.
+    five_sum_norm = 5*14 + 2*10*4
+    residual_norm = 140 + five_sum_norm - 2*5*28
+    assert residual_norm == 10 < 14
+    srg_four_cycles = 99*84//4
+    unsigned_bound = 4*srg_four_cycles//21
+    assert srg_four_cycles == 2079 and unsigned_bound == 396
     report = dict(coefficient_bound=dict(max_norm=24, max_abs_entry=1,
                                         rejected_twos=small_coefficient_cases()),
                   induced_minimum_degree_three=dict(sorted(histogram.items())),
@@ -107,6 +116,11 @@ def main():
                   norm24_three_edges_case=dict(each_sign_graph='three disjoint edges',
                                                 outside_degree_one_in_each_sign=42,
                                                 outside_degree_two_in_each_sign=33),
+                  global_coheawood_bound=dict(srg_four_cycles=srg_four_cycles,
+                                              four_cycles_per_coheawood=21,
+                                              max_coheawoods_per_four_cycle=4,
+                                              five_coheawood_residual_norm=residual_norm,
+                                              unsigned=unsigned_bound, signed=2*unsigned_bound),
                   sign_subgraphs_triangle_free=True,
                   four_cycle_complements=sorted(complements))
     out = Path(__file__).resolve().parents[3] / 'data' / 'codex_night_20261014'

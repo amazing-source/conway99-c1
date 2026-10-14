@@ -1023,3 +1023,47 @@ signe induit trois arêtes disjointes. Tous les 75 sommets extérieurs ont
 alors a_z=1 ou 2, exactement 42 du premier type et 33 du second. Il s'agit
 d'une égalité exacte et d'une contrainte de solveur, pas d'une exclusion de
 la couche de norme 24. Le script et son rapport incorporent ce raffinement.
+
+### 06h32 — Au plus 396 co-Heawoods, soit 792 vecteurs signés
+
+**Nouvelle borne globale :** C1 contient au plus **396 co-Heawoods induits**,
+et donc au plus **792 vecteurs entiers de norme 14**, opposés compris. La
+borne LAB précédente sur cette couche était 7920. Aucun quotient modulo
+symétrie n'intervient ici : il s'agit du nombre total dans un éventuel C1.
+
+Fixons un C4 I et signons ses deux parties par +1 et -1. Tous les
+co-Heawoods qui le contiennent peuvent être orientés de manière concordante
+sur I. Deux de leurs vecteurs f,g ont alors produit scalaire exactement
+quatre et n'ont aucun autre sommet commun. Voici pourquoi ce point n'est
+pas une hypothèse : f+g possède déjà deux +2 et deux -2. Pour deux sommets
+de valeur +2, la masse négative de f+g est au moins 8+8-4=12. Avec au moins
+quatre entrées de module deux, cela donne `||f+g||^2>=2*(12+4)=32`, donc
+f.g>=2. Le lemme de coordonnées appliqué à f-g, de norme <=24, interdit
+toute intersection de signes opposés. Le produit scalaire est donc la
+taille de l'intersection, au moins quatre; la borne d'angle le borne par
+quatre. Il vaut quatre et l'intersection est exactement I.
+
+Soit c le vecteur signé de I et `q=7P c=3c-Ac`, entier propre -4. On a
+`c.c=4`, `c.Ac=-8`, donc `q.q=7*(3*4+8)=140`. Pour chaque co-Heawood f
+contenant I, `q.f=7*c.f=28`. Si cinq tels vecteurs f1,...,f5 existaient,
+leur somme s aurait norme `5*14+2*C(5,2)*4=150`. Le vecteur entier propre
+`q-s` aurait alors norme `140+150-2*5*28=10`, impossible au minimum entier
+de norme 14. **Chaque C4 appartient donc à au plus quatre co-Heawoods.**
+
+Le graphe C1 possède exactement `99*84/4=2079` C4, puisque chaque paire
+non adjacente a ses deux voisins communs et chaque C4 est compté par ses
+deux diagonales. Un co-Heawood en possède exactement 21, un pour chaque
+paire de sommets de l'une de ses parties. Le double comptage donne
+`nombre_coHeawoods <= 4*2079/21 = 396`.
+
+Contrôle supplémentaire plus faible : les coordonnées locales à v montrent
+que deux co-Heawoods distincts ne peuvent choisir les mêmes trois voisins
+négatifs. Trois tels voisins forcent sept sommets communs concordants et
+aucun croisement de signes, contre la borne d'angle. Les 280 triples
+admissibles, quatre par co-Heawood en v, donnent au plus 70 co-Heawoods en
+v, donc 495 globalement. Le comptage par C4 améliore cette borne à 396 et
+ne dépend pas du calcul des 4480 supports.
+
+Les constantes, les 21 C4 et le résidu de norme dix sont intégrés au script
+`coheawood_angle_bound.py` et au rapport correspondant. Preuve globale
+élémentaire; pas d'annonce d'exclusion de C1.
