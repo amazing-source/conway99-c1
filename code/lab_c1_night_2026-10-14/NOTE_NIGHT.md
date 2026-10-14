@@ -559,3 +559,17 @@ Counting formulas for P4 (1015740) and claws (320760) also checked by brute forc
   supports 9-10: more. So a_4 > 1.4e7 is plausible, but distinctness then involves integral 3-eigenvectors of
   support up to 16-20 (twin prisms, differences of grids, ...), which must be classified or counted first.
 * Estimated cost: one or two days of hand work plus small exact enumerations; no large computation.
+
+## 28. Dependency table of the rank exclusions (04:31 UTC; from the saved certificates cert_bXX.json)
+| b | proved inputs used by the certificate (besides a_0 = c_0 = 1, c_1..c_6 = 0, positivity) |
+|---|---|
+| 2-18 | none (min B >= 14 alone) |
+| 20, 22 | a_2 >= 462 (lines) |
+| 24 | a_2 >= 462, a_4 >= 14970 |
+| 26 | a_2 >= 462, a_4 >= 14970, c_7 <= 7920 |
+| 28 | a_2 >= 462, a_4 >= 14970, c_7 <= 7920, c_8 <= 360360 |
+| 30 | a_2, a_3 >= 24948, a_4 >= 354816, a_5 >= 196812, c_7, c_8 |
+| 32 | a_2, a_3 >= 24948, a_4 >= 1749210, a_5 >= 3415104, c_7, c_8 |
+Where each input is proved: a_2 19.2(i); a_4 >= 14970 19.2(ii); c_7 19.2(iii) with 17.2; c_8 20.1-20.3 and 23 (gap
+closed); a_3, a_4 >= 354816, a_5 >= 196812 and 3415104: 25.1-25.2 (counts checked on srg(243,22,1,2), 25.5);
+a_4 >= 1749210: 26.1-26.3 (uses P <= 1151 prisms, 19.2(v)). b = 0: B would be even unimodular of rank 44 (23).
