@@ -627,3 +627,6 @@ vectors (24); DRAT certification of T1 and kk6 (~3 h, not launched).
 * (Codex 07:37 local, f842209) for the support-8, sum-0, norm-8 family D: at most 15932268 colliding pairs
   (certified multiplicities: <= 2508 per kernel of norm 12, <= 184 of norm 14): too large to help, as expected from
   31; no rank excluded by this route.
+* (Codex 07:42 local, 3c5c424) exact anti-neighbourhood edge counts via A^2/A^3 sharpen 31: bowtie far set 40 with
+  96 + e(R) edges, house 41 with 103 + e(R) (or 40 / 99 next to a prism): support-7 family >= 2057064 raw vectors
+  before collisions. Still far from the 1.42e7 needed for b = 34; Codex stops the collision route for b = 34.
