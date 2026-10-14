@@ -26,11 +26,11 @@ import row_census as RC
 
 
 def load(path):
-    A = np.zeros((243, 243), dtype=np.int64)
-    for line in Path(path).read_text().splitlines():
-        if line.strip():
-            u, v = map(int, line.split())
-            A[u, v] = A[v, u] = 1
+    edges = [tuple(map(int, line.split())) for line in Path(path).read_text().splitlines() if line.strip()]
+    n = 1+max(max(edge) for edge in edges)
+    A = np.zeros((n, n), dtype=np.int64)
+    for u, v in edges:
+        A[u, v] = A[v, u] = 1
     return A
 
 
@@ -38,11 +38,11 @@ def graph(A):
     return ig.Graph(n=len(A), edges=list(zip(*np.where(np.triu(A, 1)))))
 
 
-def verify(A):
+def verify(A, k=22, lam=1, mu=2):
     return bool(
         np.array_equal(A, A.T) and not np.diag(A).any()
-        and np.all((A == 0) | (A == 1)) and np.all(A.sum(1) == 22)
-        and np.array_equal(A @ A + A, 20 * np.eye(243, dtype=np.int64) + 2)
+        and np.all((A == 0) | (A == 1)) and np.all(A.sum(1) == k)
+        and np.array_equal(A @ A + (mu-lam)*A, (k-mu)*np.eye(len(A), dtype=np.int64) + mu)
     )
 
 

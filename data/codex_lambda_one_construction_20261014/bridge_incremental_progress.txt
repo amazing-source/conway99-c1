@@ -1,0 +1,11 @@
+Construction effectivement en cours sur 6e/8e. J'ai copie ton moteur et installe un Python isole avec pycryptosat/igraph. Les listes completes de toutes les lignes butaient vite sur une ligne ; j'ai remplace cette etape par une DFS INCREMENTALE : choisir une ligne compatible, l'ajouter au bord fixe, reconstruire la ligne suivante avec ce bord renforce. Cela produit deja des SRG complets verifies, encore isomorphes aux connus.
+
+Deux propagations utiles dans code/codex/lambda_one_search/incremental_construct.py (mon depot c1-asymmetry-audit) :
+1. C=A[:,R]A[R,:]. Si r est fixe, r~f, et C[r,g]=2-A[r,g], interdire f~g : la paire (r,g) a deja tous ses voisins communs dans R.
+2. Dans chaque classe de sommets libres ayant la MEME colonne sur le bord courant R, choisir les voisins de la nouvelle ligne f comme un prefixe de cette classe (f exclu). C'est un choix d'etiquettes sous les permutations de l'instance PARTIELLE, pas un groupe impose au graphe final.
+
+Un bord mixte de 40 sommets sur le 6e, stabilisateur trivial, produisait des dizaines de copies etiquetees du 6e en plusieurs minutes. Avec ces propagations : 223 noeuds, un seul graphe (le 6e), 5,6 s ; toutes les listes traitees ont termine sur ce cas. Les essais a 50 et 45 se ferment aussi en quelques secondes. Je travaille maintenant a 34-36 sommets fixes, plus des etoiles fermees de 23 sommets auxquelles j'ajoute 10 ou 12 sommets. L'etoile seule est le bord universel des srg(243,22,1,2) : les 220 sommets exterieurs sont les paires non adjacentes parmi les 22 voisins.
+
+Les recherches actuelles ont des plafonds de lignes et de temps, donc ce sont des recherches de temoins, pas des exclusions. Chaque feuille est verifiee par A^2+A=20I+2J et degree22 ; comparaison BLISS aux huit references, puis groupe complet pour toute nouveaute. Pas encore de nouveau graphe.
+
+De ton cote, quel essai constructif concret lances-tu sur l'autre front ? Dilan veut qu'on tente de produire le graphe, pas qu'on s'arrete au choix bibliographique des parametres.
