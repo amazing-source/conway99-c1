@@ -87,6 +87,22 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   srg(k^2/2 + 1, k, 1, 2); for k = 22 (243 graphs) the analogous factor (4 - A_H)(5 + A_H) is definite, so 'special'
   (H_l disconnected) has no spectral meaning there.
 
+- P14 (binary relations at three stars; ChatGPT session shown by the user, 14/10 about 20:30 UTC; every step re-checked
+  by LAB). Stars 0, 1 (mates) and 2 (mate 3). If the base L_0 u L_1 is connected (c = 1), then
+  ker T n {0,1}^34 = {0, 1_L0, 1_L1, 1_L0 + 1_L1, 1_L2}, using only (C1) and Gamma >= 0 (no positivity, no C1', no C2).
+  With T >= 0 and c components there are exactly 2^c + 2^(c-1) + 2 binary relations (unions of base components Y,
+  Z - 1_Y with C4 in Y, Z = sum of the three stars, and the two stars L_0, L_1), spanning dimension c + 2.
+  Key identity, valid for EVERY integral q in ker T: (Gamma q)_ij = 3 q_ij + (2w - t_i - t_j)/8, with w = sum q,
+  d_i = sum of q over the labels containing i, t_i = 3 d_i + d_i'. The letter graph of S is connected with the triangle
+  0, 2, 4, so all t_i are congruent mod 8, 2t = 2w (mod 8), d_i = d_i' (mod 4), w = 0 (mod 4); for binary q the outer
+  pairs are all even or all odd, and a finite case analysis (parity of the matching tau_0 on L_0 n supp(Z - q) kills the
+  profile (m_0, m_1) = (4, 4)) gives the classification. LAB complement: (t_i - w)/8 is exactly the value of the global
+  3-eigenvector on the letter i and -w/4 its value on v (w_i + w_j = g_i + g_j on every label, letter graph connected
+  and not bipartite), so the extension of an integral relation is integral iff t = w (mod 8), and otherwise all 14
+  letter values are half-integers. Scope: binary relations only; (A) needs ALL rational relations (ChatGPT's example
+  M = v v^T / 2, v = (1, 2, -3), shows positivity alone does not make a kernel binary-spanned). Consistent with Codex's
+  exclusions of relations z = 2q + u with few odd entries (messages 728-732).
+
 ## LITERATURE (checked 14/10 evening; statuses are those of the sources, not re-proved here)
 - Makhnev, Mat. Zametki 44(5) (1988) 667-672 'Strongly regular graphs with lambda = 1': according to Reimbayev
   (arXiv 2409.10620, 2508.03377), srg(99,14,1,2) does not exist if every pair of triangles joined by two edges is joined
@@ -99,6 +115,29 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   (n_2 in our notation); 7-vertex counts (arXiv 2608.19410) in two parameters.
 - Thakkar-Severini (arXiv 2608.11211): the 84-vertex reduction, CP-SAT inconclusive, interlacing listed as future work.
 - No source found on 3x3 grids, special lines, or spectral positivity of local objects.
+
+## STATEMENT (A) IS FALSE (VERIFIED exactly, 14/10 about 20:55 UTC)
+- counterexample_A_1.json: admissible three-star structure (stars 0, 1 mates and 2) with c(l) = 1, rank T = 30,
+  T >= 0 and U >= 0. Exact independent verifier verify_counterexample.py (Fractions only, K re-derived from its
+  formula, Pi from D, no search code imported): (C1) exact towards 0, 1, 2, (C1') towards the other letters, (C2)
+  caps; the three stars in ker T; rank T_X = 22 so c(l) = 1; rank T = 30 with a 30 x 30 principal submatrix positive
+  definite (exact LDL pivots), hence T >= 0; U = 7 Pi_S - T of rank 31 with a 31 x 31 positive definite principal
+  submatrix; nullity 4 = three stars + one relation. 52 distinct candidates of the same kind (numerically PSD) in
+  counterexamples_A_all.json (entry 38 = the verified one); all in the family invariant under
+  h3 = (0 1)(4 5)(6 7)(8 9)(10 11)(12 13), relation in the even sector.
+- How it was found (the user's 'look at why the door closes'): (i) det(8T[J,J]) = 2^73 x a random-looking integer of
+  about 1e10, divisible by 3, 5, 7, 11, 13 at random rates (det_primes.py): no arithmetic mechanism; (ii) without
+  positivity, c(l) = 1 rank-30 structures appear within seconds under the swap a <-> a' (sym_exact.py; Codex found
+  non-symmetric ones of weights 16 and 24); (iii) the swap is the only symmetry compatible with c(l) = 1 (P5); it
+  splits T into even/odd sectors, the extra relation lives in the even sector, whose B-part is constant on mate pairs
+  (a 4 x 4 determinant), and the even sector can be PSD; (iv) a sector-targeted walk (mode zero) found PSD ones.
+- The counterexample does NOT extend: outside label {4,6} has 5335 local profiles and none of norm exactly 20
+  (colnorm_arith.py), like z2b, the Z5 objects and dec_81..84.
+- Consequence: the route '(A) => every line special => Case I enumeration' is closed. Remaining local candidates:
+  H4' (two non-special lines at a vertex: four-star object with c(l) = c(m) = 1, T, U >= 0, nullity >= 14) - under a
+  Z2 x Z2 symmetry, without positivity, exact nullity 11 reached (sym4g.py); and H4 (no PSD four-star structure at
+  all, which would exclude Conway): full model, 160 500 Z5-invariant structures, best -0.0041, no PSD; searches in six
+  symmetry classes running (h4_*).
 
 ## VERIFIED (exact computations; files in this folder)
 - line_pairs.py on the eight srg(243,22,1,2): n_2 = 0 only for BvLS (8910 prisms, 1485 grids, every prism in a grid);
