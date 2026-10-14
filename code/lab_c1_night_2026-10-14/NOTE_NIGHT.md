@@ -525,7 +525,7 @@ srg(243,22,1,2) the general formulas (only lambda = 1, mu = 2 used) agree with b
 1773090, triples with one edge 534600, induced paths 53460, lines 891, far set of an edge 200 vertices with 1810 edges.
 
 ## 26. Supports 5 and 6: b = 32 excluded (04:26 UTC)
-**26.1 Distinctness up to support 12.** Lemma: a nonzero integral 3-eigenvector v with entries in {0, +-1, +-2] has
+**26.1 Distinctness up to support 12.** Lemma: a nonzero integral 3-eigenvector v with entries in {0, +-1, +-2} has
 support >= 12. Proof: for p in P (positive part), the positive neighbour mass is >= 3 v_p, so
 sum_{w in P} v_w (deg_P(w) - 3) >= 0: the v-weighted average degree inside P is >= 3; on <= 5 vertices the admissible
 graphs (no edge in two triangles, no two vertices with 3 common neighbours: at most C4, paw, house, bowtie) give at
@@ -548,3 +548,14 @@ Counting formulas for P4 (1015740) and claws (320760) also checked by brute forc
 **26.5 b = 34** needs a_3 > 9.8e5, or a_4 > 1.4e7, or a_5 > 3.0e8 (`theta7_b32.py 34`). Candidates: supports 7
 (bowtie or house + a far edge) and 8 (two 4-sets with 4 edges far apart), where coincidences can come from integral
 3-eigenvectors of support up to 16 (grids sharing a line, twin prisms, ...): to be bounded.
+
+## 27. What b = 34 would cost (04:30 UTC)
+* B-side upper bounds cannot do it: at b = 34, with c_7 <= 7920, c_8 <= 360360, even c_9 = c_10 = c_11 = 0 is
+  feasible (`theta7_cert2.py` probes).
+* A-side: the programme needs a_4 > 1.42e7 (1.31e7 if a_5 >= 3e7 were proved; `theta7_b34.py`), a_3 > 9.8e5 is out
+  of reach (norm-6 vectors with entries +-1 have support <= 6 and are only about 3e4), a_5 > 3e8 likewise.
+* Rough size of the norm-8 vectors with entries +-1 and larger supports: support 7 (bowtie, 2079, or house, exactly
+  8316 = 2 (4158 - 3P) + 6P, plus a far edge): about 3e6; support 8 (two 4-sets with 4 edges, far apart): about 7e6;
+  supports 9-10: more. So a_4 > 1.4e7 is plausible, but distinctness then involves integral 3-eigenvectors of
+  support up to 16-20 (twin prisms, differences of grids, ...), which must be classified or counted first.
+* Estimated cost: one or two days of hand work plus small exact enumerations; no large computation.
