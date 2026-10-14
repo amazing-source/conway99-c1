@@ -107,6 +107,63 @@ def main():
         keep = [k for k in range(n) if np.linalg.norm(Qz.T @ V[:, k]) < 1e-6]
         return float(ev[keep].min()) if keep else 0.0
 
+    # character sectors (gens = one or two commuting involutions): basis vectors sum_g chi(g) e_{g(alpha)}
+    sectors = []
+    if len(gl) in (1, 2) and all(all(m[m[i]] == i for i in range(n)) for m in gl):
+        signs = [(1,), (-1,)] if len(gl) == 1 else [(1, 1), (-1, 1), (1, -1), (-1, -1)]
+        elems = [((), lambda i: i)]
+        if len(gl) == 1:
+            elems = [((0,), lambda i: i), ((1,), lambda i, m=gl[0]: m[i])]
+        else:
+            elems = [((0, 0), lambda i: i), ((1, 0), lambda i, m=gl[0]: m[i]),
+                     ((0, 1), lambda i, m=gl[1]: m[i]), ((1, 1), lambda i, a=gl[0], b=gl[1]: a[b[i]])]
+        for sg in signs:
+            vecs, seen_o = [], set()
+            for i in range(n):
+                orb = frozenset(f(i) for _, f in elems)
+                if orb in seen_o:
+                    continue
+                seen_o.add(orb)
+                v = np.zeros(n)
+                for ex, f in elems:
+                    v[f(i)] += np.prod([sg[k] ** ex[k] for k in range(len(sg))])
+                if np.linalg.norm(v) > 1e-9:
+                    vecs.append(v / np.linalg.norm(v))
+            B = np.array(vecs).T if vecs else np.zeros((n, 0))
+            sectors.append((sg, B))
+
+    def sector_defect(T, cap_triv):
+        """greedy minimal sum of 14 smallest |eigenvalues| with at most cap_triv taken in the trivial sector"""
+        pool = []
+        for k, (sg, B) in enumerate(sectors):
+            if B.shape[1] == 0:
+                continue
+            ev = np.sort(np.abs(np.linalg.eigvalsh(B.T @ T @ B)))
+            pool += [(x, k) for x in ev]
+        pool.sort()
+        taken, tot, cnt = {}, 0.0, 0
+        for x, k in pool:
+            cap = cap_triv if k == 0 else 99
+            if taken.get(k, 0) >= cap:
+                continue
+            taken[k] = taken.get(k, 0) + 1
+            tot += x
+            cnt += 1
+            if cnt == 14:
+                break
+        return tot
+
+    def sector_nullities(M8):
+        out = []
+        for sg, B in sectors:
+            if B.shape[1] == 0:
+                out.append(0)
+                continue
+            Bi = np.rint(B * np.sqrt(np.sum(np.abs(B) > 1e-9, axis=0))).astype(np.int64)   # integer basis
+            blk = (Bi.T @ M8 @ Bi).tolist()
+            out.append(len(blk) - exact_rank(blk))
+        return out
+
     import os
     init = os.environ.get("INIT")            # warm start from a saved structure (same labels and group)
     if init:
@@ -124,9 +181,14 @@ def main():
     t0 = time.time()
     hist, npsd = {}, 0
     best_psd = None
+    best_near = None
     best_null = -1
     cur, temp = None, float(os.environ.get("TEMP0", "0.3"))
+    maxsec = float(os.environ.get("MAXSEC", "1e12"))   # self-termination (Git Bash timeout does not kill python.exe)
     for mv in range(moves):
+        if time.time() - t0 > maxsec:
+            print("time limit reached (%.0f s)" % (time.time() - t0), flush=True)
+            break
         Rl = set(rng.sample(range(n), 4))
         bad = set(Rl)
         for m in gl:
@@ -138,7 +200,10 @@ def main():
                 continue
             v = e[key]
             assum.append(v if model[v] else -v)
-        ok2, m2 = sol.solve(assum)
+        if mv == 0 and init:
+            ok2, m2 = True, model                 # evaluate the warm-start structure itself first
+        else:
+            ok2, m2 = sol.solve(assum)
         if not ok2:
             continue
         G = np.zeros((n, n), dtype=np.int64)
@@ -181,7 +246,25 @@ def main():
                 if best_null >= 14 and min(lt, lu) > -1e-9:
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
-        if mode == "lowrank":
+        if mode in ("sector", "urepair"):
+            capt = 5 + min(cl, cm)
+            if mode == "urepair" and both and nul_num >= 14 and lt > -1e-9:
+                s2 = lu                                   # stay on the plateau nullity >= 14, T >= 0; push U up
+            else:
+                s2 = min(-sector_defect(T, capt), lt, lu) if both else -99.0
+                if mode == "urepair":
+                    s2 -= 1.0
+            if nul_num >= 13 and min(lt, lu) > -0.05:
+                print("move %d: near target: numerical nullity %d, sector nullities %s, lambda_T %.4f, lambda_U %.4f, c = (%d,%d)"
+                      % (mv, nul_num, sector_nullities(M8), lt, lu, cl, cm), flush=True)
+                key = (nul_num, min(lt, lu))
+                if best_near is None or key > best_near:
+                    best_near = key
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt,
+                               "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_near.json", "w"))
+        elif mode == "lowrank":
             s2 = -float(absev[:14].sum()) if both else -99.0
         elif mode == "zero":
             s2 = min(-float(absev[13]), lt, lu) if both else -99.0

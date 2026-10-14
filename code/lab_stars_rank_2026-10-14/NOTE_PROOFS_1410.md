@@ -160,6 +160,17 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   (9 local + 1 mixed). The real local condition of a Conway graph (T, U >= 0 and nullity >= 14) is still 2 short.
   Fine-space spectrum (fine_scan.py): all 111 tested (4,4) PSD structures have spec(Gamma_F) in [-4,3]; with c = (1,1)
   only 1 of 19 near-PSD structures does, so the fine spectrum alone does not explain (A4).
+- Sector-targeted search (sym4g.py modes sector / urepair; sector_spec.py gives exact nullities per character block
+  (++, -+, +-, --) of G1), 14/10 21:36-21:45 UTC. Exact facts (Fractions):
+  sc_7_null14.json: c = (5,5) (four grids + one mu = 2 component per line), nullity 14 = (10,1,1,2), RANK 30, T >= 0
+  (lambda_T = 0.2378), U NOT PSD: -0.0746 in the -+ and +- blocks only.
+  sc_2_null14.json: c = (6,6), nullity 16 = (11,1,1,3), T >= 0 (0.8377 = 4 - sqrt 10), U = 3 - sqrt 10 in -+ and +-.
+  sc_6_null14.json: c = (6,6), nullity 14 = (11,1,1,1), T = U = 2 - sqrt 5 (in -- for T, in -+/+- for U).
+  null13.json: c = (5,5), (10,1,1,1), T -0.19 (-+) and -0.03 (--), U -0.0105 (-+). h4g_2_PSD_171: (9,1,1,1), PSD.
+  Reading (EVIDENCE, G1 only): T wants many grids, U breaks with many grids, always in the -+/+- blocks; the U-negative
+  direction is spread over all line pairs (no small forbidden subgraph). Walking on the plateau 'nullity >= 14 and
+  T >= 0' (urepair) never raised lambda_U above -0.0746. The real local condition (T, U >= 0, rank <= 30) is neither
+  found nor excluded; in asymmetric families positivity at four stars was never reached at all.
 - NEXT (Codex, message 754 reply, not re-audited): in G1 the 44 labels form 11 regular Klein-4 orbits, four character
   blocks of size 11; stars give nullities (2,1,1,0) in (++,-+,+-,--); the trivial block has rank >= 6 - min(c_l, c_m),
   so rank T <= 30 forces the three non-trivial blocks to carry nullity >= 9 - min(c_l, c_m); ten minimal targets
