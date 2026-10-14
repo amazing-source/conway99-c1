@@ -1174,3 +1174,96 @@ distinction complète demandée pour les projections de LAB reste donc ouverte.
 Fichiers : `small_positive_three_supports.py` et
 `data/codex_night_20261014/small_positive_three_supports.json`. Énumération
 et vérification rationnelle locales en environ 2,5 secondes; aucun SAT.
+
+### 07h08 — Tous les noyaux entiers +3 de masse l1 au plus 16
+
+**Résultat : 48 configurations couvrantes, au plus 313434 vecteurs signés.**
+Il s'agit de tous les h entiers non nuls tels que Ah=3h et `||h||_1<=16`.
+Ce seuil couvre les différences de deux vecteurs 0,+1,-1 portés par au plus
+huit sommets **et de même somme**, lorsqu'ils ont la même projection P.
+Il ne couvre pas à lui seul les collisions entre sommes différentes :
+P(h)=0 donne alors `(A-3I)h=(somme h)/9 * 1`, avec un terme constant possible.
+Cette distinction est conservée dans le relais à LAB.
+
+**Les quatre cas pondérés manquants.** La masse de chaque signe est M<=8,
+et M>=4a impose a<=2. S'il existe une entrée +2, M=8. Ce sommet doit toucher
+toute la masse positive restante, égale à six, et aucun sommet négatif.
+Deux entrées +2 seraient adjacentes et auraient au moins deux autres
+sommets positifs communs, contre lambda=1. Il n'y a donc qu'une +2 et six
+entrées +1, toutes voisines de celle-ci. Chaque +1 exige exactement un
+partenaire positif parmi les six voisins, et aucun voisin négatif. Le signe
+positif est le moulin de trois triangles F3, de poids deux au centre et un
+sur ses six autres sommets. L'autre signe est soit le même moulin pondéré,
+soit l'un des trois graphes cubiques de huit sommets. Aucune arête entre les
+signes. Cela donne quatre configurations, de norme 20 ou 18, qui s'ajoutent
+aux 44 précédentes. Leurs incidences extérieures passent également le LP;
+les quatre solutions rationnelles sont vérifiées exactement et enregistrées.
+
+**Bornes sur les nombres de graphes à huit sommets.** Pour chacun des sept
+types, une programmation dynamique sur ses 256 sous-ensembles choisit un
+ordre d'injection dans C1. Le premier sommet a au plus 99 images. Avec un
+voisin déjà choisi, il en reste au plus 14 moins les voisins déjà utilisés.
+Avec deux voisins choisis, il en reste au plus lambda ou mu, moins leurs
+voisins communs déjà utilisés. Sans voisin choisi, un non-voisin choisi
+donne au plus 84 images, moins celles déjà utilisées qui lui sont non
+adjacentes. On minimise le produit de ces bornes, puis on divise par l'ordre
+du groupe d'automorphismes du type, connu par les 8! réétiquetages.
+
+Le rapport enregistre les ordres et tous les facteurs, donc cette borne
+ne suppose pas un comptage réel de copies dans C1. Pour les trois cubiques,
+les majorants sont 4158,24948,49896, total 79002. Pour les trois types à
+deux sommets de degré quatre, ils sont 8316 chacun, total 24948. Pour le
+type à quatre sommets de degré quatre, le majorant est 2079.
+
+**Classes de même fonction b=A1_H-3*1_H, pour la norme 16.**
+
+* Cas cubique. Une fonction b a somme 88 et norme carrée 128, et vaut zéro
+  sur le support de H. Comme `somme C(b_x,2)=20`, elle est non nulle sur au
+  moins 68 sommets; elle a donc au plus 31 zéros. Deux graphes cubiques
+  distincts de même b sont disjoints : leur différence aurait sinon un
+  signe porté par un sous-graphe propre de degré minimum trois, impossible
+  dans un graphe cubique connexe. Il y en a donc au plus trois par classe,
+  et au plus `2*79002=158004` vecteurs signés de norme 16 de ce type.
+* Deux degrés quatre. Les trois types n'ont aucun sous-graphe propre de
+  degré minimum trois, ce qui est contrôlé exhaustivement par le script.
+  Deux supports de même b sont donc disjoints, et leurs deux sommets de
+  degré quatre sont reliés par un couplage parfait. Pour une classe de t
+  supports, les 2t sommets distingués ont chacun degré au moins t-1 dans
+  leur union. Tout graphe induit de n sommets satisfait
+  `somme deg(v)^2 <= 2n(n-1)` par comptage des voisins communs. Il faut donc
+  `(t-1)^2<=4t-2`, soit t<=5. Au plus `4*24948=99792` vecteurs signés.
+* Quatre degrés quatre. Le seul type a exactement deux sous-graphes propres
+  de degré minimum trois : les deux prismes obtenus en retirant une arête
+  entre sommets de degré trois. Deux supports distincts de même b sont donc
+  disjoints ou se rencontrent sur une telle arête. Leurs ensembles de quatre
+  sommets de degré quatre sont toujours disjoints. Pour un support fixé,
+  chaque partenaire disjoint requiert un nouveau voisin de chacun de ses
+  quatre sommets distingués, dans les sommets distingués du partenaire.
+  Ces voisins sont distincts et il reste dix places après les quatre voisins
+  internes. Donc au plus dix partenaires disjoints, soit `10*2079=20790`
+  vecteurs signés. Les partenaires non disjoints donnent la norme 12 déjà
+  comptée, pas la norme 16.
+
+Les trois sortes de classes sont séparées par `||b||^2=128,114,100`.
+En tout, la norme 16 contribue au plus **278586** vecteurs signés.
+
+**Comptage des cas pondérés.** Il y a au plus `99*C(7,3)=3465` moulins
+pondérés : choisir le centre et trois des sept paires de son voisinage.
+Un moulin pondéré et un cubique de huit sommets ont même masse huit; leur
+b a somme 88, norme carrée 128 et au plus 31 zéros. Des composantes positives
+connexes, propres de valeur trois dans leur support, de même masse et même
+b, sont distinctes et disjointes. En effet, b vaut zéro sur chacun des
+supports; un sommet d'un support extérieur à l'autre ne peut être adjacent
+à cet autre support. La connexité impose alors égalité ou disjonction; sur
+un même support, l'unicité du vecteur propre positif et la masse fixée
+donnent le même vecteur. Chaque composante a au moins sept sommets : une
+classe en contient au plus quatre. Chaque moulin a donc au plus trois
+partenaires de masse huit, ce qui borne ensemble les normes 18 et 20
+pondérées par `2*3*3465=20790` vecteurs signés.
+
+Total : `5742 + 8316 + 278586 + 20790 = 313434`. Tous les nombres sont des
+majorants, avec surcomptages possibles, pas des nombres de vecteurs existants.
+Le passage de cette borne de noyaux à un nombre de collisions de petits z
+doit encore tenir compte des représentations z-z'=h; il n'est pas effectué
+ici. Le script et son rapport sont mis à jour, calcul complet en environ
+2,6 secondes. Aucune exclusion de C1 ni du prochain rang modulaire annoncée.

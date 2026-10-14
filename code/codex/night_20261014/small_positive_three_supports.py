@@ -8,7 +8,9 @@ It does not claim that any surviving support extends to an SRG.
 """
 from collections import Counter
 from fractions import Fraction
+from functools import lru_cache
 from itertools import combinations, permutations
+from math import factorial
 from pathlib import Path
 import argparse
 import json
@@ -120,7 +122,39 @@ def support_couplings(first, second):
     return survivors
 
 
-def outside_patterns(ns):
+def embedding_bound(ns):
+    """Induced labeled embedding bound from degrees and lambda/mu alone."""
+    n = len(ns)
+    @lru_cache(None)
+    def best(assigned):
+        if assigned == (1 << n)-1:
+            return 1, []
+        answer = None
+        for v in range(n):
+            if assigned >> v & 1:
+                continue
+            known_neighbors = [x for x in range(n) if assigned >> x & 1 and ns[v] >> x & 1]
+            if len(known_neighbors) >= 2:
+                choices = min((1 if ns[x] >> y & 1 else 2) - (ns[x] & ns[y] & assigned).bit_count()
+                              for x,y in combinations(known_neighbors,2))
+            elif known_neighbors:
+                choices = 14-(ns[known_neighbors[0]] & assigned).bit_count()
+            elif assigned:
+                choices = 85-assigned.bit_count()+min((ns[x] & assigned).bit_count()
+                                                      for x in range(n) if assigned >> x & 1)
+            else:
+                choices = 99
+            assert choices >= 1
+            remaining, order = best(assigned | 1 << v)
+            candidate = (choices*remaining, [(v,choices)] + order)
+            if answer is None or candidate[0] < answer[0]:
+                answer = candidate
+        return answer
+    count, order = best(0)
+    return dict(labeled_embeddings=count, order_and_choice_bounds=order)
+
+
+def outside_patterns(ns, signs=None):
     n = len(ns)
     residual = {(x,y): (1 if ns[x] >> y & 1 else 2) - (ns[x] & ns[y]).bit_count()
                 for x, y in pairs(n)}
@@ -131,7 +165,8 @@ def outside_patterns(ns):
             compatible[x] |= 1 << y
             compatible[y] |= 1 << x
     result = []
-    half = n//2
+    if signs is None:
+        signs = [1]*(n//2) + [-1]*(n//2)
     def walk(selected, available, balance):
         if selected.bit_count() > 14:
             return
@@ -144,16 +179,16 @@ def outside_patterns(ns):
             b = available & -available
             available ^= b
             x = b.bit_length()-1
-            walk(selected | b, available & compatible[x], balance + (1 if x < half else -1))
+            walk(selected | b, available & compatible[x], balance + signs[x])
     walk(0, (1 << n)-1, 0)
     assert len(set(result)) == len(result)
     return result, residual
 
 
-def extension_linear_test(ns):
+def extension_linear_test(ns, signs=None):
     import numpy as np
     from scipy.optimize import linprog
-    patterns, residual = outside_patterns(ns)
+    patterns, residual = outside_patterns(ns, signs)
     n = len(ns)
     row_labels = [()] + [(x,) for x in range(n)] + pairs(n)
     rhs = [99-n] + [14-row.bit_count() for row in ns] + list(residual.values())
@@ -236,6 +271,62 @@ def main():
                                    seven_vertex_boundary_class_size=3,
                                    signed_norm14_vectors=2*99*21*2,
                                    norm16_count='not bounded here')
+    windmill = [0]*7
+    for x in range(1,7):
+        edge(windmill,0,x)
+    for x,y in [(1,2),(3,4),(5,6)]:
+        edge(windmill,x,y)
+    weighted = []
+    other_parts = [('windmill',windmill,[2]+[1]*6)]
+    other_parts += [(f'cubic8_type_{i}',decode(rep['code'],8),[1]*8)
+                    for i,rep in enumerate(report[8]['representatives']) if max(rep['degrees']) == 3]
+    for name, second, second_weights in other_parts:
+        ns = windmill + [row << 7 for row in second]
+        signs = [2]+[1]*6+[-x for x in second_weights]
+        assert sum(signs)==0 and sum(abs(x) for x in signs)==16
+        assert all(sum(signs[y] for y in range(len(ns)) if ns[x] >> y & 1)==3*signs[x]
+                   for x in range(len(ns)))
+        item = dict(second_part=name, support=len(ns), squared_norm=sum(x*x for x in signs),
+                    signs=signs, edges=[(x,y) for x,y in pairs(len(ns)) if ns[x]>>y&1])
+        if args.outside_lp:
+            item['outside_lp']=extension_linear_test(ns, signs)
+        weighted.append(item)
+    report['weighted_l1_at_most_16'] = weighted
+    report['l1_at_most_16_total_templates'] = 48
+    bounds_by_fours = Counter()
+    for rep in report[8]['representatives']:
+        ns = decode(rep['code'],8)
+        rep['embedding_bound'] = embedding_bound(ns)
+        automorphisms = factorial(8)//rep['orbit_size_full']
+        rep['automorphisms'] = automorphisms
+        rep['induced_copy_bound'] = rep['embedding_bound']['labeled_embeddings']//automorphisms
+        fours = rep['degrees'].count(4)
+        bounds_by_fours[fours] += rep['induced_copy_bound']
+        proper = [bits for bits in range(1,255)
+                  if all((ns[x] & bits).bit_count() >= 3 for x in range(8) if bits >> x & 1)]
+        rep['proper_minimum_degree_three_subsets'] = proper
+        if fours in [0,2]:
+            assert not proper
+        else:
+            assert len(proper)==2 and all(bits.bit_count()==6 for bits in proper)
+            for bits in proper:
+                missing = 255 ^ bits
+                x,y = [x for x in range(8) if missing >> x & 1]
+                assert ns[x] >> y & 1 and ns[x].bit_count()==ns[y].bit_count()==3
+    assert dict(bounds_by_fours)=={0:79002,2:24948,4:2079}
+    assert (6-1)**2 > 4*6-2  # A two-lift on >=12 high vertices is impossible.
+    norm16_parts = {0:2*bounds_by_fours[0], 2:4*bounds_by_fours[2], 4:10*bounds_by_fours[4]}
+    norm16_bound = sum(norm16_parts.values())
+    weighted_bound = 2*3*(99*35)
+    total_bound = 2*twin_pairs + 2*99*21*2 + norm16_bound + weighted_bound
+    assert norm16_bound==278586 and weighted_bound==20790 and total_bound==313434
+    report['global_bounds'].update(dict(norm16_count=norm16_bound,
+                                        norm16_by_number_of_degree_four_vertices=norm16_parts,
+                                        weighted_l1_16_norm18_or_20=weighted_bound,
+                                        all_nonzero_integer_eigenvalue3_l1_at_most_16=total_bound))
+    print(json.dumps(dict(weighted_templates=len(weighted),
+                          lp=[x.get('outside_lp',{}).get('verdict') for x in weighted],
+                          signed_kernel_l1_16_bound=total_bound)), flush=True)
     out = Path(__file__).resolve().parents[3] / 'data' / 'codex_night_20261014'
     (out / 'small_positive_three_supports.json').write_text(json.dumps(report, indent=2)+'\n')
 
