@@ -1,0 +1,246 @@
+{
+  "status": "EXACT_COARSE_INTEGER_FLOOR_AND_SHARP_P_ZERO_WITNESS",
+  "local_identity": "||E||_F^2 = 5*sum(E)-3*tr(E)-8*h-480+Delta(E)",
+  "nonnegative_defect": "Delta(E)=sum_i Eii*(Eii-2)+2*sum_mates Eij*(Eij-1)+2*sum_nonmates (Eij-2)*(Eij-3)",
+  "per_root_identity": "sum_21 ||E||_F^2 = 10584-16*t_v-24*d_v+sum_21 Delta(E)",
+  "global_identity": "Q = 1047816-96*P-24*Z+Delta_global",
+  "necessary_budget_rewritten": "5*Delta_global+448*P-72*Z<=7135128",
+  "strengthened_row_identity": "sum_y E_xy=24-2*u_x; sum_x u_x=16-4*e(overlap)",
+  "row_identity_proof": "Each label {a,x} with a central and x exterior has six neighbors counted with multiplicity in the four central stars. An overlap neighbor is counted twice, an exterior-bucket neighbor once. Summing four rows gives24-2*u_x. Each of the four overlap labels has four neighbors counted with multiplicity, giving sum_x u_x=16-4*e(overlap).",
+  "sharp_P_Z_zero_minimum": {
+    "Q": 1047816,
+    "average_per_matrix": 504,
+    "contradiction_threshold_average": "12374208/(5*2079)",
+    "exact_threshold": "5952/5"
+  },
+  "coarse_witness": {
+    "status": "EXACT_INTEGER_COARSE_PD_WITNESS",
+    "E": [
+      [
+        2,
+        1,
+        2,
+        2,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3
+      ],
+      [
+        1,
+        0,
+        2,
+        3,
+        3,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        3,
+        2
+      ],
+      [
+        2,
+        3,
+        1,
+        0,
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      [
+        2,
+        3,
+        2,
+        2,
+        2,
+        1,
+        2,
+        3,
+        2,
+        3
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      [
+        3,
+        2,
+        3,
+        2,
+        2,
+        2,
+        0,
+        1,
+        3,
+        2
+      ],
+      [
+        2,
+        3,
+        3,
+        3,
+        3,
+        2,
+        1,
+        0,
+        3,
+        2
+      ],
+      [
+        3,
+        2,
+        3,
+        3,
+        2,
+        3,
+        3,
+        3,
+        0,
+        0
+      ],
+      [
+        3,
+        2,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        0,
+        2
+      ]
+    ],
+    "row_sums": [
+      22,
+      20,
+      20,
+      20,
+      22,
+      20,
+      20,
+      22,
+      22,
+      20
+    ],
+    "overlap_incidence_row_sums": [
+      1,
+      2,
+      2,
+      2,
+      1,
+      2,
+      2,
+      1,
+      1,
+      2
+    ],
+    "overlap_edge_count": 0,
+    "invariants": {
+      "squared_norm": 504,
+      "trace": 8,
+      "mate_sum": 4,
+      "entry_sum": 208,
+      "defect": 0
+    },
+    "original_budget": {
+      "score": -6776,
+      "upper_bound": 3520,
+      "passes": true,
+      "squared_norm": 504,
+      "trace": 8,
+      "mate_entry_sum": 4,
+      "entry_sum": 208
+    },
+    "positive_LDL_pivots_M": [
+      "6",
+      "47/6",
+      "8",
+      "2913/376",
+      "5700/971",
+      "33229/5700",
+      "767782/99687",
+      "2738850/383891",
+      "123946/18259",
+      "10449583/1859190"
+    ],
+    "positive_LDL_pivots_V": [
+      "54/5",
+      "4243/486",
+      "547532/63645",
+      "4716883/547532",
+      "739544984/70753245",
+      "7512857723/739544984",
+      "187759257194/22538573169",
+      "797775713522/93879628597",
+      "51542328650507/5983317851415",
+      "2425384527277023/257711643252535"
+    ],
+    "per_root_21_copies": {
+      "squared_norm": 10584,
+      "trace": 168,
+      "mate_sum": 84,
+      "entry_sum": 4368,
+      "t": 0,
+      "d": 0
+    },
+    "global_99_roots": {
+      "Q": 1047816,
+      "P": 0,
+      "Z": 0,
+      "old_budget_left": 5239080,
+      "old_budget_right": 12374208
+    },
+    "scope": "Independent copies satisfy the listed coarse constraints. Common adjacency realization, the full T/U forms, and rank bounds are NOT imposed."
+  },
+  "equality_case_local_classification": {
+    "scope": "Necessary if one root has t_v=d_v=0 and sum_21 Delta(E)=0. These conditions are NOT established for Conway.",
+    "star_matching": {
+      "examined_perfect_matchings": 10395,
+      "allowed": 4480,
+      "collapsed_cycle_types": {
+        "C6": 3840,
+        "C3+C3": 640
+      },
+      "quotient_proof": "No mate edge because t_v=0. Delta=0 forbids two matching edges on any two root lines. After collapsing the six mate pairs, the matching is a simple2-regular graph on six vertices, hence C6 or two triangles.",
+      "relabelling_normal_forms": 2
+    },
+    "mate_star_bijection": {
+      "collapsed_graph": "K6 minus a perfect matching",
+      "balanced_orientations_per_graph": 38,
+      "labelled_missing_matchings": 15,
+      "lifts_per_orientation": 4096,
+      "total_labelled_bijections": 2334720,
+      "quotient_proof": "The bijection has no within-line edge because t_v=d_v=0. Delta=0 allows at most one directed edge in each unordered pair of lines. Each collapsed vertex has in-degree2 and out-degree2, so the underlying graph is simple4-regular on six vertices. Assign the two source and two target labels independently at each vertex."
+    }
+  },
+  "conclusion": "The independent integer 10x10 compression relaxation, even with both forms positive definite and the displayed row identities, cannot force P>0 or contradiction by this budget. This is not a jointly glued Conway or a full four-star witness.",
+  "census_scope_correction": "The earlier P=0 point concerns the supplied affine order9 census only, not all possible counting or PSD relaxations of order at most9.",
+  "seconds": 0.17100000000209548
+}

@@ -2999,3 +2999,70 @@ algebrique, multiplicites des cinq types d'aretes, coefficients globaux :
 PASS. Transmission767 des deux resultats et exports portables dans
 lab_exchange_2026-10-14. Pas de re-audit de germe, aucun processus restant,
 aucune construction SRG, aucune exclusion C1.
+
+### 15/10, suite768 : plancher entier et limite exacte des comptes grossiers
+
+768 lu/acquitte. Claude travaille sur une autre compression, aux vecteurs
+impairs. Je poursuis sa question sur la borne inferieure de Q, sans audit
+de ses germes. Correction de portee de son commentaire : le point P=0
+concerne le census affine FOURNI, pas toute relaxation imaginable<=9.
+
+IDENTITE ENTIERE. Pour chaque E, definir Delta(E) par la somme de
+ e_ii(e_ii-2) sur la diagonale,
+ 2e_ij(e_ij-1) sur les cinq paires mates,
+ 2(e_ij-2)(e_ij-3) sur les quarante autres paires non ordonnees.
+Tous ces termes sont non negatifs sur les domaines entiers autorises.
+Exactement ||E||^2=5sumE-3trE-8h-480+Delta(E). D'ou, avec les
+identites de comptage deja obtenues :
+ sum_21 ||E||^2=10584-16t_v-24d_v+sum_21 Delta(E),
+ Q=1047816-96P-24Z+Delta_global,
+ et le budget precedent devient5Delta_global+448P-72Z<=7135128.
+
+TEMOIN EXACT DE LA RELAXATION GROSSIERE. Construction d'une matrice
+entiere10x10 avec trE=8,h=4,sumE=208,||E||^2=504,Delta=0 ;
+ses deux compressions M et V sont DEFINIES POSITIVES (pivots LDL
+rationnels strictement positifs exportes). Les sommes de lignes sont
+20 ou22. Elles satisfont sum_y E_xy=24-2u_x avec u entier>=0,
+sum u=16, compatible avec un recouvrement de quatre labels sans arete.
+Preuve de l'identite de ligne : pour chaque label ax, les quatre
+etoiles centrales comptent six voisins avec multiplicite, un voisin
+du recouvrement etant compte deux fois. Sommer sur les quatre a.
+
+Les21 copies de cette matrice, puis99 racines INDEPENDANTES, satisfont
+les comptes agreges P=Z=0 et Q=1047816. Le minimum moyen504 est donc
+EXACT dans cette relaxation, meme avec les deux compressions PSD et
+les identites de lignes indiquees. Le budget ne contredirait P=Z=0
+que pour une moyenne>5952/5=1190.4. Cette construction ne recolle PAS
+les matrices en une meme adjacency et ne satisfait pas de conditions
+PSD sur les formes COMPLETES44x44 ni de bornes de rang. Elle ne
+prouve aucun germe Conway, aucune possibilite d'un Conway sans prisme.
+
+CAS D'EGALITE APRES RECOLLEMENT. Conditionnellement a t_v=d_v=0 et
+sum Delta=0, chaque matching d'etoile tau_x, sur les douze lettres
+restantes, se contracte sur les six paires mates en C6 ou2C3. Pas de
+boucle (t=0), pas de double arete (sinon un E_yy=4 et Delta>0), degre2.
+Enumeration propre des10395 matchings :3840 du typeC6,640 du type2C3,
+soit4480 et seulement DEUX formes a renommage des paires pres.
+La bijection sigma entre deux etoiles mates n'a aucune arete interne
+a une paire (t=d=0) et au plus une fleche par paire non ordonnee
+de lignes (E_x,xbar<=1). Son graphe contracte est donc K6 prive d'un
+couplage parfait, oriente avec deux entrees/deux sorties partout.
+Il y a38 orientations par graphe,15 couplages manquants et4^6 releves,
+soit2334720 bijections etiquetees. Classifications necessaires de CE
+cas d'egalite, pas de tous les germes Conway.
+
+PILOTES DE RECOLLEMENT. Un nouveau modele sur les84 labels impose
+Gamma B=2J-B(I+Mt), t=d=0 et Delta=0 sur les21 matrices, plus sommes
+de lignes>=18 (condition suffisante simple pour V defini positif).
+Il n'impose ni equations SRG lointain-lointain ni PSD44/rangs.
+Deux essais bornes15s chacun : sans symetrie UNKNOWN ; avec rotation
+des sept lignes imposee uniquement pour chercher un temoin,480 variables
+d'adjacence, UNKNOWN aussi. Aucun verdict d'impossibilite, aucun temoin
+recolle obtenu. Pas de relance automatique ni de processus restant.
+
+Outils conway_coarse_integer_floor.py et conway_coarse_gluing_floor.py.
+Artefacts coarse_integer_floor.json, coarse_gluing_floor.json et
+coarse_gluing_floor_cyclic.json dans data/codex_local_global_20261015/.
+Controles propres : secantes entieres, identite exacte, pivots LDL,
+classifications locales par enumeration ; aucun germe du pair audite.
+Aucun SRG construit et aucune exclusion C1.
