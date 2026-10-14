@@ -835,7 +835,7 @@ b=30 demanderait, selon LAB, une borne sur les vecteurs de norme 24 de B
 Résultats de pair intégrés sans relancer un audit ni ouvrir les anciennes
 notes. Notre exclusion d'arête a été transmise au message 639.
 
-### 06h14 — Intersections orthogonales : supports 0 ou 4, au plus 12 racines
+### 06h12 — Intersections orthogonales : supports 0 ou 4, au plus 12 racines
 
 **Résultat exact.** Deux vecteurs entiers orthogonaux de norme 14 de l'espace
 propre -4 ont des supports disjoints ou une intersection de quatre sommets.
@@ -913,3 +913,94 @@ par la borne; il offre une nouvelle famille très contrainte à examiner.
 Fichiers : `orthogonal_root_stars.py`, rapport exact
 `data/codex_night_20261014/orthogonal_root_stars.json`. Aucun SAT, aucun
 flottant, aucune hypothèse de symétrie globale de C1. C1 reste ouvert.
+
+### 06h25 — Petits vecteurs entiers et angles de tous les co-Heawoods
+
+**Résultats prouvés.** Tout vecteur entier h de valeur propre -4 et de norme
+carrée au plus 24 a ses coordonnées dans {0,+1,-1}. Pour deux co-Heawoods
+signés f,g distincts et non opposés, les seules valeurs absolues possibles
+de leur produit scalaire sont **0, 1, 2, 4**. Si sa valeur absolue est quatre,
+leur intersection est un C4, et les signes y coïncident après orientation.
+Si elle vaut deux, leur intersection contient exactement deux sommets, un de
+chaque signe, là aussi avec signes concordants. Aucune existence de ces
+configurations survivantes n'est affirmée.
+
+**Lemme sur les coordonnées.** Soit M la masse totale de chaque signe, et
+a=max|h_v|. L'équation propre au sommet extrémal donne M>=4a, donc
+`||h||^2 >= a^2+2M-a >= a^2+7a`. Une norme <=24 impose a<=2. Si t est
+le nombre d'entrées de module deux, `||h||^2=2(M+t)`. Deux entrées +2
+exigeraient une masse négative >=8+8-4=12, car elles ont au plus deux voisins
+communs, de poids au plus deux. Cela contredit M+t<=12 avec t>=2. De même
+pour deux entrées -2. Restent, à changement de signe près, les cas suivants.
+
+1. Une entrée +2, aucune -2 : M<=11. Le sommet u de valeur +2 ne peut être
+   adjacent à une entrée positive x. Sinon la masse négative voisine de u
+   est >=9, celle requise par x est >=6, et leur unique voisin commun peut
+   porter au plus deux unités négatives. La masse négative disponible pour x
+   est alors <=2+(M-9)<=4, contradiction. Donc u touche exactement huit
+   entrées -1. Chacune des M-2 entrées +1, non adjacente à u, doit toucher
+   au moins deux des M-8 entrées négatives restantes. Pour M<10, c'est
+   impossible. Pour M=10, les huit +1 touchent toutes la même paire négative,
+   contre mu=2. Pour M=11, neuf +1 choisissent au moins une paire parmi trois
+   sommets négatifs, mais ces trois paires ne peuvent avoir ensemble que six
+   voisins communs. Contradiction dans tous les cas.
+
+2. Une +2 en u et une -2 en w : M<=10, avec M-2 entrées unitaires de chaque
+   signe. Le même argument interdit les voisins de même signe de u et w.
+   S'ils ne sont pas adjacents, l'équation de u impose M=10 et ses huit
+   voisins négatifs unitaires; w touche de même les huit +1. Tout +1 a alors
+   exactement deux voisins -1 et aucun voisin positif, par mu=2 avec u;
+   symétriquement les huit -1 sont indépendants. Cela donnerait huit voisins
+   indépendants dans N(u), qui est une réunion de sept arêtes : impossible.
+   S'ils sont adjacents, u touche six des négatifs unitaires N1, w six des
+   positifs unitaires P1. Pour M<=9, chaque sommet de P1 doit toucher au moins
+   un négatif hors N1 : son voisin w occupe déjà une des deux places communes
+   avec u. S'il n'en reste aucun, contradiction; s'il en reste un, il est
+   voisin des six sommets de P1, tout comme w, contre mu=2.
+   Enfin M=10 laisse deux positifs P0 et deux négatifs N0 hors P1,N1. Chaque
+   sommet de P0 doit toucher les deux N0 et exactement deux N1, par son
+   équation propre et mu=2 avec u; symétriquement chaque N0 touche les deux
+   P0 et exactement deux P1. Il n'y a donc que quatre arêtes entre P1 et N0.
+   Mais chacun des six P1 en requiert au moins une, comme ci-dessus. Impossible.
+
+**Angles.** Après orientation, écrivons d=f.g>=0. Le minimum entier de norme
+14 donne d<=7 pour des racines distinctes. Si d>=2, h=f-g a norme
+`28-2d<=24`, donc aucune coordonnée de module deux. Sur l'intersection I
+de leurs supports, f et g ont donc le même signe, et |I|=d. Dans le
+co-Heawood de g, chaque sommet extérieur au support de f peut avoir au plus
+un voisin dans I : ses voisins dans I auraient tous le même signe de f.
+Le sous-graphe induit par supp(g)\I a donc degré minimum au moins trois.
+
+L'énumération exacte des 16383 sous-ensembles non vides d'un co-Heawood donne
+les nombres de tels sous-graphes par taille : 21 de taille 10, 49 de taille
+12, 14 de taille 13, un de taille 14, et aucun autre. Les 21 compléments de
+taille quatre sont tous des C4; les 49 compléments de taille deux ont un
+sommet dans chaque partie. Cela exclut d=3,5,6,7 et précise d=2,4. La borne
+générale |f.g|<=6 de 05h27 est donc remplacée par |f.g|<=4, avec le trou 3.
+
+**Contrainte supplémentaire pour les petites couches entières.** Si h a
+p entrées +1 et p entrées -1, les deux graphes induits par les signes ont le
+même nombre e d'arêtes. En notant d_x le degré dans son propre signe,
+le comptage des voisins communs des p positifs donne exactement la nécessité
+`9e + somme_x C(d_x,2) <= p(p-7)`, où x parcourt les deux signes. En effet,
+les négatifs contribuent `6p+8e+somme_neg C(d_x,2)` et les positifs
+`somme_pos C(d_x,2)`, contre au plus `p(p-1)-e`.
+Pour p=7,8,9,10,11,12, cela borne e par 0,0,2,3,4,6. Aucun de ces deux
+graphes n'a de triangle : trois sommets d'un même signe dans une droite
+exigeraient trois ensembles disjoints d'au moins six voisins de l'autre
+signe, alors que p<=12. En particulier une norme 24 entière signifie
+exactement 12 coordonnées de chaque signe et au plus six arêtes dans chacun
+de leurs graphes induits. Cela ne borne pas encore le nombre de ces vecteurs,
+et ne traite pas les classes non entières du réseau B de LAB.
+
+Code exact : `coheawood_angle_bound.py`; rapport
+`data/codex_night_20261014/coheawood_angle_bound.json`. Le petit script vérifie
+les paramètres des sept cas de coefficients et les sous-graphes du
+co-Heawood; les arguments graphiques sur les coefficients sont ci-dessus.
+
+**Relais LAB 641, lu et acquitté.** LAB annonce l'exclusion du paramètre
+b=30, donc `rang_F7(A+4I)>=33`, par nouveaux minorants de couches dans A
+issus de petits vecteurs entiers projetés (commits `4f8303e/d2e0ecc`,
+certificat `cert_b30.json`). Il poursuit b=32, où la distinction des images
+projetées au-delà du support huit se heurte aux prismes jumeaux. Contribution
+de pair enregistrée; pas de réaudit ni de lecture d'anciennes notes.
