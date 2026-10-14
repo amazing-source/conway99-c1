@@ -456,3 +456,24 @@ matrices) or C_8 on both sides (576 matrices).
   decreases by about 10.6 per vector of norm 16 allowed (2.7e5 at c_7 <= 2000, c_8 <= 1e5). So b = 30 falls if one
   proves roughly c_8 <= 1.2e5 together with c_9 << 1.3e6 (and c_7 small): a count of the norm-16 vectors three
   times sharper than 20.4 and a first count of the norm-18 vectors (9 + 9 skeletons). Not attempted tonight.
+
+## 23. Independent reading of sections 17-21 and corrections (04:12 UTC)
+An independent reader (a separate agent, read-only, given the files, not my conclusions) re-derived 19.1-19.2, 20.1,
+20.3 and the certificate logic, and found no error that would make b >= 30 false. Points raised, now closed:
+* 19.1, min B >= 14 also needs norms <= 12 excluded: for an integral -4-eigenvector with entries 0, +-1 and h
+  positives, each negative is a common neighbour of >= 6 pairs of positives, so 6h <= h(h-1), h >= 7, norm >= 14;
+  an entry of size m >= 2 costs m^2 + 7m >= 18. So the minimum is >= 14, with equality only for co-Heawood vectors.
+* b = 0 is impossible: B would be an even unimodular lattice of rank 44 (44 is not 0 mod 8).
+* 20.2 had a gap (the identification of the four m's depends on the skeleton, so two vectors could share p and its
+  negatives). Closed by the reader's argument: if f, f' are of type A at the same p with the same four negatives,
+  they share p and the six w's, so f.f' = 11 + f'(r) - sum_{m in M} f'(m) >= 11 - 1 - 1 = 9 (at most one m can be the
+  eighth positive r' of f'), hence |f - f'|^2 <= 14; f - f' is an integral -4-eigenvector, so it is 0 or has norm
+  exactly 14, and equality forces f'(r) = -1, giving the entry f(r) - f'(r) = 2 and norm >= 18: so f = f'. The bound
+  c_8 <= 360360 stands.
+* Certificates: `theta7_cert2.py` now checks with explicit tests (not assert), saves (lam, mu) in cert_bXX.json and
+  logs the command line; all certificates regenerated (`theta7_cert_log2.txt`, cert_b02..cert_b28.json, 14 files);
+  b = 30 still feasible.
+* Controls with b = 0 mod 4 added (`theta7_test2.py`, log `theta7_test2_log.txt`): Lambda_7^(2k+1) + A_6 +
+  E_8^m and with sqrt7 E_8 (b = 8, 12, 16, 20, 24, 28, 32, 36, 40): the Fricke relation holds exactly.
+Status of Theorem 20.4 (rank_{F_7}(A + 4I) >= 31): hand lemmas + exact certificates + one independent reading;
+not reviewed by a human; not compared with the theta-LP of 07/10.

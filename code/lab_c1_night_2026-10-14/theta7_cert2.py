@@ -37,12 +37,20 @@ INE = [[0] * ne + [int(j == t) for j in range(ng)] for t in range(ng)]
 INE.append([Fraction(v) for v in e] + [Fraction(v) for v in g])
 ok, x = X.feasible(EQ, [0] * 15, INE, [0] * ng + [1], ne + ng)
 if not ok:
-    print("b=%d [%s]: feasible (no certificate)" % (b, spec)); sys.exit(0)
+    print("python theta7_cert2.py %d \"%s\" %d -> feasible (no certificate)" % (b, spec, nmax)); sys.exit(0)
 lam, mu = x[:ne], x[ne:]
-assert all(m >= 0 for m in mu)
+# explicit checks (not assert, so that python -O cannot remove them)
+if not all(m >= 0 for m in mu):
+    raise SystemExit("certificate check failed: negative multiplier")
 for k in range(15):
-    assert sum(lam[i] * Fraction(E[i][k]) for i in range(ne)) + sum(mu[j] * Fraction(G[j][k]) for j in range(ng)) == 0
+    if sum(lam[i] * Fraction(E[i][k]) for i in range(ne)) + sum(mu[j] * Fraction(G[j][k]) for j in range(ng)) != 0:
+        raise SystemExit("certificate check failed: combination not zero on coordinate %d" % k)
 val = sum(lam[i] * Fraction(e[i]) for i in range(ne)) + sum(mu[j] * Fraction(g[j]) for j in range(ng))
-assert val > 0
-print("b=%d [%s] nmax=%d: INFEASIBLE, certificate verified exactly; weights on: %s"
-      % (b, spec, nmax, [names[j] for j in range(ng) if mu[j] != 0]))
+if not val > 0:
+    raise SystemExit("certificate check failed: value not positive")
+import json
+json.dump({"b": b, "spec": spec, "nmax": nmax,
+           "lam": [str(v) for v in lam], "mu": {names[j]: str(mu[j]) for j in range(ng) if mu[j] != 0}},
+          open("cert_b%02d.json" % b, "w"), indent=0)
+print("python theta7_cert2.py %d \"%s\" %d -> INFEASIBLE, certificate verified exactly (saved cert_b%02d.json); weights on: %s"
+      % (b, spec, nmax, b, [names[j] for j in range(ng) if mu[j] != 0]))
