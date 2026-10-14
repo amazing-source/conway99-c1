@@ -99,3 +99,26 @@ Checked here on my model: F_2 rank 441, dim K = 288, basis weights 0 mod 4, pair
 P(W(9),x0) (to my knowledge the only known GQ(8,10)) has NO 3-ovoid: the 243 family does not arise this way. Two
 cadical runs on the 3-ovoid CNF (no mu, 280 s each) were undecided, as expected for a parity-UNSAT instance.
 The same argument does not apply at 378 (lines of 6 points, hemisystem and complement meet them in 3).
+
+## 7. B: rooted SAT model for srg(v,k,1,mu) (rooted_pq.py, rooted_decode.py; user's go 14/10 ~14:10 UTC)
+Model: x fixed, its k/2 lines fixed, outer vertices with transversal labels (mu inner neighbours, one per line), all
+degrees and all lambda/mu counts by sequential counters, outer columns lexicographically non-increasing (the only
+symmetry breaking). Validation: (9,4,1,2), (15,6,1,3), (27,10,1,5) SAT, decoded graphs checked exactly.
+**Calibration: srg(57,14,1,4) (known not to exist, Wilbrink-Brouwer 1983): cadical UNSAT in 1901 s** (2.34 M clauses;
+no DRAT certificate). Running (8 h caps): (115,18,1,3) since 14:13 UTC (17.5 M clauses, ~2 GB, log
+rooted_data/run115.log); Conway (99,14,1,2) since 14:45 UTC (8.5 M clauses, log rooted_data/run99.log). An UNSAT would
+have to be re-run with DRAT logging and checked; a SAT would be decoded and checked exactly, then its group computed.
+**Symmetry breaking for mu = 2 (rooted_pq_sb.py).** For mu = 2 the outer labels are forced (one outer vertex per
+non-collinear pair), so W(B_{k/2}) acts on the outer-outer variables by a permutation; lex-leader constraints
+X <=_lex X o pi (49 elements: line transpositions, point swaps, their products; prefix of 600 variables) are sound.
+Results: Paley 9 still SAT (decoded, checked); srg(51,10,1,2) (parameter-infeasible; the cloud session's rooted model
+was undecided after 300 s) UNSAT in 1331 s with these constraints; the run without them is in progress for comparison.
+Conway with these constraints: 2.88 M variables, 8.71 M clauses, cadical since 15:13 UTC (8 h cap, log
+rooted_data/run_sb99.log), alongside the run without them (since 14:45).
+**Stopped 14/10 15:18 UTC** (user: the lab PC will be used by his brother; heavy runs will be done later on his laptop
+at full power; AWS not now). Every run stopped WITHOUT a verdict: (115,18,1,3) after 3779 s, Conway plain after 1838 s,
+Conway with W(B7) symmetry breaking after 304 s, srg(51,10,1,2) without symmetry breaking after a few minutes (the
+comparison with the 1331 s UNSAT is therefore missing), MILP 378 second anchor. Nothing was decided; nothing is
+excluded. To resume: the CNF files are in rooted_data/ (pq_115.cnf, pq_99.cnf, sb_99.cnf, pq_51.cnf); plan proposed
+to the user before any AWS run: scaling point srg(73,12,1,2) (60 outer vertices, infeasible) and a cube split of
+Conway compatible with the symmetry breaking, a few cubes timed locally first.

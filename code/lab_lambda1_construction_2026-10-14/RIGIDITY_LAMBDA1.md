@@ -76,9 +76,14 @@ vectors of support 90 with entries 4 and 1 (i.e. -11 = s and a = (k - mu)/|s| = 
 of non-adjacent pairs; nothing shorter within 250 s per anchor (a longer run to prove optimality is in progress).
 In the conference family srg(25,12,5,6) the shortest eigenvectors have support 6 for both eigenvalues, far below the
 pair support 14: there the short eigenvectors are NON-trivial, and that is where the Godsil-McKay switchings live.
-**Reading.** A family is rigid when its short eigenvectors are only the pair vectors (they generate relabellings);
-switching needs short non-trivial eigenvectors of both eigenvalues, with concentration. The lambda = 1 graphs studied
-have none at small scale.
+**Correction (15:12 UTC).** The same MILP on BvLS and on the sixth 243-graph (eigenvalue -5, anchor 0, 1200 s each)
+returns pair vectors as well (support 42 = 2 + 2(k - mu), entries 5 and 1: an adjacent pair), although trades EXIST
+at 243 (thirds, line regions). So "only pair vectors are short" does not by itself mean rigidity. What separates
+the cases is CONCENTRATION: there are two ways to carry a trade, (a) short non-trivial eigenvectors (srg(25,12,5,6):
+support 6 < 14, Godsil-McKay switchings), (b) regions that carry MANY eigenvectors of both eigenvalues (a third of a
+243-graph: 81 vertices carry 10 (-5)-eigenvectors and 20 4-eigenvectors, density 10/81 = 0.12 against the threshold
+1/(2(r-s)) = 1/18). The S3 hemisystem graph has neither: its shortest -11-vectors are pair vectors (support 90) and no
+region below ~280 vertices carries enough of them (X_m unions: density at most 0.016 against 1/30).
 
 ## 7. Rank-2 trades: the simplest genuine trades, and why they are absent here
 If the s-eigenvectors supported in the changed region form a line Y = <x>, the theorem forces Y' = <y> with
@@ -94,8 +99,17 @@ give a new srg A + Delta (its eigenprojections are E_s - xx^T/|x|^2 + yy^T/|y|^2
   set (points P, blocks Q of the 2-(7,4,2) biplane, x = 1_P - 1_Q) asks that every point of S- n P lie in every block
   of S+ n Q and every block of S- n Q contain every point of S+ n P; with blocks of 4 points, two points in exactly 2
   blocks, this forces S- = empty or S- = P u Q. So a co-Heawood configuration never carries a rank-2 trade: Conway
-  graphs are rigid at that scale too (s-side only; on the 3-side a rank-2 trade would need a +-1 3-eigenvector of
-  norm 14, not examined here).
+  graphs are rigid at that scale too.
+* Conway, 3-side. Taking as acquired Codex's classification (night journal 14/10): the +-1 integral 3-eigenvectors of
+  norm 14 are x = 1_H - 1_H' with H, H' two disjoint H7 configurations (7 vertices, 11 edges, degrees 4,3^6) whose
+  centres are adjacent, no other edge between them. On the 3-side the cross pairs get Delta_ij = -x_i x_j, so a cross
+  pair inside H (or H') must be an edge and a cross pair between H and H' a non-edge. A split of H into two non-empty
+  parts would need a complete bipartite K_{p,7-p} inside H7 (impossible: degrees <= 4 and 11 edges); so H and H' each
+  lie on one side, and on different sides the centre edge would be a cross pair: only the trivial split remains.
+  Hence a Conway graph carries no rank-2 trade on a {0,+-1} eigenvector of either sign. A rank-2 trade could still use
+  a vector with two entry sizes, a on S+ and b on S- with |S+|(a/b) + |S-|(b/a) = 2(r-s) = 14: the pair vectors
+  (a = 1 on 24 vertices, b = 3 on u, w) are of this kind and give the transposition (u w); the other two-size vectors
+  are not classified here.
 
 ## 8. Symmetry from scarcity: why the known lambda = 1 srgs are symmetric
 All known lambda = 1 srgs are solutions of an exact problem inside a HOST with a large automorphism group: hemisystems
@@ -115,3 +129,10 @@ Giudici-Royle), where lambda = (q-3)/2 > 1 and small stabilisers do appear (orde
 of its solutions; it needs a host-free construction, or a host with fewer symmetries than solutions. For Conway no
 host is known at all, and B5 says that a Conway graph would be asymmetric: it would be exactly such a host-free,
 isolated object.
+**Faithfulness (Codex, bridge 14/10, taken as acquired).** The stabiliser of a solution S acts on the induced graph
+through K_S / K_(S) (K_(S) = pointwise stabiliser). For a hemisystem it acts faithfully: a hemisystem line through each
+point recovers the point as an intersection of two concurrent hemisystem lines (my argument), equivalently every point
+outside S has 78 neighbours in S and two points share at most 26 (Codex). General form (Codex): an m-ovoid of a GQ(s,t)
+determines the host as soon as m(t+1) > max(s-1, t+1). So scarcity (N < |K|) gives a non-trivial automorphism of the
+induced graph itself; an asymmetric induced graph needs a regular orbit of solutions (N >= |K| is only necessary), and
+a regular orbit still allows "internal" automorphisms that do not extend to the host.
