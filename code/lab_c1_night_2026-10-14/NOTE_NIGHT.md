@@ -599,3 +599,17 @@ These are what the supports 7-8 count of 27 would need next (integral 3-eigenvec
   estimated family total of about 1.2e7 against the target 1.4e7, a loss of order R * 3e5 (R representations per h)
   leaves no margin unless R is very small. Assessment: b = 34 not reachable by this route without an exact count of
   the support-7/8 configurations (not determined by the parameters) and of R. Stopped here.
+
+## 30. Summary of the night (05:09 UTC)
+Proved (with status):
+1. **rank_{F_7}(A + 4I) is odd and >= 35** (sections 19-28): exact theta programme on M_22(Gamma_0(7)) for the line
+   lattice A and B = sqrt7 A*; hand-proved shell bounds (lines, vertex-derived small vectors, co-Heawood and norm-16
+   counts); Farkas certificates checked exactly and saved (cert_b02..cert_b32.json); controls on 20 real lattices and
+   80-digit Fricke check; counting formulas checked by brute force on srg(243,22,1,2); one independent agent reading
+   (gap found and closed). Not compared with the theta-LP of 07/10 (old notes not opened).
+2. **N9**: no 9-set spans exactly 17 edges (section 17, hand, from Codex's norm-14 lemma).
+3. Dense local families (solver): T1 (no vertex on 21 grids; also Codex, F_2 proof), kk6 (no vertex on 15 grids),
+   kk5 partial (five lines pairwise in grids force a grid on the other two; DRAT-verified).
+4. Spread family: abelian case impossible (hand); general case open.
+Open / next: b = 34 (needs > 1.4e7 norm-8 vectors in A, section 27 and 29); level-63 programme with the 99 vertex
+vectors (24); DRAT certification of T1 and kk6 (~3 h, not launched).
