@@ -160,6 +160,11 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   (9 local + 1 mixed). The real local condition of a Conway graph (T, U >= 0 and nullity >= 14) is still 2 short.
   Fine-space spectrum (fine_scan.py): all 111 tested (4,4) PSD structures have spec(Gamma_F) in [-4,3]; with c = (1,1)
   only 1 of 19 near-PSD structures does, so the fine spectrum alone does not explain (A4).
+- NEXT (Codex, message 754 reply, not re-audited): in G1 the 44 labels form 11 regular Klein-4 orbits, four character
+  blocks of size 11; stars give nullities (2,1,1,0) in (++,-+,+-,--); the trivial block has rank >= 6 - min(c_l, c_m),
+  so rank T <= 30 forces the three non-trivial blocks to carry nullity >= 9 - min(c_l, c_m); ten minimal targets
+  (1+a, 1+b, c), a + b + c = 3 for c = (4,4). To do at restart: target these sector nullities in sym4g.py (blocks
+  B^t T B / 4 of Codex's four_star_g1_sectors.py), warm starts h4g_2_PSD_171.json (nullity 12) and null13.json.
 - (A4) (OPEN, robust): T, U >= 0 at four stars forces c(l), c(m) >= 2. It would make every line of a Conway graph
   special, i.e. exclude the 'generic, prism-poor' regime that no local lemma touches (CONWAY_CONSTRAINTS.md, F).
   Combined with the known grid bounds (rho <= 126 grids, g(x) <= 17 per vertex, no Hamming point, kk5/kk6) a
