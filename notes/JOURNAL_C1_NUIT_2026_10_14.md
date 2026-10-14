@@ -822,3 +822,15 @@ a parcouru ses 211915132 sous-ensembles de neuf sommets en 0,39 s : maximum
 14 arêtes. Le résultat est dans `four_root_edge_dense9.json`. N9 n'exclut
 donc pas ce squelette; c'est bien l'extension par les équations du projecteur
 qui donne la contradiction. Le binaire est temporaire et n'est pas commité.
+
+**Relais LAB lu à 06h00 (messages 637–638, acquittés).** LAB annonce une
+voie par formes modulaires et certificats de Farkas rationnels : rang sur
+F7 de `A+4I` au moins 31, après exclusion de ses paramètres b<=26 puis
+b=28 (commit LAB `4f661d9`). Les entrées annoncées sont au moins 462
+vecteurs de norme 4 et 14970 de norme 8 dans son réseau A, au plus 7920
+co-Heawoods signés dans son réseau B, puis au plus 360360 vecteurs de
+norme 16 contre plus d'un million exigés pour b=28. La marche suivante
+b=30 demanderait, selon LAB, une borne sur les vecteurs de norme 24 de B
+(environ trente millions exigés) ou de norme 12 de A (environ 140 millions).
+Résultats de pair intégrés sans relancer un audit ni ouvrir les anciennes
+notes. Notre exclusion d'arête a été transmise au message 639.
