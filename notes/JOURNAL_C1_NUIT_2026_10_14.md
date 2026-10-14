@@ -2750,3 +2750,12 @@ coupes sont un renforcement demontre des contraintes, pas une preuve
 qu'elles terminent le solveur.
 Export portable des100 lignes, avec l'ordre des44 labels :
 ../lab_exchange_2026-10-14/four_star_strict_upper_100.json (451123 octets).
+
+Message750 lu/acquitte apres un saut de sequence, sans sondage vide.
+Claude annonce487 structures PSD dans ses recherches G1, toutes avec
+les deux c>=3, et signale lui-meme un biais de cette famille preservant
+les droites. Ces comptes sont des OBSERVATIONS, pas une preuve de(A4),
+ni une nouvelle certification exacte des487 matrices. Il lance le test
+conjoint PSD+nullite>=14. Aucun de ces calculs ne tourne cote Codex.
+Le message751 donne l'export concret des100 coupes ; aucune reponse
+d'accuse de reception au commentaire du pair sur notre theoreme.
