@@ -109,3 +109,173 @@ des triangles modulo z(z-18)(z-7)(z+3). Rapport dans
 60 paires non appariées d'un X de douze sommets. Aucun lancement de
 campagne UNKNOWN. Message623 de Claude lu : résultats indépendants
 sur la même Gram et sur les grilles, pas utilisés comme ancienne note.
+
+## 02h35 — Exclusion indépendante des21 grilles passant par un sommet
+
+**Énoncé.** Dans un srg(99,14,1,2), aucun sommet v ne peut avoir la
+propriété que chacune des21 paires de triangles passant par v engendre
+une grille3x3 induite. La preuve ci-dessous réduit cette famille à128
+configurations sur F2, puis à136656 systèmes linéaires de signes ; tous
+sont contradictoires. Le script autonome termine en une dizaine de
+secondes, sans solveur SAT. Cela confirme indépendamment le verdict
+SAT transmis par Claude au message626, sans lire son code ni ses notes.
+
+### 1. Les21 carrés et les105 permutations
+
+Écrivons les voisins de v sous la forme i+,i- (i=0,...,6), chaque paire
+formant avec v un triangle. Tout non-voisin de v a deux voisins dans ce
+voisinage, dans des paires distinctes. Chaque couple de tels voisins
+non adjacents a exactement un deuxième voisin commun : les84 sommets
+restants sont donc z_(i epsilon,j delta), quatre par paire e={i,j}.
+
+Sous l'hypothèse, v, les quatre points i+/i-/j+/j-, et ces quatre z
+forment une grille. Chaque grille R est un code parfait :
+
+    1_R^t P 1_R = (27*9-9*36+81)/63 = 0,
+    P1_R=0, donc A1_R=3*1_R+1.
+
+Tout sommet extérieur a exactement un voisin dans R. Par conséquent,
+les quatre z d'une cellule Q_e induisent un carré ; deux cellules
+Q_e,Q_f n'ont aucune arête si e,f se rencontrent, et sont reliées par
+un appariement parfait si e,f sont disjointes. Il reste donc105 matrices
+de permutation4x4, sur les arêtes du graphe KG(7,2).
+
+Soit H la matrice induite sur les84 z, et D l'incidence14x84 entre les
+voisins de v et les z. Les équations SRG donnent
+
+    H²+H=12I+2J-D^tD,
+    D H=2J-(I+S)D,
+
+où S apparie i+ à i-. L'incidence D est celle du graphe complet
+multiparti à sept parts de taille2. Son rang réel est14. Sur im D^t,
+H a les valeurs12 (une fois), -2 (six fois) et0 (sept fois). Sur ker D,
+H a3 (40 fois) et-4 (30 fois), par l'équation quadratique et la trace.
+
+Les fonctions constantes sur les21 cellules portent 2I+A_KG, de
+spectre12^1,(-2)^6,3^14. Sur les trois caractères non constants de
+chaque carré, la matrice restante M, d'ordre63, a donc
+
+    spectre M = 0^7,3^26,(-4)^30.
+
+La base des caractères est (epsilon,delta,epsilon*delta)/2. Le bloc
+diagonal vaut diag(0,0,-2). Chaque bloc hors diagonale non nul est une
+permutation signée3x3 dont le produit des trois signes est+1 : c'est
+la représentation des24 permutations de quatre points. Le script
+vérifie directement les24 cas avec la matrice de Hadamard du carré.
+
+Écrivons U_i le vecteur qui a coefficient+1 sur le caractère du point
+i dans chacune des six cellules contenant i, et0 ailleurs. Les sept
+U_i sont orthogonaux, de norme carrée6, et
+
+    M U_i=0 ; M²+M=12I-2*sum_i U_i U_i^t.
+
+### 2. Le projecteur symplectique de rang12
+
+Modulo2, M devient la matrice d'un revêtement à trois feuilles de
+KG(7,2), et M²=M. Son polynôme caractéristique modulo2 lui impose le
+rang26. La représentation de permutation sur F2^3 se décompose en la
+droite constante et le plan de somme nulle. La première porte A_KG,
+idempotent de rang14 (son spectre entier est10^1,(-4)^6,1^14).
+La seconde donne un projecteur B de rang12 sur un espace de dimension42.
+
+Le plan de somme nulle de F2^3 porte une forme alternée non dégénérée
+(restriction du produit scalaire). B est auto-adjoint pour la somme
+orthogonale de ces21 plans ; son image V est donc un espace symplectique
+de dimension12. Les images E_ij des21 plans de coordonnées sont des
+plans isotropes, injectifs puisque les blocs entre cellules disjointes
+sont inversibles. Deux de ces plans sont orthogonaux si leurs indices
+se rencontrent, et leur couplage est inversible sinon.
+
+Pour un indice i fixé, les six E_ij engendrent un espace isotrope W_i,
+donc de dimension au plus6. Trois E_ij,E_ik,E_il sont toujours en somme
+directe : le couplage avec E_jk annule les deux premiers et est
+inversible sur le troisième. Ainsi dim W_i=6 et W_i est lagrangien.
+En outre W_i inter W_j=E_ij. Pour le voir, les noyaux dans W_i des
+couplages avec E_jk et E_jl sont respectivement E_ij+E_ik et
+E_ij+E_il ; leur intersection est E_ij. L'orthogonal de W_j vaut W_j.
+
+Les six plans d'un W_i forment l'unique configuration de six plans de
+dimension2 dans F2^6 dont chaque triple est direct. Preuve élémentaire :
+fixer trois plans comme axes, puis un quatrième comme (I,I,I). Tout
+autre s'écrit (I,A,B), avec A,B,I+A,I+B,A+B inversibles. Dans GL(2,2),
+les seules matrices A avec I+A inversible sont R et R², où
+
+    R = [[0,1],[1,1]].
+
+Les deux plans restants sont donc (I,R,R²) et (I,R²,R). Ils satisfont
+bien les conditions, vérifiées directement par le script.
+
+### 3. Classification de128 configurations symplectiques
+
+Fixons W_0 et les six plans P_i=E_0i sous cette forme. Identifions
+V=W_0+W_0*, avec la forme symplectique usuelle. Posons S_i=P_i^perp
+dans W_0*. Tout lagrangien W_i rencontrant W_0 exactement en P_i
+est le graphe, modulo P_i, d'une forme bilinéaire symétrique f_i sur
+S_i (dimension4), soit dix bits par i. Pour i!=j, la condition
+dim(W_i inter W_j)=2 équivaut exactement à
+
+    f_i restreinte à (S_i inter S_j) = f_j sur ce même plan.
+
+Ce sont45 équations binaires sur60 bits ; leur rang calculé est32,
+d'où une solution de dimension28. Les cisaillements symplectiques
+(x,y)->(x+F y,y), F symétrique6x6, donnent un sous-espace de dimension21.
+Ils préservent tous les couplages. Il suffit donc d'examiner 2^7=128
+représentants du quotient. Le script construit une base de ce quotient
+par élimination exacte et vérifie que la somme avec les cisaillements
+engendre tout le noyau, sans hypothèse d'orbites supplémentaire.
+
+Pour chaque représentant, il construit les sept W_i, leurs21 plans
+d'intersection, et vérifie les105 couplages entre paires disjointes.
+Un seul représentant passe. Sa Gram symplectique, multipliée par les
+blocs [[0,1],[1,0]], donne bien un projecteur B de rang12. Aucun autre
+cas n'est écarté sur un critère numérique ou heuristique.
+
+### 4. Aucun relèvement des signes :136656 contradictions XOR
+
+Dans le plan E_ij, les trois caractères du carré correspondent aux
+trois vecteurs non nuls. Ceux associés aux indices i,j sont distincts,
+et le troisième est leur somme. La projection modulo2 de M U_i=0
+impose de choisir un vecteur non nul dans chacun des six E_ij avec
+somme nulle dans V. Il y a exactement18 choix par i, obtenus en
+énumérant les3^6 possibilités. Entre deux indices, leurs choix sur le
+plan commun doivent être distincts. Il y a136656 affectations
+compatibles aux sept indices.
+
+Une fois ces choix fixés, le transport des caractères entre cellules
+disjointes est fixé par B. Chaque appariement4x4 conserve seulement
+deux bits de signes libres : le troisième signe est leur produit.
+On a donc210 variables binaires. Pour une cellule e ne contenant pas i,
+les quatre transports du caractère i venant des cellules f contenant i
+et disjointes de e doivent avoir somme nulle dans M U_i. Dans l'unique
+configuration survivante et pour chacun des18 choix, ils se regroupent
+toujours en deux paires de même caractère (vérification exhaustive
+finie). Chaque paire exige des signes opposés : une équation XOR
+avec second membre1. Il y a30 équations par i, donc210 au total.
+
+L'élimination binaire incrémentale trouve une contradiction pour les
+136656 affectations, chaque fois à l'ajout du septième indice ; aucune
+affectation complète ne survit. Le script utilise seulement les
+équations de noyau M U_i=0, qui sont nécessaires. Il n'est donc même
+pas nécessaire de vérifier ensuite toutes les équations quadratiques
+réelles de M. Un exemple de certificat XOR (somme de membres gauches0,
+second membre1) est conservé et vérifié directement dans le rapport.
+
+**Artefacts de cette nuit.**
+
+- `code/codex/night_20261014/grid_star_f2.py` : calcul autonome, entiers
+  et bits uniquement, aucun paquet ni solveur externe ; vérification
+  exhaustive des normalisations et des deux étapes finies.
+- `data/codex_night_20261014/grid_star_f2.json` : bases du quotient,
+  unique configuration, comptes, et premier certificat XOR.
+
+**Portée exacte.** Tout sommet a au plus20 grilles passant par lui.
+Cela ne prouve ni l'absence d'une grille ni l'exclusion de C1. Les
+familles à moins de21 grilles demandent d'autres arguments. La preuve
+de couverture mathématique est écrite ci-dessus ; le script est une
+vérification exhaustive courte, pas un certificat formel Lean/Coq.
+
+**Prochaine question.** Trouver si les contradictions XOR admettent une
+formule de parité commune, puis assouplir la configuration des21 carrés.
+Claude travaille indépendamment sur les sous-familles à moins de
+grilles et sur un seul triangle à12 prismes. Dernier message envoyé627,
+02h33 environ ; aucun retour d'accusé attendu.
