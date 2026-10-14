@@ -1267,3 +1267,73 @@ Le passage de cette borne de noyaux à un nombre de collisions de petits z
 doit encore tenir compte des représentations z-z'=h; il n'est pas effectué
 ici. Le script et son rapport sont mis à jour, calcul complet en environ
 2,6 secondes. Aucune exclusion de C1 ni du prochain rang modulaire annoncée.
+
+### 07h18 — Noyaux affines : 40 types supplémentaires, borne totale 911178
+
+On couvre maintenant les collisions de projections de sommes différentes.
+Soit `P=(27I-9A+J)/63` et `h` entier non nul, `Ph=0`, `||h||_1<=16`.
+L'équation est `(A-3I)h=(somme h)/9 * 1`. Sa somme est donc 0 ou ±9.
+La somme nulle relève des 48 gabarits et de la borne 313434 précédente.
+Orientons l'autre cas pour avoir somme h=9. Si M et N sont les masses
+positive et négative, alors M=9+N et N<=3. Un coefficient positif a impose
+M>=4a+1, donc a<=2. Un coefficient négatif -a impose N>=4a-1 : s'il y a
+une partie négative, elle comprend exactement trois coefficients -1.
+Leurs équations imposent qu'ils forment une droite T et n'aient aucune
+arête vers le support positif S.
+
+**Aucun coefficient 2.** Sans partie négative, un sommet de coefficient 2
+doit être adjacent à toute la masse restante, égale à sept. Le voisinage
+est une réunion d'arêtes : un autre coefficient 2 ne peut recevoir le
+poids sept requis, et une fois ces autres 2 exclus, un coefficient 1 ne
+peut recevoir que 2+1 au lieu des quatre requis. Avec la droite négative
+T, écrivons X pour ses 36 voisins et Y pour les 60 sommets non adjacents
+à T. Le support positif est dans Y. Un sommet de Y a exactement six
+voisins dans X, donc huit dans Y. Un sommet de coefficient 2 ne peut
+avoir aucun voisin de Y hors S, car à ce voisin l'équation affine impose
+un poids positif total de un. Ses huit voisins de Y seraient donc dans S,
+ce qui excède le poids interne requis, égal à sept. Contradiction.
+
+Il reste exactement deux formes nécessaires, à changement de signe près :
+
+* h est l'indicatrice d'une grille de neuf sommets (norme carrée 9).
+* `h=1_S-1_T`, où T est une droite, S comprend douze sommets non adjacents
+  à T et induit un graphe régulier de degré quatre (norme carrée 15).
+  Chaque sommet de X a exactement deux voisins dans S, et chaque sommet
+  de Y hors S en a exactement un. En particulier T est déterminée par S :
+  ce sont les trois zéros du vecteur `(A-3I)1_S`.
+
+**Énumération exhaustive abordable.** Le générateur C++ remplit les lignes
+successives de la matrice d'adjacence. Les sommets encore non traités avec
+le même voisinage dans le préfixe traité sont interchangeables : choisir
+un segment initial de chaque classe suffit, sans supprimer de classe
+d'isomorphisme. Chaque ajout vérifie degré <=4 et les capacités de voisins
+communs (un sur une arête, deux ailleurs). Sur douze sommets : 46620 nœuds,
+2350 feuilles avant quotient, **40 types** après individualisation et
+raffinement exacts. Histogramme du nombre de triangles :
+`{0:1, 2:2, 3:4, 4:22, 5:6, 6:3, 8:2}`. Sur neuf sommets, le même
+générateur ne donne qu'un type, la grille, avec 72 automorphismes.
+Les automorphismes des 41 types sont aussi vérifiés par une seconde
+recherche de bijections conservant l'adjacence, sans raffinement de couleurs.
+
+Pour chaque type, la programmation dynamique sur les 4096 sous-ensembles
+choisit un ordre d'insertion des sommets. Les facteurs sont 99 au départ,
+au plus 14 moins les voisins déjà employés si un voisin est fixé, et au
+plus la capacité résiduelle lambda/mu d'une paire si deux voisins sont
+fixés. Un facteur analogue emploie les 84 non-voisins quand aucun voisin
+n'est fixé. Le produit borne les plongements étiquetés; sa division par
+le groupe d'automorphismes borne les copies induites. Les ordres, facteurs,
+graphes et nombres sont tous conservés dans le rapport.
+
+Somme des majorants des 40 types : **298681** copies. Une copie détermine
+au plus une droite T, donc au plus un noyau orienté de somme 9. Avec la
+borne déjà prouvée de 191 grilles, les sommes non nulles contribuent au
+plus `2*(298681+191)=597744` noyaux signés. En incluant la somme nulle :
+
+**Au plus 911178 vecteurs entiers non nuls h tels que Ph=0 et ||h||_1<=16.**
+
+Fichiers : `affine_regular_supports.cpp`, `small_affine_kernels.py`, deux
+listes exhaustives JSONL et rapport `small_affine_kernels.json`. Génération
+C++ <0,1 s, quotient, automorphismes et majorants Python environ 4,8 s.
+Ce sont des conditions nécessaires et des majorants, sans affirmation
+d'extension des 40 types ni d'exclusion de C1. Cette borne compte les
+noyaux h; elle ne compte pas encore les représentations z-z'=h.
