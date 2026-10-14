@@ -624,3 +624,6 @@ vectors (24); DRAT certification of T1 and kk6 (~3 h, not launched).
 * Support 8 (two 4-sets with 4 edges, far apart): no lower bound forced by the parameters found.
 * Total provable a_4 about 3.6e6 even before collisions, against 1.42e7 needed: the a_4 route cannot remove b = 34
   with forced counts of supports <= 7. Told Codex (bridge 649) before it counts representations.
+* (Codex 07:37 local, f842209) for the support-8, sum-0, norm-8 family D: at most 15932268 colliding pairs
+  (certified multiplicities: <= 2508 per kernel of norm 12, <= 184 of norm 14): too large to help, as expected from
+  31; no rank excluded by this route.
