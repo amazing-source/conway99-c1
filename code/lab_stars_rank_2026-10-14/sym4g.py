@@ -4,7 +4,7 @@ H4' (open): no admissible four-star structure (lines l = {v,0,1}, m = {v,2,3}) w
 with rank T <= 30 (nullity >= 14: four stars plus ten mixed relations).  Allowed symmetries (P5): no group element may
 fix 0, 1, 2 (or 0, 1, 3, or 2, 3, 0, or 2, 3, 1) pointwise while moving a letter.  Generators are given as cycle strings
 separated by '|', e.g. "0,1;4,5;6,7;8,9;10,11;12,13|2,3;4,6;5,7;8,10;9,11;12,13".
-Modes: lowrank (maximise -(sum of the 14 smallest |eigenvalues| of T), positivity ignored: can ten mixed relations
+Modes: mix3 (15/10: target three mixed relations under T, U >= 0, saves _MIX3_k.json), lowrank (maximise -(sum of the 14 smallest |eigenvalues| of T), positivity ignored: can ten mixed relations
 occur at all?), zero (maximise min(-(14th smallest |eigenvalue|), lambda_min T, lambda_min U)), psd.
 Every structure with c(l) = c(m) = 1 has its numerical nullity recorded; record-breaking ones are re-checked exactly.
 usage: python sym4g.py <generators> <moves> <seed> <out prefix> [lowrank|zero|psd]
@@ -277,7 +277,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9:
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -298,6 +298,63 @@ def main():
                                "lambda_U": lu, "nullity_numeric": nul_num,
                                "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
                               open(out + "_near.json", "w"))
+        elif mode == "mix3":
+            # MIX test (15/10): mixed = nullity - (2 + c(l) + c(m) - [grid(l,m)]); push the nullity needed for
+            # three mixed relations to zero while keeping T, U PSD; save every PSD structure with mixed >= 3
+            c4 = [idx[frozenset(p)] for p in ((0, 2), (0, 3), (1, 2), (1, 3))]
+            gr = int(G[c4[0], c4[1]] and G[c4[2], c4[3]] and G[c4[0], c4[2]] and G[c4[1], c4[3]])
+            target = 2 + int(os.environ.get("MIXT", "3")) + cl + cm - gr   # MIXT = mixed relations aimed at
+            if os.environ.get("NULT"):
+                target = int(os.environ["NULT"])                          # NULT = absolute nullity aimed at
+            if not (both and target <= n):
+                s2 = -99.0
+            elif min(lt, lu) > -1e-9:
+                s2 = -float(absev[target - 1])          # on the PSD set: push the target eigenvalue to 0
+            else:
+                s2 = -1.0 + 3.0 * min(lt, lu)            # off the PSD set: always worse than any PSD structure
+            if min(lt, lu) > -1e-9 and nul_num >= target:
+                nmix = getattr(main, "nmix", 0) + 1
+                main.nmix = nmix
+                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "grid_lm": gr,
+                           "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                           "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                          open(out + "_MIX3_%d.json" % nmix, "w"))
+                print("move %d: PSD WITH >= MIXT MIXED RELATIONS (numerical): nullity %d, c = (%d,%d), grid %d"
+                      % (mv, nul_num, cl, cm, gr), flush=True)
+        elif mode == "r7":
+            # 7-adic stress test (15/10): on the PSD set, minimise rank_7(8T_S4) (Conway needs <= k <= 28, L4/L22/L23);
+            # tie-break by pushing the 14th smallest |eigenvalue| down; save every PSD structure with rank_7 <= 29
+            if min(lt, lu) > -1e-9 or os.environ.get("R7NOPSD"):
+                A7 = M8 % 7
+                r7 = 0
+                for c in range(n):
+                    piv = np.nonzero(A7[r7:, c])[0]
+                    if len(piv) == 0:
+                        continue
+                    q = r7 + piv[0]
+                    A7[[r7, q]] = A7[[q, r7]]
+                    A7[r7] = (A7[r7] * pow(int(A7[r7, c]), 5, 7)) % 7
+                    colv = A7[:, c].copy()
+                    colv[r7] = 0
+                    A7 = (A7 - np.outer(colv, A7[r7])) % 7
+                    r7 += 1
+                    if r7 == n:
+                        break
+                s2 = -float(r7) - 0.1 * float(absev[13])
+                best7 = getattr(main, "best7", 99)
+                if r7 < best7:
+                    main.best7 = r7
+                    print("move %d: %s with rank_7 = %d (new minimum), numerical nullity %d, c = (%d,%d), lambda %.3f"
+                          % (mv, "PSD" if min(lt, lu) > -1e-9 else "non-PSD", r7, nul_num, cl, cm, min(lt, lu)), flush=True)
+                if r7 <= 29 and min(lt, lu) > -1e-9:
+                    k7 = getattr(main, "k7", 0) + 1
+                    main.k7 = k7
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "rank7": r7,
+                               "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_R7_%d.json" % k7, "w"))
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "lowrank":
             s2 = -float(absev[:14].sum()) if both else -99.0
         elif mode == "zero":

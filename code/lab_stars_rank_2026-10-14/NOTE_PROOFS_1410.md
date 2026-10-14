@@ -210,7 +210,8 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   so rank T <= 30 forces the three non-trivial blocks to carry nullity >= 9 - min(c_l, c_m); ten minimal targets
   (1+a, 1+b, c), a + b + c = 3 for c = (4,4). To do at restart: target these sector nullities in sym4g.py (blocks
   B^t T B / 4 of Codex's four_star_g1_sectors.py), warm starts h4g_2_PSD_171.json (nullity 12) and null13.json.
-- (A4) (OPEN, robust): T, U >= 0 at four stars forces c(l), c(m) >= 2. It would make every line of a Conway graph
+- (A4) FALSE (E4, 14/10 23:30 UTC): T, U >= 0 at four stars does NOT force c(l), c(m) >= 2 (an exact PSD structure
+  has c(m) = 1). Had it been true it would have made every line of a Conway graph
   special, i.e. exclude the 'generic, prism-poor' regime that no local lemma touches (CONWAY_CONSTRAINTS.md, F).
   Combined with the known grid bounds (rho <= 126 grids, g(x) <= 17 per vertex, no Hamming point, kk5/kk6) a
   stronger form ('at least three grids per line') would give at least 11 grids per vertex by parity (the sum over
@@ -261,6 +262,22 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
 - CONSEQUENCE / TARGET (OPEN): a Conway four-star structure needs T, U >= 0, rank_Q <= 30 AND rank_7(8T_S4) <= k <= 28.
   Our searches never imposed the 7-adic condition. 'PSD at four stars forces rank_7 >= 29' would exclude Conway
   (k <= 28); 'forces rank_7 >= 23' would exclude k = 22 (r = 37).
+- E4 (VERIFIED exactly, 14/10 23:30 UTC; verify_counterexample.py + mixed_view.py): fourstar_psd_c31_mix4.json and
+  fourstar_psd_c21_mix4.json, found by the PSD-first walk sym4g.py mix3 (MIXT=4) in the group <(0 1)(2 3)> warm-started
+  from a G1 structure: admissible four-star structures with T >= 0, U >= 0, c(m) = 1 (m NON-special), no grid on (l,m),
+  c(l) = 3 resp. 2, nullity 10 resp. 9, i.e. FOUR mixed relations (ker_l + ker_m has dimension 6 resp. 5).
+  REFUTES (A4) ('PSD at four stars forces c >= 2') and every universal cap 'mixed <= 3'. The G1 data (mixed <= 2,
+  c >= 3) were an artefact of the symmetry. Still far from Conway on these flags: c = (3,1) needs nullity 14 + delta
+  (eight mixed relations), these have 10.
+- E5 (VERIFIED exactly, 14/10 23:55 UTC): fourstar_psd_c11_mix6.json (same walk, group <(0 1)(2 3)>): admissible
+  four-star structure with c(l) = c(m) = 1 (BOTH lines non-special), T >= 0 of rank 34, U >= 0 of rank 40, nullity 10
+  = 4 local + SIX mixed relations. The 'generic' configuration is PSD-compatible at four stars; for Conway it would
+  need nullity 14 (ten mixed relations), rank 30 and rank_7 <= k. Walk statistics (5208 PSD structures with >= 4
+  mixed): c = (1,1) nullity 8-10, (1,2) 9-10, (2,2) 10-11, (3,3) 12, (4,4) 12. rank_7 over about 6500 PSD structures
+  (G1 and non-G1): always >= 30.
+- Reduction (grid_floor.py, Codex's identity, CONWAY_CONSTRAINTS G14): a cap 'mixed <= 2' would contradict proved
+  bounds (rho >= 198 > 191), 'mixed <= 3' the census certificate (rho >= 154 > 126); Codex: every Conway graph has >= 336
+  of its 2079 flags with >= 4 mixed relations. By E4 no such universal cap exists: this route needs the rank condition.
 - Literature (3 quick web queries, not exhaustive): star complements (Cvetkovic-Rowlinson-Simic 1999; Rowlinson
   2007, 2012) are known; no application to (99,14,1,2) found.
 
