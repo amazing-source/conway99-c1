@@ -1,5 +1,9 @@
 # Asymmetry campaign: Paley 9 and Paley 25 (started 14/10/2026, about 10:40 UTC)
 
+**STATUS AFTER THE NOVELTY CHECK (14/10, 12:40 UTC, NOVELTY_CHECK.md): parts 1-2 are mostly a REDISCOVERY of known
+or already-done work (note 171 and its external dossiers, note 165, notes 176-177, NOTE_SPREADFREE, Brouwer's
+Paulus page). New: section 6.3, the 3888-vs-6 reading in 6.2, and section 11 (flip lemma).**
+
 User's request (direct, 14/10): study "ultra microscopically" why Paley 9's parameters force symmetry and why Paley
 25's family contains asymmetric graphs, keeping in mind ALL constraints accumulated on Conway's srg(99,14,1,2)
 (list: CONWAY_CONSTRAINTS.md). Data: Spence's lists (maths.gla.ac.uk/~es/SRGs/, downloaded 14/10, sha256 in
@@ -240,3 +244,56 @@ symmetry and a unique completion.
   where: the sixth graph, around the orbit of 108 with trivial stabiliser). One-block runs take seconds.
 * (c) For Conway: apply 7.1 to the forced pieces of the coclique / co-Heawood frames (a frame with at most 2
   completions must have a group of order at most 2).
+
+# Part 3 (14/10/2026, 12:40-13:30 UTC): novelty check, and the flip lemma
+
+## 10. Novelty check (NOVELTY_CHECK.md)
+Most of parts 1-2 was ALREADY in the project or in the literature: the 15 srg(25,12,5,6), their groups, the two
+asymmetric ones and their complementarity (Paulus-Rozenfeld 1973; Cohn-Elkies-Kumar-Schurmann; external dossier
+PALEY, note 171 of 11/10); the two-graph with group 6 and its children (Brouwer's Paulus page); certificates of
+asymmetry and all one-cell Godsil-McKay sets of every size at 25 (dossier PALEY); no GM switching at 243 (my
+NOTE_SPREADFREE section 2, 12/10); the forced-symmetry principle (= "extension lemma", note 171 section 7, 11/10);
+symmetry-directed trades and the twin from a stabiliser of order 4320 (note 165 section 4 bis); "each one-block
+completion keeps a translation" (NOTE_SPREADFREE 6e); the asymmetric 243 search (13/10, tools exhausted); the 2-factor
+F_x of the second subconstituent and its conjectures (G), (E), (L), (P) (notes 176-177, 12/10; tested by me on 13/10).
+NEW: section 6.3 (|Aut(F_x)| against |Aut(G)_x|), the orbit-stabiliser reading 3888 vs 6, and section 11 below.
+
+## 11. The flip lemma (hand proof, checked on all eight graphs at 243: flip_check.py, flip_check.log)
+Notation of note 176: x a vertex, m = k/2 lines through x, z_uv the vertex of Delta_x with inner neighbours u, v,
+pi_u the perfect matching of N(x) - {u, u'} with z_{u,pi_u(v)} = the special neighbour of z_uv via u; F_x = the first-
+order data (x, N(x), the labels, the special edges). For a line l = {x, a, a'} let the FLIP s_l fix x and N(x) - l
+pointwise, swap a and a', and send z_uv to z_(s u)(s v).
+**Lemma.** s_l is an automorphism of F_x iff (i) l has the maximal number 2(m - 1) of parallel lines, i.e.
+pi_u(a) = a' for every u in N(x) - l, and (ii) pi_a = pi_a'.
+**Proof.** s_l preserves x, the mate pairs and the labels by construction. A special edge z_uv -- z_{u,pi_u(v)} (via u)
+goes to z_(su)(sv) -- z_(su)(s pi_u(v)), which is special via su iff s pi_u(v) = pi_(su)(s v). For u not in l
+(s u = u) this says that pi_u commutes with the transposition (a a'), i.e. pi_u(a) = a' (pi_u has no fixed point);
+and pi_u(a) = a' means that z_ua ~ z_ua', so {u, z_ua, z_ua'} is a line joined to l by the perfect matching x-u,
+a-z_ua, a'-z_ua': a parallel line. Over the 2(m - 1) vertices u this is (i). For u = a (and u = a') it says
+pi_a' = pi_a on N(x) - l, which is (ii). Conversely (i) and (ii) give every case. QED
+Under (i), (ii) says that the bijection z_ac -> z_a'c joins every line through a (other than l) to a line through a'
+by a perfect matching: the far edge aa' is a rung of m - 1 prisms (d(aa') = m - 1 in note 177).
+**Data.** The flip is never an automorphism of the graph. It preserves F_x exactly at the pairs (x, l) with l flat:
+2673 pairs in BvLS (all), 333 in the twin, 243 in Gamma3 and in Gamma4 (the flat lines times their 3 points), none in
+the four spread-free graphs (no flat line). In all eight graphs (i) implies (ii) at every point of every flat line
+(observed, not proved). This explains the ratio 2 of section 6.3 at the generic vertices of the covers (one flat
+spread line through the vertex); the larger ratios at special orbits (twin orbit 60: 16; Gamma4 orbit 81: 4) also
+involve permutations of the lines (extra_fx.py, extra_fx.log).
+**Link with Conway.** A flat line is Codex's family p(T) = 12 (open, 192 local types left, JOURNAL_C1_NUIT_2026_10_14);
+condition (ii) is "two of the three matchings of the flat line coincide", which by Codex's lemma ("an edge in two
+matchings is in all three", proved at 99 with the prism-closure lemma) forces the three to coincide. Then each of the
+6 pairs {i, j} of the common matching gives a 3 x 3 grid (rows T, U_i, U_j; columns the three lines through a, b, c),
+so T spans a grid with every other line at each of its points. By the extension lemma (Aut = 1) a flip-symmetric F_x
+has at least two completions (G and its flipped copy). No exclusion.
+
+## 12. What is left of the proposals of section 9, with costs
+* (a) "Do the matchings at one vertex determine a srg(243,22,1,2)?" Not done anywhere. Exact model at 243: the
+  19 910 pairs of Delta_x with disjoint labels are free, every other pair is known; constraints = degrees, the
+  counts c_b(o) at the 22 inner vertices (linear), lambda and mu on all pairs of Delta_x (about 5 million products).
+  Comparable to the closed-neighbourhood model of 12/10 (undecided in 200 s, 1.4 million variables). Estimate: one
+  cadical run of 30 min to several hours, 3-5 GB, per vertex; NOT launched (beyond a five-minute check). Value:
+  descriptive (where the symmetry and asymmetry are written), no exclusion expected.
+* (b) asymmetric 243 and (c) principle on the frames: already done (section 10).
+* Open problems of this line, unchanged: conjectures (G), (E), (L2), (P) of notes 176-177 (all true on the eight
+  graphs; local proofs failed on 12-13/10). (P) "every edge lies in a prism" is the one with a consequence at 99:
+  at least 231 prisms, which would exclude the zero-prism (maximal torsion) profile.
