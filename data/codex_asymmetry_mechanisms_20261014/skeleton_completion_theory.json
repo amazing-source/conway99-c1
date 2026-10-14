@@ -1,0 +1,65 @@
+{
+  "status": "Theoretical results; no completion solver or group recalculation was run",
+  "main_distinction": {
+    "root_rigidity": "Aut(K_x,x)=1 prevents nonidentity automorphisms fixing x in each completion.",
+    "labelled_uniqueness": "Exactly one completed labelled adjacency matrix extends the decided pairs.",
+    "isomorphism_uniqueness": "All completions lie in one isomorphism class; they may still have many different labelled matrices.",
+    "gamma6_gamma8_completion_uniqueness": "OPEN here. Saturation of the local automorphism bound does not establish uniqueness."
+  },
+  "completion_group_action": {
+    "setup": "Let Omega be the set of SRG completions of fixed decided pairs, and L their permutation group. For a rooted skeleton use permutations fixing x and preserving all its decided pairs.",
+    "formula": "|L.G|=|L|/|L intersect Aut(G)|; Omega is the disjoint union of these L-orbits.",
+    "consequence": "A unique labelled completion inherits all of L. If all completions are asymmetric, the action is free and |Omega| is a multiple of |L|.",
+    "limit": "A large lower bound on |Omega| from one orbit can count only relabellings of a single graph. A trivial L says nothing about the number of different completions."
+  },
+  "residual_triangle_graph": {
+    "theorem": "For lambda=1, U_x=G[F_x]-T_x is (k-2mu)-regular and every U_x edge belongs to exactly one triangle entirely in U_x.",
+    "zero_residual_case": "If k=2mu, then U_x is empty and K_x=G, so completion is automatic. Conversely, if k>2mu then the completed graph has additional far edges.",
+    "geometry_at_equality": "With triangles as lines, k=2mu gives a generalized quadrangle of order (2,mu-1). A point outside a line has at most one neighbor on it by lambda=1, and at least one because no triangle can lie entirely in its far set.",
+    "limit": "Positive residual degree does not prove multiple completions. It identifies what must still be determined.",
+    "values": {"Conway99":10,"Gamma6_243":18,"hemi378":36}
+  },
+  "maximal_local_group_forces_canonical_grid_skeleton": {
+    "assumptions": "lambda=1, mu=2, k=2t>=4. The rooted skeleton group has its maximum order 2^t*t!.",
+    "proof": [
+      "A rooted skeleton automorphism acts faithfully on S=N(x), because every far vertex is the unique nonmatched pair {a,b} of S. Its induced group is a subgroup of the matching group W_t.",
+      "The maximum order forces this image to be all of W_t.",
+      "The far vertex {a,b} has exactly one transport neighbor sharing a. The subgroup fixing a and b must fix that neighbor. Among the possible other letters, only the matched partner of b is fixed and admissible.",
+      "Thus the two transport neighbors of {a,b} are {a,bar(b)} and {bar(a),b}. This determines the canonical disjoint grid squares, one for each pair of matching edges."
+    ],
+    "application_to_accepted_derived_data": "The stored BvLS root0 and twin243 root0 skeleton orders both equal 2^11*11!. Hence both skeletons are isomorphic to this same canonical grid skeleton.",
+    "conclusion": "The BvLS rooted skeleton admits at least TWO NONISOMORPHIC SRG completions, supplied by the accepted distinct BvLS and twin graphs. This is stronger than merely counting relabelled BvLS completions.",
+    "warning": "The conclusion uses the maximal local group, not just the list of cycle lengths."
+  },
+  "exact_star_completion_equations_mu_two": {
+    "notation": "S has k vertices; B is its matching matrix; F has m=k(k-2)/2 vertices; D is the k by m incidence matrix of K_k minus that matching. E=T+U is adjacency on F. Assume k>4.",
+    "gram": "DD^t=(k-3)I+J-B; its eigenvalues are 2(k-2), k-4, k-2, so D has full row rank.",
+    "linear_equation": "DE=(J-I-B)D=2J-(I+B)D.",
+    "quadratic_equation": "E^2+E=(k-2)I+2J-D^tD.",
+    "forced_entries": "E has diagonal zero. When two far labels share a letter, their entry equals T. Entries joining vertices at transport distance two are also zero, since a transport edge cannot acquire a triangle inside F.",
+    "exact_completion": "A symmetric binary E with the specified entries and both displayed equations gives the required full SRG with this rooted skeleton. Its row sums k-2 follow from the linear equation."
+  },
+  "linear_equations_do_not_reconstruct_the_completion": {
+    "unknown_pairs_before_distance_two_zeros": "N=m(m-1)/2-k(k-2)(k-3)/2: the pairs of disjoint edge labels.",
+    "rank_bound": "On symmetric matrices Delta, the map Delta -> D Delta has rank at most k*m-k(k-1)/2, because (D Delta)D^t must be symmetric. These k(k-1)/2 compatibility conditions are independent since D has full row rank.",
+    "additional_zero_count": "There are at most m unordered pairs at distance two in a union of cycles.",
+    "dimension_bound": "If nonempty, the real affine solution set of these linear conditions and decided entries has dimension at least N-[k*m-k(k-1)/2]-m.",
+    "values": {"Conway99":1393,"Gamma6_243":15081},
+    "meaning": "Even a rigid circuit skeleton cannot determine E from these linear equations alone. Integrality, inequalities, or the quadratic equations must do essential further work.",
+    "limit": "These dimensions do NOT count binary completions, feasible directions in the unit cube, or SRGs. Further consequences of the full equations may force more entries."
+  },
+  "projector_form_of_the_remaining_problem": {
+    "relation_to_previous_work": "Specialization of the previously used spectral completion framework to the explicit rooted-star incidence matrix; not a claim that spectral completion itself is new.",
+    "definitions": "W=ker D, Pi=I-D^t(DD^t)^(-1)D, E0=D^t(DD^t)^(-1)(J-I-B)D. Let r>s solve z^2+z=k-2 and g=r-s.",
+    "form": "Every completion is E=E0+r*Pi-g*Q, where Q is an orthogonal projector with image in W. Its rank is r*dim(W)/g because tr(E0)=0 and tr(E)=0.",
+    "proof": "E0 is the forced action on im D^t, with eigenvalues k-2, -2, 0 of multiplicities 1,k/2-1,k/2. The remaining invariant space W carries only the eigenvalues r,s by the quadratic equation. Conversely this formula plus the binary and decided-entry conditions supplies all block SRG identities.",
+    "circuits_role": "The circuit words determine which entries of this matrix must be zero or one. Rigidity of their permutation group is distinct from uniqueness of the projector satisfying those entry conditions."
+  },
+  "sufficient_uniqueness_certificate": {
+    "setup": "Let Q0 correspond to a known completion. Choose a symmetric matrix C supported on decided entries, including the diagonal, and put Z=Pi*C*Pi on W.",
+    "condition": "The positive eigenspace of Z is exactly im(Q0), Z is strictly negative on its orthogonal complement in W, and Z has no zero eigenvalue on W.",
+    "proof": "For every other feasible Q, the decided entries imply tr(ZQ)=tr(ZQ0). Among all 0<=Q<=I on W, tr(ZQ) has the unique maximizer Q0 under the stated signs. Therefore Q=Q0 and the completion is unique.",
+    "status": "A precise sufficient criterion, not a certificate found for Gamma6 or Gamma8. Failure to find such C would not prove another completion exists. No optimization was run."
+  },
+  "corrected_empirical_cycle_observation": "All cycles in the eight stored243 reports are EVEN. The twin has length30 cycles, so the earlier claim that all lengths were divisible by4 was false. The partial99 example with cycles4,11,69 only shows that evenness is not forced by its stated local constraints."
+}

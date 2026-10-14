@@ -1561,14 +1561,14 @@ alignements non identiques. Sur Gamma8, racine0, longueur40 : les79 autres
 sont elimines de la meme facon. Ce sont des explications combinatoires de
 la rigidite, sans solveur de groupes. Les temoins de rejet sont sauvegardes.
 
-Limite importante : les huit243 ont des cycles de longueur divisible par4,
-mais ce n'est pas une consequence des seules contraintes de la premiere
-etoile. Une construction PARTIELLE sur99 sommets, apres31 petits echanges,
+Correction du14/10 apres le message684 : le twin a des cycles de longueur30,
+donc l'observation initiale « tous multiples de4 » etait fausse. Les cycles
+des huit243 sont tous PAIRS. Une construction PARTIELLE sur99, apres31 echanges,
 donne des cycles4,11,69 et un squelette enracine rigide. Les lignes de N[x]
 sont completes, chaque arete presente a un voisin commun, et toute autre
 paire en a au plus deux. Chaque sommet de F a encore10 voisins inconnus.
 Ce n'est PAS un SRG, et sa completabilite n'est pas etablie. Ne pas imposer
-la divisibilite par4 a un SRG inconnu sans une preuve globale supplementaire.
+la parite des cycles a un SRG inconnu sans une preuve globale supplementaire.
 
 Scripts : asymmetry_triangle_transport.py, triangle_transport_words.py,
 triangle_transport_local_experiment.py. Donnees et preuves detaillees dans
@@ -1616,3 +1616,75 @@ sept autres par invariant intrinseque, et exclusion du seed par la borne
 locale saturee. La rigidite de la racine serait automatique ; son unicite
 intrinseque, ou une autre preuve empechant son deplacement, resterait a
 obtenir pour conclure Aut=1. Cible et preuves : gamma6_root0_target.json.
+
+### Reprise theorique apres Claude684 : rigidite et unicite sont distinctes
+
+La question « pourquoi K_x determine Gamma6/Gamma8 » partait d'une premise
+NON prouvee. Ni la rigidite de K_x, ni la saturation m*h=|Aut(G)| ne prouvent
+l'unicite d'une completion. Elles montrent que toute autre completion
+serait nouvelle. Correction transmise au pont685. Aucun calcul lourd lance.
+
+Pour un morceau avec paires decidees, son groupe L agit sur les completions
+Omega ; l'orbite de G a taille |L|/|L intersection Aut(G)|. Une completion
+unique herite donc de L. Si toutes les completions sont asymetriques,
+|Omega| est un multiple de |L|. Mais une orbite entiere peut ne compter
+que des renumerotations : les quelque5,16millions provenant de BvLS sont
+de ce type. Si L=1, l'action ne renseigne plus sur le nombre de completions.
+
+NON-UNICITE REELLE DU SQUELETTE BvLS : pour lambda1,mu2, Aut(K_x,x) agit
+fidelement sur les k=2t lettres de l'appariement de N(x). Si son ordre
+atteint 2^t*t!, son image est tout le groupe W_t. Le stabilisateur des
+lettres a,b doit fixer l'unique voisin de transport de {a,b} partageant a.
+La seule autre lettre admissible fixe est bar(b). Ainsi les deux voisins
+sont {a,bar(b)} et {bar(a),b} : c'est le squelette canonique des grilles.
+Les rapports existants donnent cet ordre maximal pour BvLS/racine0 ET
+twin/racine0. Ils ont donc le MEME squelette a isomorphisme pres et donnent
+au moins deux completions NON ISOMORPHES. Pas de nouveau calcul de groupe.
+Cette conclusion ne repose pas sur les seules longueurs des cycles.
+
+Pour tout lambda1, le complement U_x du transport est (k-2mu)-regulier,
+chaque arete ayant son triangle unique dans U_x. Si k=2mu, U_x est vide :
+K_x=G et l'unicite est automatique. Les triangles forment alors un GQ
+d'ordre(2,mu-1) : un point hors d'une droite a au plus un voisin sur elle
+par lambda1, et au moins un car aucun triangle ne peut etre entierement
+dans son ensemble F. Le degre residuel est10 pour99,18 pour243,36 pour378.
+Un degre positif ne prouve PAS la non-unicite : il definit l'inconnue.
+
+EQUATIONS EXACTES POUR mu2 : B est l'appariement de N(x), D l'incidence
+de K_k-B, m=k(k-2)/2. Pour E=T+U sur F,
+  DE=(J-I-B)D=2J-(I+B)D ;
+  E^2+E=(k-2)I+2J-D^tD.
+DD^t=(k-3)I+J-B est inversible pour k>4. Les entrees sur les paires
+partageant une lettre sont exactement celles de T ; la distance2 dans T
+force aussi une entree nulle. Avec symetrie, diagonal0 et binaire, ces
+equations sont necessaires ET suffisantes pour la completion SRG.
+
+Obstacle a une reconstruction PUREMENT LINEAIRE : avant les zeros de
+distance2, il reste N=m(m-1)/2-k(k-2)(k-3)/2 inconnues. Sur Delta symetrique,
+le rang de Delta -> D Delta est au plus km-k(k-1)/2, car (D Delta)D^t est
+symetrique. Les zeros de distance2 ajoutent au plus m contraintes. Si le
+systeme reel est non vide, sa dimension est donc au moins1393 pour99 et
+15081 pour243, meme avec un squelette rigide. Cela ne compte AUCUN graphe
+binaire ni direction faisable dans le cube : integralite, inegalites et
+equations quadratiques peuvent encore isoler la completion.
+
+Specialisation du cadre spectral deja utilise : W=ker D, Pi son projecteur,
+E0=D^t(DD^t)^(-1)(J-I-B)D. Alors E=E0+r*Pi-(r-s)*Q, Q projecteur dans W,
+r,s racines de z^2+z=k-2. Les circuits imposent des entrees de Q ; la
+rigidite de leur groupe ne signifie pas l'unicite de Q.
+CRITERE SUFFISANT D'UNICITE : pour le projecteur Q0 du seed, trouver C
+symetrique porte sur les entrees decidees tel que Z=Pi*C*Pi soit strictement
+positif sur im Q0 et strictement negatif sur son orthogonal dans W, sans
+terme croise. Toute completion a la meme trace(ZQ) ; Q0 est l'unique
+maximiseur de cette trace sur0<=Q<=I. Donc E est unique. Aucun tel certificat
+n'est trouve ici pour Gamma6/Gamma8 ; aucun SDP lance. Une recherche de
+certificat qui echoue ne prouverait pas non plus la non-unicite.
+Preuves et portee : skeleton_completion_theory.json.
+
+Campagne conservee dans codex_lambda_one_construction_20261014/parked_campaign/
+manifest.json :17 empreintes de sources/entrees/rapport, cible,30 essais
+anterieurs en place, configuration et bord d'un ancien pilote378 sauvegardes.
+Le moteur specifique conservant exactement K_0 n'etait PAS encore implemente,
+donc aucune commande de lancement pour ce modele n'est inventee. Le moteur
+general existant devra aussi etre adapte a la consigne de ne plus auditer
+les seeds deja acquis avant une reprise. Aucune execution de solveur ici.

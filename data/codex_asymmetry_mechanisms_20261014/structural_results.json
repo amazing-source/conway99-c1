@@ -32,7 +32,7 @@
     "Root rigidity and distinguishability of the root are separate requirements. Known symmetries may survive entirely by moving a rigid root to other globally equivalent roots.",
     "These observations supply an asymmetry criterion, not a construction of a new asymmetric SRG and not a nonexistence argument for Conway."
   ],
-  "empirical_question_not_a_theorem": "All transport cycle lengths in the eight243 examples are divisible by4. The new partial99 example shows that this is not forced by the closed-star and current common-neighbor upper-bound constraints alone; whether it is forced in full SRGs is not settled here.",
+  "empirical_question_not_a_theorem": "CORRECTION: all cycles in the eight stored243 examples are even, but not all are divisible by4: twin243 has length30 cycles. The partial99 example with cycles4,11,69 shows only that evenness is not forced by the stated local constraints; its global completability remains unknown.",
   "transition_system_mu_two": {
     "base_graph": "H=K_k minus the matching P induced by N(x)",
     "far_vertices": "Exactly one far vertex for every nonmatched pair {a,b} of N(x); this follows from mu=2.",
@@ -54,7 +54,7 @@
     "rooted_skeleton_group_order": 1,
     "unassigned_neighbors_per_far_vertex": 10,
     "satisfied": "Closed-star rows complete; present edges have exactly one common neighbor; nonedges have at most two.",
-    "conclusion": "Evenness and divisibility by four are not consequences of these local constraints alone. Any proof for full SRGs must use further global constraints."
+    "conclusion": "Evenness is not forced by these local constraints alone. Divisibility by four is already false in the complete twin243 graph, which has cycles of length30."
   },
   "fixed_skeleton_completion_corollary": {
     "hypothesis": "Let m count roots of the SEED with the same invariant of K_x itself (here the unrefined T_x invariant), h=|Aut(K_x,x)|, and suppose accepted |Aut(G)|=m*h.",
@@ -62,5 +62,6 @@
     "proof": "The orbit of x has at least |Aut(G)|/h=m points and lies in the m-class, so equals it; the point stabilizer has size h. Thus all rooted skeleton isomorphisms from K_x to a compatible K_y are restrictions of actual automorphisms of G. The skeleton has the entire vertex set. An isomorphism of another completion to G would therefore also be an automorphism of G, forcing that completion to equal G.",
     "application": "The computed bounds are saturated for Gamma5-8 and hemi378, using the full group orders already supplied by the peer. Hence a search keeping their rooted skeletons may block the one labelled seed without separately enumerating isomorphic copies.",
     "limit": "A different completion would be a new isomorphism class, but not automatically asymmetric. No such completion has been constructed."
-  }
+  },
+  "completion_uniqueness_status": "Not proved for Gamma6 or Gamma8. Root rigidity and saturation of the local automorphism bound do not imply uniqueness of completion. See skeleton_completion_theory.json."
 }
