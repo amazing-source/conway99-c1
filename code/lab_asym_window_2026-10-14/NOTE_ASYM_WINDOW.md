@@ -107,3 +107,54 @@ an exclusion through asymmetry needs a mechanism that carries a forced symmetry 
 - T3: a global count: route Omega's first level has 10^11 to 10^12 two-star structures up to symmetry (note 157), and a
   Conway graph forces at least 99 free orbits of rooted solutions; any upper bound below that is an exclusion (no
   method in sight).
+
+# Part 2 (14/10, evening): second order, and Codex's majority theorem
+
+## 6. Codex's extension of the flip theorem (bridge, `pure_flip_majority_theorem.json`; proof re-read, correct)
+If g fixes x and every line through x setwise and flips q > 0 of the t = m lines, then q >= ceil(t/2).
+Proof: take y = z_ac with a on a flipped line and c on a fixed one; g(y) = z_a'c. Among the 2t - 2 label neighbours of
+y, the incidences with the 2q flipped letters number 1 (for a) + 1 (for a') + 2(2q - 2) = 4q - 2, so at least
+2t - 4q of them avoid the flipped letters; they are fixed by g, hence common neighbours of y and g(y), and so is c.
+Since y and g(y) have at most 2 common neighbours, 2t - 4q <= 1. QED (It does not need the flip lemma; q = 1 is the
+flip theorem of section 3.) Consequence: the flip patterns of the automorphisms fixing x and all lines form a binary
+code of length t and minimum distance ceil(t/2), of size at most 8 for t = 7 and t = 11.
+
+## 7. Second order: the three points of a line
+Notation: l = {x, a, a'}, N[l] = N[x] u L_a u L_a' (39 vertices; L_u = the 12 labels containing u).
+
+**7.1 What is forced.** On L_a u L_a' the graph is tau_a u tau_a' u sigma (Codex note 157 section 2.4): every label of
+L_a has one neighbour in L_a, one in L_a', and 10 among the 60 labels that avoid a and a'; every one of those 60 has
+exactly 2 neighbours in L_a and 2 in L_a' (mu with a and with a'), and 8 among the 60. Everything else is data of G:
+the matchings tau_a, tau_a', the bijection sigma, and the bipartite graph between the 24 labels and the 60.
+
+**7.2 Rank.** The vectors supported on a vertex set Q and orthogonal to E_(-4) form a space of dimension at least
+|Q| - 44 (span(1) + E_3 has codimension 44), and it contains (A + 4I) e_u for every u with N[u] in Q. For Q = N[l]:
+the three vectors of x, a, a', generically nothing else (Codex: rank 22 on the 24 labels in 99.97 % of random
+admissible structures), so the rows of N[l] have rank 36 on E_(-4): deficit 8. Adding one more star, Q = N[l] u N[b]
+(49 vertices, b in N(x) - l): at least 49 - 44 = 5 such vectors, four of them from x, a, a', b; with exactly five, the
+rank is 44, the full rank, and by 1.2 the rows of these 49 vertices determine G. (This is the forced "extra relation" of
+three stars in note 157 section 2.5: it is the 49 - 44 count, a 3-eigenvector supported on N[x] u N[a] u N[a'] u N[b].)
+
+**7.3 Forced symmetry dies at the first gluing.** The forced part of N[l] is three frames, each with a group W(B7); what
+glues them (tau_a, tau_a', sigma) is data of G, and the group of the glued piece is the stabiliser of that data. The only
+gluing forced to be symmetric is the flat one (flat line with (ii): sigma = rungs z_ac -> z_a'c, tau_a' = sigma tau_a),
+whose symmetry is the flip; and the flip already fails on the next layer: z_ac and z_a'c are adjacent, so their 10
+neighbours among the 60 are disjoint sets, which the flip would have to exchange with themselves. So in Conway the
+window is closed at the first two orders: forced symmetry lives only in single frames (deficit 30), rigidity needs
+glued data (deficit 8 for a line, 0 for a line plus one star), and glued data carries no forced symmetry.
+
+**7.4 Two dead ends checked (do not redo).**
+- "Near-symmetries must be exact": false. For a transposition sigma = (u w), G and sigma(G) differ on 48 pairs only
+  (N(u) and N(w) differ in 24 vertices), and both are Conway graphs: relabelling trades are small, so a small defect
+  |G - sigma(G)| forces nothing.
+- "Rigid pieces are pairwise non-isomorphic, so their types must be numerous": true whenever the pieces are rigid
+  (8316 = 99 x 7 x 12 rooted three-star pieces per graph, pairwise non-isomorphic by 1.1), but the type space of a piece
+  with full rows is astronomically larger; no count.
+
+## 8. What is left of the asymmetry lever
+Local forcing is excluded at orders 1 and 2 (sections 2, 3, 6, 7). What remains is ABUNDANCE: an asymmetric Conway graph
+gives at least 99 x 645 120 labelled completions of the frame, 8316 pairwise distinct rigid three-star pieces, and free
+orbits everywhere. The mechanism that makes the known lambda = 1 graphs symmetric is the opposite, SCARCITY (378: about
+3.18 million hemisystems under a host group of about 9 million, so every hemisystem has a nontrivial stabiliser). An
+exclusion of C1 along this line needs an upper bound on the number of solutions of a symmetric host problem below its
+group order; no such bound is in sight without enumeration.
