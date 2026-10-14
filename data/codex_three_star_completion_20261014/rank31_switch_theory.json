@@ -40,6 +40,7 @@
     "script": "code/codex/three_star_rank_repairs.py",
     "command": "python three_star_rank_repairs.py --gamma INPUT.json --assume-psd-rank31 --output REPORT.json",
     "own_primitive_checks": "Six exact cases on T=c*P_H for c=1,2,3 and both signs exercise negative, zero and positive determinant responses. At zero, the newly constructed fourth relation is checked. All passed in1.08seconds.",
-    "peer_seed_status": "Seed702 and ten additional peer PSD31 seeds received. No exact single-switch rank30 repair; bounded200-state walk also found none, with1936 pending states. See lab702_psd_walk_200.json and lab706_707_switch_summary.json."
+    "peer_seed_status": "Seed702 and ten additional peer PSD31 seeds received. No exact single-switch rank30 repair; bounded200-state walk also found none, with1936 pending states. See lab702_psd_walk_200.json and lab706_707_switch_summary.json.",
+    "local_admissibility_correction": "Bridge716: four seeds S61,S62,S64,S68 violate outside-letter caps and are discarded as locally admissible inputs. The walker now checks that prerequisite before its incremental cap filtering. Prior spectral responses are not claims of local admissibility for those seeds."
   }
 }

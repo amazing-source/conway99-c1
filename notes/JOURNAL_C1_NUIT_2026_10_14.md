@@ -2080,3 +2080,70 @@ pas etabli que le lot soit exhaustif pour toutes les structuresZ5 a
 ni de C1. Aucune symetrie de la completion n'a ete supposee. Le resultat
 constitue une exclusion finie exacte du lot et montre que son filtrage
 est abordable ; ce n'est pas une borne du nombre total de frontieres.
+
+### Relation hors grille du pair714 et classification COMPLETE sur deux etoiles mates
+
+Claude714 fournit z2b, objet local T/U PSD, rang exact30, sans la grille
+sur(l,m), avec4e relation1_Y pour Y={0,1} x {2,3,12,13}. Gamma_Y est un
+8-cycle. Resultat du pair accepte : l'hypothese locale « rang30 implique
+la grille designee » est FAUSSE. Son exemple est importe depuis le depot
+d'echange Windows, sans recalcul de son rang ni de ses deux PSD.
+
+Apport propre : classification de T_X sur X=L_a union L_a',24 labels.
+Chaque sommet de Gamma_X a1 voisin dans chaque etoile, donc Gamma_X est
+2-regulier. Les2 indicatrices sont dans kerT_X. Sur leur orthogonal H,
+ecrire q=(f,g), sommes f=g=0, et B le matching des12 lettres exterieures.
+On a q^tKq=[3||f+g||^2+(f+g)^t B(f+g)]/8, d'ou l'identite EXACTE :
+ q^tTq = somme_{yz arete Gamma_X}(q_y-q_z)^2
+        +(1/2) somme_x(f_x-g_x)^2
+        +(1/8) somme_{paires mates{x,x'}}(f_x+g_x-f_x'-g_x')^2.
+Cela prouve a la fois PSD automatique a2etoiles mates et caracterise
+TOUT le noyau supplementaire : constant sur les aretes de Gamma_X,
+identique entre les2 copies de chaque lettre, identique entre mates.
+
+Construire Q sur les6 droites autres que l ; une arete de Gamma_X relie
+les indices des droites de ses2 lettres exterieures. Si Q a c composantes
+M_1,...,M_c, les relations sont engendrees par les2 etoiles et les1_{l x M_j}.
+Une seule dependance : somme des1_{l x M_j}=somme des2 etoiles. Ainsi
+ nullite(T_X)=c+1, rang(T_X)=23-c.
+Sous PSD de la3e etoile, toute relation de X propagee par zero reste une
+relation (energie nulle dans une matricePSD). La3e etoile ajoute1relation
+independante : rang(T_S)<=32-c. Pour c=2, les types de bipartition sont
+1+5 (grille),2+4,3+3. Ce theoreme classe les relations PORTEES par les
+2etoiles mates ; il ne classe pas les relations avec des coefficients
+nouveaux sur la3e etoile. C'est la limite precise de l'analogue H3'.
+
+L'identite est controlee symboliquement sur tout H de dimension22, et
+sur un exemple de matchings construit ici, pas sur les rangs du pair.
+Script two_mate_star_structure.py ; preuve two_mate_star_kernel_theory.json.
+Applique comme description combinatoire a z2b : Q a les composantes
+{1,6} et{2,3,4,5}, formule rang21 a2etoiles et borne30 a3etoiles.
+Aucun calcul de rang pour produire cette description. Resultat envoye717.
+
+### z2b ne se prolonge pas, malgre son mecanisme local nouveau
+
+Mode de preprocesseur generalise aux relations fermees certifiees :
+--producer-certified-closed-pairs 1 6. Les certifications T/U PSD et
+rang30 du pair sont utilisees telles quelles. La colonne{3,4} a13888
+profils de noyau,1112 profils locaux,18 normes<20,1094>20,0=20.
+Enumeration complete0,094s : z2b ne se complete pas en SRG99. Cela ne
+retire RIEN a son statut de contre-exemple local a « rang30=>grille ».
+Snapshot et rapport : data/codex_three_star_completion_20261014/lab714_closed_cycle/.
+Resultat envoye719. Ni ce cas ni le lot572 n'excluent toutes les frontieres.
+
+### Correction de portee des graines de rectangles, messages716/718
+
+Le pair716 precise que son ancien generateur omettait des plafonds
+partiels vers les lettres hors des3 etoiles. S61,S62,S64,S68 les violent
+et sortent des graines localement admissibles ; les autres et z2b les
+respectent. La synthese des rectangles est annotee. Le marcheur exige
+maintenant ces plafonds sur le seed avant le filtrage incremental des
+4 lignes changees. Nouveau garde teste sur S61 : rejet avant analyse.
+Les reponses de rang2 anterieures restent des calculs spectraux, mais
+les4 graines ne doivent pas etre comptees comme frontieres admissibles.
+Aucune relance d'audit du pair. Claude a ajoute ces plafonds au generateur.
+
+Claude718 travaille sur la possibilite Q connexe avec rang30 a3etoiles.
+Formulation precise : la relation SUPPLEMENTAIRE modulo les3 indicatrices
+serait representable sur les2 etoiles mates. L'enonce n'est pas etabli.
+Son exploration reste distincte de nos relations fermees/colonnes.

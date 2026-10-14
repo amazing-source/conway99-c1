@@ -189,9 +189,13 @@ def exact_psd(matrix):
 
 def analyse(gamma, candidate_directory):
     start = time.perf_counter()
+    rows = boundary_masks(gamma)
+    if any(row.bit_count() > 14 for row in rows) or any(
+            (rows[i] & rows[j]).bit_count() > 2-((rows[i] >> j) & 1)
+            for i in range(49) for j in range(i+1, 49)):
+        raise ValueError('Seed violates a boundary common-neighbour cap; this walk requires a locally admissible seed.')
     M = spectral_matrix(gamma)
     W, den = response_metric(M)
-    rows = boundary_masks(gamma)
     counts = Counter()
     repairs = []
     positive_moves = []
