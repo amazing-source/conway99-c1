@@ -66,6 +66,18 @@ C = Codex result not re-derived by me, H = heuristic/observation. Items are stat
 | E3 | global integral completion criterion; rank-two reconstruction rigidity; positive 43-vertex boundary completion <= 8192 sign assignments; co-Heawood-free completion <= 2 sign choices | C |
 | E4 | "complete grid star" excluded by symplectic reduction (= T1/L8) | C |
 
+## G. Star objects at a vertex (added 14/10 evening; details and proofs in work/stars_rank_2026-10-14/NOTE_PROOFS_1410.md)
+| # | statement | status |
+|---|---|---|
+| G1 | T = 3I - Gamma - K on the 84 labels of x satisfies T^2 = 7T (rank 30); for Sigma = N[x] u S, T_S >= 0 iff lambda_2(A_Sigma) <= 3, U_S = 7 Pi_S - T_S >= 0 iff lambda_min(A_Sigma) >= -4, nullities = multiplicities of 3 and -4 (Haynsworth) | P |
+| G2 | line l special (c(l) >= 2) iff H_l (cubic graph on the 36 neighbours of l) is disconnected iff lambda_2(H_l) = 3; components = closed configurations, mu = 1 components are straight 3 x 3 grids; rank of the H_l-far incidence = 35 - c(l) | P |
+| G3 | binary 3-eigenvector code: dim 54, words of even weight >= 8 (Codex), F2^99 = C + C^perp | P |
+| G4 | three stars (a, a' mates, b), c(l) = 1: the only binary relations are the stars (ChatGPT session shown by the user, checked); every PSD rank-30 three-star structure tested dies at its first outside label (Codex's column filter) | P / M |
+| G5 | statement (A) 'T, U >= 0 and c(l) = 1 at three stars force rank 31' is FALSE: exact counterexample (52 found, all non-extendable at the label {4,6}) | M (exact certificates) |
+| G6 | H4 'no four-star structure is PSD' is FALSE: exact PSD structure, c = (3,4), rank 34 (Conway needs rank <= 30) | M (exact certificates) |
+| G7 | four stars: D T D^T = 6I + 2(J - Mt) - E on outer partial stars (T >= 0 forces E <= 4 / <= 8 on the symmetric / antisymmetric sectors); U is positive definite on these sectors (Codex: a zero would give Gamma q = -16/5 q or -8/3 q) | P |
+| G8 | (A4) 'T, U >= 0 at four stars forces c(l), c(m) >= 2': OPEN; every PSD four-star structure found (about 500, symmetric families) has c >= 3 on both lines; with c(l) = 1 forced the best is about -0.07 | H |
+
 ## F. What is NOT known
 No exclusion of C1; no ceiling on torsion beyond the 7-adic window; no forced small substructure of bounded search
 size; the generic (high torsion, prism-poor) regime is untouched by every local lemma.

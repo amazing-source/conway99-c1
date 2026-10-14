@@ -10,6 +10,7 @@ Every structure with c(l) = c(m) = 1 has its numerical nullity recorded; record-
 usage: python sym4g.py <generators> <moves> <seed> <out prefix> [lowrank|zero|psd]
 """
 import itertools
+import os
 import json
 import math
 import random
@@ -106,7 +107,17 @@ def main():
         keep = [k for k in range(n) if np.linalg.norm(Qz.T @ V[:, k]) < 1e-6]
         return float(ev[keep].min()) if keep else 0.0
 
-    ok, model = sol.solve()
+    import os
+    init = os.environ.get("INIT")            # warm start from a saved structure (same labels and group)
+    if init:
+        di = json.load(open(init))
+        assert [sorted(l) for l in S] == di["labels"], "label order differs"
+        eset = {tuple(x) for x in di["edges"]}
+        assum0 = [e[(i, j)] if (i, j) in eset else -e[(i, j)] for i, j in itertools.combinations(range(n), 2)]
+        ok, model = sol.solve(assum0)
+        print("warm start from %s: %s" % (init, ok), flush=True)
+    else:
+        ok, model = sol.solve()
     if not ok:
         print("no invariant admissible structure", flush=True)
         return
@@ -114,7 +125,7 @@ def main():
     hist, npsd = {}, 0
     best_psd = None
     best_null = -1
-    cur, temp = None, 0.3
+    cur, temp = None, float(os.environ.get("TEMP0", "0.3"))
     for mv in range(moves):
         Rl = set(rng.sample(range(n), 4))
         bad = set(Rl)

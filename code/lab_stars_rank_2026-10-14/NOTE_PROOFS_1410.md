@@ -155,6 +155,11 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   mu = (1,1,1,3), i.e. three grids per line; psd4_candidate_1 has two grids on l and three on m).
 - With c(l) = 1 forced (sym4g.py psd cl1, families G1, G1c, h3, line swaps): best min(lambda_T, lambda_U) about
   -0.07 (c(m) = 4) after thousands of moves; no PSD. T alone reaches -0.003 with c = (1,1) but U stays at -0.16.
+- Exact nullities of the first 400 PSD four-star structures (G1 family): c = (4,4) gives nullity 11 (141) or 12 (257)
+  while the base components give 10, so 1 or 2 MIXED relations come with positivity; c = (3,4) gives nullity 10
+  (9 local + 1 mixed). The real local condition of a Conway graph (T, U >= 0 and nullity >= 14) is still 2 short.
+  Fine-space spectrum (fine_scan.py): all 111 tested (4,4) PSD structures have spec(Gamma_F) in [-4,3]; with c = (1,1)
+  only 1 of 19 near-PSD structures does, so the fine spectrum alone does not explain (A4).
 - (A4) (OPEN, robust): T, U >= 0 at four stars forces c(l), c(m) >= 2. It would make every line of a Conway graph
   special, i.e. exclude the 'generic, prism-poor' regime that no local lemma touches (CONWAY_CONSTRAINTS.md, F).
   Combined with the known grid bounds (rho <= 126 grids, g(x) <= 17 per vertex, no Hamming point, kk5/kk6) a
