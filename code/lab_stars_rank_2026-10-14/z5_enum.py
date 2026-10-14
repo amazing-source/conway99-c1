@@ -73,6 +73,7 @@ def main():
     count = psd = 0
     found = []
     ranks = {}
+    psd_saved = []
     best = -9
     while count < cap:
         ok, model = sol.solve()
@@ -94,6 +95,9 @@ def main():
             rk = exact_rank([[int(round(8 * T[i][j])) for j in range(n)] for i in range(n)])
             ranks[rk] = ranks.get(rk, 0) + 1
             r = rk
+            psd_saved.append({"rank": rk, "lambda_perp": lam,
+                              "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]})
+            json.dump({"labels": [sorted(l) for l in S], "stars": stars, "psd": psd_saved}, open(out + ".psd.json", "w"))
             if r <= 30 and len(found) < 50:
                 found.append({"labels": [sorted(l) for l in S], "gamma": G.astype(int).tolist(), "rank": r,
                               "eigenvalues": np.linalg.eigvalsh(T).tolist()})

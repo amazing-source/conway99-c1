@@ -89,6 +89,17 @@ def build(stars, rng):
             else:
                 for x in lits:
                     F.add([z for z in lits if z != x])
+    # (C1') partial counts towards the letters that are not stars (added 14/10 evening, after Codex's cap example):
+    # the neighbours of l inside S that contain y are some of its |N(l) n L_y| = c(l, y) neighbours in L_y
+    for l in S:
+        i = idx[l]
+        for y in range(14):
+            if y in stars:
+                continue
+            lits = [e[(i, idx[t])] for t in S if y in t and t != l]
+            c = count_needed(l, y)
+            for sub in itertools.combinations(lits, c + 1):
+                F.add([-x for x in sub])
     # (C2) caps on common neighbours inside S (sequential counter, upper direction only)
     for i, j in itertools.combinations(range(len(S)), 2):
         s = len(S[i] & S[j])
