@@ -1,0 +1,53 @@
+{
+  "bridge_messages_consumed": [741, 743],
+  "producer": "Claude LAB",
+  "peer_results_consumed_without_independent_audit": {
+    "claim_A": "FALSE",
+    "counterexample": "lab_exchange_2026-10-14/counterexample_A_1.json, structures[0]",
+    "seed_labels": 34,
+    "seed_T_rank": 30,
+    "seed_U_rank": 31,
+    "both_Grams_PSD": true,
+    "first_line_Q_connected": true,
+    "seed_completion": "IMPOSSIBLE",
+    "completion_obstruction": {
+      "missing_label": [4, 6],
+      "locally_admissible_profiles": 5335,
+      "profiles_with_exact_required_norm_20": 0
+    },
+    "other_51_seed_candidates": "Producer reports numerical positivity only; no exact certification or extendibility asserted here."
+  },
+  "own_work": {
+    "script": "code/codex/four_star_profile_join.py",
+    "input_contract": "Producer-certified rank30 seed plus ten complete profile domains, exact principal inverse. Optional producer-certified U rank31.",
+    "new_labels": "(3,x), x=4,...,13",
+    "forced_adjacency": "Gamma_uv=(-K8(u,v)-m_u[I]^T M_II^{-1} m_v[I])/8 must belong to {0,1}, M=8T.",
+    "old_row_budgets": "sum_x h_(3,x)[i]=2-1_(3 in label_i)-1_(2 in label_i)-Gamma_i,(0,3)-Gamma_i,(1,3)",
+    "additional_constraints": [
+      "Perfect matching induced on the completed twelve-vertex star L3",
+      "All old-boundary degree and common-neighbour capacities consumed jointly",
+      "Exact pair compatibility for new/new and old/new common neighbours",
+      "Optional 31 cut inequalities for connected Q on the second line",
+      "Exact complementary positivity on the assembled extension"
+    ],
+    "upper_Schur_reduction": {
+      "N": "15U",
+      "old_principal_basis_dimension": 31,
+      "W": "N_BB-N_BJ N_JJ^{-1} N_JB",
+      "diagonal_before_projection": 50,
+      "off_diagonal_before_projection": "15*Gamma_uv-6+1_(outer letters mates)",
+      "forced_kernel": "W*ones(10)=0",
+      "PSD_equivalent_test": "Any principal 9x9 block of W, using the forced kernel",
+      "early_pair_filter": "W_uv^2 <= W_uu W_vv"
+    },
+    "validation": "Own exact Gram/pair-capacity/Schur-minor primitives pass; no end-to-end seed campaign run.",
+    "application_status": "Waiting for a producer-surviving seed and complete domains; the supplied counterexample already fails an individual column and is not retested."
+  },
+  "scope": {
+    "H4_prime": "OPEN",
+    "Conway_excluded": false,
+    "C1_excluded": false,
+    "full_SRG_constructed": false,
+    "globally_affordable_enumeration_proved": false
+  }
+}

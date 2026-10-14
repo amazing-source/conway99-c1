@@ -2612,3 +2612,71 @@ au moins DEUX paires exterieures. Total1149/1420 profils exclus,271 restent
 (97 sur deux paires,146 sur trois,28 sur cinq). La masse minimale16 ne
 monte pas a20. Aucune conclusion sur les automorphismes complets, aucun
 SRG asymetrique construit, (A) ouvert. Tous les calculs pilotes termines.
+
+### Messages741/743 : (A) FAUX ; passage a la compatibilite de quatre etoiles
+
+Les resultats du producteur Claude LAB sont ACCEPTES SANS RE-AUDIT.
+Le germe counterexample_A_1.json a34 labels, Gamma binaire admissible,
+Q connexe, T et U PSD, rang(T)=30 et rang(U)=31, certifies exactement
+par Claude. Cela REFUTE(A), qui annoncait rang31 pour tous ces objets.
+Arret de la recherche d'une preuve de(A). Les restrictions anterieures
+sur les relations nonnegatives (poids>=16, poids16 sur au moins deux
+paires exterieures) restent des conditions necessaires, pas une exclusion
+de tous les germes de rang30.
+
+Message743 : CE GERME NE SE PROLONGE PAS EN CONWAY. Pour le label{4,6},
+Claude obtient5335 profils localement admissibles et ZERO de norme20.
+Ce resultat est repris tel quel, sans refaire les domaines. Les51 autres
+structures de son export sont seulement numeriquement PSD a ce stade :
+ne pas leur attribuer la certification exacte du premier germe.
+
+Notre piste distincte : JOINDRE les dix colonnes(3,x), x=4..13, en une
+quatrieme etoile. Claude poursuit ses domaines individuels et ses
+constructions directes de quatre etoiles. Si H4' (aucune extension avec
+deux Q connexes, les deux PSD et rangT<=30) etait etabli universellement,
+un sommet aurait au plus une droite non speciale. H4' reste OUVERT.
+
+REDUCTION EXACTE DU JOIN, pour un germe de rang30 deja certifie :
+M=8T, I base principale30, H=M_II^{-1}. A un profil h_u correspond
+m_u=-8h_u-K8(S,u), avec m_u[I]^T H m_u[I]=20 et les relations du noyau.
+La seule entree nouvelle possible est M_uv=m_u[I]^T H m_v[I] ; donc
+Gamma_uv=(-K8(u,v)-M_uv)/8 doit valoir0 ou1. Toutes les nouvelles aretes
+sont ainsi determinees par les dix choix de colonnes.
+
+Noter a=(0,3), b=(1,3). Les34 budgets exacts de l'etoile L3 sont
+somme_x h_(3,x)[i]=2-1_(3 dans i)-1_(2 dans i)-Gamma_ia-Gamma_ib.
+L3 doit induire un couplage parfait. On impose ensemble toutes les
+capacites des49 anciens sommets, via R=12I+2J-B-B^2 et les contributions
+d_u d_u^t des dix nouveaux voisins. Pour deux nouveaux sommets, le
+couplage interdit un voisin commun parmi les dix nouveaux : leur plafond
+se lit exactement dans d_u.d_v<=2-Gamma_uv. Pour un couple ancien/nouveau,
+un nouveau voisin eventuel ajoute uniquement le profil de son partenaire
+de couplage ; ceci se filtre dans les tables de compatibilite. Ces
+contraintes couvrent donc tous les plafonds locaux du bord59 assemble.
+
+REDUCTION COMPLEMENTAIRE : N=15U, et rang(U_S)=31 certifie par le
+producteur. Retirer trois pivots independants des trois relations
+d'etoile donne une base principale J. Son inverse sert au prolongement,
+sans refaire un calcul de rang ni un certificat PSD sur le germe.
+W=N_BB-N_BJ N_JJ^{-1} N_JB est de taille10. Les equations d'etoile
+imposent W*1=0 ; N>=0 equivaut donc a la positivite d'un principal9x9
+de W, puisque le bloc ancien est PSD et les colonnes orthogonales a son
+noyau. Avant le join, les inegalites W_uv^2<=W_uu W_vv sont des filtres
+exacts de COUPLES, plus forts que la positivite individuelle des colonnes.
+Ici N_uu=50, N_uv=15Gamma_uv-6+1_(x,y mates) pouru=(3,x),v=(3,y).
+
+Implementation four_star_profile_join.py : tables de Gram exactes,
+capacites communes, budgets d'etoile, couplage, option Q2 connexe par31
+coupes, filtre des mineurs de Schur et quotient9x9, coupes PSD entieres
+sur toute extension proposee. Les depassements de temps/taille ne sont
+jamais des exclusions. Un UNSAT serait limite au germe fourni et au
+type de seconde droite demande. Les grands temoins PSD utilisent un
+nogood exact pour eviter un debordement int64 dans CP-SAT.
+
+Controles de NOS primitives de Gram, capacites conjointes et mineurs
+de Schur : PASS. Aucun essai complet sur un germe survivant pour
+l'instant ; celui de741 est deja tue par la colonne du pair. Aucune
+nouvelle exclusion H4', aucun graphe Conway/C1 construit ou exclu,
+aucune enumeration globale abordable demontree. Messages742 et744
+transmettent la division du travail et cette reduction. Artifacts :
+data/codex_three_star_completion_20261014/four_star_join_741/.
