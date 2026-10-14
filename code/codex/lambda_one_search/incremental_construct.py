@@ -61,6 +61,11 @@ def main():
     p.add_argument("--row-cap", type=int, default=24)
     p.add_argument("--node-cap", type=int, default=10000)
     p.add_argument("--solution-cap", type=int, default=500)
+    p.add_argument("--backend", choices=["cms", "cp-sat"], default="cms")
+    p.add_argument("--spectral-prune", action="store_true",
+                   help="numerical PSD Schur bounds, construction search only")
+    p.add_argument("--prefer-small-changes",action="store_true",
+                   help="CP-SAT objective favors neighborhoods closest to the seed")
     p.add_argument("--prune-x", action="store_true")
     p.add_argument("--canonical-free-types", action="store_true",
                    help="remove equivalent labellings within identical current boundary columns")
@@ -105,6 +110,9 @@ def main():
               "prune_X_using_peer_classification": args.prune_x,
               "construction_search_not_census": True, "status": "running",
               "canonical_free_types": args.canonical_free_types,
+              "backend": args.backend,
+              "numerical_spectral_pruning": args.spectral_prune,
+              "prefer_small_changes": args.prefer_small_changes,
               "star_root": args.star_root, "star_extra": args.star_extra if args.star_root is not None else None,
               "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "limits": {"seconds": args.seconds, "row_seconds": args.row_seconds,
@@ -126,7 +134,7 @@ def main():
     save(True)
     print("START " + json.dumps(report), flush=True)
 
-    def possible_rows(A, R, F, f, C):
+    def possible_rows(A, R, F, f, C, spectral=None):
         row_start = time.monotonic()
         row_deadline = min(deadline, row_start+args.row_seconds)
         variables = [g for g in F if g != f]
@@ -134,21 +142,35 @@ def main():
         var = {g: i+1 for i, g in enumerate(variables)}
         nv = [len(var)]
         clauses = []
+        counts = []
         def new():
             nv[0] += 1
             return nv[0]
         for r in R:
             lits = [var[g] for g in variables if A[r, g]]
             target = mu-(mu-lam)*int(A[r, f])-int(C[r, f])
-            counter(clauses.append, new, lits, target)
-        counter(clauses.append, new, list(var.values()), k-int(A[f, R].sum()))
+            counts.append((lits, target))
+        counts.append((list(var.values()), k-int(A[f, R].sum())))
+        if args.backend == "cms":
+            for lits, target in counts:
+                counter(clauses.append, new, lits, target)
         for g in variables:
             if C[f, g] > lam:
                 clauses.append([-var[g]])
-            # If the common-neighbour count of the fixed pair (r,g) is
-            # already saturated inside R and r~f, then f~g is impossible.
+            # A saturated fixed pair cannot gain f as a common neighbor.
             if any(A[r, f] and C[r, g] == mu-(mu-lam)*A[r, g] for r in R):
                 clauses.append([-var[g]])
+        if spectral is not None:
+            z=F.index(f)
+            for j,g in enumerate(F):
+                if g==f:
+                    continue
+                if not spectral[0][z,j]:
+                    clauses.append([var[g]])
+                    stats["spectrally_forced_row_entries"] += 1
+                if not spectral[1][z,j]:
+                    clauses.append([-var[g]])
+                    stats["spectrally_forced_row_entries"] += 1
         for g, h in itertools.combinations(variables, 2):
             if C[g, h] >= mu:
                 clauses.append([-var[g], -var[h]])
@@ -163,7 +185,15 @@ def main():
                 cell.sort()
                 for g, h in zip(cell, cell[1:]):
                     clauses.append([-var[h], var[g]])
-        solver = pycryptosat.Solver(threads=1)
+        if args.backend == "cp-sat":
+            from cp_backend import CpBackend
+            solver = CpBackend(seed=rng.randrange(1000000))
+            for lits, target in counts:
+                solver.add_count(lits, target)
+            if args.prefer_small_changes:
+                solver.model.minimize(sum(solver.variable(var[g]) for g in variables if not A0[f,g]))
+        else:
+            solver = pycryptosat.Solver(threads=1)
         solver.add_clauses(clauses)
         rows = []
         complete = False
@@ -197,7 +227,8 @@ def main():
         stats["sat_rows_generated"] += len(rows)
         old = set(np.flatnonzero(A0[f]))
         # Changes first, but keep every row we have generated.
-        rows.sort(key=lambda N: -len(set(N) ^ (old & set(F))))
+        sign=1 if args.prefer_small_changes else -1
+        rows.sort(key=lambda N: (not bool(set(N) ^ (old & set(F))), sign*len(set(N) ^ (old & set(F)))))
         return rows, complete
 
     def record(A):
@@ -253,7 +284,15 @@ def main():
         # Most constrained first, with random ties and no symmetry constraints.
         degrees = [(int(A[f, R].sum()), rng.random(), f) for f in F]
         f = max(degrees)[2]
-        rows, complete = possible_rows(A, R, F, f, C)
+        spectral=None
+        if args.spectral_prune and len(R)<=90:
+            from spectral_bounds import missing_edge_bounds
+            spectral=missing_edge_bounds(A,R,F,k,lam,mu)
+            if spectral is None:
+                stats["numerical_spectral_prunes"] += 1
+                save()
+                return
+        rows, complete = possible_rows(A, R, F, f, C,spectral)
         if not rows:
             stats["unsat_row_nodes" if complete else "undecided_row_nodes"] += 1
             save()

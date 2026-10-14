@@ -1469,3 +1469,42 @@ p<=1150. C'est un compte brut : ne pas le lire comme un minorant de a_4
 sans retrancher les collisions. Le gain seul ne comble pas l'écart du rang.
 
 Code et rapport `small_antineighborhoods.py/json`, calcul <0,1 s.
+
+### 14 octobre, apres-midi : demande explicite de CONSTRUIRE un SRG asymetrique lambda=1
+
+Travail de construction effectif dans code/codex/lambda_one_search, donnees
+codex_lambda_one_construction_20261014. Aucun SRG asymetrique obtenu.
+Les recherches par voisinages incrementaux et SAT global sur243 ne donnent
+que des copies connues ou des limites de temps, jamais une exclusion generale.
+Le moteur incremental a ete etendu a378 et a CP-SAT, avec choix de labels
+pour les colonnes identiques du bord (sans imposer d'automorphisme).
+
+Claude a construit hemi_s1, SRG(378,52,1,8). Verification INDEPENDANTE ici :
+identite matricielle exacte et groupe COMPLET BLISS d'ordre6 (0,063s).
+Bords aleatoires gardes90,75,60 : reconstruction du seed seul. Bord45 :
+seed seul mais22 enumerations incompletes. Bord35 avec CP-SAT :214 lignes
+candidates,171 noeuds, profondeur45 en420s, aucune completion. Un controle
+spectral numerique de Schur n'a pas apporte de coupe sur ce pilote ; aucune
+preuve d'exclusion ne repose sur ce controle numerique. Deux essaisR40 avec
+priorite aux petites modifications sont en cours au moment de cette entree.
+
+AUTRE CONSTRUCTION TESTEE PUIS FERMEE PAR PREUVE EXACTE : 3-ovoide dans le
+quadrangle de Payne surGF9,729points et891droites de9. La geometrie ambiante
+est verifiee SRG(729,88,7,11). SAT/CPSAT et recherche locale n'ont produit
+aucun3-ovoide. Le blocage a ensuite ete explique sans solveur : incidence M
+891x729 de rang binaire441, noyau de dimension288 DOUBLEMENT PAIR. Chacun
+des288 vecteurs d'une base explicite a poids0mod4 et les intersections de
+toutes les paires sont paires. Un3-ovoide aurait243points ; son complement,
+de poids486, rencontre chaque droite en6points, donc serait dans ker(M),
+mais486=2mod4 : contradiction. La base, son independance et l'appartenance
+au noyau sont verifiees exactement. Script payne9_obstruction.py et certificat
+payne9/obstruction_certificate.json. Le constructeur effectue maintenant ce
+precontrole en0,31s et ne relance plus de SAT sur cette voie impossible.
+Portee : CE quadrangle explicite seulement, pas les SRG243 generaux, pas
+les autres GQ de meme ordre, pas Conway. Resultat transmis aClaude : pont667.
+Commits precedents de cette construction :0b0ea1a,bafa35e.
+
+Fin des deux essaisR40 : seeds902/903,359/347noeuds,80/70s, seul le graphe
+de depart reconstruit,17 enumerations incompletes dans chaque essai. Aucun
+nouveau SRG, aucune exclusion de ces bords. Bilan des essais et sources :
+data/codex_lambda_one_construction_20261014/construction_run_summary.json.
