@@ -1,0 +1,33 @@
+{
+  "status": "PROVED_NECESSARY_BOUND_AND_LINEAR_EDGE_CUTS",
+  "setup": "D is the14 by84 root-incidence matrix. Its columns are the unordered nonmate pairs of root neighbours. Let i(y,z)=|y intersect z| and m(y,z) count mate incidences.",
+  "full_projection_proof": [
+    "DD^t=11I+J-B_matching, with inverse(11I+B_matching)/120-J/240.",
+    "Pi=I-D^t(DD^t)^(-1)D is the orthogonal projector onto kerD. Entrywise120Pi_yz=120*delta_yz-11*i(y,z)-m(y,z)+2.",
+    "For an actual Conway graph, Gamma D^t=2J-D^t(I+B_matching), so T=3I-Gamma-K annihilates imD^t, where8K=3*i+m-2.",
+    "On kerD, the SRG equations give Gamma^2+Gamma=12I; its eigenvalues there are3 and-4. Hence T has eigenvalues0 and7, so T=7P for an orthogonal projector P with image contained in kerD.",
+    "Therefore0<=T<=7Pi on all84 labels. Passing to principal blocks yields the necessary T_SS<=7Pi_SS, stronger than T_SS<=7I.",
+    "The complementary Gram is U=7Pi_SS-T_SS=4I+Gamma-L, with L_yz=(4*i(y,z)-m(y,z)+2)/15. Thus15U=60I+15Gamma-4*i+m-2J must be PSD."
+  ],
+  "sixteen_linear_cuts": {
+    "vectors": "For each mate pair {4,5},{6,7},{8,9},{10,11},{12,13}, choose opposite signs s_x. Set q_{c,x}=s_x on the30 labels with c in{0,1,2},x in4..13, and q=0 on the four remaining labels. Global negation identifies orientations, leaving16 cuts.",
+    "fixed_energies": "q^tq=30. Dq is3*s on the10 outside letters and zero elsewhere. Since mate signs are opposite and sum to0, q^tPi_SS q=45/2 and q^tK_SS q=45/2.",
+    "inequality": "q^t(7Pi_SS-T_SS)q=90+q^tGamma q>=0. Equivalently e_opposite_sign-e_same_sign<=45 in the induced30-label subgraph.",
+    "grid_specialization": "When the four crossed labels on root lines{0,1} and{2,3} form the grid square, their three-star counts are saturated internally. They are an isolated C4 in Gamma. Gamma has69 edges, so the remaining30-label subgraph has65 edges. The inequality becomes e_same_sign>=10 for every one of the16 mate orientations.",
+    "family_exclusion": "Consequently every such grid-containing boundary whose remaining65 edges all cross one mate orientation is impossible in a Conway graph. No symmetry of a putative completion is assumed. This is a proper family, not all grids or all Z5-invariant boundaries.",
+    "solver_form": "For any fixed q, q^t U q>=0 is a linear inequality in the adjacency variables. These16 cuts need no eigensolver. Further cuts can come from any integer negative witness for U."
+  },
+  "observed_examples": {
+    "lab700": "The rank30 Z5 seed has0 same-sign and65 opposite-sign edges for the all-even-positive orientation. Its exact witness has q^t(15U)q=-600. It is excluded by the new cut before column enumeration.",
+    "lab704_EX2": "The same cut also gives-600 and excludes this second rank30 seed.",
+    "lab704_EX0": "The full complementary Gram is PSD, not only the16 cuts. The first missing column{3,4} still has no rank-preserving profile:20250 kernel profiles,553 locally admissible,4 with norm<20,549 with norm>20,0 with norm20. Thus this third supplied boundary is also nonextendible, for a distinct reason.",
+    "eleven_rank31_seeds": "All11 supplied rank31 seeds pass the full complementary Gram condition. Its addition does not settle the missing fourth relation or prove that rank30 without a grid is impossible."
+  },
+  "implementation": {
+    "module": "code/codex/three_star_ambient_upper.py",
+    "integration": "The column preprocessor now rejects failure of U PSD before computing column domains. Rank30 repairs are exported only if U is PSD. Intermediate states in the bounded rank31 switch exploration are not filtered by U.",
+    "certificates": "Every negative result has an integer vector q and exact negative q^t(15U)q. Positive decisions use exact rational congruence pivots. Floating eigenvectors only propose short integer witnesses, whose negative values are checked exactly.",
+    "own_primitive_checks": "Singular PSD and indefinite small matrices; our fractional witness gives U=4Pi; the exact fixed energies for all16 orientations. Passed.",
+    "scope": "New necessary constraints and nonextension results for supplied boundaries, not an independent re-audit of the producer's T ranks. No new SRG or exclusion of C1."
+  }
+}

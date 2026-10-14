@@ -1879,3 +1879,160 @@ le rang du bloc principal31 excede le rang30 du Gram residuel global.
 Ce n'est ni une exclusion globale de C1 ni un succes du filtre des50
 colonnes. Le pair cherche un premier exemple de rang<=30 ; aucun tel
 exemple n'est encore entre dans notre preprocesseur. Pas de relance ici.
+
+### Pourquoi31, et comment viser exactement la quatrieme relation
+
+Dilan demande une recherche propre sur la question du rang31. Claude
+interroge via698, export de son Gamma34 demande via699. Le fichier LAB
+n'est pas present dans l'arbre Recherche_Conway Windows. Pas de recopie
+ni d'audit de son rang. Travail ici sur le mecanisme de modification.
+
+Les trois indicatrices d'etoiles forment un noyau force independant.
+Rang31 signifie exactement que T est positif defini sur leur orthogonal
+H de dimension31. Conway impose une relation supplementaire parce que
+le Gram residuel global a rang30. Cela ne fait pas du rang31 un theoreme
+universel sur les configurations locales ni une obstruction d'asymetrie.
+
+Resultat neuf exploitable : un echange d'aretes en rectangle s'ecrit
+DeltaGamma=sigma(a*b^t+b*a^t), a=e_u-e_r, b=e_v-e_s, quatre sommets
+ distincts. Il preserve les trois relations ssi u,r sont dans une meme
+cellule d'appartenance aux centres et v,s aussi. Les tailles des cellules
+non triviales sont11,11,10 ; les deux recouvrements sont des singletons.
+Donc10585 formes de rectangles au total, aucune ne peut changer les
+lignes des deux recouvrements. Toutes conservent les degres.
+
+Avec G=T^+ sur H, alpha=a^tGa, beta=b^tGb, gamma=a^tGb, le determinant
+relatif apres echange vaut F=(1-sigma*gamma)^2-alpha*beta. Blanchir T
+reduit la modification a deux dimensions : les deux valeurs propres
+non triviales sont1-sigma*gamma +/- sqrt(alpha*beta). La plus grande
+est strictement positive. Donc F>0 conserve PSD/rang31, F=0 donne
+EXACTEMENT PSD/rang30, F<0 cree une valeur propre negative. Au zero,
+q=G(sigma*beta*a+(1-sigma*gamma)*b) donne la nouvelle relation.
+
+Code three_star_rank_repairs.py : une inversion rationnelle du quotient
+pour toutes les reponses, numerateur entier exact de F, filtrage binaire
+et plafonds locaux, export d'eventuelles reparations de rang30 satisfaisant
+aussi T<=7I. Pas de recalcul complet du rang du seed. La certification
+PSD31 du producteur est une precondition explicite. Pas encore de seed
+recu ; aucun resultat de ce balayage n'est annonce pour l'exemple LAB.
+
+Tests des nouvelles primitives : six cas exacts T=c*P_H, c=1,2,3,
+signes+/-, couvrant les trois issues ; relation nouvelle verifiee aux
+zeros. Passage en1,08s. Pas d'audit independant d'un resultat du pair.
+Preuve et limites dans rank31_switch_theory.json. Les echanges plus
+longs et ceux modifiant les recouvrements restent hors de cette famille.
+
+### Premier rang30 du pair : grille comprise, completion refusee a la colonne suivante
+
+Claude700 fournit la4e relation explicite : le carre de quatre labels
+croises d'une grille3x3 a son indicatrice dans ker(T). La grille force
+DONC rang<=30 ; l'egalite30 est celle de ses exemples, pas une consequence
+universelle de la seule presence d'une grille. Son exemple invariantZ5,
+69 aretes, PSD/rang30, est accepte et importe depuis sa liste d'aretes
+(lab700_z5_rank30.json). Aucun nouvel audit du calcul du pair.
+
+Application NEUVE de notre filtre de completion : le premier label
+manquant {3,4} suffit. Enumeration complete de cette colonne :31460
+profils bruts,20250 compatibles avec le noyau,228 avec les plafonds
+locaux. Parmi ces228,77 ont m_I^t H^-1 m_I<20,151 ont une norme>20,
+aucun n'a la norme20 necessaire pour conserver le rang30. Les77 premiers
+peuvent ajouter une dimension PSD, donc rang31, interdit pour Conway.
+Les151 autres rendent l'extension nonPSD. Cette configuration locale
+precise est donc noncompletable en SRG99, sans campagne SAT ni
+hypothese de symetrie sur une completion. Calcul exact0,157s (hors
+lancement Python), resultat envoye au pont703. Aucune exclusion de la
+familleZ5 complete ni des grilles en general. Diagnostic de norme ajoute
+au preprocesseur ; rapport lab700_column_domains.json.
+
+### Balayage exact d'un echange sur le rang31 du pair
+
+Claude702 transmet enfin l'exemple binaire68 aretes. La nouvelle analyse
+par reponse de rang2 couvre10585 rectangles :374 binaires legaux,
+259 rejetes par les plafonds locaux,115 admissibles. Parmi115 :102
+rendent T nonPSD,13 gardent PSD/rang31, ZERO donne le rang30. Calcul
+exact0,075s, sans audit de son rang initial. Rapport lab702_one_switch.
+Les recouvrements restent fixes ; il n'y a donc aucun resultat global
+sur toutes les reparations. Exploration bornee de ces13 voisins lancee
+ensuite pour chercher un mecanisme en plusieurs echanges.
+
+### Obstruction arithmetique courte de notre exemple700
+
+La norme de la colonne {3,4} ne peut pas etre20, MEME avant les plafonds
+locaux. Sur les20250 profils de noyau, aucune norme n'est entiere. Une
+preuve courte remplace cette enumeration : H^-1=N/d avec d=38230440,
+43 divise d et N=7*r*r^t(mod43). Les poids r valent1 sur{0,2},{1,2},
+4 sur{0,x},{1,x} pour x pair>=4,2 sur{2,x} pour x pair>=4,0 ailleurs.
+La relation de grille oblige h=0 sur les4 labels de grille. Il reste
+2 choix A,2 choix A',1 choix B. Si e est le nombre de x pairs parmi
+les4 premiers et f parmi le dernier, r^tm=62-32e-16f. La norme20
+impose r^tm=0(mod43), donc n=2e+f=20(mod43), mais0<=n<=9. Impossible.
+Certificat exact dans lab700_mod43_certificate.json, script reproductible
+three_star_grid_mod43.py. Ce resultat porte sur cette frontiere.
+
+### Deuxieme Gram ambiant : une famille exclue et16 coupes lineaires
+
+En cherchant la structure de cette obstruction, derivation d'une borne
+plus forte que T_SS<=7I. Pour le graphe complet, T=7P avec imP contenu
+dans kerD (D incidence14x84). Pi projette sur kerD. Donc0<=T<=7Pi,
+et pour CHAQUE bloc S, T_SS<=7Pi_SS. Le Gram complementaire est
+ U=7Pi_SS-T_SS=4I+Gamma-(4*inter-mates+2J)/15.
+Ainsi15U=60I+15Gamma-4*inter+mates-2J doit etre PSD. Les identites
+completes viennent de DD^t=11I+J-B_matching et Gamma^2+Gamma=12I sur
+kerD. Il s'agit du second cote spectral de la completion ; aucune
+hypothese d'automorphisme n'est introduite.
+
+Consequence combinatoire : choisir des signes opposes sur chaque paire
+mate parmi4..13, poser q_{c,x}=s_x pour c=0,1,2 et x>=4, q=0 sur
+les4 autres labels. On a q^tq=30, q^tPi q=q^tKq=45/2. Donc
+ q^tGamma q>=-90, soit e_croisees-e_memes<=45.
+Il y a16 coupes distinctes modulo signe global. Avec une grille sur
+{0,1}/{2,3}, ses4 labels sont un C4 isole dans Gamma et les30 autres
+labels portent65 aretes. Il faut donc AU MOINS10 aretes de meme signe
+pour CHACUNE des16 orientations. Toute cette famille a grille avec
+65 aretes toutes croisees pour une orientation est exclue. C'est plus
+large que deux exemples, mais ce ne sont PAS toutes les grilles/Z5.
+
+700 et EX2 du message704 violent la coupe :0 meme,65 croisees,
+q^t(15U)q=-600. EX0 passe U PSD entier, mais notre filtre de colonne
+{3,4} donne553 profils locaux,4 de norme<20,549>20,0=20 : EX0 est
+lui aussi noncompletable (0,235s). Les3 frontieres a grille fournies
+sont exclues, sans supposer de symetrie de leur completion. Les11
+graines PSD31 (702 et S61..70) passent U PSD : la nouvelle borne ne
+resout pas leur4e relation. Resultats transmis708 puis message de lot.
+
+Implementation three_star_ambient_upper.py :16 coupes puis decision
+rationnelle de PSD, avec temoin entier pour toute negativite. Des
+vecteurs numeriques peuvent proposer un petit temoin, mais la valeur
+negative est calculee exactement. Integre a three_star_column_domains
+et aux candidats exportes par three_star_rank_repairs. Tests propres :
+petits cas PSD singuliers/indefinis, U=4Pi pour notre temoin fractionnaire,
+et energies exactes des16 orientations. Aucun nouvel audit des rangs
+T du pair. Rapports individuels et synthese ambient_upper_seed_summary.
+
+### Limite de l'exploration des echanges
+
+Depuis702,200 etats PSD31 traites en10,64s ;1936 etats encore en file,
+aucune reparation de rang30. Arret borne, sans pretention d'exhaustivite.
+Sur les10 nouvelles graines S61..70 du pair, tous les echanges simples
+admissibles sont examines ; aucun F=0. La conjecture du pair « PSD et
+rang<=30 implique grille sur(l,m) » n'est NI prouvee NI refutee. De
+plus, les rectangles conservent les lignes des recouvrements, et une
+hypothetique nouvelle relation pourrait correspondre a une autre grille
+deja contenue dans S ; il faudrait la classifier avant de dire hors-grille.
+
+### Trois nouvelles frontieres passent les deux Grams, mais pas la premiere colonne
+
+Claude709 : parmi10000 structuresZ5 examinees,595 sontT PSD et572
+passent aussiU PSD ; toutes ont le rang30 via leur grille. Donnees du
+pair acceptees, sans reproduire sa campagne. Il transmetV0,V7,V15.
+Application du travail de completion propre, apres import des aretes :
+ V0 :491 profils locaux pour{3,4},42 norme<20,449>20,0=20 ;
+ V7 :698 profils,52<20,646>20,0=20 ;
+ V15:786 profils,52<20,734>20,0=20.
+Enumerations completes0,22-0,24s parfrontiere. Tous trois exclus, donc
+6 exemples a grille transmis sont noncompletables, dont4 qui passaient
+les deuxGrams. Ceci n'exclut PAS tous les572 cas de l'echantillon,
+encore moins toute la familleZ5. Le lot572 serait un calcul fini
+abordable pour ce filtre (aucun domaine nonvide n'a encore ete trouve).
+Message de resultats envoye au pair ; aucun calcul de groupe ni campagne
+SAT, aucune verification du rangT annonce par lui.

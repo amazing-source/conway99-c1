@@ -1,0 +1,355 @@
+{
+  "status": "EXACT_ONE_SWITCH_ANALYSIS_CONDITIONAL_ON_PRODUCER_PSD_RANK31",
+  "labels": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      11
+    ],
+    [
+      0,
+      12
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      12
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      2,
+      10
+    ],
+    [
+      2,
+      11
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      13
+    ]
+  ],
+  "counts": {
+    "rectangle_geometries": 10585,
+    "binary_legal": 375,
+    "locally_admissible": 119,
+    "PSD_but_still_rank31": 10,
+    "destroys_PSD": 109,
+    "local_cap_rejections": 256
+  },
+  "repairs": [],
+  "psd_rank31_moves": [
+    {
+      "rectangle": [
+        1,
+        2,
+        17,
+        20
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        1,
+        8,
+        17,
+        19
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        9,
+        10,
+        13,
+        14
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        1,
+        6,
+        24,
+        26
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        7,
+        8,
+        32,
+        33
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        7,
+        9,
+        30,
+        32
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        15,
+        22,
+        25,
+        30
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        17,
+        21,
+        24,
+        32
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        20,
+        22,
+        24,
+        31
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        1,
+        6,
+        4,
+        8
+      ],
+      "sign": 1
+    }
+  ],
+  "response_metric_denominator": 16247340486216,
+  "determinant_ratio_denominator": 263976072875033567285998656,
+  "closest_by_absolute_determinant_ratio": [
+    {
+      "numerator": -19936446146298593985124800,
+      "rectangle": [
+        3,
+        9,
+        13,
+        16
+      ],
+      "sign": 1
+    },
+    {
+      "numerator": 26990266287188771286834240,
+      "rectangle": [
+        1,
+        2,
+        17,
+        20
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": 29167357873279946451993792,
+      "rectangle": [
+        7,
+        8,
+        32,
+        33
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": 45260879362970812937754624,
+      "rectangle": [
+        9,
+        10,
+        13,
+        14
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": -257258523531533494626984384,
+      "rectangle": [
+        1,
+        11,
+        5,
+        8
+      ],
+      "sign": 1
+    },
+    {
+      "numerator": -283380125640826173838607232,
+      "rectangle": [
+        13,
+        20,
+        15,
+        19
+      ],
+      "sign": 1
+    },
+    {
+      "numerator": -291251453443630415336470464,
+      "rectangle": [
+        1,
+        8,
+        24,
+        33
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": -342084324115382601473457408,
+      "rectangle": [
+        14,
+        16,
+        28,
+        33
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": 353289358422854504601822144,
+      "rectangle": [
+        15,
+        22,
+        25,
+        30
+      ],
+      "sign": -1
+    },
+    {
+      "numerator": 417556000955543901616170432,
+      "rectangle": [
+        7,
+        9,
+        30,
+        32
+      ],
+      "sign": 1
+    }
+  ],
+  "elapsed_seconds": 0.03492209999967599,
+  "scope": [
+    "The input PSD/rank31 certification is taken from its producer, not repeated.",
+    "Every binary legal single rectangle switch preserving all three star sums is covered.",
+    "All such switches fix both overlap-vertex rows and all vertex degrees.",
+    "Longer or simultaneous trades, or trades moving overlap rows, are not exhausted.",
+    "Rank30 is only a necessary condition; the fifty outside columns remain to be constructed.",
+    "No consequence about automorphism groups follows from these ranks alone."
+  ]
+}

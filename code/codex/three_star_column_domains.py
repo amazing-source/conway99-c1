@@ -11,9 +11,13 @@ from itertools import combinations
 from math import comb, gcd, lcm
 from pathlib import Path
 import json
+import sys
 import time
 
 import sympy as sp
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from three_star_ambient_upper import analyse as analyse_ambient_upper
 
 
 CENTRES = (0, 1, 2)
@@ -153,6 +157,12 @@ def prepare(gamma):
         if sum(boundary[centre]) != 14 or any(residual[centre, j] for j in range(49)):
             raise ValueError('The four closed neighbourhoods are not complete/consistent.')
     statistics = boundary_degree_statistics(gamma)
+    upper = analyse_ambient_upper(gamma)
+    if not upper['complementary_gram']['psd']:
+        witness = upper['complementary_gram']
+        raise ValueError('Complementary Gram 7Pi_SS-T_SS is not PSD: '
+                         f'integer quadratic witness value {witness["quadratic_value"]} for 15U; '
+                         f'vector {witness["integer_witness"]}.')
     M = sp.Matrix(34, 34, lambda i, j:
                   24*(i == j) - 8*gamma[i][j] - k8(S[i], S[j]))
     reduced, basis = M.rref()
@@ -186,6 +196,7 @@ def prepare(gamma):
     return dict(B=boundary, residual=[[int(x) for x in residual.row(i)] for i in range(49)],
                 rank=rank, basis=basis, kernels=kernels, inverse=numerator,
                 denominator=denominator, statistics=statistics,
+                complementary_gram_psd=True,
                 M=[[int(x) for x in M.row(i)] for i in range(34)])
 
 
@@ -208,7 +219,8 @@ def column_domain(gamma, prepared, join, label, deadline, keep_profiles=False):
     dot = [sum(x*y for x, y in zip(v, base)) for v in prepared['kernels']]
     report = dict(label=label, raw_bound=raw_bound(delta), kernel_profiles=0,
                   cap_profiles=0, spectral_profiles=0, complete=True,
-                  remaining_degree_profile_counts={6:0, 7:0, 8:0})
+                  remaining_degree_profile_counts={6:0, 7:0, 8:0},
+                  norm_comparison_counts={'below_20':0, 'equal_20':0, 'above_20':0})
     if any(x % 8 for x in dot):
         report['obstruction'] = 'A kernel equation has a nonintegral required sum.'
         return report
@@ -247,6 +259,16 @@ def column_domain(gamma, prepared, join, label, deadline, keep_profiles=False):
         report['cap_profiles'] += 1
         value = constant + sum(linear[i] for i in selected)
         value += sum(pair[i][j] for i, j in combinations(selected, 2))
+        comparison = 'below_20' if value < 0 else 'above_20' if value > 0 else 'equal_20'
+        report['norm_comparison_counts'][comparison] += 1
+        if ('minimum_norm_excess_numerator' not in report or
+                value < report['minimum_norm_excess_numerator']):
+            report['minimum_norm_excess_numerator'] = value
+            report['minimum_norm_profile'] = [S[i] for i in selected]
+        if ('maximum_norm_excess_numerator' not in report or
+                value > report['maximum_norm_excess_numerator']):
+            report['maximum_norm_excess_numerator'] = value
+        report['norm_excess_denominator'] = prepared['denominator']
         if value > 0 or (prepared['rank'] == 30 and value != 0):
             continue
         report['spectral_profiles'] += 1
@@ -308,6 +330,7 @@ def analyse(gamma, seconds=30, keep_profiles=False, label_indices=None):
         report.update(status='NO_COMPLETION', reason=str(error), seconds=time.monotonic()-started)
         return report
     report.update(spectral_rank=prepared['rank'], kernel_dimension=len(prepared['kernels']),
+                  complementary_gram_psd=prepared['complementary_gram_psd'],
                   full_rank_reconstruction_available_after_columns=(prepared['rank'] == 30),
                   spectral_basis=prepared['basis'], kernels=prepared['kernels'],
                   inverse_numerator=prepared['inverse'], inverse_denominator=prepared['denominator'],

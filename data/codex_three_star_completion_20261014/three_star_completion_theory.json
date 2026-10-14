@@ -13,7 +13,10 @@
     "reason": "Each of a,a',b is nonadjacent to u and has its entire neighbourhood in R. For b, the star letter b' supplies one common neighbour exactly when delta=1; a and a' have no such star contribution.",
     "partition": "Write z=h_p and z'=h_p'. The disjoint groups L_a minus p, L_a' minus p', L_b minus {p,p'} have sizes11,11,10, with selected counts2-z,2-z',2-delta-z-z'.",
     "exact_unfiltered_count": "N_delta=sum_(z,z' in {0,1}) C(11,2-z) C(11,2-z') C(10,2-delta-z-z'), with negative binomial indices giving zero.",
-    "counts": {"delta0_40_columns":148346,"delta1_10_columns":31460},
+    "counts": {
+      "delta0_40_columns": 148346,
+      "delta1_10_columns": 31460
+    },
     "root_caps_enumeration": "Imposing all root-star common-neighbour budgets further leaves94743 profiles for each delta0 label (84582/10044/117 of induced degree6/7/8), and25926 for each delta1 label (0/24776/1150). The matching group on the five other pairs is transitive on each of these two label types, so one representative per type suffices. Exact finite enumeration took0.343 seconds; no Gamma sample was used.",
     "scope": "These counts impose only the three displayed sums. Common-neighbour caps, boundary capacities, kernel equations and spectral norms can further remove candidates. Their product is still enormous and is not an affordable total-search bound."
   },
@@ -59,7 +62,7 @@
     "peer_path": "work/stars_rank_2026-10-14/lns3_psd_found.json",
     "reported_properties": "A binary34-label three-star structure satisfying the peer's local constraints, with68 edges, T_SS PSD, and exact rational rank31.",
     "consequence": "Local counts/caps plus integrality and PSD still do not imply rank<=30. This particular partial structure cannot extend to a Conway graph, because a principal submatrix cannot have larger rank than the full residual matrix, whose rank must be30.",
-    "scope": "An excluded partial configuration, not a global exclusion of C1 or an exclusion supplied by the new50-column domains. No rank<=30 input for that preprocessor has yet been supplied."
+    "scope": "An excluded rank31 partial configuration, not a global exclusion of C1. Later three rank30 inputs were supplied; each was excluded by our complementary Gram or exact column-domain condition."
   },
   "implementation": {
     "path": "code/codex/three_star_column_domains.py",
@@ -67,6 +70,12 @@
     "run": "C:/home/researcher/Desktop/Recherche_Conway/c1-lambda1-env/Scripts/python.exe -I -u -X utf8 code/codex/three_star_column_domains.py --gamma INPUT.json --output REPORT.json --seconds 30",
     "dependency": "SymPy1.14.0 installed in the existing c1-lambda1-env for exact rational arithmetic.",
     "bounded_execution": "The enumeration has a time budget; incomplete domains are explicitly marked and never used to claim emptiness or a global count bound. Exact preprocessing runs before enumeration and can exceed that soft time budget.",
-    "checks": "Own primitives checked: exact counts148346/31460, an added kernel relation giving12100/1210, and sparse versus dense rational norm evaluation. No real49-vertex sample has been processed yet."
+    "checks": "Own primitive tests as recorded. Three producer-certified PSD30 grid seeds were subsequently supplied:700 and704_EX2 fail the ambient upper Gram;704_EX0 passes both Gram conditions but has no norm20 profile for label{3,4}."
+  },
+  "ambient_upper_gram": {
+    "necessary_condition": "7Pi_SS-T_SS is PSD, stronger than T_SS<=7I.",
+    "formula": "15(7Pi_SS-T_SS)=60I+15Gamma-4*intersection+mate_incidence-2J.",
+    "source": "ambient_upper_gram_theory.json",
+    "integration": "Tested before rank/column preparation, with exact integer negative witnesses and rational positive decisions."
   }
 }

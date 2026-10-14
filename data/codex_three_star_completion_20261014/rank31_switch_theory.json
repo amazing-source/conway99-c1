@@ -1,0 +1,45 @@
+{
+  "status": "PROVED_EXACT_SWITCH_CRITERION_WITH_BOUNDED_COMPUTATIONS",
+  "question": "Why can the binary three-star boundary have rank31, and how can an edge change create the fourth relation needed for Conway?",
+  "setup": {
+    "matrix": "T=3I-Gamma-K on34 labels meeting centres0,1,2; mates c xor1; 8K_yz=3|y intersect z|+mate_incidence(y,z)-2.",
+    "forced_kernel": "The three star indicator vectors are independent and annihilated by T. Thus rank<=31. A producer-certified PSD rank31 seed is strictly positive on their31-dimensional orthogonal complement H.",
+    "conway_requirement": "The full84-label residual spectral matrix for an actual SRG(99,14,1,2) has rank30. Every principal block must have rank<=30. Hence one additional relation on the34 labels is necessary.",
+    "limitation": "Three forced relations explain why31 is the maximal local rank. They do not prove that all locally admissible binary configurations have rank31. Neither rank31 nor rank30 characterizes asymmetry."
+  },
+  "weighted_relation": {
+    "notation": "Choose a hypothetical extra kernel vector q orthogonal to all three star indicators. Put z_c=sum_{y containing c}q_y and s=sum_y q_y. Let p={0,2}, pprime={1,2}.",
+    "balances": "z_0=z_1=z_2=0; s=-q_p-q_pprime.",
+    "equation": "24 q_{cd}-8 sum_{w adjacent to {c,d}}q_w = 3(z_c+z_d)+z_{c xor1}+z_{d xor1}-2s.",
+    "overlap_difference": "3(q_p-q_pprime)=sum_{N(p)}q-sum_{N(pprime)}q.",
+    "adjacent_overlaps_case": "If Gamma_p,pprime=1, both overlap degrees in Gamma equal2. With other neighbours r,s, 4(q_p-q_pprime)=q_r-q_s.",
+    "special_case_only": "If all14 z_c vanish, then Kq=0 and the extra relation reduces to Gamma q=3q. A general extra relation need not have all14 z_c zero."
+  },
+  "rectangle_switch": {
+    "update": "Take four distinct vertices u,r,v,s, a=e_u-e_r, b=e_v-e_s. DeltaGamma=sigma(a b^t+b a^t), sigma=+1 or-1. For sigma=+1, add uv and rs, remove us and rv.",
+    "star_preservation": "Because a,b are independent, DeltaGamma annihilates the three star indicators iff a and b are each orthogonal to them. Equivalently u,r have the same centre membership, and v,s have the same centre membership.",
+    "cells": "Three nonsingleton cells have sizes11,11,10; the two overlap vertices are singleton cells. No such rectangle can move either overlap row. All degrees remain fixed.",
+    "count": "Cross-cell shapes:55*55+2*55*45=7975. Within-cell shapes:3*(C(11,4)+C(11,4)+C(10,4))=2610. Total10585. Each geometry has at most one binary-legal sign.",
+    "local_admissibility": "After binary legality, test only common-neighbour caps affected by the four changed rows in the full49-vertex boundary. Other caps and degrees persist from the producer-certified seed.",
+    "scope": "This exhausts single rectangle switches preserving the three star relations. It does not exhaust longer trades, simultaneous switches, or changes to overlap rows."
+  },
+  "exact_response": {
+    "metric": "Let G=T^+ be the inverse of T on H. Put alpha=a^tGa, beta=b^tGb, gamma=a^tGb. Then alpha,beta>0 and alpha*beta>gamma^2.",
+    "formula": "F_sigma=(1-sigma*gamma)^2-alpha*beta = det(T'|H)/det(T|H), where T'=T-DeltaGamma.",
+    "proof": "Whitening by T^{-1/2} on H gives I-sigma(x y^t+y x^t), x=T^{-1/2}a, y=T^{-1/2}b. Its two nonunit eigenvalues are1-sigma*gamma plus/minus sqrt(alpha*beta). The larger is strictly positive. Thus the sign of F exactly gives the sign of the smaller eigenvalue.",
+    "outcomes": {
+      "F_positive": "T' PSD, rank31",
+      "F_zero": "T' PSD, rank30 exactly",
+      "F_negative": "T' has exactly one negative eigenvalue"
+    },
+    "new_kernel": "At F=0, q=G(sigma*beta*a+(1-sigma*gamma)*b) is a nonzero extra kernel vector orthogonal to the three stars.",
+    "integer_evaluation": "Use an integer basis Z of H. For M=8T, compute (Z^t M Z)^(-1)=N/d once. Then G=8 Z N Z^t/d. F has integer numerator(d-sigma*gamma_num)^2-alpha_num*beta_num. No eigenvalue tolerance or repeated seed-rank computation is used.",
+    "precondition": "The seed PSD/rank31 certification is supplied by its producer. Candidate repairs additionally need T<=7Pi_SS (the ambient complementary Gram) and all50 outside columns; rank30 alone does not produce a Conway graph."
+  },
+  "implementation": {
+    "script": "code/codex/three_star_rank_repairs.py",
+    "command": "python three_star_rank_repairs.py --gamma INPUT.json --assume-psd-rank31 --output REPORT.json",
+    "own_primitive_checks": "Six exact cases on T=c*P_H for c=1,2,3 and both signs exercise negative, zero and positive determinant responses. At zero, the newly constructed fourth relation is checked. All passed in1.08seconds.",
+    "peer_seed_status": "Seed702 and ten additional peer PSD31 seeds received. No exact single-switch rank30 repair; bounded200-state walk also found none, with1936 pending states. See lab702_psd_walk_200.json and lab706_707_switch_summary.json."
+  }
+}
