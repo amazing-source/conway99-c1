@@ -3139,3 +3139,86 @@ carres sur une fixture de permutations, completions des motifs marques,
 facteurs d'automorphismes et identite affine sum(c+d)=4Z2. Aucun germe
 du pair audite, aucun census re-genere, aucun processus restant.
 Aucune exclusion C1 ni construction d'un SRG.
+
+### 15/10, suite772 : prolonger c55 force une rupture massive de symetrie locale
+
+772 lu/acquitte. Claude fournit fourstar_psd_rank30_urep100.json : bord
+local G1 c55, T/U PSD de rangs30/40, nullitesT(10,1,1,2), certification
+exacte du producteur acceptee SANS ouvrir ni re-auditer son germe.
+Son label{4,6} ne se prolonge pas :2591 profils,16 compatibles au noyau,
+aucun de norme5/2. Son analyse de ces16 profils lui reste reservee.
+Le temoin refute l'exclusion locale par C1/C1'/C2+PSD+rangs ; il ne
+refute pas toutes les contraintes sur un bord deduites d'un prolongement.
+
+NOUVEAU RESULTAT POUR LA FAMILLE ENTIERE, non pour son seul germe :
+supposer G1, c=(5,5), recouvrement NON grille et T/U PSD. Normaliser
+les deux paires exterieures actives A=(4,5),B=(6,7). Les trois autres
+paires sont ordinaires. Le quotient trivial T00=ww^t avec
+w=e_O-e_LA-e_RB est celui deja prouve, de rang1. Pour un label manque
+u, nO(u) est le nombre de voisins parmi les quatre labels de O.
+La positivite impose B00^t T(S,u)/2=(1-nO)w/2. Les onze comptes
+d'orbites sont donc determines par nO et les paires utilisees par u.
+Table exacte exportee (y compris projections T00/U00) : nO dans{0,1}
+si u utilise A ou B ; nO dans{0,1,2} si ses deux paires sont ordinaires.
+Pas d'utilisation des caracteres non triviaux d'un germe particulier.
+
+VECTEUR PROPRE GLOBAL. Dans un vrai Conway, T_far^2=7T_far,
+T_far annihile l'incidence des14 lettres racines et porte l'espace
+propre-4 du graphe lointain. Poser z=T_far*1_O et le prolonger par0
+sur la racine et ses14 voisins. Sur S, z vaut+1 sur les4 labels de O,
+-1 sur les8 labels de LA et RB,0 sur les32 autres. Sur les40 labels
+exterieurs, z_u=1-nO(u), donc encore dans{0,+1,-1}. De plus
+||z||^2=7*1_O^t T_far 1_O=28 et somme z=0. Donc A99 z=-4z avec
+EXACTEMENT14 signes+1,14 signes-1,71 zeros. Les4 labels de O ont
+degre3 dans S et12 dans le graphe lointain, donc sum_u nO=36.
+Cela donne N0+N1+N2=40, N1+2N2=36, N0+N2=16, d'ou
+ (N0,N1,N2)=(10,24,6).
+Les six labels ayant deux voisins dans O utilisent tous deux paires
+ordinaires : ils sont parmi les douze labels sur(8,9),(10,11),(12,13).
+
+RUPTURE DE L'INVOLUTION LOCALE. h=g1g2 permute(0 1)(2 3) et fixe
+les dix lettres exterieures, donc chacun des40 labels manquants.
+Un tel label brise h lorsque son voisinage dans S differe sur au moins
+une des22 paires(i,h(i)). Projeter T(S,manquants) sur les caracteres10
+et01, c'est-a-dire le secteur h-impair, donne une matrice R. Dans ces
+deux blocs T+U=7Pi, Pi projetant sur les deux espaces de dimension10
+orthogonaux aux etoiles imposees. Le catalogue exact126 deja etabli
+donne T et U definis positifs sur chacun. Par T_far^2=7T_far :
+ RR^t=7T_impair-T_impair^2=T_impair U_impair, donc rangR=20.
+
+La partie fixe geometrique des colonnes est h-paire : une colonne
+de R est nulle exactement quand le profil de voisinage est h-invariant.
+Pour chaque lettre exterieure x, son etoile dans S est h-paire ;
+T_far B=0 donne R B_manquants=0. B_manquants est l'incidence NON
+ORIENTEE des40 aretes de K10 prive de ses cinq paires mates.
+Soit H le sous-graphe forme par les labels dont la colonne est non
+nulle. Alors20<=|E(H)|-rang(B_H). Le rang d'une composante connexe
+est m-1 si elle est bipartie, m sinon. Avec au plus10 sommets, les
+bornes binom(m,2)-max(0,m-5), ou floor(m^2/4) si bipartie, laissent
+seulement une composante NON bipartie sur9 ou10 sommets :
+ - neuf sommets : au moins29 aretes ;
+ - dix sommets : au moins30 aretes.
+L'enumeration finie des tailles de composantes confirme que toutes
+les composantes<=8 ne donnent qu'une nullite d'incidence<=17.
+Donc AU MOINS29 DES40 SOMMETS EXTERIEURS DOIVENT BRISER h. Aucun
+automorphisme global n'est impose ; ce resultat quantifie justement
+l'impossibilite de prolonger cette involution en conservant la plupart
+des profils. Il ne prouve pas que le groupe global entier serait trivial.
+
+VERSION SOLVEUR. Adaptateur add_completion_cuts(model,rows_by_label),
+conditionnel a CETTE famille canonique. Domaines et histogramme nO,
+880 XOR pour les22 paires et40 labels,40 indicateurs break,10 indicateurs
+de lettres utilisees. Imposer used>=9 et sum_break>=20+used. Cela
+implique au plus11 profils h-invariants, et au plus10 si toutes les
+lettres sont utilisees. Aucun appel de ces contraintes sur une famille
+generale non couverte. Adaptateur valide dans CP-SAT :2850 variables
+dont1760 adjacences d'entree,2123 contraintes ; pas de campagne solveur
+ni de gain de vitesse mesure.
+
+Outil four_star_c55_global_constraints.py, c55_global_constraints.json.
+Controles propres : tables du quotient, cap fixe des caracteres,
+equations d'histogramme, enumeration des tailles et fixture29 aretes
+de rang d'incidence9 (temoin de ce seul argument de rang, pas un SRG).
+Le support29 est optimal POUR CES SEULES contraintes d'incidence.
+Aucun fichier du germe772 lu, aucun processus restant. Ni la famille
+c55 ni C1 ne sont exclus ; aucune preuve que tout Conway entre dans c55.
