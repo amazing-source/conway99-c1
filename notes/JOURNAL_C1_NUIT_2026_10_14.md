@@ -2456,3 +2456,56 @@ Preuve principale neighbourhood_cover_bound.json ; exemples abstraits et
 table de bornes cover_bound_checks.json. Ce sont des restrictions globales
 de completion, pas une preuve de(A) ni de l'existence d'automorphismes.
 Tous les pilotes sont termines ; aucun processus de recherche en cours.
+
+### Message733 : relations non binaires et poids positif minimal
+
+Message733 lu et acquitte. Classification binaire et congruences du pair
+ACCEPTEES sans re-audit, dans nonnegative_kernel_733/peer733_results.json.
+Avec Q connexe, les seuls vecteurs binaires de kerT sont0,L0,L1,L0+L1,L2.
+Pour q entier, w=sommeq est divisible4 ; d_i=d_mate modulo4 et tous les
+t_i=3d_i+d_mate ont le meme residu modulo8, necessairement0 ou4.
+
+NOUVELLE forme de recherche : toute relation supplementaire rationnelle
+peut etre rendue entiere, puis positive ou nulle en ajoutant les etoiles.
+Soustraire une etoile des que toutes ses coordonnees sont positives finit
+avec au moins un zero dans chaque etoile (w decroit de12). La relation
+reste supplementaire. Sa queue de dix coefficients doit etre non constante,
+sinon soustraire L2 la ramene au noyau connu des deux premieres etoiles.
+Son maximum est>=2 par733. Aucune borne universelle de hauteur annoncee.
+
+PROUVE ANALYTIQUEMENT : une telle relation non negative a w>=12.
+On utilise d_i+d_mate<=w et d0+d1+d2=w+q02+q12. Les congruences eliminent
+w4. A w8, les profils de degres equilibres et le residu4 sont impossibles.
+Il ne reste, a symetrie pres, que d0,d1,d2,d3=(1,5,5,1), une paire
+exterieure(a,a') de degres(2,2), et les autres degres0. Les lignes a zero
+forcent q02=1,q12=2,q13=1,q1a=q1a'=q2a=q2a'=1. La ligne12 demande alors
+un poids voisin4, mais les comptes vers L1 et L2 l'autorisent au plus2.
+Preuve detaillee : normalization_and_weight_bound.json. L'enumeration
+entiere<=8 retrouve un seul profil normalise, exclu par cette ligne.
+
+NOUVELLE EXCLUSION FINIE : w12 est aussi impossible. Enumeration COMPLETE
+en0,738s des coefficients0..12 satisfaisant la normalisation et les
+congruences :19 profils normalises (pas un compte affirme de classes
+d'isomorphisme). Les domaines exacts de chaque ligne en excluent17.
+Les profils10 et12 restants sont impossibles meme fractionnairement :
+certificats exacts de Farkas de46 et50 termes, seconds membres-4 et-8,
+avec uniquement equations de noyau et positivite des aretes. Ils n'utilisent
+ni Q connexe, ni les plafonds de voisins communs, ni PSD. Tous les
+coefficients sont annules exactement par les multiplicateurs entiers.
+Donc une relation supplementaire normalisee doit avoir w>=16.
+La couverture des19 profils repose sur l'enumeration entiere terminee ;
+ce n'est pas encore une classification analytique du cas w12.
+
+Moteur three_star_nonnegative_kernel.py : tous les coefficients0..H sont
+libres, sans q de reference ni contrainte Du=0. Symetries de la paire0/1
+et des cinq paires exterieures, equations de noyau, congruences, Q connexe,
+plafonds locaux puis coupes spectrales exactes. Premier essai H2,40s :
+deux nouveaux candidats locaux de poids24 ; tous deux T non PSD, six
+coupes exactes ajoutees. Timeout ensuite : aucune exclusion de H2,
+aucun bord PSD construit, aucune preuve de(A).
+
+Essai exploratoire w16,20s :437 profils,149 survivants des domaines de
+lignes, enumeration INCOMPLETE. Aucun verdict d'exclusion sur w16.
+Filtre supplementaire prouve : T_ii=20/8 et T_ij>=-10/8 donnent
+3*q_i<=w pour toute relation non negative. La hauteur necessaire pour
+un poids fixe16 est donc au plus5, ce qui facilite une enumeration ciblee.
