@@ -1337,3 +1337,76 @@ C++ <0,1 s, quotient, automorphismes et majorants Python environ 4,8 s.
 Ce sont des conditions nécessaires et des majorants, sans affirmation
 d'extension des 40 types ni d'exclusion de C1. Cette borne compte les
 noyaux h; elle ne compte pas encore les représentations z-z'=h.
+
+### 07h37 — Multiplicités certifiées pour une famille de vecteurs de norme 8
+
+Périmètre précis : `z dans {0,+/-1}^99`, support **exactement huit**,
+**somme zéro**, et `||sqrt(7)Pz||^2=8`. Le support est donc une paire
+ordonnée de quatre-ensembles anticomplets, chacun induisant quatre arêtes
+(C4 ou paw). Écrire D pour cet ensemble de z. Les calculs suivants ne
+couvrent pas les collisions avec des z de sommes ou de tailles différentes.
+
+Une collision z-z'=h a somme nulle et masse absolue <=16, donc relève des
+48 gabarits précédents. Un noyau unitaire de norme 2p partage exactement
+8-p sommets extérieurs entre z et z'; un noyau pondéré de masse 16 n'en
+partage aucun. Sur son support, chaque coefficient 1 de h choisit entre
+`(z,z')=(1,0)` et `(0,-1)` (analogue pour -1); un coefficient 2 force
+`(1,-1)` (analogue pour -2). L'équation de norme devient simplement :
+la somme des produits des signes sur les arêtes de z vaut huit.
+
+**Norme 16 ou cas pondérés.** Énumération directe des partitions du support,
+sans inconnue extérieure. Pour les trois cubiques de huit sommets, les
+multiplicités sur les paires de types valent les produits des nombres
+`6,4,8`; diagonale `36,16,64`. Pour les trois types à deux sommets de degré
+quatre : diagonale `32,72,50`, termes hors diagonale `48,40,60` (maximum
+sur les deux couplages admissibles). Type à quatre degrés quatre : 32 ou
+64. Cas pondérés : moulin/moulin 144, moulin/cubique 72,48,96.
+Ces multiplicités comptent les couples ordonnés (z,z') pour un h signé fixé.
+
+**Norme 14, un sommet extérieur.** On énumère les 99 profils possibles de
+ce sommet dans le support de h. Pour chaque profil, on compte exactement
+ses contributions possibles, avec les deux signes. Les variables sont
+les nombres de sommets de chaque profil; leurs sommes, degrés résiduels
+et comptes de voisins communs sont fixés. Le dual rationnel vérifié donne
+**au plus 184 représentations** pour un h signé de norme 14.
+
+**Norme 12, deux sommets extérieurs.** Il y a 46 profils individuels.
+On ajoute les nombres de paires extérieures de chaque paire de profils,
+selon qu'elles sont adjacentes ou non : 1892 sortes admissibles après
+vérification des capacités de voisins communs dans le support augmenté.
+Les marges de paires par profil valent 86 fois la taille du profil, et
+les marges de paires voisines valent le degré extérieur fois cette taille.
+Pour chaque sommet du support, on fixe de même les marges des partenaires
+qui lui sont adjacents : tous les partenaires, puis seulement ceux voisins
+du premier sommet. La dernière égalité est exactement le compte lambda/mu
+des voisins communs entre un sommet du support et un sommet extérieur.
+Avec les marges individuelles, cela donne 1276 égalités linéaires.
+L'objectif compte exactement les partitions et signes pour chaque sorte
+de paire extérieure. Le dual rationnel vérifié donne **au plus 2508
+représentations** pour un h signé issu de deux prismes jumeaux.
+
+Dans les deux LP, le solveur ne sert qu'à proposer un dual. Les coefficients
+sont reconstruits en fractions, une éventuelle erreur d'arrondi est
+corrigée par la ligne de somme constante, puis toutes les inégalités
+duales et la valeur sont vérifiées en arithmétique rationnelle. Les
+certificats complets sont conservés dans le rapport. Aucune infeasibilité
+ni extension intégrale n'est annoncée.
+
+**Borne globale de pertes, encore trop large.** Chaque composante cubique
+de huit sommets a au plus deux partenaires, celles à deux degrés quatre
+au plus quatre, celles à quatre degrés quatre au plus dix. Pour les deux
+premières familles, chaque multiplicité hors diagonale est au plus la
+moyenne des deux diagonales. En chargeant les arêtes de compatibilité
+à leurs extrémités et en utilisant les bornes de copies déjà prouvées :
+3742200, 2561328 et 665280 paires de collisions respectivement. Pour les
+moulins, une paire moulin/cubique se charge au plus 96 au moulin, une paire
+moulin/moulin 72 à chacun. Au plus trois partenaires et 3465 moulins donnent
+997920 paires. Ajouter `2871*2508=7200468` pour les prismes jumeaux et
+`4158*184=765072` pour la norme 14. Total : **15932268 paires non ordonnées
+en collision dans D**. Donc `|sqrt(7)P(D)| >= |D|-15932268`.
+
+Ce résultat rend le passage noyaux-vers-représentations effectif sur D,
+mais ne donne pas encore le minorant de |D| nécessaire, ni l'exclusion du
+rang modulaire suivant. Ne pas ajouter ce minorant à ceux d'autres familles
+sans traiter leurs collisions croisées. Script et rapport :
+`norm_eight_collision_multiplicities.py/json`; exécution complète <2 s.
