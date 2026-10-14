@@ -64,3 +64,19 @@ Earlier: CP-SAT / incremental searches on the 378 graph with random kept sets.
 
 Before any of this, the user wants the mathematics to make the model sharper ("plus concises et precises"): see the
 asymmetry work that follows this note.
+
+## Filters from the asymmetry work, to try when the campaign resumes (none tested yet)
+
+Source: `work/asym_window_2026-10-14/NOTE_ASYM_WINDOW.md` and Codex's
+`c1-asymmetry-audit/data/codex_asymmetry_mechanisms_20261014/flip_orbit_completion_filter.json` (14/10).
+1. Strict lex-leader. In C1 no completion is fixed by a nontrivial symmetry of the instance, so the lex-leader
+   constraints may be strict (X <_lex X o pi for every pi != 1 used), not only X <=_lex X o pi.
+2. Free action and counting (Codex). A group H preserving the WHOLE instance (constraints and blocking clauses included)
+   acts freely on its Conway completions, so their number is a multiple of |H|; an upper bound U < |H| on the number of
+   completions excludes the instance. For every member of the family (not only C1), flips of fewer than ceil(m/2) lines
+   act freely (majority theorem, NOTE_ASYM_WINDOW section 6): two independent single flips preserving the instance force a
+   multiple of 4, which together with a "at most 2 completions" bound (spectral residual of rank <= 1) closes the branch.
+3. Root choice. In C1 the 99 rooted graphs are pairwise non-isomorphic, so the root may be taken extremal for any
+   vertex invariant (for example maximal torsion); this is a factor of at most 99.
+Caveat from Codex: the full rank 44 of the 49 rows N[l] u N[b] is the generic case of the rigidity criterion, not a
+proved fact for every graph.
