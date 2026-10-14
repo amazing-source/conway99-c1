@@ -7,6 +7,11 @@ The criterion is conditional on an actual common binary factor B,D.
 """
 from itertools import combinations, product
 from math import isqrt
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import time
 
 import sympy as sp
 from sympy.matrices.exceptions import NonInvertibleMatrixError
@@ -145,6 +150,11 @@ def _complete_signs(B,D,M,C,gap,sign,report,k,mu):
     report.update(forced_components=count, active_coordinates=len(active),
                   sign_assignments=assignments, sign=sign,
                   projector_diagonal_numerators=list(map(str,a)))
+    if k == 14 and mu == 2 and sign == -1:
+        coheawood = len(active) == 14 and all(a[i] == sp.Rational(1,2) for i in active)
+        report['forced_coheawood_disjoint_from_boundary'] = coheawood
+        report['at_most_two_signs_unless_forced_coheawood'] = True
+        assert coheawood or assignments <= 2
     anchor = a[active[0]]
     vectors = []
     for component in components:
@@ -167,5 +177,25 @@ def _complete_signs(B,D,M,C,gap,sign,report,k,mu):
         answers.append(encode(E))
     if k == 14 and mu == 2:
         assert len(answers) <= 2, 'Conway rank-two rigidity and small-support automorphisms'
+        if report.get('forced_coheawood_disjoint_from_boundary'):
+            assert len(answers) <= 1, 'A nonzero rank-two difference needs 26, not 14, support vertices'
     return dict(report, status='COMPLETE' if answers else 'NO_SRG_COMPLETION',
                 completions=answers, kernel_rejections=assignments-len(answers))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--factor', required=True, type=Path, help='JSON containing B,D and optional k,mu')
+    parser.add_argument('--out', required=True, type=Path)
+    args = parser.parse_args()
+    factor = json.loads(args.factor.read_text(encoding='utf-8-sig'))
+    start = time.monotonic()
+    result = complete_rank_one(factor['B'],factor['D'],factor.get('k',14),factor.get('mu',2))
+    result.update(elapsed=time.monotonic()-start,
+                  source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  scope='Exact completion of the supplied factor; factor enumeration is not included')
+    args.out.parent.mkdir(parents=True,exist_ok=True)
+    args.out.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
+    print(json.dumps(dict(status=result['status'],nullity=result['nullity'],
+                          completions=len(result['completions']),
+                          sign_assignments=result.get('sign_assignments'))))

@@ -3539,3 +3539,61 @@ variables et647 contraintes. Cela ne construit pas un graphe et n'exclut
 rien ; aucune campagne sur les26 noyaux n'a suivi. Le témoin est conservé
 dans `data/codex_norm18_star_v15/core3_first_triple.json`. Le résultat
 exploité de cette reprise est la réduction43/56 ci-dessus.
+
+## 79. La branche sans co-Heawood ne demande que deux signes
+
+Le cas de§76 avec au moins trois composantes ne se contente pas de borner
+le calcul. Pour un bord43 positif, q=1 et eta=-1 ; le vecteur v de(76a)
+est un vecteur propre-4 du graphe complété, après prolongement par zéro
+sur le bord. Ses14 coordonnées non nulles ont module1/sqrt(2). Ainsi
+f=sqrt(2)*v est un vecteur propre ENTIER de norme14, à coefficients±1.
+Comme Cf=0, sa somme est nulle : ses supports positif et négatif ont
+chacun sept sommets, tous HORS DU BORD.
+
+Voici directement ce que cette égalité impose. Chaque sommet positif a
+au moins quatre voisins négatifs, et réciproquement. Pour les sept sommets
+négatifs, compter les paires de leurs voisins positifs donne
+
+    sum_(q négatif) binom(d_P(q),2) >= 7*binom(4,2)=42.
+
+Chaque paire positive a au plus deux voisins communs ; la même somme
+vaut donc au plus2*binom(7,2)=42. Toutes les égalités sont forcées : les
+degrés croisés valent4, chaque paire a exactement deux voisins croisés,
+et l'équation propre exclut les arêtes à l'intérieur de chaque support.
+Le biparti obtenu est le co-Heawood, complément d'incidence du plan de
+Fano. C'est exactement le noyau de la note
+`NOTE_COHEAWOOD_DEUX_COCLIQUES.md`§1, dont le mécanisme donne deux
+cocliques22 se coupant en15 sommets. Ce noyau est ici disjoint du bord43,
+et donc aussi du support de norme18 si celui-ci a servi à construire le bord.
+
+**Dichotomie exploitable avant la recherche des signes :** pour chaque
+facteur D du bord43 positif, soit il reste au plus DEUX affectations de
+signes, soit toute complétion contient un co-Heawood disjoint du bord.
+La seconde situation se reconnaît même si le graphe des signes a moins
+de trois composantes : exactement14 a_i non nuls, tous égaux à1/2.
+Dans ce cas, une complétion éventuelle est UNIQUE : deux complétions
+différeraient seulement sur ces14 sommets, alors que§70 en exige26.
+
+Ainsi la sous-famille SANS co-Heawood, incluant les cas alpha<=21 et en
+particulier alpha<=20, bénéficie d'une complétion en au plus deux choix,
+ou du rejet immédiat du facteur lorsqu'il force ce noyau. La famille
+co-Heawood demeure ouverte et dispose de son modèle antérieur ; aucune
+exclusion de cette famille n'est supposée. Ce rapprochement ne réintroduit
+pas l'hypothèse alpha>=21 : il fournit une réduction pour la branche que
+les cocliques21/22 ne couvrent pas.
+
+Le programme signale `forced_coheawood_disjoint_from_boundary` et vérifie
+la borne de deux signes dans tous les autres cas q=1 de Conway. Il ne
+rejette pas par défaut cette famille encore ouverte. Une entrée en ligne
+de commande est disponible :
+
+    python code/codex/coclique_rank_one_completion.py --factor facteur.json --out resultat.json
+
+Le JSON d'entrée contient B,D, avec éventuellement k,mu pour les petits
+contrôles ; les valeurs par défaut sont14,2. Le résultat distingue une
+complétion complète, un facteur impossible et un cas hors de portée.
+
+Réduction43/56 transmise à Claude par620 ; dichotomie co-Heawood par621.
+Les messages sortants sont conservés avec les artéfacts V15. Les sept
+contrôles et un contrôle de l'entrée CLI passent. Aucun calcul payant,
+aucun nouveau processus de recherche long laissé actif par cette reprise.
