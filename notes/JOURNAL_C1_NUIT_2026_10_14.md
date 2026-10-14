@@ -2282,3 +2282,81 @@ pas filtre sur les etats intermediaires ; il serait exige sur un candidat.
 La marche est terminee, pas en arriere-plan. Correction defensive du
 scanner : un nouveau rang30 peut avoir Q encore deconnecte ; il est
 classe ainsi, sans l'annoncer comme contre-exemple a(A).
+
+### Message727 : rectification du carre tordu et invariant de droite
+
+Les resultats du pair727 sont acceptes sans refaire ses preuves. Sous les
+seuls axiomes de matchings a deux etoiles, le carre ferme peut etre tordu.
+Sous les plafonds complets de voisins communs avec les lettres racines,
+le cas tordu est impossible : il donnerait trois voisins communs au lieu
+de deux. Ainsi une composante singleton de Q dans un bord admissible est
+bien une grille3x3. Ceci rectifie l'entree722 ci-dessus et le JSON de theorie.
+
+Le pair identifie aussi c(l) au nombre de composantes du graphe cubique H_l
+sur les36 voisins de la droite hors de celle-ci. Une composante a6r sommets ;
+chaque sommet eloigne de la droite y a r voisins. Le graphe induit restant
+sur60 sommets a valeur propre-4 de multiplicite7+c(l), et3 de multiplicite18.
+Provenance et portee : prescribed_kernel_728/peer727_line_structure.json.
+Les observations sur les huit graphes243 ne prouvent ni(B) ni(C).
+
+### Construction avec noyau prescrit et obstruction binaire generale
+
+Nouveau moteur three_star_prescribed_kernel.py : aucune graine du pair en
+entree. On impose trois etoiles et z=2q+u dans le noyau, q indicatrice de
+l x M, u un cycle signe d'incidence. Contraintes binaires, plafonds locaux
+complets,16 coupes d'orientation ; les futures coupes spectrales utilisent
+des valeurs quadratiques entieres negatives. Les deux premiers modeles
+(r2,y8 et r3,y10, u rectangle) donnent CP-SAT INFEASIBLE en environ2s
+chacun, sans coupe spectrale ajoutee. Relaxations lineaires faisables.
+Ce sont deux verdicts solveur locaux, pas une preuve de(A).
+
+PROUVE analytiquement, independamment de ces calculs : pour tout SRG(v,k,1,mu)
+avec mu>0 paire, A^2=A sur F2 et C=im(A)=Fix(A). Si un mot non nul a poids w,
+e aretes internes et d_x voisins dans son support, d_x est impair dedans,
+pair dehors. Donc w est pair, 2e>=w et
+  (k-1)w <= somme d_x(d_x-1)
+          = mu*w*(w-1)-2*(mu-1)*e
+          <= mu*w*(w-1)-(mu-1)*w.
+Ainsi w>=2+(k-2)/mu, arrondi au prochain entier pair. Conway : poids>=8 ;
+parametres243,22,1,2 : poids>=12, sans recalcul d'aucun graphe du pair.
+Au poids8 pour Conway, l'egalite force quatre aretes disjointes dans le
+support ; dehors52 sommets ont deux voisins et39 aucun.
+
+Sur nos34 labels (trois etoiles), le poids8 est impossible : chaque centre,
+exterieur au support, aurait au plus deux voisins dans celui-ci ; trois
+centres couvrant huit labels demanderaient au moins huit incidences, pas six.
+Le poids minimal d'un mot NON NUL de C supporte sur ces labels est donc>=10.
+
+Application nouvelle aux noyaux : sur TOUS les84 labels,
+  (Kq)_p = r*|p cap l| + |p cap M| - r,
+ou M contient2r lettres. Ceci est entier ; Dq est pair. Si Du=0 et
+z=2q+u, alors Dz et Kz=2Kq sont pairs. Une relation Tz=0 dans un Conway
+donne donc A(z mod2)=z mod2, apres prolongement par zero sur le repere.
+Un noyau local d'un bloc PSD se propage au T global de toute completion.
+On peut ainsi rejeter AVANT la recherche toute relation de cette famille
+avec2,4,6 ou8 coefficients impairs sur nos34 labels. En particulier tous
+les reflets d'incidence4cycle deplacant q avec q.u impair sont globalement
+exclus, meme si un bord PSD local existait. Ce n'est PAS une exclusion de
+tous les changements de noyau, de tous les rangs30, ni de l'asymetrie.
+
+Preuve : prescribed_kernel_728/binary_obstruction.json. Controle de notre
+formule Kq sur les63 sous-ensembles non vides de six paires, avec les84
+labels complets ; aucun calcul sur une matrice du pair. Transmis729.
+
+Quatre essais suivants a poids impair10 : u est la somme d'un4cycle et
+d'un6cycle. Deux ont une entree negative sur X et deux evitent cela.
+Tous echouent deja lineairement. Pour CHACUN, extraction d'un certificat
+EXACT de Farkas, puis verification rationnelle :15,18,24,22 inegalites,
+coefficients entiers non negatifs, somme des coefficients de chaque arete
+nulle, second membre-1. Ils n'utilisent QUE les relations de noyau et les
+bornes0<=Gamma_ij<=1, ni plafonds ni coupes PSD. Les JSON *_linear_certificate
+contiennent tous les multiplicateurs et les lignes. Ces quatre relations
+particulieres sont donc PROUVEES impossibles meme fractionnairement.
+
+Le filtre binary_obstruction du nouveau moteur calcule Dz et Kz sur les84
+labels ; il distingue explicitement une impossibilite de completion d'une
+impossibilite PSD locale. Les six essais sont termines, sans processus en
+arriere-plan. Aucun contre-exemple a(A), aucune preuve de(A),(B),(C), aucun
+SRG asymetrique construit. L'apport est un obstacle structurel de parite
+aux constructions de noyaux, et non une nouvelle borne sur le nombre
+d'automorphismes.
