@@ -613,3 +613,14 @@ Proved (with status):
 4. Spread family: abelian case impossible (hand); general case open.
 Open / next: b = 34 (needs > 1.4e7 norm-8 vectors in A, section 27 and 29); level-63 programme with the 99 vertex
 vectors (24); DRAT certification of T1 and kk6 (~3 h, not launched).
+
+## 31. Provable support-7 counts and the verdict on the a_4 route for b = 34 (05:20 UTC)
+* Bowtie B (two lines through a point): |N(B) minus B| = 10 + 4 * 12 - 4 = 54 (the four leaf pairs from different
+  lines have one outside common neighbour each, all distinct), so the far set has 40 vertices, each with >= 4
+  neighbours inside it (14 minus at most 10 neighbours in N(B)): >= 80 far edges. Bowtie + far edge (z = 1_B - 1_e,
+  sum 3, norm 21 - 2 (6 + 1 - 0) + 1 = 8): >= 2079 * 80 * 2 = 332640 vectors.
+* House H (a line and an edge with two edges between them; 8316 houses for every P: 2 per pair with two edges, 6 per
+  prism): far set >= 39 vertices, >= 78 far edges: >= 8316 * 78 * 2 = 1297296 vectors.
+* Support 8 (two 4-sets with 4 edges, far apart): no lower bound forced by the parameters found.
+* Total provable a_4 about 3.6e6 even before collisions, against 1.42e7 needed: the a_4 route cannot remove b = 34
+  with forced counts of supports <= 7. Told Codex (bridge 649) before it counts representations.
