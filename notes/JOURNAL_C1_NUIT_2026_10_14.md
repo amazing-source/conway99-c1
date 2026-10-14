@@ -2550,3 +2550,65 @@ nullite>=4 par les relations construites. Ils montrent deja que(A) SANS
 positivite est faux. Aucune nullite exacte supplementaire annoncee pour
 nos candidats. La positivite est donc indispensable a toute preuve de(A),
 qui reste ouvert. Claude poursuit ses constructions avec symetries.
+
+### Message738 : symetrie h3 et separation des contraintes de positivite/C2
+
+Message738 lu et acquitte. Resultats/echantillons du pair acceptes sans
+re-audit. Sur NOS objets : les deux matrices finales sauvegardees ne sont
+pas h3-invariantes (110 et118 entrees d'aretes changent). Les six relations
+ne sont ni paires ni impaires modulo le span des trois etoiles, et leurs
+supports ne sont pas h3-invariants. Seule la premiere queue de poids24
+est constante dans les paires. Les quatre matrices intermediaires n'ont
+pas ete conservees : pas d'affirmation sur leur groupe. Reponse739.
+
+Nouvelle piste propre : coupes PSD sur les profils de coefficients, via
+LP continu. Toute direction ENTIERE donne une inegalite PSD valide, meme
+si elle a ete proposee par une valeur propre numerique. Seules des
+combinaisons de Farkas a cancellation entiere comptent comme exclusions.
+Premier pilote12 profils/12 iterations : aucune exclusion. Un suivi80
+iterations du profil31 n'exclut rien non plus. Ces limites ne prouvent
+aucune faisabilite. Scripts three_star_psd_profile_cuts.py et variantes.
+
+Recherche d'une marge positive sur les quotients principaux : on retire
+quatre ancres independantes des relations de T et trois de U. Le noyau
+force permet une congruence, donc la positivite du quotient suffit.
+Le pilote a necessite de cacher la marge avant d'ajouter une coupe au
+modele GLOP : lire solution_value apres mutation invalide la lecture.
+Corrige dans le code avant les pilotes avec coupes C2. Les anciennes
+coupes restent des inegalites PSD valides ; aucun verdict ne repose sur
+une marge numerique. Le point retenu est ensuite certifie en rationnels.
+
+CONSTRUCTION RATIONNELLE EXACTE, profil31 : Gamma a denominateur commun
+29664,115 aretes strictement fractionnaires. Les659 equations/inegalites
+lineaires (noyau, plafonds aux lettres, orientations, connexite Q) passent
+exactement. Les quotients de8T et15U ont tous leurs pivots rationnels
+strictement positifs ; les noyaux forces donnent rang(T)=30, rang(U)=31.
+Mais22 plafonds de voisins communs lointains(C2) sont violes, dont15 deja
+dans leur relaxation McCormick. Ce n'est PAS un graphe ni un contre-exemple
+a(A). Cela localise une faiblesse du seul LP+PSD. Certificat/matrice dans
+profile31_fractional_certificate_738.json.
+
+Coupes C2 valides : pour tout couple i,j et tout ensemble K de sommets
+intermediaires, Gamma_ij+somme_K(Gamma_ik+Gamma_jk)
+  <=2-|label_i intersection label_j|+|K|.
+Preuve : ab>=a+b-1 pour0<=a,b<=1, puis plafond de voisins communs.
+Elles se separent en prenant K={k:Gamma_ik+Gamma_jk>1} au point LP.
+Le profil45 est exclu exactement par ces coupes ; son certificat
+individuel utilise deux coupes C2, aucune coupe PSD.
+
+FAMILLE TERMINEE : poids16, une seule paire exterieure active dans le
+support (au plus dix labels sur0,1,2,3,a,a').52 profils dans la liste
+complete1420 ;47 deja exclus, il restait31,42,44,45,46. Nouveau scan C2
+des cinq :42,44,45 ont des contradictions de Farkas exactes(-2,-1,-2),
+utilisant noyau, plafonds aux lettres, C2 et bornes d'aretes, sans PSD.
+Les31 et46 atteignent la limite des coupes LP, puis sont UNSAT binaires
+au presolve (zero branche). On retire ensuite TOUTES les coupes initiales
+d'orientation PSD pour distinguer le mecanisme : toujours UNSAT,
+0,122s et0,174s de solveur, aucun test spectral demande. Ce sont deux
+verdicts UNSAT finis ; pas de trace de preuve SAT portable annoncee.
+
+Ainsi une relation supplementaire normalisee de poids16 doit toucher
+au moins DEUX paires exterieures. Total1149/1420 profils exclus,271 restent
+(97 sur deux paires,146 sur trois,28 sur cinq). La masse minimale16 ne
+monte pas a20. Aucune conclusion sur les automorphismes complets, aucun
+SRG asymetrique construit, (A) ouvert. Tous les calculs pilotes termines.

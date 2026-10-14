@@ -117,10 +117,11 @@ def lp_probe(rows):
                 meaning='Numerical continuous relaxation; no exact infeasibility certificate.')
 
 
-def linear_certificate(z):
+def linear_certificate(z, extra_rows=(), connected_Q=False):
     """Extract and exactly check a nonnegative combination yielding 0<=-1."""
     rows = []
-    for number, (coeff, lo, hi, origin) in enumerate(linear_constraints(z)):
+    source_rows = list(linear_constraints(z, connected_Q=connected_Q))+list(extra_rows)
+    for number, (coeff, lo, hi, origin) in enumerate(source_rows):
         if lo is not None:
             rows.append(( {e:-a for e, a in coeff.items()}, -lo, origin, number))
         if hi is not None:
@@ -184,13 +185,15 @@ def spectral_witnesses(matrix):
     return float(values[0]), witnesses
 
 
-def construct(z, seconds, max_candidates, seed, connected_Q=False):
+def construct(z, seconds, max_candidates, seed, connected_Q=False, require_PSD=True):
     start = time.monotonic()
     rows = list(linear_constraints(z, connected_Q=connected_Q))
+    if not require_PSD:
+        rows = [row for row in rows if row[3] != 'orientation_psd']
     report = dict(labels=LABELS, prescribed_kernel=z.tolist(),
                   linear_relaxation=lp_probe(rows),
                   global_binary_kernel_test=binary_obstruction(z),
-                  connected_Q_required=connected_Q,
+                  connected_Q_required=connected_Q, PSD_required=require_PSD,
                   scope='One prescribed kernel family, not all connected Q boundaries.',
                   solver='OR-Tools CP-SAT, one worker', cuts=[], iterations=[])
     model = cp_model.CpModel()
@@ -244,6 +247,9 @@ def construct(z, seconds, max_candidates, seed, connected_Q=False):
         assert all((masks[i]&masks[j]).bit_count() <= 2-((masks[i]>>j)&1)
                    for i, j in combinations(range(49), 2))
         report['last_gamma'] = gamma.tolist()
+        if not require_PSD:
+            report['status'] = 'NEW_LOCAL_BOUNDARY_WITHOUT_PSD_REQUIREMENT'
+            break
         new_cuts = 0
         for name, matrix in (('T', M), ('U', U)):
             minimum, witnesses = spectral_witnesses(matrix)

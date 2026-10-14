@@ -1,0 +1,37 @@
+{
+  "result": "A normalized nonnegative extra relation of weight16 must involve at least two outside root mate pairs.",
+  "meaning_of_one_pair": "The support lies among the ten labels on letters0,1,2,3,a,a', where(a,a') is one of the five outside mate pairs. The tail is nonconstant and the usual star-minimal normalization is imposed.",
+  "complete_coefficient_counts": {
+    "all_weight16_profiles": 1420,
+    "profiles_with_one_active_outside_pair": 52,
+    "previously_excluded_by_row_or_linear_certificates": 47,
+    "remaining_profiles_before_this_turn": [31,42,44,45,46]
+  },
+  "new_exclusions": {
+    "42": "Exact Farkas contradiction0<=-2 using kernel equations, root caps, common-neighbour inequalities and edge bounds.",
+    "44": "Exact Farkas contradiction0<=-1 using the same ingredients.",
+    "45": "Exact Farkas contradiction0<=-2 in the shared-cut scan, or0<=-1 in the earlier individual scan; no PSD cut is used by either certificate.",
+    "31": "Binary CP-SAT infeasible at presolve,0 branches; repeated as a stronger problem with ALL orientation PSD cuts removed and no spectral checks, still infeasible in0.122 solver seconds.",
+    "46": "Binary CP-SAT infeasible at presolve,0 branches; with ALL orientation PSD cuts removed and no spectral checks, still infeasible in0.174 solver seconds."
+  },
+  "proof_status": "The coefficient coverage is direct finite enumeration. Three new exclusions have portable exact integer linear-combination certificates. The two others are completed finite integer-solver UNSAT results; no standalone SAT proof trace is claimed.",
+  "updated_counts": {
+    "total_excluded_weight16_profiles": 1149,
+    "remaining_profiles": 271,
+    "remaining_by_active_outside_pair_count": {"2":97,"3":146,"5":28}
+  },
+  "fractional_relaxation_example": {
+    "profile_index":31,
+    "common_denominator":29664,
+    "fractional_undirected_entries":115,
+    "exact_rank_T":30,
+    "exact_rank_U":31,
+    "both_PSD":true,
+    "all_659_linear_constraints_satisfied_exactly":true,
+    "nonlinear_far_common_neighbour_cap_violations":22,
+    "McCormick_common_neighbour_violations":15,
+    "interpretation":"The star equations, root-letter caps, Q connectivity cuts and both PSD conditions alone admit a fractional rank30 point. This is not a graph and it violates C2, so it does not refute(A)."
+  },
+  "files": ["weight16_one_pair_common_738.json","profile31_binary_no_psd_738.json","profile46_binary_no_psd_738.json","profile31_fractional_certificate_738.json"],
+  "open": "Weight16 remains possible on two or more outside mate pairs. Assertion(A) and C1 remain open; no asymmetric SRG is constructed. All local pilot runs have ended."
+}

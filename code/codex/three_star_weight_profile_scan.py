@@ -17,10 +17,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from three_star_prescribed_kernel import linear_constraints, lp_probe, linear_certificate
 
 
-def compact_certificate(q, full):
+def compact_certificate(q, full, extra_rows=(), connected_Q=False):
     if full['status'] != 'EXACT_NONNEGATIVE_LINEAR_COMBINATION_CONTRADICTION':
         return full
-    source = list(linear_constraints(q))
+    source = list(linear_constraints(q, connected_Q=connected_Q))+list(extra_rows)
     terms = []
     combined = Counter()
     total = 0
@@ -49,7 +49,8 @@ def compact_certificate(q, full):
         total += term['multiplier']*rhs
     assert not any(combined.values()) and total == full['combined_rhs'] < 0
     return dict(status=full['status'], combined_rhs=total, terms=terms,
-                schema='row_number refers to list(linear_constraints(q)) with connected_Q=False; sign=1 takes the upper inequality, -1 the negated lower inequality. Edge rows are explicit. Multipliers are nonnegative integers.',
+                schema='row_number refers to list(linear_constraints(q, connected_Q=...)) followed by the recorded extra rows; sign=1 takes the upper inequality, -1 the negated lower inequality. Edge rows are explicit. Multipliers are nonnegative integers.',
+                connected_Q=connected_Q, extra_row_count=len(extra_rows),
                 expanded_integer_combination_checked=True)
 
 
