@@ -346,3 +346,55 @@ three different fibres. Conditions: for fibres i != j and u != u' in G_i,
     Degrees of freedom about 955 bits against about 4200 bits of conditions: nonexistence is the expected answer,
     but a search over the conditions of one base fibre alone already has Latin-square size (more than 10^27 cases),
     so no affordable exhaustive route is visible. Left open.
+
+## 19. The line lattice and the 7-rank: every b <= 26 is excluded (03:38 UTC)
+Status: hand lemmas (mine, tonight) + an exact linear programme on modular forms whose infeasibility certificates
+are checked in exact rational arithmetic independently of the solver. Not reviewed. The theta-LP of 07/10 was NOT
+consulted (night rule): the comparison with it is open; the new ingredients are 19.2 (i)-(iii).
+
+**19.1 Two lattices.** E = projection on the eigenspace V_- of -4 (rank 44), K_- = Z^99 cap V_- (integral
+-4-eigenvectors). K_- is even (sum f = 0 gives |f|^2 = sum f_v^2 = sum f_v = 0 mod 2) and K_-*/K_- = Z/9 + (Z/7)^b:
+exponent divides 63 because 63E is integral; the 3-part is Z/9 because K_3 (exponent 77) is 3-adically unimodular,
+so K_- is 3-adically the complement of the vector 1 (norm 99) in a unimodular lattice. 7-adically
+rank_{F_7}(A - 3I) = b + 1 (the image of A - 3I on the complement of 1 is 7 K_-*, of dimension b mod 7, plus the
+unit eigenvalue 11 on 1). Since A + 4I = A - 3I mod 7: **b + 1 = rank of A + 4I over F_7.**
+  A := sqrt7 E {z in Z^99 : sum z = 0 mod 3}. |sqrt7 E z|^2 = 3|z|^2 - z^T A z + (sum z)^2/9, an even integer:
+       A is even; it contains the 231 line vectors q_l = sqrt7 E 1_l (norm 4). Every vector of K_+ = Z^99 cap
+       (V_3 + R1) has sum = 0 mod 9 ((A - 3I)v = 11c 1 with 11c integral), so A has index 3 in sqrt7 K_-* and
+       det A = 7^(44-b).
+  B := K_- + Z f_l (f_l = 7 E 1_l, entries = 1/3 mod 1) = K^(3), det 7^b. (1/sqrt7) B lies in A* (direct check
+       of the products) and has the same determinant, so B = sqrt7 A*; also sqrt7 B lies in A, so A has level 7.
+  min B >= 14: in K_- (17.2: norm 14 only for co-Heawood vectors; an entry of size m >= 2 costs m^2 + 7m >= 18);
+       in the cosets +-f_l + K_- every entry is = +-1/3 mod 1 and the sum is 0, so the norm is >= 22.
+  b is even and b != 44: Milgram's formula for the even lattice A of rank 44 (Gauss sum -sqrt|D|, each Z/7 factor
+       contributes (t/7) i sqrt7) forces 44 - b even; b = 44 would make A even unimodular of rank 44 = 4 mod 8.
+  theta_A, theta_B are in M_22(Gamma_0(7)) (trivial character) and theta_A |_22 W_7 = - 7^(b/2 - 11) theta_B
+       (Poisson summation; i^(-22) = -1).
+**19.2 Shell bounds (a_n = number of vectors of norm 2n in A, c_n the same in B).**
+  (i)   a_2 >= 462: the vectors +-q_l (distinct: products of distinct lines lie in {1,0,-1,-2}).
+  (ii)  a_4 >= 14970: for a line n and w in {+-q_m : q_m.q_n = 0} (2(162 + 3p(n)) vectors: 18 meeting lines,
+        144 + 3p lines with one edge) v = +-q_n + w has norm 8 and |v.q_n| = 4. So each line sees at least
+        4(162 + 3p) >= 648 such v; a vector of norm 8 has |v.q| = 4 for at most 10 lines (tight frame:
+        sum_n (v.q_n)^2 = 21 |v|^2 = 168). Hence a_4 >= 231 * 648 / 10, i.e. >= 14970 (even).
+  (iii) c_7 <= 7920: a norm-14 vector of B is a co-Heawood vector 1_P - 1_N; it is determined by one positive p and
+        its four negative neighbours (on four distinct lines through p: 35 * 16 choices), and every vector is met
+        from its 7 positives: at most 99 * 560 / 7 = 7920.
+  (iv)  c_7m >= a_m: sqrt7 A lies in B.
+  (v)   (not needed) a_3 >= 930 and a_5 >= 1625 by the same argument with q_m.q_n = +-1, using P <= 1151 prisms
+        (Cauchy-Schwarz on the cubic tensors: |S|^2 = 13860 - 12P >= 8316^2 / 1471932, numbers checked again).
+**19.3 Computation.** `theta7_lp.py`: basis of M_22(Gamma_0(7)) (dimension 15, from 162 monomials in E2_7, E_4,
+E_4(7t), E_6, E_6(7t), Delta, Delta(7t), (eta eta_7)^6), W_7-matrix, parametrisation by a_0..a_14 (Sturm bound 15).
+`exact_lp.py`: simplex in rational arithmetic. `theta7_cert2.py`: Farkas certificate (lam, mu) with mu >= 0,
+lam E + mu G = 0, lam.e + mu.g > 0, verified by exact arithmetic. Log `theta7_cert_log.txt`:
+  * b = 2..18: infeasible from min B >= 14 alone;
+  * b = 20, 22: infeasible with (i); b = 24: with (i)+(ii); b = 26: with (i)+(ii)+(iii);
+  * b = 28, 30 (and, in the exploration, every b up to 42): feasible with (i)-(iv).
+**Theorem (19.3).** If srg(99,14,1,2) exists then rank_{F_7}(A + 4I) = b + 1 is odd and at least 29 (b in
+{28, 30, ..., 42}).
+**19.4 Controls.** `theta7_test.py`: the lattices Lambda_7^(2k) + E_8^m and Lambda_7^(2k) + (sqrt7 E_8)^m
+(b = 2, 6, ..., 42): the Fricke relation and the B-series hold exactly, and the exact programme without the
+vanishing conditions accepts them. The floating solver (HiGHS) rejects some of these real lattices (cancellation in
+huge coefficients): no floating result is used.
+**19.5 What would exclude b = 28.** With (i)-(iv) the programme at b = 28 forces c_8 >= 1.06 * 10^6 (vectors of
+norm 16 in B: integral eigenvectors 1_P - 1_N with |P| = |N| = 8) and c_11 >= 1.1 * 10^8. An upper bound below
+these (a counting argument like (iii)) would remove b = 28. `theta7_ranges2.py` prints the ranges for b >= 28.
