@@ -3299,3 +3299,83 @@ est desormais eliminee avant leur recherche d'extension.
 Outil code/codex/four_star_c55_mod7.py ; artefact
 data/codex_local_global_20261015/c55_mod7.json et copie portable
 lab_exchange_2026-10-14/codex_c55_mod7.json. Aucun processus restant.
+
+### 15/10, suite778 : au moins336 bords avec quatre relations mixtes
+
+778 lu/acquitte. Claude accepte l'exclusion G1 c55 non grille sans la
+refaire. Il etudie les relations mixtes, observe au plus2 dans ses2500
+bords G1 PSD et cherche hors G1. Observation et identite G9 acceptees,
+aucun rang de ses bords re-audite. Son enumeration des seuils uniformes
+MIX<=M ne prouve pas ces seuils : ils restent des conjectures.
+
+STATUT DES BORNES demande par le pair. P<=1151 a une preuve cubique
+dans ce journal, ensuite renforcee en P<=1150. Chaque grille utilise
+six prismes, dont chacun a au plus une grille completante, donc6rho<=P.
+Le certificat conserve c1-codex/data/codex_prism_plus_five_grids_cap.json
+exprime1386-P-5rho comme somme de15 comptes induits a9 sommets avec
+coefficients rationnels positifs. C'est un certificat exact deja verifie,
+pas seulement une sortie LP numerique ; ses identites sont celles du
+census9 accepte. Aucun census regenere. Ensemble :11rho<=1386, rho<=126.
+Le fichier distinct codex_order9_prism_cap.json donne aussi P<=11088/13.
+Statuts et chemins transmis dans779, sans nouvelle verification du pair.
+
+NOUVELLE IDENTITE SANS SYMETRIE. Pour chaque sommet v, G_v est le graphe
+des grilles sur ses sept droites. Ecrire e_v=|E(G_v)|, g_l=deg(l),
+epsilon_lm=1 si la paire est une grille. Les composantes H_l donnent
+c_l<=f(g_l)=3+floor(g_l/2), et g_l!=5 (resultat P9 accepte).
+Poser o_v=nombre de degres impairs et h_v=sum_l(f(g_l)-c_l)>=0.
+Pour le bord44 de la paire, poser
+ m_lm=dim ker(T_S44)-(2+c_l+c_m-epsilon_lm),
+ delta_lm=30-rang(T_S44)>=0 dans un Conway.
+G9 donne m_lm=12-c_l-c_m+epsilon_lm+delta_lm. Chaque droite apparait
+dans six paires et sum floor(g_l/2)=e_v-o_v/2. En sommant :
+ sum_l<m m_lm=126-5e_v+3o_v+6h_v+Delta_v,
+avec Delta_v=sum_l<m delta_lm. Une grille a9 sommets contribue neuf
+incidences, donc sum_v e_v=9rho. Ainsi EXACTEMENT
+ sum_global m=12474-45rho+3O+6H+Delta.
+La borne rho<=126 donne sum m>=6804, moyenne>=36/11 sur2079 drapeaux.
+L'exces positif sum max(m-3,0) est au moins567, et augmente avec O,H,
+Delta et les deficits des couples ayant moins de trois relations.
+Ces relations sont lineaires dans les noyaux ; elles ne sont pas des
+automorphismes. Aucune hypothese G1 n'intervient.
+
+NOUVEAU COMPTAGE DES COUPLES EXCEPTIONNELS. Chaque m_lm est au moins
+12-f(g_l)-f(g_m)+epsilon_lm. Classer les sommets de G_v en A (degres0,1),
+B (2,3), C (4), D (6). Les paires forcement >=4 sont exactement :
+toutes celles incidentes a A, celles internes a B, et les aretes B-C.
+Pour A-D, le sommet de D est universel. Leur nombre est donc
+ b_v=|A|(13-|A|)/2+binom(|B|,2)+e(B,C).
+Enumeration de CE NOUVEL objectif sur les2^21 graphes etiquetes :
+1142968 sans degre5. Minimum b selon e=0,...,18,21 :
+ 21,21,21,21,21,21,20,19,17,15,11,7,3,1,0,0,0,0,0,0.
+Les e=19,20 ont toujours un degre5. Les temoins des minima sont exportes.
+Ce calcul ne refait pas les bords PSD de Claude ni sa recherche de germes.
+
+CERTIFICAT COURT POUR336. Le profil implique13b+20e>=273. Somme sur99
+sommets, avec sum e<=1134 :13B>=4347, donc B>=335. Si B=335, alors
+sum e=1134 et la somme des ecarts a273 est au plus8. Les seuls profils
+individuels possibles sont (e,b,ecart)=(0,21,0),(13,1,0),(12,3,6),(14,0,7).
+Un b superieur au minimum ajoute13 a l'ecart. Il peut donc y avoir au
+plus un profil de type12 ou14 ; tous les autres ont0 ou13 aretes.
+La somme des e serait0,+1 ou-1 modulo13, alors que1134 vaut3. Contradiction.
+Donc AU MOINS336 des2079 drapeaux (v,{l,m}) ont m_lm>=4.
+Au moins18 sommets ont un tel couple : les autres ont au moins14 grilles,
+et le budget global est1134 incidences. On compte des drapeaux centres,
+pas336 matrices non isomorphes ni336 sous-ensembles necessairement distincts.
+
+La relaxation des99 graphes de grilles INDEPENDANTS atteint336 avec
+12 graphes vides,84 graphes a13 aretes et3 graphes a14 aretes. Cela ne
+les recolle pas en un seul Conway, ni ne realise leurs relations mixtes.
+Le plancher est exact pour cette relaxation seulement.
+
+CONTROLES PROPRES : formule du nouveau b confrontee a sa definition
+directe sur tous les temoins extremes, identite locale de somme,
+programmation dynamique entiere sur99 sommets et1134 incidences,
+certificat par ecarts et modulo13. Calcul total2.56 secondes. Aucun
+appel SAT ni germe du pair traite. Le budget seul n'exclut pas Conway.
+Il impose une population importante de bords a quatre relations mixtes,
+au-dela de la seule recherche d'un contre-exemple a MIX<=2.
+
+Outil conway_mixed_relations_budget.py ; artefact
+data/codex_local_global_20261015/mixed_relations_budget.json et copie
+portable codex_mixed_relations_budget.json. Aucun processus restant.
