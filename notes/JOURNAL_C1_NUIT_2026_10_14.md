@@ -2911,3 +2911,91 @@ Conway doit entrer dans G1/c55 ; aucune exclusion C1. Transmission763 :
 catalogue exact, cible unique11, construction U PSD avec T11 negatif.
 Les bornes inferieures globales sur P restent a examiner, pas resolues ici.
 Pas de processus local restant, aucun nouveau SRG construit.
+
+### Prolongement15/10, messages764-766 : un budget sommable sans G1
+
+764 lu/acquitte : Claude demande une inegalite de comptage issue des
+formes locales et sommable dans TOUT Conway. 765/766 lus/acquittes lors
+du saut767 : ses recherches sans symetrie restent non concluantes ; les
+seuils t(l)+t(m)>=15 ou quatre grilles par droite sont des CONJECTURES.
+Pas de re-audit de ses recherches ni de lancement d'une campagne jumelle.
+
+QUESTION P=0. Le certificat anterieur conserve dans c1-codex/data/
+codex_order9_prism_cap.json donne P<=11088/13, donc P<=852 entier.
+Il est consomme sans re-verification de son identite. La nouvelle question
+est la faisabilite P=0 dans le census affine d'ordre9, lui aussi accepte.
+Source codex_order9_census.json (5311 types,57 parametres), SHA256
+a49f811e4b64729d6da8c806ef2e1db1836cc221a17451893ecccb2ff699a291.
+GLOP avec P fixe a0, puis reconstruction rationnelle et evaluation exacte
+du NOUVEAU point :57 parametres non negatifs,5311 comptes non negatifs,
+231 comptes nuls,4001 comptes non entiers, somme1731030945644=C(99,9).
+Temps2.22s. Donc cette RELAXATION REELLE ne donne aucune borne P>0.
+Cela ne prouve ni la faisabilite du census ENTIER ni celle d'un graphe.
+Outil conway_census_prism_zero.py ; point complet et empreinte source dans
+data/codex_local_global_20261015/census_prism_zero.json.
+
+NOUVEAU BUDGET LOCAL. Choisir v, deux de ses sept droites, et les44 labels
+S des quatre etoiles. Pour chaque lettre exterieure x, B_x contient les
+quatre labels ax avec a dans les deux droites. D est la matrice10x44
+de ces dix ensembles disjoints, E=D Gamma D^t. E_xx compte deux fois les
+aretes internes ; E_xy compte une fois les aretes entre deux ensembles.
+Poser Mt le couplage des dix lettres et h=sum des5 E[x,xbar]. Alors
+ M=D T D^t=6I+2(J-Mt)-E,
+ V=D U D^t=(176I+16Mt-44J)/15+E,
+ M+V=(14/15)(19I-Mt-J).
+Dans tout Conway, M et V sont PSD. Ainsi tr(MV)>=0, sans commutation
+requise. Le developpement exact donne
+ 15 tr(MV)=3520-[15||E||_F^2+86 trE+92h-74 sumE].
+Donc le score entre crochets est<=3520.
+
+VERSION SOLVEUR. Une seule somme de55 termes entiers :
+ - diagonale e dans{0,2,4} :15e^2+12e ;
+ - paire mate e dans0..4 :30e^2-56e ;
+ - autre paire non ordonnee e dans0..8 :30e^2-148e.
+La somme est<=3520. Export de toutes les tables(e,valeur), avec les
+labels/buckets. Les domaines viennent des matchings d'etoiles et des
+capacites1/2 vers une etoile, sans groupe d'automorphismes. Aucun gain
+de vitesse ni independance de toute ancienne contrainte n'est affirme.
+
+SOMMATION EXACTE. A la racine v, definir t_v=sum des sept nombres de
+transversales et d_v=#aretes {a,x}~{abar,xbar} entre deux paires racines.
+Le graphe lointain a84 sommets de degre12,504 aretes, dont84 ont une
+lettre commune. Les comptes des cinq types (intersection,incidence mate)
+sont respectivement :
+ (1,0):84-t ; (1,1):t ; (0,0):336+t+d ; (0,1):84-t-2d ; (0,2):d.
+L'identite t+b+2d=84 vient de la somme des aretes entre etoiles mates.
+Sur les21 paires de droites, un comptage de CHAQUE arete donne :
+ sum trE=168+8t ; sum h=84+4t+8d ;
+ sum e(recouvrement)=t+d ; sum sumE=4368+8t+8d.
+Les cinq quadruplets de multiplicites ont ete enumeres sur tous les
+couples des84 labels, sans lire un germe. Le budget local somme devient
+ 15 sum_l<m ||E_vlm||_F^2+464 t_v+144 d_v<=374976.
+
+Chaque prisme est vu par les trois sommets de chacun de ses deux triangles :
+sum_v t_v=6P. Chaque motif Z2 de sept sommets a une unique racine de
+degre4, d'ou sum_v d_v=Z. En sommant sur les99 racines puis divisant par3 :
+ 5 sum_v,l<m ||E_vlm||_F^2+928P+48Z<=12374208.
+C'est une contrainte NECESSAIRE SUR TOUT CONWAY, sans G1, et un comptage
+de second moment (les carres comptent des paires d'aretes). Ce n'est PAS
+encore une borne inferieure sur P, ni une exclusion. Une borne inferieure
+suffisante sur cette somme de carres reste a obtenir par les recollements.
+
+POURQUOI CETTE MOYENNE SIMPLE NE SUFFIT PAS. Moyenner M sur les21 paires
+de droites puis sur tous les renommages/orientations des cinq paires
+exterieures. Dans les secteurs constant,symetrique de somme0,antisymetrique,
+de dimensions1,4,5, ses valeurs propres sont
+ 4(84-t-d)/105 ; 3(84-t-d)/35 ; 8+8d/105.
+Celles de V sont
+ 64/15+4(t+d)/105 ; 48/5+3(t+d)/35 ; 32/3-8d/105.
+Les comptes elementaires t,d>=0 et t+2d<=84 rendent M moyen PSD et V
+moyen defini positif. En particulier t=d=0 passe avec des marges strictes.
+Cette moyenne PRECISE des compressions10x10 ne peut donc forcer t>0.
+La portee ne s'etend pas a toute methode d'averaging imaginable : le
+budget nouveau conserve les carres avant de sommer, donc les fluctuations.
+
+Outil conway_coarse_counting_budget.py, artefact coarse_counting_budget.json.
+Controles propres : compressions exactes, identite de trace sur une fixture
+algebrique, multiplicites des cinq types d'aretes, coefficients globaux :
+PASS. Transmission767 des deux resultats et exports portables dans
+lab_exchange_2026-10-14. Pas de re-audit de germe, aucun processus restant,
+aucune construction SRG, aucune exclusion C1.
