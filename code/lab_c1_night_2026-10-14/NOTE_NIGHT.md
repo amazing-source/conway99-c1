@@ -252,3 +252,97 @@ fully prescribed (five trials). The remaining family "K_5 plus the opposite edge
 up to symmetry; no cheap case split found. Not pursued further tonight.
 * Launched 02:27 UTC: kk4 (six grids, four lines pairwise) with one random M_9, 25 minutes of solver time, to see
   whether the forcing mechanism of the first pass exists one level down (`kk4_long.out`).
+
+## 17. No set of nine vertices spans exactly 17 edges (hand proof, 02:50 UTC)
+Source of the idea: Codex, bridge message of 02:40 UTC ("in a prism the three completing vertices cannot induce a
+path"), proof by a vector of norm 14. I re-derived every step below and extended the case analysis; status: hand
+proof, read once by its author, not reviewed by anyone else.
+
+**17.1 The vector of a set.** For a set S of vertices put f_S = 7 E 1_S = (3I - A) 1_S + (|S|/9) 1, where
+E = (27I - 9A + J)/63 is the projection on the eigenspace of -4 (check: (A + 4I)(3I - A) = -2J, so
+(A + 4I) f_S = -2|S| 1 + 18 (|S|/9) 1 = 0). Entries: 3 + |S|/9 - deg_S(v) for v in S, |S|/9 - n_S(v) for v outside
+(n_S = number of neighbours in S). Norm: |f_S|^2 = 21 |S| + (7/9)|S|^2 - 14 e(S). For |S| = 9 the vector is
+integral, with entries 4 - deg_S(v) inside and 1 - n_S(v) outside, and |f_S|^2 = 14 (18 - e(S)).
+So e(S) <= 18, with equality iff f_S = 0 iff S is a 3 x 3 grid (4-regular, every outside vertex has one neighbour).
+
+**17.2 Integral vectors of norm 14 in the eigenspace of -4.** Let f be integral, A f = -4 f (so sum f = 0),
+|f|^2 = 14. (a) No entry has absolute value >= 2: if f_v = -m with m >= 2 then the neighbours of v sum to 4m,
+so their squares sum to at least 4m >= 8; the total sum is 0, so the other vertices sum to m - 4m <= -6 and
+their squares sum to at least 6; total at least 4 + 8 + 6 = 18 > 14. (b) So f = 1_P - 1_N with |P| = |N| = 7.
+A vertex of N has (positive neighbours) - (negative neighbours) = 4, hence at least 4 positive neighbours and is a
+common neighbour of at least 6 pairs of P; the 21 pairs of P have at most 2 common neighbours each; 7 x 6 = 42 =
+21 x 2. Equality everywhere: P and N are cocliques, every vertex of N has exactly 4 neighbours in P and none in N,
+every vertex of P has exactly 4 neighbours in N, two vertices of P have exactly two common neighbours and both lie
+in N, two vertices of N have exactly two common neighbours and both lie in P (symmetric design 2-(7,4,2)).
+
+**17.3 Theorem N9.** In srg(99,14,1,2) no 9-set S has e(S) = 17.
+Proof. Suppose e(S) = 17; then f_S has norm 14 and 17.2 applies: degrees in S are 3 (value +1), 4 (value 0) or
+5 (value -1); outside vertices have 0 (+1), 1 (0) or 2 (-1) neighbours in S; (number of degrees 3) - (number of
+degrees 5) = 36 - 34 = 2. An outside positive vertex has no neighbour in S, so the four positive neighbours of a
+vertex of degree 5 of S are vertices of degree 3 of S.
+* k >= 1 vertices of degree 5: there are k + 2 of degree 3, so k >= 2; k = 2: the two negatives share four
+  positive neighbours, more than 2; k = 3: three 4-subsets of a 5-set, two of them share 3; k >= 4 needs 10 vertices.
+* k = 0: degrees (3,3,4^7), positives u1, u2 in S; they are not adjacent and have no common neighbour in S (their
+  common neighbours are negative, hence outside). Two-paths in S: 2 x 3 + 7 x 6 = 48 = 3 t + c, where t = number of
+  triangles of S (edge-disjoint, so t <= 5) and c = number of two-paths with non-adjacent ends <= 2 x 18 = 36
+  (19 non-adjacent pairs, the pair u1 u2 contributes 0). So t = 4 or 5.
+  t = 5: 15 edges in triangles, 2 others. A vertex of degree 3 lies in exactly one triangle and one other edge;
+  of the seven vertices of degree 4, six lie in two triangles and one, Q, in one triangle and two other edges.
+  The two other edges are u1 Q and u2 Q: Q (value 0) is a common neighbour of u1 and u2. Contradiction.
+  t = 4: c = 36, so every non-adjacent pair of S other than u1 u2 has both its common neighbours in S. A negative
+  vertex y (outside, two neighbours s, s' in S) is then either a common neighbour of u1, u2 (two such, by the
+  design) or the third vertex of the triangle on an edge s s' of S lying in no triangle of S (17 - 12 = 5 such
+  edges). The design has two blocks through u1 avoiding u2: so u1 lies on exactly two edges outside triangles of
+  S; its degree 3 leaves one edge for triangles, but triangles through u1 use two edges each. Contradiction. QED
+
+**17.4 Consequences (each is a short clause valid at every vertex).**
+(a) Tile lemma. For two lines {x,a,a'} and {x,b,b'}, among the four corners [a,b], [a,b'], [a',b], [a',b'] the
+    number of adjacencies (the four "pairings" M_a{b,b'}, M_a'{b,b'}, M_b{a,a'}, M_b'{a,a'} and the two diagonals
+    [a,b]~[a',b'], [a,b']~[a',b]) is 0, 1 or 2, or the four pairings hold and the nine vertices are a grid.
+    In particular three pairings force the fourth (the set has 14 + 3 = 17 edges otherwise).
+(b) Prism closure (Codex): for a prism with edges a_i b_i and third vertices c_i, the number of adjacent pairs
+    among c_1, c_2, c_3 is 0, 1 or 3. In vectors of lines: if l, m and m, n are prisms then l, n have 0, 1 or 3
+    edges between them (two prisms in a row never give a root q_l + q_m + q_n).
+(c) Around a line l: three pairs of mates u u', v v', w w' in X_a, X_b, X_c carry 0..4 or 6 of the six possible
+    cross edges u-v, v-w, w-u, u'-v', v'-w', w'-u' (and their crossings), never exactly 5 (12 + 5 = 17).
+(d) Prism with c_1 ~ c_2 and c_3 adjacent to neither: the third vertex d of the line c_1 c_2 is adjacent to
+    neither a_3 nor b_3 (otherwise prism + c_1, c_2, d has 17 edges).
+**17.5 Remark (other sizes).** The same formula with |S| = s gives e(S) <= 3, 5, 7, 9, 12, 14, 18, 19 for
+s = 3..10 after using that the entries of f_S are congruent to s/9 modulo 1 (minimum of that class at least
+11 k (9 - k)/9, k = s mod 9). Only s = 9 has the extra gap at 17. For |S| = 18: e <= 45 and e = 44 would again be
+a vector of norm 14 (not analysed).
+
+## 18. Checked proofs, small cores, and the family "eleven disjoint grids" (03:10 UTC)
+**18.1 Checked proofs for kk5.** `kk5_certify.py`, log `kk5_certify_log.txt`: the 12 refuted classes of M_11
+(section 16) were solved again with a DRAT proof and every proof is VERIFIED by drat-trim (4.6 s per class, solve
++ check). What is certified: the CNF written by srg_sat.encode is unsatisfiable (the encoder is controlled, not
+certified). Cost of the same certification for T1 (588 classes) and kk6 (1971 classes): about 45 min and 2.5 h of
+one process; NOT launched (larger run, needs the user's word).
+**18.2 Cores.** `core_units.py` (log `core_log.txt`): for kk5 class 0 the checked proof uses 42 of the 46
+prescribed pairs, and with those 42 alone cadical no longer answers in 15 s. The refutation uses essentially the
+whole hypothesis: no small forbidden pattern hides in it.
+**18.3 The solver does not find N9 by itself.** `pattern_test.py`, log `pattern_log.txt`: "three pairings of
+a grid at x and not the fourth" (4 literals, impossible by 17.4(a)) is UNKNOWN after 100 s. So the clauses of
+section 17 are genuinely new for the solver.
+**18.4 kk4 with one random matching:** UNKNOWN after 1500 s (`kkN_probe_log.txt`). Dense families below K_5
+are out of reach of plain cadical.
+**18.5 Family SPREAD: the vertex set is a disjoint union of 11 grids.** Arithmetic: a grid is a perfect code, so a
+vertex has 4 neighbours in its own grid and exactly one in each of the ten others (4 + 10 = 14). The graph is a
+9-fold cover of K_11 (bijections phi_ij between fibres) plus a grid on each fibre; the 165 external lines meet
+three different fibres. Conditions: for fibres i != j and u != u' in G_i,
+  #{k : phi_ik(u) = phi_jk(phi_ij(u'))} = 2 - [u ~ u' in G_i] - [phi_ij(u) ~ phi_ij(u') in G_j],  and 1 for u = u'.
+(i) Abelian case impossible (hand): if every fibre is Z_3^2 with phi_ij(t) = t + d_ij (any regular Z_3^2), put
+    delta_ijk = d_ij + d_jk + d_ki and sigma_i = sum_k d_ik. Summing the condition over k gives
+    sum_k delta_ijk = sigma_j - sigma_i - d_ij, while the prescribed multiset is symmetric under s -> -s, so its sum
+    is 0; hence d is a coboundary, every delta_ijk = 0, and delta_ijk = 0 would hold for 9 values of k instead of
+    one. (Consistent with the exclusion of automorphisms of order 3; independent two-line argument.)
+(ii) Spectral and trace checks give no contradiction: on the 88-dim space of fibre-sum-zero vectors the grid
+    eigenspaces U_1 (eigenvalue 1) and U_2 (eigenvalue -2) give A = [[X, B], [B^T, Y]] with tr X = 44, tr Y = -88,
+    BB^T = (3 - X)(4 + X), XB = -B(Y + 1); tr X^2 = 44 + (4/9) c where c = number of grid edges sent to grid edges
+    by the phi_ij; the number of 4-cycles of the cover equals c. The extreme c = 990 (all phi_ij grid isomorphisms)
+    is impossible (44 = 3a - 4b with a + b = 44 has no integer solution).
+(iii) Exact search (`spread_instance.py`, log `spread_log.txt`): fibres fixed, 4280 free pairs, implied
+    "exactly one neighbour per other fibre" clauses, two symmetry reductions: UNKNOWN after 280 s.
+    Degrees of freedom about 955 bits against about 4200 bits of conditions: nonexistence is the expected answer,
+    but a search over the conditions of one base fibre alone already has Latin-square size (more than 10^27 cases),
+    so no affordable exhaustive route is visible. Left open.
