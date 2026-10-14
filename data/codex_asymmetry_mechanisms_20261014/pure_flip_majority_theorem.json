@@ -1,0 +1,38 @@
+{
+  "status": "Theoretical extension of the peer's single-pair flip obstruction; no solver or graph-group computation",
+  "setup": {
+    "graph": "A nontrivial SRG with parameters (1+2t^2,2t,1,2), rooted at x",
+    "star": "S=N(x) consists of t matched pairs, with mate involution a -> bar(a)",
+    "far_labels": "Every far vertex is uniquely labelled {a,b}, with a,b in different star pairs",
+    "pure_flip": "An automorphism g fixing x and each star pair setwise; it reverses a subset I of q pairs and fixes all other star letters"
+  },
+  "majority_theorem": "If g is nonidentity, then q>=ceil(t/2).",
+  "proof": [
+    "The case q=t already satisfies the assertion. Otherwise choose a letter a on a reversed pair and c on a fixed pair; let y be the far vertex {a,c}. Its image is the distinct far vertex {bar(a),c}.",
+    "A far vertex is fixed by g exactly when both its labels belong to fixed star pairs. Let n_i count the far neighbors of y having i labels on reversed pairs, for i=0,1,2.",
+    "The far degree of y is 2t-2, so n_0+n_1+n_2=2t-2.",
+    "Count incidences between far neighbors of y and the 2q reversed star letters. For a the count is1, since a is adjacent to y and its triangle mate lies in F. For bar(a) it is also1, since a already supplies one of the two common neighbors of bar(a) and y. Each of the remaining 2q-2 letters supplies2, because neither it nor its mate is a label of y. Hence n_1+2n_2=4q-2.",
+    "Subtracting yields n_0=2t-4q+n_2>=2t-4q.",
+    "Every one of these n_0 fixed far neighbors of y is also adjacent to g(y). The fixed star vertex c is an additional common neighbor. Since distinct vertices have at most2 common neighbors, n_0+1<=2.",
+    "Consequently 2t-4q<=1, hence q>=ceil((2t-1)/4)=ceil(t/2)."
+  ],
+  "binary_code_corollary": {
+    "definition": "C_x is the set of subsets I whose pure flip is an actual automorphism of G. It is a binary linear code of length t, being a subgroup of the t independent star-pair flips.",
+    "minimum_distance": "Every nonzero codeword has weight at least ceil(t/2); the same holds for distances between distinct codewords since their sum is another codeword.",
+    "odd_t_size_bound": "For odd t, |C_x|<=t+1, rounded down to a power of two.",
+    "proof": "Write M=|C_x|. Each active coordinate occurs in exactly M/2 codewords, so the sum of all weights is at most Mt/2. The M-1 nonzero words each have weight at least (t+1)/2. Thus (M-1)(t+1)<=Mt, or M<=t+1.",
+    "global_flip_corollary": "For odd t, if reversing all t pairs is an automorphism, then C_x consists of only identity and this full flip. Indeed every other codeword and its complement would both have weight at least (t+1)/2, impossible since their weights sum to t.",
+    "scope": "These bounds concern only the kernel of the action on star pairs. They are not bounds of8 on the entire point stabilizer or on Aut(G)."
+  },
+  "instances": {
+    "Conway99": {"t":7,"minimum_reversed_pairs":4,"maximum_pure_flip_subgroup_order":8},
+    "lambda_one_243": {"t":11,"minimum_reversed_pairs":6,"maximum_pure_flip_subgroup_order":8}
+  },
+  "consequences_for_skeleton_completion": {
+    "local_code": "Define C_K analogously for the rooted skeleton K_x. It is determined by the transition system, and C_x is a subcode of C_K for every SRG completion.",
+    "nonextension": "A pure flip in Aut(K_x,x) of weight below ceil(t/2) cannot extend to any SRG completion as an automorphism. Acting by it sends each completion to a distinct labelled completion of the same skeleton.",
+    "labelled_orbit_bound": "For odd t, the C_K-orbit of any completion has size |C_K|/|C_x|, at least |C_K| divided by the largest power of two not exceeding t+1.",
+    "conjecture_S_implication": "If the peer's absence-of-flat-lines condition implies Aut(K_x,x)=Aut(G)_x, it must in particular force C_K to have this minimum-distance property. Excluding only weight-one flips is weaker. No counterexample to the conjecture for an actual SRG is asserted here.",
+    "limit": "A low-weight local flip rules out a unique labelled completion, not existence of a completion or uniqueness up to isomorphism. No asymmetric SRG was constructed."
+  }
+}

@@ -1688,3 +1688,40 @@ Le moteur specifique conservant exactement K_0 n'etait PAS encore implemente,
 donc aucune commande de lancement pour ce modele n'est inventee. Le moteur
 general existant devra aussi etre adapte a la consigne de ne plus auditer
 les seeds deja acquis avant une reprise. Aucune execution de solveur ici.
+
+### Extension mathematique du flip de Claude687 : majorite de paires
+
+Dans un SRG(1+2t^2,2t,1,2), un automorphisme fixant x et CHAQUE paire de
+N(x) comme ensemble est un retournement d'un sous-ensemble de q paires.
+THEOREME : s'il est non trivial, q>=ceil(t/2). Cela etend l'obstruction
+de Claude pour une seule paire, sans refaire ses calculs ni sa preuve.
+
+Si q=t la borne est immediate. Sinon prendre y={a,c}, a retourne et c fixe.
+Son image est {bar(a),c}. Parmi ses voisins dans F, noter n_i ceux dont
+l'etiquette a i lettres sur les paires retournees. Alors
+  n0+n1+n2=2t-2 ; n1+2n2=4q-2.
+La seconde identite compte les incidences aux lettres retournees : a donne1,
+bar(a) donne1 (a fournit deja un voisin commun dans N(x)), les2q-2 autres
+donnent2. Donc n0=2t-4q+n2>=2t-4q. Les n0 voisins fixes et c sont tous
+voisins communs de y et g(y), d'ou n0<=1 et q>=ceil((2t-1)/4)=ceil(t/2).
+
+COROLLAIRE : les retournements purs qui sont de vrais automorphismes forment
+un code binaire lineaire C_x de longueur t, distance minimale ceil(t/2).
+Pour t impair, si M=|C_x|, chaque coordonnee active apparait M/2 fois,
+d'ou somme des poids<=Mt/2 ; les M-1 mots non nuls ont poids>=(t+1)/2.
+Ainsi M<=t+1, arrondi a une puissance de2. Pour Conway(t7) : poids>=4 et
+|C_x|<=8. Pour243(t11) : poids>=6 et |C_x|<=8. Ce n'est PAS une borne8
+sur tout le stabilisateur de x : les permutations de paires restent possibles.
+Si le retournement de TOUTES les paires est un automorphisme, alors pour t
+impair C_x={0,1} : un autre mot et son complement ne peuvent tous deux
+avoir poids>t/2.
+
+Pour un squelette K_x, son code local C_K peut etre plus grand. Chaque mot
+local de poids inferieur au seuil est un automorphisme de K_x qui ne peut
+s'etendre a AUCUNE completion comme automorphisme. Il envoie donc chaque
+completion sur une autre matrice etiquetee, isomorphe. Cela exclut l'unicite
+etiquetee, pas l'existence ni l'unicite a isomorphisme pres. La conjecture S
+de Claude impliquerait que l'absence de lignes plates force deja cette
+distance minimale dans C_K ; exclure seulement les flips individuels est
+plus faible. Aucun contre-exemple de SRG a S etabli ici.
+Preuve complete : pure_flip_majority_theorem.json. Aucun solveur lance.
