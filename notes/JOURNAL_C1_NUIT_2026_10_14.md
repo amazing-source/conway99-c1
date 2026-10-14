@@ -2360,3 +2360,11 @@ arriere-plan. Aucun contre-exemple a(A), aucune preuve de(A),(B),(C), aucun
 SRG asymetrique construit. L'apport est un obstacle structurel de parite
 aux constructions de noyaux, et non une nouvelle borne sur le nombre
 d'automorphismes.
+
+Suite bornee : avec le meme u de poids10, une exploration des choix de M
+s'arrete au PREMIER choix fractionnairement faisable, M={paire1} (celle
+contenant b), apres0,031s. Ce n'est pas une enumeration des62 choix : un
+seul a ete essaye. Le modele binaire correspondant donne ensuite UNSAT
+en0,516s, sans coupe PSD ajoutee. Fichiers weight10_component_scan.json
+et r1_b_w10.json. Sept relations au total testees, toujours aucune preuve
+generale de(A). Pas de nouvelle campagne lancee apres ce verdict.
