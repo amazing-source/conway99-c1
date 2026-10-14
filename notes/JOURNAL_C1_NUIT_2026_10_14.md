@@ -1602,3 +1602,17 @@ selections de taille |K|. C'est necessaire, pas suffisant : des symetries
 internes peuvent encore ne pas s'etendre a l'hote. Une obstruction propre
 a une famille de constructions n'est pas une obstruction generale a lambda1.
 Formulation complete : host_symmetry_criterion.json.
+
+### Cible precisee apres la question de Dilan relayee par Claude682
+
+Construction visee : SRG(243,22,1,2), seed Gamma6, racine0, squelette K_0
+conserve exactement. Aucun calcul de completion n'est en cours. Objectif
+asymetrique, sans affirmer qu'une completion differente existe.
+Comparaison des signatures DEJA calculees :17*C4+C12+C32+C40+C68 apparait
+sur108 racines de Gamma6, et sur AUCUNE racine de chacun des sept autres
+graphes243. Aucun nouveau groupe calcule. Une completion differente avec
+ce K_0 serait donc non isomorphe aux HUIT graphes connus : exclusion des
+sept autres par invariant intrinseque, et exclusion du seed par la borne
+locale saturee. La rigidite de la racine serait automatique ; son unicite
+intrinseque, ou une autre preuve empechant son deplacement, resterait a
+obtenir pour conclure Aut=1. Cible et preuves : gamma6_root0_target.json.
