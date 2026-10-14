@@ -170,3 +170,52 @@ If blocks 1..6 are pairwise grids at x, every M_a with a <= 12 respects all seve
 exchange of 13 and 14 (`kk6_all.py`, `kk6_classes.txt`). With all 14 matchings prescribed cadical refutes a case in
 under a second WITHOUT further case split (seven sample cases at 00:50 UTC), except the class
 M_13 = M_14 = blocks, which is T1. Full list launched 00:51 UTC, log `kk6_all_log.txt`.
+
+## 12. The graph on the 84 outer vertices as an equation on the edges of K(2,2,2,2,2,2,2) (hand, 01:09 UTC)
+Outer vertices = the 84 edges of the cocktail-party graph CP on the 14 inner vertices. Let A_out be the adjacency of
+the graph induced on them (12-regular), L the adjacency of the line graph of CP (two edges sharing an end).
+* (12.1) Counting common neighbours (an inner common neighbour exists exactly when the two edges share an end):
+  **A_out^2 + A_out = 10 I + 2 J - L.** Hence A_out commutes with L.
+* (12.2) L has eigenvalues 22 (1), 10 (7: edge functions f(a) + f(b) with f odd on blocks), 8 (6: f even on
+  blocks, zero sum), -2 (70: edge functions with zero sum around every inner vertex). On these spaces A_out is
+  12; 0 (computed: A maps the outer function back to the inner one); -2; and on the 70-dimensional space its
+  eigenvalues are 3 (40 times) and -4 (30 times) (trace).
+* (12.3) A_out = M + F, M = the part inside L (one partner at each end of an edge: a 2-regular graph, union of
+  even cycles of length >= 4), F = adjacencies of disjoint edges (10-regular). For an inner vertex c outside {a,b},
+  the number of neighbours of [a,b] among the edges through c that are disjoint from [a,b] is
+  2 - [c = -a] - [c = -b] - [M_a pairs b, c] - [M_b pairs a, c].
+* (12.4) Three inner vertices a, b, c in three blocks: the three statements "M_a pairs b,c", "M_b pairs a,c",
+  "M_c pairs a,b" are never all true (the edge [a,b][a,c] would lie in two triangles).
+* A 4-cycle of M is a "quadrangle" [a,b],[a,b'],[a',b'],[a',b]; a grid is the case a' = -a, b' = -b. Under T1,
+  M is 21 disjoint 4-cycles and F is a 4-fold cover of the Kneser graph of the pairs of blocks (Codex's setting).
+* (01:17 UTC) **Averaging the outer graph over the symmetries of the local view gives no bound** (`local_scheme_lp.py`).
+  The group of block permutations and sign changes has six orbits on pairs of outer vertices (valencies 1, 2, 1,
+  20, 20, 40); with y1 = (sum of the prism numbers of the seven lines through x)/84 and y2 = density of
+  adjacencies [a,b] ~ [-a,-b], the other densities are y3 = (1-y1)/10, y4 = (1-y1-y2)/10, y5 = (8+2y1+y2)/40.
+  The 70-dimensional space splits as 21 + 35 + 14 with averaged eigenvalues -2 y1 + y2, -1.2 y2, 3 y1 + 1.5 y2;
+  the conditions "in [-4, 3]" reduce to y1 + y2/2 <= 1, which is trivial. Side remark: for T1 (y1 = 1) the
+  eigenvalue 3 is reached on the 14-dimensional component, so that whole component would lie in the 3-eigenspace
+  of the outer graph, which explains the rigidity of that family.
+
+## 13. Controls of the exact encoder (01:25 UTC)
+* 9 vertices, nothing fixed: SAT (the grid). 9 vertices with an edge given two common neighbours: UNSAT.
+* 9 vertices in the local view with the true matchings: SAT; with wrong matchings: UNSAT (`control_local9.py`).
+* **Real graph on 243 vertices** (`control_243.py`: coset graph of the ternary Golay code, built from a
+  parity-check matrix and verified to be srg(243,22,1,2) by direct counting): all adjacencies fixed to their true
+  values except 400 random pairs left free: SAT; the same with one adjacency flipped: UNSAT. So the encoder does not
+  reject a true graph with lambda = 1, mu = 2, and it does reject a single wrong entry.
+* Not controlled: the 99-specific builders (`h12_instance.build`, `family.py`) on a true example, since none
+  exists; their rules are the hand statements of sections 4 and 9 of this note. T1 is confirmed independently by
+  Codex's F_2 method; kk6 is not.
+
+## 14. RESULT kk6 (01:34 UTC, 14/10): no vertex lies on 15 grids spanned pairwise by six of its seven lines
+`kk6_all_log.txt`: 1971 classes of (M_13, M_14) (sum of class sizes 114,345 = 11 x 10,395, as it must be);
+1970 refuted by cadical in at most 2.2 s each, with all 14 local matchings prescribed and no further case split;
+the single undecided class (index 1946) is M_13 = M_14 = blocks, i.e. T1, refuted separately (section 7, and by
+Codex's independent method).
+**Statement.** In a strongly regular graph (99,14,1,2), no vertex x has six lines through it that pairwise span
+3 x 3 grids. (T1 is the case of all seven.) Equivalently: among the seven blocks at any vertex, the "grid graph"
+(two blocks joined when the four local matchings at their ends respect each other) contains no K_6.
+**Proof status.** Hand: the reduction to the two matchings (section 11) and the class list. Machine: 1970 calls
+of cadical, no certificate kept; encoder controlled on 9 and on 243 vertices (section 13). Not confirmed by a
+second method, not read by a third party.
