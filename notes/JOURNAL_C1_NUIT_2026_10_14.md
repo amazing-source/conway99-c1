@@ -834,3 +834,82 @@ b=30 demanderait, selon LAB, une borne sur les vecteurs de norme 24 de B
 (environ trente millions exigés) ou de norme 12 de A (environ 140 millions).
 Résultats de pair intégrés sans relancer un audit ni ouvrir les anciennes
 notes. Notre exclusion d'arête a été transmise au message 639.
+
+### 06h14 — Intersections orthogonales : supports 0 ou 4, au plus 12 racines
+
+**Résultat exact.** Deux vecteurs entiers orthogonaux de norme 14 de l'espace
+propre -4 ont des supports disjoints ou une intersection de quatre sommets.
+Trois tels supports ne passent jamais par un même sommet. Toute famille
+orthogonale contient donc **au plus 12 vecteurs**, et le système de racines
+du réseau L décrit à 05h27 est `A1^r`, avec **r<=12**, soit au plus 24 racines
+en comptant les opposés. La borne précédente r<=28 est remplacée.
+
+Le nouveau calcul fini prouve deux faits intermédiaires : l'intersection de
+taille deux est impossible; trois supports passant par v doivent avoir une
+arête commune. Ce second cas est exclu par le théorème de 05h56, commit
+`234fac5`. La dépendance est explicite : ce calcul d'incidences seul laisse
+survivre des configurations qui partagent une arête.
+
+**Coordonnées locales exhaustives.** Fixons v. Ses 14 voisins sont sept
+paires. Chacun des 84 autres sommets est l'unique second voisin commun
+Q_ab d'une paire de voisins a,b de v qui ne sont pas appariés. Cela utilise
+seulement lambda=1 et mu=2 et donne les 99 étiquettes sans ambiguïté.
+
+Orientons une racine f par f(v)=1. Elle choisit quatre voisins négatifs N
+de v dans quatre paires différentes. Ses six autres sommets positifs sont
+les six Q_ab pour {a,b} inclus dans N. Les trois sommets négatifs restants
+sont des Q_ab qui apparient les six extrémités des trois paires inutilisées,
+sans employer une paire initiale. En effet, un voisin de v hors du support
+doit avoir exactement un voisin de chaque signe; les partenaires des quatre
+voisins négatifs ont déjà leur voisin négatif. Les six autres voisins de v
+sont donc couverts exactement une fois par les trois sommets négatifs Q.
+Il y a huit appariements admissibles, d'où `C(7,4)*16*8 = 4480` supports.
+
+Pour chaque support, il reste exactement six graphes internes possibles.
+Un sommet négatif Q doit toucher quatre des six Q positifs. Vu comme quatre
+arêtes du K4 sur N, ce choix est un cycle de longueur quatre : ses deux
+arêtes omises forment un couplage parfait. Les trois Q négatifs doivent
+omettre les trois couplages parfaits différents. Il reste donc 3! choix.
+Les autres arêtes du co-Heawood sont déjà fixées par les coordonnées.
+
+**Filtrage des supports.** Le lemme de norme 28 de 05h56 borne chaque
+intersection de signes (++,+-,-+,--) à un sommet. Avec v commun positif,
+l'orthogonalité donne une intersection totale de taille deux ou quatre.
+Si elle a taille quatre, les signes opposés sont adjacents (lemme de 05h56),
+donc l'éventuel sommet négatif commun est dans N(v). Ces conditions laissent
+528 supports compatibles avec un premier support fixé, puis 8784 triples
+contenant ce premier support. Le groupe local agit transitivement sur les
+4480 premiers supports. Le stabilisateur de celui fixé a ordre 144 : les
+24 permutations des quatre paires sélectionnées, et les six automorphismes
+des trois autres paires préservant leur couplage choisi.
+
+Il reste huit orbites de paires et 64 orbites de triples. Pour chaque
+orbite, les 6^2 ou 6^3 incidences internes sont toutes couvertes. On rejette
+une arête également imposée comme non-arête, un sommet extérieur ayant deux
+voisins de même signe dans un co-Heawood, ou un excès de voisins communs.
+Les rejets se produisent déjà avec les deux premières règles. Deux orbites
+de paires survivent, toutes deux avec intersection de taille quatre. Une
+orbite de triples survit, avec arête commune : 72 supports étiquetés et 40
+choix internes pour le représentant. Aucun triple sans arête commune.
+
+**Vérification sans quotient.** L'option `--labelled-audit` parcourt aussi
+les 312 paires et 8712 triples sans voisin négatif commun, sans réduction par
+le stabilisateur; aucun ne survit. Le contrôle total se termine localement
+en moins d'une minute. Le calcul supplémentaire des quadruples (53 orbites)
+ne laisse lui aussi que l'arête commune; il n'est pas nécessaire à la borne.
+Un co-Heawood isolé garde bien ses six incidences possibles dans le même
+modèle, ce qui contrôle que les règles ne rejettent pas par construction.
+
+**Borne globale.** Dans une famille orthogonale de r supports, chacun a 14
+sommets et chaque intersection non vide contient quatre sommets. Aucun
+sommet ne pouvant appartenir à trois supports, les intersections à l'intérieur
+d'un support sont disjointes. Le graphe d'intersection des supports a donc
+degré au plus trois. S'il a e arêtes, leur union a exactement `14r-4e`
+sommets, au moins `8r`. Puisque l'union est dans les 99 sommets, r<=12.
+En cas r=12, ce graphe doit être cubique et l'union a 96 sommets : 72 sommets
+doubles, 24 privés et trois hors de tous les supports. Ce cas n'est pas exclu
+par la borne; il offre une nouvelle famille très contrainte à examiner.
+
+Fichiers : `orthogonal_root_stars.py`, rapport exact
+`data/codex_night_20261014/orthogonal_root_stars.json`. Aucun SAT, aucun
+flottant, aucune hypothèse de symétrie globale de C1. C1 reste ouvert.
