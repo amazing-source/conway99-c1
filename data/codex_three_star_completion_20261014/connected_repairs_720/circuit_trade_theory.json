@@ -1,0 +1,15 @@
+{
+  "status": "PROVED_ENUMERATION_OF_MINIMAL_MEMBERSHIP_DEPENDENCIES",
+  "matrix": "The3-by34 star-membership matrix has column types e0(11 copies),e1(11),e2(10),p=e0+e2(1),p'=e1+e2(1).",
+  "circuits": [
+    "Parallel-column differences:55+55+45=155 support2 circuits.",
+    "p-e0-e2 and p'-e1-e2:110+110=220 support3 circuits.",
+    "p-p'-e0+e1:121 support4 circuits."
+  ],
+  "completeness": "After removing repeated column types, there are only five types in rank3. The only dependent triples are{p,e0,e2} and{p',e1,e2}. Of the five subsets of four types, all except{p,p',e0,e1} contain one of those triples. The remaining four-set is a circuit. A five-set cannot be minimal. Thus the listed496 circuits are all minimal dependencies, up to scalar and orientation.",
+  "trades": "For two disjoint circuits a,b, sigma*(a*b^t+b*a^t) has zero diagonal and annihilates all three star indicators. Its nonzero entries are+1 or-1. If its sign matches absent/present edges, it gives a binary star-preserving trade, possibly moving the overlap vertices and changing vertex degrees.",
+  "rank_response": "For a producer-certified PSD rank31 seed T, put alpha=a^t*T^+*a, beta=b^t*T^+*b, gamma=a^t*T^+*b. The sign of(1-sigma*gamma)^2-alpha*beta distinguishes PSD rank31, PSD rank30, and one negative eigenvalue exactly, as in rank31_switch_theory.json.",
+  "verified_counts": "There are57145 disjoint circuit pairs beyond the10585 earlier rectangles, hence67730 pairs in this specified move family.",
+  "limit": "Minimal circuits span the kernel, but pairs of minimal circuits do NOT exhaust all rank-two changes, let alone all higher-rank changes. This enumeration is not a proof of(A).",
+  "implementation": "code/codex/three_star_circuit_trades.py"
+}

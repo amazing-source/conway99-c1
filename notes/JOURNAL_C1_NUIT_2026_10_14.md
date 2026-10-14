@@ -2109,7 +2109,7 @@ Une seule dependance : somme des1_{l x M_j}=somme des2 etoiles. Ainsi
 Sous PSD de la3e etoile, toute relation de X propagee par zero reste une
 relation (energie nulle dans une matricePSD). La3e etoile ajoute1relation
 independante : rang(T_S)<=32-c. Pour c=2, les types de bipartition sont
-1+5 (grille),2+4,3+3. Ce theoreme classe les relations PORTEES par les
+1+5 (carre ferme droit ou tordu, correction722),2+4,3+3. Ce theoreme classe les relations PORTEES par les
 2etoiles mates ; il ne classe pas les relations avec des coefficients
 nouveaux sur la3e etoile. C'est la limite precise de l'analogue H3'.
 
@@ -2179,3 +2179,70 @@ ces rectangles sur ce lot seulement, et ne prouve PAS(A). ArtifactsJSONL
 dans data/codex_three_star_completion_20261014/connected_repairs_720/.
 Prochaine variation : circuits de relations entre les3 indicatrices,
 autorisant aussi le mouvement des2 sommets de recouvrement jusque-la figes.
+
+### Circuits mobiles, limites exactes et deux obstructions de conjugaison
+
+PROUVE : les colonnes des3 indicatrices ont les5 types e0,e1,e2,p=e0+e2,
+p'=e1+e2. Leurs dependances minimales sont155 differences paralleles,
+220 relations p-e0-e2 ou p'-e1-e2 et121 relations p-p'-e0+e1.
+Les paires disjointes de ces496 circuits donnent67730 echanges de rang2,
+dont57145 depassent les anciens rectangles et peuvent bouger les recouvrements.
+Code three_star_circuit_trades.py ; preuve circuit_trade_theory.json.
+Cela ne couvre PAS toutes les modifications de rang2 ni de rang superieur.
+
+VERIFIE : sur702, les nouvelles directions donnent106 echanges binaires,
+34 locaux,31 indefinis et3 PSD31, aucun rang30. Puis une levee eta>0
+choisie pour chacune de298 sources du lot donne298 graines connexes PSD31.
+Leurs67730 directions chacune produisent136476 echanges binaires,
+33271 locaux :25874 indefinis,7099 PSD31 et298 PSD30. Les298 derniers
+ANNULENT EXACTEMENT la levee initiale : aucun nouvel objet de rang30.
+Premier passage236 graines55,14s ; suite62 graines3,60s. Aucun contre-
+exemple(A), aucune preuve(A). Les levees intermediaires ne sont pas
+filtrees par U ; tout nouveau candidat connexe30 aurait du passer U.
+Les duplicatas des sources sont retires des exports ; les recettes
+inversees exactes suffisent et les retours de source ne sont plus audites.
+
+PROUVE : pour un4-cycle alterne u de l'incidence D_S, H=I-uu^t/2
+fixe D_S^t, K et Pi ; une conjugaison binaire Gamma'=H Gamma H conserve
+donc T,U,rang. Deux obstructions de METHODE, pas une preuve(A) :
+(i) l'indicatrice du carre ferme sur la droite b est D_S^t w avec
+w=(1,1,1,1,-1,...,-1)/2 ; toute conjugaison fixant l'incidence la fixe.
+(ii) pour un ensemble ferme de2 droites CONTENANT b, tout4-cycle qui
+deplace son indicatrice q produit z=2Hq avec une seule coordonnee
+negative-1, en(b,y) hors composante. Kz y vaut-2 ; l'equation
+Gamma'z=3z-Kz y exigerait-1, impossible avec matrice nonnegative et
+diagonale0. Preuve incidence_reflection_obstructions.json.
+Controle symbolique des5 positions possibles :160 reflets mobiles,
+tous frappes par cette obstruction ; aucune matrice du pair re-auditee.
+Sur z2b,22 des32 reflets mobiles ont une diagonale non nulle,10 ne sont
+pas entiers. Le cas2+4 avec b dans la composante4, et3+3, echappent a
+cette obstruction. Cette zone manque a nos graines actuelles ; signale724.
+
+### Messages722-723 et conservation rigoureuse des statuts
+
+CORRECTION de terminologie722 : une composante singleton de Q force un
+CARRE FERME, droit ou tordu (matching croise echange), pas necessairement
+la grille geometrique. Phrase corrigee dans two_mate_star_kernel_theory.json.
+Les relations d'indicatrices et les filtres qui les utilisent restent
+valides ; les exemples explicitement certifies grilles restent tels quels.
+Le theoreme de relations mixtes du pair722 a4 etoiles est accepte et
+consigne avec provenance, sans nouvel audit. Je n'ai pas de somme de
+carres positive a3 etoiles : le Schur10x10 reste signe. (A),(B),(C) OUVERTS.
+
+PROUVE, transmis725 pour la recherche du pair sur les bases : avant la3e
+etoile, une base39 laisse60 labels, chacun avec4356 profils bruts de
+voisinage vers X (2 voisins dans chaque etoile), et un reste8-regulier.
+Si c=1, rang22 sur X et rang8 restant ; le budget exact des60 normes de
+projection pour M=8T est752, les deficits totalisent448. En general la
+somme vaut808-56c, par le projecteur global M/56. Ce filtre SUR LA BASE
+n'est pas encore implemente ni demontre contradictoire pour toute base.
+Preuve intrinseque de c(l), budgets et statuts :
+connected_repairs_720/line_invariant_and_base_budget.json.
+
+Les57145 nouvelles directions ont aussi ete parcourues sur les6 autres
+graines31 localement admissibles du pair(S63,S65,S66,S67,S69,S70),
+sans recalcul des rangs sources :637 mouvements binaires,192 locaux,
+166 indefinis,26 PSD31,aucun rang30. Additionnes a702, cela couvre
+les7 graines historiques valides pour cette nouvelle famille de mouvements.
+Synthese six_seed_circuit_summary.json. Aucun processus de recherche
+reste en cours a la fin de ce passage ; aucune campagne globale lancee.
