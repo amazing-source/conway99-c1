@@ -87,3 +87,15 @@ srg(57,14,1,4) does not exist either). Conway's (99,14,1,2) is not of this form 
 solution). So the stabiliser of O in Aut(GQ) acts on the srg (equality for the S3 graph), and an asymmetric member of
 either family coming from a 3-ovoid needs a 3-ovoid with trivial stabiliser: at 378 none exists in the two known GQs
 (Bamberg-Giudici-Royle classification); at 243 the question is open and is exactly Codex's search.
+
+## 6. The 3-ovoid route at 243 is closed (Codex's parity obstruction, verified here; payne9.py, binary_obstruction.py)
+Built here independently: P(W(9),x0) from W(3,9) (form x1y2 - x2y1 + x3y4 - x4y3, x0 = (1,0,0,0); 729 points y with
+y2 != 0; 810 totally isotropic lines not through x0 and 81 hyperbolic lines through x0, minus their points in
+x0-perp); collinearity graph srg(729,88,7,11) checked. Orbits of the 40 index-3 subgroups of the elation group are
+never 3-ovoids (they contain or miss whole hyperbolic lines: counts 0, 3, 9). Codex's obstruction (bridge 14/10,
+its payne9_obstruction.py): over F_2 the kernel K of the incidence matrix (lines x points) is doubly even; the
+complement of a 3-ovoid meets every line (9 points) in 6 points, so it lies in K, but has weight 486 = 2 mod 4.
+Checked here on my model: F_2 rank 441, dim K = 288, basis weights 0 mod 4, pairwise intersections even. Hence
+P(W(9),x0) (to my knowledge the only known GQ(8,10)) has NO 3-ovoid: the 243 family does not arise this way. Two
+cadical runs on the 3-ovoid CNF (no mu, 280 s each) were undecided, as expected for a parity-UNSAT instance.
+The same argument does not apply at 378 (lines of 6 points, hemisystem and complement meet them in 3).
