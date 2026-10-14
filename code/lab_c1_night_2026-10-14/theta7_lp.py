@@ -22,7 +22,8 @@ from fractions import Fraction
 import numpy as np
 from scipy.optimize import linprog
 
-N = int(sys.argv[1]) if (__name__ == "__main__" and len(sys.argv) > 1) else 60
+import os
+N = int(sys.argv[1]) if (__name__ == "__main__" and len(sys.argv) > 1) else int(os.environ.get("THETA7_N", "60"))
 
 
 def sigma(k, n):

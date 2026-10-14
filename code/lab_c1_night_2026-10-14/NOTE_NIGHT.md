@@ -443,3 +443,16 @@ and the number with x_p = 6 is 2x - 40, so a type-A vector has at least 2 such p
 **21.5 Literature (quick web search, not exhaustive):** no published bound on the 7-rank of A + 4I for a putative
 srg(99,14,1,2) found (Brouwer - van Eijl 1992 give the general framework; arXiv 1910.07686 treats the Laplacian
 critical group, where 7 plays no role).
+**21.6 The type-B skeletons** (from the 720 matrices): the codegree-1 pairs form C_4 + C_4 on both sides (144
+matrices) or C_8 on both sides (576 matrices).
+
+## 22. Where b = 30 stands (04:01 UTC)
+* More positivity does not help: with a_2 >= 462, a_4 >= 14970, c_7 <= 7920, c_8 <= 304920 the programme at b = 30
+  stays feasible with 45, 59 and 109 coefficients (THETA7_N=110).
+* Norm-18 vectors of B (hand): an entry +-2 is impossible (if f_v = -2, its eight +1 neighbours are neighbours of v,
+  but a -1 vertex is not adjacent to v and has at most 2 neighbours in N(v), while it needs 4 more positive than
+  negative neighbours), so they are 1_P - 1_N with |P| = |N| = 9; e(P) = e(N) <= 2 by the same count as 20.1.
+* From `theta7_b30_log.txt` (exact optimiser): at b = 30 the minimum of c_9 is 1.33e6 when c_7 = c_8 = 0 and
+  decreases by about 10.6 per vector of norm 16 allowed (2.7e5 at c_7 <= 2000, c_8 <= 1e5). So b = 30 falls if one
+  proves roughly c_8 <= 1.2e5 together with c_9 << 1.3e6 (and c_7 small): a count of the norm-16 vectors three
+  times sharper than 20.4 and a first count of the norm-18 vectors (9 + 9 skeletons). Not attempted tonight.
