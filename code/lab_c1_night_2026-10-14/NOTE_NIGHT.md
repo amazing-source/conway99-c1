@@ -573,3 +573,5 @@ Counting formulas for P4 (1015740) and claws (320760) also checked by brute forc
 Where each input is proved: a_2 19.2(i); a_4 >= 14970 19.2(ii); c_7 19.2(iii) with 17.2; c_8 20.1-20.3 and 23 (gap
 closed); a_3, a_4 >= 354816, a_5 >= 196812 and 3415104: 25.1-25.2 (counts checked on srg(243,22,1,2), 25.5);
 a_4 >= 1749210: 26.1-26.3 (uses P <= 1151 prisms, 19.2(v)). b = 0: B would be even unimodular of rank 44 (23).
+* (dead end, exploration) At b = 34 the programme stays feasible even with no root in A (a_1 = 0) and no co-Heawood
+  vector (c_7 = 0): the absence of the smallest objects does not remove b = 34; only a larger a_4 can.
