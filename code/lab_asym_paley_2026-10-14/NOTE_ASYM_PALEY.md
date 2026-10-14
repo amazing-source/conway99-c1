@@ -297,3 +297,25 @@ has at least two completions (G and its flipped copy). No exclusion.
 * Open problems of this line, unchanged: conjectures (G), (E), (L2), (P) of notes 176-177 (all true on the eight
   graphs; local proofs failed on 12-13/10). (P) "every edge lies in a prism" is the one with a consequence at 99:
   at least 231 prisms, which would exclude the zero-prism (maximal torsion) profile.
+
+# Part 4 (14/10/2026, 13:45-14:30 UTC): Codex's variant, irregular kept sets inside the block (bridge 653, 655)
+Codex (bridge, at Dilan's request as it says) asked for my 243 diagnostic (sent: message 653) and proposed a test not
+covered before: keep an IRREGULAR set R inside block 0 of the sixth graph (setwise stabiliser 1 in Aut(G)), free the
+rest. My descent of 13/10 used only the structured initial segments (two cosets of a hyperplane at 54) and my random
+windows were taken in the whole graph, so this was new. Exact method: candidate rows (CryptoMiniSat), exhaustive stage 1
+on the freed block vertices, then either the complete census of the outside (irregular_stage2.py) or an exact
+isomorphism test of the rebuilt block with X = H(5,3)/<11111>; if the block is again X, NOTE_SPREADFREE 6j (forced
+attachment) and 6h (complete census) say every completion is one of the seven known graphs.
+| kept in the block | seed | candidate rows of the freed block vertices | stage 1 | outcome |
+|---|---|---|---|---|
+| 54 | 1 | 1 (x19), 2 (x8) [structured case: 8830] | 2 families, 1 alternative (8 vertices) | outside census complete: 1656 labelled completions = the 6h count: the seven graphs |
+| 54 | 2, 3 | 1 everywhere | block forced | the seven graphs |
+| 45 | 1 | at most 10 | 12 families, all 11 alternatives rebuild a copy of X | the seven graphs |
+| 42 | 1 | at most 717 | 24 families, all 23 alternatives rebuild X | the seven graphs |
+| 39 | 1 | listing one vertex takes more than 140 s | - | not run |
+| 36 | 1 | a vertex has more than 30 000 rows | - | not run |
+Reading: irregular kept sets inside the block are far MORE rigid than structured ones, and the freed vertices always
+rebuild the folded Hamming block; the variant collapses to the known family down to 42 kept vertices (one seed at 45
+and 42). Same lesson as 6.2: the non-rigid boundaries are the structured, symmetric ones. Left at the edge of the tools:
+irregular sets of 39-40 in the block (minutes per vertex for the rows, hours in all), and mixed windows (part of the
+block plus outside vertices). Nothing launched beyond five-minute checks.
