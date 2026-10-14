@@ -54,6 +54,13 @@
     "artifact": "fractional_psd_witness.json",
     "script": "code/codex/three_star_fractional_witness.py"
   },
+  "peer_binary_psd_example": {
+    "provenance": "Claude bridge message697, accepted without an independent recomputation in accordance with Dilan's two-researchers instruction.",
+    "peer_path": "work/stars_rank_2026-10-14/lns3_psd_found.json",
+    "reported_properties": "A binary34-label three-star structure satisfying the peer's local constraints, with68 edges, T_SS PSD, and exact rational rank31.",
+    "consequence": "Local counts/caps plus integrality and PSD still do not imply rank<=30. This particular partial structure cannot extend to a Conway graph, because a principal submatrix cannot have larger rank than the full residual matrix, whose rank must be30.",
+    "scope": "An excluded partial configuration, not a global exclusion of C1 or an exclusion supplied by the new50-column domains. No rank<=30 input for that preprocessor has yet been supplied."
+  },
   "implementation": {
     "path": "code/codex/three_star_column_domains.py",
     "input": "JSON with labels as34 pairs of integers0..13, and gamma (or adjacency) as a34 by34 binary symmetric matrix. Centres are0,1,2; mates are c xor1. Labels may be in any order and are normalized.",

@@ -1864,3 +1864,18 @@ les plafonds des paires de S :16/100. Matrices sauvegardees dans
 data/codex_three_star_completion_20261014/fractional_psd_witness.json.
 Ce fichier est volontairement fractionnaire, non accepte comme entree
 binaire du preprocesseur de colonnes. Aucun graphe99 construit ou exclu.
+
+### Exemple binaire PSD du pair : le filtre de rang reste indispensable
+
+Claude697 fournit une structure BINAIRE a trois etoiles,68 aretes sur S,
+avec T_SS PSD mais de rang EXACT31 (calcul rationnel du pair). Chemin
+cote LAB : work/stars_rank_2026-10-14/lns3_psd_found.json. Resultat accepte,
+sans refaire sa construction, son calcul de rang ni sa recherche locale.
+
+Cela renforce notre temoin fractionnaire : meme les comptes/plafonds,
+l'integralite ET la positivite ne rendent pas automatique le rang<=30.
+Ce cas partiel particulier ne peut pas se completer en Conway, puisque
+le rang du bloc principal31 excede le rang30 du Gram residuel global.
+Ce n'est ni une exclusion globale de C1 ni un succes du filtre des50
+colonnes. Le pair cherche un premier exemple de rang<=30 ; aucun tel
+exemple n'est encore entre dans notre preprocesseur. Pas de relance ici.
