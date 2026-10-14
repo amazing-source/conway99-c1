@@ -3066,3 +3066,76 @@ coarse_gluing_floor_cyclic.json dans data/codex_local_global_20261015/.
 Controles propres : secantes entieres, identite exacte, pivots LDL,
 classifications locales par enumeration ; aucun germe du pair audite.
 Aucun SRG construit et aucune exclusion C1.
+
+### 15/10, suite769 : obstruction croisee impaire et interface exacte au census
+
+Transmission770 du plancher grossier. Le saut a revele769, lu/acquitte.
+Claude situe numeriquement les violations de ses exemples dans la
+compression impaire de deux droites ; observations acceptees sans audit.
+Il demande quels blocs/cycles sont representables dans le census existant.
+Son message rapporte aussi une directive utilisateur : cette attribution
+reste une contribution du pair, pas une instruction utilisateur nouvelle.
+
+NOUVEAU LEMME UNIFORME. Pour UNE droite racine l={v,a,abar}, sur les
+douze autres lettres, Q=tau_a+tau_abar-sigma-sigma^t. Les deux tau sont
+des matrices de matchings, sigma une permutation. Donc Q1=0, Q symetrique
+et ||Q||_op<=4, sans hypothese de symetrie du graphe. Dans1-perp :
+ T_impair=6I-Q a toutes ses valeurs propres dans[2,10],
+ U_impair=8I+Q a toutes ses valeurs propres dans[4,12].
+Ainsi chaque bloc diagonal impair est automatiquement defini positif
+sur les onze dimensions utiles et a exactement le noyau1 impose.
+Une obstruction dans la compression a DEUX droites vient necessairement
+du BLOC CROISE. Ce n'est pas une preuve de positivite des formes44x44.
+
+Certificat par carres :4I-Q=(I-tau_a)^2/2+(I-tau_abar)^2/2+
+(I+sigma)(I+sigma^t). La borne inferieure analogue vient des signes
+inverses. Dans des bases orthonormales de1-perp, les tests de positivite
+de la compression impaire combinee sont exactement les deux Schur :
+ D_T-C^t A_T^-1 C>=0,
+ D_U-(7Omega+C)^t A_U^-1(7Omega+C)>=0.
+Les inverses existent toujours. Chaque Schur est11x11 ; aucune borne de
+rang globale ni positivite complete du bord ne suit de ces seuls tests.
+
+MOMENTS ET CENSUS. Poser f=tr sigma (prismes de l), a=tr(tau_a tau_abar),
+b=tr(sigma^2), c=tr(tau_a sigma), d=tr(tau_abar sigma). Alors
+ trQ=-2f ; ||Q||_F^2=48+2a+2b-4c-4d ;
+ tr(T_impair U_impair)=528+4f-||Q||^2>=432+4f.
+Le dernier minorant est automatique car a,b<=12 et c,d>=0 : le produit
+de traces sur une seule droite ne peut donc localiser une violation.
+
+Enumeration de NOUVEAUX motifs marques, census accepte sans regeneration :
+ a : racine, deux lettres de l, deux lettres exterieures, quatre labels
+lointains, donc9 sommets ;32 completions brutes,10 admissibles,6 types.
+ b hors points fixes : meme support9 ;32 brutes,4 admissibles,2 types.
+ c : trois labels lointains, donc8 sommets ;4 brutes,1 admissible,1 type.
+Multiplicites exactes = nombre de completions etiquetees * |Aut(type)|.
+Diviser par2 pour a et b (deux orientations de l) ; le motif c somme
+sur les deux orientations donne directement c+d. Les sommes portent
+sur les99*7=693 drapeaux(racine,droite non orientee).
+
+Hn_code designe le COMPTE INDUIT du type, libre ou expression affine :
+ sum a=6H9_10984541408+36H9_13262907120+2H9_13912920516+
+       2H9_15781745092+2H9_40207239904+2H9_61757303448 ;
+ sum b=6P+12H9_13904794052+6H9_61505645208 ;
+ sum(c+d)=2H8_225487536=4Z2 ;
+ Z2=H7_1761497=133056-6P-h7_1985025/4.
+Les vecteurs affines complets sur les57 parametres sont exportes, ainsi
+que les graphes definissant chaque parametre. A l'ordre7 :208 types,
+2 parametres ; a8 :916 types,9 parametres ; a9 :5311 types,57 parametres.
+Notre ancien point rationnel P=0 donne sum a=24948/5,sum b=0,
+sum(c+d)=33264/5,sum||Q||^2=16632,sumtr(TU)=349272. Ces moments
+seuls ne le refutent pas. Il reste un point de RELAXATION sans graphe.
+
+LIMITE DE SUPPORT. Une entree B_xy avec les quatre lettres centrales,
+les deux exterieures et les deux labels lointains tient sur9 sommets.
+Un produit generique de deux telles entrees peut employer quatre labels
+lointains et11 sommets. Le census9 ne le code donc pas automatiquement ;
+il faut des identites supplementaires ou des comptes cibles. Cette
+remarque ne prouve pas l'independance algebrique des comptes d'ordre11.
+
+Outil conway_odd_census_interface.py ; artefact odd_census_interface.json.
+Controles propres : nouvelles expansions de traces et certificat par
+carres sur une fixture de permutations, completions des motifs marques,
+facteurs d'automorphismes et identite affine sum(c+d)=4Z2. Aucun germe
+du pair audite, aucun census re-genere, aucun processus restant.
+Aucune exclusion C1 ni construction d'un SRG.
