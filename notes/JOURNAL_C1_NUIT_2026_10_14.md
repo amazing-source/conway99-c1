@@ -2759,3 +2759,63 @@ ni une nouvelle certification exacte des487 matrices. Il lance le test
 conjoint PSD+nullite>=14. Aucun de ces calculs ne tourne cote Codex.
 Le message751 donne l'export concret des100 coupes ; aucune reponse
 d'accuse de reception au commentaire du pair sur notre theoreme.
+
+### Messages752/754 : domaines44->45 et contraintes par caracteres de G1
+
+Resultats du pair acceptes sans re-audit : meilleurs bords quatre etoiles
+PSD annonces de nullite12/rang32. Un objet de nullite13 existe mais n'est
+PAS PSD. Aucun germe PSD de rangT<=30 disponible. Les futurs certificats
+du pair fourniront une base principale T et le rang de U pour nos domaines.
+
+Moteur four_star_column_domains.py, 44 anciens labels et40 manquants :
+les quatre labels de recouvrement sont02,03,12,13. Chacun de leurs16
+masques impose, dans chaque bloc de dix labels ax, exactement2-deg(a)
+voisins. Total brut4 949 026 profils par label manquant. En groupant les
+centres(0,1) et(2,3), deux tables de4356 entrees suffisent pour joindre
+les equations de noyau ; elles sont reutilisees sur les40 labels.
+ATTENTION :8712 est le nombre d'entrees, PAS le cout total du domaine.
+Il reste a parcourir les correspondances, en nombre dependant du germe,
+puis les capacites et les normes. Pas d'enumeration globale abordable
+des germes demontree. Budgets de temps, aucun timeout pris pour exclusion.
+
+La base principale certifiee permet de calculer l'inverse et les relations
+necessaires aux colonnes, sans refaire rang/PSD du germe. Si rangT30,
+m=-8h-K8(S,u) doit satisfaire m_I^t(8T_II)^{-1}m_I=20. Si rangT<30,
+seule l'inegalite<=20 est imposee. Si le pair certifie AUSSI rangU40,
+le rang ambiant complementaire est deja atteint : n=15h-4intersection+
+mate-2 doit satisfaire n_J^t(15U_JJ)^{-1}n_J=50. Cette seconde egalite
+ne doit pas etre imposee si rangU<40. Les quatre relations d'etoile
+permettent de choisir le principal40 de U sans calculer son rang.
+
+Controles propres :4356+4356 entrees,4 949 026 profils bruts,221801 avec
+le bit02 force, et les deux polynomes quadratiques exacts : PASS.
+Aucune application a un germe rang30, puisqu'il n'y en a pas encore.
+Le vieux join34->44 n'est pas applique tel quel a un objet44.
+
+NOUVEAU THEOREME POUR G1 : les44 labels sont11 orbites regulieres du
+groupe de Klein. Les quatre caracteres ont donc chacun dimension11.
+Les etoiles donnent des nullites(2,1,1,0) dans(++,-+,+-,--).
+Pour une droite de composantes c, ses24 labels forment6 orbites regulieres.
+Le noyau deux-etoiles connu a dimension c+1 ; ses c relations invariantes
+viennent des composantes Q, tandis que la difference des deux etoiles
+est dans un caractere non trivial. Son bloc trivial6x6 a rang6-c.
+Le bloc trivial11x11 global contient les deux principaux correspondants,
+donc rang_trivial>=6-min(c_l,c_m). Par suite, rangT<=30 impose
+nullite_nontriviale>=9-min(c_l,c_m).
+
+Pour c=(4,4), il faut au moins5 dimensions de noyau non triviales,
+dont deux differences d'etoiles deja connues : AU TOTAL trois autres
+relations non triviales, en comptant celles deja trouvees. Sous l'absence
+de C4 mentionnee par le pair, parmi les quatre relations mixtes necessaires,
+au moins trois doivent etre non triviales. Le secteur trivial, de rang>=2,
+ne fournit qu'une relation de plus que les huit locales.
+Couverture par10 cibles minimales de nullite(-+,+-,--)=(1+a,1+b,c),
+a+b+c=3 ; ces cibles peuvent se recouvrir et ne suffisent pas a certifier
+le rang ou la positivite. Elles orientent les recherches du pair.
+
+Code four_star_g1_sectors.py : bases B_chi44x11 explicites, B_chi^t B_chi=4I,
+blocs B_chi^t T B_chi/4 et dix cibles. Action du groupe, dimensions,
+orthogonalite et types des etoiles controles sans lire de graphe : PASS.
+Restriction a la famille LOCALE G1 ; aucune symetrie du graphe complet
+n'est supposee. Transmissions753/755. Donnees four_star_columns_752/.
+Aucun calcul local restant, aucun Conway/C1 exclu, aucune construction SRG.
