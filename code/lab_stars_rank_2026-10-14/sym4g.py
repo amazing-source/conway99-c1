@@ -37,7 +37,9 @@ def parse(cyc):
 def main():
     gens_s, moves, seed, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
     mode = sys.argv[5] if len(sys.argv) > 5 else "lowrank"
-    anyc = len(sys.argv) > 6 and sys.argv[6] == "anyc"     # H4 test: no c(l) = c(m) = 1 requirement, P5 not enforced
+    anyc = len(sys.argv) > 6 and sys.argv[6] in ("anyc", "cl1", "cl2")   # H4 test: P5 not enforced
+    cl1 = len(sys.argv) > 6 and sys.argv[6] == "cl1"               # (A4) test: require c(l) = 1 only
+    cl2 = len(sys.argv) > 6 and sys.argv[6] == "cl2"               # require c(l) <= 2 only
     gens = [parse(c) for c in gens_s.split("|")]
     # close the group and check the P5 condition
     group = [tuple(range(14))]
@@ -139,7 +141,7 @@ def main():
         nul_num = int(np.sum(absev < 1e-8))
         cl = 23 - exact_rank([[int(M8[i][j]) for j in Xl] for i in Xl])
         cm = 23 - exact_rank([[int(M8[i][j]) for j in Xm] for i in Xm])
-        both = (cl == 1 and cm == 1) or anyc
+        both = (cl == 1) if cl1 else ((cl <= 2) if cl2 else ((cl == 1 and cm == 1) or anyc))
         lt = perp_min(T)
         lu = perp_min(7 * PiS - T)
         if min(lt, lu) > -1e-9:

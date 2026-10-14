@@ -1,4 +1,5 @@
-"""Independent exact verifier for a candidate counterexample to statement (A) (14/10/2026).
+"""Independent exact verifier for star structures: candidate counterexamples to (A) (three stars) or to H4 / H4'
+(four stars 0,1,2,3), 14/10/2026.
 
 Statement (A): every admissible three-star structure (stars 0, 1 mates, and 2; letters 0..13, mate of x = x xor 1)
 with T >= 0, U >= 0 and c(l) = 1 has rank T = 31.  A counterexample needs, exactly:
@@ -10,7 +11,8 @@ with T >= 0, U >= 0 and c(l) = 1 has rank T = 31.  A counterexample needs, exact
         (exact LDL^T pivots > 0) and has the same rank as the whole matrix.
 Everything is computed with Fractions from the label names and the edge list only (K re-derived from its formula,
 Pi from D), without importing the search code.
-usage: python verify_counterexample.py <json> <path to record: key[:index]>   e.g.  symz_606_found.json found:3
+usage: python verify_counterexample.py <json> <path to record: key[:index], or 'edges' for a top-level edge list>
+       [stars, default 0,1,2]   e.g.  symz_606_found.json found:3      h4_4_PSD_1.json edges 0,1,2,3
 """
 import itertools
 import json
@@ -91,17 +93,17 @@ def main():
     path, rec = sys.argv[1], sys.argv[2]
     d = json.load(open(path))
     key, _, k = rec.partition(":")
-    item = d[key][int(k)] if k else d[key]
+    item = d if key == "edges" else (d[key][int(k)] if k else d[key])
+    stars = tuple(int(t) for t in (sys.argv[3] if len(sys.argv) > 3 else "0,1,2").split(","))
     S = [frozenset(l) for l in d["labels"]]
     n = len(S)
-    assert len(set(S)) == n == 34
+    assert len(set(S)) == n
     assert all(len(l) == 2 and MATE(min(l)) != max(l) for l in S)
-    assert set(S) == {frozenset((a, x)) for a in (0, 1, 2) for x in range(14) if x not in (a, MATE(a))}
+    assert set(S) == {frozenset((a, x)) for a in stars for x in range(14) if x not in (a, MATE(a))}
     adj = [[0] * n for _ in range(n)]
     for i, j in item["edges"]:
         assert i != j
         adj[i][j] = adj[j][i] = 1
-    stars = (0, 1, 2)
 
     def need(l, y):
         return 1 if (y in l or MATE(y) in l) else 2
@@ -128,6 +130,10 @@ def main():
     X = [i for i in range(n) if 0 in S[i] or 1 in S[i]]
     rX = rank_and_basis([[T[i][j] for j in X] for i in X])[0]
     print("rank T_X = %d  ->  c(l) = %d" % (rX, 23 - rX))
+    if 3 in stars:
+        Xm = [i for i in range(n) if 2 in S[i] or 3 in S[i]]
+        rXm = rank_and_basis([[T[i][j] for j in Xm] for i in Xm])[0]
+        print("rank T_Xm = %d  ->  c(m) = %d" % (rXm, 23 - rXm))
     # Pi_S from D: Pi = I - D^T (D D^T)^-1 D on the 84 labels, restricted to S
     LAB = [frozenset((a, b)) for a, b in itertools.combinations(range(14), 2) if b != MATE(a)]
     DDt = [[Fr(12 if x == y else (0 if y == MATE(x) else 1)) for y in range(14)] for x in range(14)]
@@ -150,14 +156,18 @@ def main():
     U = [[7 * Pi(S[i], S[j]) - T[i][j] for j in range(n)] for i in range(n)]
     okT, rT, kerT = psd_certificate(T, "T")
     okU, rU, kerU = psd_certificate(U, "U")
-    print("nullity of T = %d (stars give 3)" % (n - rT))
+    print("nullity of T = %d (stars give %d)" % (n - rT, len(stars)))
     # exhibit the extra relation: a kernel vector outside the span of the stars
     Smat = [[Fr(1 if y in l else 0) for l in S] for y in stars]
     rs = rank_and_basis(Smat + kerT)[0]
-    print("rank of span(stars, ker T) = %d (4 means one relation beyond the stars)" % rs)
-    verdict = okT and okU and rT == 30 and rX == 22 and rs == 4
-    print("VERDICT: %s" % ("COUNTEREXAMPLE TO (A) (admissible, c(l) = 1, rank 30, T >= 0, U >= 0)" if verdict
-                           else "not a counterexample"))
+    print("rank of span(stars, ker T) = %d" % rs)
+    if len(stars) == 3:
+        verdict = okT and okU and rT == 30 and rX == 22 and rs == 4
+        print("VERDICT: %s" % ("COUNTEREXAMPLE TO (A) (admissible, c(l) = 1, rank 30, T >= 0, U >= 0)" if verdict
+                               else "not a counterexample to (A)"))
+    else:
+        print("VERDICT: %s" % ("ADMISSIBLE FOUR-STAR STRUCTURE WITH T >= 0 AND U >= 0 (H4 is false); rank T = %d"
+                               % rT if (okT and okU) else "T or U is not PSD"))
 
 
 if __name__ == "__main__":

@@ -131,13 +131,35 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   non-symmetric ones of weights 16 and 24); (iii) the swap is the only symmetry compatible with c(l) = 1 (P5); it
   splits T into even/odd sectors, the extra relation lives in the even sector, whose B-part is constant on mate pairs
   (a 4 x 4 determinant), and the even sector can be PSD; (iv) a sector-targeted walk (mode zero) found PSD ones.
-- The counterexample does NOT extend: outside label {4,6} has 5335 local profiles and none of norm exactly 20
-  (colnorm_arith.py), like z2b, the Z5 objects and dec_81..84.
+- The counterexample does NOT extend: outside labels {4,6}, {4,7}, {5,6}, {4,12} have 5335, 5675, 5675, 4963 local
+  profiles and none of norm exactly 20 (colnorm_arith.py; each label alone is fatal), like z2b, the Z5 objects and
+  dec_81..84. The values norm - 20 have 2-adic valuation >= 2 with a geometric tail: no arithmetic pattern.
+- Four stars, partial-star identity (PROVED; checked numerically on 5 structures): for the outer letters x and
+  d_x = indicator of the labels of S4 containing x, D T D^T = 6I + 2(J - Mt) - E with
+  E[x][y] = #{(a,b) in {0,1,2,3}^2 : ax ~ by} (sum of K over the 16 pairs = -2 + 6[x=y] + 2[y=x']). So T >= 0 forces
+  E <= 4 on mate-symmetric vectors orthogonal to 1 and E <= 8 on mate-antisymmetric ones. The four-star structures
+  closest to positivity saturate E = 4 exactly; their remaining negative direction lies in the fine space ker D_S
+  (lambda_max of the compressed Gamma = 3.0046 > 3).
 - Consequence: the route '(A) => every line special => Case I enumeration' is closed. Remaining local candidates:
   H4' (two non-special lines at a vertex: four-star object with c(l) = c(m) = 1, T, U >= 0, nullity >= 14) - under a
   Z2 x Z2 symmetry, without positivity, exact nullity 11 reached (sym4g.py); and H4 (no PSD four-star structure at
   all, which would exclude Conway): full model, 160 500 Z5-invariant structures, best -0.0041, no PSD; searches in six
   symmetry classes running (h4_*).
+
+## H4 IS FALSE (VERIFIED exactly, 14/10 about 21:12 UTC); new candidate (A4) (EVIDENCE only)
+- psd4_candidate_1.json (= lab_exchange psd4_H4_false_1.json): admissible four-star structure (stars 0,1,2,3) with
+  T >= 0 (rank 34) and U >= 0 (rank 40), exact certificates (verify_counterexample.py ... edges 0,1,2,3);
+  c(l) = 3, c(m) = 4, nullity 10. Not a Conway object (rank must be <= 30), but positivity alone is possible.
+  Found in G1 = <(0 1)(4 5)(6 7)(8 9)(10 11)(12 13), (2 3)(4 5)(6 7)(8 9)(10 11)(12 13)> (sym4g.py psd anyc);
+  that family then gave more than 250 numerically PSD structures, ALL with c(l), c(m) >= 3 (mostly (4,4), components
+  mu = (1,1,1,3), i.e. three grids per line; psd4_candidate_1 has two grids on l and three on m).
+- With c(l) = 1 forced (sym4g.py psd cl1, families G1, G1c, h3, line swaps): best min(lambda_T, lambda_U) about
+  -0.07 (c(m) = 4) after thousands of moves; no PSD. T alone reaches -0.003 with c = (1,1) but U stays at -0.16.
+- (A4) (OPEN, robust): T, U >= 0 at four stars forces c(l), c(m) >= 2. It would make every line of a Conway graph
+  special, i.e. exclude the 'generic, prism-poor' regime that no local lemma touches (CONWAY_CONSTRAINTS.md, F).
+  Combined with the known grid bounds (rho <= 126 grids, g(x) <= 17 per vertex, no Hamming point, kk5/kk6) a
+  stronger form ('at least three grids per line') would give at least 11 grids per vertex by parity (the sum over
+  the 7 lines at x of their grid counts is even), hence rho >= 121: not yet a contradiction.
 
 ## VERIFIED (exact computations; files in this folder)
 - line_pairs.py on the eight srg(243,22,1,2): n_2 = 0 only for BvLS (8910 prisms, 1485 grids, every prism in a grid);
