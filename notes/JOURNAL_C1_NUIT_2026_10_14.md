@@ -2368,3 +2368,91 @@ seul a ete essaye. Le modele binaire correspondant donne ensuite UNSAT
 en0,516s, sans coupe PSD ajoutee. Fichiers weight10_component_scan.json
 et r1_b_w10.json. Sept relations au total testees, toujours aucune preuve
 generale de(A). Pas de nouvelle campagne lancee apres ce verdict.
+
+### Message731 et construction avec coefficients libres
+
+Message731 lu et acquitte. Resultats du pair ACCEPTES, sans re-audit :
+code im_F2(A) de dimension54, intersection triviale avec son dual, code
+dual de poids minimal>=8 ; formulation spectrale de T/U par le graphe
+induit49 et multiplicites3/-4 ; une grille est un code parfait, avec neuf
+fibres exterieures de dix sommets. Provenance et enonces precis dans
+variable_kernel_731/peer731_results.json. Claude poursuit(B) ; je poursuis(A).
+
+NOUVEAU moteur three_star_variable_kernel.py : z=2q+u, TOUS les coefficients
+u dans{-1,0,1} sont variables, avec Du=0. On impose Q connexe par ses31
+coupures, et une queue non constante sur la troisieme etoile. Cette derniere
+condition assure une quatrieme relation independante des trois etoiles.
+Le q de reference n'est PAS impose dans le noyau, ni sa composante dans
+Gamma. Aucun graphe du pair en entree. Deux essais40s(M={2,3} et{2,3,4})
+donnent UNKNOWN, aucun candidat local ; aucune exclusion.
+
+PROUVE : forme normale de cette famille ternaire. Pour chaque lettre
+x=4..13, (u0x,u1x,u2x) est nul ou une permutation de(1,-1,0), soit sept
+etats. Les recouvrements verifient u02=-u12=a, u03=-u13=c ; les dix triples
+somment a(-a-c,a+c,0). Echanger0/1 normalise a>0 ou a=0,c>=0, puis on
+trie les etats dans chaque paire de lettres et les paires dans M/horsM.
+Ces symetries sont compatibles et preservent q. Deux nouveaux essais40s
+avec cette forme restent UNKNOWN. Pas d'inference d'impossibilite.
+
+Enumeration COMPLETE des coefficients dans cette famille, par
+three_star_ternary_kernel_templates.py :194336 formes normalisees pour
+chacune des deux partitions. Il peut subsister des repetitions ; ce ne
+sont pas194336 classes d'isomorphisme prouvees. Les tailles d'orbites sous
+les flips et permutations de paires somment a38673438 vecteurs etiquetes
+avec(a,c) normalises, egalement obtenus par un DP sur dix etats ordonnes.
+Controle de couverture propre, pas de verification d'un graphe du pair.
+
+Filtre entier necessaire par ligne : les quatre choix d'adjacence vers
+les deux recouvrements fixent les comptes dans les trois groupes exclusifs.
+Le poids de voisinage requis doit se trouver entre la somme des k plus
+petits et celle des k plus grands coefficients. Il reste118848 et104528
+vecteurs, en3,64s et3,52s respectivement. Aucun de ces vecteurs n'est un
+graphe construit. Les survivants sont stockes en NPZ. Sur un PREFIXE
+limite aux poids>=10 (choix de recherche, pas exclusion locale), le premier
+LP compatible avec Qconnexe est obtenu apres5 et25 essais ; ces deux
+relations fixees sont ensuite UNSAT binaires en0,610s et0,469s. Aucune
+coupe PSD n'a ete ajoutee, faute de candidat local. L'assertion(A) reste
+ouverte, la famille ternaire entiere n'est pas exclue.
+
+### Nouveau lemme de couverture des supports binaires
+
+PROUVE pour TOUT SRG(v,k,1,2). Si X est le support d'un mot non nul de
+C=im_F2(A), w=|X|, d_y=|N(y) cap X|, alors
+  somme_horsX d(d-2) + somme_dansX d(d-1) = w*(2w-k-2).
+Preuve : soustraire somme_horsX d = kw-2e(X) du compte exact
+somme d(d-1)=2w(w-1)-2e(X). Tous les termes affiches sont non negatifs
+par parite (d impair dans X, pair dehors).
+
+Si X est couvert par h voisinages dont les centres sont HORS de X,
+leurs degres somment a t>=w. Cauchy donne une contribution>=t^2/h-2t,
+donc>=w^2/h-2w lorsque w>=h. On obtient
+                     w >= h*k/(2h-1), arrondi pair.
+Si w<h, cette borne decoule deja de w>=(k+2)/2. Version discrete :
+w=2h*a+2b,0<=b<h, contribution des centres>=4h*a*(a-1)+8a*b.
+Pour UN voisinage, w>=k : le seul mot non nul contenu dans N(v) est N(v)
+lui-meme. Pour trois voisinages, poids>=10 Conway,>=14 aux parametres243.
+Cela compare les parametres sans recalculer aucun des graphes connus.
+
+PROUVE, Conway au poids10 dans trois voisinages : RHS40, contribution
+des centres>=16 ; somme interne<=24 et divisible8. Les degres impairs
+1,3,5,7 coutent0,6,20,42. Donc soit les dix degres internes valent1,
+soit quatre valent3 et six valent1. Dans le second cas, les trois centres
+ont degres(4,4,2) et tous les autres sommets exterieurs ont0 ou2 voisins.
+Les quatre sommets de degre3 induisent3 ou4 aretes (5/6 violeraient lambda1).
+Leur graphe est P4, K1,3, K3+isole, C4 ou paw ; les feuilles et l'eventuelle
+arete entre sommets de degre1 sont ensuite forcees. Avec le couplage5K2,
+cela donne SIX formes abstraites possibles, sans affirmer leur realisation.
+Enumeration propre des64 graphes sur les quatre sommets de degre3 : cinq
+formes non isomorphes et les plafonds internes verifient cette description.
+
+PROUVE aux parametres243,22,1,2 au poids14 : RHS56, contribution des trois
+centres>=40, somme interne<=16 et divisible8 ; les seuls degres possibles
+sont tous1. Le support est donc obligatoirement7K2. Pour le code dual de
+Conway, le resultat du pair implique aussi qu'un mot de poids8 serait une
+coclique avec tous les degres exterieurs0/2 : impossible sur trois etoiles,
+d'ou poids>=9 sur les labels lointains, sans supposer les poids duaux pairs.
+
+Preuve principale neighbourhood_cover_bound.json ; exemples abstraits et
+table de bornes cover_bound_checks.json. Ce sont des restrictions globales
+de completion, pas une preuve de(A) ni de l'existence d'automorphismes.
+Tous les pilotes sont termines ; aucun processus de recherche en cours.

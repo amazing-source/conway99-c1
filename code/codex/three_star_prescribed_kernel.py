@@ -51,9 +51,9 @@ def prescribed_vector(closed_pairs, x, y, extra_cycles=()):
     return 2*q+u
 
 
-def linear_constraints(z):
+def linear_constraints(z=None, connected_Q=False):
     """Yield integer edge rows, lower bound, upper bound, and provenance."""
-    relations = np.column_stack((S, z))
+    relations = S if z is None else np.column_stack((S, z))
     rhs8 = 24*relations-K8@relations
     if np.any(rhs8 % 8):
         raise ValueError('Prescribed kernel has noninteger required row sums.')
@@ -75,6 +75,13 @@ def linear_constraints(z):
         v = [signs.get(p[1], 0) for p in LABELS]
         row = {(i, j):v[i]*v[j] for i, j in EDGES if v[i]*v[j]}
         yield row, -45, 33, 'orientation_psd'
+    if connected_Q:
+        two = {i for i, p in enumerate(LABELS) if p[0] in (0, 1)}
+        for mask in range(1, 63, 2):
+            part = {j+1 for j in range(6) if (mask>>j)&1}
+            row = {(i, j):1 for i, j in EDGES if i in two and j in two
+                   and ((LABELS[i][1]//2 in part) != (LABELS[j][1]//2 in part))}
+            yield row, 1, None, 'Q_connectivity'
 
 
 def binary_obstruction(z):
@@ -177,12 +184,13 @@ def spectral_witnesses(matrix):
     return float(values[0]), witnesses
 
 
-def construct(z, seconds, max_candidates, seed):
+def construct(z, seconds, max_candidates, seed, connected_Q=False):
     start = time.monotonic()
-    rows = list(linear_constraints(z))
+    rows = list(linear_constraints(z, connected_Q=connected_Q))
     report = dict(labels=LABELS, prescribed_kernel=z.tolist(),
                   linear_relaxation=lp_probe(rows),
                   global_binary_kernel_test=binary_obstruction(z),
+                  connected_Q_required=connected_Q,
                   scope='One prescribed kernel family, not all connected Q boundaries.',
                   solver='OR-Tools CP-SAT, one worker', cuts=[], iterations=[])
     model = cp_model.CpModel()
@@ -279,21 +287,32 @@ def construct(z, seconds, max_candidates, seed):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--closed-pairs', type=int, nargs='+', required=True)
+    parser.add_argument('--closed-pairs', type=int, nargs='+')
     parser.add_argument('--x', type=int, default=4)
-    parser.add_argument('--y', type=int, required=True)
+    parser.add_argument('--y', type=int)
     parser.add_argument('--extra-cycle', type=int, nargs='+', action='append', default=[])
     parser.add_argument('--seconds', type=float, default=40)
     parser.add_argument('--max-candidates', type=int, default=100)
     parser.add_argument('--seed', type=int, default=19)
+    parser.add_argument('--kernel-json')
+    parser.add_argument('--connected-Q', action='store_true')
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-    z = prescribed_vector(args.closed_pairs, args.x, args.y, args.extra_cycle)
-    result = construct(z, args.seconds, args.max_candidates, args.seed)
-    result['template'] = dict(closed_pairs=args.closed_pairs, x=args.x, y=args.y,
-                              extra_cycles=args.extra_cycle,
-                              odd_weight=int(np.count_nonzero(z % 2)),
-                              formula='z=2*closed_indicator+incidence_rectangle+extra_incidence_cycles')
+    if args.kernel_json:
+        raw = json.loads(Path(args.kernel_json).read_text(encoding='utf-8-sig'))
+        z = np.array(raw['prescribed_kernel'], dtype=np.int64)
+        if z.shape != (N,):
+            raise ValueError('Expected34 integer kernel coordinates in the standard LABELS order.')
+        template = dict(source=args.kernel_json, odd_weight=int(np.count_nonzero(z % 2)))
+    else:
+        if args.closed_pairs is None or args.y is None:
+            parser.error('Supply --kernel-json, or --closed-pairs together with --y.')
+        z = prescribed_vector(args.closed_pairs, args.x, args.y, args.extra_cycle)
+        template = dict(closed_pairs=args.closed_pairs, x=args.x, y=args.y,
+                        extra_cycles=args.extra_cycle, odd_weight=int(np.count_nonzero(z % 2)),
+                        formula='z=2*closed_indicator+incidence_rectangle+extra_incidence_cycles')
+    result = construct(z, args.seconds, args.max_candidates, args.seed, connected_Q=args.connected_Q)
+    result['template'] = template
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')

@@ -1,0 +1,209 @@
+{
+  "labels": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      11
+    ],
+    [
+      0,
+      12
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      12
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      2,
+      10
+    ],
+    [
+      2,
+      11
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      13
+    ]
+  ],
+  "prescribed_kernel": [
+    0,
+    0,
+    2,
+    2,
+    2,
+    2,
+    0,
+    1,
+    1,
+    0,
+    -1,
+    -1,
+    0,
+    0,
+    2,
+    2,
+    2,
+    2,
+    0,
+    -1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    -1,
+    1,
+    1
+  ],
+  "linear_relaxation": {
+    "status": 0,
+    "optimal_code": 0,
+    "iterations": 488,
+    "meaning": "Numerical continuous relaxation; no exact infeasibility certificate."
+  },
+  "global_binary_kernel_test": {
+    "incidence_even": true,
+    "full_Kz_even": true,
+    "odd_weight": 10,
+    "rules_out_Conway_completion": false,
+    "reason": "A nonzero binary fixed word supported on three far stars has weight>=10.",
+    "does_not_by_itself_rule_out_local_PSD": true
+  },
+  "connected_Q_required": true,
+  "scope": "One prescribed kernel family, not all connected Q boundaries.",
+  "solver": "OR-Tools CP-SAT, one worker",
+  "cuts": [],
+  "iterations": [
+    {
+      "iteration": 0,
+      "status": "INFEASIBLE",
+      "solver_seconds": 0.25103040000000004,
+      "branches": 0
+    }
+  ],
+  "status": "PRESCRIBED_FAMILY_UNSAT_BY_CP_SAT",
+  "elapsed_seconds": 0.6100000000005821,
+  "local_candidates": 0,
+  "template": {
+    "source": "data/codex_three_star_completion_20261014/variable_kernel_731/r2_first_connected_lp_kernel.json",
+    "odd_weight": 10
+  }
+}
