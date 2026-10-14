@@ -122,3 +122,51 @@ DRAT output if the statement is ever used in a paper). Encoder tested both ways 
 ## 8. Nested families tried directly (no case split), 240 s each, launched 00:29 UTC
 kkN = the first N blocks pairwise grids at x (kk7 = T1 again as a control, kk2 = one grid through x);
 h12 = a line with 12 prisms; g6 = a line in six grids. Results in family_log.txt.
+
+## 9. The view from a line, and the model of a line with 12 prisms (hand, 00:31 UTC)
+For a line T = {a,b,c}: X_u = the 12 neighbours of u outside T (six blocks beta_u), Z = the 60 non-neighbours of T.
+* (9.1) Each y in X_a has exactly one neighbour in X_b and one in X_c: three perfect matchings X_a-X_b, X_a-X_c,
+  X_b-X_c. The prisms on T are the triangles made of one edge of each: p(T) <= 12.
+* (9.2) For each u in T, z -> N(z) cap X_u is a bijection from Z to the 60 pairs of X_u that are not blocks.
+* (9.3) One grid on two lines through x (blocks A, B): the 40 outer vertices [d,e] with d, e outside A u B are
+  the disjoint union of the neighbourhoods of the four vertices [+-a,+-b]: the complete 5-partite graph K(2,2,2,2,2)
+  on the five other blocks splits into four 2-factors.
+* (9.4) p(T) = 12. Identify X_a, X_b, X_c with one 12-set Y through the matchings (the 12 prisms are
+  m_y = {y_a,y_b,y_c}). Data: three perfect matchings beta_a, beta_b, beta_c of Y (their union is the cubic
+  multigraph Psi of section 6(c)); for each z in Z three pairwise disjoint pairs P_a(z), P_b(z), P_c(z) of Y, P_u(z)
+  not an edge of beta_u, each P_u a bijection onto the non-edges of beta_u. Proved:
+  - for y != y': #{z : y in P_a(z), y' in P_b(z)} = 2 - [beta_a pairs y,y'] - [beta_b pairs y,y'] (same for the
+    other two pairs of codings);
+  - for z in Z and y in Y, the number of neighbours z' of z in Z with y in P_a(z') is 1 if y in P_a(z), and
+    2 - [beta_a(y) in P_a(z)] - [y in P_b(z)] - [y in P_c(z)] otherwise;
+  - S(z) = P_a(z) u P_b(z) u P_c(z) contains exactly half of each connected component of Psi;
+  - Z is partitioned into 20 lines.
+  All counts are consistent (sums checked); no contradiction at this level.
+
+## 10. Dead ends of the night (do not redo)
+* (00:47 UTC) **Moments of degree 4 and 5 of the two frames give nothing beyond Codex's degree-3 bound.**
+  Degree 4 (`moments4.py`): tensors G4 = sym(g x g), V4 = sum u_x^4, E22 = sum over edges of sym(u_x^2 u_y^2),
+  W4 = sum over lines and marked point of sym(u_a^2 u_b u_c); sum_T q_T^4 = -V4/9 + 2 E22/27 + 4 W4/27. Only
+  <W4,W4> = 14164227 + (505197/4) pbar depends on pbar; the Gram matrix is positive definite for every pbar >= 0
+  (determinant affine and increasing). Control: |sum q_T^4|^2 = 231 (324 + 12 pbar) reproduced.
+  Degree 5 (`moments5.py`, `moments5_root.py`): V5, E32, W311, W221, sym(g x V3), sym(g x S3); two controls
+  reproduced; the 6 x 6 Gram matrix is positive definite exactly for pbar < 588/59 and its determinant vanishes AT
+  588/59: the same bound as degree 3, no gain. To do better one needs tensors that see pairs of lines (prisms),
+  which bring new unknown counts.
+* (00:43 UTC) H12 with only the two matchings at the other two points of the line fixed (790 classes of
+  3-edge-coloured cubic multigraphs on 12 points, `psi_orbits.py`, `psi_reps.txt`): the four most symmetric classes
+  are NOT decided by cadical in 60 s each (`run_h12.py`). A deeper case split would need the neighbourhood of a
+  further vertex: far more cases than for T1. Not pursued.
+* (00:36 UTC) kk7 (= T1) and kk6 without case split: not decided in 240 s each (`family.py`, `run_family.py`).
+* Codex confirmed T1 independently (bridge, 00:33 UTC): reduction over F_2 to 128 configurations, none lifts
+  (its code grid_star_f2.py, pure Python, about 10 s). Two different methods agree.
+* (00:53 UTC) Mixed moments across the two eigenspaces (`mixed_moments.py`: S = sum_T q_T^a x q'_T^b against
+  V = sum_x u_x^a x u'_x^b, Cauchy-Schwarz, all a, b <= 7 with a + b <= 9): the only non-trivial bound is
+  (a,b) = (3,0), Codex's 588/59. No lower bound on pbar from this family.
+
+## 11. Family kk6 (15 grids through a vertex, on six of its seven lines), in progress
+If blocks 1..6 are pairwise grids at x, every M_a with a <= 12 respects all seven blocks, so the line {x,13,14} has
+12 prisms and the only freedom is (M_13, M_14): 1971 classes under block permutations, sign changes and the
+exchange of 13 and 14 (`kk6_all.py`, `kk6_classes.txt`). With all 14 matchings prescribed cadical refutes a case in
+under a second WITHOUT further case split (seven sample cases at 00:50 UTC), except the class
+M_13 = M_14 = blocks, which is T1. Full list launched 00:51 UTC, log `kk6_all_log.txt`.
