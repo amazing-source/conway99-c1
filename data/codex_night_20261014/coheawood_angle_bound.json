@@ -78,12 +78,19 @@
   "sign_subgraph_edge_bounds": {
     "7": 0,
     "8": 0,
-    "9": 2,
-    "10": 3,
-    "11": 4,
-    "12": 6
+    "9": 1,
+    "10": 1,
+    "11": 2,
+    "12": 3
   },
   "sign_subgraph_constraint": "9*e + sum_v binom(d_same_sign(v),2) <= p*(p-7)",
+  "outside_incidence_constraint": "5*e + W <= p*p-19*p+99",
+  "outside_incidence_identity": "sum_outside (a-1)*(a-2)/2 = p*p-19*p+99-5*e-W",
+  "norm24_three_edges_case": {
+    "each_sign_graph": "three disjoint edges",
+    "outside_degree_one_in_each_sign": 42,
+    "outside_degree_two_in_each_sign": 33
+  },
   "sign_subgraphs_triangle_free": true,
   "four_cycle_complements": [
     452,

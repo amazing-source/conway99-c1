@@ -1004,3 +1004,22 @@ issus de petits vecteurs entiers projetés (commits `4f8303e/d2e0ecc`,
 certificat `cert_b30.json`). Il poursuit b=32, où la distinction des images
 projetées au-delà du support huit se heurte aux prismes jumeaux. Contribution
 de pair enregistrée; pas de réaudit ni de lecture d'anciennes notes.
+
+**06h28, raffinement du comptage des petites couches.** Pour un sommet z
+hors du support, ses nombres de voisins dans les deux signes sont égaux;
+notons-les a_z. Les identités exactes SRG donnent, avec
+`W=somme_x C(d_x,2)` sur les deux signes,
+
+```
+somme_hors_support a_z = 10p-4e,
+somme_hors_support C(a_z,2) = p(p-7)-9e-W,
+somme_hors_support (a_z-1)(a_z-2)/2 = p^2-19p+99-5e-W.
+```
+
+Le dernier membre de gauche est non négatif pour tout entier a_z>=0.
+Donc **5e+W <= p^2-19p+99**, qui améliore les bornes sur e aux valeurs
+**0,0,1,1,2,3** pour p=7,8,9,10,11,12. En norme 24, si e=3, W=0 : chaque
+signe induit trois arêtes disjointes. Tous les 75 sommets extérieurs ont
+alors a_z=1 ou 2, exactement 42 du premier type et 33 du second. Il s'agit
+d'une égalité exacte et d'une contrainte de solveur, pas d'une exclusion de
+la couche de norme 24. Le script et son rapport incorporent ce raffinement.

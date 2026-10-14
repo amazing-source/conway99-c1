@@ -99,8 +99,14 @@ def main():
                   possible_absolute_inner_products=[0, 1, 2, 4],
                   absolute_inner_product_four_requires='aligned induced four-cycle intersection',
                   absolute_inner_product_two_requires='aligned two-vertex intersection of opposite signs',
-                  sign_subgraph_edge_bounds={p: p*(p-7)//9 for p in range(7, 13)},
+                  sign_subgraph_edge_bounds={p: min(p*(p-7)//9,
+                                                    (p*p-19*p+99)//5) for p in range(7, 13)},
                   sign_subgraph_constraint='9*e + sum_v binom(d_same_sign(v),2) <= p*(p-7)',
+                  outside_incidence_constraint='5*e + W <= p*p-19*p+99',
+                  outside_incidence_identity='sum_outside (a-1)*(a-2)/2 = p*p-19*p+99-5*e-W',
+                  norm24_three_edges_case=dict(each_sign_graph='three disjoint edges',
+                                                outside_degree_one_in_each_sign=42,
+                                                outside_degree_two_in_each_sign=33),
                   sign_subgraphs_triangle_free=True,
                   four_cycle_complements=sorted(complements))
     out = Path(__file__).resolve().parents[3] / 'data' / 'codex_night_20261014'
