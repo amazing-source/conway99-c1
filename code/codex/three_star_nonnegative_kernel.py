@@ -170,7 +170,115 @@ def enumerate_coefficients(height, seconds, limit, weight_limit=None, fixed_weig
                 isomorphism_class_count_not_claimed=True)
 
 
-def search(height, seconds, max_candidates, seed, weight_limit=None, fixed_weight=None):
+def direct_profiles(weight, seconds):
+    """Exhaust weighted multisets of outside mate-pair triples directly.
+
+    Every nonnegative relation has max(q)<=weight/3. On each outside
+    letter, its three coefficients determine its degree. Sort the two
+    triples within each mate pair, and sort the five pairs. Residues
+    restrict the permitted pair types before any four-overlap choices.
+    """
+    start = time.monotonic()
+    height = weight//3
+    base = height+1
+    index = {p:i for i, p in enumerate(LABELS)}
+    triples = sorted(product(range(base), repeat=3),
+                     key=lambda a: a[0]+base*a[1]+base*base*a[2])
+    overlaps = {}
+    for a, b, c, d in product(range(base), repeat=4):
+        if a > b or (a == b and c > d):
+            continue
+        overlaps.setdefault(a+b+c+d, []).append((a, b, c, d))
+    rows, counts = [], []
+    cache = {}
+    leaves = 0
+    def overlap_choices(total, residue):
+        key = total, residue
+        if key not in cache:
+            u0, u1, u2 = total
+            answer = []
+            for a, b, c, d in overlaps.get(weight-sum(total), []):
+                d0, d1, d2, d3 = a+c+u0, b+d+u1, a+b+u2, c+d
+                if all(v % 8 == residue for v in
+                       (3*d0+d1, 3*d1+d0, 3*d2+d3, 3*d3+d2)):
+                    answer.append((a, b, c, d))
+            cache[key] = answer
+        return cache[key]
+    def consume(chosen, residue):
+        nonlocal leaves
+        leaves += 1
+        if leaves % 1000 == 0 and time.monotonic()-start >= seconds:
+            raise TimeoutError
+        chosen = sorted(chosen, key=lambda pair:pair[2])
+        outside = [triple for pair in chosen for triple in pair[1]]
+        if len({triple[2] for triple in outside}) == 1:
+            return
+        total = tuple(sum(a[c] for a in outside) for c in (0, 1, 2))
+        for a, b, c, d in overlap_choices(total, residue):
+            vector = [0]*N
+            for p, value in (((0, 2), a), ((1, 2), b), ((0, 3), c), ((1, 3), d)):
+                vector[index[p]] = value
+            for x, triple in zip(range(4, 14), outside):
+                for centre in (0, 1, 2):
+                    vector[index[centre, x]] = triple[centre]
+            if max(vector) < 2:
+                continue
+            if any(min(vector[i] for i, p in enumerate(LABELS) if centre in p) != 0
+                   for centre in (0, 1, 2)):
+                continue
+            q = np.array(vector, dtype=np.int64)
+            assert int(sum(q)) == weight
+            rhs8 = 24*q-K8@q
+            assert not np.any(rhs8 % 8)
+            rhs = rhs8//8
+            if np.any(rhs < 0) or np.any(rhs > weight-q):
+                continue
+            rows.append(dict(q=vector, weight=weight,
+                             impossible_row=first_impossible_row(vector)))
+    complete = True
+    try:
+        for residue in (0, 4):
+            minimum = 0 if residue == 0 else 2
+            types = []
+            for i, first in enumerate(triples):
+                first_degree = sum(first)
+                first_code = first[0]+base*first[1]+base*base*first[2]
+                for second in triples[i:]:
+                    second_degree = sum(second)
+                    cost = first_degree+second_degree
+                    if cost > weight-4*minimum:
+                        continue
+                    if (3*first_degree+second_degree) % 8 != residue or \
+                       (3*second_degree+first_degree) % 8 != residue:
+                        continue
+                    second_code = second[0]+base*second[1]+base*base*second[2]
+                    types.append((cost, (first, second), base**3*first_code+second_code))
+            types.sort(key=lambda pair:(pair[0], pair[2]))
+            before = leaves
+            def visit(first_index, left, remaining, chosen):
+                if not left:
+                    consume(chosen, residue)
+                    return
+                for i in range(first_index, len(types)):
+                    pair = types[i]
+                    if pair[0]*left > remaining:
+                        break
+                    visit(i, left-1, remaining-pair[0], chosen+[pair])
+            visit(0, 5, weight, [])
+            counts.append(dict(residue=residue, pair_types=len(types),
+                               five_pair_multisets=leaves-before))
+    except TimeoutError:
+        complete = False
+    return dict(mode='direct_five_pair_multiset_enumeration', weight=weight,
+                height=height, complete=complete, normalized_profiles=len(rows),
+                profiles=rows, row_domain_survivors=sum(r['impossible_row'] is None for r in rows),
+                elapsed_seconds=time.monotonic()-start, five_pair_multisets=leaves,
+                residue_counts=counts, labels=LABELS, graph_not_constructed=True,
+                isomorphism_class_count_not_claimed=True)
+
+
+def search(height, seconds, max_candidates, seed, weight_limit=None, fixed_weight=None,
+           profiles_path=None, cuts_path=None):
     start = time.monotonic()
     report = dict(mode='new_graph_construction', height=height,
                   weight_limit=weight_limit, fixed_weight=fixed_weight,
@@ -196,6 +304,15 @@ def search(height, seconds, max_candidates, seed, weight_limit=None, fixed_weigh
             wedges.append(value)
         model.Add(sum(wedges)+edge(i, j) <= 2-len(set(LABELS[i]).intersection(LABELS[j])))
     q, w, d, t, rhs = coefficients(model, height, weight_limit, fixed_weight)
+    if profiles_path is not None:
+        profile_data = json.loads(Path(profiles_path).read_text(encoding='utf-8-sig'))
+        assert profile_data['complete'] and profile_data['source_enumeration_complete']
+        remaining_profiles = [row['q'] for row in profile_data['records'] if
+            row.get('certificate', {}).get('status') != 'EXACT_NONNEGATIVE_LINEAR_COMBINATION_CONTRADICTION']
+        model.AddAllowedAssignments(q, remaining_profiles)
+        report['exact_preprocessing'] = dict(source=str(profiles_path),
+            remaining_profiles=len(remaining_profiles),
+            discarded_only_with_exact_row_or_Farkas_certificates=True)
     for i in range(N):
         products = []
         for j in range(N):
@@ -207,6 +324,19 @@ def search(height, seconds, max_candidates, seed, weight_limit=None, fixed_weigh
             products.append(value)
         model.Add(sum(products) == rhs[i])
     signatures = set()
+    if cuts_path is not None:
+        prior = json.loads(Path(cuts_path).read_text(encoding='utf-8-sig'))
+        for cut in prior['cuts']:
+            name = cut['matrix']
+            v = np.array(cut['vector'], dtype=np.int64)
+            assert name in ('T', 'U') and len(v) == N
+            signatures.add((name, tuple(map(int, v))))
+            expr = sum(int(v[i]*v[j])*edges[i, j] for i, j in EDGES if v[i]*v[j])
+            if name == 'T':
+                model.Add(16*expr <= int(24*(v@v)-v@K8@v))
+            else:
+                model.Add(30*expr >= int(-v@U0@v))
+            report['cuts'].append(dict(matrix=name, vector=list(map(int, v)), source=str(cuts_path)))
     for iteration in range(max_candidates):
         remaining = seconds-(time.monotonic()-start)
         if remaining <= 0:
@@ -288,17 +418,24 @@ def main():
     parser.add_argument('--seed', type=int, default=37)
     parser.add_argument('--coefficients-only', action='store_true')
     parser.add_argument('--enumerate-coefficients', action='store_true')
+    parser.add_argument('--direct-profiles', action='store_true')
     parser.add_argument('--profile-limit', type=int, default=10000)
+    parser.add_argument('--profiles-file')
+    parser.add_argument('--cuts-file')
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-    if args.enumerate_coefficients:
+    if args.direct_profiles:
+        if args.fixed_weight is None:
+            parser.error('--direct-profiles requires --fixed-weight')
+        report = direct_profiles(args.fixed_weight, args.seconds)
+    elif args.enumerate_coefficients:
         report = enumerate_coefficients(args.height, args.seconds, args.profile_limit,
                                         args.weight_limit, args.fixed_weight)
     elif args.coefficients_only:
         report = coefficient_probe(args.height, args.seconds, args.weight_limit, args.fixed_weight)
     else:
         report = search(args.height, args.seconds, args.max_candidates, args.seed,
-                        args.weight_limit, args.fixed_weight)
+                        args.weight_limit, args.fixed_weight, args.profiles_file, args.cuts_file)
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')

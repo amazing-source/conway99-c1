@@ -2509,3 +2509,35 @@ lignes, enumeration INCOMPLETE. Aucun verdict d'exclusion sur w16.
 Filtre supplementaire prouve : T_ii=20/8 et T_ij>=-10/8 donnent
 3*q_i<=w pour toute relation non negative. La hauteur necessaire pour
 un poids fixe16 est donc au plus5, ce qui facilite une enumeration ciblee.
+
+Suite : le pilote CP avec hauteur5 reste incomplet apres40s (803 profils,
+226 survivants). Remplace par une enumeration COMBINATOIRE directe :
+triples de coefficients sur chaque lettre exterieure, paires de triples
+compatibles avec le residu0/4, multisets de cinq paires, puis les quatre
+coefficients de recouvrement. La borne3q_i<=w fixe la hauteur. La preuve
+de couverture est le tri des flips/permutations ; pas de solveur general
+pour cette enumeration. w12 :19 profils en0,078s, ce qui fournit aussi
+une couverture directe du resultat precedent. w16 :1420 profils COMPLETS
+en2,641s, dont993 exclus par le domaine exact d'une seule ligne.
+
+Les427 survivants w16 passent tous au filtre lineaire en17,735s :151
+contradictions EXACTES de Farkas,276 faisables fractionnairement. Les
+certificats compacts citent les lignes originales, sont re-deployes et
+additionnes en entiers avant sauvegarde.80 n'utilisent que noyau et
+bornes d'aretes ;71 utilisent aussi les plafonds aux lettres. Aucun
+n'utilise une coupe spectrale. Total1144/1420 profils exclus exactement.
+Ce n'est PAS une preuve d'exclusion du poids16.
+
+Un modele unique autorise les276 profils restants et reutilise les six
+coupes spectrales du pilote H2. En40,031s :quatre nouveaux candidats
+locaux de poids16, tous T indefini, six nouvelles coupes exactes. Timeout
+ensuite ; aucun bord PSD produit, aucune exclusion de la famille276.
+Les calculs sont termines, aucun processus de recherche en cours.
+
+Corollaire net de la borne precedente : pour Q connexe et T PSD, les
+vecteurs entiers non negatifs de kerT de somme<=12 sont exactement0 et
+les trois etoiles individuelles. Les coefficients d'un vecteur entier
+dans leur span se lisent sur les groupes exclusifs, donc sont entiers ;
+la non-negativite les rend non negatifs et leur somme vaut w/12. Une
+quatrieme relation normalisee commence donc au poids16. Cela explique
+une obstruction aux relations courtes, sans prouver le rang31 general.
