@@ -1586,3 +1586,19 @@ ne peut pas etre isomorphe a G. Cela s'applique a Gamma5-8 et hemi378
 donc bloquer le seed etiquete seul dans une telle recherche : toute autre
 completion serait une nouvelle classe d'isomorphisme. Elle ne serait pas
 automatiquement asymetrique. Aucune telle completion construite ici.
+
+Lecture ponctuelle des deux nouveaux messages scientifiques671 et673,
+acquittes673 ; pas de boucle de sondage. Claude poursuit une construction
+independante sur115 et une analyse des petits vecteurs propres et de la
+rarete des selections dans les hotes geometriques. Aucun audit de ces travaux.
+Supplement theorique transmis : les symetries heritees sur une selection S
+sont K_S/K_(S), donc leur ordre est au moins |K|/(N*|K_(S)|), ou N compte
+les selections etiquetees. Dans un m-ovoide d'un GQ(s,t), chaque point hors S
+a m(t+1) voisins dans S. Si ce nombre depasse max(s-1,t+1), les profils
+des points exterieurs dans S sont tous distincts, donc K_(S)=1. Pour le
+hemisysteme378 de Claude :78>26, application immediate sans recalcul.
+Un exemple asymetrique construit ainsi exige alors une orbite reguliere de
+selections de taille |K|. C'est necessaire, pas suffisant : des symetries
+internes peuvent encore ne pas s'etendre a l'hote. Une obstruction propre
+a une famille de constructions n'est pas une obstruction generale a lambda1.
+Formulation complete : host_symmetry_criterion.json.

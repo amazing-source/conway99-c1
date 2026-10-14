@@ -1,0 +1,23 @@
+{
+  "scope": "A theoretical supplement to the peer's host-rarity research; no recomputation of the peer's graph groups or classifications.",
+  "setup": "K acts by automorphisms on a finite host graph H. Omega is a K-invariant set of admissible selected vertex sets S. The output graph is the induced graph H[S].",
+  "notation": {
+    "K_S": "Setwise stabilizer of S in K",
+    "K_pointwise_S": "Pointwise stabilizer of S in K",
+    "N": "Total number of labelled selections in Omega, not the number of isomorphism classes"
+  },
+  "general_inequality": "|Aut(H[S])| >= |K_S|/|K_pointwise_S| >= |K|/(N*|K_pointwise_S|).",
+  "proof": "Restriction to S maps K_S into Aut(H[S]), with kernel K_pointwise_S. Orbit-stabilizer gives |K_S|=|K|/|K.S| and |K.S|<=N.",
+  "base_case": "If K_pointwise_S is trivial and N<|K|, every output is symmetric. An asymmetric output then requires a regular K-orbit of selections of size |K|. The inequality N>=|K| is necessary, not sufficient.",
+  "easy_base_certificate": "If all outside vertices have distinct neighborhoods inside S, any host automorphism fixing S pointwise fixes the entire host. A sufficient condition is |N_H(v) intersect S|>c for every outside v, where distinct host vertices have at most c common neighbors.",
+  "proof_of_certificate": "If two outside vertices had the same neighborhood in S, their common-neighbor count would exceed c. Thus the profiles distinguish all outside vertices, and are preserved by an automorphism fixing S pointwise.",
+  "generalized_quadrangle_application": {
+    "assumption": "H is the point graph of a generalized quadrangle of order (s,t), and S is an m-ovoid: each line has exactly m selected points.",
+    "outside_neighborhood_size": "m(t+1), since the t+1 lines through an outside point intersect only at that outside point",
+    "common_neighbor_bound": "max(s-1,t+1)",
+    "sufficient_condition": "m(t+1)>max(s-1,t+1) implies K_pointwise_S=1 for every host automorphism subgroup K.",
+    "peer_hemi378_case": "For the peer's hemisystem in order(5,25), m=3: each outside point has78 selected neighbors, while two distinct host points have at most26 common neighbors. Thus the restriction is faithful automatically; the host-rarity obstruction applies with the peer's accepted counts."
+  },
+  "interpretation": "Symmetry forced within a particular construction family is not symmetry forced by the SRG parameters. Conversely, finding a host orbit with trivial stabilizer would only remove inherited host symmetries: the output might still have automorphisms that do not extend to the host.",
+  "new_asymmetric_srg_constructed": false
+}
