@@ -477,3 +477,46 @@ An independent reader (a separate agent, read-only, given the files, not my conc
   E_8^m and with sqrt7 E_8 (b = 8, 12, 16, 20, 24, 28, 32, 36, 40): the Fricke relation holds exactly.
 Status of Theorem 20.4 (rank_{F_7}(A + 4I) >= 31): hand lemmas + exact certificates + one independent reading;
 not reviewed by a human; not compared with the theta-LP of 07/10.
+
+## 24. Next steps for the ranks b = 30..42 (proposal, 04:14 UTC)
+(1) Sharper counts of short integral eigenvectors (targets of 22): norm 16 (type B dominates: 249480 from 99 * 560
+    * 36 / 8; anchoring at a codegree-2 pair of positives gives the same number) and a first count for norm 18
+    (9 + 9, e(P) <= 2).
+(2) The 3-part has not been used. The class-0 sublattice M_3 = Lambda/sqrt7 of A has discriminant Z/9 + (Z/7)^(44-b)
+    (cyclic 3-part: 7Ee_x/sqrt7 has order exactly 9 modulo M_3, because K_+ only has sums = 0 mod 9), and
+    sqrt7 M_3* = K_9 = K_- + Z 7Ee_x contains the 198 VERTEX vectors +-7Ee_x of norm 196/9. Theta series of
+    K_-, M_3 and K_9 live at level 63 and are exchanged by W_7 and W_9: a level-63 programme would add the vertex
+    shell (at least 198 vectors of norm 196/9 in the classes +-1 mod 9) next to the line shell used here. New fact:
+    the vertices themselves, not yet used by any theta argument of the night. Cost: a basis of M_22(Gamma_0(63))
+    with characters and the Weil representation of Z/9, a few hours.
+(3) Compare with the theta-LP of 07/10 (not opened tonight).
+
+## 25. Vertex-derived shells of A: b = 30 excluded (04:21 UTC)
+**25.1 Small vectors of A.** A contains sqrt7 E z for every integer z with 3 | sum z, of norm
+3|z|^2 - z^T A z + (sum z)^2/9. With entries 0, +-1 and support <= 4:
+  norm 6: z = e_x - e_y (x, y non-adjacent; 2 * 4158 = 8316) and 1_S, S an induced path (8316 paths, 16632
+          vectors with signs): a_3 >= 24948.
+  norm 8: e_x - e_y adjacent (1386); 1_S, S = edge + vertex adjacent to neither end (693 * 72 = 49896, 99792 with
+          signs); e_x + e_y - e_u - e_w for two edges with no edge between them (693 * 366 / 2 = 126819 pairs,
+          253638 vectors; for an edge xy the 72 vertices far from it span 366 edges: the 12 neighbours of the third
+          point of the line xy have 11 neighbours among them, the 60 others 10): a_4 >= 354816.
+  norm 10: independent triples (98406, 196812 with signs); splits {ab}|{cd} of K2 + 2K1 and of P4 (2 vectors each):
+          a_5 >= 196812 + 3035340 + 182952 = 3415104.
+  norms 12, 14, 16: splits of 4-sets with t = e_xy + e_uw - cross = 0, -1, -2: a_6 >= 10869012, a_7 >= 6503112,
+          a_8 >= 1555092.
+  The 4-vertex counts used: C4 2079, paw 8316, triangle + K1 13860, claw 27720, P4 91476, P3 + K1 507276,
+  2K2 126819, K2 + 2K1 1517670, 4K1 1469160 (by difference; checked: sum of edge counts = 693 * C(97,2) = 3226608).
+**25.2 Distinctness.** Two such z, z' give the same vector iff z - z' lies in K_+ = ker E cap Z^99; sums are in
+{0, +-3} so the difference has sum 0 and lies in V_3, with entries in {0, +-1, +-2} and support <= 8. An integral
+3-eigenvector with entries +-1 needs every positive vertex to have >= 3 positive neighbours (pi - nu = 3), so its
+positive part induces minimum degree >= 3, impossible on <= 5 vertices (K_4 and the 8-edge graphs on 5 vertices
+contain an edge in two triangles): support >= 12. With an entry 2 at x: the positive neighbours of x carry >= 6, the
+negative mass is >= 8 so |N| >= 4 and |P| <= 4, forcing three neighbours of value 2 with no other positive mass
+around them: a neighbour y of value 2 sees at most x and one more positive, 4 < 6. So the vectors are distinct.
+**25.3 Result.** `theta7_cert2.py 30 "a2>=462,a3>=24948,a4>=354816,a5>=196812,c7<=7920,c8<=360360" 30`:
+INFEASIBLE, certificate verified exactly (cert_b30.json). With all of 25.1, b = 32, 34, 36 stay feasible.
+**Theorem (25.3).** If srg(99,14,1,2) exists then rank_{F_7}(A + 4I) is odd and at least 33 (b in {32, ..., 42}).
+**25.4 b = 32.** Under all bounds (`theta7_b32.py`): a_3 <= 1.24e5, a_4 <= 1.63e6, a_5 <= 3.4e7 and a_6 >= 1.1e9.
+More norm-8 vectors exist with support 5 and 6 (C4 or paw + a far vertex: 212058 + 831600; two lines with one edge:
+>= 33264; a line and an induced path in its far set: 231 * 1584 + 6P pairs), which would pass 1.63e6, but their
+distinctness is not automatic beyond support 8 (twin prisms give integral 3-eigenvectors of support 12): open.
