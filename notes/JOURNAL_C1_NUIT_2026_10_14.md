@@ -501,3 +501,77 @@ arêtes de G[Y] forment un graphe6-régulier, et chacune de ces arêtes a
 son unique voisin commun dans X. Cela peut servir à une réduction de la
 complétion des192 types ; aucune borne abordable sur cette complétion
 n'est encore démontrée.
+## 04h56 — Extension à tout triangle et propagation dans les tuiles locales
+
+Le tour précédent est un progrès vérifié : lemme P3 et exclusion598/790,
+commit dcef9ae. LAB633 a confirmé le lemme et proposé sa lecture sur les
+quatre couplages d'une grille locale. Le présent prolongement s'applique
+sans hypothèse p(T)=12 et sans exclure préalablement les co-Heawood.
+
+**Tous les partenaires de prisme de T sont disjoints.** Si U,V en
+partageaient un sommet x, voisin de t_i dans T, les non-adjacents x,t_j
+(j!=i) auraient trois voisins communs : t_i et les deux sommets distincts
+de U,V voisins de t_j. C'est impossible.
+
+**Alignement forcé.** Écrire T={t_i}, U={u_i}, V={v_i}, avec arêtes de
+prisme t_i-u_i et t_i-v_i. Une arête u_i-v_j pour i!=j donnerait aux
+non-adjacents u_i,t_j les trois voisins communs t_i,u_j,v_j. Donc les
+arêtes U-V possibles sont uniquement u_i-v_i, i=0,1,2.
+
+**Exactement deux arêtes U-V est impossible.** Dans ce cas S=T+U+V a
+neuf sommets et17 arêtes ; f=(3I-A)1_S+1 a norme14, vaut1 aux deux
+sommets u_k,v_k non couplés et0 aux autres sommets de S. Les deux positifs
+partagent t_k de valeur0 : la même preuve de saturation que pour la
+fermeture P3 donne la contradiction. Les prétendus cas « tordus » de
+(3,3,2) sont déjà écartés par l'alignement et mu=2 ; précision transmise
+à LAB634. Aucun cas co-Heawood n'est laissé ouvert pour ce motif précis.
+
+Ainsi, si R désigne toujours le graphe des prismes, on a les zéros
+supplémentaires
+
+    (R²)_{TU}=0 si T,U se rencontrent,
+    (R²)_{TU}=0 si T,U sont disjoints avec exactement deux arêtes entre eux.
+
+Sur les p(T) partenaires d'un triangle quelconque, les arêtes de G entre
+triangles partenaires forment trois appariements PARTIELS alignés. Leur
+multigraphe est simple de degré au plus3, sauf composantes isolées à
+arêtes triples. En particulier, le voisinage d'un sommet de R induit un
+appariement : chaque arête de R appartient à au plus un triangle de R.
+Les partenaires restants ne sont pas déclarés complétables.
+
+**Clauses pour les partenaires.** Pour chaque paire de partenaires déjà
+identifiés, les six arêtes non alignées sont interdites (clauses unités).
+Pour les trois arêtes alignées e0,e1,e2, interdire exactement deux valeurs1 :
+
+    (!e0 or !e1 or e2), (!e0 or e1 or !e2), (e0 or !e1 or !e2).
+
+Ces clauses peuvent propager dès que deux des trois états sont connus.
+Elles généralisent les72 clauses spécialisées du cas p(T)=12.
+
+**Quatre couplages autour d'un sommet (lecture LAB633).** Dans les quatre
+sommets Q_ij associés à deux droites du voisinage de v, les quatre arêtes
+du carré sont les quatre couplages locaux aux extrémités des deux droites.
+Trois couplages vrais imposent le quatrième. Sinon les neuf sommets
+forment une grille privée d'une arête :17 arêtes, deux sommets de degré3,
+les sept autres de degré4. Les deux sommets de degré3 partagent le troisième
+point de leur droite, de degré4. Le vecteur f de norme14 donne encore la
+contradiction. Les diagonales supplémentaires sont déjà interdites par
+lambda=1 à partir des trois arêtes du carré.
+
+Pour chaque quadruplet de variables, quatre clauses de longueur4
+interdisent exactement trois valeurs1. Il y a21 tuiles, donc84 clauses
+par sommet racine dont les84 sommets extérieurs sont déjà coordonnés.
+Si tous les voisinages sont coordonnés, cela donne8316 clauses avant
+suppression des doublons. Ce compte ne suppose pas que ces coordonnées
+soient disponibles dans n'importe quel modèle global.
+
+**Artefact.** `code/codex/night_20261014/local_prism_propagation.py` fournit
+les constructeurs de clauses et les contrôles exacts, sans solveur externe.
+Il parcourt les34 appariements possibles entre les triangles extrêmes de
+deux prismes normalisés :26 sont éliminés par les nombres de voisins
+communs, trois par le vecteur de norme14, cinq passent ces seules conditions
+(zéro arête, une arête de trois façons, ou trois arêtes). Il vérifie aussi
+les quatre grilles privées d'une arête et les tables de vérité des clauses.
+Le rapport est `data/codex_night_20261014/local_prism_propagation.json`.
+Exécution :0,06s. Il s'agit de propagation nécessaire, pas d'une nouvelle
+campagne UNKNOWN ni d'une exclusion de la famille des192 types restants.
