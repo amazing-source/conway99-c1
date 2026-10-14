@@ -20,14 +20,16 @@ C = Codex result not re-derived by me, H = heuristic/observation. Items are stat
 ## B. Symmetry
 | # | statement | status |
 |---|---|---|
-| B1 | Behbahani-Lam: a prime dividing |Aut| is 2 or 3 (with further restrictions) | literature |
+| B1 | Literature (external input, summarised in work/LITERATURE.md and INVENTORY_C2_CAMPAIGNS.md F1, not re-proved): Makhnev-Minakova 2004 (an involution forces |Aut| to divide 42), Behbahani-Lam 2011 (prime orders), Crnkovic-Maksimovic 2020 (no group of order 6 or 9), Cesarz-Woldar 2025 (2 divides |Aut| => |Aut| divides 6; 7 divides |Aut| => Aut = Z7). Project inventory: |Aut| is 1, 2 or 3 | literature (corrected 14/10: the earlier line "a prime dividing |Aut| is 2 or 3" was my shorthand, not a quoted statement) |
 | B2 | C2: no automorphism of order 2 (the project's Route C, 156/156, papers written) | P + M (project) |
 | B3 | C3: no automorphism of order 3 (proof written; external review by Woldar-Cesarz in progress) | P (under review) |
 | B4 | C7 excluded (memory: "with C2, C3, C7 excluded and Behbahani-Lam, every srg(99,14,1,2) is asymmetric") | P (project) |
-| B5 | Hence Aut = 1: a Conway graph, if it exists, is ASYMMETRIC | follows from B1-B4 |
+| B5 | Hence Aut = 1: a Conway graph, if it exists, is ASYMMETRIC | follows from B1-B4 (whether the inventory line in B1 already uses C7 is not checked) |
 | B6 | No regular spread: the quotient would be srg(33,12,1,6), multiplicity 44/7 not an integer; regular spreads occur in the (1,2) family only at v = 9 and 243 | P (12/10) |
 | B7 | Not a conference graph (k = 14 != 2 mu = 4): no regular two-graph structure (this campaign, 14/10) | P |
-| B8 | Godsil-McKay switching with a set of size 4 is impossible in the family (1,2) for k >= 6 (counting with mu = 2); at k = 4 (Paley 9) it exists but returns Paley 9 | P (this campaign) |
+| B8 | No Godsil-McKay switching set of ANY size (one switching class) in srg(v,k,1,2) for k >= 14: (k - delta)(m - 1) + m n_2m = 4m - 2 - delta^2 has no solution (NOTE_ASYM_PALEY 7.2); at k = 4 (Paley 9) such sets exist and return Paley 9. Several classes (t >= 2): not covered | P (this campaign, 14/10) |
+| B9 | Forced-symmetry principle: for every partial structure H of a Conway graph (pairs freed), the number of completions of H is at least |Aut(H)|; a piece with a unique completion is rigid. At a vertex x, the matching data F_x has at least |Aut(F_x)| completions (|Aut(F_x)| <= 645120) | P (orbit-stabiliser + B5; NOTE 7.1, 8.4) |
+| B10 | No symmetric srg(99,14,1,2) exists (B5), so an asymmetric one cannot arise from a symmetric one by any move (switching, trade): unlike every asymmetric srg at 25-26 (all children of the two-graph with group S3) and unlike the trades at 243 (which keep the stabiliser of the move) | P (consequence) |
 
 ## C. Torsion and grids (Codex's lemma corpus, note 100 and later notes)
 | # | statement | status |
@@ -53,6 +55,8 @@ C = Codex result not re-derived by me, H = heuristic/observation. Items are stat
 | D4 | integral 3-eigenvectors: entries <= 2 imply support >= 12 (equality: twin prisms); full classification for |h|_1 <= 16 (48 configurations, <= 911178 signed kernels) | P (night) / C |
 | D5 | binary words of ker_7(A + 4I) have weight 0, 63 or 77 (note 178) | C (checked by Codex) |
 | D6 | p-ary codes of the lines contain their duals (p = 2, 3, 5) | C |
+| D7 | theta-LP (07/10): window r in {35..43} with a_7 <= 990 / 842, a_8 <= 27720, b_4 >= 2.73 million; night 14/10: rank_7(A + 4I) >= 35 by exact LP + certificates (a rediscovery, weaker than D1) | M (memory c1-start, NOTE_NIGHT) |
+| D8 | Global attack 12/10: co-Heawood configurations without the rank condition leave about 3e22 second rows per base; norm 18 vectors are not killed by positivity; "critical path = norm 18 or 26 at every rank" | M / H (memory c1-start) |
 
 ## E. Cocliques, boundaries, completions (Codex's asymmetry repository, 12-14/10)
 | # | statement | status |

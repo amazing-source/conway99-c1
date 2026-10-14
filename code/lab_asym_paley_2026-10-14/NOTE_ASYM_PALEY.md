@@ -97,3 +97,146 @@ forces mean >= 14.2, the coherent profile of note 100 is maximal torsion 84; ran
   last automorphisms.
 * 4.3 In the (1,2) family: look for a parent structure (extension of the partial quadrangle by one point, Delsarte
   cliques of the extension) and test it on Paley 9 (extension = two-graph on 10 points?) and on the 243 graphs.
+
+# Part 2 (14/10/2026, 11:10-12:10 UTC): how the automorphisms die, and the same law inside Conway's family
+
+## 5. srg(25,12,5,6): the parents, explicitly (anatomy25.py -> anatomy25.log, anatomy26.py -> anatomy26.log)
+**5.1 The parent groups as permutation groups on 26 points** (Aut(T)_p = Aut(T_p), plus one isomorphism T_p -> T_q
+per point q of the orbit, extended by p -> q; every element checked on the coherent triples).
+* T6: order 6, non-abelian = S3. Its 3 involutions each fix 6 points (5, 8 and one point of each orbit of size 3);
+  its 2 elements of order 3 fix exactly the points 5 and 8. Orbits: 6, 6 (regular) -> #4, #2 (Aut 1); 3, 3, 3, 3 ->
+  #5, #6, #12, #1 (Aut 2 = the involution fixing the point); 1, 1 -> #7, #8 (Aut 6 = all of S3).
+* T39: Frobenius group 13:3 (26 elements of order 3, 12 of order 13); orbits 13, 13 -> #9, #3 (Aut 3).
+* T72: non-abelian of order 72 (element orders 1:1, 2:21, 3:26, 4:18, 6:6); orbits 12, 12, 1, 1 -> #10, #13 (Aut 6),
+  #11, #14 (Aut 72).
+* Paley two-graph: order 15600 (= |PSigmaL(2,25)|), transitive -> #15 (Aut 600).
+* The two-graph on 10 points behind Paley 9: order 720 with the element-order statistics of S6 exactly
+  (1:1, 2:75, 3:80, 4:180, 5:144, 6:240; PGL(2,9) and M10 have elements of order 8): Aut(Paley 9) = point stabiliser
+  of S6 on 10 points, order 72.
+
+**5.2 Complements.** #2 <-> #4, #7 <-> #8, #1 <-> #6, #5 <-> #12, #3 <-> #9, #10 <-> #13, #11 <-> #14, #15 self.
+So there is ONE asymmetric srg(25,12,5,6) up to complementation.
+
+**5.3 The srg(26,10,3,4) in the switching classes.** T72: #1, #2; T6: #3, #4, #5, #9, #10; T39: #6, #7; Paley: #8.
+The asymmetric srg(26,10,3,4) #10 also lies in T6. **Every asymmetric graph at 25 and 26 comes from the one parent
+T6 = S3, by a choice (a point, or a regular graph of the class) in a regular orbit of S3.**
+
+**5.4 Godsil-McKay moves obey the same law.** For every switching set D (170 sets), the stabiliser of D in Aut(G) is
+contained in Aut(G') (0 violations): it is the group common to G and G'. Moves also CREATE symmetry: #1 -> #3 (Stab 1,
+target Aut 3), #3 -> #7 (Stab 3, target 6), #1 -> #8 (Stab 2, target 6). The asymmetric #2 is one move away from
+graphs with automorphisms of order 2 (#1, #6, #12) and 3 (#3, #9).
+
+**5.5 A hand-checkable proof of asymmetry.** Colour each vertex by the isomorphism type of its local graph G[N(v)]
+(12 vertices): #2 gets 17 colours (12 singletons), #4 gets 15 (11 singletons); equitable refinement of this colouring
+is discrete, so every automorphism fixes every vertex. In all 15 graphs the refinement of the local-type colouring
+equals the orbit partition exactly.
+
+## 6. The same law inside Conway's family: srg(243,22,1,2) (pairgroup243.py, boundary243.py, firstorder.py)
+Tools: 2-dim WL with the geometric initial colours of my aut_tools.py (12/10), refinement by all layers, every map
+checked on every layer. All runs below take about one second each (logs pair243.log, pair243_twin.log,
+boundary243.log, firstorder243.log).
+
+**6.1 Trades (same labelled vertex set): group common to G and G' = stabiliser of the trade in Aut(G).**
+
+| pair | pairs changed | vertices touched | lines exchanged | Aut(G), Aut(G') | common |
+|---|---|---|---|---|---|
+| BvLS -> twin | 1440 | 180 | 240 | 3849120, 4320 | 4320 (all of Aut(twin)) |
+| fifth -> sixth | 1620 | 162 | 360 | 2916, 108 | 54 |
+| fifth -> seventh | 2268 | 243 | 468 | 2916, 162 | 27 |
+| fifth -> eighth | 2268 | 243 | 468 | 2916, 108 | 54 |
+| sixth -> seventh | 648 | 81 | 108 | 108, 162 | 27 |
+| sixth -> eighth | 648 | 81 | 108 | 108, 108 | 54 |
+| seventh -> eighth | 648 | 81 | 108 | 162, 108 | 27 |
+
+* The twin is "BvLS switched at a line L" (the 180 vertices far from L) and Aut(twin) = Stab_{Aut BvLS}(L)
+  (3849120 / 891 lines = 4320): the exact analogue, in Conway's family, of a two-graph descendant (Aut = stabiliser of
+  the chosen element), with a line in place of a point. BvLS is line-transitive, so this twin is unique.
+* The fifth to eighth graphs share a common group of order 27 (9 orbits of 27): a core that no trade removed; each
+  trade kept half or a sixth of the symmetry and created the rest (sixth: 54 kept, 54 new; seventh: 27 kept, 135 new).
+
+**6.2 Boundary group versus number of completions** (block = 81 vertices; its inner pairs erased and the block marked;
+completion counts from my exhaustive lists of 13/10; block stabilisers by blockstab243.py).
+
+| graph, erased block | Aut(boundary) | completions | each completion keeps at least |
+|---|---|---|---|
+| fifth, block 2 (block 0 the same) | 3888 | 6 (fifth x4 = one orbit, Gamma4 x2) | 648 (the fifth: exactly 972 = its block stabiliser) |
+| sixth, block 0 | 108 | 6 (sixth, seventh, eighth, twice each) | 18 (the sixth: exactly 54, orbit of 2) |
+| sixth, block 1 | 54 | 1 | 54 (rigid) |
+
+This is why every trade of 12-13/10 kept symmetry (and why "all 40 translations forbidden" was UNSAT on one block).
+
+**6.3 Where the symmetry of a vertex lives: matchings (first order) or outer lines (second order).**
+F_x = x, its lines, the outer vertices with their inner neighbours and the matchings M_a (the graph minus the edges
+of the outer lines). Always Aut(G)_x <= Aut(F_x); the ratio is a lower bound for the number of completions of F_x.
+
+| graph | Aut(G)_x versus Aut(F_x), by vertex orbit |
+|---|---|
+| BvLS (Hamming points) | 15840 vs 81749606400 = 2^11 11! (ratio 5160960) |
+| twin | Hamming points 1440 vs 2^11 11!; orbit 60: 72 vs 1152; orbit 180: 24 vs 48 |
+| Gamma3 | 32 vs 64; 8 vs 16; 8 vs 16 |
+| Gamma4 | 48 vs 192; 24 vs 48 |
+| fifth, sixth, seventh, eighth (no flat line, mean torsion 108-141 of 220) | EQUAL at every vertex (12; 4, 2, 2, 1; 2, 2, 2; 4, 2, 2, 1) |
+
+At a Hamming point the matchings are fully symmetric and only the outer lines break the symmetry; in the high-torsion
+graphs the matchings alone already carry exactly the stabiliser (including the trivial stabilisers of the orbits
+of 108).
+
+## 7. Three short proofs
+**7.1 Forced-symmetry principle.** Let H be a partial structure (some pairs decided, the others free) and C(H) its
+set of labelled completions. Aut(H) permutes C(H), and for X in C(H) the stabiliser of X in Aut(H) consists of
+automorphisms of X. Orbit-stabiliser: |Stab(X)| >= |Aut(H)| / |C(H)|. Hence: if |C(H)| < |Aut(H)|, every completion
+is symmetric; an ASYMMETRIC graph X satisfies |C(H)| >= |Aut(H)| for every partial structure H obtained from X by
+freeing pairs (a nontrivial element of Aut(H) fixing X is a nontrivial automorphism of X).
+Instances: Paley 9 (7.3: H = local skeleton, |C| = 1); two-graph descendants; GM moves (5.4); block trades (6.2);
+first-order data (6.3).
+
+**7.2 No Godsil-McKay switching set in the family (1,2) for k >= 14 (any size).** Let D, |D| = 2m >= 4, induce a
+delta-regular graph, every vertex outside D having 0, m or 2m neighbours in D (n_0, n_m, n_2m such vertices).
+Counting edges leaving D: n_m = 2(k - delta) - 2 n_2m. Counting pairs of D with a common neighbour outside D
+(lambda = 1 for the m delta adjacent pairs, mu = 2 for the others, minus the 2m C(delta,2) paths inside D):
+n_m C(m,2) + n_2m C(2m,2) = 2m(2m - 1) - m delta^2. Together:
+
+    (k - delta)(m - 1) + m n_2m = 4m - 2 - delta^2.
+
+For 2 <= m <= k the left side minus the right side is at least k(m - 1) - (m - 1)^2/4 - (4m - 2) > 0 when k >= 14
+(at k = 14 it is 10m - 12 - (m-1)^2/4 >= 7.75 on [2, 14]; at k = 22 the same holds on [2, 22]); for m > k every
+outside vertex has 0 neighbours in D, so D is a union of components: D = V and nothing is switched. (|D| = 2 only
+swaps two vertices: an isomorphic graph.) At k = 4 the equation has the
+solutions delta = 2 (D an induced C4) and delta = 1, n_4 = 1 (D = N(y)); all such switchings return Paley 9 (1.4).
+This covers the GM switchings with one switching class (the form used in 1.4 and 5.4); switchings with several
+classes C_1, ..., C_t (t >= 2) are NOT covered by this count.
+
+**7.3 Why Paley 9 is forced.** In srg(9,4,1,2), N(x) = 2K2: two lines {x,a,a'}, {x,c,c'}. A non-neighbour y of x
+has two common neighbours with x, not on one line (else y would be the third point of that line, i.e. x), so the 4
+non-neighbours are the pairs [a,c], [a,c'], [a',c], [a',c']; the second line through a must be {a, [a,c], [a,c']}
+(a has degree 4 and N(a) = 2K2), and the same at a', c, c'. Everything is forced: the 3 x 3 grid. The local group
+(swap a, a'; swap c, c'; exchange the two lines; order 8) preserves this unique completion, so it lies in Aut, and
+all vertices look alike: |Aut| = 9 x 8 = 72. In the language of 6.3: torsion is forced to 0, F_x has the full local
+symmetry and a unique completion.
+
+## 8. Confrontation with Conway (CONWAY_CONSTRAINTS.md, all items)
+1. The two mechanisms that create asymmetry at 25-26 are impossible for Conway: no two-graph (k != 2 mu, B7) and no
+   GM switching set of any size (7.2, B8).
+2. The mechanism of Conway's own family at 243 (trades, line switchings) keeps the stabiliser of the move; to reach an
+   asymmetric graph it needs a seed. For Conway no symmetric member exists at all (B5: literature + C2 + C3), so an
+   asymmetric Conway graph cannot be reached from a symmetric one by ANY move; it would be an "orphan", unlike every
+   asymmetric graph of section 5 (all children of S3).
+3. The certificate of 5.5 is void for Conway: every local graph is 7K2 (A2) and all 4-vertex statistics are forced
+   (A7). Vertices can first differ at the level of the matchings (torsion, A4). Paley 9 is the case torsion = 0 forced
+   (7.3); Conway is forced away from it (no Hamming point, L8; mean torsion >= 14.2 of 84, L16).
+4. 6.3 shows that in the high-torsion regime the matchings carry the whole vertex stabiliser. For Conway, by 7.1 (with
+   Aut = 1): at every vertex x the matching data F_x has at least |Aut(F_x)| distinct completions (|W(B7)| = 645120
+   is the largest possible group). If the outer lines are determined by the matchings at one vertex (unknown; at 243
+   it holds up to symmetry in the four high-torsion graphs), then every matching system of a Conway graph is rigid
+   under W(B7).
+5. Usable form for exclusions: any piece H that is FORCED in a Conway graph and has c completions must have
+   |Aut(H)| <= c; a forced piece with a unique completion must be rigid. A forced piece with more symmetry than
+   completions excludes C1.
+
+## 9. Next steps (proposed, nothing launched)
+* (a) At 243: do the matchings at one vertex determine the graph? One solver run per vertex: about 23 650 free pairs
+  and 5 million products, beyond a five-minute check; needs the user's go.
+* (b) At 243: an asymmetric member of Conway's family, by freeing regions whose boundary group is small (6.2 says
+  where: the sixth graph, around the orbit of 108 with trivial stabiliser). One-block runs take seconds.
+* (c) For Conway: apply 7.1 to the forced pieces of the coclique / co-Heawood frames (a frame with at most 2
+  completions must have a group of order at most 2).
