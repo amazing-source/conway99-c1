@@ -709,6 +709,38 @@ def main():
                       - float(os.environ.get("TSUMPEN", "0")) * max(0, tl + tm - 14))
                 if os.environ.get("B1KEEP1") and min(cl, cm) != 1:
                     s2 = -60.0          # stay among structures with a non-special line, push the nullity up
+                if os.environ.get("SUMOBJ"):
+                    # SUMOBJ (15/10 evening, mechanism A, conjecture SUM14: dim(ker T + h ker T) <= 14 for T, U PSD):
+                    # push dim(N + hN) to SUMT (default 15) with the smooth surrogate lambda_SUMT of the parallel sum
+                    # T : hTh = T (T + hTh)^+ hTh (PSD, h-invariant, kernel exactly N + hN)
+                    hp = getattr(main, "hperm", None)
+                    if hp is None:
+                        hm = {0: 1, 1: 0, 2: 3, 3: 2}
+                        hp = [idx[frozenset(hm.get(y, y) for y in S[i])] for i in range(n)]
+                        main.hperm = hp
+                    sumt = int(os.environ.get("SUMT", "15"))
+                    Th = T[np.ix_(hp, hp)]
+                    Xp = T @ np.linalg.pinv(T + Th, rcond=1e-10) @ Th
+                    xev = np.sort(np.abs(np.linalg.eigvalsh((Xp + Xp.T) / 2)))
+                    wT, VT = np.linalg.eigh(T)
+                    Nk = VT[:, np.abs(wT) < 1e-8]
+                    dimsum = int(np.sum(np.linalg.svd(np.hstack([Nk, Nk[hp, :]]), compute_uv=False) > 1e-7)) if Nk.size else 0
+                    s2 = -3.0 * max(0, sumt - dimsum) - float(os.environ.get("SUMW", "10")) * float(xev[sumt - 1])
+                    sb = getattr(main, "sumrec", -1)
+                    if dimsum > sb:
+                        main.sumrec = dimsum
+                        print("move %d: SUM RECORD dim(N + hN) = %d (nullity %d, saturated %d), c = (%d,%d), t = (%d,%d)"
+                              % (mv, dimsum, nul_num, dimsum - nul_num, cl, cm, tl, tm), flush=True)
+                    if dimsum >= int(os.environ.get("SUMSAVE", "15")) or (dimsum - nul_num >= 2 and nul_num >= 11):
+                        ks = getattr(main, "ks", 0) + 1
+                        main.ks = ks
+                        if ks <= 50:
+                            json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "t": [tl, tm],
+                                       "dimsum": dimsum, "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                       "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                      open(out + "_SUM_%d.json" % ks, "w"))
+                            print("move %d: SUM TARGET: dim(N + hN) = %d, nullity %d, saved %s_SUM_%d.json"
+                                  % (mv, dimsum, nul_num, out, ks), flush=True)
                 if os.environ.get("HBREAK"):
                     # HBREAK (15/10 morning): all 331 rank-30 objects are invariant under h = (0 1)(2 3); stay among
                     # PSD structures with h BROKEN and push the nullity up (a rank-30 one would test (SQ30) and (H-INV))
@@ -732,6 +764,38 @@ def main():
                         nh = hidden_relation_count(G, S, idx, whole=True)
                         if nh > 0:
                             hasym = 0
+                    if os.environ.get("ODDW") and hasym > 0:
+                        # ODDW (15/10 evening, after the ODD9 refutation): nu = N+ + N- + s; the broken HB_1 lineage sits
+                        # at (10, 2, 1); reward the THIRD smallest eigenvalue of the h-odd sector of T going to 0 (an
+                        # extra odd relation would give nullity 14 on a broken structure); saves broken PSD structures
+                        # with odd nullity >= 3 as _ODDB_k.json
+                        Bo = getattr(main, "oddbasis", None)
+                        if Bo is None:
+                            hm2 = {0: 1, 1: 0, 2: 3, 3: 2}
+                            hp2 = [idx[frozenset(hm2.get(y, y) for y in S[i])] for i in range(n)]
+                            oreps = [i for i in range(n) if i < hp2[i]]
+                            Bo = np.zeros((n, len(oreps)))
+                            for k, r in enumerate(oreps):
+                                Bo[r, k] = 1 / math.sqrt(2); Bo[hp2[r], k] = -1 / math.sqrt(2)
+                            main.oddbasis = Bo
+                        evo = np.sort(np.linalg.eigvalsh(Bo.T @ T @ Bo))
+                        g3 = float(evo[2])
+                        s2 = s2 - float(os.environ["ODDW"]) * g3
+                        bo = getattr(main, "bestodd", 99.0)
+                        if g3 < bo - 1e-6:
+                            main.bestodd = g3
+                            print("move %d: ODDW broken PSD, third odd eigenvalue %.5f (new minimum), nullity %d, c = (%d,%d)"
+                                  % (mv, g3, nul_num, cl, cm), flush=True)
+                        if g3 < 1e-7:
+                            kob = getattr(main, "kob", 0) + 1
+                            main.kob = kob
+                            if kob <= 50:
+                                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "odd_gap": g3,
+                                           "hasym": hasym, "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                           "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                          open(out + "_ODDB_%d.json" % kob, "w"))
+                                print("move %d: ODDW TARGET: broken PSD with an extra odd relation, nullity %d, saved %s_ODDB_%d.json"
+                                      % (mv, nul_num, out, kob), flush=True)
                     if hasym == 0:
                         s2 = s2 - float(os.environ["HPEN"]) if os.environ.get("HPEN") else -60.0
                     else:

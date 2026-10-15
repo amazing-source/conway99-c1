@@ -354,6 +354,7 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   trivial class = full class = 2 3 5 7) and the rank-35 c22 object (t = 7, m = 7: full = trivial x 5).
 
 - ODD9 status (EVIDENCE only, 15/10 01:47-02:00 UTC; odd9_check.py exact, odd9_axioms.py, sym4g.py mode odd9).
+  [CORRECTED 15/10 17:05 UTC: ODD9 is FALSE. Exact counterexamples (verify_counterexample.py + odd9_check.py, ranks over Q): hv_h_c22_H30_23.json (c = (2,2), nullity 14, rank 30, h-invariant, T and U PSD, odd gain 8 beyond X_l and beyond X_m), 57 further h-invariant PSD rank-30 objects with odd gain 8 (types c22, c32, c42, c52, c23, c33, c43, c24, c34), r7_Z5h_cold1_PSD_1.json (nullity 9, odd gain 5). (B') no longer follows from ODD9 and remains OPEN. See work/stars_rank_2026-10-14/MECHANISM_A_2026-10-15.md E12.] 
   Statement: in every admissible four-star structure with T, U >= 0, the ten m-odd vectors f_y = 1_{2y} - 1_{3y}
   (y outer) add exactly 9 to the rank beyond X_l (and symmetrically). Equivalently the odd Schur complement
   S_f = G_f - C^T T_X^+ C (10 x 10, S_f 1 = 0 always) is non-singular on 1^perp; G_f = 6I - J/2 - Q_m alone is >= 2
