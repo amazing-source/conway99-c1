@@ -5241,3 +5241,120 @@ objet non-grille avec min t<=7 a nu13,t=(6,8) ; sa classe de noyau de742
 structures n'atteint nu14 qu'a t=(8,8). Observation acceptee sans audit,
 sans confondre742 objets avec une classification de la cible NG7.
 Aucune reponse au simple retour d'accord ; aucun processus lance.
+
+## 15/10 - Suite854 : cloture des noyaux retenus et retraits utiles
+
+854 lu/acquitte. LAB donne la restriction rho:N=kerT -> R^{Y_m},
+avec ker rho=kerT_Xl de dimension c_l+1, donc
+ nu=c_l+1+dim(P_m).
+N9-NG equivaut a dim(P_m)<=8 pour chaque cote hors-grille. Il observe
+un gain pair collectif3 dans ses exemples serres, une centaine de
+non-grilles PSD et des milliers de membres de classes de noyau compatibles
+avec N9-NG. Les15 non-grilles nu14 sont c55,t8/8 et echouent F7/DISC.
+Sa nouvelle famille Klein donne des non-grilles t2/2..4/4,nu<=10.
+Ces observations et certificats sont acceptes ; aucun recalcul de ces
+graphes, rangs, groupes ou matrices. N9-NG n'est toujours pas prouvee.
+
+PROBLEME TRAITE ICI. Les retraits arbitraires d'une seule colonne d'une
+base du noyau peuvent redonner la meme classe de noyau. On peut prouver
+quand le retrait est annule par les contraintes de positivite, et choisir
+des retraits qui liberent effectivement des composantes. C'est un outil
+de construction de nouvelles recherches, pas un audit des precedentes.
+
+THEOREME DE CLOTURE. Sur un cote deux-etoiles X, on dispose de l'identite
+ 8T_X=L8-u*u^t,
+ L8=8(2I-Gamma_X)+3(I-F)+(I-M)+(I-FM).
+Sous C1, Gamma_X est2-regulier. L8 est donc un laplacien de reseau a
+poids non negatifs, avec les couplages F/M fixes. u est la difference
+des deux etoiles. Soient kappa_1,...,kappa_c les indicatrices des
+composantes d'un ancien reseau. Elles sont toutes orthogonales a u.
+Soit W l'espace des relations GLOBALES qu'une nouvelle cible doit retenir.
+Poser K=[kappa_i] et H={a:Ka appartient a W}.
+
+Pour a dans H, T_X_nouveau*(Ka)=0 et u^t*Ka=0, donc L8_nouveau*(Ka)=0.
+L'energie laplacienne est une somme de carres a poids non negatifs.
+Toute arete du nouveau reseau joint donc des sommets sur lesquels tous
+les potentiels Ka ont la meme valeur. Donner a l'ancienne composante i
+la signature egale a la ligne i d'une base quelconque de H. Aucune arete
+du nouveau reseau ne joint deux anciennes composantes de signatures
+distinctes. L'indicatrice de chaque union de composantes de meme signature
+est donc dans ker L8_nouveau, puis ker T_X_nouveau puisqu'elle est
+orthogonale a u. Sous T GLOBAL PSD, toute relation d'un bloc principal
+s'etend par zero en une relation globale. Ajouter ces indicatrices a W,
+puis iterer avec l'autre cote. La dimension augmente ou le processus
+s'arrete. Les signatures et les espaces sont calcules exactement sur Q.
+
+La cible peut scinder une ancienne composante ; elle ne peut fusionner
+des morceaux que si leurs anciennes composantes sont indiscernables.
+Aucune invariance de Gamma ni conservation de ses aretes n'est supposee.
+Une ancienne composante a4 etiquettes, de signature unique, reste isolee.
+Les couplages F/M fixes la maintiennent connexe. C1 force ses deux aretes
+dans les memes etoiles ; C1-prime interdit les deux diagonales croisees
+(elles doubleraient une incidence vers la lettre mate), d'ou les aretes
+droites. La grille reelle persiste et donne2 prismes par la droite.
+Si quatre grilles restent ainsi forcees de CHAQUE cote, min(t_l,t_m)>=8 :
+la classe ne peut atteindre NG7. Le recours a C1-prime concerne cette
+conclusion geometrique, pas la cloture laplacienne de base.
+
+COROLLAIRE CODIMENSION1. Soit N0 l'ancien noyau complet et W=ker ell
+un hyperplan de N0. Il faut d'abord retenir les4 relations universelles
+d'etoiles, sinon leur ajout peut deja restituer N0. Sur l'espace des
+composantes d'un cote, poser alpha_i=ell(kappa_i).
+ - alpha=0 : toutes les anciennes indicatrices sont retenues.
+ - alpha non nul : H=ker alpha. Les signatures i,j sont egales ssi
+   e_i-e_j appartient a span(alpha).
+Un retrait d'une seule relation ne permet donc une fusion de composantes
+que si alpha est proportionnel a UNE difference e_i-e_j. Si alpha non
+nul n'a pas cette forme, toutes les signatures sont distinctes : la
+cloture restitue chaque kappa_i. Au moins l'une est hors W ; puisque W
+est hyperplan de N0, TOUT N0 est restitue. Le retrait etait inutile.
+Il suffit que cela arrive sur un seul des deux cotes.
+
+En c55 non-grille, chaque cote possede une composante active contenant
+deux classes mates, et quatre composantes-grilles. Les10 restrictions
+de fusion possibles se repartissent en4 actif/grille (au moins3 grilles
+anciennes restent) et6 grille/grille (au moins2 restent). Le module donne
+20 choix deliberes a un seul cote, a essayer plutot que des retraits de
+colonnes arbitraires. CORRECTION DE PORTEE : ces20 choix ne sont pas une
+enumeration de tous les hyperplans globaux. Les valeurs de ell sur les
+relations mixtes, et le rapport des restrictions sur les deux cotes,
+restent libres. Une cloture qui ne restitue pas N0 n'assure ni nouvelle
+PSD ni nouveau graphe. Elle supprime seulement cet obstacle necessaire.
+
+CONSTRUCTION IMPLEMENTEE. release_component_merge(full_kernel,sides,
+side_index,i,j) prend les2 differences forcees d'etoiles, les indicatrices
+des deux cotes, puis les complete par des colonnes du noyau fourni.
+Elle conserve ce complement mixte explicite, remplace kappa_i,kappa_j
+par leur SOMME et conserve tout le reste. La dimension passe de nu a
+nu-1, sans perdre les etoiles forcees. L'hypothese est que les noyaux
+des deux cotes sont independants (cas non-grille). close_retained_kernel
+applique ensuite la cloture et retourne les composantes separees, les
+potentiels separants et les grilles encore forcees. Aucun Gamma du pair
+n'est lu ; les composantes et les indicatrices sont des entrees acceptees.
+
+DEUX CONSEQUENCES POUR SORTIR DES GRILLES. Ecrire la matrice geometrique
+K_geom=(3B^tB+B^tMB-2J)/8, de sorte que T=3I-Gamma-K_geom.
+Si l'ancien noyau contient1_O et qu'on le retient, K_geom*1_O=1_O donne
+ T*1_O=0 <=> Gamma*1_O=2*1_O.
+La non-negativite interdit alors toute arete O-F ; C1 force le C4
+geometrique sur O. Un noyau contenant cette relation ne permet pas de
+passer hors-grille. Par ailleurs, pour deux matrices T PSD,
+ ker((1-s)T0+sT1)=kerT0 inter kerT1 lorsque0<s<1.
+Si T0 vient d'une grille de nullite14 et T1 d'un non-grille, 1_O est
+perdu, et l'interieur de ce SEGMENT a nullite<=13. Ceci n'interdit ni
+les trajectoires non lineaires via d'autres faces PSD, ni les mouvements
+discrets, ni un point final non-grille de nullite14.
+
+CONTROLES PROPRES. Six hyperplans abstraits d'un espace N14 construit
+avec les partitions c55 et deux directions mixtes arbitraires :
+ - restrictions generiques deux cotes :13 ->14, grilles forcees4/4 ;
+ - generique gauche + paire droite :13 ->14, grilles4/4 ;
+ - fusion actif/grille gauche :13 ->13, grilles3/4 ;
+ - fusion deux grilles gauche :13 ->13, grilles2/4 ;
+ - fusion actif/grille des deux cotes :13 ->13, grilles3/3 ;
+ - retrait mixte seul :13 ->13, mais grilles4/4, donc toujours hors NG7.
+La fonction constructive reproduit exactement le troisieme cas.
+Environ1,1s ; PAS des graphes, PAS des modeles des conditions PSD.
+Script code/codex/four_star_kernel_partition_closure.py, rapport
+data/codex_local_global_20261015/kernel_partition_closure.json.
+NG7, NG5 et N9-NG restent ouverts. Aucun SRG construit ou exclu ici.
