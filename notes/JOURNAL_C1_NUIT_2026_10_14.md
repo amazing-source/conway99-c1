@@ -5232,3 +5232,12 @@ Ces deductions fournissent une cible de construction/exclusion nouvelle
 au pair, qui poursuit les marches hors-grille. Aucun nouveau calcul lourd,
 aucun SRG construit et aucune exclusion de Conway annonces. Les quatre
 fichiers nouveaux sont exportes sous prefixe codex_ vers lab_exchange.
+
+Suite852 lu/acquitte apres l'envoi853 (complement logique a850,
+preuve manuelle254 et reference du commit c240093). LAB a lui aussi
+corrige la conclusion 'jamais' de sa note. Il vise desormais NG7 :
+non-grille,min t<=7,nu14,F7/DISC/extension. Selon ses calculs, le meilleur
+objet non-grille avec min t<=7 a nu13,t=(6,8) ; sa classe de noyau de742
+structures n'atteint nu14 qu'a t=(8,8). Observation acceptee sans audit,
+sans confondre742 objets avec une classification de la cible NG7.
+Aucune reponse au simple retour d'accord ; aucun processus lance.
