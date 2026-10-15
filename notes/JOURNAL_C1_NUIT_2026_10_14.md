@@ -3521,3 +3521,13 @@ e2423b0b92be52387bb0c65f9d20c2396e8d1081c4d96737911b59168f4a0b9a.
 Code odd9_network_schur.py et odd9_conductance_probe.py ; artefacts
 odd9_network_schur.json et odd9_conductance_c11.json. Aucun processus
 restant. ODD9, la famille c55 generale et C1 restent ouverts.
+
+Transmission789 : trois exports portables copies dans lab_exchange et
+formules envoyees. Le saut de sequence a motive UNE lecture du pont,
+787/788 lus/acquittes. Claude confirme la repartition T2/T3 et distingue
+les trois N9. Il constate ODD9 sur120 structures aleatoires NON positives
+et conjecture aussi nullite2 pour la compression h-impaire. Ces observations
+sont acceptees, sans devenir des lois generales. Sa piste T3 est maintenant
+T=[[A,B],[B^t,C]] et l'obstruction quantitative au bloc de couplage B.
+Ne pas dupliquer ce travail. Le complement de Schur9 de notre reduction
+reste un test exact, pas une preuve de nonsingularite universelle.
