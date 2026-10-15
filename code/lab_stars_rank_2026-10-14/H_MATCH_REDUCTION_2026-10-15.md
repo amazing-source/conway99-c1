@@ -63,6 +63,14 @@ line of Q_l. Let E_H be the set of pairs {l, m} at v where both halves hold. A p
 so v lies on >= 18 grids, contradicting L10. Hence at every vertex of a Conway graph AT LEAST 4 of the 21 pairs of lines
 have a four-star block (PSD, nullity >= 14) whose star matchings are not h-related.
 
+Variant of the Proposition: (H-MATCH) at the 15 pairs among six lines l_1..l_6 at v already makes the matchings of
+their 12 letters mate-aligned (in step (iii) use the double transpositions inside the six lines; if y is on the seventh
+line, argue with the other letter z of the pair; the two letters of the seventh line are then paired together), hence
+15 grids among the six lines. Applying kk5 (catalogue C10, status M, DRAT certificate: five lines pairwise in grids
+force the grid on the other two) to each of the six 5-subsets gives the grids (l_i, l_7): v is a Hamming point,
+contradicting L8. [kk6 would give the contradiction directly, but kk6 is status S (1970 cadical calls, no certificate
+kept, NOTE_NIGHT section 14).]
+
 ## 3. Evidence (15/10; PSD tests and nullities of the search tools are numerical, double precision; "complete" =
 cryptominisat UNSAT, no certificate; exact checks are marked)
 
@@ -100,14 +108,6 @@ cryptominisat UNSAT, no certificate; exact checks are marked)
   M_1 != h(M_0) is satisfiable (twist_sat.py), so any obstruction is spectral, not combinatorial.
 - Z5s = <Z5, (0 2)(1 3)> (no h): 197 764 invariant structures in 2 h (not complete), 116 PSD, max nullity 13.
 
-Variant of the Proposition: (H-MATCH) at the 15 pairs among six lines l_1..l_6 at v already makes the matchings of
-their 12 letters mate-aligned (in step (iii) use the double transpositions inside the six lines; if y is on the seventh
-line, argue with the other letter z of the pair; the two letters of the seventh line are then paired together), hence
-15 grids among the six lines. Applying kk5 (catalogue C10, status M, DRAT certificate: five lines pairwise in grids
-force the grid on the other two) to each of the six 5-subsets gives the grids (l_i, l_7): v is a Hamming point,
-contradicting L8. [kk6 would give the contradiction directly, but kk6 is status S (1970 cadical calls, no certificate
-kept, NOTE_NIGHT section 14).]
-
 - 06:25 UTC, kernel-imposed MILP (kernel_milp.py, scipy/HiGHS; linear model: C1, C1', ker T >= N i.e.
   Gamma N = (3I - K) N, C2 as lazy cuts; objective = number of star-pair orbits {p, h(p)} with Gamma_p != Gamma_h(p)):
   for object 0 the optimum is 0 (every admissible structure whose kernel contains N_0 has h-related matchings).
@@ -144,6 +144,18 @@ kept, NOTE_NIGHT section 14).]
   60 vertices each, 17 or 25 grids per vertex) NEITHER half holds at ANY pair, grids included. So in real
   lambda = 1, mu = 2 graphs h-related local matchings go with the grid-full (Hamming) regime, which L8 forbids for
   Conway; the high-nullity local objects we can find are all of that BvLS-like kind.
+
+- CALIBRATION on srg(243,22,1,2) (stars_gen.py = the same model for general k, r, s; it reproduces stars_rank.build
+  and kval exactly for (14, 3, -4)): there T = 4I - Gamma - K, U = 9 Pi - T, rank T <= 110 - 22 = 88, so a SIX-star
+  block (three lines, 108 labels) has forced nullity >= 20, the analogue of the four-star nullity >= 14 for Conway.
+  Real blocks (real_block243.py, vertex 0, three lines): BvLS: admissible, PSD, nullity exactly 20, matchings
+  h-related for the three pairs; new243_trade_aut108: admissible, PSD, nullity exactly 20, matchings NOT h-related
+  (44-48 asymmetric star pairs per pair of lines). So the ANALOGUE of (H-MATCH) is FALSE in a real lambda = 1,
+  mu = 2 graph: forced-nullity PSD blocks with broken matchings exist there. (H-MATCH), if true for Conway, would be
+  specific to the Conway parameters (and then equivalent in effect to non-existence).
+  Search calibration running: walk_gen.py (same HMATCH walk as for Conway) from the BvLS block, looking for broken
+  nullity-20 PSD blocks, which do exist (cal243/cal_bvls_f*.log; control from the aut108 block: finds itself at once);
+  kernel_sat_gen.py on the BvLS kernel (cal243/ksat_bvls.log).
 
 ## 4. Tests running (06:45 UTC)
 kernel_milp_all.py over the 331 objects (modes match and hfull, no PSD cuts; PSDCUTS=1 adds eigenvector cutting planes

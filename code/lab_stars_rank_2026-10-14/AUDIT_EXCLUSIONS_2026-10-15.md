@@ -272,3 +272,11 @@ Journal des résultats, au fil de l'eau (heures UTC).
   srg(243) de la campagne asymétrique, elle ne tient à AUCUNE paire (17 ou 25 grilles par sommet). Les couplages
   h-reliés vont avec le régime « plein de grilles » (Hamming), que L8 interdit à Conway : nos objets locaux de haute
   nullité sont tous de ce type-là.
+- 07:20 : CALIBRATION sur srg(243,22,1,2) (stars_gen.py = le même modèle pour k, r, s quelconques ; il reproduit
+  exactement celui de Conway pour (14, 3, -4)). Là, ce sont les blocs à SIX étoiles (108 labels) qui ont une nullité
+  forcée >= 20. Blocs réels (exacts) : BvLS, nullité 20, positif, couplages h-reliés ; nouveau srg(243) trade_aut108,
+  nullité 20, positif, couplages NON h-reliés. L'ANALOGUE de (H-MATCH) est donc FAUX dans un vrai graphe. Marches
+  HMATCH lancées depuis le bloc BvLS (même méthode que pour Conway) : en 500 mouvements, elles ne quittent pas les
+  blocs h-reliés, alors que des blocs cassés existent (le contrôle depuis le bloc aut108 reste sur des blocs
+  cassés). Conclusion provisoire : nos marches ne passent pas d'un îlot à l'autre ; ne pas trouver de bloc cassé
+  pour Conway ne prouve presque rien.

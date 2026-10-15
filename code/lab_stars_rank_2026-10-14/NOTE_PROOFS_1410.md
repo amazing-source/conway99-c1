@@ -424,7 +424,22 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   transversal-rich line m are absorbed by X_l (each relation lives on N[l] plus the line {y, z_2y, z_3y}, which forms
   a prism with m). In the c11 object (h family) the 6 mixed relations are h-even and spread over many letters.
 
+## 15/10 LOOP (03:00-07:30 UTC; details H_MATCH_REDUCTION_2026-10-15.md, AUDIT_EXCLUSIONS section 5)
+- PROVED (reviewed, modulo L8; Makhnev or rho <= 191 also suffice): (H-MATCH) => no Conway graph, where (H-MATCH) =
+  'every admissible four-star structure with T, U >= 0 and nullity >= 14 has M_1 = h(M_0) and M_3 = h(M_2)'
+  (M_a = matching induced on the 12 labels {a,y}; h = (0 1)(2 3)). Contrapositive, quantitative (modulo L10): every
+  vertex of a Conway graph has >= 4 pairs of lines whose block is PSD of nullity >= 14 with broken star matchings.
+- (SQ30) explained: the 331 rank-30 objects are all h-invariant; class from integral eigenvalues 3, 5, 7 of T.
+- Evidence for (H-MATCH): all 429 distinct saved nullity >= 14 structures are h-invariant (all from h-families or
+  short walks from h-invariant seeds); PSD broken record nullity 13; T-only form FALSE (U >= 0 essential); none of the
+  129 distinct kernels of the 331 objects carries a PSD broken structure (MILP + complete SAT enumerations).
+- CALIBRATION against it: in srg(243,22,1,2) the analogue (six-star blocks, forced nullity 20) is FALSE: real blocks of
+  a new srg(243) are PSD of nullity 20 with broken matchings, while BvLS blocks are h-related (BvLS is grid-full);
+  HMATCH walks from the BvLS block never reach the broken blocks that exist (islands). So not finding broken blocks
+  for Conway is weak evidence.
+
 ## OPEN (none of these is established)
+- (H-MATCH) [would EXCLUDE Conway; see the 15/10 LOOP section].
 - (B') [the live four-star question, 15/10 02:15 UTC] No admissible four-star structure with T, U >= 0 and nullity
   >= 14 (rank <= 30) has a line with c = 1. (B') => every line of a Conway graph is special (c >= 2; corrected
   15/10: not c >= 2 + delta, and not an equivalence).
