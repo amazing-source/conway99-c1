@@ -37,6 +37,18 @@ def ordered_labels(labels):
     return out
 
 
+def full_geometric_offsets(labels=LABELS):
+    """Return the rational offsets of T=offset-Gamma, U=offset+Gamma."""
+    labels = ordered_labels(labels)
+    k8 = sp.Matrix(44, 44, lambda i, j:
+        3*len(set(labels[i]) & set(labels[j]))
+        + sum((x ^ 1) in labels[j] for x in labels[i])-2)
+    l15 = sp.Matrix(44, 44, lambda i, j:
+        4*len(set(labels[i]) & set(labels[j]))
+        - sum((x ^ 1) in labels[j] for x in labels[i])+2)
+    return dict(T=3*sp.eye(44)-k8/8, U=4*sp.eye(44)-l15/15)
+
+
 def square_template(labels=LABELS):
     """Return fixed square rows, C2 zeros and four PSD degree cuts.
 
@@ -126,14 +138,9 @@ def geometry_reduction(labels=LABELS):
         grid_modes[name] = vec
     grid_by_char = {'00': ['kappa', 'q'], '10': ['r', 't'], '01': [], '11': []}
     gamma = template['known_adjacency']
-    k8 = sp.Matrix(44, 44, lambda i, j:
-        3*len(set(labels[i]) & set(labels[j]))
-        + sum((x ^ 1) in labels[j] for x in labels[i])-2)
-    l15 = sp.Matrix(44, 44, lambda i, j:
-        4*len(set(labels[i]) & set(labels[j]))
-        - sum((x ^ 1) in labels[j] for x in labels[i])+2)
-    lower = 3*sp.eye(44)-gamma-k8/8
-    upper = 4*sp.eye(44)+gamma-l15/15
+    geometric = full_geometric_offsets(labels)
+    lower = geometric['T']-gamma
+    upper = geometric['U']+gamma
     assert lower*grid_modes['kappa'] == sp.zeros(44, 1)
     tdiag = dict(kappa=sp.Rational(0), q=sp.Rational(5),
                  r=sp.Rational(5, 2), t=sp.Rational(5, 2))
@@ -172,6 +179,30 @@ def geometry_reduction(labels=LABELS):
                 character_bases=bases, grid_modes=grid_modes,
                 grid_by_character=grid_by_char, T_grid_diagonal=tdiag,
                 U_grid_diagonal=udiag, offsets=offsets, couplings=couplings)
+
+
+def lift_schur_direction(reduction, side, character, vector):
+    """Lift a rational 10-vector to a rational 44-vector for PSD cuts.
+
+    On the normalized family, lifted^t M lifted = 4*vector^t M_reduced
+    vector, where M is T or U.  Once lifted, the full-space inequality
+    w^t M w>=0 is valid for EVERY PSD matrix of the original affine model;
+    its validity no longer needs to reference the square normalization.
+    """
+    if side not in ('T', 'U') or character not in CHARS:
+        raise ValueError('Expected side T/U and a Klein-four character.')
+    vector = sp.Matrix(vector)
+    if vector.shape != (10, 1) or any(not x.is_Rational for x in vector):
+        raise ValueError('Expected ten exact rational coordinates.')
+    lifted = reduction['character_bases'][character]*vector
+    for name in reduction['grid_by_character'][character]:
+        diagonal = reduction[side+'_grid_diagonal'][name]
+        mixed = reduction['couplings'][character][name][side]
+        if not diagonal:
+            assert mixed == sp.zeros(1, 10)
+            continue
+        lifted -= reduction['grid_modes'][name]*(mixed*vector)[0]/diagonal
+    return lifted
 
 
 def compressed_adjacency(gamma, reduction):
@@ -288,9 +319,16 @@ def report():
                 v = lookup[act_label(LABELS[j], a, b)]
                 weighted[u, v] = weighted[v, u] = root+1
     compressed = compressed_adjacency(weighted, result)
+    geometric = full_geometric_offsets()
+    direction = sp.Matrix(range(1, 11))
     for chi in CHARS:
         v = result['character_bases'][chi]
         assert compressed[chi] == v.T*weighted*v/4
+        for side, sign in (('T', -1), ('U', 1)):
+            full_matrix = geometric[side]+sign*(known+weighted)
+            small_matrix = result['offsets'][chi][side]+sign*compressed[chi]
+            lifted = lift_schur_direction(result, side, chi, direction)
+            assert (lifted.T*full_matrix*lifted)[0] == 4*(direction.T*small_matrix*direction)[0]
     orbit_size = interface_orbit_size(template)
     assert orbit_size == 96
     counts = projected_matching_counts()
