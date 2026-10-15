@@ -5086,3 +5086,149 @@ pas une identification de relations individuelles ni une loi universelle.
 LAB indique une invariance de structure sous la fausse h(5 13) ; ne pas
 transformer cette phrase en affirmation d'automorphisme de Conway.
 Aucune reponse d'accuse au pair ; aucune nouvelle matrice relue.
+
+## 15/10 - Suite849–850 : census entier sans prisme et 254 blocs obligatoires
+
+849 demande une nouvelle lecture de la portee des resultats L8, L10,
+L16 et de leur combinaison. Le message du pair n'est pas une nouvelle
+autorisation d'auditer ses germes. Travail complementaire effectue :
+consequences mathematiques des resultats acceptes et nouveau point du
+census, sans reproduire ses campagnes ou ses certificats de graphes.
+850 propose ensuite N9-NG / NG5. Lus et acquittes jusqu'a850 ; reponse
+substantielle851 envoyee avec les deux nouveaux resultats ci-dessous.
+
+CORRECTION DE NOTRE ANCIENNE NOTE100. Le profil P=0, rho=0, |W|=84,
+k=28 satisfait les inegalites et identites SCALAIRES explicitees au §4.
+Il ne definit ni un ensemble global de transitions tau, ni les matrices
+de Gram et reseaux requis, ni les recollements d'un graphe. Ce n'est
+donc pas un contre-modele formel de tous les enonces structurels L1-L21.
+La phrase historique 'aucune combinaison ne peut donner de contradiction'
+est trop forte si elle vise les lemmes entiers et leurs preuves. Une
+correction est placee en tete de note100 ; le texte historique reste
+identifie comme tel. A fortiori, le profil ne certifie pas sa compatibilite
+avec les conditions quatre etoiles ajoutees depuis le25/09.
+
+RESULTAT NOUVEAU : UN CENSUS ENTIER A P=0. La lacune de notre ancien
+point rationnel est maintenant fermee pour le census affine FOURNI.
+Sources consommees sans regeneration : codex_seven_vertex_census.json,
+codex_order8_census.json et codex_order9_census.json dans c1-codex/data.
+Leurs empreintes SHA256 sont conservees. Il y a57 parametres ; tous les
+comptes affines des trois ordres sont imposes entiers et non negatifs.
+Recherche dans la boite x=floor(ancien_point_x)+delta, |delta|<=1000,
+x>=0, P=0. Les1091 congruences distinctes et776 inegalites potentiellement
+actives dans cette boite sont passees a CP-SAT,1travailleur, plafond20s.
+Un temoin est obtenu ; preparation, calcul et evaluation totale~7s.
+
+Le certificat est le NOUVEAU point a57 parametres entiers, dont :
+ P=0, h7_1985025=525572, h8_219693185=20074276,
+ h8_219728388=410676, h8_253002372=1743184,
+ h8_253838341=1743356, h8_254084098=4068610,
+ h8_254100481=715000, h8_254101521=139694.
+Les48 autres sont dans integer_census_prism_zero.json. Chaque expression
+affine est evaluee EXACTEMENT par arithmetique rationnelle/entiere :
+ - ordre7 :208 comptes entiers>=0,3 nuls, somme14887031544=C(99,7) ;
+ - ordre8 :916 comptes entiers>=0,20 nuls, somme171200862756=C(99,8) ;
+ - ordre9 :5311 comptes entiers>=0,175 nuls, somme1731030945644=C(99,9).
+Au total6435 comptes. Le type grille H9_13262907120 vaut0. La distance
+maximale a l'ancien point rationnel est5004/5 (la boite est centree sur
+sa PARTIE ENTIERE, pas exactement sur le point rationnel).
+
+CONCLUSION PRECISE : l'integralite et la non-negativite de CE census aux
+ordres7,8,9 ne suffisent pas a prouver P>0. Le temoin ne construit aucun
+graphe, aucun tau global, aucune matrice44 PSD ou de rang admissible.
+Il ne certifie pas toutes les relaxations imaginables d'ordre<=9 ni
+une extension des comptes aux ordres superieurs. Code autonome
+conway_integer_census_zero.py ; l'evaluation exacte des nouvelles valeurs
+est necessaire a cette conclusion, ce n'est pas un re-audit du census.
+
+THEOREME NOUVEAU : AU MOINS254 BLOCS NON-GRILLE A PETITE TRANSVERSALE.
+Soit L l'ensemble des droites ayant t(l)<=7, m=|L|. Une droite hors L
+a t>=8. Avec sum_l t(l)=2P<=1704, on obtient
+ sum_{l dans L}(8-t(l))>=8*231-1704=144,
+donc m>=18 et sum_L t<=8m-144.
+
+Noter g(l) le nombre de grilles contenant l. Chaque grille fournit
+deux prismes par l ; deux grilles n'utilisent pas le meme prisme.
+Donc g(l)<=floor(t(l)/2), et g(l)<=3 sur L. Chaque droite intervient
+dans18 drapeaux(racine,paires de droites) :6 partenaires en chacun de
+ses3 points. Chacune de ses grilles occupe exactement3 de ces drapeaux.
+Le nombre I d'incidences entre L et les drapeaux NON-GRILLE satisfait
+ I=sum_L(18-3g(l))>=max(9m,18m-(3/2)(8m-144))
+                         =max(9m,6m+216).
+
+Pour borner les doubles comptes, prendre C, graphe d'intersection des
+231 droites. Si D est l'incidence99x231, alors DD^t=A+7I et
+C=D^tD-3I. Son spectre est18^1,7^54,0^44,(-3)^132. Sur l'indicatrice
+de L, la borne par la deuxieme valeur propre donne
+ 2e_C(L)<=7m+(18-7)m²/231=7m+m²/21,
+soit e_C(L)<=floor(7m/2+m²/42).
+
+Un drapeau non-grille est compte deux fois dans I exactement quand
+ses DEUX droites appartiennent a L. Ces doubles comptes sont au plus
+e_C(L), puisqu'une paire de droites se coupe au plus en un point.
+Si N est le nombre de drapeaux non-grille portant au moins une droite
+de L, alors
+ N>=max(ceil(I/2),I-e_C(L)).
+Preuve manuelle du minimum254 :
+ - si m>=49, N>=3m+108>=255 ;
+ - pour18<=m<=48, N>=(5/2)m+216-m²/42. Cette fonction est croissante
+   sur cet intervalle ; en18 elle vaut1773/7, donc N>=254 entier.
+Le calcul rationnel sur les214 cardinalites18..231 retrouve254, avec
+minimum des budgets en m18,I324,e_C<=70. Il ne prouve pas qu'un graphe
+reel atteigne254. Artefact forced_low_prism_blocks.json et script
+conway_forced_low_prism_blocks.py (standard-library, instantane).
+
+NOUVELLE CIBLE SUFFISANTE (NG7), TOUJOURS OUVERTE : aucun objet quatre
+etoiles NON-GRILLE avec min(t_l,t_m)<=7 ne passe toutes les conditions
+necessaires d'un bloc Conway (T/U PSD,nuT>=14,F7,DISC quand applicable,
+extension). Une preuve de NG7 suffirait puisqu'au moins254 tels drapeaux
+sont forces. On n'a besoin ni d'exclure TOUS les non-grilles, ni de
+prouver t>=8 sur TOUS les blocs sans distinction. C'est l'intersection
+de deux regimes obligatoires, distincte d'une classification accomplie.
+Reste un theoreme uniforme a trouver ; les558 objets du pair ne sont
+pas une enumeration exhaustive.
+
+850 : LAB propose N9-NG, nu<=9+min(c_l,c_m) hors-grille, et sa consequence
+NG5, nu>=14=>min(c_l,c_m)>=5 hors-grille. En utilisant SON inegalite
+acceptee c(l)<=g(l)+floor((6-g(l))/2), on voit immediatement
+ t(l)<=7 => g(l)<=3 => c(l)<=4.
+Donc NG5 implique NG7. Il suffit meme de prouver NG5 sur les blocs de
+notre cible NG7, pas sur tous les non-grilles. L'implication globale
+proposee par LAB est aussi correcte sous cette inegalite : une droite
+avec un partenaire non-grille a c>=5, donc g>=4 et t>=8 ; si tous ses
+6 partenaires a une racine sont des grilles, elle a deja6 grilles et
+t=12. Ainsi P>=924>852. Ce sont des implications CONDITIONNELLES.
+N9-NG/NG5 ne sont pas des theoremes. Les97 structures observees satisfont
+N9-NG selon le producteur, sans necessite de les re-auditer. Parmi ses
+6 nouvelles PSD de la classe de noyau c55,4 sont nonG1 et echouentF7/DISC
+selon lui ; ne pas etendre notre preuve propre G1 a ces4 par analogie.
+Nos familles a Gamma fixe et <Z5,hM> ont O grille ; elles ne testent pas
+N9-NG, et relancer leurs certificats ne servirait pas la nouvelle cible.
+
+PORTEE DES TROIS PREUVES ET DES AUTRES RESULTATS.
+ - L16/Krein est DEJA general, sans hypothese Hamming. L'identite
+   12P=13860-64||sum_L u_L^tensor3||² traite aussi les sommets tordus.
+   Sa positivite minore la norme et MAJORE P. Pour en tirer un minorant
+   de P, il faudrait une MAJORATION supplementaire de cette norme.
+ - L8 utilise les bijections Q_P->Q_R, une holonomie dans S4, puis la
+   parite ell dans{0,2,4}. Hors-Hamming les blocs peuvent avoir des
+   doubles : les hypotheses des holonomies manquent. Note109 avait
+   deja explicite ce verrou. Les equations generales des triangles
+   restent utilisables, mais pas leur ancien squelette Fano impose.
+ - L10/D1/D2 utilisent n_R<=1 vers un quadrangle complet pour forcer
+   n_R=1 par le lemme des fentes. Sans grille, les sommes de fentes
+   subsistent ; cette capacite1 et l'unicite n'en decoulent plus.
+ - C11 exclut598 des790 types d'une droite t12 ; il ne touche pas le
+   profil t0 partout. La conjecture(P), toute arete dans un prisme,
+   donnerait P>=231 si prouvee ; elle est ouverte et ne suffirait pas
+   seule contre852. P=0 implique sans grille, mais la reciproque est
+   fausse au niveau des contraintes : des prismes peuvent etre sans grille.
+ - Les coupes48, PSD/rangs/DISC/extension ne sont pas des comptes de
+   torsion seuls. Ils peuvent encore agir sur P=0 ; aucun modele commun
+   qui les satisfasse tous n'est fourni, et aucune exclusion universelle
+   P=0 n'est etablie ici. ODD9 refutee ne doit pas etre reutilisee.
+
+Ces deductions fournissent une cible de construction/exclusion nouvelle
+au pair, qui poursuit les marches hors-grille. Aucun nouveau calcul lourd,
+aucun SRG construit et aucune exclusion de Conway annonces. Les quatre
+fichiers nouveaux sont exportes sous prefixe codex_ vers lab_exchange.
