@@ -4837,3 +4837,61 @@ des familles contenant h*p. Aucun de ses calculs n'est duplique ici.
 Artefact et rapport regeneres en1,1s : toutes les identites exactes
 passent ; statut explicite EXACT_ODD9_INTEGER_CUTS_AND_RELAXATION_OBSTRUCTION,
 ODD9 binaire OPEN. Preuve et portee sont conservees ci-dessus.
+
+## 15/10 - Suite841 : KER-SYM universelle refutee et profil complet des coupes
+
+Resultat de19d6bf5 transmis au pont840. Une notification ancienne a
+conduit a une unique lecture utile :841, lu/acquitte. LAB rapporte46
+premieres structures PSD de nullite9 de <Z5,tau>,tau=(02)(13), dont le
+noyau n'est invariant sous AUCUNE des9496 involutions h*p testees.
+La loi KER-SYM universelle est donc refutee, resultat accepte sans
+reverification. Ces nullites9 ne refutent pas une eventuelle version
+restreinte aux nullites>=14. LAB poursuit l'enumeration de cette famille.
+
+NOUVEAU CALCUL, DEMANDE EN841 : la coupe48 est-elle saturee sur les
+objets deja construits ? J'ai calcule ce NOUVEL invariant sur4 exports
+locaux, sans recalculer leur admissibilite, rang, PSD ou automorphismes.
+Je n'ai pas les331 objets de rang30 en lot ici : aucune affirmation sur
+ce corpus entier. L'outil portable permet a LAB de les traiter lui-meme.
+
+Enumeration COMPLETE de la famille des coupes equilibrees S, sans se
+limiter aux31752 h-impaires. Chaque lettre exterieure choisit2 etoiles
+parmi4 ; chaque etoile en choisit5. Si les nombres des six types de
+colonnes01,02,03,12,13,23 sont(a,b,c,d,e,f), l'equilibrage impose
+f=a,e=b,d=c et a+b+c=5. Le nombre de directions a signe pres est donc
+ (1/2) sum_{a+b+c=5} 10!/(a! b! c!)^2 =586278.
+Pour a=0..5, les nombres sont31752,220500,252000,75600,6300,126.
+a=0 est exactement notre sous-famille h-impaire ; a=5 est h-paire.
+Normalisation : (0,4) appartient a S, ce qui choisit exactement l'un de
+S et F-S. Leurs nombres d'aretes dans O union S sont egaux sous C1.
+
+ALGORITHME : lister les6^5=7776 choix des cinq premieres lettres et des
+cinq dernieres ; reunir seulement les comptes d'etoiles complementaires
+a5. Les valeurs sont des nombres entiers d'aretes obtenus directement
+par petits produits matriciels, sans diagonalisation, solveur ou test
+de rang. Aucun grand tableau de586278 contraintes n'est stocke.
+Temps mesure environ0,03s/objet apres le cache initial. Chaque maximum
+a un temoin24 explicite, recompte directement pour proteger l'indexation
+du nouvel outil. Les effectifs par a retrouvent la formule multinomiale.
+
+RESULTATS (maximum sur TOUTES les586278 directions ; puis h-impaires) :
+- fourstar_psd_rank30_urep100.json :46, puis43 ;6 directions maximales.
+- null13.json :46, puis44 ;6 directions maximales.
+- fourstar_psd_asym_c31.json :45, puis44 ;5 directions maximales.
+- fourstar_psd_grid_Z5h_c22.json :43, puis43 ;190 directions maximales.
+Aucun de ces4 objets ne sature48. Le serrage de la borne48 n'est donc
+PAS etabli. Les profils par a sont respectivement
+ [43,43,43,43,45,46], [44,43,43,44,45,46],
+ [44,44,43,44,44,45], [43,43,43,43,43,43].
+Dans les trois premiers, les directions les plus proches de la borne
+sont h-PAIRES (a=5), pas dans la famille impaire initialement indexee.
+Cela ne constitue pas un theoreme de symetrie ou une preuve d'ODD9.
+
+Nos controles propres : le modele fractionnaire T/U PSD atteint49,
+et la fixture binaire C1 nonPSD atteint49 avec exactement1 direction
+violant48. Aucun objet du pair n'a ete reaudite. Module autonome
+odd9_balanced_cut_profile.py (NumPy), API profile(G,labels,scale=1) et
+from_export(data) ; CLI --input un_ou_plusieurs_JSON --output rapport.
+Rapport odd9_balanced_cut_profiles.json contient les temoins, les
+effectifs de maximisants et tous les profils par a. Le calcul consomme
+les labels fournis pour eviter toute hypothese cachee sur leur ordre.
