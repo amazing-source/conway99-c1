@@ -55,6 +55,14 @@ vertex has a pair of lines whose four-star block is a PSD structure of nullity >
 M_3 != h(M_2) (in the labelling of that pair). [Makhnev alone gives this at one vertex at least; rho <= 191 alone at
 18 vertices at least.] No such structure has ever been found (section 3).
 
+Quantitative form (PROVED modulo L10, at most 17 grids per vertex, catalogue C3): for a line l at v let
+Q_l = {m' : M_{a^1} = s(m')(M_a)} (the l-half of (H-MATCH) at (l, m')). If |Q_l| >= 3, the argument of (iii), with
+the double transpositions s(m_y) s(m''') taken inside Q_l, shows that M_a and M_{a^1} pair y with y^1 for every y on a
+line of Q_l. Let E_H be the set of pairs {l, m} at v where both halves hold. A pair of E_H whose two lines have E_H-degree
+>= 3 is a grid. If |E_H| >= 18, every line has E_H-degree >= 3 (a line of degree <= 2 misses >= 4 of the 21 pairs),
+so v lies on >= 18 grids, contradicting L10. Hence at every vertex of a Conway graph AT LEAST 4 of the 21 pairs of lines
+have a four-star block (PSD, nullity >= 14) whose star matchings are not h-related.
+
 ## 3. Evidence (15/10; PSD tests and nullities of the search tools are numerical, double precision; "complete" =
 cryptominisat UNSAT, no certificate; exact checks are marked)
 
@@ -79,6 +87,11 @@ cryptominisat UNSAT, no certificate; exact checks are marked)
   ten non-trivial relations are all h-even, and the h-odd compression of T has rank 20 (= 22 - 2). For the broken
   nullity-13 structure: h-even compression nullity 10, h-odd 2. In block form T = [[A, B], [B^T, C]] (E_+, E_-), with
   rank C = 20 one has nullity T = 2 + nullity(A - B C^+ B^T), and B = 0 iff the structure is h-invariant.
+- The h-odd compression C has nullity exactly 2 (the star differences) for 300/300 random admissible structures
+  (no positivity) and for all but one of 126 saved files (hmatch_tools_2026-10-15/hodd_rank.py). Whenever
+  nullity C = 2, ker C is contained in ker B (the star vectors lie in ker T), so for EVERY such structure, PSD or not,
+  nullity T = 2 + nullity(A - B C^+ B^T); for h-invariant ones (B = 0) nullity T = 2 + nullity A, i.e. nullity 14
+  <=> the 22 x 22 quotient matrix A (h-orbits of labels) has rank 10. Reformulation only, no proof.
 - Local exhaustive neighbourhood of hm_id_c22_HB_1 (enum_local.py, 12 free labels on the lines {4,5}, {6,7}, COMPLETE,
   1091 structures): nullity 14 occurs 4 times (2 PSD), always with h-related matchings and all ten outer transversals
   on both lines (hmatch_tools_2026-10-15/show_match_loc12_nul13plus.log); every structure with M_1 != h(M_0) there
@@ -103,8 +116,34 @@ kept, NOTE_NIGHT section 14).]
   exactly for T by hsym_check.py and by the reviewer). So the T-only form of (H-MATCH) is FALSE: U >= 0 is essential.
   (The kmilp_obj*_ambig.json files were written by two drivers (modes match and hfull) into the same names; the logs
   kmilp_match_331.log and kmilp_hfull_331.log are authoritative.)
+- 07:00 UTC, complete kernel-MILP sweeps (logs kmilp_match_331.log, kmilp_hfull_331.log, kmilp_match_other103.log):
+  the 331 rank-30 objects have 129 DISTINCT kernels (kernel_classes_331.json). Match mode: 318/331 objects (128/129
+  kernels) admit NO admissible structure with that kernel and broken star matchings; the remaining kernel (shared by
+  13 Z5h objects with c = (2,2)) admits broken ones, but the MILP optimum is never PSD (U fails). Full h-asymmetry
+  (hfull): 303/331 admit no h-broken structure at all; the other 28 optima are not PSD. The 103 other distinct saved
+  structures of nullity >= 14 (nul14_other_structures_2026-10-15.json, PSD or not): 98 kernels admit no broken
+  structure, the other 5 again have non-PSD optima. The shared kernel is being enumerated COMPLETELY by SAT
+  (kernel_sat_enum.py, DP encoding of the linear kernel equations; validated against kernel_enum.py: same 8
+  structures for the 13-dim kernel of hm_id_c22_HB_1): ksat_obj53_full.log. RESULT (07:05 UTC): 15 936 admissible
+  structures contain the shared kernel (COMPLETE, 500 s); 96 are PSD, ALL with h-related matchings; the 9 408 with
+  broken matchings (8 688 of nullity 14, 720 of nullity 15) are all non-PSD. Hence none of the 129 distinct kernels of
+  the 331 rank-30 objects is the kernel of a PSD structure with broken matchings (128 by the MILP optimum 0, ten of
+  them re-checked by complete SAT enumeration in kreps_check/ksat_10reps.log; the shared one by complete SAT
+  enumeration). A full SAT pass over the 129 kernels is running (ksat_all_kernels.log).
+- Sub-kernel sweep (subkernel_sweep.py): for each of the 129 kernels, impose only the 4 star vectors + 8 (resp. 7) of
+  the 10 complementary kernel vectors (random choices), and enumerate ALL admissible structures containing that
+  12- (resp. 11-) dimensional space; the nullity-14 ones have 2 (resp. 3) kernel directions that are not prescribed.
+  Logs subk_drop2.log, subk_drop3.log.
 - kernel_enum.py (all admissible structures whose kernel contains the 13-dimensional kernel of hm_id_c22_HB_1):
   8 structures, COMPLETE (MILP infeasible after no-good cuts), all of nullity 13 and broken, 1 PSD (the start).
+
+- Real srg(243,22,1,2) graphs (hmatch_tools_2026-10-15/hmatch243.py; exact, combinatorial): in the
+  Berlekamp-van Lint-Seidel graph (built by make_bvls.py, 40 vertices examined) every vertex is a Hamming point (55/55
+  pairs of lines are grids) and BOTH halves of the (H-MATCH) relation hold at every pair; in the three new srg(243)
+  of the asymmetric campaign (spreadfree_243_2026-10-12: trade_aut108, trade_aut162, tricayley_Z3x4_grids25;
+  60 vertices each, 17 or 25 grids per vertex) NEITHER half holds at ANY pair, grids included. So in real
+  lambda = 1, mu = 2 graphs h-related local matchings go with the grid-full (Hamming) regime, which L8 forbids for
+  Conway; the high-nullity local objects we can find are all of that BvLS-like kind.
 
 ## 4. Tests running (06:45 UTC)
 kernel_milp_all.py over the 331 objects (modes match and hfull, no PSD cuts; PSDCUTS=1 adds eigenvector cutting planes

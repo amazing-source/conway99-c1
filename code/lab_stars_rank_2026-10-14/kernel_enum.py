@@ -34,6 +34,9 @@ N = nullspace_int(M)
 drop = int(os.environ.get("DROP", "0"))
 if drop:
     N = N[:len(N) - drop]
+if os.environ.get("DROPIDX"):                 # drop the listed basis vectors (comma-separated indices)
+    dd = {int(t) for t in os.environ["DROPIDX"].split(",")}
+    N = [v for q, v in enumerate(N) if q not in dd]
 print("%s: kernel basis used: %d vectors" % (f, len(N)), flush=True)
 pairs = list(itertools.combinations(range(n), 2))
 pid = {p: t for t, p in enumerate(pairs)}
@@ -131,7 +134,9 @@ while found < cap and time.time() - t0 < tlim:
     masym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
     hasym = int(np.abs(G[np.ix_(hp, hp)] - G).sum()) // 2
     hist[(psd, nul, masym > 0, hasym > 0)] += 1
-    if nul >= 14 and masym > 0:
+    if found % 50 == 0:
+        print("progress: %d structures, %.0f s, %s" % (found, time.time() - t0, dict(hist)), flush=True)
+    if nul >= 14 and masym > 0 and psd:
         out = os.path.basename(f).replace(".json", "") + "_KE_%d.json" % found
         json.dump({"labels": d["labels"], "edges": [[i, j] for i, j in pairs if G[i, j]], "psd": psd, "masym": masym,
                    "nullity_numeric": nul}, open(out, "w"))

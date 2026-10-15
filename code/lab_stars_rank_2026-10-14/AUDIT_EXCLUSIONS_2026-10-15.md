@@ -260,3 +260,15 @@ Journal des résultats, au fil de l'eau (heures UTC).
   kk5 (M, DRAT) + L8 et non kk6 (S) ; « contraposée prouvée modulo L8 » ; 806 fichiers = 429 structures distinctes ;
   une structure de nullité 14 trouvée hors famille h (marche du groupe trivial) est elle aussi h-invariante ; scripts
   copiés dans hmatch_tools_2026-10-15/.
+- 07:05 : ÉNUMÉRATION COMPLÈTE par SAT (kernel_sat_enum.py, équations du noyau codées par sommes partielles ; validée
+  contre le MILP) du noyau partagé par les 13 objets : 15 936 structures admissibles contiennent ce noyau
+  (COMPLET, 500 s) ; 96 positives, TOUTES à couplages h-reliés ; les 9 408 à couplages cassés sont toutes non
+  positives. Avec le MILP (optimum 0 pour les 128 autres noyaux, dont 10 recontrôlés par SAT complet) : AUCUN des
+  129 noyaux distincts des 331 objets de rang 30 n'est le noyau d'une structure positive à couplages cassés.
+  Balayage des sous-noyaux (12 et 11 dimensions imposées sur 14) en cours ; jusqu'ici aucune structure de nullité
+  14 à couplages cassés, positive ou non. Énumération SAT de tous les noyaux lancée (ksat_all_kernels.log).
+- 07:15 : ANALOGIE avec de vrais srg(243,22,1,2) (exact) : dans le graphe de Berlekamp-van Lint-Seidel, tout
+  sommet est un point de Hamming et la relation (H-MATCH) tient à TOUTES les paires ; dans les trois nouveaux
+  srg(243) de la campagne asymétrique, elle ne tient à AUCUNE paire (17 ou 25 grilles par sommet). Les couplages
+  h-reliés vont avec le régime « plein de grilles » (Hamming), que L8 interdit à Conway : nos objets locaux de haute
+  nullité sont tous de ce type-là.

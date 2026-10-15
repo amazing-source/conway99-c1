@@ -49,3 +49,14 @@ tu le demandes. Le code plafonne maintenant le nombre de fichiers écrits.
 Branche lab/theta-lp-2026-10-08 du dépôt privé : f6ce63c, ce2c5b3, puis le commit final de la nuit.
 
 (Corrigé le 15/10 vers 04:20 UTC après une relecture indépendante : voir AUDIT_EXCLUSIONS_2026-10-15.md.)
+
+## 5. Boucle du matin (03:00-07:00 UTC, après l'audit)
+- Pas d'exclusion. Détails : AUDIT_EXCLUSIONS_2026-10-15.md section 5, H_MATCH_REDUCTION_2026-10-15.md.
+- (SQ30) expliquée : les 331 objets de rang 30 sont tous invariants par h = (0 1)(2 3) ; leur classe vient de
+  valeurs propres entières de T (3, 5, 7). Ce n'est pas un témoignage sur les blocs de Conway.
+- NOUVEAU, démontré (relu sans erreur) : (H-MATCH) « dans toute structure positive de nullité >= 14, le couplage
+  M_1 est l'image par h de M_0 (et M_3 de M_2) » entraînerait que chaque sommet est un point de Hamming, donc pas
+  de graphe de Conway (L8, ou Makhnev, ou rho <= 191). Contraposée (modulo L10) : à chaque sommet d'un graphe de
+  Conway, au moins 4 des 21 paires de droites ont un bloc positif de nullité >= 14 à couplages non h-reliés.
+- (H-MATCH) est OUVERTE : record hors symétrie = nullité 13 ; fausse si on oublie U >= 0 ; le MILP à noyau imposé
+  ne trouve aucune structure positive cassée pour les noyaux des objets connus (un noyau encore en cours).

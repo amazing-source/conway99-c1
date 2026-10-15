@@ -700,6 +700,18 @@ def main():
                               % (mv, cl, cm, out, kb), flush=True)
             else:
                 s2 = -100.0 + 3.0 * min(lt, lu)
+        elif mode == "urep2":
+            # U-repair on the nullity >= 14 plateau (15/10 06:50, (H-MATCH) test with HREQ): on the plateau with T >= 0
+            # the score is lambda_min(U); off it, worse than any plateau point
+            if nul_num >= 14 and lt > -1e-9:
+                s2 = lu
+            else:
+                s2 = -10.0 + 3.0 * min(lt, lu) - 2.0 * max(0, 14 - nul_num)
+            bu = getattr(main, "bestu2", -999.0)
+            if nul_num >= 14 and lt > -1e-9 and lu > bu:
+                main.bestu2 = lu
+                print("move %d: URE2 plateau record lambda_U %.5f (nullity %d, c = (%d,%d))" % (mv, lu, nul_num, cl, cm),
+                      flush=True)
         elif mode == "lowrank":
             s2 = -float(absev[:14].sum()) if both else -99.0
         elif mode == "zero":
@@ -728,7 +740,7 @@ def main():
                     print("move %d: HREQ RECORD: matchings NOT h-related (%d pairs), numerical nullity %d, PSD %s "
                           "(lambda_T %.4f, lambda_U %.4f), c = (%d,%d)" % (mv, masym, nul_num, min(lt, lu) > -1e-9, lt, lu, cl, cm),
                           flush=True)
-                if nul_num >= 14:
+                if nul_num >= 14 and min(lt, lu) > -1e-9:      # 15/10 06:50: only PSD ones are targets
                     kq = getattr(main, "kq", 0) + 1
                     main.kq = kq
                     if kq <= 50:
