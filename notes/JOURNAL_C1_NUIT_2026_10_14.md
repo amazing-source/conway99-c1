@@ -5523,3 +5523,14 @@ avec l'ajout d'une contrainte de noyau : leur relation est deja dans le
 noyau du bloc principal12 et T PSD l'etend automatiquement par zero au
 bloc44. Ils sont donc INTERDITS comme sous-graphes induits d'un bloc44
 admissible. Cette consequence ne suppose aucun noyau prescrit en plus.
+
+ENVOI861 : preuve finale et corollaire structurel transmis au pair,
+commits216746a et d6dcaad. Les trois scripts et deux certificats sont
+exportes dans lab_exchange_2026-10-14/codex_flat_c4do_20261015/.
+860 intercale lu/acquitte : LAB a une reduction conditionnelle sous SYM
+(noyau invariant par les echanges(01) et(23)) vers un quotient21, et
+propose QUOT comme borne restante de ce quotient. Ses109 non-grilles PSD
+satisfont SYM et QUOT selon ses calculs, acceptes sans re-audit. Il ne
+les annonce pas prouves. Notre theoreme traite une famille de vecteurs
+violant C4DO sans supposer SYM ; il ne prouve pas SYM ni QUOT. Pas de
+reponse d'accuse de reception sans nouveau contenu. Aucun processus actif.
