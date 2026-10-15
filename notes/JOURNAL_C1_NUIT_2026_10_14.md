@@ -4232,3 +4232,75 @@ invalides rejetees. Huit identites de relevement T/U x quatre caracteres
 sur une matrice algebrique invariante propre. Artefacts psd_exact_cuts.json
 et g1_twist_square.json ; executions autour d'une seconde. Aucun germe,
 cube ou verdict du pair re-audite. Pas de nouvelle exclusion de G1''/C1.
+
+### 15/10, suite815 : projection exacte de C2 et certificats a variables mixtes
+
+815 lu/acquitte. Claude annonce70 iterations/384 coupes PSD pour G1'',
+sans verdict, et50/252 pour le temoin G1, encore sans structure PSD.
+Il a remplace C2 paresseux par sa linearisation exacte : auxiliaires
+continus y_ijt>=x_it+x_jt-1, somme_t y_ijt<=2-s-x_ij, avec nonnegativite.
+10668 colonnes continues. Ses cubes M0,M2 sont un decoupage envisage,
+pas une campagne au cout demontre abordable. Aucun calcul du pair repris.
+
+NOUVELLE ELIMINATION (message816). Pour une paire i,j, poser e=x_ij,
+s=nombre de lettres communes, L_t=x_it+x_jt et c=2-s. Les seules bornes
+inferieures y_t>=0,y_t>=L_t-1 ont pour minimum max(0,L_t-1). Toutes les
+apparitions dans les sommes C2 sont a coefficients positifs. Il existe
+donc des auxiliaires ssi
+ e+sum_t max(0,L_t-1)<=c.
+Pour x dans[0,1], ces minima sont aussi<=1 : des bornes y<=1 ne changent
+pas la projection. Les auxiliaires identiques sous le groupe ont la meme
+forme L_t, et peuvent etre regroupes avec leur multiplicite entiere m_t.
+Cette projection est EXACTE sur la relaxation continue, pas seulement
+sur les affectations binaires. Elle concerne ces auxiliaires et ces
+contraintes ; des contraintes supplementaires arbitraires sur y ne sont
+pas supposees dans cette equivalence.
+
+SEPARATION COMPLETE. La somme de max est le maximum sur les sous-ensembles W
+de la somme des L_t-1 selectionnes. Pour tout W, la coupe equivalente est
+ e+sum_{t dans W} m_t L_t <= c+sum_{t dans W} m_t.
+Au point courant, prendre tous les termes L_t>1. Une seule passe sur
+les termes suffit pour produire une coupe la plus violee ou prouver
+qu'aucune coupe C2 de cette paire n'est violee. Il n'est pas necessaire
+d'enumerer les2^42 sous-ensembles. Cela ne borne pas le nombre d'iterations
+du solveur et ne garantit pas une acceleration ; la relaxation obtenue
+apres separation complete a exactement la meme force que l'etendue.
+
+CERTIFICAT DE CHAQUE COUPE. Ajouter une fois e+sum m_t y_t<=c, m_t fois
+L_t-y_t<=1 pour les termes selectionnes, et m_t fois-y_t<=0 pour tous
+les autres. Les coefficients de TOUS les auxiliaires s'annulent. Les
+multiplicateurs entiers nonnegatifs sont exportes avec la coupe. C'est
+une justification courte utilisable dans une preuve d'infaisabilite.
+La selection de W peut venir d'un calcul flottant sans invalider la
+coupe : tout W est valide ; seule la certification de la separation
+complete exige une comparaison exacte au point rationnel courant.
+
+OUTIL c2_projected_cuts.py, bibliotheque standard seulement.
+models_from_edge_orbits(labels,orbits) construit les formes dans l'ordre
+des variables et labels du producteur. Toutes les paires doivent etre
+couvertes, y compris les variables fixees par des equations ; les formes
+C2 identiques sont fusionnees par leurs coefficients effectifs, sans
+supposer une action de groupe non fournie. separate_all parse une fois
+le point rationnel et renvoie toutes les paires violees ; subset_cut
+permet aussi une selection externe. Aucun graphe du pair lu.
+
+CERTIFICAT MIXTE. Si Claude conserve la formulation etendue, seules les
+254 variables d'aretes sont binaires. Le nouveau mixed_binary_tree_certificate
+de psd_exact_cuts.py recoit explicitement leurs indices ; les autres
+variables restent continues et leurs bornes sont dans les lignes globales.
+Les feuilles Farkas doivent annuler les colonnes binaires ET continues.
+Ne jamais traiter les10668 y comme des bits pour conclure sur le modele
+mixte. Les lignes creuses sont maintenant acceptees avec n_variables
+explicite ; bornes et branches sont creuses pour eviter de remplir de
+grandes matrices. binary_tree_certificate reste l'interface tout-binaire.
+Cette infrastructure consomme une preuve ; elle ne tire toujours pas un
+certificat d'un seul statut HiGHS et ne borne pas la taille de l'arbre.
+
+CONTROLES PROPRES :486 points fractionnaires compares a tous les
+sous-ensembles dans deux petits modeles ; multiplicites et variables
+alias ;72 affectations binaires de quatre labels comparees directement
+a C2, avec et sans egalites de variables. Identite des multiplicateurs
+elimnant y. Certificat mixte pour x binaire,y continu,y=x,2y=1 : deux
+feuilles exactes, et rejet d'un branchement sur y. Aucune structure SRG
+construite ou exclue. Artefacts c2_projected_cuts.json et psd_exact_cuts.json,
+exports portables correspondants ; calculs courts, pas de processus actif.

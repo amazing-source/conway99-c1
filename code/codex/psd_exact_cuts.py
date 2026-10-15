@@ -56,6 +56,28 @@ def integer_row(coefficients, rhs):
                 positive_scale=str(sp.Rational(scale, common)))
 
 
+def row_dimension(row):
+    if isinstance(row['coefficients'], dict):
+        n = row.get('n_variables')
+        if not isinstance(n, int) or n < 0:
+            raise ValueError('Sparse rows require an explicit nonnegative n_variables.')
+        return n
+    return len(row['coefficients'])
+
+
+def row_entries(row):
+    """Dense and sparse rows share the same exact certificate semantics."""
+    n = row_dimension(row)
+    entries = row['coefficients'].items() if isinstance(row['coefficients'], dict) else enumerate(row['coefficients'])
+    for key, value in entries:
+        j = int(key)
+        if not 0 <= j < n:
+            raise ValueError('Coefficient index outside the declared dimension.')
+        value = rational(value)
+        if value:
+            yield j, value
+
+
 def negative_direction(matrix):
     """Exact congruence: return PSD, or an integer q with q^t M q<0.
 
@@ -172,7 +194,7 @@ def farkas_certificate(rows, multipliers):
     """
     if not rows:
         raise ValueError('No inequalities supplied.')
-    n = len(rows[0]['coefficients'])
+    n = row_dimension(rows[0])
     if isinstance(multipliers, dict):
         values = [sp.Rational(0)]*len(rows)
         for key, value in multipliers.items():
@@ -187,10 +209,12 @@ def farkas_certificate(rows, multipliers):
     combined = [sp.Rational(0)]*n
     rhs = sp.Rational(0)
     for row, weight in zip(rows, values):
-        if len(row['coefficients']) != n:
+        if row_dimension(row) != n:
             raise ValueError('Inconsistent row dimension.')
-        for j, a in enumerate(row['coefficients']):
-            combined[j] += weight*rational(a)
+        if not weight:
+            continue
+        for j, a in row_entries(row):
+            combined[j] += weight*a
         rhs += weight*rational(row['rhs'])
     if any(combined) or rhs >= 0:
         raise ValueError('Not a contradiction: require zero left side and negative right side.')
@@ -198,24 +222,31 @@ def farkas_certificate(rows, multipliers):
                 nonzero_multipliers=sum(x != 0 for x in values))
 
 
-def binary_tree_certificate(rows, n_variables, tree):
-    """Check a finite covering branch tree with exact Farkas leaves.
+def mixed_binary_tree_certificate(rows, n_variables, binary_variables, tree):
+    """Check a covering branch tree with binary AND continuous variables.
 
-    Row order at a leaf is: supplied global rows; x_j<=1 for increasing j;
-    -x_j<=0 for increasing j; then branch rows along that root-to-leaf path.
+    Only indices in binary_variables may be split.  All other variables
+    stay continuous; their bounds must be present in the supplied rows.
+    Row order at a leaf: global rows; x_j<=1 for increasing binary j;
+    -x_j<=0 for increasing binary j; then the branch rows on that path.
     Node schema: {'split':j,'zero':node,'one':node}.
     Leaf schema: {'multipliers': sparse_map_or_full_list}.
-    Zero appends x_j<=0; one appends -x_j<=-1.  All variables are binary.
+    Zero appends x_j<=0; one appends -x_j<=-1.  Farkas cancels ALL columns,
+    including the continuous ones.  Bounds/branches are stored sparsely.
     This consumes a proof, and cannot extract one from a MILP status flag.
     """
-    if any(len(row['coefficients']) != n_variables for row in rows):
+    if any(row_dimension(row) != n_variables for row in rows):
         raise ValueError('Wrong global row dimension.')
+    binary = list(binary_variables)
+    if (any(not isinstance(j, int) or not 0 <= j < n_variables for j in binary)
+            or len(set(binary)) != len(binary)):
+        raise ValueError('Invalid binary variable index list.')
+    binary = sorted(binary)
+    binary_set = set(binary)
     bounded_rows = list(rows)
     for sign, rhs in ((1, 1), (-1, 0)):
-        for j in range(n_variables):
-            coefficients = [0]*n_variables
-            coefficients[j] = sign
-            bounded_rows.append(dict(coefficients=coefficients, rhs=rhs))
+        for j in binary:
+            bounded_rows.append(dict(coefficients={str(j): sign}, rhs=rhs, n_variables=n_variables))
 
     def visit(node, current, fixed):
         if 'multipliers' in node:
@@ -224,22 +255,28 @@ def binary_tree_certificate(rows, n_variables, tree):
             farkas_certificate(current, node['multipliers'])
             return 1, len(fixed)
         j = node.get('split')
-        if not isinstance(j, int) or not 0 <= j < n_variables or j in fixed:
+        if not isinstance(j, int) or j not in binary_set or j in fixed:
             raise ValueError('Invalid or repeated binary split.')
         leaves, depth = 0, 0
         for label, sign, rhs in (('zero', 1, 0), ('one', -1, -1)):
             if label not in node:
                 raise ValueError('Both children are required to cover a binary split.')
-            coefficients = [0]*n_variables
-            coefficients[j] = sign
-            child_rows = current+[dict(coefficients=coefficients, rhs=rhs)]
+            child_rows = current+[dict(coefficients={str(j): sign}, rhs=rhs, n_variables=n_variables)]
             count, child_depth = visit(node[label], child_rows, fixed | {j})
             leaves += count
             depth = max(depth, child_depth)
         return leaves, depth
 
     leaves, depth = visit(tree, bounded_rows, set())
-    return dict(status='EXACT_BINARY_CONTRADICTION', leaves=leaves, maximum_depth=depth)
+    return dict(status='EXACT_MIXED_BINARY_CONTRADICTION', leaves=leaves, maximum_depth=depth,
+                binary_variables=len(binary), continuous_variables=n_variables-len(binary))
+
+
+def binary_tree_certificate(rows, n_variables, tree):
+    """All-binary compatibility wrapper; use the mixed version for auxiliaries."""
+    result = mixed_binary_tree_certificate(rows, n_variables, range(n_variables), tree)
+    return dict(status='EXACT_BINARY_CONTRADICTION', leaves=result['leaves'],
+                maximum_depth=result['maximum_depth'])
 
 
 def report():
@@ -277,6 +314,15 @@ def report():
             'zero': {'multipliers': {'1': 1, '4': 2}},
             'one': {'multipliers': {'0': 1, '4': 2}}}
     binary_certificate = binary_tree_certificate(binary_rows, 1, tree)
+    # x is binary, y is continuous; y=x and 2y=1.  No split on y is allowed.
+    mixed_rows = [dict(coefficients={'0': -1, '1': 1}, rhs=0, n_variables=2),
+                  dict(coefficients={'0': 1, '1': -1}, rhs=0, n_variables=2),
+                  dict(coefficients={'1': 2}, rhs=1, n_variables=2),
+                  dict(coefficients={'1': -2}, rhs=-1, n_variables=2)]
+    mixed_tree = {'split': 0,
+                  'zero': {'multipliers': {'0': 2, '3': 1, '6': 2}},
+                  'one': {'multipliers': {'1': 2, '2': 1, '6': 2}}}
+    mixed_certificate = mixed_binary_tree_certificate(mixed_rows, 2, [0], mixed_tree)
     rejected = 0
     for invalid in ([1, -1], [1, 0]):
         try:
@@ -291,12 +337,18 @@ def report():
         psd_cut([[0.5]], [[[1]]], [1])
     except ValueError:
         rejected += 1
-    assert rejected == 4
+    try:
+        mixed_binary_tree_certificate(mixed_rows, 2, [0], {'split': 1, 'zero': {}, 'one': {}})
+    except ValueError:
+        rejected += 1
+    assert rejected == 5
     return dict(status='EXACT_PSD_CUT_AND_FINITE_PROOF_PRIMITIVES',
                 rational_negative_examples=checks, example_cut=cut,
                 exact_separation=separation, linear_certificate=linear_certificate,
                 binary_example=dict(rows=binary_rows, tree=tree,
                                     fractional_witness=['1/2'], certificate=binary_certificate),
+                mixed_example=dict(rows=mixed_rows, tree=mixed_tree, binary_indices=[0],
+                                   fractional_witness=['1/2', '1/2'], certificate=mixed_certificate),
                 rejected_invalid_inputs=rejected,
                 scope='Own algebraic fixtures only. No producer MILP, candidate graph, or C1 exclusion tested.',
                 limitation='No infeasibility proof generator or tree-size bound. A floating MILP status is not an exact certificate.')
