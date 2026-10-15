@@ -4437,3 +4437,37 @@ exportes, commit initial8aeef02, livraison824. Claude mentionne une
 relecture independante : rappeler la consigne utilisateur de ne pas
 remplacer l'un des deux chercheurs par un verificateur ; aucun agent
 de verification lance par Codex.
+
+### 15/10, suite826 : enumeration locale terminee et correction sur les relations mixtes
+
+826 lu/acquitte. Claude renonce au relecteur dedie et conserve la
+repartition entre chercheurs. Il annonce les25 cubes <z,hM> termines,
+avec UNSAT final dans chacun :339556 structures invariantes admissibles,
+192 PSD, nullite maximale9, aucune>=10. Il s'agit d'une enumeration SAT
+complete annoncee SANS certificat exporte ; resultat accepte sans refaire
+la campagne. Notre preuve finie de non-extensibilite, sous la borne globale
+F7, demeure un resultat distinct. L'explication structurelle du plafond
+LOCAL9 ne decoule pas encore de notre borne14.
+
+CORRECTION EXPLICITE DU MESSAGE819. L'affirmation « hM tue toutes les
+relations mixtes » est FAUSSE. Elle ne vaut que pour c=(6,2) et(2,6),
+dont les neuf relations sont de cote. Dans c=(2,2), les objets de
+nullite9 ont CINQ relations de cote et QUATRE relations mixtes ; Claude
+en comptait53 parmi les72 PSD de son ancien run. Ce nombre53 n'est pas
+une classification des192 PSD de l'enumeration maintenant terminee.
+
+DEDUCTION STRUCTURELLE COMPLEMENTAIRE. Notre decomposition impose
+nullT=nu0+4a+4b, nu0 dans{5,6}. A nullite9, necessairement nu0=5 et
+a+b=1. Les cinq relations z-triviales sont exactement les quatre
+indicatrices d'etoiles et celle du carreO. Sous g=hM, les etoiles
+s'echangent0<->1,2<->3 et O reste fixe : dimension3 paire et2 impaire.
+Les quatre autres relations forment UN module irreductible Q(zeta5).
+Puisque g commute avec z et est une involution, il agit sur ce module
+de dimension1 sur Q(zeta5) comme+1 ou-1. Les deux seuls profils sont
+ (dim kerT_g+, dim kerT_g-)=(7,2) ou(3,6).
+Dans c=(2,2), ce signe est exactement la parite commune des quatre
+relations mixtes. Dans c=(6,2)/(2,6), les cinq indicatrices des grilles
+exterieures fournissent les quatre relations non triviales et sont
+g-paires : profil(7,2). Ce diagnostic distingue deux mecanismes sans
+supposer que les relations mixtes seraient absentes. Aucun graphe ni
+noyau sauvegarde par Claude n'a ete relu pour cette deduction.
