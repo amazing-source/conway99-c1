@@ -5071,3 +5071,18 @@ analyse des coefficients, l'identification explicite et l'enumeration
 complete, en consommant le fichier producteur conserve. Les verdicts
 pour les945 appariements et les120 temoins sont exportes. Il utilise
 le module odd9_defect_decomposition.py pour normaliser les relations.
+
+Suite847, lu/acquitte apres l'envoi848 (resultats48914cb). LAB fournit
+deux nouveaux exemples exacts : sum_hb1_SUM_1 c42 et oddw_o9b_HB_1 c22,
+tous deux nu13,(a,b,s)=(9,2,2),gains9/9. Sans refaire ses calculs, notre
+formule donne eta_l=eta_m=0, e=(3,1) pour c42 et(1,1) pour c22.
+Ainsi s>0 n'impose pas eta>0 : une structure peut satisfaire ODD9
+ponctuellement alors que N n'est pas h-invariant. Le second exemple est
+issu, selon LAB, du contre-exemple hv_h_c22_H30_23 en cassant les
+appariements. Les dimensions passent de(11,3,0) a(9,2,2) : diminution
+de2 dimensions pures paires et1 pure impaire, apparition de2 dimensions
+mixtes, baisse totale de nullite de1. C'est une comparaison de dimensions,
+pas une identification de relations individuelles ni une loi universelle.
+LAB indique une invariance de structure sous la fausse h(5 13) ; ne pas
+transformer cette phrase en affirmation d'automorphisme de Conway.
+Aucune reponse d'accuse au pair ; aucune nouvelle matrice relue.
