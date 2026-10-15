@@ -1,0 +1,4591 @@
+{
+  "status": "EXACT_FLAT_SUPPORT_TWELVE_CORE_CLASSIFICATION",
+  "support_types": 52,
+  "cores": 832,
+  "all_core_T_U_psd": true,
+  "proof": [
+    "Assume Gamma is binary and its pairs have at most one common neighbour when adjacent and at most two otherwise (the actual C2 caps are stronger). Let q have entries0,+1,-1, satisfy Bq=0 and Tq=0. Then Gamma*q=3*q because K*q=0. Both signs occur, and every positive vertex has at least three positive neighbours; similarly for the negative vertices.",
+    "A graph on at most six vertices with those common-neighbour caps and minimum degree three must be a triangular prism on six vertices. A degree-five vertex is impossible because its neighbours have degree at most two. For degree four on six vertices, each of its four neighbours must meet the sole non-neighbour, producing four common neighbours for a nonadjacent pair. Hence the graph is cubic. On fewer than six vertices this is impossible. On six vertices, the three neighbours of a vertex must contain an edge (otherwise the two remaining vertices have three common neighbours); the remaining edges then force the triangular prism.",
+    "Consequently support at most twelve forces six positive and six negative vertices, each sign inducing a prism. Each vertex already has exactly three same-sign neighbours, so Gamma*q=3*q forbids edges between the two prisms.",
+    "Inside a prism, triangle edges already have one common prism neighbour and nonadjacent pairs already have two. Thus a root letter can be shared only by the two endpoints of a vertical matching edge. Each root occurs at most twice and each prism vertex has at most one repeated root letter.",
+    "Let o be the number of overlap labels in one prism. Its central-letter incidence sum is6+o, and every one of the four central roots occurs at most twice, so o<=2. If o=2, every central root occurs twice, and an overlap label would have two repeated roots, impossible. Hence o<=1. Bq=0 gives the same root multiplicities for both prisms and hence the same o. A nonzero overlap double difference requires o=1 for each sign, with different overlap labels.",
+    "The central multiplicities are then(1,2,2,2). Both overlap labels meet the unique multiplicity-one central root. By a central mate-preserving permutation and sign reversal normalize them to positive02 and negative03. The three other central roots close all three vertical edges in both prisms. No exterior root can repeat within a prism, so exactly five exterior letters a,b,c,d,e occur, once in each sign.",
+    "Normalize the positive labels to(02,2a,1b,1c,3d,3e). Disjointness of the signs leaves two negative forms up to permutations within the positive pairs: (03,3a,1d,1e,2b,2c), or(03,3b,1a,1d,2c,2e). These exhaust whether the negative singleton at3 uses a or one of b,c. It cannot use d or e.",
+    "The mate involution restricted to these five exterior letters is a partial matching:1 empty,10 one-edge,15 two-edge choices. Every such partial matching extends to the ten exterior roots. This gives2*26=52 covering support types; they are not asserted pairwise nonisomorphic. Each prism has four choices of its two triangles with the fixed vertical matching, giving16 orientations per support, or832 labelled core representatives.",
+    "Only the twelve-label principal T and U matrices and the local incidence/common-neighbour capacities are imposed here. Their positivity does not supply the missing32 labels, the complete star equalities on44 labels, the full Gram ranks or a Conway graph. This classification does not cover general integer kernel coefficients, nonzero incidence Bq, or support larger than twelve."
+  ],
+  "records": [
+    {
+      "partial_mate_matching": [],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          12
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        8,
+        10,
+        4,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        8,
+        10,
+        4,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        8,
+        4,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        8,
+        4,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        8,
+        4,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        8,
+        4,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        4,
+        5,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        4,
+        5,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        8,
+        4,
+        5,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        8,
+        4,
+        5,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        4,
+        8,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        4,
+        8,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        8,
+        4,
+        6,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        8,
+        4,
+        6,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        6,
+        4,
+        8,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        6,
+        4,
+        8,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        8,
+        4,
+        6,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        8,
+        4,
+        6,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        5,
+        8,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        5,
+        8,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        8,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        5,
+        6,
+        8,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        8,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        8,
+        5,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        8,
+        5,
+        6,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        7,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        7,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        8,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        5,
+        8,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        5,
+        10
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          10
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          10
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        8,
+        6,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        8,
+        6,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        7,
+        5,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        7,
+        5,
+        8
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          8
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        5,
+        7
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        10,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        8,
+        6,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          6
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        8,
+        6,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        7,
+        8,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        7,
+        8,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 0,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    },
+    {
+      "partial_mate_matching": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "kind": 1,
+      "exterior_letters": [
+        4,
+        6,
+        8,
+        7,
+        5
+      ],
+      "positive": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "negative": [
+        [
+          0,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "rank_histogram": [
+        {
+          "T_rank": 11,
+          "U_rank": 12,
+          "count": 16
+        }
+      ]
+    }
+  ],
+  "representative": {
+    "labels": [
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        3,
+        10
+      ],
+      [
+        3,
+        12
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        1,
+        10
+      ],
+      [
+        1,
+        12
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        8
+      ]
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        10
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        7,
+        11
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        10
+      ],
+      [
+        9,
+        11
+      ],
+      [
+        10,
+        11
+      ]
+    ],
+    "q": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1
+    ],
+    "overlap_double_difference": 2,
+    "T8": [
+      [
+        20,
+        -9,
+        -7,
+        1,
+        -7,
+        1,
+        -2,
+        1,
+        1,
+        1,
+        -1,
+        -1
+      ],
+      [
+        -9,
+        20,
+        2,
+        -6,
+        1,
+        -7,
+        1,
+        -2,
+        2,
+        2,
+        -1,
+        -1
+      ],
+      [
+        -7,
+        2,
+        20,
+        -9,
+        -6,
+        2,
+        1,
+        2,
+        -1,
+        -1,
+        -1,
+        2
+      ],
+      [
+        1,
+        -6,
+        -9,
+        20,
+        2,
+        -6,
+        1,
+        2,
+        -1,
+        -1,
+        2,
+        -1
+      ],
+      [
+        -7,
+        1,
+        -6,
+        2,
+        20,
+        -9,
+        -1,
+        -1,
+        -1,
+        2,
+        1,
+        1
+      ],
+      [
+        1,
+        -7,
+        2,
+        -6,
+        -9,
+        20,
+        -1,
+        -1,
+        2,
+        -1,
+        1,
+        1
+      ],
+      [
+        -2,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        20,
+        -9,
+        -7,
+        1,
+        -7,
+        1
+      ],
+      [
+        1,
+        -2,
+        2,
+        2,
+        -1,
+        -1,
+        -9,
+        20,
+        2,
+        -6,
+        1,
+        -7
+      ],
+      [
+        1,
+        2,
+        -1,
+        -1,
+        -1,
+        2,
+        -7,
+        2,
+        20,
+        -9,
+        -6,
+        2
+      ],
+      [
+        1,
+        2,
+        -1,
+        -1,
+        2,
+        -1,
+        1,
+        -6,
+        -9,
+        20,
+        2,
+        -6
+      ],
+      [
+        -1,
+        -1,
+        -1,
+        2,
+        1,
+        1,
+        -7,
+        1,
+        -6,
+        2,
+        20,
+        -9
+      ],
+      [
+        -1,
+        -1,
+        2,
+        -1,
+        1,
+        1,
+        1,
+        -7,
+        2,
+        -6,
+        -9,
+        20
+      ]
+    ],
+    "U15": [
+      [
+        50,
+        9,
+        14,
+        -1,
+        14,
+        -1,
+        -5,
+        -1,
+        -1,
+        -1,
+        -6,
+        -6
+      ],
+      [
+        9,
+        50,
+        -2,
+        13,
+        -1,
+        14,
+        -1,
+        -5,
+        -2,
+        -2,
+        -6,
+        -6
+      ],
+      [
+        14,
+        -2,
+        50,
+        9,
+        13,
+        -2,
+        -1,
+        -2,
+        -6,
+        -6,
+        -6,
+        -2
+      ],
+      [
+        -1,
+        13,
+        9,
+        50,
+        -2,
+        13,
+        -1,
+        -2,
+        -6,
+        -6,
+        -2,
+        -6
+      ],
+      [
+        14,
+        -1,
+        13,
+        -2,
+        50,
+        9,
+        -6,
+        -6,
+        -6,
+        -2,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        14,
+        -2,
+        13,
+        9,
+        50,
+        -6,
+        -6,
+        -2,
+        -6,
+        -1,
+        -1
+      ],
+      [
+        -5,
+        -1,
+        -1,
+        -1,
+        -6,
+        -6,
+        50,
+        9,
+        14,
+        -1,
+        14,
+        -1
+      ],
+      [
+        -1,
+        -5,
+        -2,
+        -2,
+        -6,
+        -6,
+        9,
+        50,
+        -2,
+        13,
+        -1,
+        14
+      ],
+      [
+        -1,
+        -2,
+        -6,
+        -6,
+        -6,
+        -2,
+        14,
+        -2,
+        50,
+        9,
+        13,
+        -2
+      ],
+      [
+        -1,
+        -2,
+        -6,
+        -6,
+        -2,
+        -6,
+        -1,
+        13,
+        9,
+        50,
+        -2,
+        13
+      ],
+      [
+        -6,
+        -6,
+        -6,
+        -2,
+        -1,
+        -1,
+        14,
+        -1,
+        13,
+        -2,
+        50,
+        9
+      ],
+      [
+        -6,
+        -6,
+        -2,
+        -6,
+        -1,
+        -1,
+        -1,
+        14,
+        -2,
+        13,
+        9,
+        50
+      ]
+    ],
+    "T_certificate": {
+      "psd": true,
+      "rank": 11,
+      "positive_pivots": [
+        "20",
+        "319/20",
+        "5572/319",
+        "74273/5572",
+        "921640/74273",
+        "4276423/921640",
+        "2222028/115579",
+        "8160896/555507",
+        "38479524/2359009",
+        "34430540/3206627",
+        "2471120/224547"
+      ]
+    },
+    "U_certificate": {
+      "psd": true,
+      "rank": 12,
+      "positive_pivots": [
+        "50",
+        "2419/50",
+        "110446/2419",
+        "4856253/110446",
+        "213535988/4856253",
+        "2197071227/53383997",
+        "8184735890/169005479",
+        "77135558985/1636947178",
+        "978307344940/22283605929",
+        "2097705398840/48915367247",
+        "8895801442665/209770539884",
+        "23698947056400/593053429511"
+      ]
+    }
+  },
+  "summary": [
+    {
+      "mate_pairs": 0,
+      "kind": 0,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 16
+    },
+    {
+      "mate_pairs": 0,
+      "kind": 1,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 16
+    },
+    {
+      "mate_pairs": 1,
+      "kind": 0,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 160
+    },
+    {
+      "mate_pairs": 1,
+      "kind": 1,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 160
+    },
+    {
+      "mate_pairs": 2,
+      "kind": 0,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 240
+    },
+    {
+      "mate_pairs": 2,
+      "kind": 1,
+      "T_rank": 11,
+      "U_rank": 12,
+      "count": 240
+    }
+  ],
+  "seconds": 1.4219999999913853,
+  "scope": "Twelve-label support cores only; no44-label extension and no general C4DO, ODDCONST or N9-NG proof."
+}

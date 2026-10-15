@@ -1,0 +1,77 @@
+{
+  "status": "PROVED_FLAT_INCIDENCE_ZERO_C4DO_SUPPORT_AT_MOST_TWELVE",
+  "proof": [
+    "Let Gamma be a binary44-label block satisfying the four central-star C1 equations and the C2 common-neighbour caps, and let T and U be PSD with the usual Conway geometry. Suppose q is a nonzero vector with entries0,+1,-1, Bq=0, Tq=0, support at most12, and w_C.q nonzero. Since Kq=0, Gamma*q=3*q. The six-vertex prism lemma forces six positive and six negative vertices, each inducing a prism, with no edges between the signs. Its proof and the covering core classification are in four_star_flat_kernel_prism_cores.py.",
+    "A repeated root letter in a prism must close one of its three vertical edges: triangle edges already have their common neighbour, and nonadjacent prism pairs already have two. Thus a prism vertex cannot carry two repeated letters. The total central incidence is6+o, where o counts its overlap vertices. This forces o<=1. Bq=0 and w_C.q nonzero force exactly one overlap label of each sign, sharing the unique multiplicity-one central root. Normalize these labels to +02,-03. The root multiplicities of either sign are r=(1,2,2,2) on the centres, with five distinct exterior letters of multiplicity1 and all other exterior multiplicities0. All three vertical edges are closed by central roots1,2,3.",
+    "Every vertex outside the two prisms meets either prism in at most one vertex. Meeting two triangle-adjacent or nonadjacent vertices exceeds the C2 capacity; meeting a vertical pair also exceeds it because that pair already has its common root neighbour. Let v be the positive prism indicator, and define k=Gamma*v-3v. Then k is binary, zero on both prisms, and Gamma*q=3q makes the two outside-prism neighbour counts equal.",
+    "Let p be the number of mate pairs entirely contained in the five exterior letters. Then p is0,1,2. Put f=(3I+M)r. Its central entries are(5,7,8,8). Among the ten exterior entries there are2p fours,5-2p threes,5-2p ones and2p zeros. With T8=8T, w=T8*v=12*1-B^t*f-8k. Moreover d=v^t*T8*v=72-r^t(3I+M)r=6-2p.",
+    "For either unused overlap label12 or13, w_x=-3-8k_x and (T8)_xx=20. PSD on the two vectors(v,e_x) gives w_x^2<=20d<=120. If k_x=1 the left side is121, impossible. Thus k vanishes on all four overlap labels. This strict one-unit inequality uses T PSD alone.",
+    "Sum k over central star a. C1 gives sum_{x in L_a}(Gamma*v)_x=12-r_a-r_{a^1}. Subtracting3r_a yields sum_{x in L_a}k_x=12-4r_a-r_{a^1}, namely(6,3,2,2). Since k vanishes on the overlap, these are also the sums on the ten exterior labels of each star.",
+    "Write b=12*1-B^t*f. Directly from the listed multiplicities, ||b||^2=480+48p, with overlap contribution20. On an exterior coordinate in central star a, changing k from0 to1 changes w_x^2 by64-16b_x. To lower-bound ||w||^2, relax the forced zeros on the support and choose the6,3,2,2 smallest such increments separately in the four stars. The resulting exact lower bounds are384,304,304 for p=0,1,2 respectively.",
+    "On the other hand T+U=7Pi, where Pi=I-(11B^tB+B^tMB-2J)/120. Because B^t J_14 B=4J, the subtracted matrix equals B^t(11I+M-J_14/2)B/120. The inner matrix has eigenvalues5 on constants,12 on the nonconstant M-even space,10 on the M-odd space, so Pi<=I. With T,U PSD this gives0<=T8<=56I. Hence ||T8*v||^2<=56*v^t*T8*v=56d, namely336,224,112 in the three cases.",
+    "The lower bounds384,304,304 strictly exceed336,224,112. This contradiction excludes every44-label extension containing such a q. Equivalently every incidence-zero kernel vector with coefficients0,+1,-1 and support at most12 satisfies C4DO. No assumption of h symmetry, modular rank, nullity14 or C1-prime is used beyond the stated C1/C2 caps. General coefficients, nonzero incidence, larger support, ODDCONST, N9-NG, NG5 and NG7 remain outside this theorem."
+  ],
+  "cases": [
+    {
+      "exterior_mate_pairs": 0,
+      "prism_T8_energy": 6,
+      "unused_overlap_nonzero_profile_square": 121,
+      "unused_overlap_PSD_upper": 120,
+      "baseline_squared_norm": 480,
+      "minimum_star_corrections": [
+        -160,
+        0,
+        32,
+        32
+      ],
+      "squared_norm_lower": 384,
+      "spectral_squared_norm_upper": 336,
+      "contradiction_margin": 48
+    },
+    {
+      "exterior_mate_pairs": 1,
+      "prism_T8_energy": 4,
+      "unused_overlap_nonzero_profile_square": 121,
+      "unused_overlap_PSD_upper": 80,
+      "baseline_squared_norm": 528,
+      "minimum_star_corrections": [
+        -192,
+        -32,
+        0,
+        0
+      ],
+      "squared_norm_lower": 304,
+      "spectral_squared_norm_upper": 224,
+      "contradiction_margin": 80
+    },
+    {
+      "exterior_mate_pairs": 2,
+      "prism_T8_energy": 2,
+      "unused_overlap_nonzero_profile_square": 121,
+      "unused_overlap_PSD_upper": 40,
+      "baseline_squared_norm": 576,
+      "minimum_star_corrections": [
+        -224,
+        -48,
+        0,
+        0
+      ],
+      "squared_norm_lower": 304,
+      "spectral_squared_norm_upper": 112,
+      "contradiction_margin": 192
+    }
+  ],
+  "hypotheses": [
+    "binary Gamma",
+    "four complete central-star C1 equations",
+    "C2 capacities including root-label intersections",
+    "T PSD",
+    "U PSD",
+    "q in ker T",
+    "Bq=0",
+    "q entries in{0,+1,-1}",
+    "support(q)<=12"
+  ],
+  "conclusion": "q(02)-q(03)-q(12)+q(13)=0",
+  "scope": "This excludes all832 support cores classified earlier as full44-label extensions with this kernel relation. It does not prove general C4DO, N9-NG, NG5 or NG7, and does not exclude Conway."
+}

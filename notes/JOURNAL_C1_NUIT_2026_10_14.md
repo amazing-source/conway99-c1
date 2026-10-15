@@ -5379,27 +5379,141 @@ gain9 n'est pas prouve hors-grille. Les18 motifs O non-grille restent
 a couvrir. Ce sont des reformulations de la cible, pas sa preuve.
 
 ESSAI ANALYTIQUE PAR LES DEUX PREMIERS MOMENTS (INSUFFISANT).
+CORRECTION suite858 : le premier calcul confondait le degre dans F
+avec le degre dans Gamma ; les expressions ci-dessous sont corrigees.
+La conclusion faible rang>=23 demeure, et ne prouve toujours pas NG5.
 On peut ecrire une identite generale, sans symetrie, sans lire un graphe.
 Noter e=e(O), D l'incidence10x44 des lettres exterieures, M_ext leur
 appariement, et
  a=tr(Gamma D^tD), b=tr(Gamma D^t M_ext D).
 C1-prime donne0<=a,b<=40 : chaque etiquette exterieure a au plus un
 voisin portant sa lettre, et au plus un portant la lettre mate.
-C1 donne e(O,F)=16-4e, deg_F(x)=6-2deg_O(x), et
- tr(Gamma^2)=224+6e (binarite).
+C1 donne e(O,F)=16-4e, deg_F(x)=6-2deg_O(x), tandis que le degre
+TOTAL d'un sommet exterieur est6-deg_O(x). Ainsi
+ tr(Gamma^2)=240+2e (binarite).
 Pour K8=3B^tB+B^tMB-2J, on a trK8=176 et tr(K8^2)=4736.
 Les quatre etoiles centrales donnent chacune12 a leurs comptes,
-d'ou tr(Gamma K8)=3(48+a)+(48+b)-2(224+6e)
-                      =-256-12e+3a+b.
+d'ou tr(Gamma K8)=3(48+a)+(48+b)-2(240+2e)
+                      =-288-4e+3a+b.
 Avec T8=24I-8Gamma-K8, il vient exactement
  trT8=880,
- tr(T8^2)=31872+192e+48a+16b.
+ tr(T8^2)=32384+64e+48a+16b.
 Les constantes de la geometrie ont ete evaluees par un script ponctuel
 sur les44 etiquettes, sans graphe du pair. Hors-grille, e<=3 et donc
-tr(T8^2)<=35008. Cauchy sur les valeurs propres non nulles donne
- rangT>=880^2/35008=12100/547>22,
+tr(T8^2)<=35136. Cauchy sur les valeurs propres non nulles donne
+ rangT>=880^2/35136>22,
 soit rangT>=23. C'est tres inferieur a31, necessaire pour rejeter un
 bloc Conway. Cette estimation ne fait pas intervenir c_l ; elle ne
 fournit pas la borne de Schur recherchee et n'est pas une preuve NG5.
 Le nouveau resultat utile reste la cloture des retraits, et non une
 exclusion universelle. Aucun calcul lourd ni processus restant actif.
+
+## 15/10 - Suite858 : preuve de C4DO pour les relations plates de petit support
+
+858 lu/acquitte. LAB propose les lois ODDCONST et EVEN', dont la somme
+des dimensions suffirait a N9-NG ; elles ne sont pas prouvees. Sa loi
+C4DO, q02-q03-q12+q13=0 pour tout q du noyau, est observee sur toutes
+ses structures. Ses resultats sont acceptes sans refaire leurs calculs.
+Travail propre : construction dirigee d'un noyau violant C4DO, puis
+extraction d'une obstruction analytique a cette construction.
+
+THEOREME OBTENU. Soit Gamma un bloc44 binaire satisfaisant C1 sur les
+quatre etoiles centrales, les capacites C2 (incluant les voisins communs
+deja imposes par les etiquettes), et T,U PSD. Si
+ q appartient a kerT, Bq=0, q_i dans{0,+1,-1}, support(q)<=12,
+alors q02-q03-q12+q13=0. Aucune hypothese h, nu>=14 ou de rang F7.
+C1-prime n'est pas requise en plus des hypotheses indiquees. Ce resultat
+ne prouve pas C4DO pour des coefficients quelconques, Bq non nul ou un
+support plus grand ; NG5 et NG7 demeurent ouverts.
+
+REDUCTION COMBINATOIRE. Puisque Bq=0, Kq=0 et Gamma q=3q. Chaque signe
+induit donc un graphe de degre minimum3. Avec lambda<=1 et mu<=2, un
+tel graphe sur au plus6 sommets est necessairement le prisme triangulaire.
+En effet, degre5 est impossible ; un degre4 en6 sommets forcerait ses
+quatre voisins a rencontrer tous l'unique non-voisin, violant mu<=2.
+Le graphe est donc cubique. En6 sommets, les trois voisins d'un sommet
+doivent contenir une arete (sinon les deux derniers sommets ont trois
+voisins communs), et le prisme s'ensuit. En moins de6, aucun cas.
+Ainsi chaque signe a6 sommets, les deux prismes sont anticomplets.
+
+Dans un prisme, deux etiquettes ne peuvent partager une lettre que sur
+une arete verticale : une arete triangulaire a deja son voisin commun,
+une paire non adjacente en a deja deux. Une lettre apparait au plus deux
+fois, et chaque sommet a au plus une lettre repetee. Si o est le nombre
+de ses sommets dans O, les incidences centrales sont6+o<=8. Le cas o=2
+forcerait toutes les lettres centrales a etre repetees, donc deux lettres
+repetees sur un sommet de O, impossible. Bq=0 impose les memes incidences
+aux deux signes. Une violation de C4DO impose alors un sommet de O dans
+chaque signe, incident a la meme lettre centrale de multiplicite1.
+Normaliser +02,-03. Les multiplicites centrales sont(1,2,2,2) ; les trois
+autres centres ferment les trois aretes verticales de chaque prisme.
+Les cinq lettres exterieures a,b,c,d,e sont toutes distinctes par signe.
+
+La classification couvrante a deux formes :
+ P=(02,2a,1b,1c,3d,3e),
+ N_I=(03,3a,1d,1e,2b,2c),
+ N_II=(03,3b,1a,1d,2c,2e).
+Le couplage M parmi les cinq lettres est un appariement partiel :
+1 vide,10 a une paire,15 a deux paires. Soit52 supports couvrants, sans
+affirmer52 classes d'isomorphisme. Pour chaque support les deux prismes
+ont4*4=16 orientations, soit832 coeurs12. Leur construction propre est
+exhaustive dans cette famille et chaque coeur a, exactement, T PSD rang11
+et U PD rang12. Congruence rationnelle, environ1,4s ; un representant
+complet et les52 cas sont sauvegardes dans flat_kernel_prism_cores.json.
+Ces positivites sur12 n'assurent PAS l'extension aux44 etiquettes.
+
+OBSTRUCTION ANALYTIQUE DE L'EXTENSION. Noter v=1_P et p le nombre de
+paires mates parmi les cinq lettres exterieures, donc p=0,1,2. Soit r=Bv,
+f=(3I+M)r et k=Gamma v-3v. Tout sommet hors des prismes les rencontre
+chacun en au plus UN sommet : meme les paires verticales ont deja leur
+voisin commun central. Ainsi k est binaire, nul sur P et N. On a
+ f_central=(5,7,8,8),
+ f_exterieur : 2p valeurs4,5-2p valeurs3,5-2p valeurs1,2p valeurs0,
+ w=(8T)v=12*1-B^t f-8k,
+ d=v^t(8T)v=72-r^t(3I+M)r=6-2p.
+Sur les deux sommets inutilises12,13 du recouvrement, w_x=-3-8k_x.
+La PSD sur(v,e_x) impose w_x^2<=20d<=120, alors que k_x=1 donnerait121.
+Donc k est nul sur TOUT O. C'est une obstruction stricte d'une unite.
+
+Pour chaque etoile centrale L_a, C1 donne
+ sum_{x dans L_a} k_x=12-4r_a-r_{a^1}, soit(6,3,2,2).
+Puisque k|O=0, ces comptes portent sur les dix etiquettes exterieures
+de chaque etoile. Pour b=12*1-B^t f, ||b||^2=480+48p, dont20 sur O.
+Chaque k_x=1 change w_x^2 de64-16b_x. Relacher les zeros imposes sur
+P et N ne peut que DIMINUER le minimum. Choisir, dans chaque etoile,
+les6,3,2,2 plus petits increments donne les bornes exactes suivantes :
+ p=0 : norme carree>=384 ; corrections(-160,0,32,32) depuis480 ;
+ p=1 : norme carree>=304 ; corrections(-192,-32,0,0) depuis528 ;
+ p=2 : norme carree>=304 ; corrections(-224,-48,0,0) depuis576.
+
+Or T+U=7Pi, Pi=I-(11B^tB+B^tMB-2J)/120 <= I. En effet le terme
+soustrait est B^t(11I+M-J_14/2)B/120, car B^t J_14 B=4J ; sa matrice
+interieure a valeurs propres5 sur les constantes,12 sur les pairs
+non constants et10 sur les impairs. Sous T,U PSD,0<=8T<=56I. Donc
+ ||w||^2 <=56d =336,224,112 respectivement.
+Les contradictions sont strictes, de marges48,80,192. AUCUN des832 coeurs
+ne s'etend en un bloc44 avec cette relation. La preuve ne depend ni des
+verdicts SAT, ni de l'enumeration832, qui a seulement aide la recherche.
+Script autonome four_star_flat_c4do_obstruction.py et certificat entier
+flat_c4do_obstruction.json ; trois budgets immediatement reproductibles.
+
+HISTORIQUE UTILE SANS CONFONDRE LES STATUTS. Un premier q violant C4DO
+avait deux lettres repetees sur02 : il est exclu par le lemme du prisme,
+apres deux coupes C2 et un verdict UNSAT. Trois pilotes40s sur la formeI
+avec p=0 avaient laisse l'extension UNKNOWN (C2 seuls, puis propagation
+des prismes, puis coupes PSD exactes). L'obstruction ci-dessus RESOUT
+maintenant toute cette famille, beaucoup plus largement que ces pilotes.
+Les anciens JSON conservent leurs verdicts historiques UNKNOWN. Le pilote
+four_star_doubly_odd_kernel.py applique desormais la preuve par defaut ;
+--historical-search existe seulement pour reproduire l'ancienne exploration.
+Ne pas relancer les memes recherches. 859 avait transmis les coeurs et
+le programme de domaines de colonnes AVANT cette obstruction finale.
+Les domaines exacts des deux etiquettes12/13 ont revele k=0, puis l'inegalite
+121>120 a fourni la preuve manuelle. Aucun processus encore actif.
+
+Correction d'une erreur propre precedente : dans le calcul des moments
+du bloc44, deg_F=6-2deg_O est le degre INTERNE a F ; le degre total dans
+Gamma vaut6-deg_O. La formule correcte, rectifiee plus haut, est
+tr(Gamma^2)=240+2e(O) et tr((8T)^2)=32384+64e(O)+48a+16b.
+La borne faible rang>=23 reste vraie, mais ce calcul n'intervient PAS
+dans la nouvelle preuve des relations plates.
