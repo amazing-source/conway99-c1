@@ -306,6 +306,13 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   hence pairs (l,m) spanning grids, whose four-star structures (PSD in Conway) (NOGRID) forbids. Even a weak cap
   suffices with (NOGRID): grid-free lines have c <= 3, and Conway then needs nullity >= 14 at every pair, while all
   PSD data with c(l), c(m) <= 3 have nullity <= 12.
+- E6 (VERIFIED exactly, 15/10 01:35 UTC): REFUTES (N9) AND (NOGRID). Group <(4 6 8 10 12)(5 7 9 11 13), (0 1)(2 3)>
+  (order 10, rotates the five outer lines; cold PSD walk, final_seedZ5h): fourstar_psd_grid_Z5h_c22.json (grid on
+  (l,m), c = (2,2), rank 35, T, U >= 0) and fourstar_psd_grid_Z5h_c62.json (grid on (l,m), c = (6,2), T >= 0 of rank
+  EXACTLY 30, U >= 0 of rank 39, nullity 14 > 9 + min(c) = 11). The latter is a second admissible PSD rank-30
+  four-star object; rank_7(8T_S4) = 29 > 28 and disc = 2^69 3 5 7 1429^2, so it is not in Conway either.
+  The (N9) evidence of the night was an artefact of the G1-descended seeds. Also: no admissible four-star structure
+  is invariant under (4 6 8)(5 7 9) (SAT, sym4g.py: no invariant admissible structure).
 - Reduction (grid_floor.py, Codex's identity, CONWAY_CONSTRAINTS G14): a cap 'mixed <= 2' would contradict proved
   bounds (rho >= 198 > 191), 'mixed <= 3' the census certificate (rho >= 154 > 126); Codex: every Conway graph has >= 336
   of its 2079 flags with >= 4 mixed relations. By E4 no such universal cap exists: this route needs the rank condition.
@@ -313,6 +320,11 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   2007, 2012) are known; no application to (99,14,1,2) found.
 
 ## OPEN (none of these is established)
+- (15/10 night, see N9_REDUCTION_2026-10-15.md; (N9) and (NOGRID) REFUTED at 01:35 UTC, E6) (N9) nullity(T_S4) <= 9 + min(c(l), c(m)) for every admissible PSD
+  four-star structure [would exclude Conway with the census]; its two halves ODD9 (the m-odd vectors add exactly 9
+  beyond X_l) [would make every Conway line special] and EVEN3 (the m-even vectors add >= 3); (NOGRID) no PSD
+  four-star structure has a grid on (l,m), and (LOW) nullity <= 13 when c(l), c(m) <= 3 [together: Conway excluded
+  with no census]; (R7) PSD four-star structures have rank_7 >= 29 [would exclude Conway via L22].
 - (A) Every admissible three-star structure with T >= 0, U >= 0 and c(l) = 1 has rank 31 (no relation beyond the
   stars unless l is special). Evidence: no counterexample in 11 seeds x all rectangles (Codex), 6 812 exact
   third-star completions on a connected base (h3pp_inner.py), annealing to |lambda| ~ 1e-5; the residual Schur

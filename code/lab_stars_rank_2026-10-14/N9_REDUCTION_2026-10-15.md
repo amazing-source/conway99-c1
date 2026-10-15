@@ -1,5 +1,16 @@
 # Two local conjectures that would exclude Conway's 99-graph (LAB, 15/10/2026, night; Codex out of usage)
 
+**REFUTED (15/10, 01:35 UTC, VERIFIED exactly): both (N9) and (NOGRID) are FALSE.** A cold PSD walk in a family
+never explored before (group <(4 6 8 10 12)(5 7 9 11 13), (0 1)(2 3)> of order 10, rotating the five outer lines)
+found at once fourstar_psd_grid_Z5h_c22.json (T, U >= 0, grid on (l,m), c = (2,2), rank 35) and
+fourstar_psd_grid_Z5h_c62.json (T >= 0 of rank EXACTLY 30, U >= 0 of rank 39, grid on (l,m), c = (6,2), nullity 14
+> 9 + min(c) = 11; rank gain of l over X_m = 9 < 12). The reductions below stay true as implications but their
+hypotheses are false. The rank-30 witness is not in Conway: rank_7(8T_S4) = 29 > 28 (L22), disc(8T lattice) =
+2^69 3 5 7 1429^2 (fails at 3, 5, 7; the 2-part is exactly the forced 2^69). LESSON: the 166 000 visits measured
+the G1-descended region, not the set of PSD structures; the first genuinely different family broke the laws,
+exactly as the G1 caps were broken earlier in the night.
+
+
 Status tags: PROVED (written argument below), VERIFIED (exact computation), EVIDENCE, OPEN. Nothing here excludes
 Conway: both conjectures are open. Notation as in NOTE_PROOFS_1410.md: v a vertex, l = {v,a,a'}, m = {v,b,b'} two
 lines through v, X_l = L_a u L_a' (24 labels), S4 = X_l u X_m (44 labels), C4 = X_l n X_m, T = 3I - Gamma - K,
@@ -49,6 +60,12 @@ whose spectrum lies in [-4, 3] (odd_quotient.py); it holds on all data but the t
   constant m-odd part on the outer letters (and, by symmetry, a constant l-odd part): relations are pure-swap even
   modulo the star differences. (N9) = (this ODD9 law) + (the even vectors add >= 3).
 
+Partial consequence (PROVED, given the ODD9 law alone): in a Conway graph rank T_S4 - rank T_X_l = 7 + c(l) - delta,
+and this rank gain is at least the gain 9 of the m-odd vectors, so c(l) >= 2 + delta: EVERY line of a Conway graph
+would be special (the old target (B)). On the tight witnesses the odd Schur block (f-vectors given X_l) has least
+eigenvalue 0.48 to 1.23 on the complement of the star direction, a comfortable margin. Proof programme: ODD9
+(all lines special), then the even gain >= 3 (c >= 5, grid count).
+
 ## 3. Conjecture (NOGRID) and a census-free exclusion
 (NOGRID) No admissible four-star structure with T, U >= 0 has grid(l,m) = 1.
 (LOW) Every admissible four-star structure with T, U >= 0 and c(l), c(m) <= 3 has nullity <= 13 (rank >= 31).
@@ -67,6 +84,15 @@ Checked (VERIFIED numerically, 00:50 UTC): a grid on (l,m) fixes the block struc
 four C4 labels: C4 isolated from the rest, perfect matchings and 2-regular bipartite pairs as in P11), and the
 compressions of T and U to these 8 block vectors are the same for every grid structure and PSD (T: 0^5, 5, 7.5, 7.5;
 U: 0^4, 2, 10, 10, 70/3). So (NOGRID), if true, cannot come from the coarse block partition alone.
+
+Final tallies of the night (runs stopped 01:05 UTC): mode schur, eight runs, about 166 000 PSD visits (including
+two asymmetry-seeking runs reaching h-asymmetry 20-40): minimum rank gain exactly 12, never below; a further exact
+h-asymmetric witness on the bound: fourstar_psd_asym_c21.json (c = (2,1), nullity 10). Forced grid on (l,m): best
+min(lambda_T, lambda_U) = -0.10 (G1 family, cold start), -0.32 to -0.44 from repaired seeds: no PSD grid structure.
+Mode oddgap: third h-odd eigenvalue of T down to 0.0023, never 0.
+Operational note: the walks saved one file per PSD visit (about 460 000 files, 2.1 GB); moved unchanged to the
+subfolder visits_archive_2026-10-14_15/ (files cited in the notes kept in place); sym4g.py now saves at most SAVEPSD
+(default 20) files per run.
 
 ## 4. What would make this a proof
 - (N9), (NOGRID), (LOW) are statements about finitely many 59-vertex configurations; no exhaustive method is in sight.

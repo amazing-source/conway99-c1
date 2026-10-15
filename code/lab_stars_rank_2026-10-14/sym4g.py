@@ -256,9 +256,11 @@ def main():
         lu = perp_min(7 * PiS - T)
         if min(lt, lu) > -1e-9:
             npsd += 1
-            json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt, "lambda_U": lu,
-                       "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
-                      open(out + "_PSD_%d.json" % npsd, "w"))
+            # 15/10: saving every PSD visit filled the folder with 460 000 files; save only the first SAVEPSD (default 20)
+            if npsd <= int(os.environ.get("SAVEPSD", "20")):
+                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt, "lambda_U": lu,
+                           "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                          open(out + "_PSD_%d.json" % npsd, "w"))
             print("move %d: T AND U PSD (c(l)=%d, c(m)=%d), lambda_T %.4f, lambda_U %.4f, numerical nullity %d, t = (%d,%d)"
                   % (mv, cl, cm, lt, lu, nul_num, tl, tm), flush=True)
         if both and (best_psd is None or min(lt, lu) > best_psd):
@@ -315,7 +317,8 @@ def main():
             if min(lt, lu) > -1e-9 and nul_num >= target:
                 nmix = getattr(main, "nmix", 0) + 1
                 main.nmix = nmix
-                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "grid_lm": gr,
+                if nmix <= int(os.environ.get("SAVEPSD", "20")):
+                  json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "grid_lm": gr,
                            "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
                            "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
                           open(out + "_MIX3_%d.json" % nmix, "w"))
