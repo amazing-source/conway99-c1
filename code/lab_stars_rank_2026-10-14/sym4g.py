@@ -290,6 +290,12 @@ def main():
         print("FIXSUB %s: %d labels fixed, %d pairs fixed, %d edges" % (os.environ["FIXSUB"], len(inside), nfix, len(eset)),
               flush=True)
     init = os.environ.get("INIT")            # warm start from a saved structure (same labels and group)
+    if os.environ.get("NOSQUARE") and not init:
+        # 15/10 evening (N9-NG test): the no-square clause was only added on warm starts; add it on cold starts too
+        sqp0 = [(idx[frozenset((0, 2))], idx[frozenset((0, 3))]), (idx[frozenset((0, 2))], idx[frozenset((1, 2))]),
+                (idx[frozenset((0, 3))], idx[frozenset((1, 3))]), (idx[frozenset((1, 2))], idx[frozenset((1, 3))])]
+        sol.add_clause([-e[p] for p in sqp0])
+        print("NOSQUARE (cold start): the closed square on (l, m) is forbidden", flush=True)
     if init:
         di = json.load(open(init))
         assert [sorted(l) for l in S] == di["labels"], "label order differs"
@@ -854,6 +860,28 @@ def main():
                 main.bestu2 = lu
                 print("move %d: URE2 plateau record lambda_U %.5f (nullity %d, c = (%d,%d))" % (mv, lu, nul_num, cl, cm),
                       flush=True)
+        elif mode == "n9ng":
+            # (N9-NG) without positivity (15/10 evening): push the (10 + min c)-th smallest |eigenvalue| of T to 0, i.e.
+            # look for nullity >= 10 + min(c(l), c(m)) (a violation of nu <= 9 + min c); positivity ignored; meant to be
+            # run with NOSQUARE (no grid on (l, m)); saves every violation as _NGV_k.json (cap 50) and prints records
+            kk = 9 + min(cl, cm)
+            s2 = -float(absev[kk]) if kk < n else -99.0
+            slack = nul_num - 9 - min(cl, cm)
+            br = getattr(main, "bestslack", -99)
+            if slack > br:
+                main.bestslack = slack
+                print("move %d: N9NG record slack %d (nullity %d, c = (%d,%d), lambda_T %.3f, lambda_U %.3f)"
+                      % (mv, slack, nul_num, cl, cm, lt, lu), flush=True)
+            if slack > 0:
+                kv = getattr(main, "kv", 0) + 1
+                main.kv = kv
+                if kv <= 50:
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "slack": slack,
+                               "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_NGV_%d.json" % kv, "w"))
+                    print("move %d: N9NG VIOLATION saved %s_NGV_%d.json (nullity %d, c = (%d,%d))"
+                          % (mv, out, kv, nul_num, cl, cm), flush=True)
         elif mode == "lowrank":
             s2 = -float(absev[:14].sum()) if both else -99.0
         elif mode == "zero":

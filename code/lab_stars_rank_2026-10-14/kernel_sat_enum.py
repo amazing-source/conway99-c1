@@ -60,6 +60,12 @@ if os.environ.get("DROPIDX"):                 # impose only part of the kernel (
 sol = Solver()
 for c in F.clauses:
     sol.add_clause(c)
+if os.environ.get("NOSQ"):
+    # NOSQ (15/10 evening, (N9-NG) / (NG7) campaign): enumerate only structures WITHOUT the closed square on (l, m)
+    sqv = [e[(idx[frozenset(p)], idx[frozenset(q)])] for p, q in (((0, 2), (0, 3)), ((0, 2), (1, 2)), ((0, 3), (1, 3)),
+                                                                  ((1, 2), (1, 3)))]
+    sol.add_clause([-v for v in sqv])
+    print("NOSQ: closed square on (l, m) forbidden", flush=True)
 nv = [F.n]
 
 
@@ -146,7 +152,18 @@ while found < cap and time.time() - t0 < maxsec:
     lu = float(np.linalg.eigvalsh(Pp @ (7 * PiS - T) @ Pp + 50 * (np.eye(n) - Pp))[0])
     psd = min(lt, lu) > -1e-9
     masym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
-    if os.environ.get("NHREPORT") and nul >= 13:
+    if os.environ.get("CREPORT"):
+        # CREPORT (15/10 evening, (N9-NG) test): spectral c(l), c(m) (23 - rank T_X), grid flag, T >= 0 alone, and the
+        # slack nu - 9 - min(c) in the histogram key (positivity of U NOT required, to see whether (N9-NG) needs it)
+        cls_ = []
+        for a0_, a1_ in ((0, 1), (2, 3)):
+            X_ = [i for i in range(n) if S[i] & {a0_, a1_}]
+            cls_.append(23 - int(np.sum(np.abs(np.linalg.eigvalsh(T[np.ix_(X_, X_)])) > 1e-7)))
+        grid_ = all(G[idx[frozenset(p)], idx[frozenset(q)]] for p, q in (((0, 2), (0, 3)), ((1, 2), (1, 3)),
+                                                                        ((0, 2), (1, 2)), ((0, 3), (1, 3))))
+        hist[("grid" if grid_ else "no grid", "T>=0" if lt > -1e-9 else "T not", "U>=0" if lu > -1e-9 else "U not",
+              nul, tuple(cls_), "slack %d" % (nul - 9 - min(cls_)))] += 1
+    elif os.environ.get("NHREPORT") and nul >= 13:
         # NHREPORT (15/10, mechanism A): dimension of the h-homogeneous part N n hN of the kernel (numerical, SVD)
         w_, V_ = np.linalg.eigh(T)
         Nb = V_[:, np.abs(w_) < 1e-8]
@@ -157,6 +174,13 @@ while found < cap and time.time() - t0 < maxsec:
         hist[(psd, nul, masym > 0, "N n hN = %d" % nh)] += 1
     else:
         hist[(psd, nul, masym > 0)] += 1
+    if os.environ.get("DUMPPSD") and psd and nul >= int(os.environ.get("DUMPMIN", "12")):
+        # DUMPPSD (15/10 evening, (NG14) campaign): save every PSD member of nullity >= DUMPMIN, broken or not
+        os.makedirs(os.environ["DUMPPSD"], exist_ok=True)
+        pn = getattr(sys.modules[__name__], "psdn", 0) + 1
+        sys.modules[__name__].psdn = pn
+        json.dump({"labels": d["labels"], "edges": [[i, j] for i, j in pairs if G[i, j]], "psd": True,
+                   "nullity_numeric": nul}, open(os.path.join(os.environ["DUMPPSD"], "p_%d.json" % pn), "w"))
     if os.environ.get("DUMPDIR") and masym > 0 and nul >= int(os.environ.get("DUMPMIN", "12")):
         # DUMPDIR (15/10, mechanism A): save every broken structure of nullity >= DUMPMIN (PSD or not) for analysis
         os.makedirs(os.environ["DUMPDIR"], exist_ok=True)
