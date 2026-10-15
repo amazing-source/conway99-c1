@@ -258,7 +258,7 @@ def main():
         if time.time() - t0 > maxsec:
             print("time limit reached (%.0f s)" % (time.time() - t0), flush=True)
             break
-        Rl = set(rng.sample(range(n), 4))
+        Rl = set(rng.sample(range(n), int(os.environ.get("NFREE", "4"))))   # NFREE (15/10): labels freed per move
         bad = set(Rl)
         for m in gl:
             bad |= {m[i] for i in Rl}
@@ -388,6 +388,15 @@ def main():
                     main.bestg = g3
                     print("move %d: PSD, third odd eigenvalue %.5f (new minimum), nullity %d, c = (%d,%d)"
                           % (mv, g3, nul_num, cl, cm), flush=True)
+                    if g3 < 0.01:
+                        # 15/10: keep the near-failures of ODD-h for an exact local search (cap 30)
+                        kn = getattr(main, "kn", 0) + 1
+                        main.kn = kn
+                        if kn <= 30:
+                            json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "odd_gap": g3,
+                                       "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                       "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                      open(out + "_NEAR_%d.json" % kn, "w"))
                 if g3 < 1e-7:
                     ko = getattr(main, "ko", 0) + 1
                     main.ko = ko
@@ -628,6 +637,42 @@ def main():
                       - float(os.environ.get("TSUMPEN", "0")) * max(0, tl + tm - 14))
                 if os.environ.get("B1KEEP1") and min(cl, cm) != 1:
                     s2 = -60.0          # stay among structures with a non-special line, push the nullity up
+                if os.environ.get("HBREAK"):
+                    # HBREAK (15/10 morning): all 331 rank-30 objects are invariant under h = (0 1)(2 3); stay among
+                    # PSD structures with h BROKEN and push the nullity up (a rank-30 one would test (SQ30) and (H-INV))
+                    hp = getattr(main, "hperm", None)
+                    if hp is None:
+                        hm = {0: 1, 1: 0, 2: 3, 3: 2}
+                        hp = [idx[frozenset(hm.get(y, y) for y in S[i])] for i in range(n)]
+                        main.hperm = hp
+                    hasym = int(np.abs(G[np.ix_(hp, hp)] - G).sum()) // 2
+                    if os.environ.get("HMATCH"):
+                        # HMATCH: only the four star matchings M_a (pairs of labels sharing a star letter a) count;
+                        # (H-MATCH) = M_1 = h(M_0), M_3 = h(M_2) at nullity >= 14 would exclude Conway (Hamming points)
+                        sl = getattr(main, "starpairs", None)
+                        if sl is None:
+                            sl = [(i, j) for i in range(n) for j in range(i + 1, n) if S[i] & S[j] & {0, 1, 2, 3}]
+                            main.starpairs = sl
+                        hasym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
+                    if hasym == 0:
+                        s2 = s2 - float(os.environ["HPEN"]) if os.environ.get("HPEN") else -60.0
+                    else:
+                        hb = getattr(main, "hbrec", -1)
+                        if nul_num > hb:
+                            main.hbrec = nul_num
+                            print("move %d: HBREAK RECORD: PSD with h broken (%d asymmetric pairs), nullity %d, c = (%d,%d), "
+                                  "t = (%d,%d)" % (mv, hasym, nul_num, cl, cm, tl, tm), flush=True)
+                        if nul_num >= 13:
+                            kh = getattr(main, "kh", 0) + 1
+                            main.kh = kh
+                            if kh <= 50:
+                                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "t": [tl, tm],
+                                           "hasym": hasym, "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                           "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                          open(out + "_HB_%d.json" % kh, "w"))
+                            if nul_num >= 14:
+                                print("move %d: HBREAK TARGET HIT: rank <= 30 PSD with h broken, saved %s_HB_%d.json"
+                                      % (mv, out, kh), flush=True)
                 bb = getattr(main, "bestb1", -999.0)
                 if s2 > bb:
                     main.bestb1 = s2
@@ -661,9 +706,42 @@ def main():
             s2 = min(-float(absev[13]), lt, lu) if both else -99.0
         else:
             s2 = min(lt, lu) if both else -99.0
+        if os.environ.get("HREQ"):
+            # HREQ (15/10 morning, any mode): penalise structures whose four star matchings M_0..M_3 are h-related
+            # (M_1 = h(M_0), M_3 = h(M_2)); records the numerical nullity of the matching-broken ones, PSD or not
+            hp = getattr(main, "hperm", None)
+            if hp is None:
+                hm = {0: 1, 1: 0, 2: 3, 3: 2}
+                hp = [idx[frozenset(hm.get(y, y) for y in S[i])] for i in range(n)]
+                main.hperm = hp
+            sl = getattr(main, "starpairs", None)
+            if sl is None:
+                sl = [(i, j) for i in range(n) for j in range(i + 1, n) if S[i] & S[j] & {0, 1, 2, 3}]
+                main.starpairs = sl
+            masym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
+            if masym == 0:
+                s2 -= float(os.environ["HREQ"])
+            else:
+                hr = getattr(main, "hreqrec", -1)
+                if nul_num > hr:
+                    main.hreqrec = nul_num
+                    print("move %d: HREQ RECORD: matchings NOT h-related (%d pairs), numerical nullity %d, PSD %s "
+                          "(lambda_T %.4f, lambda_U %.4f), c = (%d,%d)" % (mv, masym, nul_num, min(lt, lu) > -1e-9, lt, lu, cl, cm),
+                          flush=True)
+                if nul_num >= 14:
+                    kq = getattr(main, "kq", 0) + 1
+                    main.kq = kq
+                    if kq <= 50:
+                        json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "masym": masym,
+                                   "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                   "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                  open(out + "_HQ_%d.json" % kq, "w"))
+                    if kq <= 3:
+                        print("move %d: HREQ TARGET HIT: nullity %d with matchings not h-related (PSD %s), saved %s_HQ_%d.json"
+                              % (mv, nul_num, min(lt, lu) > -1e-9, out, kq), flush=True)
         if cur is None or s2 >= cur or rng.random() < math.exp((s2 - cur) / temp):
             model, cur = m2, s2
-        temp = max(0.003, temp * 0.999)
+        temp = max(float(os.environ.get("TFLOOR", "0.003")), temp * 0.999)   # TFLOOR (15/10): constant-temperature tail
         if mv % 200 == 0:
             print("move %d: numerical nullity histogram (c(l)=c(m)=1) %s, PSD visits %d, best exact nullity %d, "
                   "score %.4f (%.0f s)" % (mv, dict(sorted(hist.items())), npsd, best_null, cur, time.time() - t0),

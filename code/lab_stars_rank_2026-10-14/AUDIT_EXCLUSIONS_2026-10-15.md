@@ -188,3 +188,75 @@ Journal des résultats, au fil de l'eau (heures UTC).
   avec une droite c = 1) ; (6) sc_7_null14 n'est pas un objet admissible positif (U non positif) ; (7) la
   re-vérification exacte des 52 objets (A) est maintenant consignée : verify_A52_2026-10-15.log (52/52) ; (8) G5 : les
   52 meurent tous à l'étiquette {3,4} de la quatrième étoile (ext3), {4,6} n'avait été testée que sur l'objet 38.
+- 04:28 : la recherche ciblée b1x (droite c = 1 + écart impair + transversales de l'autre droite) pousse l'écart impair
+  de 0,86 à 0,058 à nullité 10, mais la nullité ne monte pas et l'autre droite reste à 6 transversales extérieures.
+  Nouveau test plus propre de (B') lancé : la structure interne de X_l (donc c(l) = 1) est FIXÉE à celle de l'objet
+  c11 (ou X_m à celle de c31), tout le reste varie (groupes identité et h), et la marche maximise la nullité.
+- 04:41 : test « droite c = 1 fixée » (X_l de c11, ou X_m de c31, figé ; tout le reste libre ; groupes identité et h) :
+  nullité maximale 10 en 13 minutes. Fin des marches t15 (somme des transversales <= 14 visée), n15 dans G1 et b1x
+  depuis c31 : aucune cible. Lancé : b1x avec les 10 transversales extérieures de m IMPOSÉES (le cas d'absorption
+  complète des vecteurs pairs, à partir de zéro, groupes identité et h), et le test « droite fixée » sur le témoin
+  asymétrique c21.
+- 04:54 : deux familles nouvelles à une involution, <(0 1)(2 3)(4 6)(5 7)> et <(0 2)(1 3)(4 6)(5 7)>, et les
+  recherches à partir de zéro avec les 10 transversales de m imposées : aucune structure positive en 45 minutes.
+  « Droite fixée » sur le témoin asymétrique c21 : nullité <= 10 (11 443 visites positives). Lancé : descente la plus
+  raide sur l'écart d'ODD9 (odd_descent.py) depuis c31 et c21 (groupe h) et depuis asym_c21, pour chercher un échec
+  EXACT d'ODD9.
+- 05:20 : énumération Z5h arrêtée à 2 h (160 087 structures invariantes admissibles, non complète), 572 positives.
+  Nullités observées : 5, 9, 13, 14 seulement (sauts de 4 = représentations de dimension 4 de Z5). Les 185 de nullité
+  14 ont TOUTES t = (12,12), la grille, et la même classe de carrés 2*3*5*7 (aucune ne passe DISC). Nullité 13 avec
+  t = (2,2) existe (6 structures) : dans Z5h le pont des transversales tient à une relation près. Aucune nullité >= 15.
+- 05:25 : les 3 quasi-échecs d'ODD9 sauvegardés (écart < 0,01 ; og3_h_c21_NEAR_1/2, og3_h_c31_NEAR_1) ont des gains
+  impairs EXACTS 9/9 (odd9_check.py) : ODD9 tient.
+- 05:30 : énumération ⟨Z5, (0 1)M⟩ (M = échange des partenaires extérieurs) COMPLÈTE : 16 120 structures invariantes
+  admissibles, 16 positives, toutes de nullité 13, c = (6,6), t = (12,12), grille. Pas de rang 30.
+- 05:40 : MÉCANISME de (SQ30) (exact ; padic_snf.py, eig_class.py, cls_decomp.py ; logs padic_snf_331.log,
+  eig_class_331.log, cls_decomp_331.log) :
+  (a) disc(réseau 8T_S4) = 2^a 3^b 5^c 7^d, aucun autre premier. Partie 3 : Z/3 (204 objets) ou (Z/3)^5 (127) ;
+      partie 5 : Z/5 (314), Z/5+Z/25 (15), Z/5+2 Z/25 (2) ; partie 7 : Z/7 (202), (Z/7)^5 (127), rien (2, c55).
+  (b) T a des valeurs propres ENTIÈRES : 3 (mult. 3 ou 7), 5 (mult. 2), 7 (mult. 1 ou 5), parfois 1 et 4. Les valeurs
+      propres irrationnelles ont presque toutes une multiplicité 2 ou 4, et la partie irrationnelle a la classe 1 dans
+      319 objets sur 331. La classe 2*3*5*7^e vient donc des espaces propres entiers (ex. 3^3, 5^2, 7^1, chaque espace
+      propre de classe 2*5 pour le produit scalaire usuel).
+  (c) LES 331 OBJETS SONT TOUS INVARIANTS PAR h = (0 1)(2 3) (276 sous Z5h, 55 sous h). Le témoignage de (SQ30) est
+      donc entièrement h-symétrique, et les multiplicités paires viennent de la symétrie. Dans les objets à grille,
+      le vecteur en damier κ = 1_02 - 1_03 - 1_12 + 1_13 vérifie Γκ = -2κ, Kκ = 0, Dκ = 0, donc Tκ = 5κ : il se
+      sépare orthogonalement avec la norme 8T = 160, de classe 10 (c'est le 5).
+  (d) Le pinceau T + U = 7Π n'explique rien : classe(7Π sur l'orthogonal des étoiles) = 1, classe(7Π sur ker T)
+      varie (2*5, 2*5*5953, 2*3*5*43, 5*19, ...) et compense exactement.
+  Conclusion : (SQ30) n'est soutenue que par des objets h-symétriques. Un bloc de Conway (graphe asymétrique)
+  n'a aucune raison d'avoir ces valeurs propres entières. Lancé 6 marches dans le groupe trivial, à partir d'objets
+  de rang 30 (modes disc et b1, NFREE 2 à 4) : objets de rang 30 non h-invariants et leur classe.
+- 05:50 : marches dans le groupe trivial depuis des objets de rang 30 : toutes les visites positives sauvegardées
+  (rang 30, 31, 32) sont h-invariantes ; un nouvel objet de rang 30 trouvé (sq8_id_disc_c22_H30_2, c = (5,2),
+  t = (10,10)) est AUSSI h-invariant (classe 2*3*5*7). Les re-résolutions locales cassent pourtant h (hbreak_test.py :
+  201/300 cassent h, dont 10 positives, nullité <= 12).
+- 06:00 : NOUVELLE RÉDUCTION (preuve, fichier H_MATCH_REDUCTION_2026-10-15.md) : soit (H-MATCH) « toute structure à
+  quatre étoiles positive de nullité >= 14 vérifie M_1 = h(M_0) et M_3 = h(M_2) » (M_a = couplage induit sur les 12
+  labels {a,y} ; h = (0 1)(2 3)). Alors (H-MATCH) => pas de graphe de Conway : appliquée aux 21 paires de droites d'un
+  sommet v, elle force chaque couplage M_a à apparier y avec son partenaire y^1, donc les 21 paires sont dans des
+  grilles 3x3 : v est un point de Hamming, contredit L8 (Codex note 105, C2), L10 (<= 17 grilles), et appliquée
+  partout, Makhnev (non grid-full) et rho <= 191. Contraposée PROUVÉE modulo L8 : dans un graphe de Conway, chaque sommet a une
+  paire de droites dont le bloc est positif, de nullité >= 14, avec des couplages NON h-reliés. Aucun tel objet connu.
+  (H-INV) (h-invariance totale) => (H-MATCH). Statut de (H-MATCH) : OUVERT.
+  Témoignage : les 806 structures sauvegardées de nullité >= 14 (positives ou non) sont toutes h-invariantes ; mais
+  toutes les familles où 14 a été atteint contiennent h (G1 = <(0 1)M,(2 3)M> contient h). Familles sans h :
+  Z5M énuméré complètement (max 13) ; <Z5,(0 1)> : aucune structure ; <Z5,hM,(0 2)(1 3)> : 130 structures, aucune
+  positive (complet). Maximum des nullités par classe sur tous les fichiers : positif à couplages cassés 10 avant
+  06:00.
+- 06:00 : la marche hm_id_c22 (HMATCH) trouve des structures POSITIVES à couplages cassés de nullité 13
+  (hm_id_c22_HB_1.json, exact : rang 31, c = (5,2), t = (10,10)) : à UNE relation du seuil. M_1 y est entièrement
+  aligné sur les partenaires, M_0 tordu sur les droites {4,5} et {6,7}. Voisinage exhaustif (8 labels libres) : 10
+  structures, les 2 de nullité 14 ont des couplages h-reliés. Lancés : 5 marches HMATCH, 2 marches sans positivité
+  (lowrank + HREQ), 2 énumérations locales exhaustives (12 et 16 labels), énumérations Z5s, Z5hM, Z5sM.
+- 06:25-06:45 : MILP à noyau imposé (kernel_milp.py, scipy/HiGHS ; modèle linéaire C1, C1', Γ N = (3I - K) N, C2 en
+  coupes paresseuses ; on maximise le nombre de paires d'étoiles où les couplages ne sont pas h-reliés). Pour 280 des
+  293 premiers objets : optimum 0 (toute structure admissible dont le noyau contient celui de l'objet a des couplages
+  h-reliés). Les 13 autres (tous Z5h, c = (2,2)) ont LE MÊME noyau ; il admet des structures de nullité 14 à couplages
+  cassés avec T exactement positive mais U NON positive (λ_min U ≈ -0,60) : la forme « T seule » de (H-MATCH) est
+  FAUSSE, U ≥ 0 est essentielle. Coupes de positivité (vecteurs propres, symétrisées) lancées sur ce noyau.
+- 06:45 : relecture adversariale indépendante de H_MATCH_REDUCTION : AUCUNE erreur dans la preuve (la dernière étape
+  utilise au choix L8 (P), Makhnev (littérature) ou rho <= 191 (P)). Corrigés : la variante à six droites passe par
+  kk5 (M, DRAT) + L8 et non kk6 (S) ; « contraposée prouvée modulo L8 » ; 806 fichiers = 429 structures distinctes ;
+  une structure de nullité 14 trouvée hors famille h (marche du groupe trivial) est elle aussi h-invariante ; scripts
+  copiés dans hmatch_tools_2026-10-15/.

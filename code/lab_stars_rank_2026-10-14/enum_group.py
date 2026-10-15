@@ -60,6 +60,7 @@ for i, j in itertools.combinations(range(n), 2):
             sol.add_clause([-e[key], e[p]])
             sol.add_clause([e[key], -e[p]])
 print("pair orbits: %d" % len(reps), flush=True)
+HP = [idx[frozenset({0: 1, 1: 0, 2: 3, 3: 2}.get(y, y) for y in s_)] for s_ in S]
 K8 = np.rint(8 * np.array([[kval(a, b) for b in S] for a in S])).astype(np.int64)
 D = np.zeros((14, 84))
 for j, l in enumerate(LABELS):
@@ -106,14 +107,19 @@ while time.time() - t0 < maxsec:
     tl = sum(1 for (a, b) in trans_l if G[a, b])
     tm = sum(1 for (a, b) in trans_m if G[a, b])
     grid = all(G[a, b] for a, b in sqp)
-    k = (nul, cl, cm, tl, tm, grid)
+    # 15/10 morning: h-invariance (h = (0 1)(2 3)); every saved structure of nullity >= 14 so far is h-invariant
+    hinv = bool((G[np.ix_(HP, HP)] == G).all())
+    k = (nul, cl, cm, tl, tm, grid, hinv)
+    if nul >= 14 and not hinv:
+        print("HINV TARGET HIT: PSD structure of numerical nullity %d NOT invariant under h, c = (%d,%d)" % (nul, cl, cm),
+              flush=True)
     hist[k] = hist.get(k, 0) + 1
     if nul >= 14 and len(saved) < 2000:
-        saved.append({"c": [cl, cm], "t": [tl, tm], "grid": grid, "nullity_numeric": nul, "lambda_T": lt, "lambda_U": lu,
+        saved.append({"c": [cl, cm], "t": [tl, tm], "grid": grid, "hinv": hinv, "nullity_numeric": nul, "lambda_T": lt, "lambda_U": lu,
                       "edges": [[a, b] for a in range(n) for b in range(a + 1, n) if G[a, b]]})
 print("%s: %d invariant admissible structures enumerated (%s), %d with T, U PSD, %.0f s"
       % (gens_s, count, "COMPLETE" if complete else "stopped by time", npsd, time.time() - t0), flush=True)
-print("PSD structures by (numerical nullity, c(l), c(m), t(l), t(m), grid):")
+print("PSD structures by (numerical nullity, c(l), c(m), t(l), t(m), grid, h-invariant):")
 for k, v in sorted(hist.items(), reverse=True):
     print("  ", k, v)
 json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "complete": complete, "count": count, "psd": npsd,
