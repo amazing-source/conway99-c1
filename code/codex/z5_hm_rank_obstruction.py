@@ -19,7 +19,7 @@ for a portable copy.  --output optionally writes the complete small report.
 from collections import Counter
 from fractions import Fraction
 from hashlib import sha256
-from itertools import combinations, product
+from itertools import combinations, permutations, product
 from pathlib import Path
 import argparse
 import json
@@ -376,6 +376,86 @@ def quotient_table():
     return result
 
 
+def mixed_parity_reduction(table=None):
+    """A new local ceiling9 for seven quotient types, without ODD9 or F7.
+
+    The map Z[zeta5] -> F5, zeta5 ->1, detects when the negative
+    cyclotomic block is nonsingular.  This is a sufficient unit test,
+    never an assertion of singularity when the residue vanishes.
+    """
+    table = quotient_table() if table is None else table
+    rows = []
+    for case in table:
+        e, f = case['epsilon']
+        s = case['t']+case['w']
+        q = [1, -1]
+        # Evaluate unreduced Laurent representatives at X=1.  This is NOT
+        # a homomorphism Q(zeta5)->Q; only the residue modulo5 is intrinsic.
+        # Nor is this the full z-trivial geometric block: keep the Fourier offset.
+        gamma = [[0]*4 for _ in range(4)]
+        for start, epsilon in ((0, e), (2, f)):
+            for i, j in product(range(2), repeat=2):
+                gamma[start+i][start+j] = ((epsilon-1)//2)*q[i]*q[j]
+        for i, j in product(range(2), repeat=2):
+            gamma[i][2+j] = gamma[2+j][i] = (s//2)*q[i]*q[j]
+        signs = [1, -1, 1, -1]
+        N = [[12*int(i == j)-4*gamma[i][j]-signs[i]*signs[j]
+              for j in range(4)] for i in range(4)]
+        determinant = 0
+        for p in permutations(range(4)):
+            inversions = sum(p[i] > p[j] for i in range(4) for j in range(i+1, 4))
+            term = (-1)**inversions
+            for i in range(4):
+                term *= N[i][p[i]]
+            determinant += term
+        d = (7-2*e)*(7-2*f)-(2*s+1)**2
+        assert determinant == 576*d
+        nonsingular = determinant % 5 != 0
+        if nonsingular:
+            assert case['nullity'] == 5
+        rows.append(dict(epsilon=[e, f], t=case['t'], w=case['w'],
+            trivial_nullity=case['nullity'], determinant_N_at1=determinant,
+            determinant_mod5=determinant % 5,
+            negative_cyclotomic_block_proved_nonsingular=nonsingular,
+            allowed_parities_at_nullity9=([] if case['nullity'] != 5 else
+                [[7, 2]] if nonsingular else [[7, 2], [3, 6]])))
+    unit = [r for r in rows if r['negative_cyclotomic_block_proved_nonsingular']]
+    possible_minus = [r for r in rows if [3, 6] in r['allowed_parities_at_nullity9']]
+    assert len(unit) == 7 and len(possible_minus) == 5
+    assert all(-1 in r['epsilon'] for r in possible_minus)
+
+    supports = []
+    for steps in ((), (1,), (2,), (1, 2)):
+        remaining, components = set(range(5)), 0
+        while remaining:
+            todo = [remaining.pop()]
+            components += 1
+            while todo:
+                vertex = todo.pop()
+                for step in steps:
+                    for neighbour in ((vertex+step) % 5, (vertex-step) % 5):
+                        if neighbour in remaining:
+                            remaining.remove(neighbour)
+                            todo.append(neighbour)
+        supports.append(dict(steps=list(steps), exterior_components=components,
+                             side_components=components+1))
+    assert {r['side_components'] for r in supports} == {2, 6}
+    return dict(status='EXACT_CYCLIC_COMPONENT_AND_MOD5_PARITY_REDUCTION',
+        quotient_types=14, local_ceiling9_proved_types=len(unit),
+        possible_negative_mixed_types_at_nullity9=len(possible_minus),
+        cyclic_supports=supports, quotient_cases=rows,
+        proof=[
+            'Under z, O is a grid and isolates the other central line in the side-component graph. Contract the geometric mate/central-flip edges. The remaining five vertices are the exterior mate pairs, cyclically permuted by z. Their invariant component partition has blocks of equal size dividing5: either five singleton components or one component. Thus each c is2 or6, already under z alone.',
+            'The hM both-grid obstruction excludes(6,6) under T/U PSD, so min(c_l,c_m)=2 for every member of this family. This is structural, not merely a property of the producer sample.',
+            'At total nullity9, nu0=5 and a+b=1. The four star kernels give g-parities(2,2); the O indicator adds one positive direction. The remaining four directions form one Q(zeta5)-line, on which the commuting involution g acts by+1 or-1. Hence profiles(7,2) or(3,6). In c22 these are precisely the four mixed relations; in c62/c26 the four grid relations are positive.',
+            'Write e,f=+1 for the matching R between mate-central stars of type D_s, and -1 for R=M. This R is a different matching from the matching within a star. Write t,w for the signed cell-counts of B,C. Evaluating the unreduced Laurent representatives of T_- at X=1 gives a matrix orthogonally similar to3I2 plus P=[[7/2-e,-t-w-1/2],[-t-w-1/2,7/2-f]]. Evaluation at1 is not a map Q(zeta5)->Q; only its residue modulo5 is intrinsic.',
+            'For N=4T_-, det N at1 is576*d, d=(7-2e)(7-2f)-(2(t+w)+1)^2. The map Z[zeta5]->F5 sending zeta to1 is well-defined because Phi5(1)=5. If d is nonzero modulo5, det N is nonzero in Q(zeta5): the negative nontrivial kernel is absent. No converse is asserted.',
+            'Seven of the14 quotient types have this unit residue. In all seven nu0=5; combining b=0 with the proved a<=1 gives local nullity<=9, without ODD9 or the global modular rank bound.',
+            'At nullity9 the negative profile(3,6) survives this necessary filter only for five quotient types: one e is+1 and the other-1 with(t,w)=(2,0) or(0,2), or e=f=-1,t=w=0. Thus it requires R=M on at least one side. These are possible quotient types, not asserted existing graphs.',
+            'The other two quotient types have nu0=6 and cannot have total nullity9 by the modulo4 formula. Their local existence and a structural ceiling9 for the remaining types are not settled by this calculation.'
+        ])
+
+
 def geometry_fixture(block, B, C):
     """Test the new Fourier formulas against direct44-label geometry.
 
@@ -480,7 +560,8 @@ def run(certificates):
         negative_certificates=dict(count=used, sides=dict(psd_sides), arithmetic='integer'),
         quotient_table=table, modular_plus=p7_report, modular_minus=m7_report,
         modular_C1prime_witnesses=witnesses,
-        checks=dict(exact_fourier_geometry_fixtures=sorted(fixtures), field_degree_mod7=4), proof=PROOF)
+        checks=dict(exact_fourier_geometry_fixtures=sorted(fixtures), field_degree_mod7=4),
+        mixed_parity=mixed_parity_reduction(table), proof=PROOF)
 
 
 def main():
@@ -488,12 +569,17 @@ def main():
     parser.add_argument('--certificates', type=Path, default=Path(__file__).resolve().parents[2]
         / 'data/codex_local_global_20261015/z5_hm_negative_certificates.json')
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--parity-only', action='store_true',
+                        help='Only the cyclic component and mod5 parity reduction, no certificate file needed.')
     args = parser.parse_args()
-    result = run(args.certificates)
+    result = mixed_parity_reduction() if args.parity_only else run(args.certificates)
     if args.output:
         args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
-    print(json.dumps({k: result[k] for k in ('status', 'rational_plus', 'rational_minus', 'lifts',
-        'negative_certificates', 'modular_plus', 'modular_minus', 'checks')}, ensure_ascii=False))
+    keys = (('status', 'quotient_types', 'local_ceiling9_proved_types',
+             'possible_negative_mixed_types_at_nullity9') if args.parity_only else
+            ('status', 'rational_plus', 'rational_minus', 'lifts', 'negative_certificates',
+             'modular_plus', 'modular_minus', 'checks'))
+    print(json.dumps({k: result[k] for k in keys}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

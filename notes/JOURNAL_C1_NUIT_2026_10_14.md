@@ -4471,3 +4471,65 @@ exterieures fournissent les quatre relations non triviales et sont
 g-paires : profil(7,2). Ce diagnostic distingue deux mecanismes sans
 supposer que les relations mixtes seraient absentes. Aucun graphe ni
 noyau sauvegarde par Claude n'a ete relu pour cette deduction.
+
+### 15/10, suite828 : composantes forcees et sept plafonds locaux par reduction mod5
+
+828 lu/acquitte. Claude propose un lemme pour g=h*p, p preservant les
+mates, avec k transpositions exterieures. Sous(H_g), tout noyau g-impair
+a coordonnees c_y=0 ; les k differences g_y-g_p(y) ne peuvent donc etre
+absorbees et le gain pair est>=k. Sa borne de nullite utilise ensuite
+ODD9 : cette derniere condition reste explicite, pas une preuve universelle
+nouvelle d'ODD9. Il collecte les parites des PSD de sa campagne complete.
+Aucune de ses matrices n'est ouverte ou recalculee par Codex.
+
+PREMIERE DEDUCTION : min(c_l,c_m)=2 est structurel. Sous z, O est une
+grille et la droite centrale opposee est isolee dans H_l. Apres contraction
+des identifications geometriques, les cinq sommets restants sont les
+cinq paires exterieures. z les permute transitivement. Une partition
+invariante en composantes a des blocs de meme taille divisant5 : soit
+cinq singletons, soit une composante. Donc c_l dans{2,6}, et pareil
+pour c_m. Les quatre supports circulants non orientes sur5 sommets
+(pas0, pas+-1, pas+-2, les deux) donnent exactement6,2,2,2 composantes
+apres ajout de la droite isolee. Cette partie utilise z seul. Ajouter
+hM et T/U PSD exclut(6,6) par notre obstruction damier. Ainsi min c=2
+sur TOUTE la famille, sans recourir aux statistiques de Claude.
+
+DEUXIEME DEDUCTION : filtre exact sur le noyau cyclotomique g-impair.
+Noter R_l le matching ENTRE les etoiles0 et1, e=+1 s'il est D_s,
+e=-1 s'il est M. Ne pas le confondre avec M0, matching interne a l'etoile0.
+Definir f pareil pour2 et3. t,w sont les comptes signes de B=A02,C=A03.
+Evaluer en X=1 les REPRESENTANTS DE LAURENT du bloc4x4 T_-(X), en gardant
+son offset geometrique cyclotomique (il ne s'agit pas du vrai bloc
+z-trivial12x12). La decomposition paire/impaire des deux bits donne
+ 3I2 et P=[[7/2-e,-t-w-1/2],[-t-w-1/2,7/2-f]].
+Donc pour N=4T_-,
+ det N(1)=576*d,
+ d=(7-2e)(7-2f)-(2(t+w)+1)^2.
+Evaluation en1 n'est PAS un morphisme Q(zeta5)->Q ; seule la reduction
+modulo5 est intrinseque. Phi5(1)=5 donne bien Z[zeta5]->F5,zeta5->1.
+Si d!=0 mod5, detN est non nul dans Q(zeta5), donc le bloc - est inversible.
+C'est un critere suffisant ; un residu nul ne prouve PAS la singularite.
+
+Sur les14 quadruplets(e,f,t,w) laisses par le quotient T/U PSD, SEPT
+ont ce residu non nul. Tous ont nu0=5. Combiner b=0 et notre a<=1 deja
+prouve donne nullT=5+4a<=9. C'est une preuve LOCALE du plafond9 pour ces
+sept cas, sans ODD9 ni borne globaleF7. Ce sont sept types de quotient,
+pas une mesure de la proportion des339556 graphes ou des192 PSD.
+
+PREDICTION POUR LES MESURES DE CLAUDE. A nullite9, le profil(3,6) ne
+survit a ce filtre que dans cinq quadruplets : e,f de signes opposes,
+(t,w)=(2,0) ou(0,2), ou bien e=f=-1,t=w=0. Il exige donc R=M sur au
+moins une droite. Tout cas D/D de nullite9 est necessairement(7,2).
+Ces cinq cas sont des POSSIBILITES necessaires, pas des graphes construits.
+Les deux autres quadruplets ont nu0=6 et sont incompatibles avec la
+nullite9 par la formule modulo4 ; leur existence locale n'est pas reglee
+par ce filtre. L'explication structurelle du plafond9 pour les sept
+cas restants n'est pas achevee.
+
+OUTIL : ajout mixed_parity_reduction et --parity-only dans
+z5_hm_rank_obstruction.py ; bibliotheque standard, aucune lecture des
+520 certificats necessaire pour cette nouvelle reduction. Identite du
+determinant controlee directement par les24 termes de Leibniz pour
+chacun des14 quotients. Rapport z5_hm_mixed_parity.json, temps0,37s.
+La preuve de a<=1 provient bien du calcul precedent, elle n'est pas
+redemontree par le seul petit filtre. Deductions communiquees dans829.
