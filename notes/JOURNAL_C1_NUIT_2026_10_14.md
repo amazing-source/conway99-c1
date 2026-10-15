@@ -4304,3 +4304,122 @@ elimnant y. Certificat mixte pour x binaire,y continu,y=x,2y=1 : deux
 feuilles exactes, et rejet d'un branchement sur y. Aucune structure SRG
 construite ou exclue. Artefacts c2_projected_cuts.json et psd_exact_cuts.json,
 exports portables correspondants ; calculs courts, pas de processus actif.
+
+### 15/10, suite818/819/821 : exclusion de toute la famille locale Z5-hM
+
+818/819/821 lus et acquittes. Claude818 annonce G1'' MILP/SDP encore
+inconclusif, sans candidat PSD meme dans le temoin G1. Il garde ses
+auxiliaires C2 continus : notre projection n'est pas implementee chez lui,
+aucun gain de temps mesure. Nouvelle question : pourquoi la famille
+<z,hM>, z=(4 6 8 10 12)(5 7 9 11 13), h=(01)(23), M=(45)...(12 13),
+plafonne-t-elle a nullite9 dans son echantillon ? Claude819 donne un cube
+complet9024 structures/4PSD nullite9, c=(6,2), noyau entierement constitue
+des relations de cote. Claude821 :9/25 cubes finis,130856 structures,
+80PSD max9 ; sous-famille FORCE_TM complete26340/16PSD max9, c=(2,6).
+Ces resultats sont acceptes. Aucun de ses graphes ou enumerations relance.
+
+RESULTAT NOUVEAU (envoye822). Sous C1,C1',C2 et T,U PSD, tout bord44
+LOCAL invariant sous <z,hM> a nullite_Q(T)<=14. Si sa nullite est14,
+rang_F7(8T)>=29. Avec les conditions GLOBALES necessaires deja etablies
+rang_Q(T)<=30 et rang_F7(8T)<=28 (L4/L23/L22, rappelees par LAB774),
+aucun bord de CETTE FAMILLE LOCALE ne se prolonge en un Conway99.
+Ni z ni hM n'ont besoin de s'etendre en automorphismes du graphe99.
+Ce resultat n'exclut pas C1 en general et ne prouve PAS le plafond LOCAL9,
+ni l'absence de relations mixtes. Il exclut aussi les candidats locaux
+de nullite14 qui echappaient eventuellement a la campagne du pair.
+
+PARAMETRAGE COMPLET. Les quatre labels O={02,03,12,13}, fixes par z,
+forment obligatoirement un C4 : dans chaque etoile, les deux labels
+fixes ne peuvent etre apparies a une orbite de taille5. C1 sature alors
+leurs besoins et interdit toute arete entre O et les40 autres labels.
+Noter e_i=4+2i, o_i=5+2i, i modulo5. Le matching de l'etoile0 est
+e_i--o_(i+a). Celui de1 est l'image par M, donc le decalage oppose.
+Entre0 et1, le matching est soit D_s=diag(z^s,z^-s), soit M lui-meme.
+C'est exhaustif : une permutation des deux orbites5 commute avec z,
+et l'invariance hM donne M R^* M=R. Dans le cas croise cela impose les
+deux decalages nuls. Le choix M,a=0 est interdit par C2 (deux voisins
+communs plus une lettre commune). Memes parametres pour2 et3.
+Les deux blocs croises libres B=A02,C=A03 sont binaires circulants,
+chacun a sommes de lignes et colonnes2. A13=M B M et A12=M C M.
+
+DECOMPOSITION EXACTE. L'espace z-trivial a dimension12. Les autres
+32 dimensions se decomposent en deux blocs4x4 sur Q(zeta5), selon
+la parite de g=hM. Avec f=(1,-1,1,-1),
+ T+=3I-Gamma+-J/2, T-=3I-Gamma--f*f^t/4 ;
+ U+=4I+Gamma+-J/5, U-=4I+Gamma--f*f^t/3.
+Les couplages de Gamma sont B+C*M et B-C*M. Les diagonales internes
+sont explicites en zeta^a et zeta^s. Pour 2T+, la diagonale scalaire
+est5 et l'oppose de l'entree hors diagonale vaut1+2zeta^a+2zeta^s
+dans le typeD ; dans le typeM, ce sont3 et1+2zeta^a. Ce bloc2x2 est
+defini positif sauf D,a=s=0 (inegalite triangulaire, egalite unique).
+Pour4T-, les diagonales sont11 ou15, les hors-diagonales ont module
+au plus9 ou5 : ils sont TOUJOURS definis positifs.
+
+EXCLUSION ANALYTIQUE DU CAS DOUBLE GRILLE (message820, z non necessaire).
+Deux diagonales+ singulieres signifient cinq grilles exterieures de
+chaque cote, donc c_l=c_m=6 avec O. Leurs indicatrices sont dans kerT.
+Cela force aucune arete entre les grilles L_i,R_i, et un matching parfait
+entre L_i,R_j pour i!=j. hM agit antipodalement sur chaque C4 ; le
+matching commute donc aux antipodies et est un automorphisme du C4.
+Sur les dix modes damier normalises (1,-1,-1,1)/2, la restriction U
+est [[2I5,B],[B^t,2I5]], avec B_ii=0 et B_ij=+-1 sinon. Les offsets
+geometriques s'annulent sur ces modes (incidences de lettres nulles).
+Positivite =>BB^t<=4I ; sa diagonale vaut4, donc BB^t=4I. Mais deux
+lignes ont TROIS positions communes : produit scalaire impair, impossible.
+Cette sous-famille est donc exclue sous hM seul. Si une seule diagonale+
+est singuliere, echanger les deux droites pour utiliser la non singuliere.
+
+MINEURS FINIS SUR Q(zeta5). Avec une diagonale gauche2x2 inversible,
+rang du bloc4x4 <=2 equivaut a l'annulation du complement de Schur2x2.
+Premier filtre : ses deux diagonales (mineurs3x3) ; second : hors-diagonale.
+Chaque colonne+ est deux polynomes de coefficients0,1,2, de masse totale4
+(une somme B+C*M). Chaque colonne- a au plus2 coefficients+1 et2
+coefficients-1 parmi ses10 positions (une difference B-C*M). Ces domaines
+sont des SUR-ENSEMBLES exhaustifs des blocs binaires et tiennent en615
+ou1351 colonnes. Arithmetic dans Z[zeta5], base1,z,z^2,z^3, sans flottants.
+
+Secteur+ :128 colonnes possibles de chaque cote,304 blocs de rang2,
+3152 relevements B,C binaires avec les sommes requises. C1' rejette720,
+C2 rejette1912, il reste520. Tous ont un vecteur ENTIER q negatif :
+416 pour15U,104 pour8T. Les vecteurs ont ete trouves initialement par
+direction numerique arrondie, MAIS le certificat et sa reproduction
+n'utilisent que q^t M q entier strictement negatif, sans tolerance.
+Aucun verdict flottant n'entre dans la preuve. Chaque vecteur est associe
+au SHA256 des44 lignes binaires et a sa valeur quadratique exacte.
+Secteur- :32 colonnes possibles de chaque cote, AUCUN bloc4x4 de rang2,
+avant tout test PSD. Les deux nullites cyclotomiques a,b valent donc0 ou1.
+
+QUOTIENT TRIVIAL. Poser epsilon_l,epsilon_m=+1 pourD,-1 pourM, et
+t,w dans{-2,0,2} les comptes signes exterieurs dans B et C. Les tests
+exacts12x12 T/U laissent14 des36 quadruplets. Leur nullite nu0 est5 ou6.
+Les deux cas nu0=6 sont epsilon_l=epsilon_m=+1, (t,w)=(2,0) ou(0,2).
+Par conjugaison galoisienne, null_Q T=nu0+4a+4b<=14. Une completion
+Conway exige nullite>=14 : donc nu0=6,a=b=1. Echanger2,3 normalise
+les deux cas : B a comptes diag(2,2), C a les quatre comptes egaux a1.
+Cette permutation commute avec z et hM. Le secteur z-trivial a alors
+rang exactement5 surF7 (et6 surQ).
+
+OBSTRUCTION MODULAIRE CIBLEE. Phi5 est irreductible surF7 car7 est
+d'ordre4 modulo5. La decomposition par z et hM reste inversible mod7 :
+ordre10, facteurs2,4,5,8,15 tous inversibles. Les rangs des deux secteurs
+non triviaux contribuent donc4 fois leur rang surF_(7^4).
+Reprendre les MEMES equations de Schur, modulo7, dans le quotient nu0=6 :
+ - secteur+ :88 colonnes de chaque cote, AUCUN bloc de rang<=2 ;
+   la seule diagonale singuliere reste le cas grille deja traite ;
+ - secteur- :212 colonnes de chaque cote,16 blocs de rang<=2 ;
+   seulement8 relevements binaires B,C ont les comptes normalises.
+Les huit violent C1' : un label a3 voisins dans une etoile exterieure
+dont le plafond est2. Les huit petites violations sont exportees.
+Ainsi chaque rang cyclotomique mod7 est>=3, et le rang44 est
+ 5+4*3+4*3>=29,
+contraire au plafond GLOBAL28. C'est une nouvelle exclusion de famille,
+pas une nouvelle demonstration des resultats globaux utilises.
+
+ARTEFACTS. code/codex/z5_hm_rank_obstruction.py, bibliotheque standard,
+data/codex_local_global_20261015/z5_hm_negative_certificates.json (520
+vecteurs entiers), z5_hm_rank_obstruction.json (preuve detaillee, compte
+des cas, quotient, huit violationsC1'). Reproduction complete4,6s.
+Trois tests propres comparent les formules cyclotomiques aux produits
+exacts sur44 labels, typesD/D,M/D,M/M ; tous passent. Exports portables
+codex_z5_hm_* dans lab_exchange_2026-10-14. Pas de processus actif, pas
+de graphe du pair lu, pas de doublement de sa campagne par cubes.
