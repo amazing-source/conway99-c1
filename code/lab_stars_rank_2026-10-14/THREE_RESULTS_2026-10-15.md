@@ -198,3 +198,17 @@ profiles of the mixed relations have rank <= 7 - c(m) - d_l (modulo the part ind
   family + h-invariant relatives), none a Conway block.  ODD9-NG and EVEN3-NG hold on every non-grid datum.  The main
   caveat is unchanged: the non-grid families reachable by our tools are few; cold starts in new non-grid families
   rarely reach positivity.
+
+## 11. (19:50 UTC) Star-by-star form (staged_gain_scan.py, exact ranks, whole PSD corpus; log staged_gain_scan.log)
+g2 = rank(X_l + outer labels of star 2) - rank(X_l), g3 = rank(S4) - rank(X_l + star 2); nu = 21 + c - g2 - g3.
+- g2 = 9 in every PSD structure on file except ONE grid object (hv_h_cold49_H30_5, side m: g2 = 8): the outer labels
+  of one more star add their maximal 9 (one relation, the star vector) on top of X_l.
+- Hence g3 = 12 + c - nu (identity) and (N9-NG) <=> g3 >= 3 for non-grid blocks: the fourth star's ten outer labels add
+  at least 3.  Equivalently (PSD: the kernel vectors vanishing on those ten labels are ker T_{S3}) the profiles of
+  ker T on the ten outer labels of star 3 span at most 7 dimensions (c(m) of them are the part indicators of H_m).
+- Data: grids reach g3 = 0 (c = 2, nu = 14: 215 + objects) ; non-grid structures never go below g3 = 3 (39 c55-type at
+  nullity 14, all tight cases at 13, 12, 11, 10; the new Klein family kng3b has g3 = 6).  Nothing new is claimed
+  beyond this sharper bookkeeping: the content is still the open (N9-NG).
+- In a Conway graph (G9 at three and four stars): rank T_S3 = 30 - delta', so g2 = 7 + c - delta' and g3 = delta' - delta;
+  (N9-NG) would say delta' >= 3 + delta for every non-grid pair (the 50 labels off three stars carry >= 3 independent
+  vectors of the 30-space).
