@@ -3610,3 +3610,75 @@ rangH21. Elimination exacte par DomainMatrix ; le premier essai avec
 elimination d'expressions generales a ete arrete car inutilement lent.
 Aucun autre processus arrete, aucun processus restant, aucun germe du
 pair lu ou re-audite. Code h_even_network.py ; artefact h_even_network.json.
+
+### 15/10, suite792 : norme exacte du bloc mixte et filtres sur une moyenne
+
+792 lu/acquitte. Claude distingue55 structures cassees (47 moyennes) qui
+passent les deux blocs moyens positifs mais echouent par le couplage de U,
+facteur commun annonce0,6691. Il demande une borne sur B en fonction des
+40 paires cassees. Ces resultats sont acceptes, aucun lot re-audite.
+
+IDENTITE PLUS DIRECTE, sans utiliser la connexite du reseau151. Fixer
+Delta=Gamma-HGammaH, coefficients0,+1,-1. Soit b le nombre d'orbites
+d'aretes NON ORIENTEES{e,h(e)} de taille2 avec exactement une arete
+presente. Chacune contribue quatre carres1 a Delta, donc||Delta||F^2=4b.
+Dans les bases de parite ORTHONORMALES, T_mixte=B=-Gamma_mixte et
+ Delta=[[0,-2B],[-2B^t,0]]. Donc
+ ||Delta||F^2=8||B||F^2,  ||B||F^2=b/2.
+Si q compte plutot les paires d'orbites de SOMMETS dont le bloc2x2 est
+casse, q<=b<=2q : q/2<=||B||F^2<=q. Ne pas confondre les deux comptes.
+
+Pour un bloc original[[a,b],[c,d]], poser x=a-d,y=b-c. Les deux entrees
+mixtes correspondantes valent-(x-y)/2 et-(x+y)/2. Leur cout est
+(x^2+y^2)/2 : une orbite d'aretes cassee donne deux modules1/2 ; deux
+donnent un module1 et un0. Les16 blocs binaires donnent4 couts0,8 couts1/2,
+4 couts1. Pour une moyenne a demi-aretes FIXEE, les orbites cassees sont
+exactement celles de moyenne1/2. La norme Frobenius est donc FIXEE ;
+changer leurs orientations peut modifier les valeurs singulieres et
+l'energie ponderee, mais pas cette norme.
+
+Les relations d'etoiles donnent rangB<=20. Sous T PSD et rangA10,
+B^t kerA=0 donne rangB<=10. Par la somme des carres singuliers,
+ ||B||op^2 >= b/(2 rangB) >= b/20 >= q/20.
+Ainsi40 cassures dans l'un ou l'autre sens donnent||B||F^2>=20 et
+||B||op>=sqrt2 pour un candidat positif de rangA10. Cette borne seule
+ne prouve pas que U est impossible : elle doit etre comparee a sa marge.
+
+CAPACITE DE LA MOYENNE. Noter A',C' les deux blocs de U0 et N une base
+de kerA. Eliminer les coordonnees N, auxquelles B est orthogonal, donne
+la forme courte S sur rangeA :
+ S=A'-A'N(N^t A'N)^+N^t A'.
+Sous A',C' PSD et N^t B=0, U PSD equivaut a la positivite du bloc
+[[S,-B],[-B^t,C']]. Donc B=S^(1/2) K C'^(1/2), K contraction. Si s_i,c_i
+sont les valeurs propres decroissantes et r=rangB<=10,
+ b/2=||B||F^2 <= sum_{i<=r} s_i*c_i.
+Prendre r=10 donne une borne sure calculable depuis la seule moyenne.
+Plus simplement, C'<=beta I donne b<=2 beta trS. Avec T0,U0 PSD,
+beta=7 est toujours permis, soit b<=14 trS. Pour b>=40, trS<20/7 serait
+donc un certificat d'impossibilite de TOUTES les orientations de la moyenne.
+On n'affirme pas que cette inegalite rejette les47 moyennes du pair.
+
+CERTIFICAT QUADRATIQUE SUR LES SIGNES. Pour une moyenne fixee,
+B=sum_k epsilon_k B_k, epsilon_k=+-1, une variable par orbite cassee.
+Les B_k sont orthogonaux pour Frobenius, chacun de norme carree1/2.
+Avec les pseudo-inverses des blocs superieurs,
+ H_kl=tr(A'^+ B_k C'^+ B_l^t).
+Sous les conditions de portee de U, epsilon^t H epsilon est la norme
+Frobenius carree de A'^{+1/2} B C'^{+1/2}. U PSD et rangB<=10 imposent
+ epsilon^t H epsilon<=10.
+Tout diagonal rationnel d avec H-diag(d) PSD donne une minoration
+independante des signes par sum d. Si sum d>10, toutes les orientations
+sont exclues, meme avant C1/C2. Un certificat bon marche est
+d_i=H_ii-sum_{j!=i}|H_ij| (dominance diagonale) ; s'il ne depasse pas10,
+il est INCONCLUSIF. Aucune enumeration2^b abordable n'est revendiquee,
+aucun probleme quadratique general resolu.
+
+OUTILS. h_mixed_energy.py fournit shorted_upper, orientation_energy_gram
+(quatre produits par coefficient grace au support de B_k), diagonal_minorant.
+Controles propres :16 blocs binaires, trois matrices binaires44 arbitraires
+pour les facteurs4/8, une forme courte dont la trace passe de7 a2, et une
+energie sur quatre canaux comparee exactement aux traces denses sur les16
+choix de signes. Le minorant diagonal de cette fixture vaut17/4, donc
+inconclusif au seuil10. Ces objets ne sont pas des bords C1/C2 ou des SRG.
+Artefact h_mixed_energy.json. Aucun fichier du lot55 lu, aucune certification
+du producteur refaite, aucun processus actif. ODD9, H-INV et C1 restent ouverts.

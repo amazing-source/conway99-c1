@@ -1,0 +1,346 @@
+{
+  "status": "EXACT_BROKEN_EDGE_ENERGY_AND_MEAN_CAPACITY",
+  "definitions": {
+    "Q_plus": "One+1 at both labels of each h-orbit; normalize by sqrt2.",
+    "Q_minus": "One+1 and one-1 per h-orbit; normalize by sqrt2.",
+    "B": "-Q_plus^T Gamma Q_minus/2, the mixed block of T.",
+    "Delta": "Gamma-H Gamma H; entries0,+1,-1.",
+    "b": "Number of unordered edge-orbits {e,h(e)} of size2 with exactly one edge present.",
+    "q": "Number of unordered pairs of vertex-orbits whose2x2 block is not h-invariant."
+  },
+  "exact_identity": "||Delta||_F^2=4b=8||B||_F^2, hence ||B||_F^2=b/2 and q/2<=||B||_F^2<=q.",
+  "operator_bound": {
+    "general": "||B||_op^2>=b/(2 rankB).",
+    "central_stars": "rankB<=20 from the two known even and odd star differences.",
+    "positive_rank10": "If T>=0 and rankA=10, B^T kerA=0, so rankB<=10 and ||B||_op^2>=b/20>=q/20.",
+    "forty": "Forty broken edge-orbits give Frobenius norm squared20 exactly. Forty broken vertex-orbit pairs give squared Frobenius norm in[20,40]. Either interpretation forces operator norm at least sqrt2 under the rank10/PSD hypotheses."
+  },
+  "block_table": [
+    {
+      "block": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 0,
+      "B_ij": "0",
+      "B_ji": "0",
+      "energy": "0"
+    },
+    {
+      "block": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "1/2",
+      "B_ji": "1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "-1/2",
+      "B_ji": "1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 2,
+      "B_ij": "0",
+      "B_ji": "1",
+      "energy": "1"
+    },
+    {
+      "block": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "1/2",
+      "B_ji": "-1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 2,
+      "B_ij": "1",
+      "B_ji": "0",
+      "energy": "1"
+    },
+    {
+      "block": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 0,
+      "B_ij": "0",
+      "B_ji": "0",
+      "energy": "0"
+    },
+    {
+      "block": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "1/2",
+      "B_ji": "1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "-1/2",
+      "B_ji": "-1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 0,
+      "B_ij": "0",
+      "B_ji": "0",
+      "energy": "0"
+    },
+    {
+      "block": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 2,
+      "B_ij": "-1",
+      "B_ji": "0",
+      "energy": "1"
+    },
+    {
+      "block": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "-1/2",
+      "B_ji": "1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 2,
+      "B_ij": "0",
+      "B_ji": "-1",
+      "energy": "1"
+    },
+    {
+      "block": [
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "1/2",
+      "B_ji": "-1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "broken_edge_orbits": 1,
+      "B_ij": "-1/2",
+      "B_ji": "-1/2",
+      "energy": "1/2"
+    },
+    {
+      "block": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "broken_edge_orbits": 0,
+      "B_ij": "0",
+      "B_ji": "0",
+      "energy": "0"
+    }
+  ],
+  "mean_only_capacity": {
+    "definition": "Let N span kerA. For U0 diagonal blocks Abar,Cbar PSD, define S=Abar-Abar*N*(N^T*Abar*N)^+*N^T*Abar. It is the shorted upper form on rangeA.",
+    "equivalence": "Under N^T B=0, [[Abar,-B],[-B^T,Cbar]] PSD iff [[S,-B],[-B^T,Cbar]] PSD.",
+    "spectral_bound": "b/2=||B||_F^2 <= sum_{i=1}^{r} s_i*c_i, where s_i,c_i are decreasing eigenvalues of S,Cbar and r=rankB<=rankA (using r=rankA gives a safe mean-only bound).",
+    "exact_simple_bound": "If Cbar<=beta*I, then b<=2*beta*trace(S). For valid T0,U0, beta=7 is always safe: b<=14*trace(S).",
+    "rejection": "A mean violating this bound has no positive binary orientation with that broken-edge pattern. The necessary bound may still pass for all current means; none are tested here."
+  },
+  "weighted_orientation_energy": {
+    "parameterization": "For a fixed half-integral mean Gamma0, the b broken edge-orbits have independent signs epsilon_k in{+1,-1} before admissibility. B=sum epsilon_k B_k, with Frobenius inner products <B_k,B_l>=delta_kl/2.",
+    "weighted_gram": "H_kl=trace(Abar^+ B_k Cbar^+ B_l^T). If the upper range conditions hold, epsilon^T H epsilon is the squared Frobenius norm of Abar^{+1/2} B Cbar^{+1/2}.",
+    "necessary": "U PSD implies all its singular values<=1; together with rankB<=10, epsilon^T H epsilon<=10.",
+    "lower_certificate": "Any rational diagonal d with H-diag(d) PSD gives epsilon^T H epsilon>=sum(d), since epsilon_k^2=1. A certificate sum(d)>10 rejects every orientation of this mean.",
+    "scope": "An exact certificate template, not a computed universal bound, solved Ising model, or affordable exhaustive enumeration claim."
+  },
+  "proof": [
+    "Each broken unordered edge-orbit contributes four unit squares to Delta. In the orthonormal h-parity basis Delta=[[0,-2B],[-2B^T,0]], hence its Frobenius norm squared is8||B||_F^2.",
+    "For the binary2x2 block [[a,b],[c,d]], put x=a-d,y=b-c. Then B_ij=-(x-y)/2,B_ji=-(x+y)/2. Their squared sum is(x^2+y^2)/2. A singly broken block has two entries of absolute value1/2; a doubly broken block has one entry of absolute value1 and one zero.",
+    "The count b is determined by the half-integral mean: a broken edge-orbit is precisely one whose averaged entries equal1/2. Changing only orientation signs cannot reduce the unweighted Frobenius norm; it can change the singular values and the weighted energy.",
+    "Shorting follows by eliminating the kerA coordinates from the positive upper block; the mixed columns have zero entries there. On the remaining support, B=S^(1/2) K Cbar^(1/2) with K a contraction. The trace rearrangement bound gives the spectral capacity and the scalar beta bound.",
+    "The weighted contraction is linear in the orientation signs. Its squared Frobenius norm is the stated positive semidefinite quadratic form. A diagonal minorant supplies the exact sign-independent certificate."
+  ],
+  "own_checks": {
+    "binary_blocks": 16,
+    "block_cost_histogram": {
+      "0": 4,
+      "1": 8,
+      "2": 4
+    },
+    "arbitrary_binary_matrix_fixtures": [
+      {
+        "broken_vertex_orbit_pairs": 96,
+        "broken_edge_orbits": 110,
+        "mixed_frobenius_squared": "55"
+      },
+      {
+        "broken_vertex_orbit_pairs": 137,
+        "broken_edge_orbits": 170,
+        "mixed_frobenius_squared": "85"
+      },
+      {
+        "broken_vertex_orbit_pairs": 166,
+        "broken_edge_orbits": 207,
+        "mixed_frobenius_squared": "207/2"
+      }
+    ],
+    "shorting_fixture": {
+      "original_trace": "7",
+      "short_trace": "2",
+      "result": "PASS"
+    },
+    "weighted_sign_fixture": {
+      "channels": 4,
+      "exact_sign_choices": 16,
+      "sparse_vs_dense": "PASS",
+      "identity_metric": "H=I/2",
+      "diagonal_certificate": {
+        "diagonal": [
+          "3/4",
+          "3/4",
+          "5/4",
+          "3/2"
+        ],
+        "universal_sign_energy_at_least": "17/4",
+        "rank10_upper_contraction_impossible": false,
+        "scope": "Rejection requires the upper range conditions and rankB<=10; otherwise this is only an energy bound."
+      }
+    },
+    "scope": "Arbitrary binary matrices are not claimed C1/C2 borders; the normalization identity holds for every binary graph. No peer graph read."
+  },
+  "limitations": "The norm count is exact, but by itself does not force tU<1, prove H-INV, or exclude C1. No current mean has been rejected by the new capacity certificate in this report."
+}
