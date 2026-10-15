@@ -3756,3 +3756,58 @@ operateur3/2 ; les deux coupes |-3e1+3e2|<=4, |-3e1-3e2|<=4 rejettent
 toutes ses orientations. Aucun de ces exemples n'est un graphe C1/C2.
 Aucune nouvelle moyenne reelle exclue ; ODD9, H-INV et C1 restent ouverts.
 Aucun processus actif, aucun calcul intensif lance pendant le jeu.
+
+### 15/10, suite797 : famille de moyennes a40 cassures, au plus4096 orientations
+
+797 lu/acquitte. Claude a trouve le module et confirme les conventions.
+Nouveau fait combinatoire du pair accepte : ses40 cassures sont simples,
+10 dans chacun des deux blocs internes L,R et20 croisees ; chaque support
+interne est un cycle10. Aucune cassure n'implique les deux orbites O.
+Aucun fichier du pair lu. Le resultat qui suit vaut pour TOUTE moyenne de
+ce type, sans utiliser le rangA10 ou la dimension14 du noyau.
+
+Les quatre relations d'etoiles connues, en base de parite, ont vecteurs
+ pairs : (2,2,1_L,1_R) et (0,0,1_L,-1_R),
+ impairs : (1,1,1_L,0_R) et (1,-1,0_L,1_R).
+Comme les lignes/colonnes O de B sont nulles, elles imposent separement
+les sommes de lignes ET de colonnes nulles dans B_LL,B_LR,B_RL,B_RR.
+Une cassure simple donne toujours des entrees de module1/2 dans les deux
+directions. Sur chacun des cycles10 internes, ces equations propagent un
+signe autour du cycle : au plusUNE dimension par cycle, ou contradiction.
+La position des mates a distance3 rapportee par Claude n'est pas necessaire
+pour cette borne ; elle pourrait encore renforcer le filtre.
+
+Soit D le support biparti des20 paires croisees, V son nombre de sommets
+ACTIFS et c son nombre de composantes. Les sommes de lignes/colonnes de
+B_LR donnent une matrice d'incidence bipartie, avec signes de colonnes,
+de rang V-c. Les signes croises ont donc dimension lineaire au plus
+20-V+c. Toute valence impaire est immediatement impossible, puisqu'une
+somme impaire d'entrees+-1/2 ne peut etre nulle.
+
+LEMME FINI. Un graphe biparti simple a20 aretes et degres actifs pairs
+satisfait V-c>=9. Supposons V-c<=8. Chaque composante a au moins4 sommets,
+donc il y a au plus deux composantes. Une seule aurait au plus9 sommets :
+les bornes a*2floor(b/2) et b*2floor(a/2), a+b<=9, donnent au plus16
+aretes. Deux composantes auraient au plus10 sommets au total, tailles au
+moins4 ; les bornes biparties ordinaires donnent au plus4+9=13 aretes
+(tailles4+6), ou6+6=12 (tailles5+5). Contradiction dans tous les cas.
+
+BORNE : dimension totale <=1+1+20-V+c<=13. Choisir les coordonnees libres
+parmi les signes ORIGINAUX, puis identifier epsilon et-epsilon (action de h),
+donne AU PLUS2^12=4096 essais pour une moyenne fixee. Les autres conditions
+|Lz|=1, C1/C2 et PSD sont encore a appliquer ; elles ne peuvent qu'enlever
+des essais. Le nombre de moyennes differentes reste non borne ici.
+Si toutes les valences croisees valent2, D est une union de cycles pairs
+sur20 sommets : c<=5, dimension<=2+c<=7, soit au plus64 essais modulo h.
+Cette hypothese plus forte n'est PAS deduite du message797 ni verifiee
+sur ses47 moyens.
+
+CODE : forty_simple_cycle_bound dans h_orientation_kernel.py reconnait
+le type et fournit les bornes effectives. Nouvelle fixture abstraite :
+cycles10 internes et support croise K4,6 prive d'un K2,2 (20 aretes,10
+sommets actifs, tous degres pairs). Les quatre seules relations d'etoiles
+donnent bien rang27, dimension13 ;4096 essais produisent552 solutions de
+signes modulo h. C'est un temoin de l'optimalite de la borne de dimension
+pour cette relaxation, PAS un bord C1/C2 ou un SRG. Un support de cinq
+cycles4 croises donne la borne64. Executions environ une seconde, aucun
+calcul lourd, aucun processus restant. Exports actualises.

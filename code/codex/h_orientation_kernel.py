@@ -224,6 +224,62 @@ def enumerate_reduced_signs(reduction, cuts=(), max_dimension=14, sample_limit=1
                 scope='An exhaustive result for this fixed channel system and supplied valid constraints only; no assertion about untested means or Conway.')
 
 
+def forty_simple_cycle_bound(channels):
+    """Uniform <=4096 trials per mean of the structural type reported in LAB797.
+
+    Orbit indices: O=0,1; L=2..11; R=12..21. Exactly one broken edge-orbit
+    per supported pair; support within L and within R is a ten-cycle, with
+    twenty crossed pairs and no support incident with O. Only the four known
+    star relations are used, not rankA=10, full kernel14, or an automorphism.
+    """
+    sparse_channels(22, channels)
+    pairs = [(i, j) for i, j, _ in channels]
+    if len(pairs) != 40 or len(set(pairs)) != 40 or any(i < 2 for i, j in pairs):
+        return dict(status='OUTSIDE_FORTY_SIMPLE_CYCLE_CLASS')
+    groups = [[], [], []]
+    for i, j in pairs:
+        groups[0 if j < 12 else 1 if i >= 12 else 2].append((i, j))
+    if list(map(len, groups)) != [10, 10, 20]:
+        return dict(status='OUTSIDE_FORTY_SIMPLE_CYCLE_CLASS')
+
+    def support(edges):
+        adjacency = {}
+        for i, j in edges:
+            adjacency.setdefault(i, set()).add(j)
+            adjacency.setdefault(j, set()).add(i)
+        unseen, components = set(adjacency), 0
+        while unseen:
+            components += 1
+            stack = [unseen.pop()]
+            while stack:
+                neighbours = adjacency[stack.pop()] & unseen
+                unseen.difference_update(neighbours)
+                stack.extend(neighbours)
+        return adjacency, components
+
+    for edges in groups[:2]:
+        adjacency, components = support(edges)
+        if len(adjacency) != 10 or components != 1 or any(len(row) != 2 for row in adjacency.values()):
+            return dict(status='OUTSIDE_FORTY_SIMPLE_CYCLE_CLASS')
+    cross, components = support(groups[2])
+    odd = [i for i in sorted(cross) if len(cross[i]) % 2]
+    if odd:
+        return dict(status='NO_ORIENTATION_FROM_STAR_RELATIONS',
+                    reason='An odd number of crossed entries +/-1/2 cannot sum to zero.',
+                    odd_cross_degrees=odd)
+    vertices = len(cross)
+    # A simple bipartite graph with20 edges, all active degrees even, has
+    # V-c>=9. See the finite small-component argument in the report.
+    assert vertices-components >= 9
+    dimension = 2+20-vertices+components
+    return dict(status='PROVED_PER_MEAN_ORIENTATION_BOUND',
+                cross_active_vertices=vertices, cross_components=components,
+                sign_dimension_at_most=dimension,
+                trials_mod_h_at_most=2**(dimension-1), universal_trials_at_most=4096,
+                all_cross_degrees_two=all(len(row) == 2 for row in cross.values()),
+                scope='Every admissible orientation of this fixed mean satisfies the four star relations. Enumeration must also impose all remaining row magnitudes, C1/C2 and PSD. No bound on the number of different means.')
+
+
 def report():
     # Pair propagation is genuinely stronger than homogeneous linear reduction.
     eq = sp.Matrix([[-1, -2, 1]])
@@ -288,6 +344,33 @@ def report():
         obtained = (0 if candidate['status'] == 'NO_SIGN_VECTOR' else
                     enumerate_reduced_signs(candidate)['range_feasible_mod_sign'])
         assert direct == obtained
+    # A NEW abstract support, not one of the peer's47 means. The crossed
+    # graph K4,6 minus a K2,2 has20 edges and all active degrees even.
+    # It attains the dimension13 bound for the star-equation relaxation.
+    forty = []
+    for offset in (2, 12):
+        for i in range(10):
+            a, b = sorted((offset+i, offset+(i+1) % 10))
+            forty.append((a, b, 'parallel'))
+    for i in range(4):
+        for j in range(6):
+            if not (i < 2 and j < 2):
+                forty.append((2+i, 12+j, 'parallel'))
+    bound = forty_simple_cycle_bound(forty)
+    assert bound['sign_dimension_at_most'] == 13
+    even_stars = sp.Matrix.hstack(sp.Matrix([2, 2]+[1]*20), sp.Matrix([0, 0]+[1]*10+[-1]*10))
+    odd_stars = sp.Matrix.hstack(sp.Matrix([1, 1]+[1]*10+[0]*10), sp.Matrix([1, -1]+[0]*10+[1]*10))
+    eq40 = range_equations(22, forty, [even_stars], [odd_stars])
+    red40 = reduce_sign_kernel(eq40)
+    assert red40['linear_dimension'] == red40['propagated_dimension'] == 13
+    count40 = enumerate_reduced_signs(red40, sample_limit=0)
+    assert count40['trials'] == 4096 and count40['range_feasible_mod_sign'] == 552
+    # If the crossed support is five disjoint four-cycles, the bound is64.
+    cross_regular = forty[:20]+[(2+2*k+i, 12+2*k+j, 'parallel')
+                               for k in range(5) for i in (0, 1) for j in (0, 1)]
+    bound_regular = forty_simple_cycle_bound(cross_regular)
+    assert bound_regular['sign_dimension_at_most'] == 7
+    assert bound_regular['trials_mod_h_at_most'] == 64
     return dict(status='EXACT_SIGN_REDUCTION_AND_OPERATOR_CUTS',
                 proof=[
                     'The supplied range equations are homogeneous rational equations R*epsilon=0. RREF expresses every epsilon as L*z using actual free coordinates of epsilon; z therefore consists of signs.',
@@ -302,6 +385,19 @@ def report():
                 operator_fixture=dict(dimension=10, weighted_frobenius_squared='9/4',
                                       normalized_operator_norm='3/2', cuts=cuts, enumeration=rejected),
                 large_dimension_guard=oversized,
+                forty_simple_cycle_family=dict(
+                    universal_trials_per_mean_mod_h=4096,
+                    proof=[
+                        'There are no broken channels incident with O, so the first two rows and columns of B vanish. The two even star vectors (2,2,1_L,1_R) and (0,0,1_L,-1_R), and the two odd star vectors (1,1,1_L,0_R) and (1,-1,0_L,1_R), imply zero row and column sums separately in B_LL,B_LR,B_RL,B_RR.',
+                        'Every simple channel contributes one nonzero entry of magnitude1/2 in each direction of its supported pair. On each internal ten-cycle, the row equations propagate a sign around the cycle, giving at most one free sign (or no sign solution).',
+                        'Write D for the simple bipartite support of the twenty crossed channels, with V active vertices and c components. Row and column sums of B_LR give a signed version of the ordinary bipartite incidence matrix, of rank V-c. Thus the crossed linear solution space has dimension20-V+c. An odd support degree already forbids a sign solution.',
+                        'If all active degrees are even, each component of D has at least four vertices. Suppose V-c<=8. There are at most two components. One component would have at most nine vertices; the even degree bound a*(2*floor(b/2)) and b*(2*floor(a/2)) gives at most16 edges for a+b<=9. Two components have at most ten total vertices, each at least four, hence at most13 edges by the bipartite edge bound floor(v^2/4). Both contradict twenty edges. Therefore V-c>=9.',
+                        'The two internal sign dimensions plus the crossed space give total dimension at most2+20-V+c<=13. A set of pivot-free ORIGINAL signs parameterizes all solutions, so <=2^12=4096 trials modulo h suffice for each fixed mean. If all crossed degrees are2, D consists of at most five even cycles and the bound improves to2^(1+c)<=64.'
+                    ],
+                    dimension_sharp_abstract_support=bound,
+                    own_abstract_support_enumeration=count40,
+                    degree_two_support_bound=bound_regular,
+                    scope='A proven affordable orientation step for this family of fixed means. No classification, affordable bound on the number of means, or exclusion of C1 follows. The tightness example is an abstract channel support, not a constructed C1 border.'),
                 fixture_scope='Own algebraic fixtures only. No fixture is asserted to be a binary Conway border or an SRG; no peer mean read.',
                 limitations='No new C1 family or actual mean excluded. The actual reduced dimensions of the peer means have not been computed here.')
 
