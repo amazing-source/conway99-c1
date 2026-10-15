@@ -3835,3 +3835,68 @@ sous l'hypothese supplementaire de valence croisee2. Cette borne est une
 etape exhaustive abordable par moyenne du type defini, PAS une nouvelle
 famille exclue, ni une enumeration du nombre de moyennes. L'ancien lot47
 etait deja couvert par SAT. Aucun processus propre actif en fin de tour.
+
+### 15/10, suite801 : obstruction de volume au passage de nullite13 a14
+
+801 lu/acquitte. Faits nouveaux du pair acceptes, sans relance ni audit :
+le sous-groupe G_N du cadre preserve chaque classe de noyau ; h est central,
+donc les images par ce groupe d'une structure h-invariante le restent.
+Les membres casses d'une meme classe ne viennent pas de ces images.
+Survol213/287 classes : rapports |G_N|/|Aut| annonces1 dans25 classes,
+2 dans119,4 dans32,96 dans deux classes rep006 et rep037. Ce sont des
+statistiques observees, pas une necessite universelle de grande symetrie.
+Marches sans h depuis c55 : milliers de visites PSD, nullites11 a14,
+aucun couplage casse. KHOMOG autour hm_id_c22_HB_1, intersection initiale
+12D :672 structures, enumeration annoncee complete en27s ; celles de
+nullite14 (8 PSD,340 non PSD) sont h-reliees ; les cassees restent a12/13.
+Claude teste une marche par projection sans groupe ni graine. Aucun de
+ces fichiers producteurs lu ici.
+
+FORMULATION EXACTE DU MUR, pour une moyenne FIXEE et sous positivite.
+T=[[A,B],[B^t,C]], T0=(T+hTh)/2=diag(A,C). Comme T et hTh sont PSD,
+ kerT0 = kerT inter hkerT.
+Poser i=nulliteT0. Sur les supports positifs de A et C, une congruence
+reduit T a [[I,K],[K^t,I]], K=A^-1/2 B C^-1/2. Ainsi T PSD equivalaut
+a toutes les valeurs singulieres de K<=1, et
+ nulliteT = i + nombre de valeurs singulieres de K exactement egales a1.
+Donc, a i12 fixe, nullite13 requiert UNE saturation, nullite14 en requiert
+DEUX. Ce n'est pas une deduction de positivite pour les cas non PSD du pair.
+Si une classe KHOMOG n'impose qu'un sous-espace12 dans le noyau moyen,
+i peut augmenter ; la formule doit employer sa valeur ACTUELLE.
+
+COMBINER AVEC U. Shorter A',C' sur les supports de A,C, obtenant S,Q.
+Ici S,Q doivent etre definis positifs sur ces supports. Un upper shorte
+singulier demande d'abord une autre reduction de support ; aucune
+conclusion du nouveau module n'est revendiquee pour cet usage hors contrat.
+Sous les conditions de portee de T, U PSD equivaut au bloc shorte positif,
+donc L=S^-1/2 B Q^-1/2 est une contraction. Ecrire
+ L=P K R, P=S^-1/2 A^1/2, R=C^1/2 Q^-1/2.
+Si K a au moins p valeurs singulieres1, la norme de sa puissance exterieure
+d'ordre p vaut1. De K=P^-1 L R^-1 et ||exterieur^p L||<=1, on deduit
+ produit_p_petites(sigma(P)) * produit_p_petites(sigma(R)) <=1.
+Au carre, les alpha sont les valeurs generalisees de(A,S), beta celles
+de(C,Q), en ordre CROISSANT :
+  (alpha_1 ... alpha_p)(beta_1 ... beta_p) <=1.
+Tout produit strictement superieur a1 interdit nulliteT>=i+p.
+La condition p2 peut etre plus forte que p1 pour le mur13/14. Elle ne vise
+PAS les47 anciennes moyennes de nullite14, pour lesquelles p0 suffit.
+
+CERTIFICAT RATIONNEL. Pour t rationnel, l'inertie negative de A-tS compte
+les valeurs generalisees strictement inferieures a t. Au plus j-1 directions
+negatives certifient alpha_j>=t, y compris les egalites et multiplicites.
+Quatre seuils rationnels certifies suffisent donc pour un produit p2>1,
+sans isoler les racines algebriques. Les seuils peuvent etre proposes par
+un calcul flottant, mais le certificat lui-meme est rationnel exact.
+
+OUTIL : code/codex/h_nullity_volume.py, autonome SymPy. Fonctions
+rational_inertia (pivots1x1 et2x2), certify_ordered_ratio_bounds,
+certify_nullity_drop. Artefact h_nullity_volume.json. Exemple propre :
+A=C=I2, S=diag(2,1/4), Q=I2. Plus petites valeurs alpha=(1/2,4), beta=(1,1).
+p1 donne1/2, inconclusif ; p2 donne2>1, donc interdit deux saturations.
+B=diag(1,0) produit pourtant T PSD avec une seule direction nulle et U PD.
+Ajouter12 directions nulles communes illustre algebriquement13 permis,
+14 interdit ; ce n'est PAS un bord Conway. Controles de18 congruences
+rationnelles d'inertie connue, pivot diagonal nul, et seuil volontairement
+trop haut refuse. Le premier lancement a rencontre une conversion bool
+SymPy/int ; corrigee, les controles passent en moins d'une seconde.
+Aucune moyenne reelle exclue, aucun processus actif, aucun calcul lourd.
