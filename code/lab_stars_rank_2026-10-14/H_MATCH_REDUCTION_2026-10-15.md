@@ -1,5 +1,11 @@
 # (H-MATCH): a local symmetry law that would exclude Conway (LAB, 15/10/2026, ~06:00 UTC)
 
+FINAL STATUS (15/10, 07:40 UTC): (H-MATCH) is ABANDONED as a target (not refuted): its evidence is family bias,
+its srg(243) analogue is false, and local searches cannot decide it. KEPT: the implication (section 2) and its
+contrapositive G18 (>= 4 broken blocks per vertex of a Conway graph, modulo L10). Last results: the largest kernel
+class (15 objects) enumerated COMPLETELY (24 144 structures, 96 PSD, none broken), so all 129 kernels are settled
+(complete SAT or MILP); sub-kernel sweeps stopped after 189 runs (760 PSD nullity-14 structures, all h-related).
+
 Status: the IMPLICATION below is a proof. Its last step needs ONE of: L8 = "no Hamming point" (catalogue C2, status P,
 Codex note 105), Makhnev 1988 "not grid-full" (C1, literature), or rho <= 191 (P part of C6). Independent adversarial
 review (06:45 UTC): no error in the proof; status and evidence wording corrected below. The local law (H-MATCH)
@@ -153,13 +159,30 @@ cryptominisat UNSAT, no certificate; exact checks are marked)
   (44-48 asymmetric star pairs per pair of lines). So the ANALOGUE of (H-MATCH) is FALSE in a real lambda = 1,
   mu = 2 graph: forced-nullity PSD blocks with broken matchings exist there. (H-MATCH), if true for Conway, would be
   specific to the Conway parameters (and then equivalent in effect to non-existence).
+  Same calibration for (B') (the night's other live lead, 'no forced-nullity block has a line with c = 1'): in real
+  srg(243) EVERY line has c(l) = 1 (= 39 - rank T_{X_l}; hmatch_tools_2026-10-15/lines243.py, 330 (vertex, line)
+  incidences in BvLS and in trade_aut108, plus 6 vertices of two more graphs: c = 1 always), while their six-star
+  blocks have the forced nullity 20. So the analogue of (B') is false in every real graph tested, and our Conway
+  population (all c >= 2) is again unlike real lambda = 1, mu = 2 graphs.
+  More real blocks (hmatch_tools_2026-10-15/sixstar243_more.log, graph-only): 36 six-star blocks (4 vertices x 3 line
+  triples in each of tricayley, trade_aut162, trade_aut108) all have nullity EXACTLY 20, the forced minimum, and are
+  PSD (lambda_2 = 4, lambda_min = -5), with broken matchings (hmatch243). So the analogue of (N15) ('no excess
+  nullity') is CONSISTENT with real graphs, unlike those of (H-MATCH) and (B').
   Search calibration running: walk_gen.py (same HMATCH walk as for Conway) from the BvLS block, looking for broken
   nullity-20 PSD blocks, which do exist (cal243/cal_bvls_f*.log; control from the aut108 block: finds itself at once);
   kernel_sat_gen.py on the BvLS kernel (cal243/ksat_bvls.log).
 
-## 4. Tests running (06:45 UTC)
-kernel_milp_all.py over the 331 objects (modes match and hfull, no PSD cuts; PSDCUTS=1 adds eigenvector cutting planes
-for T and U, symmetrised under the object's group, but converges slowly), HMATCH walks hm2_d, hm3_c1, hm3_c2
-(the last two reward large c), walks in the twisted involution groups <h s> (s = M, (4 6)(5 7), (4 5), (4 5)(6 7))
-with HREQ (from cold), enumerations enumZ5hM, enumZ5sM, local enumeration loc16b_HB1.
-Scripts used for the evidence: work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/ (copied from the scratchpad).
+## 4. Lesson of the calibration (07:30 UTC)
+Forced-nullity PSD structures are ISOLATED points for local moves, in both settings: identity-group walks from a
+rank-30 Conway object only revisit h-invariant objects; walks from the BvLS six-star block only revisit h-related
+blocks, walks from the trade_aut108 block only broken ones. Symmetric families were needed to find the Conway objects
+at all, so the population is determined by the families searched (all containing h), and the 'laws' read off it
+((B'), (T8), (SQ30), (H-MATCH)) describe those families. In srg(243) the analogues of (H-MATCH) and (B') are false.
+Rule for any future local law: test its analogue on the real srg(243,22,1,2) graphs first (stars_gen.py,
+real_block243.py, lines243.py, hmatch243.py).
+
+## 5. Runs (state 07:30 UTC)
+ksat_all_kernels.py (complete SAT enumeration of all 129 kernel classes; class 6 completed separately in
+ksat_obj6_full.log), subkernel_sweep.py (drop 2 / drop 3), calibration walks cal243/cal_bvls_f{6,12,20} and
+cal243/cal_aut108_f6, cal243/ksat_bvls.log (BvLS kernel; the first SAT solve is slow), enumZ5hM and enumZ5sM
+(groups without h, 2 h cap). Scripts used for the evidence: work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/.

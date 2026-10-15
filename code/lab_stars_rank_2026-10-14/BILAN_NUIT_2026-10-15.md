@@ -60,3 +60,9 @@ Branche lab/theta-lp-2026-10-08 du dépôt privé : f6ce63c, ce2c5b3, puis le co
   Conway, au moins 4 des 21 paires de droites ont un bloc positif de nullité >= 14 à couplages non h-reliés.
 - (H-MATCH) est OUVERTE : record hors symétrie = nullité 13 ; fausse si on oublie U >= 0 ; le MILP à noyau imposé
   ne trouve aucune structure positive cassée pour les noyaux des objets connus (un noyau encore en cours).
+- CALIBRATION (07:00-07:40 UTC) sur de vrais srg(243,22,1,2), où les blocs à six étoiles ont une nullité forcée 20 :
+  dans BvLS (plein de grilles), les couplages sont h-reliés ; dans les nouveaux srg(243), les blocs réels sont
+  positifs, de nullité exactement 20, à couplages NON h-reliés, et toute droite a c = 1. Les analogues de (H-MATCH)
+  et de (B') sont donc faux dans de vrais graphes ; seul celui de (N15) (pas de nullité en excès) tient. Nos marches
+  ne quittent pas l'îlot de leur graine : ne pas trouver de bloc cassé pour Conway ne prouve presque rien.
+- Incident : RAM à 89 % vers 07:30 UTC (calculs srg(243)) ; arrêtés, retour à 55 %, moniteur avec alerte RAM.

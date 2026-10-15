@@ -41,13 +41,14 @@ vraie, (H3) + L8 n'aurait donc pas suffi à exclure Conway.
 ### 1.2 Encore ouverts, compatibles avec toutes les données
 | # | énoncé (local, sur les structures admissibles avec T, U >= 0) | ce qu'il donnerait | données |
 |---|---|---|---|
-| O1 | (B') nullité >= 14 => aucune droite avec c = 1 | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2, mais 329 ont la grille sur (l, m), qui force c >= 2 à elle seule : seuls les 2 objets c55 testent vraiment (B') ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (280 424 visites positives avec c = 1), et UNE seule lignée a visité c = 1 (voir 3.8) |
+| O1 | (B') nullité >= 14 => aucune droite avec c = 1 [CALIBRATION 15/10 : son analogue est faux dans les vrais srg(243), où toute droite a c = 1] | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2, mais 329 ont la grille sur (l, m), qui force c >= 2 à elle seule : seuls les 2 objets c55 testent vraiment (B') ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (280 424 visites positives avec c = 1), et UNE seule lignée a visité c = 1 (voir 3.8) |
 | O2 | ODD9 : les 10 vecteurs impairs ajoutent exactement 9 au rang | implique (B') et nullité <= 12 + min(c) | exact sur tout objet positif testé ; sans positivité, quasi-échecs (écart 2e-5) mais aucun échec exact enregistré |
 | O3 | (T8) pont des transversales : nullité >= 14 => t(l) >= 8 et t(m) >= 8 (variante : t(l) + t(m) >= 15) | P >= 924 (variante : P >= 867), contre P <= 852 (certificat exact de Codex, ordre 9) : PAS DE CONWAY | 331/331 : t = (12,12) dans 329 cas, (8,8) dans 2 ; FRAGILE : avec t <= 7 la nullité vue atteint 13 (voir 3.8) |
 | O4 | (K22) nullité >= 14 => rang_7(8T_S4) >= 23 | k >= 24, donc r = 37 exclu ; avec >= 25 : r = 37 et 39 exclus | rang_7 = 25, 29 ou 30 sur les 331 |
 | O5 | (SQ30) rang 30 => classe de carrés de det(8T_I) = 2*3*5*7^e | aucun bloc de Conway de rang 30, donc delta >= 1 à toute paire | 331/331 (+ sc_7_null14) ; un objet NON positif de rang 30 a la classe -2 |
 | O6 | (N15) aucun objet positif de nullité >= 15 | avec O5 : PAS DE CONWAY (tout bloc aurait rang 30, donc devrait passer DISC) | jamais vue : ~288 000 visites positives à nullité 14 dans les journaux, aucune à 15 ou plus ; sc_2_null14 (T seule positive, U non) atteint 16 |
 | O7 | H4' : pas de droite c = 1 des deux côtés à nullité >= 14 | cas particulier de O1 | max nullité 10 en c = (1,1) |
+| O9 | (H-MATCH) nullité >= 14 => M_1 = h(M_0) et M_3 = h(M_2) (couplages h-reliés) [ajouté 15/10 06:00] | chaque sommet serait de Hamming : PAS DE CONWAY (L8 ; ou Makhnev ; ou rho <= 191) — implication PROUVÉE et relue | 429 structures de nullité >= 14, toutes h-invariantes mais issues de familles h ; record cassé positif = 13 ; fausse sans U >= 0 ; aucun des 129 noyaux connus ne la viole ; CALIBRATION : son analogue est FAUX dans un vrai srg(243) (trade_aut108) |
 | O8 | (C) toute Conway a une droite non spéciale | avec O1 ou O2 : PAS DE CONWAY | aucune idée de preuve ; le cas « toute droite non connexe » est aussi un verrou du programme 7-adique de Codex (note 127, verrou 3) |
 
 ### 1.3 Autres voies d'exclusion de la journée (asymétrie, solveur, Codex)
@@ -280,3 +281,27 @@ Journal des résultats, au fil de l'eau (heures UTC).
   blocs h-reliés, alors que des blocs cassés existent (le contrôle depuis le bloc aut108 reste sur des blocs
   cassés). Conclusion provisoire : nos marches ne passent pas d'un îlot à l'autre ; ne pas trouver de bloc cassé
   pour Conway ne prouve presque rien.
+- 07:35 : même calibration pour (B') (« aucun bloc de nullité forcée n'a de droite c = 1 ») : dans les vrais
+  srg(243), TOUTE droite a c(l) = 1 (330 incidences sommet-droite dans BvLS et dans trade_aut108, plus deux autres
+  graphes), alors que leurs blocs à six étoiles ont la nullité forcée 20. L'analogue de (B') est faux dans tous les
+  vrais graphes testés ; notre population Conway (toujours c >= 2) ne ressemble pas aux vrais graphes.
+- 07:40 : bilan de la calibration srg(243) sur nos lois « par témoignage » : l'analogue de (H-MATCH) est faux
+  (trade_aut108), celui de (B') est faux (c = 1 partout), et les transversales des vrais graphes descendent à t = 2
+  (trade_aut108, 60 incidences sur 330), donc l'esprit du pont (T8) (« beaucoup de transversales forcées ») n'a pas
+  d'analogue non plus. Seul ODD9 a un analogue vérifié (nuit du 14-15). Les lois tirées de nos populations
+  symétriques décrivent des objets qui ne ressemblent pas aux vrais graphes lambda = 1, mu = 2.
+- 07:30 : INCIDENT (ma faute) : la mémoire vive a atteint 89 % pendant quelques minutes. En cause : les calculs
+  srg(243), dont l'énumération SAT sur le noyau BvLS (5,2 Go) et deux marches à grands pas (2 Go chacune). Ces trois
+  calculs et la marche témoin ont été arrêtés, et la mémoire est revenue à 55 %. Le moniteur signale désormais toute
+  mémoire au-dessus de 78 %. L'énumération sur le noyau BvLS (calibration du test par noyaux) est restée inachevée :
+  la première résolution n'avait pas abouti.
+- 07:35 : 36 blocs à six étoiles de trois vrais srg(243) : nullité EXACTEMENT 20 (le minimum forcé), positifs,
+  couplages cassés. L'analogue de (N15) (« pas de nullité en excès ») est COMPATIBLE avec les vrais graphes, à la
+  différence de ceux de (H-MATCH) et de (B'). (SQ30) étant un artefact de la symétrie h, la combinaison
+  (SQ30)+(N15) perd son intérêt, mais (N15) seul reste plausible.
+- 07:40 (utilisateur de retour) : (H-MATCH) ABANDONNÉE comme cible (non réfutée) : témoignage biaisé, analogue faux
+  dans les vrais srg(243), recherches incapables de trancher. Restent acquis : la réduction (H-MATCH) => pas de Conway
+  et G18 (au moins 4 blocs cassés par sommet, modulo L10). Dernier résultat : la plus grosse classe de noyau (15
+  objets) est énumérée COMPLÈTEMENT (24 144 structures, 96 positives, aucune à couplages cassés) ; les 129 noyaux
+  sont donc tous traités par SAT complet ou MILP. Balayages de sous-noyaux arrêtés (aucune structure positive cassée
+  dans 189 exécutions : 760 positives de nullité 14, toutes h-reliées ; 4 593 cassées, toutes non positives).
