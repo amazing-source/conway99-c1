@@ -313,3 +313,76 @@ A huge kernel group is what makes large classes; it is not sufficient for broken
 Projection walk without symmetry or seed (projwalk.py, two runs, about 5 CPU-minutes each at idle priority): never
 reached T, U >= 0 (best score 5.6 from 12): an unbiased search cannot reach the PSD world with these moves; PSD four-star
 structures are far from random admissible ones (lambda_2 <= 3 against about 2 sqrt 5 for random degree-6 graphs).
+
+### 6f. The 13-wall is a FAKE symmetry (LAB 15/10, 10:45 UTC; exact, hidden_sym.py, fake_kernel.py, mixed_shape.py)
+- hm_id_c22_HB_1 (the best broken PSD structure, nullity 13) is EXACTLY invariant under g = h (4 6) = (0 1)(2 3)(4 6),
+  an involution of the letters that does NOT preserve mates (4^1 = 5, 6^1 = 7), hence not a frame symmetry. Its star
+  matchings satisfy M_1 = s_m (4 6) M_0, M_3 = s_l (4 6) M_2 (M_0 has 47, 56; M_1 has 45, 67; M_2 has 49, 67;
+  M_3 has 47, 69). The odd part (for h) of its h-inhomogeneous kernel direction is (5/2)(f_4 - f_6 - e_4 + e_6).
+- For any g = h p with p an involution of the outer letters and Gamma g-invariant: g T g = T + D with D = K - gKg FIXED
+  (only the mate terms of K change). For p = (4 6), D = (1/8) J_4 (x) Q on the 16 labels {s, y}, y in {4..7}, with Q the
+  balanced signed 4-cycle 45(+), 56(-), 67(+), 74(-): rank 2, eigenvalues +1, -1; it couples the g-even vector
+  p_+ = (1/2) sum_s (1_s5 - 1_s7) with the g-odd vector q_- = (1/2) sum_s (1_s4 - 1_s6). Hence T = T_s - D/2 with
+  T_s = (T + gTg)/2 >= 0, ker T_s = N n gN, and nullity T <= nullity T_s + 1 (a rank-one coupling saturates at most one
+  direction); a g-even kernel vector n satisfies D n = 0, i.e. n is orthogonal to p_+ (one extra linear condition
+  compared with a true symmetry).
+- Data: HB_1 and every PSD nullity-13 structure of a walk in the fake group <h (4 6)> (FAKEOK option of sym4g.py, warm
+  start HB_1; about 5 500 PSD visits by 10:44 UTC, max nullity 13) have N = gN exactly, with 11 g-even + 2 g-odd kernel
+  vectors (one fewer than the 12 + 2 of h-invariant objects).
+- Reading (corrected 10:57 UTC after Codex's exact reduction, codex_h_geometric_defect.py): the walks' broken lineage
+  is h-invariant up to a mate-breaking relabelling of two letters. For HB_1, N = gN, so the T-residual of the coupling is
+  strictly positive (no saturation) and the 13 is already in the average (11 g-even + 2 g-odd). The rank-2 defect alone
+  does NOT force the cap 13 (abstract blocks with the same couplings reach nullity 14); the only constraint forced by D
+  is that g-even kernel vectors are orthogonal to p_+. Whether a fake g allows a 12-dimensional g-even kernel is OPEN.
+  Codex: for any g = h p, D = (J_4 (x) (Mt - p Mt p))/8 on the 40 labels {s, y}, rank D = 10 - 2c (c = alternating
+  components of Mt u p Mt p), and g U g = U - (8/15) D.
+- DECISIVE TEST DESIGN: for a TRUE symmetry g = h p (p a mate-preserving involution of the outer letters), D = 0, the
+  kernel splits as for h, and g-invariant structures are h-broken unless their matchings are p-invariant. <h, (4 5)> has
+  no admissible structure (SAT, earlier); G1'' = <(0 1)M, (2 3)M''> (M = all outer flips, M'' = M without (4 5))
+  contains h (4 5) and not h, and has admissible structures. In G1'', M_0 is forced to contain {4,5} (its letters 4, 5
+  are the only fixed points of s_m M''), so the l-half is automatically h-related; the m-half holds iff M_2 contains
+  {4,5}. A PSD nullity-14 G1''-structure with M_2 not containing {4,5} would REFUTE (H-MATCH). Cold walks in G1'' and in
+  G1 (control) running at idle priority since 10:42 UTC.
+
+### 6g. True-symmetry families without h (LAB 15/10, 11:00-12:10 UTC)
+- G1'' = <(0 1)M, (2 3)M''> (contains h (4 5), not h): admissible structures exist; M_0 is forced to contain {4,5}
+  (the l-half is automatically h-related); level-1 cubes (M_0, M_2): 26 811 = 81 x 331, COMPLETE; per cube more than
+  5 000 - 14 000 structures (not finished in 120 - 150 s), ZERO PSD in every sample (about 100 000 structures).
+  Codex's exact cuts for PSD members (F = {04,05,14,15} is a forced 4-cycle component, counts of attachments, canonical
+  interface up to C2 wr S4, d_P <= 1 for the four outer pairs, hence c(m) <= 3 for broken cubes) do not make the
+  cubes small. Methods tried, none conclusive: cold walks (no PSD in G1'' nor in the control G1 in 15 CPU-minutes);
+  MILP with exact C2 and positivity cutting planes (psd_milp_group.py; 130 iterations without verdict, and the control G1,
+  which contains the c55 objects, found nothing either); SDP relaxation (sdp_relax.py, Clarabel): whole family
+  feasible; per cube 2/40 infeasible, 21 feasible, 17 numerical errors (forced kernel kappa_F makes the cone degenerate);
+  SDP-guided rounding (sdp_round.py) found no PSD structure even in G1. A complete G1'' test needs an SDP
+  branch-and-bound or Codex's analytic reduction. PARKED.
+- <Z5, hM> (M = all outer flips; the only Z5 family with a true symmetry h p and no h, since M is the only involution
+  commuting with z): earlier enumeration (2 h, incomplete) 143 390 structures, 72 PSD, max nullity 9 (all with a grid
+  on (l, m), t = (2, 2) mostly), against nullity 14 in <Z5, h>. Here t(l) is 0, 2, 10 or 12 (outer transversals come in a
+  single <z, M>-orbit) and no PSD structure has outer transversals. Level-1 cubes: 25 (COMPLETE); cube 12 complete in
+  166 s (9 024 structures, 4 PSD, max nullity 9). COMPLETE enumeration running (3 idle processes, cubes 0-24, logs
+  Z5hM_full_*.log).
+- 12:14 UTC, cube 12 of <Z5, hM> COMPLETE (9 024 structures, 4 PSD, all of nullity 9; enum_cubes.py, SAVEMIN = 9).
+  Exact analysis of Z5hMs_c12_P9_1.json (side_check, balance, kernel_shape): c(l) = 6 (every other line is a
+  single-line component, i.e. l spans a grid with all six; t(l) = 12; M_0 = M_1 = the mate matching, so the l-half is
+  h-related automatically), c(m) = 2 (components [0,1] and the five outer lines), t(m) = 2; ker T (dimension 9) is
+  h-invariant: 7 even + 2 odd, and the 7 even vectors are EXACTLY the side relations (u_y + u_{y^1} for the five outer
+  lines, c1 + c2, Sum g; with the star sums), the odd part the star differences: NO mixed relation at all
+  ((1 + 6) + (1 + 2) - 1 = 9 = nullity). In the Z5h c22 objects: 5 side relations and 9 mixed ones. Provisional reading:
+  replacing h by the true symmetry hM kills every mixed relation. CORRECTED 13:00 UTC: this holds only for the
+  c = (6,2) / (2,6) members; the c = (2,2) members (53 of the 72 PSD of the earlier run) have nullity 9 = 5 side
+  relations + 4 mixed ones, so hM does NOT kill all mixed relations (check on saved structures pending).
+- 12:30 UTC, <Z5, hM>, COMPLETE sub-family enumerations (SAT, no certificate; enum_cubes.py FORCE_TL/FORCE_TM):
+  all ten outer transversals of m imposed: 26 340 structures, 16 PSD, all of nullity 9 (c = (2,6), t = (2,12), the
+  tau-mirrors of the cube-12 ones; at side l every g_y is transversal yet none is absorbed, residual 1.030); all ten outer
+  transversals of BOTH lines imposed (t = (12,12), the configuration of the Z5h nullity-14 objects): 4 788 structures,
+  ZERO PSD. Since t_out is 0 or 10 on each line in this family, every PSD member has t_out(l) = 0 or t_out(m) = 0.
+  Codex (message ~12:25): under hM alone (no Z5), c(l) = c(m) = 6 is impossible with T, U PSD (on the checkerboard modes
+  of the ten grid squares U restricts to [[2I, B], [B^T, 2I]] with B 5 x 5, zero diagonal, +-1 off it; PSD forces
+  B B^T = 4I, a conference matrix of odd order 5: two rows share three positions, odd inner product, contradiction).
+- 12:59 UTC, <Z5, hM> COMPLETE (all 25 cubes, SAT UNSAT per cube, no certificate): 339 556 invariant admissible
+  structures, 192 with T, U PSD, maximal numerical nullity 9 (no structure of nullity >= 10). Compare <Z5, h>: nullity 14
+  occurs (185 of 160 087 enumerated, incomplete). Codex (messages ~12:45-12:55, finite proof with 520 integer
+  certificates, codex_z5_hm_rank_obstruction.py in his exchange folder): for <z, hM>-invariant structures null_Q T =
+  nu0 + 4a + 4b with nu0 in {5, 6}, a, b <= 1, so nullity <= 14, and at nullity 14 rank_F7(8T) >= 29 > 28: no member of
+  the family is a Conway block. Our complete enumeration gives the stronger LOCAL ceiling 9 (unexplained).

@@ -31,7 +31,12 @@ def parse(cyc):
         c = [int(t) for t in c.split(",")]
         for k in range(len(c)):
             h[c[k]] = c[(k + 1) % len(c)]
-    assert all(h[i ^ 1] == h[i] ^ 1 for i in range(14)), "must preserve mates"
+    # FAKEOK=1 (15/10, T3): allow generators that do NOT preserve mates on the outer letters (a "fake" symmetry of the
+    # structure only; K and the admissibility constraints are not invariant, which is fine: invariance is only an extra
+    # restriction on Gamma, and every constraint of the model is still imposed)
+    if not os.environ.get("FAKEOK"):
+        assert all(h[i ^ 1] == h[i] ^ 1 for i in range(14)), "must preserve mates"
+    assert all(h[i] == i ^ 0 or i < 4 or h[i] >= 4 for i in range(14))
     assert set(h[i] for i in range(4)) == {0, 1, 2, 3}
     return h
 
