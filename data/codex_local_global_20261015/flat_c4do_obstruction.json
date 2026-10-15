@@ -9,7 +9,8 @@
     "Sum k over central star a. C1 gives sum_{x in L_a}(Gamma*v)_x=12-r_a-r_{a^1}. Subtracting3r_a yields sum_{x in L_a}k_x=12-4r_a-r_{a^1}, namely(6,3,2,2). Since k vanishes on the overlap, these are also the sums on the ten exterior labels of each star.",
     "Write b=12*1-B^t*f. Directly from the listed multiplicities, ||b||^2=480+48p, with overlap contribution20. On an exterior coordinate in central star a, changing k from0 to1 changes w_x^2 by64-16b_x. To lower-bound ||w||^2, relax the forced zeros on the support and choose the6,3,2,2 smallest such increments separately in the four stars. The resulting exact lower bounds are384,304,304 for p=0,1,2 respectively.",
     "On the other hand T+U=7Pi, where Pi=I-(11B^tB+B^tMB-2J)/120. Because B^t J_14 B=4J, the subtracted matrix equals B^t(11I+M-J_14/2)B/120. The inner matrix has eigenvalues5 on constants,12 on the nonconstant M-even space,10 on the M-odd space, so Pi<=I. With T,U PSD this gives0<=T8<=56I. Hence ||T8*v||^2<=56*v^t*T8*v=56d, namely336,224,112 in the three cases.",
-    "The lower bounds384,304,304 strictly exceed336,224,112. This contradiction excludes every44-label extension containing such a q. Equivalently every incidence-zero kernel vector with coefficients0,+1,-1 and support at most12 satisfies C4DO. No assumption of h symmetry, modular rank, nullity14 or C1-prime is used beyond the stated C1/C2 caps. General coefficients, nonzero incidence, larger support, ODDCONST, N9-NG, NG5 and NG7 remain outside this theorem."
+    "The lower bounds384,304,304 strictly exceed336,224,112. This contradiction excludes every44-label extension containing such a q. Equivalently every incidence-zero kernel vector with coefficients0,+1,-1 and support at most12 satisfies C4DO. No assumption of h symmetry, modular rank, nullity14 or C1-prime is used beyond the stated C1/C2 caps. General coefficients, nonzero incidence, larger support, ODDCONST, N9-NG, NG5 and NG7 remain outside this theorem.",
+    "Structural corollary: none of the832 labelled twelve-vertex cores can occur as an induced subgraph of an admissible44-label block. Indeed each core already has its sign vector in its principal T kernel. Full T PSD extends a principal kernel vector by zero, supplying the global kernel hypothesis automatically. No additional prescribed-kernel assumption is needed for this forbidden induced-core conclusion."
   ],
   "cases": [
     {
@@ -73,5 +74,5 @@
     "support(q)<=12"
   ],
   "conclusion": "q(02)-q(03)-q(12)+q(13)=0",
-  "scope": "This excludes all832 support cores classified earlier as full44-label extensions with this kernel relation. It does not prove general C4DO, N9-NG, NG5 or NG7, and does not exclude Conway."
+  "scope": "All832 classified cores are forbidden as induced subgraphs of an admissible44-label block: PSD propagates their principal kernel relation. This does not prove general C4DO, N9-NG, NG5 or NG7, and does not exclude Conway."
 }

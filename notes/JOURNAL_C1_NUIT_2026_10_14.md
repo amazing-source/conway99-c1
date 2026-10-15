@@ -5517,3 +5517,9 @@ Gamma vaut6-deg_O. La formule correcte, rectifiee plus haut, est
 tr(Gamma^2)=240+2e(O) et tr((8T)^2)=32384+64e(O)+48a+16b.
 La borne faible rang>=23 reste vraie, mais ce calcul n'intervient PAS
 dans la nouvelle preuve des relations plates.
+
+COROLLAIRE STRUCTUREL. Les832 coeurs ne sont pas seulement incompatibles
+avec l'ajout d'une contrainte de noyau : leur relation est deja dans le
+noyau du bloc principal12 et T PSD l'etend automatiquement par zero au
+bloc44. Ils sont donc INTERDITS comme sous-graphes induits d'un bloc44
+admissible. Cette consequence ne suppose aucun noyau prescrit en plus.
