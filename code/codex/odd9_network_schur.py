@@ -3,6 +3,8 @@
 The producer is responsible for admissibility and full T/U positivity.
 This computes a new nine-dimensional Schur object, not an audit of a seed.
 The default report uses only our algebraic fixtures; it does not read seeds.
+Universal ODD9 is refuted by producer message843. This exact reduction
+remains valid, including its extraction of a relation when the gain is low.
 """
 import argparse
 from collections import Counter
@@ -173,7 +175,7 @@ def report():
     imbalance[0, 0] = imbalance[12, 0] = 1
     rejected = grounded_schur(network, imbalance, sp.eye(9))
     assert rejected['status'] == 'COMPONENT_SOURCE_IMBALANCE_T_NOT_PSD'
-    return dict(status='EXACT_WEIGHTED_NETWORK_REDUCTION_ODD9_STILL_OPEN',
+    return dict(status='EXACT_WEIGHTED_NETWORK_REDUCTION_ODD9_REFUTED_EXTERNALLY',
         line_formula='8T_X=L8-u*u^T; L8=8(2I-Gamma_X)+3(I-F)+(I-M)+(I-FM).',
         notation=dict(F='Swap the two central letters0 and1.', M='Swap each outer letter with its mate.',
                       u='Twelve+1 coefficients on star0, twelve-1 on star1.'),
@@ -184,12 +186,12 @@ def report():
             'The root-letter incidence of F_odd*P is zero, hence K*F_odd*P=0. Put q=Gamma[X_l,:]*F_odd*P and d8=8P^T F_odd^T(3I-Gamma)F_odd P. Exact central-star counts give u^Tq=0. Positivity additionally forces each column of q to sum to zero on every network component.',
             'Ground one vertex per component. The positive definite integer matrix G is the grounded principal submatrix of L8, of size24-c. With q_g its grounded rows, the exact odd Schur matrix is S9=d8-64q_g^T G^(-1)q_g. The missing u mode causes no correction since u^Tq=0. Its rank is precisely the odd gain beyond X_l.',
             'The integer bordered matrix B=[[G,-8q_g],[-8q_g^T,d8]] has size33-c and detB=detG*detS9. detG is the product of weighted spanning-tree counts of the components. Under the producer hypothesis T>=0, S9 is PSD, so ODD9 is equivalent to detB>0. detB=0 produces an exact additional odd relation.',
-            'This is a new explicit potential/energy formulation. It does not establish strict positivity for all admissible four-star structures; U positivity and C2 have not yet been used to force it.'],
+            'This is an exact potential/energy formulation. Universal strict positivity is false: LAB message843 provides binary admissible T/U-positive counterexamples. The reduction and its zero-determinant branch remain valid.'],
         single_line_checks=dict(own_patterns=122, component_histogram=dict(histogram)),
         schur_fixtures=fixtures,
         component_imbalance_fixture='PASS: a new algebraic source violates a component sum while remaining perpendicular to u; the PSD obstruction is detected.',
         fixture_scope='The twelve bordered fixtures are algebraic Gram matrices with prescribed Schur rank8 or9, not Conway borders. They test the reduction and zero-determinant branch, not ODD9.',
-        limitations=['ODD9 remains open; no universal determinant lower bound is proved.',
+        limitations=['Universal ODD9 was refuted by LAB message843, accepted without re-verification; a universal strictly positive determinant bound is false.',
                      'No peer graph, rank, positivity certificate or automorphism group was re-audited.',
                      'Finite matrix dimension is not an affordable enumeration bound for all choices of its entries.'])
 

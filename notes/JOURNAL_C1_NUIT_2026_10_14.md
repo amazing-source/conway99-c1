@@ -4895,3 +4895,95 @@ from_export(data) ; CLI --input un_ou_plusieurs_JSON --output rapport.
 Rapport odd9_balanced_cut_profiles.json contient les temoins, les
 effectifs de maximisants et tous les profils par a. Le calcul consomme
 les labels fournis pour eviter toute hypothese cachee sur leur ordre.
+
+## 15/10 - Suite843 : ODD9 refutee, decomposition exacte de son defaut
+
+843 lu/acquitte. LAB rapporte des contre-exemples BINAIRES admissibles
+C1/C1'/C2 et PSD exacts pour T et U : hv_h_c22_H30_23, c22,nu14,
+rangT30,rangU39, gains impairs8/8 et pairs1/1 ; deux autres temoins
+c32,c52 ; au total58 structures h-invariantes nu14, neuf types de c,
+toutes a gains8/8. r7_Z5h_cold1_PSD_1, c22,nu9, a gains5/5.
+Certificats et calculs du producteur ACCEPTES, aucun re-audit demande
+ni effectue. Les fichiers correspondants ne sont pas encore dans
+lab_exchange cote Codex. ODD9 universelle est REFUTEE, meme a nu14,c22,h.
+Les anciennes mentions 'ouverte' dans ce journal sont historiques.
+La chaine conditionnelle ODD9=>B' ne prouve plus B', qui reste ouverte.
+La coupe48, le Schur exact et la formule de projection rho ne supposaient
+pas ODD9 et restent valables. L'exclusion cyclotomique/F7 de <Z5,hM>
+reste aussi valable ; LAB rapporte9/9 sur ses membres de cette famille.
+LAB refute egalement SUM14 universelle : exemple nu13,s2,dim(N+hN)=15.
+Sa version limitee a nu14 reste ouverte.
+
+NOUVELLE DECOMPOSITION SANS SYMETRIE. Soit N=kerT, nu=dimN. Decomposer
+l'espace des44 labels selon h=(01)(23), en V+ et V- de dimensions22.
+Poser a=dim(N inter V+), b=dim(N inter V-), s=nu-a-b. Alors
+ dim(N+hN)=nu+s.
+Sur le vieux cote24, le noyau a parites(c_l,1) : les c_l indicatrices
+des composantes du reseau pondere sont toutes h-paires ; la difference
+d'etoiles est h-impaire. Pourquoi les composantes sont-elles h-stables ?
+Elles sont fermees par F et M (conductances positives). h agit comme F
+hors du recouvrement, et comme FM sur le recouvrement. Cette description
+du vieux noyau NE requiert PAS que Gamma globale soit h-invariante.
+
+Soit C_m(n)_y=n_2y+n_3y et rho_l=rang(C_m N). Le sous-espace
+K_m=N inter kerC_m a dimension nu-rho_l. Il contient la somme directe
+des b relations pures impaires et des c_l relations pures paires du
+vieux cote. Le quotient a donc dimension
+ eta_l=nu-rho_l-b-c_l.
+Il s'injecte dans N/((N inter V+)+(N inter V-)) : si une relation de K_m
+se decompose en une paire et une impaire, sa partie paire a ses nouvelles
+coordonnees nulles et appartient donc au vieux noyau pair. D'ou
+ 0<=eta_l<=s,
+ d_l=9-gain_impair_l=b-2+eta_l.
+Meme formule a droite. Si N est h-invariant, s=0 et eta_l=eta_m=0 :
+ gain_impair_l=gain_impair_m=11-b.
+Une vraie symetrie de Gamma suffit, mais n'est pas necessaire pour cette
+derniere identite. Sans invariance, ignorer eta peut etre faux : notre
+fixture de sous-espace abstrait a nu5,a=b2,s1,c_l=c_m1,gains8/9,
+eta_l1,eta_m0. C'est un exemple d'algebre lineaire, PAS un graphe.
+
+EXPLICATION SPECTRALE. Pour les22 orbites de h, F a colonnes e_i-e_hi,
+donc F^tF=2I. Les2 differences d'etoiles u0,u1 ont norme carree24 et
+sont orthogonales. W=F^t[u0,u1]/2 verifie W^tW=12I. Calcul geometrique :
+ K_-=F^tKF/2=WW^t/4,
+ L_-=F^tLF/2=WW^t/3.
+C1 donne Gamma*u0=Gamma*u1=0. Sur l'orthogonal de W, de dimension20,
+ T_-=3I-Gamma_-, U_-=4I+Gamma_-, Gamma_-=F^t Gamma F/2.
+Sous T PSD, un noyau de cette compression se releve au noyau complet.
+Ainsi b-2 est EXACTEMENT la multiplicite de3 dans Gamma_-. Cela vaut
+meme sans commutation de Gamma et h. Si Gamma commute avec h, le
+quotient est signe ENTIER, entrees Gamma(i,j)-Gamma(i,hj).
+T/U PSD autorisent l'intervalle ferme[-4,3] ; elles ne rendent PAS
+stricte l'extremite3. Les exemples du pair occupent cette extremite :
+gain8 -> b3 -> multiplicite1 ; gain5 -> b6 -> multiplicite4.
+
+BUDGET CORRIGE, SANS SYMETRIE : apres le vieux cote et les nouveaux
+vecteurs impairs, le gain residuel pair vaut
+ e_l=(44-nu)-(23-c_l)-(9-d_l)=12+c_l-nu+d_l.
+Si l'on prouve INDEPENDAMMENT e_l>=k, on obtient
+ nu<=12+c_l+d_l-k.
+Il serait faux d'omettre d_l, ou d'affirmer sans examen qu'un ancien
+lemme conditionnel fournit encore k. Sur les58 cas h,nu14,gain8,
+(a,b)=(11,3) et e_l=c_l-1,e_m=c_m-1. DANS cette classe, min c>=2
+equivaut a e_l,e_m>=1. C'est une reformulation de la cible, pas sa preuve.
+
+PARITE RENFORCEE. Une relation pure h-impaire, normalisee en retirant
+ses projections sur u0,u1, a incidence nulle sur toutes les14 lettres.
+Elle verifie donc Gamma*n=3n. Apres mise sous forme entiere primitive,
+ses40 coefficients exterieurs ne peuvent PAS tous etre impairs, MEME
+si n n'est pas nul sur O. En effet C1 donne e(O,F)=16-4e(O)<=16 :
+au moins24 exterieurs n'ont aucun voisin dans O. Sur l'un d'eux,
+Gamma*n serait une somme paire de coefficients impairs, contre3n impair.
+La nouvelle obstruction ne suppose plus n|O=0. Elle n'exclut pas les
+relations a coefficients pairs ou nuls, donc respecte la refutation.
+
+ARTEFACT : odd9_defect_decomposition.py et rapport. Identites de
+projecteurs et fixture abstraite calculees exactement en1,2s. Les
+budgets des cas LAB sont deduits de SES nombres, sans lire ses graphes.
+API normalize_odd_relation consomme un vecteur fourni, retire les
+etoiles forcees, exporte le vecteur primitif et ses profils de valeurs
+et parites ; elle ne recalcule pas l'appartenance au noyau du producteur.
+Message844 a demande au pair les labels et UNE relation supplementaire
+pour comprendre comment les coefficients evitent la parite plate.
+Statuts executables et rapports ODD9/STILL_OPEN corriges, sans relancer
+les anciens calculs. Aucun processus de recherche lourd actif.

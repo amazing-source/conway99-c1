@@ -5,6 +5,8 @@ e(O union S)<=48, improving49 from ordinary PSD. No symmetry, U, C2,
 O-grid assumption or proof of ODD9 is used for this cut.
 
 This is NOT a counterexample to binary C1/C1'/C2, T/U-positive ODD9.
+Universal binary ODD9 was subsequently refuted by LAB message843;
+that producer result is accepted here without re-verification.
 The model satisfies the linear counts, entry bounds and T/U positivity,
 and its internal star matchings belong to the exact matching polytope.
 It violates C2 and is fractional. A parity argument excludes its specific
@@ -240,7 +242,9 @@ def model():
     internal = sum(GI[i, j] for i, j, _ in cut['edge_coefficients'])/SCALE
     assert internal == 49
     return dict(status='EXACT_ODD9_INTEGER_CUTS_AND_RELAXATION_OBSTRUCTION',
-        binary_ODD9_status='OPEN', fractional_model_is_not_a_graph=True, labels=LABELS,
+        binary_ODD9_status='REFUTED_BY_LAB_MESSAGE_843',
+        binary_ODD9_provenance='Producer exact counterexamples accepted without re-verification; this fractional model is separate.',
+        fractional_model_is_not_a_graph=True, labels=LABELS,
         scale=SCALE, adjacency_scaled=[[int(x) for x in GI.row(i)] for i in range(44)],
         formula=dict(P=P.tolist(), Q=[[str(x) for x in Q.row(i)] for i in range(4)],
                      t=list(t), H='(J10-I10)/9', D='t*t^t-I10+H',
@@ -380,7 +384,7 @@ PROOF = [
     'The T kernel has the four star indicators, the O-grid indicator, and n(c,y)=(1,-1,1,-1)_c*t_y with n|O=0. These six vectors are independent and exhaust it. Both weighted two-star networks have two components: O, and the connected20 exterior labels. The even-sum projection has rank1, so the odd rank gain is8.',
     'The fractional entries satisfy C1, C1-prime and the interval[0,1] exactly. Each internal ten-vertex matching matrix is an explicit average of225 actual matchings: select one cross edge between the two five-element sign classes, then one of three matchings on each remaining four-element set. Its same-sign entries are1/5 and its opposite-sign entries1/25. Thus adding all odd-set matching inequalities does not remove this fractional example.',
     'The model violates the actual quadratic C2 inequality; an exact offending pair is exported. It therefore does not refute ODD9, nor show that integrality alone or C2 alone is indispensable. It shows that linear star counts, entry bounds, internal matching polytopes, and simultaneous T/U positivity are insufficient.',
-    'Binary parity obstruction, without an O-grid assumption: at any outer vertex, C1 sums to6 over the four central stars. An O-neighbour is counted twice and an outer neighbour once, so its outer degree is6-2*d_O, hence even. Let n vanish on O, have odd integer coordinates at every outer vertex, and have zero root-letter incidence. Then K*n=0. A T-kernel relation would imply Gamma*n=3n. The left side is a sum of an even number of odd integers and is even, while the right side is odd. Contradiction. A general ODD9 failure need not have these incidence and parity properties, so the conjecture remains open.',
+    'Binary parity obstruction, without an O-grid assumption: at any outer vertex, C1 sums to6 over the four central stars. An O-neighbour is counted twice and an outer neighbour once, so its outer degree is6-2*d_O, hence even. Let n vanish on O, have odd integer coordinates at every outer vertex, and have zero root-letter incidence. Then K*n=0. A T-kernel relation would imply Gamma*n=3n. The left side is a sum of an even number of odd integers and is even, while the right side is odd. Contradiction. A general ODD9 failure need not have these incidence and parity properties. Universal binary ODD9 has been refuted by the separate producer counterexamples reported in LAB message843; this restricted obstruction remains valid.',
     'General strict cut: choose S of20 outer labels, with five per central star and two per outer letter. Put q=+1 on S,-1 on its outer complement,0 on O; Kq=0. Write H=e(O,F), H_S=e(O,S), E0=e(O). Summing C1 on O gives H=16-4E0. Summing on S gives2e(S)+cut(S,F-S)=120-2H_S. Also e(F)=120-H. Substitution into q^t*T*q=120-2e(F)+4cut yields exactly8*(49-e(O union S)). T PSD gives e(O union S)<=49. Equality would put q in the kernel and contradict parity. Since this edge count is integral, e(O union S)<=48 and q^t*T*q>=8. No U, C2 or symmetry is used.',
     'If O happens to be a grid, C1 forbids O-F edges, so the general cut specializes to e(S)<=44. Equivalently the6-regular outer graph has cut(S,F-S)>=32, versus30 from the ordinary PSD inequality.',
     'At the forbidden binary equality e(O union S)=49, let s_i=(T*q)_i at any outer vertex. It is an odd nonzero integer. Since T_ii=5/2, v=5q-2*s_i*e_i has v^t*T*v=-10*s_i^2, or v^t*(8T)*v=-80*s_i^2. The report includes our explicit C1 binary equality fixture and its exact negative witness; it is intentionally not a PSD border.',
