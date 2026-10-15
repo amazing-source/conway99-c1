@@ -289,6 +289,18 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   h-symmetric, the minimum is also exactly 12, attained by fourstar_psd_asym_c31.json (VERIFIED exactly: c = (3,1),
   rank 34, 4 mixed relations, h-asymmetry 16). In every h-symmetric structure the 12 splits as 9 (the m-odd vectors
   f_y, i.e. no relation has a non-trivial h-odd part) + at least 3 (the m-even vectors), see the board text above.
+- ODD QUOTIENT (odd_quotient.py, 15/10 00:20 UTC): for an h-symmetric structure the h-odd eigenvectors of the 59-vertex
+  graph live on 24 orbits (a^, b^, 10 + 10 label orbits, two C4 orbits); their signed adjacency A^- has spectrum in
+  [-4, 3] exactly when T and U are PSD on that sector, and mult_3(A^-) = h-odd nullity (two star differences forced:
+  e_a^ + (1/3) 1_N(a^) has Rayleigh quotient exactly 3). 'ODD-h' (mult_3 = 2) holds on all data but is CLOSE to
+  failing: walks (mode oddgap) push the third odd eigenvalue of T down to 0.002 with T, U PSD. If ODD-h fails, (N9) can
+  still hold (the even part must then compensate); not decided.
+- (NOGRID) (EVIDENCE only): no PSD four-star structure with a grid on (l,m) has been found: earlier forced-grid runs
+  best -0.35; tonight cold forced-grid runs -0.21, repaired seeds (grid_repair.py) -0.51 to -0.57 and walks from them
+  about -0.44. (N9) + (NOGRID) together would exclude Conway with NO census input: (N9) forces >= 4 grids on every line,
+  hence pairs (l,m) spanning grids, whose four-star structures (PSD in Conway) (NOGRID) forbids. Even a weak cap
+  suffices with (NOGRID): grid-free lines have c <= 3, and Conway then needs nullity >= 14 at every pair, while all
+  PSD data with c(l), c(m) <= 3 have nullity <= 12.
 - Reduction (grid_floor.py, Codex's identity, CONWAY_CONSTRAINTS G14): a cap 'mixed <= 2' would contradict proved
   bounds (rho >= 198 > 191), 'mixed <= 3' the census certificate (rho >= 154 > 126); Codex: every Conway graph has >= 336
   of its 2079 flags with >= 4 mixed relations. By E4 no such universal cap exists: this route needs the rank condition.

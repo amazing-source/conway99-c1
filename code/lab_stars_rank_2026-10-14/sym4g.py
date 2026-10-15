@@ -277,7 +277,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur"):
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -321,6 +321,28 @@ def main():
                           open(out + "_MIX3_%d.json" % nmix, "w"))
                 print("move %d: PSD WITH >= MIXT MIXED RELATIONS (numerical): nullity %d, c = (%d,%d), grid %d"
                       % (mv, nul_num, cl, cm, gr), flush=True)
+        elif mode == "oddgap":
+            # ODD-h test (15/10): one generator h; on the PSD set push the THIRD smallest eigenvalue of the h-odd sector
+            # of T to 0 (two zeros = the star differences); save PSD structures with odd nullity >= 3
+            if min(lt, lu) > -1e-9:
+                Bo = [B for sg, B in sectors if sg == (-1,)][0]
+                evo = np.sort(np.linalg.eigvalsh(Bo.T @ T @ Bo))
+                g3 = float(evo[2])
+                s2 = -g3
+                bestg = getattr(main, "bestg", 99.0)
+                if g3 < bestg - 1e-6:
+                    main.bestg = g3
+                    print("move %d: PSD, third odd eigenvalue %.5f (new minimum), nullity %d, c = (%d,%d)"
+                          % (mv, g3, nul_num, cl, cm), flush=True)
+                if g3 < 1e-7:
+                    ko = getattr(main, "ko", 0) + 1
+                    main.ko = ko
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "odd_gap": g3,
+                               "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_ODD_%d.json" % ko, "w"))
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "schur":
             # SCHUR12 stress test (15/10): on the PSD set, minimise min(rank T_S4 - rank T_Xl, rank T_S4 - rank T_Xm)
             # (Conway needs 7 + c(l) - delta resp. 7 + c(m) - delta); save every PSD structure with value <= 11
