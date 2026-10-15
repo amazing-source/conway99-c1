@@ -4054,3 +4054,75 @@ Controles :945 matchings,7 types exacts, ratio lower/upper, deux exemples
 abstraits de nullite14, trois petits blocs a couplage sous-critique, critique,
 sur-critique, et une obstruction de portee. Export execute en moins d'une
 seconde. Aucun processus actif ; aucune famille C1 exclue.
+
+### 15/10, suite807 : un carre force normalise les96 interfaces G1''
+
+807 lu/acquitte : Claude a26760 structures admissibles G1'' en600s,
+enumeration incomplete, aucune PSD ; marches a froid jusque G1 temoin
+inconclusives (max nullite10). Il projette les cubes sur M0,M2. Aucun
+doublement de cette enumeration. Sa correction est acquise : M0 contient
+45 ; c'est M2 ne contenant pas45 qui briserait H-MATCH dans cette famille.
+
+NOUVEAU LEMME. Poser a=(01)M, b=(23)M'', avec M tous les flips exterieurs
+et M'' sans45. F={04,05,14,15} est fixe point par point par b. M0 contient
+45, donc M1 aussi. C1 impose un unique voisin de chaque sommet de F dans
+l'autre etoile de l ; ce voisin doit etre b-fixe, donc encore dans F.
+Le matching04-15,05-14 donnerait deux voisins communs a04 et14, qui ont
+deja la lettre4 en commun : C2 l'interdit. F induit donc le carre
+04-05-15-14-04. C1 exclut toutes ses aretes vers O et les autres labels L.
+
+POSITIVITE UTILISEE. Pour kappa=1_F, kappa^t T kappa=0. Sous T>=0,
+T*kappa=0. La somme des quatre termes K vaut-1 pour les labels R2/3,y
+avec y=6..13, et0 pour tous les autres labels hors F. Donc chacun des
+16 premiers labels a EXACTEMENT un voisin dans F, tous les autres zero.
+Cette reduction vise les structures PSD ; elle n'est pas imposee aux
+structures simplement admissibles sans justification spectrale.
+
+NORMALISATION. Les deux orbites non triviales de a sur F sont{04,15}
+et{05,14}. Chacune des quatre orbites regulieres R d'une paire exterieure
+6/7,...,12/13 s'attache a une de ces deux orbites, avec deux orientations.
+Chaque sommet de F doit avoir deux voisins dans R2 et deux dans R3 :
+exactement deux paires s'attachent a chaque orbite. Total binom(4,2)*2^4=96.
+Le groupe C2 wr S4 (ordre384) des quatre paires agit TRANSITIVEMENT sur
+ces96 interfaces, tout en preservant a,b, les mates et h. On peut donc
+fixer une interface, y compris pour chercher un contre-exemple H-MATCH.
+Ce facteur porte sur les interfaces etiquetees, pas sur le temps SAT.
+
+TEMOIN CANONIQUE. Pour y=6,8, les voisins dans F de R2y,R2(y^1),R3y,
+R3(y^1) sont respectivement04,15,15,04. Pour y=10,12, ils sont05,14,14,05.
+Ainsi20 aretes incidentes a F sont presentes (4 internes+16 attaches)
+et146 absentes. C2 force huit absences supplementaires : dans chacune
+des etoiles R2 et R3, les paires d'indices6-8,7-9,10-12,11-13, puisqu'un
+voisin dans F et la lettre centrale sont deja communs. Les matchings M2
+invariants possibles passent331->284 ; ceux ne contenant pas45 passent
+250->216. M0 a encore81 choix abstraits. Les produits23004 et17496 sont
+des bornes de CHOIX DE MATCHINGS avant les autres contraintes, pas des
+nombres de cubes SAT faisables ni des estimations de temps.
+
+ELIMINATION EXACTE DU CARRE. Les caracteres00,10,01,11 de G1'' ont les
+dimensions12,12,10,10. Les40 labels hors F forment10 orbites regulieres,
+donnant dix directions par caractere. Sur F, les modes normalises par2
+sont kappa=(1,1,1,1)/2 et q=(1,-1,-1,1)/2 de caractere00 ; r=(1,1,-1,-1)/2
+et t=(1,-1,1,-1)/2 de caractere10. Les blocs sur ces quatre modes sont
+T_F=diag(0,5,5/2,5/2), U_F=diag(14/3,2,10/3,10/3).
+Le couplage T de kappa est nul ; tous les autres couplages sont FIXES
+par l'interface. Schur elimine donc F : pour chaque caractere chi, avec
+Gamma_chi=V_chi^t Gamma V_chi/4, les tests EXACTS sont
+ T_offset_chi-Gamma_chi >=0 et U_offset_chi+Gamma_chi >=0,
+quatre matrices10x10 de chaque sorte. Les offsets sont exportes. RangT
+vaut3+somme des rangs reduits ; nulliteT vaut1+somme des nullites reduites.
+Donc la cible locale rangT<=30 devient somme<=27. Si l'on impose aussi
+la borne GLOBALE acceptee rang_F7(8T)<=28, la cible devient somme<=25 :
+les pivots5,5/2 et tous les denominateurs des offsetsT (ppcm10) sont
+inversibles modulo7. Cette borne globale ne decoule pas du seul PSD local.
+
+OUTIL AUTONOME g1_twist_square.py : square_template(labels) pour les
+assignations, geometry_reduction(labels) pour les bases/couplages/offsets,
+compressed_adjacency pour les quatre blocs de Gamma en1600 lectures
+entrees au lieu d'une multiplication44x44. Le producteur fournit son
+ordre de labels et l'invariance ; aucun audit de ses graphes. Controles
+propres : orbite96, lignes C1 du carre, contraintes C2 deja decidables,
+decomposition exacte, projection sur une matrice algebrique invariante,
+comptes de matchings abstraits. Tout termine en moins d'une seconde.
+Artefact g1_twist_square.json ; lemme transmis par808, export ensuite.
+Cette reduction ne prouve pas encore H-MATCH ni l'exclusion de G1''/C1.
