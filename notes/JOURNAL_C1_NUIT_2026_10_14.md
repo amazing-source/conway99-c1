@@ -4987,3 +4987,87 @@ Message844 a demande au pair les labels et UNE relation supplementaire
 pour comprendre comment les coefficients evitent la parite plate.
 Statuts executables et rapports ODD9/STILL_OPEN corriges, sans relancer
 les anciens calculs. Aucun processus de recherche lourd actif.
+
+## 15/10 - Suite845 : coefficients non plats et famille exacte des120 appariements
+
+Resultat74d26b4 envoye846. Le trou de sequence a revele845, lu/acquitte :
+LAB a fourni un fichier cible dans Downloads/conway_c2_researcher2_start_
+2026_09_30/.../work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/for_codex/
+odd9_counterexamples_2026-10-15.json. Deux objets certifies, labels, aretes,
+bases impaires completes de dimension3. Copie conservee dans notre depot
+data/codex_local_global_20261015/lab843_odd9_counterexamples.json pour
+reproduire les NOUVEAUX calculs. Pas de rang, PSD, C2 ou noyau du producteur
+recalcule. LAB rapporte aussi KER-SYM-13 observe sur653 objets nu>=13,
+651 sous h,2 sous fausse h(46) ; observation, pas preuve universelle.
+
+COEFFICIENTS. Apres retrait des etoiles forcees, chaque base impaire
+fournit une unique direction primitive, hauteur24, n|O=0,16 coefficients
+exterieurs pairs et24 impairs, aucun zero. Pour hv_h_c22_H30_23, les lignes
+0 et2 sur les lettres4..13 sont
+ A=(24,-3,-2,-16,-23,-1,-1,13,2,7),
+ B=(2,7,-2,-16,13,-1,-1,-23,24,-3),
+et les lignes1,3 sont leurs opposees. Sommes nulles. Les signes par ligne
+sont4 positifs et6 negatifs, pas5/5. La relation n'est donc ni plate ni
+du type de nos586278 coupes equilibrees. Elle evite exactement l'hypothese
+'tous les coefficients exterieurs impairs' de notre obstruction.
+Le deuxieme objet a la meme distribution, avec les colonnes permutees.
+
+NOUVELLE IDENTIFICATION ENTRE CES DEUX EXEMPLES : la permutation fixant
+0..3 et envoyant les lettres4..13 sur
+ (6,8,7,5,11,13,10,12,9,4)
+transporte TOUTE l'adjacence Gamma du _23 sur celle du _10. Ce constat
+est une comparaison nouvelle entre les deux objets, pas un audit de
+leurs certificats. La permutation ne preserve PAS les paires exterieures.
+Ils representent donc le meme graphe partiel44 avec deux appariements
+differents des lettres exterieures, ce qui change c22 en c32. Le bloc
+impair ne depend pas de cet appariement ; son extremite propre3 est
+conservee. Aucune affirmation que les58 autres temoins ont ce meme Gamma.
+
+NOUVELLE RECHERCHE FINIE : fixer Gamma du _23 et varier seulement le
+matching parfait M des10 lettres exterieures. Les945 possibilites sont
+enumerees exactement. C1 central, C2, la binarite et les blocs impairs
+T/U sont HERITES de l'objet certifie ; ils ne sont pas reaudites.
+Les seuls tests nouveaux sont C1' pour les nouvelles paires et les blocs
+PAIRS de T/U. Une paire(y,z) est compatible si les4 lignes de l'etoile y
+ont au plus1 voisin dans l'etoile z, et reciproquement. Seules les deux
+paires(4,8),(11,12) sont interdites :750 matchings compatibles,195 rejetes.
+
+Pour le relievement pair F dont les colonnes sont e_i+e_hi, Bp=BF, les
+blocs entiers modifies sont
+ 8T+=24I-8Gamma+-(3Bp^tBp+Bp^t M Bp)/2+4J,
+ 15U+=60I+15Gamma+-(4Bp^tBp-Bp^t M Bp)/2-4J.
+Elimination symetrique sans fractions (Bareiss) : pivots positifs,
+divisions entieres exactes, rejet d'une diagonale negative ou d'une
+ligne non nulle a diagonale nulle. Aucun classement flottant dans le
+rapport final.630 des750 cas echouent T+,120 passent T+ ET U+.
+Tous ont rangT+=11,rangU+=20. Le noyau impair3 est herite, donc nuT14
+et gains impairs8/8 pour les120. Temps de l'enumeration exacte~0,55s.
+
+EXPLICATION DU NOMBRE120, PLUS FORTE QUE LE RECENSEMENT. Les paires des
+120 cas forment exactement K5,5 entre
+ P={4,7,8,11,12}, Q={5,6,9,10,13}.
+Poser t=+1 surP,-1 surQ et q(c,y)=t_y, q|O=0. NOUVELLE identite de
+l'adjacence fixe : Gamma*q=2q, q^tq=40. L'incidence est nulle au centre
+et vaut4t a l'exterieur, d'ou
+ q^t K(M) q=60+2t^t M t,
+ q^t T(M) q=-20-2t^t M t=-8r,
+ou r est le nombre de paires de M restant dans une meme partie.
+T PSD force r=0. Il ne reste que5!=120 appariements transversaux, et
+TOUS sont PSD d'apres les calculs entiers. On a donc necessite et
+suffisance dans CETTE famille a adjacence fixee. Ce q h-pair n'est pas
+celui de la coupe48 : son incidence exterieure est NON nulle.
+
+Comptes des choix LABELLES par(c_l,c_m) : (2,2):16 ; (2,3),(3,2):20
+chacun ; (2,4),(4,2):10 chacun ; (2,5),(5,2):2 chacun ; (3,3):24 ;
+(3,4),(4,3):8 chacun. Ce ne sont PAS120 graphes non isomorphes ou SRG
+complets. Le graphe partiel reste le meme et h demeure une symetrie.
+O est une grille isolee (4 aretes,aucune versF), donc chaque reseau de
+cote a sa composanteO et au moins une composante exterieure : min c>=2
+est automatique ici. Cette famille ne tranche pas B' hors-grille.
+
+ARTEFACTS : odd9_endpoint_mate_family.py, odd9_endpoint_mate_family.json,
+odd9_counterexample_coefficients.json. Le script reproduit la nouvelle
+analyse des coefficients, l'identification explicite et l'enumeration
+complete, en consommant le fichier producteur conserve. Les verdicts
+pour les945 appariements et les120 temoins sont exportes. Il utilise
+le module odd9_defect_decomposition.py pour normaliser les relations.
