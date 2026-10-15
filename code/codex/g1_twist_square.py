@@ -38,7 +38,7 @@ def ordered_labels(labels):
 
 
 def square_template(labels=LABELS):
-    """Return fixed square rows and eight further C2-forbidden edges.
+    """Return fixed square rows, C2 zeros and four PSD degree cuts.
 
     Every PSD admissible G1'' structure has a frame relabelling satisfying
     these assignments.  The template alone need not have a completion.
@@ -72,8 +72,16 @@ def square_template(labels=LABELS):
         if common == 2 and (i, j) not in zeros:
             assert (i, j) not in ones
             forced_extra.add((i, j))
+    degree_cuts = []
+    for y in (6, 8, 10, 12):
+        root = index[(2, y)]
+        others = [index[(2, y+1)], index[(3, y)], index[(3, y+1)]]
+        degree_cuts.append(dict(outer_pair=[y, y+1],
+            edges=[sorted((root, other)) for other in others], upper_bound=1,
+            proof='T minor on q_F and 1_Rpair has determinant 5*(2-d)-1>=0, hence integer d<=1.'))
     return dict(labels=labels, square=square, ones=sorted(ones),
                 zeros=sorted(zeros), c2_extra_zeros=sorted(forced_extra),
+                internal_degree_cuts=degree_cuts,
                 known_adjacency=known)
 
 
@@ -290,6 +298,10 @@ def report():
     assert counts['M2_before_square_colors'] == 331
     assert len(template['ones']) == 20 and len(template['zeros']) == 146
     assert len(template['c2_extra_zeros']) == 8
+    for j, orbit in enumerate(result['regular_orbits']):
+        if LABELS[orbit[0]][0] == 2 and LABELS[orbit[0]][1] >= 6:
+            assert abs(result['couplings']['00']['q']['T'][j]) == 1
+            assert result['offsets']['00']['T'][j, j] == sp.Rational(9, 5)
     denominator = sp.ilcm(*(entry.q for chi in CHARS for entry in result['offsets'][chi]['T']))
     return dict(status='EXACT_G1_DOUBLE_PRIME_SQUARE_NORMALIZATION',
                 interface_orbit_size=orbit_size,
@@ -297,6 +309,12 @@ def report():
                 reduced_character_dimensions={chi: 10 for chi in CHARS},
                 T_offset_common_denominator=int(denominator),
                 matching_counts=counts, reduction=serial(result),
+                component_bounds=dict(
+                    grids_on_m_at_most=2,
+                    components_on_m_at_most=4,
+                    if_M2_does_not_contain_45=dict(grids_on_m_at_most=1,
+                                                 components_on_m_at_most=3),
+                    proof='The four other exterior pair-orbits have internal degree<=1, so cannot be grids. Non-singleton H_m components use at least two of its six pair-nodes.'),
                 formulas={
                     'T_test': 'T_offsets[chi]-V_chi^t Gamma_remaining V_chi/4 >= 0, for every chi',
                     'U_test': 'U_offsets[chi]+V_chi^t Gamma_remaining V_chi/4 >= 0, for every chi',

@@ -4126,3 +4126,37 @@ decomposition exacte, projection sur une matrice algebrique invariante,
 comptes de matchings abstraits. Tout termine en moins d'une seconde.
 Artefact g1_twist_square.json ; lemme transmis par808, export ensuite.
 Cette reduction ne prouve pas encore H-MATCH ni l'exclusion de G1''/C1.
+
+### 15/10, suite809 : quatre grilles interdites et c_m<=3 dans le cas casse
+
+809 lu/acquitte apres le saut de sequence du message810. Claude trouve
+les26811=81*331 couples M0,M2 admissibles, mais aucun de quatre cubes
+sondes n'est termine apres150s ;10454 a14566 structures par cube, aucune
+PSD. Cela indique un mauvais cout brut ; extrapoler3e8 structures n'est
+pas un plancher prouve par quatre sondes. Il impose maintenant les
+relations des composantes et notre interface normalisee. Pas de doublon.
+
+NOUVELLE EXCLUSION LOCALE (envoyee811). Pour P={y,y^1}, y=6,8,10,12,
+R_P={2y,2y^1,3y,3y^1} est une orbite reguliere de G1''. Son degre interne
+d_P est donc constant et entier. Dans T, le mode1_RP/2 a norme2-d_P.
+Le mode q_F=(04-05-14+15)/2 a norme5 ; leur couplage vaut+-1 puisque
+tous les sommets de R_P s'attachent a la meme orbite{04,15} ou{05,14}.
+Le mineur PSD2x2 impose5(2-d_P)-1>=0. Donc d_P<=1. C'est aussi la
+diagonale du Schur precedent :9/5-d_P>=0. Aucune de ces quatre paires
+ne peut ainsi former une grille avec la droite m.
+
+COUPES LINEAIRES : pour chacun des quatre y,
+ Gamma[2y,2y^1]+Gamma[2y,3y]+Gamma[2y,3y^1]<=1.
+Ces coupes sont nouvelles et distinctes des huit zeros C2 deja exportes.
+Elles contraignent notamment les couplages croises quand M2 contient
+une paire mate. square_template exporte les trois indices par coupe.
+
+CONSEQUENCE POUR LES CUBES. Les seules grilles possibles de m avec les
+six autres droites du cadre sont l (orbite O) et P45. Donc g_m<=2 et
+c_m<=floor((6+g_m)/2)<=4, chaque composante non singleton de H_m consommant
+au moins deux de ses six paires. Dans le cas M2 ne contenant pas45,
+P45 n'est pas une grille non plus : g_m<=1, donc c_m<=3. Toute la
+sous-famille G1'' brisant H-MATCH avec c_m>=4 est donc exclue SOUS T>=0.
+C'est une exclusion de sous-famille, pas l'exclusion de G1'' ni de C1.
+Code/artefact g1_twist_square mis a jour et exportes, controles propres
+des quatre coefficients de Schur9/5 et des couplages+-1, moins d'une seconde.
