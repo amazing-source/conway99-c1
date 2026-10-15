@@ -25,13 +25,13 @@ Tous les calculs sont arrêtés depuis 02:32 UTC.
   srg(243,22,1,2). Le principe n'est pas nouveau : Codex l'utilise dans ses notes 205, 217, 231 et 247.
 
 ## 2. La seule piste encore vivante (non démontrée)
-- (B') : aucun objet positif de rang 30 à quatre étoiles n'a de droite non spéciale (c = 1). Pour Conway, c'est
-  équivalent à « toute droite est spéciale » (équivalence démontrée).
+- (B') : aucun objet positif de rang 30 à quatre étoiles n'a de droite non spéciale (c = 1). Cela entraînerait que
+  toute droite d'un graphe de Conway est spéciale (implication démontrée ; ce n'est pas une équivalence).
 - Indices : sur les 331 objets de rang 30, le minimum de c est 2, atteint 182 fois. Les marches qui gardent une
   droite non spéciale (environ 20 000 visites positives) plafonnent à une nullité de 10, alors que Conway demande 14.
   ODD9 (les 10 vecteurs impairs ajoutent exactement 9 au rang) impliquerait (B') ; elle tient sur toutes les
-  structures positives et sur l'analogue dans quatre vrais srg(243). Mais elle casse sans positivité : une preuve
-  devra utiliser T ou U semi-définie positive.
+  structures positives et sur l'analogue dans quatre vrais srg(243). Sans positivité, on en trouve des quasi-échecs (écart 2e-5), sans échec exact : on ne sait pas si une preuve
+  doit utiliser la positivité.
 - Prudence : la nuit a montré que ce genre de loi peut être un artefact de famille. Ici, trois familles symétriques
   et les marches qui en partent.
 - Observation à tester (pas une loi) : les 331 objets ont tous la même classe de carrés, 2·3·5·7^e, alors que leurs
@@ -47,3 +47,5 @@ tu le demandes. Le code plafonne maintenant le nombre de fichiers écrits.
 
 ## 4. Commits
 Branche lab/theta-lp-2026-10-08 du dépôt privé : f6ce63c, ce2c5b3, puis le commit final de la nuit.
+
+(Corrigé le 15/10 vers 04:20 UTC après une relecture indépendante : voir AUDIT_EXCLUSIONS_2026-10-15.md.)

@@ -357,13 +357,15 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   Statement: in every admissible four-star structure with T, U >= 0, the ten m-odd vectors f_y = 1_{2y} - 1_{3y}
   (y outer) add exactly 9 to the rank beyond X_l (and symmetrically). Equivalently the odd Schur complement
   S_f = G_f - C^T T_X^+ C (10 x 10, S_f 1 = 0 always) is non-singular on 1^perp; G_f = 6I - J/2 - Q_m alone is >= 2
-  on 1^perp (Q_m a signed 4-regular adjacency). Consequence (PROVED): ODD9 for Conway four-star blocks <=> every line
-  of a Conway graph is special, c(l) >= 2 + delta (since 23 - c(l) + 9 <= 30 - delta). It is NOT stronger than that:
-  in a Conway graph with a non-special line l every m forces an odd gain <= 8.
+  on 1^perp (Q_m a signed 4-regular adjacency). Consequence (PROVED, one direction only; corrected 15/10 after an independent review): ODD9 for
+  Conway four-star blocks => c(l) >= 2 + delta for every line and pair (since 23 - c(l) + 9 <= 30 - delta), in
+  particular every line is special. The converse is false in general (c = 3, delta = 0 leaves room for an odd gain 8
+  plus an even gain 2). In a Conway graph with a non-special line l every m forces an odd gain <= 8.
   Data: ODD9 holds on every PSD structure tested, in every family, including the Z5h objects (where (N9) failed
   through the EVEN part: c62 has even gain 0 beyond X_m), and on 140 random structures satisfying only (C1), (C1)+(C1')
   or the full model (this only shows the generic value). Stress walks: without positivity the least non-trivial
-  eigenvalue of S_f drops to 2e-5 within minutes (so ODD9 is not a consequence of the counting axioms alone); with
+  eigenvalue of S_f drops to 2e-5 within minutes (no exact failure on file: whether ODD9 needs positivity is NOT
+  established); with
   T, U >= 0 the walks stay above 0.037 (identity, c11 and c55 seeds), 0.118 (h), 0.147 (Z5h); the earlier h-family
   oddgap walks reached 0.0023 for the related h-odd eigenvalue. No proof; no counterexample.
 
@@ -391,13 +393,13 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   T, U >= 0 and T of rank exactly 30 (harvested by sym4g.py SAVE30 in the groups Z5h, h and identity; exact symmetric
   pivoting, so PSD and rank are exact). c distribution: (2,2) 182, (6,2)/(2,6) 86, (3,3) 23, (6,6) 15, (5,3)/(3,5) 9,
   (4,4) 7, (4,2)/(2,4) 7, (5,5) 2. NEVER a line with c = 1. Every one satisfies ODD9 on both sides (odd gains 9, 9),
-  so the bound nullity <= 12 + min(c) is attained 182 times at c = 2. rank_7: 25 (127), 29 (202), 30 (2). DISC fails
+  so the bound nullity <= 12 + min(c) is attained by all 275 objects with min(c) = 2. rank_7: 25 (127), 29 (202), 30 (2). DISC fails
   for all 331 (robustly, odd exponents at 3 and/or 5). Caveat: three symmetric families plus walks seeded from them;
   in Z5h the only possible values of c are 1, 2, 6, and 1 never occurs.
 - OBSERVATION (SQ30) (EVIDENCE only, 02:38 UTC): all 331 rank-30 PSD objects of E10 have det(8T_I) in the square
   class 2 3 5 7^e EXACTLY (e = 1 when rank_7 is 25 or 29, e = 0 when rank_7 = 30; no other prime, cofactor a square),
   while their three-star sub-blocks X_l u L_2 have scattered classes (2 3 7, 5 61, 5 23, 3 5 7 19 23, 5 17 4651, ...)
-  and X_l alone has class 1, 3, 5, 2 5 or 2 3 5. sc_7_null14.json (PSD, rank 30) also has class 2 3 5. A NON-PSD
+  and X_l alone has class 1, 3, 5, 2 5 or 2 3 5. sc_7_null14.json (T >= 0 but U NOT PSD, rank 30; so not an admissible PSD object) also has class 2 3 5. A NON-PSD
   rank-30 structure (sc_6_null14.json) has class -2, so the pattern is not forced by rank 30 alone. Two lineages only
   (G1-c55 and Z5h). If 'PSD and rank 30 => class 2 3 5 7^e' were true, no Conway four-star block could have rank 30
   (Conway needs class 2), i.e. delta(v,l,m) >= 1 at every pair; with ODD9 this would give c >= 3 on every line.
@@ -424,12 +426,14 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
 
 ## OPEN (none of these is established)
 - (B') [the live four-star question, 15/10 02:15 UTC] No admissible four-star structure with T, U >= 0 and nullity
-  >= 14 (rank <= 30) has a line with c = 1. In a Conway graph (B') <=> every line is special (c(l) >= 2 + delta).
+  >= 14 (rank <= 30) has a line with c = 1. (B') => every line of a Conway graph is special (c >= 2; corrected
+  15/10: not c >= 2 + delta, and not an equivalence).
   ODD9 (odd gain exactly 9 beyond X_l, i.e. the odd Schur block S_f non-singular on 1^perp) implies (B') and gives
   nullity <= 12 + min(c(l), c(m)), attained (c62 cluster: c(m) = 2, nullity 14, even gain 0). Data: every rank-30
-  PSD object found has min(c) >= 2; max nullity with a c = 1 line is 10 (15 425 archived visits, G1-descended, plus
-  tonight's runs); walks mode b1 (from 02:07 UTC, three families) never left min(c) >= 2. ODD9 fails without
-  positivity, so a proof must use T >= 0 (or U >= 0).
+  PSD object found has min(c) >= 2, but 329 of the 331 have the grid on (l,m), which forces c >= 2 by itself; only
+  the two c55 objects test (B'). Max nullity with a c = 1 line is 10 (280 424 logged PSD visits with a c = 1 line, all
+  from the c11/c21/c31/asym lineage); walks mode b1 (from 02:07 UTC) never left min(c) >= 2. Without positivity the
+  odd gap gets down to 2e-5 but no exact failure is on file.
 - (15/10 night, see N9_REDUCTION_2026-10-15.md; (N9) and (NOGRID) REFUTED at about 01:14 UTC, E6) (N9) nullity(T_S4) <= 9 + min(c(l), c(m)) for every admissible PSD
   four-star structure [would exclude Conway with the census]; its two halves ODD9 (the m-odd vectors add exactly 9
   beyond X_l) [would make every Conway line special] and EVEN3 (the m-even vectors add >= 3); (NOGRID) no PSD
@@ -437,7 +441,7 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   with no census]; (R7) PSD four-star structures have rank_7 >= 29 [would exclude Conway via L22] -- REFUTED by E7
   (rank_7 = 25 at rank 30). Remaining local tests at four stars: DISC (SQ3) and the extension; both kill every object
   found so far (four rank-30 objects), and DISC-targeted walks (sym4g.py mode disc) ran from 01:33 UTC.
-- (A) Every admissible three-star structure with T >= 0, U >= 0 and c(l) = 1 has rank 31 (no relation beyond the
+- [REFUTED 14/10 ~20:55 UTC, 52 exact counterexamples; kept for the record] (A) Every admissible three-star structure with T >= 0, U >= 0 and c(l) = 1 has rank 31 (no relation beyond the
   stars unless l is special). Evidence: no counterexample in 11 seeds x all rectangles (Codex), 6 812 exact
   third-star completions on a connected base (h3pp_inner.py), annealing to |lambda| ~ 1e-5; the residual Schur
   complement R (10 x 10, R 1 = 0) is not a Laplacian (22-40 positive off-diagonal entries of 90), and its second
@@ -445,5 +449,5 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   and one last factor of valuation 4 to 10 (infinite exactly when l is special): no 2-adic bound visible.
 - (B) Every Conway graph has a special line. By P6, its negation forces >= 10 mixed relations at every pair of lines.
 - (C) Every Conway graph has a non-special line. (A) + (C) would exclude Conway; (A) alone gives (B).
-- (H4) No admissible four-star structure is PSD: probably false (see VERIFIED).
+- (H4) No admissible four-star structure is PSD: REFUTED exactly 14/10 ~21:12 UTC (psd4_candidate_1.json).
 - Affordability of the finite route (decomposable bases, third stars, column filter): not estimated.

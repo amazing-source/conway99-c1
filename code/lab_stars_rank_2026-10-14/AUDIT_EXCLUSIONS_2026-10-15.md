@@ -32,23 +32,26 @@ fait le 14/10 et la nuit ; ensuite continuer la piste vivante si elle le mérite
 | R9 | (R7) rang_7(8T_S4) >= 29 | contradiction avec k <= 28 (L22) | E7 (rang_7 = 25) |
 | R10 | au plus 6 relations mixtes (idée de la nuit, jamais écrite comme conjecture) | - | E8 (7 mixtes) |
 
-Toutes ces lois venaient de recherches parties de la famille G1 (ou de graines qui en descendaient) ; chacune est tombée
-dès qu'une famille indépendante a été essayée.
+La plupart ((A4), les plafonds de relations mixtes, (N9), (NOGRID), (LOW), (R7)) venaient de recherches parties de la
+famille G1 ou de graines qui en descendaient, et sont tombées dès qu'une famille indépendante a été essayée ; (H3), (H4)
+et (A) avaient d'autres origines (données Z5, premières recherches). Remarque (relecture indépendante) : (H3) ne
+portait que sur le rang exactement 30, alors qu'un bloc à trois étoiles de Conway a le rang 30 - delta' <= 30 ; même
+vraie, (H3) + L8 n'aurait donc pas suffi à exclure Conway.
 
 ### 1.2 Encore ouverts, compatibles avec toutes les données
 | # | énoncé (local, sur les structures admissibles avec T, U >= 0) | ce qu'il donnerait | données |
 |---|---|---|---|
-| O1 | (B') nullité >= 14 => aucune droite avec c = 1 | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2 ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (800 408 visites), mais UNE seule lignée a visité c = 1 (voir 3.8) |
-| O2 | ODD9 : les 10 vecteurs impairs ajoutent exactement 9 au rang | implique (B') et nullité <= 12 + min(c) | exact sur tout objet positif testé ; FAUX sans positivité |
+| O1 | (B') nullité >= 14 => aucune droite avec c = 1 | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2, mais 329 ont la grille sur (l, m), qui force c >= 2 à elle seule : seuls les 2 objets c55 testent vraiment (B') ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (280 424 visites positives avec c = 1), et UNE seule lignée a visité c = 1 (voir 3.8) |
+| O2 | ODD9 : les 10 vecteurs impairs ajoutent exactement 9 au rang | implique (B') et nullité <= 12 + min(c) | exact sur tout objet positif testé ; sans positivité, quasi-échecs (écart 2e-5) mais aucun échec exact enregistré |
 | O3 | (T8) pont des transversales : nullité >= 14 => t(l) >= 8 et t(m) >= 8 (variante : t(l) + t(m) >= 15) | P >= 924 (variante : P >= 867), contre P <= 852 (certificat exact de Codex, ordre 9) : PAS DE CONWAY | 331/331 : t = (12,12) dans 329 cas, (8,8) dans 2 ; FRAGILE : avec t <= 7 la nullité vue atteint 13 (voir 3.8) |
 | O4 | (K22) nullité >= 14 => rang_7(8T_S4) >= 23 | k >= 24, donc r = 37 exclu ; avec >= 25 : r = 37 et 39 exclus | rang_7 = 25, 29 ou 30 sur les 331 |
 | O5 | (SQ30) rang 30 => classe de carrés de det(8T_I) = 2*3*5*7^e | aucun bloc de Conway de rang 30, donc delta >= 1 à toute paire | 331/331 (+ sc_7_null14) ; un objet NON positif de rang 30 a la classe -2 |
-| O6 | (N15) aucun objet positif de nullité >= 15 | avec O5 : PAS DE CONWAY (tout bloc aurait rang 30, donc devrait passer DISC) | aucune donnée : jamais cherché avant ce matin |
+| O6 | (N15) aucun objet positif de nullité >= 15 | avec O5 : PAS DE CONWAY (tout bloc aurait rang 30, donc devrait passer DISC) | jamais vue : ~288 000 visites positives à nullité 14 dans les journaux, aucune à 15 ou plus ; sc_2_null14 (T seule positive, U non) atteint 16 |
 | O7 | H4' : pas de droite c = 1 des deux côtés à nullité >= 14 | cas particulier de O1 | max nullité 10 en c = (1,1) |
 | O8 | (C) toute Conway a une droite non spéciale | avec O1 ou O2 : PAS DE CONWAY | aucune idée de preuve ; le cas « toute droite non connexe » est aussi un verrou du programme 7-adique de Codex (note 127, verrou 3) |
 
 ### 1.3 Autres voies d'exclusion de la journée (asymétrie, solveur, Codex)
-- Principe de symétrie forcée (prouvé) : une pièce forcée qui a plus de symétries que de complétions exclut C1. La
+- Principe de symétrie forcée (prouvé, modulo Aut = 1, qui utilise C3, en relecture externe) : une pièce forcée qui a plus de symétries que de complétions exclut C1. La
   fenêtre est fermée aux ordres 1 et 2 (flips, théorème de majorité de Codex) : aucune pièce forcée symétrique connue.
   Reste « l'abondance » : il faudrait une borne supérieure sur le nombre de solutions ; aucune méthode.
 - Conjecture (P) de Codex (toute arête est dans un prisme) : P >= 231 ; n'exclut que le profil sans prisme.
@@ -149,7 +152,39 @@ Journal des résultats, au fil de l'eau (heures UTC).
   32 objets de rang 30 réellement nouveaux, tous dans les deux lignées connues (t = (12,12) avec grille et classe
   2*3*5*7, ou c55 avec t = (8,8), sans grille et classe 2*3*5) : aucun ne passe DISC, tous satisfont ODD9.
 - 03:36 : vérification de la formule « nullité = 12 + c(l) - gain pair » sur les 331 objets : gain pair = c(l) - 2
-  pour TOUS (227 objets avec c(l) = 2 et gain 0, 24 avec c(l) = 3 et gain 1, 12 avec 4 et 2, 8 avec 5 et 3, 58 avec 6
-  et 4) ; les 10 lettres extérieures de m sont des transversales partout sauf dans la lignée c55 (8). Lecture : un
-  contre-exemple à (B') demanderait DEUX coïncidences à la fois (gain impair <= 8, c'est-à-dire un échec d'ODD9, ET
-  absorption complète des vecteurs pairs, donc 10 transversales sur m) ; la lignée c = 1 connue a 4 à 6 transversales.
+  pour TOUS (227 objets avec c(l) = 2 et gain 0, 24 avec c(l) = 3 et gain 1, 12 avec 4 et 2, 10 avec c(l) = 5 et 3 (dont les 2 c55), 58 avec 6
+  et 4 ; ce n'est pas une vérification indépendante : rang 30 + ODD9 + P3 imposent cette identité) ; les 10 lettres extérieures de m sont des transversales partout sauf dans la lignée c55 (8). Lecture : un
+  contre-exemple à (B') demande un gain total <= 8 au-delà de X_l, donc un échec d'ODD9 (gain impair <= 8) ; si le gain
+  impair vaut exactement 8, il faut EN PLUS l'absorption complète des vecteurs pairs (donc 10 transversales sur m) ;
+  la lignée c = 1 connue a 4 à 6 transversales.
+- 03:50 : où mènerait la piste si les deux lois locales étaient prouvées (programme, rien de prouvé) :
+  (i) ODD9 (gain impair 9) et (ii) la borne d'absorption (un g_y non transversal n'est jamais absorbé). Dans un
+  Conway, un bloc de rang 30 (delta = 0) a P_V(B) de dimension 32 - c(l) ; pour c(l) = 2 c'est tout V, donc tous les
+  g_y sont absorbés, ce que (ii) interdit sauf si les 10 lettres extérieures sont des transversales de m. Donc :
+  (i) => toute droite a c >= 2 ; (i)+(ii) => toute droite l avec c(l) = 2 force t >= 10 sur les 18 droites qui la
+  coupent (avec ODD9, c(l) = 2 force d'ailleurs delta = 0 à toutes les paires de l). Avec P <= 852 (moyenne de t <= 7,38), il y a au plus 170 droites avec t >= 10 ;
+  cela contraint les voisines des droites avec c = 2 sans dire que ces droites sont rares, et les autres droites
+  auraient c >= 3 (au moins trois parts : grilles ou
+  configurations fermées de taille 2 ou 3). Ce n'est pas encore une exclusion : il faudrait un comptage de plus
+  (census des configurations fermées). Je le note comme programme, pas comme résultat.
+- 04:05 : fin de la deuxième vague (2700 s chacune). Depuis les objets (2,2) de rang 30, deux marches qui cherchaient
+  N'IMPORTE QUELLE structure positive avec une droite c = 1 (groupe identité : 39 995 visites positives ; groupe h :
+  30 624) n'en ont trouvé AUCUNE, même à basse nullité : autour de l'amas Z5h, la positivité garde la grille sur (l, m),
+  donc c >= 2 ; et sans grille la positivité tombe (nosq). L'amas à haute nullité et la lignée c = 1 (nullité <= 10)
+  sont deux régions séparées de l'espace positif. Pas de nullité 15 (n15_Z5h, 31 524 visites), pas de t <= 7 à
+  nullité 14 (t8, 77 939 visites), pas de nouvelle lignée (nl_Z5M plafonne à 13).
+- 04:08 : troisième vague terminée sans cible : les marches « oddgap » dans h descendent à 0,007 (troisième valeur
+  propre impaire), sans échec exact d'ODD9 ; dans G1 (où c = 1 est permis), ~7 800 visites positives depuis c55 et
+  depuis psd4_candidate : aucune avec c = 1 ; sans grille près de l'amas Z5h : aucune structure positive en 3000 s.
+  Lancé : énumérations exhaustives de Z5 x (0 1)M et de Z5 x (0 2)(1 3) (2 h chacune), deux familles nouvelles
+  <h, (4 7)(5 6)> et <(0 1)(4 5)>, recherche ciblée b1x dans h depuis c31.
+- 04:20 : RELECTURE INDÉPENDANTE de cet audit (agent « adversarial reviewer », lecture seule) : aucune réfutation
+  fausse, aucune implication fausse dans les tableaux 1.1 et 1.2. Corrigé suite à ses remarques : (1) « ODD9 faux sans
+  positivité » n'est pas établi (quasi-échecs 2e-5, aucun échec exact) ; (2) l'« équivalence » (B') <=> « toute
+  droite spéciale » et « ODD9 <=> c >= 2 + delta » étaient fausses comme équivalences : seules les implications sont
+  vraies (corrigé dans NOTE_PROOFS, CONWAY_CONSTRAINTS G17, BILAN) ; (3) (A) et (H4) marqués réfutés dans la liste OPEN
+  du carnet ; (4) le témoignage pour (B') est presque vide : 329/331 objets ont la grille, qui force c >= 2, seuls les 2
+  c55 testent (B') ; (5) comptes corrigés (275 objets atteignent la borne, 10 objets avec c(l) = 5, 280 424 visites
+  avec une droite c = 1) ; (6) sc_7_null14 n'est pas un objet admissible positif (U non positif) ; (7) la
+  re-vérification exacte des 52 objets (A) est maintenant consignée : verify_A52_2026-10-15.log (52/52) ; (8) G5 : les
+  52 meurent tous à l'étiquette {3,4} de la quatrième étoile (ext3), {4,6} n'avait été testée que sur l'objet 38.
