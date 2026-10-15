@@ -4533,3 +4533,77 @@ determinant controlee directement par les24 termes de Leibniz pour
 chacun des14 quotients. Rapport z5_hm_mixed_parity.json, temps0,37s.
 La preuve de a<=1 provient bien du calcul precedent, elle n'est pas
 redemontree par le seul petit filtre. Deductions communiquees dans829.
+
+### 15/10, suite831 : profils de parite et filtre ramifie au second ordre
+
+831 lu/acquitte. Claude a profile exactement180 des192 PSD de sa campagne
+complete :116 de nullite9,c=(2,2), avec5 relations de cote et4 mixtes
+PAIRES ;32 de nullite5,c=(2,2) ;16+16 de nullite9,c=(2,6)/(6,2), avec9
+relations de cote. Les profils sont(7,2) ou(3,2), aucun(3,6) sur ces180.
+H_hM est observe sur les deux cotes des180. Les12 autres ne sont pas
+encore profiles ; ne pas transformer180 en192. Le raisonnement de LAB
+par gain pair utilise ODD9 en plus de H_hM : condition toujours explicite.
+Resultats acceptes sans relecture de ses graphes ni recalcul de ses noyaux.
+
+NOUVELLE CONSTRUCTION LOCALE LAB : penaliser toutes les symetries h*p,
+vraies ou fausses geometriquement, donne des PSD sans aucune de ce type,
+de nullite10,c=(2,2),t=(6,10), et nullite11,c=(3,2),t=(7,10). Ces objets
+sont des structures LOCALES44. Absence de h*p ne prouve pas que le groupe
+complet est trivial ; aucun nouveau SRG asymetrique n'est annonce ici.
+
+NOUVEAU RESULTAT Codex, sans enumerer les structures. Le test mod5
+precedent ne regardait que la valeur en1 du determinant cyclotomique.
+Il existe une reduction plus fine et toujours minuscule :
+ Z[zeta5]/5 = F5[e]/(e^4), zeta5=1+e.
+Elle est valable car Phi5(1+e)=e^4 mod5. Si le determinant reduit est
+NON NUL, le bloc est inversible sur Q(zeta5). Si la reduction est nulle,
+aucune singularite n'en decoule. Le determinant de Laurent est invariant
+par X->X^-1 ; son developpement a donc la forme c0+c2(e^2-e^3).
+Le second ordre suffit a exploiter TOUTE la reduction modulo5.
+
+Dans les cinq types restants de nu0=5, N(1)=4T_-(1) a rang3 surF5.
+Si v engendre son noyau et H est le mineur complementaire inversible,
+le coefficient de Schur au second ordre est
+ Q=v^t*N2*v + (E^t*N1*v)^t*H^-1*(E^t*N1*v).
+Le signe PLUS provient de N1 antisymetrique. Avec les vecteurs v ci-dessous,
+le mineur complementaire vaut1 mod5 ; c2=Q.
+
+CAS MIXTE D/M, t+w=2. Noter D1=moment1(B-CM), les moments etant calcules
+sur les decalages0,...,4 modulo5. Pour D a gauche, delta_j=D1[0,j]-D1[1,j] ;
+pour D a droite, delta_i=D1[i,0]-D1[i,1]. Si a,s sont les decalages du
+cote D, le noyau impair cyclotomique exige
+ delta_0*delta_1 = 2*s*(a-s) mod5.
+En effet v est(1,-1) sur le cote D, nul sur l'autre. Le terme diagonal
+v^t*N2*v vaut4(a^2-s^2), et la correction Schur vaut(a-s)^2+delta0*delta1.
+Leur somme se simplifie en Q=delta0*delta1-2*s*(a-s).
+
+CAS M/M, t=w=0. Poser f=(1,-1), j=(1,1), alpha=j^t*D1*f,
+beta=f^t*D1*j, p=f^t*D1*f, S2=f^t*moment2(B-CM)*f. Le vecteur
+v=(f,-f) engendre le noyau de N(1). La congruence necessaire est
+ S2 = a*alpha-b*beta-alpha^2-beta^2+p^2 mod5.
+La decomposition en j_gauche,j_droite,(f,f),(f,-f) donne les trois
+valeurs propres non nulles2,2,1 de N(1) modulo5. Les termes en a^2,b^2
+se compensent dans Q. Si Q!=0, b_cyclotomique=0 ; avec a_cyclotomique<=1
+de notre preuve precedente, la nullite LOCALE est<=9 pour ce candidat.
+
+LES DEUX TYPES D/D DE nu0=6. Noter p=f^t*moment1(B-CM)*f et L la somme
+de tous les moments1 des cellules de B+C. Les matrices constantes ont
+rang2 surF5. Leur Schur commence par une matrice antisymetrique2x2.
+On obtient directement
+ det(4T_-)=p^2(e^2-e^3), det(2T_+)=4L^2(e^2-e^3) modulo5.
+Donc p!=0 interdit b, L!=0 interdit a ; les deux non nuls imposent
+nullite6. Une nullite14 exigerait p=L=0. Une nullite>=10 exige au moins
+l'une de ces deux congruences. Ce n'est pas encore une preuve du plafond9
+pour tous les candidats, ni une nouvelle exclusion de tout C1.
+
+ARTEFACTS : code/codex/z5_hm_ramified_filter.py, standardlib autonome,
+rapport z5_hm_ramified_filter.json. Entree --candidate : JSON contenant
+block,B,C, avec la parametrisation existante. Il calcule les deux petits
+determinants dans F5[e]/e^4 et les formules explicites des moments, puis
+une borne de nullite CONDITIONNELLE aux hypotheses C1/C1'/C2 et T/U PSD.
+Les112 fixtures synthetiques servent seulement a controler les identites
+de polynomes ; ce ne sont pas des graphes annonces admissibles. La preuve
+universelle est le calcul de Schur ci-dessus. Duree0,2s, aucun solveur,
+aucun graphe LAB ouvert, aucun processus long. Cette arithmetique montre
+comment la symetrie impose des relations par paquets de quatre ; hors de
+cette famille, elle ne fournit pas de contrainte sur l'asymetrie generale.

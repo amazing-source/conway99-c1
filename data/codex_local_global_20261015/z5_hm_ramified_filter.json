@@ -1,0 +1,359 @@
+{
+  "status": "EXACT_SECOND_ORDER_CYCLOTOMIC_FILTER",
+  "synthetic_identity_fixtures": 112,
+  "fixtures_with_negative_sector_proved_nonsingular": 77,
+  "fixtures_are_not_asserted_admissible_graphs": true,
+  "examples": {
+    "mixed_D_M": {
+      "block": {
+        "left": [
+          "D",
+          3,
+          4
+        ],
+        "right": [
+          "M",
+          4,
+          null
+        ]
+      },
+      "B": [
+        [
+          [
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "C": [
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "result": {
+        "epsilon": [
+          1,
+          -1
+        ],
+        "t": 2,
+        "w": 0,
+        "determinant_minus_mod5": [
+          0,
+          0,
+          3,
+          2
+        ],
+        "determinant_plus_mod5": [
+          0,
+          0,
+          1,
+          4
+        ],
+        "moment_formula": {
+          "kind": "mixed_D_M",
+          "D_side": "left",
+          "delta": [
+            0,
+            0
+          ],
+          "a": 3,
+          "s": 4,
+          "q": 3
+        },
+        "minus_proved_nonsingular": true,
+        "plus_proved_nonsingular": true,
+        "conditional_nullity_upper_bound": 5
+      }
+    },
+    "M_M": {
+      "block": {
+        "left": [
+          "M",
+          4,
+          null
+        ],
+        "right": [
+          "M",
+          3,
+          null
+        ]
+      },
+      "B": [
+        [
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "C": [
+        [
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "result": {
+        "epsilon": [
+          -1,
+          -1
+        ],
+        "t": 0,
+        "w": 0,
+        "determinant_minus_mod5": [
+          0,
+          0,
+          1,
+          4
+        ],
+        "determinant_plus_mod5": [
+          0,
+          0,
+          1,
+          4
+        ],
+        "moment_formula": {
+          "kind": "M_M",
+          "a": 4,
+          "b": 3,
+          "alpha": 1,
+          "beta": 2,
+          "p": 4,
+          "s2": 3,
+          "q": 1
+        },
+        "minus_proved_nonsingular": true,
+        "plus_proved_nonsingular": true,
+        "conditional_nullity_upper_bound": 5
+      }
+    },
+    "D_D_nullity6": {
+      "block": {
+        "left": [
+          "D",
+          3,
+          0
+        ],
+        "right": [
+          "D",
+          4,
+          0
+        ]
+      },
+      "B": [
+        [
+          [
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      ],
+      "C": [
+        [
+          [
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        ],
+        [
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "result": {
+        "epsilon": [
+          1,
+          1
+        ],
+        "t": 2,
+        "w": 0,
+        "determinant_minus_mod5": [
+          0,
+          0,
+          4,
+          1
+        ],
+        "determinant_plus_mod5": [
+          0,
+          0,
+          1,
+          4
+        ],
+        "moment_formula": {
+          "kind": "D_D_nullity6",
+          "p": 3,
+          "total": 3
+        },
+        "minus_proved_nonsingular": true,
+        "plus_proved_nonsingular": true,
+        "conditional_nullity_upper_bound": 6
+      }
+    }
+  },
+  "proof": [
+    "Phi5(1+e)=e^4 in F5[e]. Hence Z[zeta5]/5 is F5[e]/e^4. A nonzero determinant in this ring proves nonsingularity over Q(zeta5), even if the constant term vanishes.",
+    "The Laurent determinant is invariant under X->X^-1. Its expansion c0+c1*e+c2*e^2+c3*e^3 therefore has c1=0 and c3=-c2 over F5. The second-order test uses the entire reduction modulo5; a zero reduction is inconclusive.",
+    "In the five remaining nu0=5 quotient types, N(1)=4T_-(1) has rank3 overF5. Let v span its kernel and E be the other three coordinate vectors. With H=E^t*N(1)*E, the second-order Schur term is Q=v^t*N2*v+(E^t*N1*v)^t*H^-1*(E^t*N1*v). Here N1 is skew-symmetric, which accounts for the plus sign.",
+    "Write D1=moment1(B-CM). In a mixed D/M type with t+w=2, put delta_j=D1[0,j]-D1[1,j] if D is on the left; put delta_i=D1[i,0]-D1[i,1] otherwise. A negative cyclotomic kernel requires delta_0*delta_1=2*s*(a-s) mod5, where a,s belong to that D side. The determinant coefficients are (0,0,Q,-Q).",
+    "For M/M and t=w=0, set f=(1,-1), j=(1,1), alpha=j^t*D1*f, beta=f^t*D1*j, p=f^t*D1*f, and S2=f^t*moment2(B-CM)*f. A negative cyclotomic kernel requires S2=a*alpha-b*beta-alpha^2-beta^2+p^2 mod5. The determinant coefficients are (0,0,Q,-Q).",
+    "In D/D, t+w=2, let p=f^t*moment1(B-CM)*f and L=sum of all first moments of B+C. The reductions of det(4T_-) and det(2T_+) are respectively p^2*(e^2-e^3) and4*L^2*(e^2-e^3). Thus nonzero p excludes b, and nonzero L excludes a. Both nonzero imply total nullity6; nullity14 requires p=L=0. Neither congruence is asserted sufficient.",
+    "Combining these filters with the earlier exact a,b<=1 theorem gives candidate-specific caps. For nu0=5, Q!=0 on the negative side proves nullity<=9. For nu0=6, both first moments nonzero prove nullity6. This is not a proof of a universal local ceiling9.",
+    "These are filters on the small circulant coefficient blocks. No producer graph, saved kernel, enumeration, or exact PSD result is recomputed. The deterministic fixtures check polynomial identities on synthetic coefficient assignments only; the Schur derivation supplies the universal argument."
+  ]
+}
