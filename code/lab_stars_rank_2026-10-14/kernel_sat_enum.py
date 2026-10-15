@@ -36,6 +36,14 @@ K8 = [[int(round(8 * kval(a, b))) for b in S] for a in S]
 G0 = [[1 if tuple(sorted((a, b))) in E0 else 0 for b in range(n)] for a in range(n)]
 M = [[(24 if a == b else 0) - 8 * G0[a][b] - K8[a][b] for b in range(n)] for a in range(n)]
 N = nullspace_int(M)
+if os.environ.get("KHOMOG"):
+    # KHOMOG=1 (15/10, T3): impose only the h-homogeneous part N n hN of the kernel, h = (0 1)(2 3), computed exactly as
+    # ker(M + hMh) (equal to ker T n ker hTh when T >= 0); for a broken structure this frees its mixed kernel directions
+    hmap = {0: 1, 1: 0, 2: 3, 3: 2}
+    hp0 = [idx[frozenset(hmap.get(y, y) for y in s)] for s in S]
+    Mh = [[M[a][b] + M[hp0[a]][hp0[b]] for b in range(n)] for a in range(n)]
+    N = nullspace_int(Mh)
+    print("KHOMOG: imposing the h-homogeneous kernel part, dimension %d" % len(N), flush=True)
 if os.environ.get("DROPIDX"):                 # impose only part of the kernel (drop the listed basis vectors)
     dd = {int(t) for t in os.environ["DROPIDX"].split(",")}
     N = [v for q, v in enumerate(N) if q not in dd]

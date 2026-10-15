@@ -1,8 +1,10 @@
 # (H-MATCH): a local symmetry law that would exclude Conway (LAB, 15/10/2026, ~06:00 UTC)
 
-FINAL STATUS (15/10, 07:40 UTC): (H-MATCH) is ABANDONED as a target (not refuted): its evidence is family bias,
-local searches cannot decide it (the srg(243) comparison, corrected at 08:00, does not test it). KEPT: the implication (section 2) and its
-contrapositive G18 (>= 4 broken blocks per vertex of a Conway graph, modulo L10). Last results: the largest kernel
+STATUS (corrected 15/10, 10:00 UTC): (H-MATCH) is OPEN and remains a CANDIDATE ROUTE. The 07:40 wording 'abandoned as
+a target' is withdrawn (the user rejected it; nothing refutes the law). Its evidence is family-biased; local searches
+have not decided it (the srg(243) comparison, corrected at 08:00, does not test it). Work on it continues (section 6,
+task T3; Codex has T2 = ODD9). KEPT: the implication (section 2) and its contrapositive G18 (>= 4 broken blocks per
+vertex of a Conway graph, modulo L10). Last results: the largest kernel
 class (15 objects) enumerated COMPLETELY (24 144 structures, 96 PSD, none broken), so all 129 kernels are settled
 (complete SAT or MILP); sub-kernel sweeps stopped after 189 runs (760 PSD nullity-14 structures, all h-related).
 
@@ -196,3 +198,118 @@ structural fact it brought out goes the other way: only Conway has forced relati
 
 ## 5. Runs (state 08:10 UTC)
 All runs finished or stopped. Scripts used for the evidence: work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/.
+
+## 6. Task T3 (absorption / 13-wall), state 09:15 UTC (LAB; Codex has T2 = ODD9)
+- Block form along h: T = [[A, B], [B^T, C]], U = 7 Pi - T = [[A', -B], [-B^T, C']] (E_+ / E_- = h-even / h-odd, 22 + 22).
+  A, C, A', C' depend only on the average Gamma_0 = (Gamma + h Gamma h)/2; B = -(compression of Delta), with
+  Delta = Gamma - h Gamma h (entries 0, +-1). nullity T = nullity C + nullity(A - B C^+ B^T); nullity C = 2 in all data.
+- LEMMA (proved, elementary): if T >= 0 and rank A = 10, then ker T contains ker A (12 dimensions, h-even) and the two
+  star differences, so nullity T >= 14 and Delta kills ker A. If T, U >= 0 then T_0 = (T + hTh)/2 and U_0 are PSD
+  (average of PSD matrices).
+- COROLLARY: a complete enumeration of a kernel class (all admissible structures whose kernel contains N) contains every
+  PSD structure whose even block has the same 12-dimensional kernel as a member of the class. So the 129 complete
+  class enumerations exclude any PSD broken structure 'sharing the even kernel' of a known rank-30 object.
+- DATA: all 416 PSD nullity-14 structures on file have B = 0 and rank A = 10 (or rank A = 11 with nullity C = 3).
+  In the only class with broken members (the kernel shared by 13 Z5h objects, 15 936 structures, complete), the 9 408
+  broken ones all fail positivity, T nearly (scale factor of B in [0.876, 1.247]) but U clearly: 93 % already on the
+  h-odd block C' (a pure h-odd vector with x^T U x < 0), 5 % on the h-even block A', 2 % need B at least 1.5 times
+  smaller (tU <= 0.669). Broken PSD structures of nullity 13 have rank A = 12 and B saturating one direction.
+- So a PSD broken structure of nullity 14 needs either a NEW 12-dimensional h-even kernel (rank A = 10), or rank A > 10
+  with B saturating T on two directions (never seen beyond one). Sweep running: harvest new h-invariant rank-30
+  objects (sym4g.py in <h>, runs hv_h_*), new kernel classes (new_kernel_classes.py), complete enumeration of each
+  (kernel_sat_enum.py), looking for a PSD broken member.
+
+### 6b. T3 update, 10:00 UTC (numerical unless marked exact; "complete" = SAT UNSAT, no certificate)
+- Harvest in <h> (sym4g.py b1 anyc, SAVE30, six warm starts c22, r725, cold49, h42, c55, hr7; stopped at 09:38 UTC
+  because the user opened a game, rule 'low performance'): 166 distinct PSD structures of numerical nullity 14, all
+  h-invariant by construction, with new types c = (4,2) and (3,3). New kernel classes (new_kernel_classes.py, exact
+  kernels, exact rank 30): 18 (newk1), then 140 more (newk2) beyond the 196 known. Almost every harvested object is
+  a new class: the h-invariant rank-30 world shows no saturation.
+- Complete class enumerations (kernel_sat_enum.py via ksat_dir.py): newk1 18/18 complete, NO structure with broken
+  matchings at all (PSD or not); typical class = 174 structures (4 PSD) or a singleton. newk2: running; at 09:51 UTC
+  50/140 complete, 77 PSD (all h-related), 1530 non-PSD, ZERO broken; most classes are SINGLETONS (the 14-dimensional
+  kernel determines the structure).
+- Why singletons (exact reasoning): a structure with kernel >= N satisfies, row by row, Gamma_i N = ((3I - K) N)_i, i.e.
+  14 linear equations on the ~6 neighbours of label i among 43 candidates. A second structure with the same kernel
+  needs, in some row, a {0, +-1} vector Delta_i orthogonal to N with zero sum on every star: an additive coincidence
+  among the kernel coordinates of labels. In the rank A = 10 case, N = ker A (+) star differences is h-invariant and the
+  even coordinates of r and h(r) coincide, so the even equations only see orbit counts; broken structures with that
+  kernel exist only when these orbit-count equations have several solutions (the obj53 class: 9 408 broken, all
+  non-PSD).
+- Codex (message of ~09:50 UTC, codex_h_mixed_energy.py in C:\Users\RESEARCHER\Desktop\Recherche_Conway\lab_exchange_2026-10-14):
+  exact identity ||B||_F^2 = b/2 (b = broken edge orbits {e, h e} with exactly one edge; q = broken orbit blocks,
+  q <= b <= 2q); T >= 0 gives B^T ker A = 0, so rank B <= rank A; two necessary tests for a FIXED average, valid for all
+  2^b orientations: (1) b/2 <= sum_i lambda_i(S) lambda_i(C') with S = A' shorted to range A; (2) eps^T H eps <= rank A
+  with H_kl = tr(S^+ B_k C'^+ B_l^T); a diagonal d with H - diag d >= 0 and sum d > rank A excludes every orientation.
+  Independent re-implementation: hmatch_tools_2026-10-15/orient_tests.py (B = sum eps_k B_k checked against the true
+  block). On the 47 distinct averages of the 55 obj53 near-misses (orient_near.log): b = 40, rank A = 10; test (1)
+  20 vs 151.4 (passes); test (2) inconclusive: H is singular (bound b lambda_min = 0), actual eps^T H eps = 7.108 <= 10
+  on all 47, local minima over eps 0 to 2.06. The near-misses fail by the OPERATOR norm (tU = 0.669, i.e.
+  ||S^-1/2 B C'^-1/2||_op = 1.495) while ||.||_F^2 = 7.108: the excess is concentrated on one direction, invisible to a
+  Frobenius test. No average excluded (and for these 47 the complete class enumeration already covers all admissible
+  orientations).
+- Break types (break_types.py, exact, combinatorial): for label orbits O, O' the 2 x 2 block [[a,b],[c,d]] is SINGLY
+  broken (one of a != d, b != c; even quotient Gamma_+(O,O') a half-integer, B entries +-1/2) or DOUBLY broken (both;
+  Gamma_+ integral, B entries 0 and +-1). The obj53 near-misses and kmilp_obj53_ambig: q = b = 40, ALL single, located
+  10 in the l-block, 20 across, 10 in the m-block; the l-block breaks are exactly M_0 Delta M_1, two disjoint matchings
+  whose union is a 10-cycle on the outer letters with every mate pair at distance 3. hm_id_c22_HB_1 (PSD, nullity 13):
+  q = 26 (22 single, 4 double, the doubles all across), b = 30.
+- Running at idle priority (game open): the newk2 enumeration, and a walk in <tau>, tau = (0 2)(1 3) (swaps the two
+  lines, does NOT contain h; plain b1 objective, CPEN = 0, SAVE30): if it reaches nullity 14 PSD, are those structures
+  h-invariant anyway (forcing) or broken (counterexample)?
+
+### 6c. 10:10 UTC
+- newk2 FINISHED: 140/140 classes complete, 404 PSD structures (all h-related matchings), 14 960 non-PSD (all h-related),
+  ZERO broken structures. Total: 287 kernel classes enumerated completely (129 + 18 + 140); exactly ONE (obj53, Z5h c22)
+  contains broken structures at all (9 408, none PSD).
+- EXACT remark: if N = ker T is h-invariant (rank A = 10) and the kernel class of N is a singleton, then Gamma is
+  h-invariant (h Gamma h is admissible with kernel hN = N). So (H-INV) in the case rank A = 10 is equivalent to: no
+  kernel class with an h-invariant kernel contains two PSD members Gamma != h Gamma h. Uniqueness is what the data show
+  everywhere except obj53.
+- Shape of the forced relations (kernel_shape.py, exact): Z5h lineage (c22, c62, c42): u_y = -sum_z Phi_yz g_z with
+  Phi in (1/5)Z, Sum g = 0, c1 + c2 = 0 in the Gram space, i.e. span(u) = span(g) (one 9-dimensional space for both
+  lines; u_y = 1_0y + 1_1y, g_z = 1_2z + 1_3z, c1 = 1_02 + 1_13, c2 = 1_03 + 1_12). G1 c55: component relations
+  u_8 + u_9 = u_10 + u_11 = u_12 + u_13 = 0, g_4 + g_5 = ... = 0, plus four integral mixed relations. c33: component
+  relations g_4 + .. + g_7 = 0, g_8 + .. + g_13 = 0, the rest mixed in fifths.
+- Single breaks cost kernel equations (exact reasoning): with an h-invariant kernel, row r of Delta = Gamma - h Gamma h
+  must be orthogonal to N; a single break at (O, O') contributes +-phi_+(O') (even kernel coordinates of the orbit), a
+  double break 0 or +-2 phi_+(O'). So every row with single breaks needs a signed vanishing sum of even orbit
+  coordinates; in the RREF basis the l-outer orbits have coordinates e_y (pivots), so an l-block break must be
+  compensated across (lm) by columns of Phi.
+- NEW complete enumeration around the 13-wall (kernel_sat_enum.py, new option KHOMOG = impose only N n hN =
+  ker(M + hMh)): for hm_id_c22_HB_1 (PSD broken, nullity 13), N n hN has dimension 12; ALL admissible structures
+  containing it: 672 (COMPLETE, 27 s): PSD nullity 14: 8 (all h-related); non-PSD nullity 14: 340 (all h-related);
+  broken: only nullity 12 or 13 (4 PSD of nullity 13). In this class, broken => nullity <= 13 WITHOUT positivity.
+  homog_classes.py on all 450 saved HB files + the 55 near-misses: only 2 distinct homogeneous kernels (this one, and
+  the 14-dimensional obj53 kernel): the walks produced a single broken lineage.
+- Walks without h (idle priority): Z5 alone from seed_rank30_c22 (HBREAK + HMATCH): stuck on a broken PSD structure
+  of nullity 10. <(0 1)M> and <(2 3)M> (M = all outer flips) from the G1 c55 object: about 1 250 PSD visits each in the
+  first minutes, ALL with h-related matchings (no broken PSD structure reached).
+
+### 6d. LEMMA (side relations are h-homogeneous) -- PROVED (LAB 15/10, 10:30 UTC; exact check side_check.py)
+For ANY admissible four-star structure (h-invariant or not): let C be a component of H_l, with letter set W (a union
+of lines other than l, automatically s_m-invariant since m's two letters are mates) and label set C n X_l =
+{0y, 1y : y in W}. Then kappa_C = 1_{C n X_l} satisfies T kappa_C = 0 on the rows of X_l, and h kappa_C = kappa_C.
+Proof: for x in X_l, x has exactly two Gamma-neighbours in X_l (its M-partner and its sigma_l-partner, C1), both in the
+H_l-component of x, so (Gamma kappa)_x = 2 [x in C]; summing K(x, z) = -1/4 + 3/8 |x n z| + 1/8 m(x, z) over the 4k labels
+z of C n X_l (k = lines in W) gives -k + 3/8 (2k + 2[y in W]) + 1/8 (2k + 2[y^1 in W]) = [x in C] (W is a union of lines);
+so (T kappa)_x = 3[x in C] - 2[x in C] - [x in C] = 0. h maps {0, y} to {1, s_m(y)} and W is s_m-invariant. If T >= 0
+(or just T_S >= 0), kappa_C in ker T_{X_l} gives kappa_C in ker T. Together with the star vectors (1_L0 - 1_L1 is h-odd,
+the others even) these are 1 + c(l) independent kernel vectors of T_{X_l}, i.e. all of them (rank T_X = 23 - c, G2).
+CONSEQUENCE: all side relations (on X_l or on X_m) lie in N n hN. The h-inhomogeneous part of ker T can only come from
+the MIXED relations (G9: 12 - c(l) - c(m) + [grid] + delta of them in a Conway graph). Exact check (side_check.py): for
+hm_id_c22_HB_1 (broken, PSD, nullity 13; c = (5,2)) and a near-miss (broken, non-PSD) every component vector is in
+ker T and h-invariant. Both have m's two letters as a single-line component of H_l and l's as one of H_m: (l, m) is a
+3 x 3 grid pair there (and c1 + c2 = 1_02 + 1_03 + 1_12 + 1_13 is the corresponding component vector).
+
+### 6e. Kernel symmetry groups (kernel_sym.py, exact; log kernel_sym_287.log), 10:25 UTC
+Frame group = D4 on the star letters x signed permutations of the five outer lines (order 30 720). For a structure,
+Aut = its stabiliser, G_N = the stabiliser of its kernel N; class(N) is a union of G_N-orbits, so it contains at least
+|G_N| / |Aut| structures. h is central in the frame group, so images of h-invariant structures are h-invariant: broken
+members of a class are never images, always 'accidental' solutions. Over the 287 classes: |G_N|/|Aut| = 1 (singleton
+orbit) for 55, 2 for 198, 4 for 32, and 96 for exactly TWO classes (|Aut| = 20, |G_N| = 1920): obj 6 (c = (6,6), 15
+objects, 24 144 structures, none broken) and obj 53 (c = (2,2), 13 objects, 15 936 structures, the 9 408 broken ones).
+A huge kernel group is what makes large classes; it is not sufficient for broken members (class 6 has none).
+Projection walk without symmetry or seed (projwalk.py, two runs, about 5 CPU-minutes each at idle priority): never
+reached T, U >= 0 (best score 5.6 from 12): an unbiased search cannot reach the PSD world with these moves; PSD four-star
+structures are far from random admissible ones (lambda_2 <= 3 against about 2 sqrt 5 for random degree-6 graphs).
