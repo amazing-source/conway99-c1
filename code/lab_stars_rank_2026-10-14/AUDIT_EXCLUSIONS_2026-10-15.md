@@ -56,6 +56,9 @@ dès qu'une famille indépendante a été essayée.
   Conway arrêté sans verdict, campagne mise en pause par l'utilisateur ; rien ne tourne.
 - Théorèmes de rang de la nuit du 13-14/10 (rang_F7(A + 4I) >= 33) : redécouverte, plus faible que la fenêtre
   {37, 39, 41, 43} déjà connue.
+- Cibles de la nuit du 13-14/10 (NOTE_NIGHT, section 2) : T1 (pas de sommet localement affine) = L8, prouvé ; T2 (aucune
+  grille 3 x 3) n'exclurait pas Conway seul ; T3 (borne sur le nombre de prismes p(l) d'une droite, 0 <= p(l) <= 12 par
+  F3) : une borne inférieure p(l) >= 8 pour toute droite serait décisive avec P <= 852 ; c'est exactement le pont (T8).
 - Codex, 15/10 : la famille G1 c55 sans grille est exclue par F7 (théorème) ; au moins 336 des 2079 drapeaux ont au
   moins 4 relations mixtes (prouvé, utilise rho <= 126) ; budgets de comptage du second ordre (nécessaires, pas des
   bornes sur P) ; le census d'ordre 9 admet P = 0 en relaxation réelle (pas de borne inférieure sur P par cette voie).
@@ -106,3 +109,47 @@ Z5 x hM, Klein extérieur x échange), deux recherches de nullité 15 (O6) et de
 Le groupe <(4 6)(5 7), (8 10)(9 11), h> n'admet aucune structure admissible (SAT). Ajouté à 03:01 UTC : deux
 recherches qui imposent une droite c = 1 dans les lignées à haute nullité (Z5h à froid, et h depuis c55), pour tester
 (B') là où il n'a jamais été testé.
+
+## 5. Boucle de tests après l'audit (15/10, à partir de 03:00 UTC ; l'utilisateur dort, « continue en loop »)
+Journal des résultats, au fil de l'eau (heures UTC).
+- 03:01-03:12 : quatre groupes n'admettent AUCUNE structure admissible à quatre étoiles (SAT) :
+  <(4 6)(5 7), (8 10)(9 11), h>, <h, (4 6)(5 7)>, <h, (4 5)>, et (déjà connu) <(4 6 8)(5 7 9)>.
+- 03:05 : les familles contenant Z5 imposent la grille sur (l, m) (un label fixe ne peut pas être apparié à une
+  5-orbite) : 276 des 331 objets sont Z5-invariants, et 329/331 ont la grille ; l'absence de c = 1 y est automatique.
+- 03:10 : mécanisme des relations dans les objets Z5h de rang 30 : 9 relations mixtes de la forme
+  (combinaison l-paire sur X_l) + 5 (1_{2y} + 1_{3y}), une par lettre extérieure y : les vecteurs pairs de m sont
+  absorbés par X_l ; chaque relation vit sur la boule de l plus la droite {y, z_2y, z_3y} (prisme avec m).
+- 03:13 : interdire la grille sur (l, m) près de ces objets (NOSQUARE) fait perdre la positivité (lambda_min vers
+  -0,3 après 6000 pas) : la grille est essentielle à ces objets de rang 30.
+- 03:20 : énumérations EXHAUSTIVES (enum_group.py : modèle SAT de sym4g.py, blocage sur les représentants d'orbites,
+  terminé quand le solveur dit UNSAT) : <Z5, h, M> (ordre 20) : 64 structures admissibles, aucune positive ;
+  <Z5, (0 1)M, (2 3)M> (ordre 20) : 4, aucune positive ; <Z5, h, (0 2)(1 3)> (ordre 20) : 90, aucune positive.
+  Z5h (ordre 10) : 6177 structures en 240 s sans finir (13 positives : nullité 14 seulement avec t = (12,12) et la
+  grille ; dans Z5h, t vaut 2, 7 ou 12 par orbites) ; énumération complète lancée (limite 2 h).
+- 03:20 : les marches « oddgap » longues dans h retrouvent des quasi-échecs d'ODD9 (troisième valeur propre impaire
+  0,007 en quelques minutes) : ODD9 reste fragile.
+- 03:24 : relecture des journaux par transversales des DEUX droites (t_scan2.py, ~830 000 visites positives) :
+  quand les deux droites ont au plus 7 transversales (le régime typique d'un Conway, où la moyenne de t est <= 7,38
+  par le certificat de Codex), la nullité vue ne dépasse pas 12 (t = (6,6) et (7,7), lignée c55) ; avec
+  t(l) + t(m) <= 14 elle atteint 13 une fois (t = (12,2), Z5h). Les variantes du pont : « t(l), t(m) >= 8 »
+  (P >= 924) et « t(l) + t(m) >= 15 » (P >= 867) sont donc compatibles avec tout ce qui a été vu, à une relation près ;
+  « au moins une droite avec t >= 8 » (P >= 792) n'exclurait rien.
+- 03:30 : MÉCANISME transversales <-> nullité (even_explained.py, even_bound_scan.py). Avec ODD9, la nullité vaut
+  12 + c(l) - (gain pair), où le gain pair est celui des 10 vecteurs m-pairs g_y = 1_{2y} + 1_{3y} au-delà de
+  X_l + (vecteurs impairs). Nullité 14 exige donc gain pair = c(l) - 2 : pour c(l) = 2, TOUS les g_y doivent être
+  absorbés. Or la norme de g_y vaut 5/2 si y est une transversale de m, 9/2 sinon, et sur 6000 structures positives
+  tirées des archives (toutes familles, les deux sens l/m) la part « expliquée » d'un g_y non transversal ne dépasse
+  jamais 4,2516 < 4,5 : un g_y non transversal n'est jamais absorbé, un g_y transversal peut l'être (2,5 atteint).
+  Si cette borne était un théorème : nullité 14 avec c(l) = 2 forcerait les 10 transversales extérieures de m
+  (t(m) >= 10), exactement ce que montrent les 182 objets (2,2). C'est une explication du pont (T8), pas une preuve ;
+  pour c(l) >= 3 l'absorption partielle ne force rien lettre par lettre.
+- 03:33 : bilan intermédiaire des recherches lancées à 03:00 : aucune cible atteinte. Pas de structure positive de
+  nullité 15 (n15_Z5h, ~30 000 pas) ; pas de nullité 14 avec t <= 7 (t8_*) ; pas de droite c = 1 à nullité >= 11
+  (c1_*, dont G1 où c = 1 est permis) ; sans grille sur (l, m) près des amas connus, pas de positivité (nosq_*).
+  32 objets de rang 30 réellement nouveaux, tous dans les deux lignées connues (t = (12,12) avec grille et classe
+  2*3*5*7, ou c55 avec t = (8,8), sans grille et classe 2*3*5) : aucun ne passe DISC, tous satisfont ODD9.
+- 03:36 : vérification de la formule « nullité = 12 + c(l) - gain pair » sur les 331 objets : gain pair = c(l) - 2
+  pour TOUS (227 objets avec c(l) = 2 et gain 0, 24 avec c(l) = 3 et gain 1, 12 avec 4 et 2, 8 avec 5 et 3, 58 avec 6
+  et 4) ; les 10 lettres extérieures de m sont des transversales partout sauf dans la lignée c55 (8). Lecture : un
+  contre-exemple à (B') demanderait DEUX coïncidences à la fois (gain impair <= 8, c'est-à-dire un échec d'ODD9, ET
+  absorption complète des vecteurs pairs, donc 10 transversales sur m) ; la lignée c = 1 connue a 4 à 6 transversales.

@@ -330,7 +330,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap", "disc", "odd9", "b1"):
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap", "disc", "odd9", "b1", "b1x"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -579,6 +579,42 @@ def main():
                                   open(out + "_ODD9_%d.json" % ko, "w"))
                         print("move %d: ODD9 DEGENERATE CANDIDATE (gap %.2e), saved %s_ODD9_%d.json"
                               % (mv, gmin, out, ko), flush=True)
+        elif mode == "b1x":
+            # 15/10 loop: targeted (B') search.  A counterexample needs a line with c = 1 whose odd gain drops to 8
+            # (odd Schur block S_f singular on 1^perp) AND a complete absorption of the even vectors of the other line
+            # (all its outer letters transversals).  Score on PSD structures with a c = 1 line (call it l):
+            # -3 (14 - nullity)_+ - 4 (odd gap beyond X_l) + 0.3 (outer transversals of the other line); else -60 / -100.
+            if min(lt, lu) > -1e-9 and min(cl, cm) == 1:
+                if cl == 1:
+                    Xi, odd_ix, other_t = Xl, oddv_m, sum(1 for (i0, i1) in trans_m[2:] if G[i0, i1])
+                else:
+                    Xi, odd_ix, other_t = Xm, oddv_l, sum(1 for (i0, i1) in trans_l[2:] if G[i0, i1])
+                Fm = np.zeros((n, 10))
+                for k2, (p2, q2) in enumerate(odd_ix):
+                    Fm[p2, k2] = 1.0
+                    Fm[q2, k2] = -1.0
+                TX = T[np.ix_(Xi, Xi)]
+                wX, VX = np.linalg.eigh(TX)
+                keep = wX > 1e-9
+                W2 = VX[:, keep].T @ (T @ Fm)[Xi, :]
+                Sf = Fm.T @ T @ Fm - W2.T @ (W2 / wX[keep][:, None])
+                gap = float(np.min(np.abs(np.linalg.eigvalsh(Q9.T @ Sf @ Q9))))
+                s2 = -3.0 * max(0, 14 - nul_num) - 4.0 * gap + 0.3 * other_t
+                bx = getattr(main, "bestb1x", -999.0)
+                if s2 > bx:
+                    main.bestb1x = s2
+                    print("move %d: c = 1 PSD: nullity %d, odd gap %.5f, outer transversals of the other line %d, score %.3f"
+                          % (mv, nul_num, gap, other_t, s2), flush=True)
+                if nul_num >= 14:
+                    print("move %d: RANK <= 30 PSD WITH A NON-SPECIAL LINE (c = (%d,%d)) [b1x]" % (mv, cl, cm), flush=True)
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt,
+                               "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_B1X_%d.json" % mv, "w"))
+            elif min(lt, lu) > -1e-9:
+                s2 = -60.0
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "b1":
             # (B') test (15/10): a PSD four-star structure of rank <= 30 with a NON-special line (c = 1); in a Conway graph
             # every line is special iff no such structure occurs.  score on PSD: -3 (missing relations below 14)
@@ -588,7 +624,8 @@ def main():
                 # TPEN (weight of min(t(l), t(m)) - 7 when positive, default 0; tests the transversal bridge (T8))
                 ntar = int(os.environ.get("NULTARGET", "14"))
                 s2 = (-3.0 * max(0, ntar - nul_num) - float(os.environ.get("CPEN", "2.0")) * (min(cl, cm) - 1)
-                      - float(os.environ.get("TPEN", "0")) * max(0, min(tl, tm) - 7))
+                      - float(os.environ.get("TPEN", "0")) * max(0, min(tl, tm) - 7)
+                      - float(os.environ.get("TSUMPEN", "0")) * max(0, tl + tm - 14))
                 if os.environ.get("B1KEEP1") and min(cl, cm) != 1:
                     s2 = -60.0          # stay among structures with a non-special line, push the nullity up
                 bb = getattr(main, "bestb1", -999.0)
