@@ -41,6 +41,73 @@ def parse(cyc):
     return h
 
 
+def hidden_relation_count(G, S, idx, cap=50, whole=False):
+    """15/10 afternoon (T3): number (capped) of permutations p of the outer letters 4..13 with
+    M_1 = s_m p(M_0) and M_3 = s_l p(M_2) (M_a = star matching of a, s_l = (0 1), s_m = (2 3)); p = id is the h-relation.
+    0 means the star matchings are related by NO outer permutation (no hidden h-type relation at all)."""
+    n = len(S)
+    M = {}
+    for a in range(4):
+        part = {}
+        for i in range(n):
+            if a not in S[i]:
+                continue
+            for j in range(n):
+                if j != i and a in S[j] and G[i, j]:
+                    y = [t for t in S[i] if t != a][0]
+                    z = [t for t in S[j] if t != a][0]
+                    part[y] = z
+        M[a] = part
+    sw = {2: 3, 3: 2, 0: 1, 1: 0}
+    # target partner maps: for the l-side, (s_m M_1)(x) = s_m(M_1(s_m x)); for the m-side, (s_l M_3)
+    A0, B0 = M[0], {x: sw.get(M[1][sw.get(x, x)], M[1][sw.get(x, x)]) for x in M[1]}
+    A2, B2 = M[2], {x: sw.get(M[3][sw.get(x, x)], M[3][sw.get(x, x)]) for x in M[3]}
+    outer = list(range(4, 14))
+    cnt = [0]
+    pmap = {x: x for x in range(4)}
+
+    def ok_pair(Am, Bm, x):
+        # partner consistency for letter x already mapped
+        y = Am.get(x)
+        if y is None:
+            return True
+        if y in pmap:
+            return Bm.get(pmap[x]) == pmap[y]
+        return True
+
+    def rec(k, used):
+        if cnt[0] >= cap:
+            return
+        if k == len(outer):
+            if whole:
+                # whole-structure invariance under g = h p (p may break mates: a FAKE symmetry is counted too)
+                gm = {0: 1, 1: 0, 2: 3, 3: 2}
+                gm.update({x: pmap[x] for x in outer})
+                perm = [idx[frozenset(gm[t] for t in S[i])] for i in range(n)]
+                if not np.array_equal(G[np.ix_(perm, perm)], G):
+                    return
+            cnt[0] += 1
+            return
+        x = outer[k]
+        for t in outer:
+            if t in used:
+                continue
+            pmap[x] = t
+            good = True
+            for Am, Bm in ((A0, B0), (A2, B2)):
+                for u in list(pmap):
+                    if not ok_pair(Am, Bm, u):
+                        good = False
+                        break
+                if not good:
+                    break
+            if good:
+                rec(k + 1, used | {t})
+            del pmap[x]
+    rec(0, set())
+    return cnt[0]
+
+
 def main():
     gens_s, moves, seed, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
     mode = sys.argv[5] if len(sys.argv) > 5 else "lowrank"
@@ -299,7 +366,7 @@ def main():
         lt = perp_min(T)
         lu = perp_min(7 * PiS - T)
         # SAVE30=N (15/10): harvest the first N distinct PSD structures of numerical nullity >= 14 (rank <= 30), any mode
-        if (os.environ.get("SAVE30") and min(lt, lu) > -1e-9 and nul_num >= 14) or (os.environ.get("SAVE30ANY") and nul_num >= 14):
+        if (os.environ.get("SAVE30") and min(lt, lu) > -1e-9 and nul_num >= 14) or (os.environ.get("SAVE30ANY") and nul_num >= int(os.environ.get("SAVEANYMIN", "14"))):
             h30 = getattr(main, "h30", None)
             if h30 is None:
                 h30 = main.h30 = set()
@@ -659,6 +726,12 @@ def main():
                             sl = [(i, j) for i in range(n) for j in range(i + 1, n) if S[i] & S[j] & {0, 1, 2, 3}]
                             main.starpairs = sl
                         hasym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
+                    if os.environ.get("HIDDENPEN"):
+                        # HIDDENPEN (15/10 afternoon): treat ANY outer permutation relating the matchings (fake or true
+                        # hidden symmetry, h itself included) like the h-relation: stay among genuinely asymmetric ones
+                        nh = hidden_relation_count(G, S, idx, whole=True)
+                        if nh > 0:
+                            hasym = 0
                     if hasym == 0:
                         s2 = s2 - float(os.environ["HPEN"]) if os.environ.get("HPEN") else -60.0
                     else:
@@ -667,7 +740,7 @@ def main():
                             main.hbrec = nul_num
                             print("move %d: HBREAK RECORD: PSD with h broken (%d asymmetric pairs), nullity %d, c = (%d,%d), "
                                   "t = (%d,%d)" % (mv, hasym, nul_num, cl, cm, tl, tm), flush=True)
-                        if nul_num >= 13:
+                        if nul_num >= int(os.environ.get("HBSAVEMIN", "13")):
                             kh = getattr(main, "kh", 0) + 1
                             main.kh = kh
                             if kh <= 50:

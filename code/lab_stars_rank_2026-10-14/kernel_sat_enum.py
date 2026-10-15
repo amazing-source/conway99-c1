@@ -36,6 +36,16 @@ K8 = [[int(round(8 * kval(a, b))) for b in S] for a in S]
 G0 = [[1 if tuple(sorted((a, b))) in E0 else 0 for b in range(n)] for a in range(n)]
 M = [[(24 if a == b else 0) - 8 * G0[a][b] - K8[a][b] for b in range(n)] for a in range(n)]
 N = nullspace_int(M)
+if os.environ.get("LINEVECS"):
+    # LINEVECS=1 (15/10, mechanism A, type I): impose the four star vectors and the five outer LINE vectors
+    # 1 on the 8 labels {a, y}, {a, y^1} (a = 0..3) of each outer line {y, y^1} (they lie in the kernel of the obj53
+    # class); the structure file only provides the label order
+    N = []
+    for a in range(4):
+        N.append([1 if a in S[i] else 0 for i in range(n)])
+    for y in (4, 6, 8, 10, 12):
+        N.append([1 if (S[i] & {y, y + 1}) else 0 for i in range(n)])
+    print("LINEVECS: imposing 4 stars + 5 outer line vectors", flush=True)
 if os.environ.get("KHOMOG"):
     # KHOMOG=1 (15/10, T3): impose only the h-homogeneous part N n hN of the kernel, h = (0 1)(2 3), computed exactly as
     # ker(M + hMh) (equal to ker T n ker hTh when T >= 0); for a broken structure this frees its mixed kernel directions
@@ -136,7 +146,24 @@ while found < cap and time.time() - t0 < maxsec:
     lu = float(np.linalg.eigvalsh(Pp @ (7 * PiS - T) @ Pp + 50 * (np.eye(n) - Pp))[0])
     psd = min(lt, lu) > -1e-9
     masym = sum(1 for (i, j) in sl if G[i, j] != G[hp[i], hp[j]])
-    hist[(psd, nul, masym > 0)] += 1
+    if os.environ.get("NHREPORT") and nul >= 13:
+        # NHREPORT (15/10, mechanism A): dimension of the h-homogeneous part N n hN of the kernel (numerical, SVD)
+        w_, V_ = np.linalg.eigh(T)
+        Nb = V_[:, np.abs(w_) < 1e-8]
+        hNb = Nb[np.argsort(hp), :] if False else Nb[[hp.index(i) for i in range(n)], :]
+        both = np.hstack([Nb, hNb])
+        sv = np.linalg.svd(both, compute_uv=False)
+        nh = 2 * Nb.shape[1] - int(np.sum(sv > 1e-7))
+        hist[(psd, nul, masym > 0, "N n hN = %d" % nh)] += 1
+    else:
+        hist[(psd, nul, masym > 0)] += 1
+    if os.environ.get("DUMPDIR") and masym > 0 and nul >= int(os.environ.get("DUMPMIN", "12")):
+        # DUMPDIR (15/10, mechanism A): save every broken structure of nullity >= DUMPMIN (PSD or not) for analysis
+        os.makedirs(os.environ["DUMPDIR"], exist_ok=True)
+        dn = getattr(sys.modules[__name__], "dumpn", 0) + 1
+        sys.modules[__name__].dumpn = dn
+        json.dump({"labels": d["labels"], "edges": [[i, j] for i, j in pairs if G[i, j]], "psd": bool(psd),
+                   "nullity_numeric": nul}, open(os.path.join(os.environ["DUMPDIR"], "b_%d.json" % dn), "w"))
     if psd and nul >= 14 and masym > 0:
         saved += 1
         out = os.path.basename(f).replace(".json", "") + "_KS_%d.json" % saved

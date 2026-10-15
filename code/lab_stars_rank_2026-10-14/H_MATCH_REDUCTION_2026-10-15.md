@@ -386,3 +386,47 @@ structures are far from random admissible ones (lambda_2 <= 3 against about 2 sq
   certificates, codex_z5_hm_rank_obstruction.py in his exchange folder): for <z, hM>-invariant structures null_Q T =
   nu0 + 4a + 4b with nu0 in {5, 6}, a, b <= 1, so nullity <= 14, and at nullity 14 rank_F7(8T) >= 29 > 28: no member of
   the family is a Conway block. Our complete enumeration gives the stronger LOCAL ceiling 9 (unexplained).
+
+### 6h. LEMMA (true symmetries other than h block absorption) -- PROVED (LAB 15/10, 13:15 UTC)
+Let g = h p with p a MATE-PRESERVING involution of the outer letters having k two-cycles, Gamma g-invariant, T >= 0.
+Write c_y(n) = n(2y) + n(3y) (m-even outer coordinates of a label vector n).  HYPOTHESIS (H_g): every g-odd kernel
+vector n has c_y(n) = 0 for all outer y (true for instance when the g-odd part of ker T is spanned by the two star
+differences).  Then the even gain at side l satisfies e_l >= k, so with ODD9 (odd gain 9)  nullity T <= 12 + c(l) - k
+(and symmetrically <= 12 + c(m) - k when the l-analogue of (H_g) holds).
+Proof: g maps {2,y} to {3, p(y)} and fixes nothing outer, so g_y = 1_2y + 1_3y goes to g_{p(y)}; the k vectors
+d_y = g_y - g_{p(y)} (one per two-cycle) are g-odd.  If sum_y lambda_y d_y were in span(X_l, f) in the Gram space of T,
+n = sum lambda_y d_y - x (x in span(X_l, f)) would be a kernel vector; its g-odd part n_- = (n - g n)/2 is a kernel
+vector (ker T is g-invariant), and its m-even outer coordinates equal sum_y lambda_y (e_y - e_{p(y)}) (X_l vectors and
+f_z = 1_2z - 1_3z, together with their g-images, have no m-even outer coordinates).  (H_g) forces lambda = 0.  So the
+d_y are independent modulo span(X_l, f): e_l >= k.  QED
+- For h itself (p = id, k = 0) the lemma says nothing, which is where nullity 14 lives.  For hM (k = 5):
+  nullity <= 7 + min(c(l), c(m)) under (H_hM) on both sides; with Codex's exclusion of c(l) = c(m) = 6 under hM this is
+  <= 12 in general and = 9 when min c = 2.  Data: every PSD member checked has hM-profile (7 even, 2 odd) (so (H_hM)
+  holds) and is TIGHT: c = (2,6) gives e_l = 5 = k and nullity 9 = 7 + 2; the complete enumeration's ceiling 9 matches
+  (no PSD member with min c >= 3).  Codex's decomposition: at nullity 9 the hM-profile is (7,2) or (3,6); (H_hM) is the
+  (7,2) case.  Reading: a true symmetry that moves outer letters moves the m-even vectors g_y; their antisymmetric
+  combinations can only be absorbed through odd kernel vectors, which do not exist beyond the star differences.
+- 13:50 UTC, profiles of the PSD members of <Z5, hM> (180 of the 192, cubes 1-24, saved with SAVEMIN = 0;
+  hmatch_tools_2026-10-15/profile_scan.py, exact; log profile_Z5hM.log): (nullity 9, c = (2,2), t = (2,2), 5 side + 4
+  mixed, hM-profile (7,2)) 116; (nullity 5, c = (2,2), 5 side + 0 mixed, profile (3,2)) 32; (nullity 9, c = (2,6) or
+  (6,2), 9 side + 0 mixed, profile (7,2)) 16 + 16. Hypothesis (H_hM) holds on BOTH sides for all 180, and min c = 2
+  always (Codex: forced in <z, hM>, since c is 2 or 6 by the C5-transitivity and (6,6) is excluded). So the lemma of 6h
+  (with ODD9) gives nullity <= 7 + 2 = 9 for every one of them: the complete ceiling 9 is EXPLAINED (no profile (3,6)
+  occurs; Codex's parity filter allows it only in 5 of 14 quotient types). Mixed relations do exist (4 in the c22 ones);
+  what hM forbids is the absorption of the five antisymmetric differences g_y - g_{y^1}.
+- 14:12 UTC, cube 0 profiled too: its 12 PSD members are all (nullity 9, c = (2,2), t = (2,2), 5 side + 4 mixed,
+  hM-profile (7,2), (H_hM) on both sides). So ALL 192 PSD members of <Z5, hM> satisfy (H_hM) on both sides and have
+  min c = 2: the lemma of 6h (with ODD9) accounts for the complete ceiling 9 of the family.
+- Asymmetric front (walks in the trivial group, HBREAK + HMATCH + HIDDENPEN = penalty for ANY whole-structure symmetry
+  h p, fake or true, detected exactly by sym4g.hidden_relation_count): from HB_1, 15 777 PSD visits by 14:12 UTC, best PSD
+  structure with NO h-type symmetry: nullity 11 (c = (3,2), t = (7,10)), reached at move 131 and never improved; from the
+  c22 seed, 3 774 PSD visits, no PSD structure without h-type symmetry at all.
+- 14:27 UTC, the best structure WITHOUT any h-type symmetry (asy_best11.json = asy_hb1_HB_50.json, from the HIDDENPEN
+  walk): verified EXACTLY by the independent verifier (admissible, T >= 0 rank 33, U >= 0 rank 40, nullity 11) and the
+  independent matching check (both halves broken); its star matchings are those of HB_1 (only cross edges differ, which
+  destroys the fake symmetry h (4 6): 13 -> 11). At side m the absorbed l-even vectors u_y are exactly those with an
+  l-transversal (y = 7, 8, 10, 11, 13); the others are not absorbed. Complete local enumerations (kernel_sat_enum.py):
+  (a) all structures whose kernel contains its 11-dimensional kernel: 16 (COMPLETE), all broken, PSD of nullity 13 (1),
+  12 (3), 11 (2); no nullity 14. (b) KHOMOG (only N n hN, dimension 10, imposed): 3 036 structures (COMPLETE): PSD of
+  nullity 14: 16, ALL with h-related matchings; non-PSD of nullity 14: 680, ALL h-related; broken structures (PSD or
+  not) have nullity <= 13. The 13-wall again holds combinatorially in this neighbourhood, without positivity.
