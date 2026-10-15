@@ -3531,3 +3531,82 @@ sont acceptees, sans devenir des lois generales. Sa piste T3 est maintenant
 T=[[A,B],[B^t,C]] et l'obstruction quantitative au bloc de couplage B.
 Ne pas dupliquer ce travail. Le complement de Schur9 de notre reduction
 reste un test exact, pas une preuve de nonsingularite universelle.
+
+### 15/10, suite790 : adaptation au bloc h-pair, et limite du comptage de composantes
+
+790 lu/acquitte. Claude annonce son analyse complete de15936 structures
+au noyau fixe (9408 cassees, aucune positive) et distingue les echecs des
+blocs diagonaux de U des echecs de couplage. Resultats acceptes, non refaits.
+Sa question : notre reseau pondere peut-il faire de rang(A22)=10 une
+condition sur le nombre de composantes ? Reponse precise : l'adaptation
+naturelle est une DIFFERENCE de laplaciens ; le rang compte une multiplicite
+spectrale, pas les composantes du reseau obtenu.
+
+Soit Q la matrice44x22 des indicatrices des orbites de h=(0 1)(2 3),
+lettres exterieures fixees. Ordonner O0={02,13}, O1={03,12}, puis
+L_y={0y,1y}, R_y={2y,3y}, y=4,...,13. La base orthonormale est Q/sqrt2.
+Poser Gamma_+=Q^t Gamma Q/2 et K_+=Q^t K Q/2. Aucun h automorphisme
+de Gamma n'est suppose ; cette compression vaut aussi pour sa moyenne.
+La geometrie donne R0=K_++J/2>=0, de denominateur4. Poser R=Gamma_++R0.
+Alors A=3I-R+J/2 ;4R est une matrice symetrique ENTIERE non negative
+pour tout bord binaire (Gamma_+ est a demi-entiers).
+
+Les deux relations d'etoiles paires ont pour somme/difference
+ w=(2,2,1^20), v=(0,0,1^10,-1^10), avec Aw=Av=0.
+Comme sum w=24, Rw=3w+12*1. Pour D_w=diag(w), definir L_R comme le
+laplacien aux conductances w_i*w_j*R_ij et L_K aux conductances w_i*w_j.
+On obtient EXACTEMENT
+ D_w A D_w = L_R - L_K/2,  L_K=24 D_w-w*w^t.
+Les deux sont des laplaciens positifs. R0 seul a151 aretes de poids
+strictement positif et est deja connexe (O0 est adjacent a toutes les
+autres orbites). Donc L_R a TOUJOURS une seule composante, quel que soit
+Gamma : ses composantes ne peuvent porter le rang variable de A.
+
+Sur1-perp, L_K est defini positif. Sous A PSD, les valeurs propres
+generalisees de (L_R,L_K) sont >=1/2 ; chaque egalite ajoute une direction
+de noyau, en plus des constantes. Ainsi rangA10 equivaut a une multiplicite
+11 du seuil1/2 sur cet espace de dimension21. Reformulation entiere plus
+simple : H=3I-R=A-J/2 verifie
+ ker H = ker A inter1-perp,
+car Hx=0 donne0=w^t Hx=-12*sum x, et la reciproque est immediate.
+Le fonctionnel somme est non nul sur kerA (il contient w), d'ou
+nulliteH=nulliteA-1. Donc
+ rangA=10 <=> multiplicite de12 dans4R egale11.
+Sous A PSD, H a exactement une valeur propre negative (tester w,
+et la perturbation est de rang1), dix positives et onze nulles.
+Ainsi4R a une valeur propre>12, onze egales a12 et dix<12.
+C'est une condition spectrale forte, PAS une preuve de rangA10 pour les
+bords de nullite14, ni une exclusion de H-INV ou Conway.
+
+OBSTRUCTION STRUCTURELLE A UN LAPLACIEN DIRECT. Les blocs geometriques sont
+ K_+[L_y,L_z]=3/4*[y=z]+1/4*[z=y^1],
+ K_+[L_y,R_z]=-1/2+3/4*[y=z]+1/4*[z=y^1],
+ K_+[O_i,L_y]=K_+[O_i,R_y]=0.
+Donc A[L_y,R_y]=-Gamma_+[L_y,R_y]-1/4<0, tandis que les entrees O-L/R
+sont non positives. Les deux noyaux donnent, ligne par ligne,
+ sum_z A[L_y,R_z] = -sum_i A[L_y,O_i] >=0.
+Chaque ligne L_y du bloc L-R contient donc une entree strictement positive ;
+de meme pour chaque colonne R_z. Au moins10 paires hors diagonale de A
+sont positives, toutes dans L-R. Elles valent1/4 ou1/2, et correspondent
+a un bloc original2x2 SANS ARETE, par la demi-integralite de Gamma_+.
+A n'est donc jamais lui-meme un laplacien ordinaire a poids positifs.
+
+L'analogue canonique de la correction a UNE droite ne marche pas non plus.
+Garder w dans le noyau et ajouter un seul mode dans l'espace des deux
+etoiles force la direction v, soit A+alpha*v*v^t, alpha>0. Or chaque
+ligne L_y a somme d'adjacences Gamma_+ egale2 vers O+L. Parmi les huit
+L_z non mates, au plus quatre entrees peuvent etre non nulles (pas0,5).
+A une entree nulle, K_+=0 : la correction cree l'entree positive alpha.
+Une congruence diagonale positive ne change pas ce signe. Ceci exclut
+seulement cette construction canonique, pas toute transformation imaginable.
+
+CONTROLES PROPRES. Geometrie K_+ exacte et identites de blocs ; support
+fixe151 aretes/une composante. Une fixture rationnelle propre
+ Gamma_+=d*d^t/136-v*v^t/10, d=(4,4,6^20),
+est non negative, verifie Gamma_+ w=d, Gamma_+ v=-2v, et la congruence.
+Elle n'est PAS un bord binaire/a demi-aretes, ni un graphe C1/C2.
+Son spectre exact A est0^2,1^4,2^5,3^10,(42/17)^1 : rang20 et A PSD ;
+rangH21. Elimination exacte par DomainMatrix ; le premier essai avec
+elimination d'expressions generales a ete arrete car inutilement lent.
+Aucun autre processus arrete, aucun processus restant, aucun germe du
+pair lu ou re-audite. Code h_even_network.py ; artefact h_even_network.json.
