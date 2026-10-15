@@ -3682,3 +3682,77 @@ choix de signes. Le minorant diagonal de cette fixture vaut17/4, donc
 inconclusif au seuil10. Ces objets ne sont pas des bords C1/C2 ou des SRG.
 Artefact h_mixed_energy.json. Aucun fichier du lot55 lu, aucune certification
 du producteur refaite, aucun processus actif. ODD9, H-INV et C1 restent ouverts.
+
+### 15/10, suite794/795 : reduction exacte des orientations et coupes de direction
+
+794 puis795 lus/acquittes. Le trou795 a ete observe lors de l'envoi796 ;
+aucune interrogation repetee d'une boite vide. Reponse796 : chemins absolus
+vers ce depot et lab_exchange_2026-10-14. Les commits sont LOCAUX, pas
+pousses sur le depot distant. h_mixed_energy.py importe maintenant les
+modules de geometrie seulement dans report() ; les trois fonctions
+reutilisables s'importent depuis l'export avec SymPy seul.
+
+RETOUR NEGATIF ACCEPTE DU PAIR795. Sur ses47 moyennes, b40, rangA10,
+Frobenius20. Capacite spectrale151,43 et trS30,67 : notre borne ne coupe
+rien. Energie ponderee7,108<=10, mais norme operateur1,495>1, donc U
+reste impossible pour les orientations observees. L'energie est concentree.
+Les bornes diagonales essayees restent inconclusives. Les47 moyennes
+appartiennent deja a une classe entierement enumeree : inutile de refaire
+ce calcul ou de re-auditer les certificats. Aucun de ces fichiers lu ici.
+
+PRECISION DE MODELISATION. Les fuites de B_k individuels dans un noyau
+ne sont PAS une obstruction : leurs signes peuvent les annuler. Seules
+les sommes N_gauche^t B=0 et B N_droite=0 sont requises. Projeter tous les
+canaux puis relaxer les signes donne une borne necessaire sure, mais la
+norme b/2 ne reste fixe dans la projection que pour les sommes satisfaisant
+les equations de portee. Cette precision transmise dans796.
+
+REDUCTION EXACTE. Pour une moyenne fixee, constituer la matrice rationnelle
+R dont la colonne k vectorise N_gauche^t B_k et B_k N_droite pour tous
+les noyaux requis (A,A' a gauche, C,C' a droite, ou blocs correctement
+shortes). Les signes doivent verifier R epsilon=0. Une RREF fournit
+ epsilon=L z,
+ou les z sont des coordonnees LIBRES originales de epsilon, donc +-1.
+Ce parametrage est exact avec la condition restante |(Lz)_i|=1.
+Apres passage d'une equation homogene aux coefficients entiers primitifs,
+une somme de coefficients impaire donne immediatement une contradiction.
+
+Une ligne a deux termes a z_i+c z_j de L donne
+ z_i z_j=(1-a^2-c^2)/(2ac).
+Si ce nombre n'est pas +-1, aucun signe n'est possible ; sinon il fusionne
+deux variables de signe, avec leur signe relatif. Iterer ces fusions peut
+faire apparaitre d'autres lignes a deux termes. Ce n'est pas seulement une
+elimination lineaire : exemple epsilon3=epsilon1+2epsilon2, dimension
+lineaire2, force epsilon1=-epsilon2 et ne garde qu'une dimension de signe.
+Les lignes a trois termes ou plus restent imposees explicitement.
+
+Si d signes restent apres propagation, au plus2^(d-1) choix modulo inversion
+globale suffisent. Cette inversion est exactement l'action de h sur le bloc
+mixte pour la moyenne fixee. Le programme refuse l'enumeration au-dela de
+d14 par defaut (8192 essais maximum). Ce n'est PAS une borne universelle
+sur d, ni une enumeration abordable de toutes les moyennes. Pour40 signes
+libres, le programme affiche2^39 essais et ne lance rien.
+
+COUPES QUI VOIENT UNE DIRECTION. Pour toute paire de vecteurs rationnels
+u,v, la positivite de U=[[A',-B],[-B^t,C']] impose, en testant(u,+-v),
+ |2u^t Bv| <= u^t A'u+v^t C'v.
+Le membre gauche est la valeur absolue d'une forme LINEAIRE en epsilon.
+Effacer les denominateurs fournit deux inegalites entieres directement
+utilisables par un solveur. Les directions peuvent provenir d'un vecteur
+singulier flottant puis etre rationalisees : la validite de la coupe ne
+depend d'aucune certification de ce vecteur comme vecteur propre.
+Cela vise directement l'obstruction de norme operateur, que la norme
+totale peut manquer. Une liste finie de coupes est seulement necessaire.
+
+OUTIL AUTONOME : code/codex/h_orientation_kernel.py, fonctions
+range_equations, reduce_sign_kernel, operator_direction_cut,
+enumerate_reduced_signs. Artefact h_orientation_kernel.json. Les noyaux et
+blocs moyens sont ceux certifies par le producteur, jamais recalcules ici.
+Controles propres : annulation de deux canaux qui fuient chacun, parite,
+fusion de signes, condition a trois termes non automatique, et48 petits
+systemes compares a l'enumeration directe des signes. Une fixture
+algebrique10D avec A'=C'=2I/3 et deux canaux a energie9/4<=10 mais norme
+operateur3/2 ; les deux coupes |-3e1+3e2|<=4, |-3e1-3e2|<=4 rejettent
+toutes ses orientations. Aucun de ces exemples n'est un graphe C1/C2.
+Aucune nouvelle moyenne reelle exclue ; ODD9, H-INV et C1 restent ouverts.
+Aucun processus actif, aucun calcul intensif lance pendant le jeu.

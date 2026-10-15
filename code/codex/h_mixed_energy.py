@@ -14,11 +14,6 @@ import sys
 import sympy as sp
 from sympy.polys.matrices import DomainMatrix
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from h_even_network import geometry
-from four_star_profile_join import LABELS
-
-
 def shorted_upper(upper, kernel):
     """Short a producer-positive upper block to ker(kernel^T).
 
@@ -91,6 +86,12 @@ def counts_and_mixed(gamma, plus, minus, h):
 
 
 def report():
+    # The reusable energy/shorting functions above need only SymPy. Keep the
+    # repository-specific geometry imports inside the optional report runner.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from h_even_network import geometry
+    from four_star_profile_join import LABELS
+
     table = []
     by_cost = Counter()
     for a, b, c, d in product((0, 1), repeat=4):
