@@ -3900,3 +3900,80 @@ rationnelles d'inertie connue, pivot diagonal nul, et seuil volontairement
 trop haut refuse. Le premier lancement a rencontre une conversion bool
 SymPy/int ; corrigee, les controles passent en moins d'une seconde.
 Aucune moyenne reelle exclue, aucun processus actif, aucun calcul lourd.
+
+### 15/10, suite803 : les cassures comme circulations par paire de composantes
+
+803 lu/acquitte. Le pair rapporte des produits de volume faibles sur HB_1
+(0,0067 ;0,0001 ; environ0) : aucun obstacle a la seconde saturation par
+ce filtre. near_0 passe aussi ; kmilp_obj53_ambig a deja un bloc upper
+negatif. Ces retours sont acceptes sans reexecution. L'enumeration KHOMOG
+reste plus forte sur HB_1. Le cas upper shorte singulier exige la reduction
+de support signalee ; aucun resultat d'exclusion n'en depend ici.
+
+Le lemme de composantes du pair803 fournit la nouvelle entree : les
+indicateurs de cote sont h-pairs ; quand ils sont dans le noyau global T,
+ils forcent les comptes equitables. Une composante W de H_l ne contenant
+pas m a indicateur pur sur L_W ; une composante Z de H_m ne contenant pas l
+a indicateur pur sur R_Z. Poser B le bloc mixte de T dans la base de h.
+Les equations B^t*kappa_W=0 et B^t*kappa_Z=0 se restreignent INDEPENDAMMENT
+au rectangle L_W x R_Z. Les composantes actives contenant l'autre droite
+ont des termes O supplementaires : le present critere ne s'y applique pas
+automatiquement.
+
+CONVENTION IMPORTANTE. Dans le bloc d'adjacence[[a,b],[c,d]], les deux
+orbites d'aretes sont PARALLELE{a,d} et CROISEE{b,c}. 'Croisee' ici designe
+ce type d'orbite, PAS le simple fait d'aller de L a R. Une orbite cassee
+est un canal de signe epsilon. Une cassure SIMPLE en donne un, une DOUBLE
+en donne deux, parallele et croise. Ils sont des aretes paralleles d'un
+multigraphe biparti D sur les ORBITES de labels L_W,R_Z.
+
+MATRICE D'INCIDENCE SIGNEE. Deux fois les contributions aux equations de
+composantes valent(-epsilon,-epsilon) pour un canal parallele et
+(-epsilon,+epsilon) pour un canal croise (premier bout dans L, second R).
+Ce systeme admet des signes si et seulement si :
+ 1. toute valence active de D est PAIRE ;
+ 2. chaque composante connexe contient un nombre PAIR de canaux CROISES.
+La condition caracterise uniquement ces equations, pas C1/C2 ou la PSD.
+
+NECESSITE. Une somme impaire de signes ne peut etre nulle. Dans chaque
+composante, sommer les equations sur L et sur R puis soustraire donne
+sum_croises epsilon=0 : le nombre de canaux croises est pair. Le nombre
+total d'aretes est deja pair puisque D est biparti et toutes les valences
+sont paires.
+SUFFISANCE CONSTRUCTIVE. Prendre un tour eulerien ferme dans chaque
+composante. Fixer le premier signe et propager le suivant afin d'annuler
+les deux contributions consecutives a chaque passage par un sommet.
+La fermeture demande(-1)^E fois le produit des rapports de bouts=1.
+E est pair, et le produit des rapports vaut(-1)^nombre_croises. La parite
+paire garantit donc la fermeture ; tous les passages se compensent deux
+a deux. Les visites multiples et les aretes paralleles sont permises.
+
+DIMENSION EXACTE. Une dependance entre les lignes se propage par
+ y_R=-s_e*y_L, s_e=+1 parallele,-1 croise.
+Sur une composante, elle a dimension1 si CHAQUE cycle contient un nombre
+pair de canaux croises, sinon0. Donc rang=V-c_bal et dimension du systeme
+lineaire E-V+c_bal. Toute solution signe est determinee par au plus ce
+nombre de signes libres, mais |Lz|=1 reste a imposer. Ne pas quotienter
+independamment chaque composante pour le probleme global : C2/PSD peuvent
+coupler leurs choix. Seul le retournement h de tous les signes est acquis.
+
+NE PAS CONFONDRE LES DEUX PARITES. La solvabilite requiert seulement une
+parite totale PAIRE par composante ; le rang baisse d'une unite seulement
+si TOUS ses cycles ont parite paire. Deux carres ayant chacun un canal
+croise, et PARTAGEANT un sommet, ne sont pas orientables separement mais
+leur union l'est : leurs defauts se compensent au sommet commun. S'ils
+sont disjoints, l'union reste impossible. De meme, une cassure double seule
+est impossible, mais deux cassures doubles partageant un sommet peuvent
+satisfaire les equations. C'est un mecanisme precis de cooperation des
+cassures ; l'interdiction de chaque cycle impair serait FAUSSE.
+
+OUTIL AUTONOME : code/codex/h_component_circulation.py, classify_tile.
+Il fournit l'obstruction, le rang exact par propagation de signes, et un
+temoin par tour eulerien quand les equations sont faisables. Exemples
+propres : carre parallele, carre impair, deux carres impairs joints ou
+separes, une ou deux cassures doubles.32 petits multigraphes supplementaires
+compares a une enumeration litterale des signes et a leur rang rationnel.
+Tout passe en moins d'une seconde. Artefact h_component_circulation.json.
+Aucun fichier de graphe du pair lu ; aucune nouvelle famille C1 exclue.
+Ce critere est un filtre sur les moyennes et une construction des seules
+orientations equitables du rectangle, PAS la construction d'un SRG.
