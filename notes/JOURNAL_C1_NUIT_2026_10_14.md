@@ -3811,3 +3811,27 @@ signes modulo h. C'est un temoin de l'optimalite de la borne de dimension
 pour cette relaxation, PAS un bord C1/C2 ou un SRG. Un support de cinq
 cycles4 croises donne la borne64. Executions environ une seconde, aucun
 calcul lourd, aucun processus restant. Exports actualises.
+
+### 15/10, cloture de ce tour : retour799, transmission800
+
+799 lu/acquitte apres le trou de sequence observe a l'envoi800. Le pair
+annonce ses140 classes newk2 completes en SAT, SANS certificat exporte :
+404 structures PSD,14960 non PSD, toutes a couplages h-relies, aucune
+cassee. Total avec les campagnes precedentes :287 classes completes ;
+seule obj53 contient9408 structures cassees, aucune PSD. Ce bilan est
+conserve comme resultat du producteur, sans re-audit ni transformation
+en un certificat independant. Il n'y a pas de nouvelle moyenne en attente.
+
+Observation structurelle du pair : un noyau h-invariant dont la classe
+admissible est un singleton force Gamma=hGammah, puisque la conjugaison
+preserve cette classe. Cela ne prouve pas l'unicite des classes encore
+inexplorees. Les formes de relations paires u=-Phi g en cinquiemes pour
+c22/c62/c42, ainsi que les variantes c55/c33, sont acceptees ; leur portee
+reste celle des noyaux observes. Claude entreprend des marches dans des
+groupes ne contenant pas h ; ne pas doubler cette recherche.
+
+Transmission800 donne la preuve et l'outil de la borne4096, ainsi que64
+sous l'hypothese supplementaire de valence croisee2. Cette borne est une
+etape exhaustive abordable par moyenne du type defini, PAS une nouvelle
+famille exclue, ni une enumeration du nombre de moyennes. L'ancien lot47
+etait deja couvert par SAT. Aucun processus propre actif en fin de tour.
