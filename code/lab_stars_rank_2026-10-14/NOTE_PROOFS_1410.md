@@ -289,6 +289,11 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   h-symmetric, the minimum is also exactly 12, attained by fourstar_psd_asym_c31.json (VERIFIED exactly: c = (3,1),
   rank 34, 4 mixed relations, h-asymmetry 16). In every h-symmetric structure the 12 splits as 9 (the m-odd vectors
   f_y, i.e. no relation has a non-trivial h-odd part) + at least 3 (the m-even vectors), see the board text above.
+- Decomposition beyond symmetry (EVIDENCE, 900 NON-h-symmetric PSD structures, 00:45 UTC): the ten m-odd vectors
+  f_y = 1_by - 1_b'y (pure swap b <-> b', y outer) ALWAYS add exactly 9 to the rank beyond X_l, whether they are added
+  before or after the ten m-even vectors 1_by + 1_b'y, which add 4 to 7. Equivalently every relation of T_S4 has a
+  constant m-odd part on the outer letters (and, by symmetry, a constant l-odd part): relations are pure-swap even
+  modulo the star differences. (N9) = (this ODD9 law) + (the even vectors add >= 3).
 - ODD QUOTIENT (odd_quotient.py, 15/10 00:20 UTC): for an h-symmetric structure the h-odd eigenvectors of the 59-vertex
   graph live on 24 orbits (a^, b^, 10 + 10 label orbits, two C4 orbits); their signed adjacency A^- has spectrum in
   [-4, 3] exactly when T and U are PSD on that sector, and mult_3(A^-) = h-odd nullity (two star differences forced:

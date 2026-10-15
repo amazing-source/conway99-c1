@@ -43,6 +43,12 @@ differences, 'ODD-h'), the m-even vectors add 3 to 6. ODD-h is a statement about
 whose spectrum lies in [-4, 3] (odd_quotient.py); it holds on all data but the third odd eigenvalue can be pushed to
 0.002 (mode oddgap), so it may fail; (N9) could survive through the even part.
 
+- Decomposition beyond symmetry (EVIDENCE, 900 NON-h-symmetric PSD structures, 00:45 UTC): the ten m-odd vectors
+  f_y = 1_by - 1_b'y (pure swap b <-> b', y outer) ALWAYS add exactly 9 to the rank beyond X_l, whether they are added
+  before or after the ten m-even vectors 1_by + 1_b'y, which add 4 to 7. Equivalently every relation of T_S4 has a
+  constant m-odd part on the outer letters (and, by symmetry, a constant l-odd part): relations are pure-swap even
+  modulo the star differences. (N9) = (this ODD9 law) + (the even vectors add >= 3).
+
 ## 3. Conjecture (NOGRID) and a census-free exclusion
 (NOGRID) No admissible four-star structure with T, U >= 0 has grid(l,m) = 1.
 (LOW) Every admissible four-star structure with T, U >= 0 and c(l), c(m) <= 3 has nullity <= 13 (rank >= 31).
@@ -50,11 +56,17 @@ whose spectrum lies in [-4, 3] (odd_quotient.py); it holds on all data but the t
 Consequence (PROVED, given (NOGRID) and (LOW)): in a Conway graph every pair of lines at every vertex gives a PSD
 four-star structure, so by (NOGRID) no two lines through a vertex span a grid: rho = 0 and every line has c <= 3
 (no singleton part). Then (LOW) gives nullity <= 13 at every pair, against nullity = 14 + delta >= 14 (G9). No census
-input is used. Also (N9) + (NOGRID) is contradictory (N9 forces grids).
+input is used. Also (N9) + (NOGRID) exclude Conway without the census: in a Conway graph (N9) forces >= 4 grids on
+every line, while (NOGRID) forbids every grid.
 
 EVIDENCE: (NOGRID): no PSD structure with a grid on (l,m) was ever found (earlier forced-grid searches best -0.35;
 15/10: cold forced-grid walks -0.21, repaired seeds -0.51 to -0.57, walks from them about -0.40 after minutes).
 (LOW): all PSD data with c <= 3 on both lines have nullity <= 12 ((3,3): 12, (2,3): 11, (1,1): 10); (N9) would give 12.
+
+Checked (VERIFIED numerically, 00:50 UTC): a grid on (l,m) fixes the block structure (O_a, O_a', O_b, O_b' and the
+four C4 labels: C4 isolated from the rest, perfect matchings and 2-regular bipartite pairs as in P11), and the
+compressions of T and U to these 8 block vectors are the same for every grid structure and PSD (T: 0^5, 5, 7.5, 7.5;
+U: 0^4, 2, 10, 10, 70/3). So (NOGRID), if true, cannot come from the coarse block partition alone.
 
 ## 4. What would make this a proof
 - (N9), (NOGRID), (LOW) are statements about finitely many 59-vertex configurations; no exhaustive method is in sight.

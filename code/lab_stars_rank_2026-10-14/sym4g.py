@@ -350,6 +350,15 @@ def main():
                 rk = n - nul_num
                 sch = min(rk - (23 - cl), rk - (23 - cm))
                 s2 = -float(sch) - 0.1 * float(absev[13])
+                if os.environ.get("ASYMW"):
+                    # drift away from the h-symmetric region (diversity): reward h-asymmetry of the edge set
+                    hp = getattr(main, "hperm", None)
+                    if hp is None:
+                        hm = {0: 1, 1: 0, 2: 3, 3: 2}
+                        hp = [idx[frozenset(hm.get(y, y) for y in S[i])] for i in range(n)]
+                        main.hperm = hp
+                    asym = float(np.abs(G[np.ix_(hp, hp)] - G).sum()) / 2.0
+                    s2 += float(os.environ["ASYMW"]) * min(asym, 60.0)
                 bests = getattr(main, "bests", 99)
                 if sch < bests:
                     main.bests = sch
