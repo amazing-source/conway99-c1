@@ -41,14 +41,14 @@ vraie, (H3) + L8 n'aurait donc pas suffi à exclure Conway.
 ### 1.2 Encore ouverts, compatibles avec toutes les données
 | # | énoncé (local, sur les structures admissibles avec T, U >= 0) | ce qu'il donnerait | données |
 |---|---|---|---|
-| O1 | (B') nullité >= 14 => aucune droite avec c = 1 [CALIBRATION 15/10 : son analogue est faux dans les vrais srg(243), où toute droite a c = 1] | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2, mais 329 ont la grille sur (l, m), qui force c >= 2 à elle seule : seuls les 2 objets c55 testent vraiment (B') ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (280 424 visites positives avec c = 1), et UNE seule lignée a visité c = 1 (voir 3.8) |
+| O1 | (B') nullité >= 14 => aucune droite avec c = 1 [15/10 : la comparaison srg(243) ne dit rien contre (B') : avec le c de Conway (composantes de H_l), toutes les droites testées des vrais srg(243) sont spéciales] | toute droite de Conway est spéciale. N'EXCLUT PAS SEUL : il faut aussi (C) | 331/331 objets de rang 30 ont min c >= 2, mais 329 ont la grille sur (l, m), qui force c >= 2 à elle seule : seuls les 2 objets c55 testent vraiment (B') ; avec une droite c = 1 la nullité vue ne dépasse pas 10 (280 424 visites positives avec c = 1), et UNE seule lignée a visité c = 1 (voir 3.8) |
 | O2 | ODD9 : les 10 vecteurs impairs ajoutent exactement 9 au rang | implique (B') et nullité <= 12 + min(c) | exact sur tout objet positif testé ; sans positivité, quasi-échecs (écart 2e-5) mais aucun échec exact enregistré |
 | O3 | (T8) pont des transversales : nullité >= 14 => t(l) >= 8 et t(m) >= 8 (variante : t(l) + t(m) >= 15) | P >= 924 (variante : P >= 867), contre P <= 852 (certificat exact de Codex, ordre 9) : PAS DE CONWAY | 331/331 : t = (12,12) dans 329 cas, (8,8) dans 2 ; FRAGILE : avec t <= 7 la nullité vue atteint 13 (voir 3.8) |
 | O4 | (K22) nullité >= 14 => rang_7(8T_S4) >= 23 | k >= 24, donc r = 37 exclu ; avec >= 25 : r = 37 et 39 exclus | rang_7 = 25, 29 ou 30 sur les 331 |
 | O5 | (SQ30) rang 30 => classe de carrés de det(8T_I) = 2*3*5*7^e | aucun bloc de Conway de rang 30, donc delta >= 1 à toute paire | 331/331 (+ sc_7_null14) ; un objet NON positif de rang 30 a la classe -2 |
 | O6 | (N15) aucun objet positif de nullité >= 15 | avec O5 : PAS DE CONWAY (tout bloc aurait rang 30, donc devrait passer DISC) | jamais vue : ~288 000 visites positives à nullité 14 dans les journaux, aucune à 15 ou plus ; sc_2_null14 (T seule positive, U non) atteint 16 |
 | O7 | H4' : pas de droite c = 1 des deux côtés à nullité >= 14 | cas particulier de O1 | max nullité 10 en c = (1,1) |
-| O9 | (H-MATCH) nullité >= 14 => M_1 = h(M_0) et M_3 = h(M_2) (couplages h-reliés) [ajouté 15/10 06:00] | chaque sommet serait de Hamming : PAS DE CONWAY (L8 ; ou Makhnev ; ou rho <= 191) — implication PROUVÉE et relue | 429 structures de nullité >= 14, toutes h-invariantes mais issues de familles h ; record cassé positif = 13 ; fausse sans U >= 0 ; aucun des 129 noyaux connus ne la viole ; CALIBRATION : son analogue est FAUX dans un vrai srg(243) (trade_aut108) |
+| O9 | (H-MATCH) nullité >= 14 => M_1 = h(M_0) et M_3 = h(M_2) (couplages h-reliés) [ajouté 15/10 06:00] | chaque sommet serait de Hamming : PAS DE CONWAY (L8 ; ou Makhnev ; ou rho <= 191) — implication PROUVÉE et relue | 429 structures de nullité >= 14, toutes h-invariantes mais issues de familles h ; record cassé positif = 13 ; fausse sans U >= 0 ; aucun des 129 noyaux connus ne la viole ; la comparaison srg(243) ne la teste pas (l'échec de l'analogue y est automatique ; deux droites n'y forcent aucune relation, contre 10 chez Conway) |
 | O8 | (C) toute Conway a une droite non spéciale | avec O1 ou O2 : PAS DE CONWAY | aucune idée de preuve ; le cas « toute droite non connexe » est aussi un verrou du programme 7-adique de Codex (note 127, verrou 3) |
 
 ### 1.3 Autres voies d'exclusion de la journée (asymétrie, solveur, Codex)
@@ -305,3 +305,23 @@ Journal des résultats, au fil de l'eau (heures UTC).
   objets) est énumérée COMPLÈTEMENT (24 144 structures, 96 positives, aucune à couplages cassés) ; les 129 noyaux
   sont donc tous traités par SAT complet ou MILP. Balayages de sous-noyaux arrêtés (aucune structure positive cassée
   dans 189 exécutions : 760 positives de nullité 14, toutes h-reliées ; 4 593 cassées, toutes non positives).
+- 07:52 : fin des deux énumérations de groupes SANS h (2 h chacune, incomplètes) : <Z5, hM> : 143 390 structures,
+  72 positives, nullité max 9 ; <Z5, (0 2)(1 3)M> : 164 907 structures, 26 positives, nullité max 13 (10 structures
+  non h-invariantes, c = (6,6), t = (12,12), grille). Dans les quatre groupes sans h étudiés (Z5M complet, Z5s, Z5sM,
+  Z5hM), la nullité positive maximale est 13 (ou 9) : le « mur à 13 » se retrouve partout hors de h.
+- 07:56 : fin de la marche de calibration depuis le bloc BvLS (2 700 s) : 8 782 mouvements, 8 207 visites positives,
+  toutes de nullité 20 à couplages h-reliés, AUCUNE structure positive cassée à aucune nullité. Nuance honnête : sur
+  Conway, la même marche trouve des structures positives cassées jusqu'à la nullité 13 ; en 243 elle n'en trouve pas
+  du tout. La calibration montre que la méthode peut rater des blocs cassés qui existent, mais les deux situations ne
+  sont pas identiques (243 plus rigide).
+- 08:00 : CORRECTION après une seconde relecture indépendante (calibration srg(243)). Les nombres sont justes, les
+  conclusions des entrées 07:15 à 07:40 étaient trop fortes ou fausses :
+  (1) l'échec de l'analogue de (H-MATCH) dans les vrais srg(243) est AUTOMATIQUE (en un sommet, « toutes les paires
+  h-reliées » équivaut à « point de Hamming », par le même argument que la preuve) : il ne dit rien de la loi ;
+  (2) (B') : ERREUR de ma part ; dans srg(243), mon c spectral ne compte pas les composantes de H_l ; avec le sens de
+  Conway, toutes les droites testées sont spéciales ; la comparaison ne dit rien contre (B') ;
+  (3) les marches 243 n'ont jamais quitté leur graine (blocs rigides), et le « témoin » était trivial : cela ne
+  mesure pas nos marches Conway, qui bougent ;
+  (4) fait de structure (vérifié) : deux droites portent 5k - 16 - g relations forcées : 10 chez Conway, aucune pour
+  tout autre jeu lambda = 1, mu = 2 (vrais blocs à deux droites de srg(243) : nullité 4 ou 5). (H-MATCH) porte sur un
+  phénomène propre à Conway. Je retire « l'analogue est faux, donc (H-MATCH) perd son crédit ».

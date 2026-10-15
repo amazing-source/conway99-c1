@@ -433,10 +433,11 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
 - Evidence for (H-MATCH): all 429 distinct saved nullity >= 14 structures are h-invariant (all from h-families or
   short walks from h-invariant seeds); PSD broken record nullity 13; T-only form FALSE (U >= 0 essential); none of the
   129 distinct kernels of the 331 objects carries a PSD broken structure (MILP + complete SAT enumerations).
-- CALIBRATION against it: in srg(243,22,1,2) the analogue (six-star blocks, forced nullity 20) is FALSE: real blocks of
-  a new srg(243) are PSD of nullity 20 with broken matchings, while BvLS blocks are h-related (BvLS is grid-full);
-  HMATCH walks from the BvLS block never reach the broken blocks that exist (islands). So not finding broken blocks
-  for Conway is weak evidence.
+- srg(243) comparison (CORRECTED 08:00 UTC after a second independent review): the failure of the six-star analogue
+  of (H-MATCH) in real srg(243) is automatic (all pairs h-related at v <=> v Hamming, by the same argument), so it
+  says nothing about the local law; the (B') comparison used a spectral c that, in srg(243), does not count the
+  components of H_l (with the Conway meaning every real line is special); the 243 walks never moved. Structural fact:
+  two lines force 5k - 16 - g relations: 10 for Conway, none for any other lambda = 1, mu = 2 parameters.
 
 ## OPEN (none of these is established)
 - (H-MATCH) [would EXCLUDE Conway; see the 15/10 LOOP section].

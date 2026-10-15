@@ -1,7 +1,7 @@
 # (H-MATCH): a local symmetry law that would exclude Conway (LAB, 15/10/2026, ~06:00 UTC)
 
 FINAL STATUS (15/10, 07:40 UTC): (H-MATCH) is ABANDONED as a target (not refuted): its evidence is family bias,
-its srg(243) analogue is false, and local searches cannot decide it. KEPT: the implication (section 2) and its
+local searches cannot decide it (the srg(243) comparison, corrected at 08:00, does not test it). KEPT: the implication (section 2) and its
 contrapositive G18 (>= 4 broken blocks per vertex of a Conway graph, modulo L10). Last results: the largest kernel
 class (15 objects) enumerated COMPLETELY (24 144 structures, 96 PSD, none broken), so all 129 kernels are settled
 (complete SAT or MILP); sub-kernel sweeps stopped after 189 runs (760 PSD nullity-14 structures, all h-related).
@@ -113,6 +113,9 @@ cryptominisat UNSAT, no certificate; exact checks are marked)
   This is not a general lemma: a SAT model with all ten outer l-transversals (and the two cross ones) and
   M_1 != h(M_0) is satisfiable (twist_sat.py), so any obstruction is spectral, not combinatorial.
 - Z5s = <Z5, (0 2)(1 3)> (no h): 197 764 invariant structures in 2 h (not complete), 116 PSD, max nullity 13.
+- 07:52 UTC: <Z5, hM> (no h): 143 390 structures in 2 h (not complete), 72 PSD, max nullity 9; <Z5, (0 2)(1 3)M>
+  (no h): 164 907 structures (not complete), 26 PSD, max nullity 13 (10 structures, not h-invariant, c = (6,6),
+  t = (12,12), grid). In all four h-free groups studied the maximal PSD nullity is 13 (or 9).
 
 - 06:25 UTC, kernel-imposed MILP (kernel_milp.py, scipy/HiGHS; linear model: C1, C1', ker T >= N i.e.
   Gamma N = (3I - K) N, C2 as lazy cuts; objective = number of star-pair orbits {p, h(p)} with Gamma_p != Gamma_h(p)):
@@ -147,42 +150,49 @@ cryptominisat UNSAT, no certificate; exact checks are marked)
   Berlekamp-van Lint-Seidel graph (built by make_bvls.py, 40 vertices examined) every vertex is a Hamming point (55/55
   pairs of lines are grids) and BOTH halves of the (H-MATCH) relation hold at every pair; in the three new srg(243)
   of the asymmetric campaign (spreadfree_243_2026-10-12: trade_aut108, trade_aut162, tricayley_Z3x4_grids25;
-  60 vertices each, 17 or 25 grids per vertex) NEITHER half holds at ANY pair, grids included. So in real
-  lambda = 1, mu = 2 graphs h-related local matchings go with the grid-full (Hamming) regime, which L8 forbids for
-  Conway; the high-nullity local objects we can find are all of that BvLS-like kind.
+  60 vertices each, 17 or 25 grids per vertex) NEITHER half holds at ANY pair, grids included. [Corrected after the
+  second independent review, 08:00 UTC: by the argument of section 2, which uses only lambda = 1 and works for any
+  number of lines, 'all pairs at v h-related' is EQUIVALENT to 'v is a Hamming point'. So this observation is a
+  consistency check of the Proposition, not evidence about the local law.]
 
-- CALIBRATION on srg(243,22,1,2) (stars_gen.py = the same model for general k, r, s; it reproduces stars_rank.build
-  and kval exactly for (14, 3, -4)): there T = 4I - Gamma - K, U = 9 Pi - T, rank T <= 110 - 22 = 88, so a SIX-star
-  block (three lines, 108 labels) has forced nullity >= 20, the analogue of the four-star nullity >= 14 for Conway.
-  Real blocks (real_block243.py, vertex 0, three lines): BvLS: admissible, PSD, nullity exactly 20, matchings
-  h-related for the three pairs; new243_trade_aut108: admissible, PSD, nullity exactly 20, matchings NOT h-related
-  (44-48 asymmetric star pairs per pair of lines). So the ANALOGUE of (H-MATCH) is FALSE in a real lambda = 1,
-  mu = 2 graph: forced-nullity PSD blocks with broken matchings exist there. (H-MATCH), if true for Conway, would be
-  specific to the Conway parameters (and then equivalent in effect to non-existence).
-  Same calibration for (B') (the night's other live lead, 'no forced-nullity block has a line with c = 1'): in real
-  srg(243) EVERY line has c(l) = 1 (= 39 - rank T_{X_l}; hmatch_tools_2026-10-15/lines243.py, 330 (vertex, line)
-  incidences in BvLS and in trade_aut108, plus 6 vertices of two more graphs: c = 1 always), while their six-star
-  blocks have the forced nullity 20. So the analogue of (B') is false in every real graph tested, and our Conway
-  population (all c >= 2) is again unlike real lambda = 1, mu = 2 graphs.
-  More real blocks (hmatch_tools_2026-10-15/sixstar243_more.log, graph-only): 36 six-star blocks (4 vertices x 3 line
-  triples in each of tricayley, trade_aut162, trade_aut108) all have nullity EXACTLY 20, the forced minimum, and are
-  PSD (lambda_2 = 4, lambda_min = -5), with broken matchings (hmatch243). So the analogue of (N15) ('no excess
-  nullity') is CONSISTENT with real graphs, unlike those of (H-MATCH) and (B').
-  Search calibration running: walk_gen.py (same HMATCH walk as for Conway) from the BvLS block, looking for broken
-  nullity-20 PSD blocks, which do exist (cal243/cal_bvls_f*.log; control from the aut108 block: finds itself at once);
-  kernel_sat_gen.py on the BvLS kernel (cal243/ksat_bvls.log).
+- CALIBRATION on srg(243,22,1,2) (corrected 08:00 UTC after the second independent review; numbers re-checked
+  exactly by the reviewer). stars_gen.py is the same model for general (k, r, s); for (14, 3, -4) it reproduces
+  stars_rank.build and kval up to renaming of the auxiliary (C2 counter) variables; for (22, 4, -5) its T is the
+  Schur complement of 4I - A (checked against BvLS and trade_aut108 at a vertex: T^2 = 9T, rank 88), and U = 9 Pi - T
+  is the Schur complement of 5I + A (U^2 = 9U, rank 110). A six-star block (three lines, 108 labels) has forced
+  nullity >= 20. Real blocks (real_block243.py, vertex 0, three lines): BvLS: admissible, PSD, nullity exactly 20,
+  matchings h-related; trade_aut108: admissible, PSD, nullity exactly 20, matchings NOT h-related.
+  WHAT THIS DOES AND DOES NOT SHOW:
+  * The failure of the six-star analogue of (H-MATCH) is AUTOMATIC: any srg(243) with a non-Hamming vertex refutes it
+    (section 2). It tests the Proposition, not the evidence for the local law.
+  * The analogy is loose. Two lines carry 5k - 16 - g forced relations beyond the stars (g = multiplicity of s):
+    10 for (99,14,1,2), and none for every other lambda = 1, mu = 2 parameter set (243: -16). Checked on real graphs
+    (hmatch_tools_2026-10-15/fourstar243.py): every two-line block has nullity 4 (trade_aut108, 165 pairs) or 5
+    (BvLS, 110 pairs). In Conway the 10 forced relations sit on the two lines h acts on; in srg(243) the 14 forced
+    relations of a six-star block need a third line, which h_lm fixes. (H-MATCH) concerns a Conway-only phenomenon.
+  * (B') calibration: INCONCLUSIVE (my earlier statement 'the analogue of (B') is false' was WRONG). In srg(243) the
+    spectral c(l) = 39 - rank T_{X_l} can only be 1 or 2 (H_l is cubic, r = 4 != 3, so 4I - A_{H_l} is invertible) and
+    it does not count the components of H_l, as it does in Conway (r = 3 = degree of H_l; P2, P3, P8). With the Conway
+    meaning, every tested line of the real srg(243) is special: H_l is disconnected (BvLS 10 components, trade 3-5,
+    tricayley 5-6; 330 lines per graph, reviewer).
+  * More real blocks (hmatch_tools_2026-10-15/sixstar243_more.log): 36 six-star blocks (4 vertices x 3 triples in
+    tricayley, trade_aut162, trade_aut108) have nullity EXACTLY 20 (exact rank of 15 T_S modulo 2^61 - 1 is 88, the
+    upper bound; reviewer), lambda_2 = 4, lambda_min = -5, and fail both halves of the h-relation at all three pairs.
+    The analogue of (N15) ('no excess nullity') is consistent with real graphs.
+  * Walks: the six-star blocks of real srg(243) are RIGID under 6- and 12-label re-solves (the re-solve returns the
+    seed or a non-PSD structure; maximum distance from the seed 0 edges; final walk from BvLS: 8 782 moves, no PSD
+    broken structure); the aut108 'control' started on a target and only re-found it (not a positive control); the
+    walks with 12 and 20 freed labels made no move before being stopped. This does not measure the Conway walks,
+    which DO move (PSD broken structures of nullity 13; a new rank-30 object 16 edges from its seed). A real control
+    would start from a perturbed (non-PSD or random admissible) neighbour of the aut108 block.
 
-## 4. Lesson of the calibration (07:30 UTC)
-Forced-nullity PSD structures are ISOLATED points for local moves, in both settings: identity-group walks from a
-rank-30 Conway object only revisit h-invariant objects; walks from the BvLS six-star block only revisit h-related
-blocks, walks from the trade_aut108 block only broken ones. Symmetric families were needed to find the Conway objects
-at all, so the population is determined by the families searched (all containing h), and the 'laws' read off it
-((B'), (T8), (SQ30), (H-MATCH)) describe those families. In srg(243) the analogues of (H-MATCH) and (B') are false.
-Rule for any future local law: test its analogue on the real srg(243,22,1,2) graphs first (stars_gen.py,
-real_block243.py, lines243.py, hmatch243.py).
+## 4. Lesson of the calibration (corrected 08:00 UTC)
+The srg(243) comparison does not test (H-MATCH): the failure of the analogue is automatic, the (B') comparison used a
+different c, and the 243 walks never moved. A failed analogue only shows that a law is not a parameter-free
+consequence of the local conditions; it cannot separate a family artefact from a Conway-specific mechanism. The one
+structural fact it brought out goes the other way: only Conway has forced relations between TWO lines, which is what
+(H-MATCH) is about. The evidence for (H-MATCH) therefore stands as before: family-biased, uncontradicted, with the
+13-wall in all walks and in all four h-free groups studied.
 
-## 5. Runs (state 07:30 UTC)
-ksat_all_kernels.py (complete SAT enumeration of all 129 kernel classes; class 6 completed separately in
-ksat_obj6_full.log), subkernel_sweep.py (drop 2 / drop 3), calibration walks cal243/cal_bvls_f{6,12,20} and
-cal243/cal_aut108_f6, cal243/ksat_bvls.log (BvLS kernel; the first SAT solve is slow), enumZ5hM and enumZ5sM
-(groups without h, 2 h cap). Scripts used for the evidence: work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/.
+## 5. Runs (state 08:10 UTC)
+All runs finished or stopped. Scripts used for the evidence: work/stars_rank_2026-10-14/hmatch_tools_2026-10-15/.
