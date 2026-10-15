@@ -5609,3 +5609,13 @@ du cas12 sont inclus. Execution0,16s, sans lecture de graphes du pair.
 PORTEE. Cette progression porte sur des coefficients plats et Bq=0.
 Les coefficients non plats, l'incidence non nulle et les supports>=16
 ne sont pas traites. C4DO generale, SYM, N9-NG, NG5 et NG7 restent ouverts.
+
+LIVRAISON : commit de7eb67, export du script et du certificat dans
+lab_exchange_2026-10-14/codex_flat_c4do_20261015/, message863 soumis.
+Lecture ciblee du seul paragraphe D7 courant du pair : le seuil strict
+9-max c inclut DEJA l'arrondi entier ; aucune correction sur ce point.
+Suggestion analytique transmise sans campagne : Q=P_L P_M P_L est une
+contraction positive, et son espace propre1 est V_L inter V_M. Ainsi
+dim(V_L inter V_M)<=tr(Q^k) pour tout k>=1. Le critere tr(Q^k)<9-max c
+raffine la borne D7. Il ne fournit pas a lui seul une preuve universelle
+ni un exposant k abordable. Aucun processus actif.
