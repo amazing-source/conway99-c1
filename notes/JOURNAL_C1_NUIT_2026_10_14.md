@@ -4607,3 +4607,101 @@ universelle est le calcul de Schur ci-dessus. Duree0,2s, aucun solveur,
 aucun graphe LAB ouvert, aucun processus long. Cette arithmetique montre
 comment la symetrie impose des relations par paquets de quatre ; hors de
 cette famille, elle ne fournit pas de contrainte sur l'asymetrie generale.
+
+### 15/10, suite833 : cible de relations mixtes et dimension de la liberte sans symetrie
+
+Filtre ramifie livre dans832, commit595aa1d. Message833 lu/acquitte.
+LAB confirme que son lemme utilise ODD9 ; les12 PSD manquantes venaient
+du cube0 non sauvegarde, qu'il relance. Depuis HB_1 :8884 visites PSD,
+meilleur objet sans h*p a nullite11,c=(3,2),t=(7,10). Depuis c22 :2019
+visites PSD, aucune sans h*p dans ce run. Son protocole d'inspection
+reste chez lui ; Codex poursuit une deduction nouvelle et n'a lu aucune
+de ses matrices. La notion sans h*p reste distincte du groupe complet
+trivial et d'un SRG construit.
+
+NOUVELLE ANALYSE, SANS Z5, SANS h*p, SANS ODD9. Noter X,Y les deux
+cotes24, O=X inter Y={02,03,12,13}, L=X moins O,R=Y moins O, de20 labels.
+La formule de cote deja etablie donne rangT_X=23-c_l et rangT_Y=23-c_m.
+Il faut traiter O correctement : ce n'est pas forcement une grille hors
+de nos anciennes familles cycliques. Sur O, T a diagonale5/2, entrees
+-1/4-Gamma sur les quatre aretes du C4 geometrique, et -Gamma sur ses
+deux diagonales. C1 interdit qu'une diagonale partage un sommet avec
+une arete de ce C4. La matrice est donc irreductiblement a diagonale
+dominante, avec au moins une dominance stricte sauf si tout le C4 est
+present. Ainsi delta=nullT_O vaut1 exactement pour la grille,0 sinon.
+Les19 motifs de O permis par les plafondsC1 donnent1 rang3 et18 rang4.
+Cette petite liste ne classe pas les graphes44.
+
+Sous T PSD, chaque noyau principal se prolonge par zero. Les deux noyaux
+de cote ont pour intersection exactement kerT_O, lui aussi prolonge par
+zero. Leur somme a donc dimension
+ k_cote = c_l+c_m+2-delta.
+Le nombre de relations mixtes independantes modulo celles de cote est
+ m = nullT-k_cote.
+Eliminer le support positif de O, puis choisir des bases principales
+positives des deux cotes. Leurs dimensions sont r_l=19-c_l+delta et
+r_m=19-c_m+delta. Pour les blocs obtenus A,E,C, definir
+ R_mix = A-E*C^-1*E^t.
+Sous les hypotheses, nullR_mix=m. Normaliser donne une contraction
+A^-1/2*E*C^-1/2 : ses valeurs singulieres egales a1 comptent exactement
+les relations mixtes. En particulier,
+ rangR_mix = 21+c_m-nullT,
+et la cible Conway nullT>=14 equivaut rangR_mix<=7+c_m. C'est une
+REFORMULATION de la cible spectrale, pas une contrainte supplementaire
+ou une exclusion nouvelle. Elle isole l'objet a faire degenerer.
+
+APPLICATION AUX PROFILS FOURNIS, SANS OUVRIR LES SEEDS. Pour c32,null11 :
+- si O non-grille :7 relations de cote+4 mixtes, R_mix16x16 de rang12 ;
+- si O grille :6 relations de cote+5 mixtes, R_mix17x17 de rang12.
+Dans les deux cas, cible14 => rangR_mix<=9 : trois relations mixtes
+supplementaires a c fixes. Pour c22,null10, le residu est17 ou18 de
+dimension, de rang13 ; il faut quatre relations mixtes de plus pour14.
+La valeur de delta des objets LAB n'est pas supposee ni re-mesuree.
+
+SECONDE DEDUCTION, POUR CONSTRUIRE DES CHANGEMENTS QUI CONSERVENT LE NOYAU.
+Fixer les deux cotes, donc seules les400 entrees du bloc croise LxR
+varient. Pour une base COMPLETE N du noyau T, un changement Delta conserve
+N si et seulement si Delta*N_R=0 et Delta^t*N_L=0. Or
+ rangN_L=nu-(c_m+1), rangN_R=nu-(c_l+1),
+car le noyau de la projection sur L est exactement le noyau du cote Y,
+et reciproquement. Si P_L,P_R sont des bases des orthogonaux de ces
+projections, tous les changements sont
+ Delta=P_L*Z*P_R^t,
+avec Z reel arbitraire de taille(21+c_m-nu)x(21+c_l-nu).
+Les indicatrices des quatre etoiles etant dans N, les egalites C1
+centrales sont automatiquement conservees. A c32,nu11, cela fait12*13=156
+dimensions REELLES ; a nu14,9*10=90. Ce ne sont PAS156 changements binaires
+ni156 graphes : boite0/1,C1',C2,U restent des contraintes supplementaires.
+Les petites variations reelles conservent T PSD sur son support positif,
+mais ne satisfont pas automatiquement ces autres contraintes.
+
+LIEN PRECIS AVEC L'ASYMETRIE. Pour n'importe quelle permutation p des10
+lettres exterieures, h*p agit sur chaque cote20 par[[0,P],[P,0]]. Tout
+espace propre a dimension<=10, car une moitie des coordonnees determine
+l'autre. Si TOUS les tenseurs u*v^t de l'espace des changements etaient
+fixes par ce h*p, les deux espaces de facteurs seraient des espaces
+propres scalaires (valeurs propres reciproques). Impossible si l'un
+des facteurs a dimension>10. Donc, lorsque
+ nu < 11+max(c_l,c_m),
+les equations de conservation du noyau seules ne peuvent forcer aucun
+h*p fixe. Comme il n'y a qu'un nombre fini de p, l'union de leurs
+sous-espaces affines fixes ne couvre pas l'espace des changements reels.
+Un choix reel generique evite tous les h*p. Ce n'est pas une construction
+de graphe binaire admissible, mais cela identifie les hypotheses qui
+manquent a un eventuel argument de symetrie forcee.
+Pour c32, cette impossibilite de forcer h*p par les seules equations
+dure jusqu'a nu13. A nu14, le facteur maximal descend a10 : cet obstacle
+dimensionnel disparait. Cela PERMET un mecanisme de symetrie forcee a14,
+sans prouver qu'il se produit. Ne pas convertir cette possibilite en
+preuve de H-MATCH ou de l'impossibilite de l'asymetrie.
+
+OUTIL : asymmetric_mixed_residual.py et rapport associe. API from_adjacency
+construit le residu et releve chaque noyau mixte en une relation sur44
+labels, a partir d'un objet deja accepte par le producteur. API
+cross_trade_factors prend son noyau complet fourni, sans le recalculer,
+et renvoie P_L,P_R. Six fixtures de Gram abstraites controlent la formule
+et les releves ; deux controlent les espaces156/90 et une variation
+elementaire. Elles ne sont pas des graphes. Duree1,0s ; pas de solveur
+lance, aucune affirmation d'acceleration ou d'accessibilite du probleme
+binaire restant. Nouvelle direction de construction complementaire des
+marches LAB, plutot qu'un audit de leurs resultats.

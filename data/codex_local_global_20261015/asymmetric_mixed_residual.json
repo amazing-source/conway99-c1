@@ -1,0 +1,115 @@
+{
+  "status": "SYMMETRY_FREE_MIXED_RELATION_OBJECTIVE",
+  "overlap": {
+    "C1_overlap_patterns": 19,
+    "rank_histogram": {
+      "3": 1,
+      "4": 18
+    }
+  },
+  "algebraic_gram_fixtures": [
+    {
+      "delta": 0,
+      "overlap_rank": 4,
+      "side_relations": 7,
+      "mixed_relations": 4,
+      "residual_dimension": 16,
+      "residual_rank": 12,
+      "conditional_full_nullity": 11,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 7
+    },
+    {
+      "delta": 1,
+      "overlap_rank": 3,
+      "side_relations": 6,
+      "mixed_relations": 5,
+      "residual_dimension": 17,
+      "residual_rank": 12,
+      "conditional_full_nullity": 11,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 8
+    },
+    {
+      "delta": 0,
+      "overlap_rank": 4,
+      "side_relations": 7,
+      "mixed_relations": 7,
+      "residual_dimension": 16,
+      "residual_rank": 9,
+      "conditional_full_nullity": 14,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 7
+    },
+    {
+      "delta": 1,
+      "overlap_rank": 3,
+      "side_relations": 6,
+      "mixed_relations": 8,
+      "residual_dimension": 17,
+      "residual_rank": 9,
+      "conditional_full_nullity": 14,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 8
+    },
+    {
+      "delta": 0,
+      "overlap_rank": 4,
+      "side_relations": 6,
+      "mixed_relations": 4,
+      "residual_dimension": 17,
+      "residual_rank": 13,
+      "conditional_full_nullity": 10,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 8
+    },
+    {
+      "delta": 1,
+      "overlap_rank": 3,
+      "side_relations": 5,
+      "mixed_relations": 5,
+      "residual_dimension": 18,
+      "residual_rank": 13,
+      "conditional_full_nullity": 10,
+      "target_nullity": 14,
+      "target_residual_rank": 9,
+      "target_mixed_relations": 9
+    }
+  ],
+  "fixtures_are_not_graphs": true,
+  "kernel_preserving_real_spaces": [
+    {
+      "nullity": 11,
+      "parameter_rows": 12,
+      "parameter_columns": 13,
+      "real_dimension": 156,
+      "kernel_equations_alone_cannot_force_any_h_p": true
+    },
+    {
+      "nullity": 14,
+      "parameter_rows": 9,
+      "parameter_columns": 10,
+      "real_dimension": 90,
+      "kernel_equations_alone_cannot_force_any_h_p": false
+    }
+  ],
+  "proof": [
+    "Let O be the four labels02,03,12,13, and X,Y the two24-label sides with intersectionO. Write c_l,c_m for their component counts. The accepted two-star formula gives rank(T_X)=23-c_l and rank(T_Y)=23-c_m.",
+    "On O, T has diagonal5/2, entries-1/4-Gamma on the geometric C4, and entries-Gamma on its diagonals. C1 upper bounds forbid a diagonal edge from sharing an endpoint with a C4 edge. All row sums of absolute off-diagonal entries are at most5/2. The geometric C4 connects the matrix. Irreducible diagonal dominance gives rank4 unless all four C4 edges are present, when the matrix is5/4 times its Laplacian and has rank3. Thus delta=null(T_O) is1 exactly for that grid, otherwise0.",
+    "Under T PSD, every principal kernel extends by zero to a full kernel vector. The embedded side kernels intersect exactly in the embedded kernel of T_O. Hence their sum has dimension(c_l+1)+(c_m+1)-delta. The remaining nullity m is the dimension of genuinely mixed relations, modulo these side relations.",
+    "Eliminate the positive support of O. The remaining blocks A,C have ranks19-c_l+delta and19-c_m+delta. Choose positive principal supports and let E be their cross block. Congruence gives the residual R=A-E*C^-1*E^t. Its nullity is exactly m. After normalization, the cross map A^-1/2*E*C^-1/2 is a contraction; its singular values equal to1 are exactly these mixed relations.",
+    "Therefore null(T)=c_l+c_m+2-delta+null(R), and rank(R)=21+c_m-null(T). In particular, the Conway target null(T)>=14 is exactly rank(R)<=7+c_m. These identities require no h*p symmetry and no ODD9.",
+    "For the producer profile c=(3,2),nullity11, delta0 means7 side+4 mixed relations and a16x16 residual of rank12. Delta1 means6 side+5 mixed relations and a17x17 residual of rank12. Target14 requires the residual rank to fall to9: exactly three additional mixed relations at fixed c. No value of delta for that seed is assumed here.",
+    "For c=(2,2),nullity10, the corresponding residual has dimension17 or18 and rank13. Target14 again requires rank<=9, hence four additional mixed relations at fixed c. The absence of h*p alone neither supplies these relations nor certifies a trivial full automorphism group.",
+    "A residual null vector x gives y=-C^-1*E^t*x; adding the overlap coefficients -T_O^-1*(T_OL*x+T_OR*y) on its positive support lifts it to a full mixed relation. The provided API constructs these objects from an already accepted producer border; it does not repeat producer admissibility or PSD validation.",
+    "Fix both24-label sides and change only the20x20 cross adjacency block by Delta. For a full kernel basis N, preserving N is exactly Delta*N_R=0 and Delta^t*N_L=0. Since the kernels supported off L and off R have dimensions c_m+1 and c_l+1, respectively, rank(N_L)=nu-c_m-1 and rank(N_R)=nu-c_l-1. Thus all such real changes are P_L*Z*P_R^t, with factor dimensions21+c_m-nu and21+c_l-nu. These equations preserve the central C1 equalities because the four star indicators belong to N.",
+    "For c=(3,2),nu11, the cross space has dimension12*13=156. At nu14 it has dimension9*10=90. These are real linear dimensions, not counts of binary trades or admissible graphs. C1-prime, C2, binary entry bounds and U positivity still constrain actual moves. Small real changes preserve T positivity on its positive support, but need not satisfy the other constraints.",
+    "A fixed h*p acts on either20-label side by [[0,P],[P,0]], where P permutes the ten outer letters. Every eigenspace has dimension at most10: one ten-coordinate half determines the other. If ALL cross changes u*v^t in the factor spaces were fixed, the two permutations would have to act by scalar reciprocal eigenvalues on those factor spaces. This is impossible if either factor dimension exceeds10.",
+    "Consequently, the kernel-preservation equations alone cannot force any fixed h*p when nu<11+max(c_l,c_m). A finite union of proper affine subspaces cannot cover the real solution space, so a generic real cross assignment satisfying those linear equations avoids every h*p. This is a statement about unrestricted real coefficients, not a construction of a binary PSD/C2 graph. At c=(3,2), the dimensional obstruction to forcing symmetry lasts through nu13; at nu14 it disappears, which permits but does not prove symmetry forcing."
+  ]
+}
