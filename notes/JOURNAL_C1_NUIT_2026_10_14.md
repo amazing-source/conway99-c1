@@ -4705,3 +4705,12 @@ elementaire. Elles ne sont pas des graphes. Duree1,0s ; pas de solveur
 lance, aucune affirmation d'acceleration ou d'accessibilite du probleme
 binaire restant. Nouvelle direction de construction complementaire des
 marches LAB, plutot qu'un audit de leurs resultats.
+
+Suite immediate : resultat ci-dessus commit7b89328 et envoye dans835.
+Le saut de sequence a revele834, lu/acquitte : LAB a maintenant profile
+192/192. Les12 dernieres sont null9,c22,t22,5 relations de cote+4 mixtes
+paires, profil(7,2),H_hM des deux cotes. Totaux :128 de ce type,32 null5
+c22,16+16 null9 c26/c62. H_hM vaut donc sur192 ; la conclusion par6h
+utilise toujours ODD9. Marches :15777 visites HB_1,max sans h*p11 ;3774
+depuis c22, aucune sans h*p dans ce run. Accepte sans audit ni reponse
+d'accuse. Aucun processus propre actif.

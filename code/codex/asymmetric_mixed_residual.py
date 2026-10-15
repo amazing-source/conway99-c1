@@ -107,7 +107,8 @@ def cross_trade_factors(kernel):
     return dict(left_factor=PL, right_factor=PR,
                 parameter_rows=PL.cols, parameter_columns=PR.cols,
                 real_dimension=PL.cols*PR.cols,
-                kernel_equations_alone_cannot_force_any_h_p=max(PL.cols, PR.cols) > 10)
+                kernel_equations_alone_cannot_force_any_h_p=(
+                    min(PL.cols, PR.cols) > 0 and max(PL.cols, PR.cols) > 10))
 
 
 def overlap_cases():
