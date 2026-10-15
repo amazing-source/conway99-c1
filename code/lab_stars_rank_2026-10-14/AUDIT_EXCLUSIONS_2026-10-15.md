@@ -325,3 +325,64 @@ Journal des résultats, au fil de l'eau (heures UTC).
   (4) fait de structure (vérifié) : deux droites portent 5k - 16 - g relations forcées : 10 chez Conway, aucune pour
   tout autre jeu lambda = 1, mu = 2 (vrais blocs à deux droites de srg(243) : nullité 4 ou 5). (H-MATCH) porte sur un
   phénomène propre à Conway. Je retire « l'analogue est faux, donc (H-MATCH) perd son crédit ».
+- 08:20 : MÉCANISME du mur à 13 (hmatch_tools_2026-10-15/balance.py, rangs exacts). Bilan nullité = 12 + c - e (gain
+  impair toujours 9). Structure cassée de nullité 13 (hm_id_c22_HB_1 et ses voisines) : côté m, c(m) = 2, donc la
+  nullité 14 exigerait l'absorption complète des 10 vecteurs l-pairs ; la torsion de M_0 tord aussi le couplage
+  croisé (z_04 ~ z_16, z_06 ~ z_14) : pas de transversale en y = 4, 6, ces deux vecteurs ne sont pas absorbés (reste
+  0,883), e(m) = 1, nullité 13. Objet h-invariant de rang 30 : c(m) = 2, e(m) = 0, toutes transversales, tout absorbé.
+  Côté l (c = 5 ou 6), l'absorption est collective (e = 4, aucun vecteur absorbé seul).
+  TEST CIBLÉ (twist_neigh.py, voisinages exhaustifs à 16 labels, 4 graines x 3 paires de droites, les 24
+  transversales imposées + couplages cassés) : aucune structure positive ; nullité max 11 ; gain impair 9 partout
+  (même sans positivité) ; gains pairs 3 à 9 : avec toutes les transversales, la torsion détruit l'absorption et la
+  positivité. Marches avec transversales forcées (tw_*) : voisines cassées de nullité 13 mais NON positives.
+  Lecture : l'absorption complète semble exiger à la fois les transversales ET des couplages h-reliés. Lemmes à
+  démontrer : ODD9 ; « absorption complète d'un côté avec c = 2 => couplages h-reliés de l'autre côté » ; reste le
+  cas c >= 3 des deux côtés (type c55).
+- 08:45 : Codex de retour (usage remis à zéro, bonjour envoyé par codex queue, il a compacté puis répondu). Partage :
+  Codex = T2 (ODD9, réduction par Schur) ; LAB = T3 (absorption / mur à 13). N9 désambiguïsé pour lui : notre (N9)
+  réfutée = G15 ; son « pas de 9 sommets à 17 arêtes » = A6, démontré, intact.
+- 08:50 : ODD9 exact sur 120/120 structures admissibles aléatoires NON positives (odd9_random.py) : loi
+  probablement algébrique. Forme fermée vérifiée : T_FF = 6I - Omega - J/2 (K_FF = J/2), Omega = graphe signé des
+  couplages autour de m sur les 10 lettres extérieures.
+- 09:00 : T3, formulation par blocs h (hblock_ranks.py, toutes les structures sauvegardées) : T = [[A, B], [B^T, C]],
+  nullité = nullité(C) + nullité(A - B C^+ B^T). Les 416 structures POSITIVES de nullité 14 ont B = 0 (h-invariantes ;
+  413 avec rang A = 10, 3 avec rang A = 11 et nullité C = 3). Structures cassées de nullité 14 : rang A = 10, rang B =
+  6 ou 8, jamais positives (U, voire T, échoue). Cassées positives de nullité 13 : rang A = 12, rang S_A = 11,
+  rang B = 4. Absorbeurs explicites (absorbers.py) : dans les objets h-invariants, chaque u_y = 1_0y + 1_1y est
+  absorbé par u_y + somme gamma_z g_z (g_z = 1_2z + 1_3z), coefficients dans Z/5, sans partie impaire.
+  Lemme visé : T >= 0, U >= 0 et nullité 14 => B = 0 (c'est (H-INV), plus fort que (H-MATCH)) ; U >= 0 est décisif.
+- 09:38 : FiveM ouvert (GTA, environ 8,7 Go) : règle « bas régime » appliquée, les 6 marches de récolte sont arrêtées.
+  Depuis, au plus 2 ou 3 calculs à la fois, tous en priorité basse (Idle).
+- 10:10 : classes de noyau, résultats COMPLETS. Les 140 nouvelles classes (newk2) contiennent 404 structures PSD, toutes
+  h-reliées, et zéro structure cassée, positive ou non. Au total 287 classes complètes ; une seule (obj53) contient des
+  structures cassées, et aucune n'est PSD.
+  Remarque exacte : si le noyau est h-invariant et la classe réduite à une structure, celle-ci est h-invariante.
+  Option KHOMOG (imposer seulement la partie h-homogène du noyau) : les 672 structures autour de la meilleure cassée
+  (nullité 13) sont toutes énumérées, et une structure cassée y a nullité <= 13, même sans positivité.
+- 10:30 : LEMME DÉMONTRÉ (note H_MATCH section 6d) : les relations de côté, c'est-à-dire les vecteurs d'étoile et les
+  vecteurs de composante 1 sur {0y, 1y : y dans W} pour chaque composante W de H_l (et de même pour H_m), sont
+  h-homogènes pour TOUTE structure admissible, symétrique ou non. Toute asymétrie du noyau vient donc des relations
+  mixtes (G9 : 12 - c(l) - c(m) + [grille] + delta). De plus, la moitié l de (H-MATCH) se lit composante par
+  composante de H_l : elle échoue dès que M_1 diffère de M_0 sur une composante qui ne contient pas m.
+- 10:25 : groupe de symétrie des noyaux (D4 x permutations signées des 5 droites extérieures). La taille d'une classe
+  est au moins |G_N|/|Aut|. Ce rapport vaut 1, 2 ou 4 sauf dans deux classes où il vaut 96 (|G_N| = 1920) : obj 6, sans
+  structure cassée, et obj 53, celle des 9 408 cassées.
+- POURQUOI (H-MATCH) RESTE OUVERT (réponse à la question de l'utilisateur) :
+  (a) La loi porte sur TOUTES les structures positives de nullité 14. Nos données ne contiennent que des structures
+      issues de familles symétriques (Z5h, G1, <h>) ou de marches courtes à partir d'elles. Une marche sans symétrie
+      et sans graine (projwalk.py) n'atteint même pas la positivité. Une structure de Conway générique aurait un noyau
+      non h-invariant (cas « relations mixtes asymétriques »), et ce cas n'est représenté que par la seule lignée cassée
+      HB_1 (nullité 13).
+  (b) L'heuristique va dans les deux sens : imposer h divise par deux la dimension du problème de rang (10 relations
+      dans un quotient de taille 22 au lieu de 44). Les recherches trouvent donc d'abord les objets symétriques, et
+      l'absence d'objets cassés dans nos données est une preuve FAIBLE.
+  (c) La positivité de T seule ne suffit pas (contre-exemples exacts). Toute preuve doit utiliser U >= 0, donc la
+      condition lambda_min >= -4 sur le graphe à 59 sommets, ET le rang. Je n'ai pas trouvé de telle preuve.
+  Ce qui fermerait la question : une preuve que les relations mixtes sont h-homogènes, ou une énumération complète
+  des structures positives de nullité 14 par une décomposition côté l, côté m puis arêtes croisées, dont le coût est
+  à estimer avant de lancer quoi que ce soit.
+- Bibliographie (vérifiée 10:35) : la prépublication arXiv 2610.16266 (12/10/2026, sum-of-squares) affirme la
+  non-existence via « au plus 55 triangles sur 99 sommets sans diamant ni K_{2,3} ». C'est FAUX : 11 copies disjointes
+  de srg(9,4,1,2) donnent 66 triangles, sans diamant ni K_{2,3}. Leur borne vient du solveur numérique, sans
+  certificat exact. Les autres sources (arXiv 2608.11211, CP-SAT ; dépôt GitHub YesterdaysLemon/conway-99-research,
+  en « exploratory ») n'étudient pas les blocs à deux droites et n'excluent rien.
