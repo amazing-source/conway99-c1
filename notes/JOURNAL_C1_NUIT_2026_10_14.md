@@ -5358,3 +5358,48 @@ Environ1,1s ; PAS des graphes, PAS des modeles des conditions PSD.
 Script code/codex/four_star_kernel_partition_closure.py, rapport
 data/codex_local_global_20261015/kernel_partition_closure.json.
 NG7, NG5 et N9-NG restent ouverts. Aucun SRG construit ou exclu ici.
+
+SUITE855 / ENVOIS856-857. Le theoreme de cloture, son outil et son rapport
+sont exportes vers lab_exchange sous prefixe codex_, et transmis dans856
+avec le commit ced8534. Le message intercale855 de LAB est lu/acquitte.
+Il rapporte une demande de preuve et propose de traiter les blocs
+h-invariants pendant que Codex traite le cas general. Cela reste dans
+la recherche deja autorisee ; aucun travail de verification du pair.
+Reponse857 : attaque directe du rang, sans supposer le premier gain9
+observe dans les donnees, ni reduire tous les non-grilles a e(O)=0.
+
+FORME MINIMALE DE LA CIBLE. Si X_l est le cote24 et Y les20 autres
+etiquettes, S=T_YY-T_YX*T_X^+*T_XY est PSD et
+ rangT=(23-c_l)+rangS, donc nu=21+c_l-rangS.
+Pour exclure nu>=14 dans les quatre cas c_l=1,2,3,4, il suffit de
+prouver rangS>=9,10,11,12 respectivement. La borne uniforme12 serait
+N9-NG, plus forte. Le partage en gains9 puis3 est une condition
+suffisante ; il ne faut pas le declarer equivalent tant que le premier
+gain9 n'est pas prouve hors-grille. Les18 motifs O non-grille restent
+a couvrir. Ce sont des reformulations de la cible, pas sa preuve.
+
+ESSAI ANALYTIQUE PAR LES DEUX PREMIERS MOMENTS (INSUFFISANT).
+On peut ecrire une identite generale, sans symetrie, sans lire un graphe.
+Noter e=e(O), D l'incidence10x44 des lettres exterieures, M_ext leur
+appariement, et
+ a=tr(Gamma D^tD), b=tr(Gamma D^t M_ext D).
+C1-prime donne0<=a,b<=40 : chaque etiquette exterieure a au plus un
+voisin portant sa lettre, et au plus un portant la lettre mate.
+C1 donne e(O,F)=16-4e, deg_F(x)=6-2deg_O(x), et
+ tr(Gamma^2)=224+6e (binarite).
+Pour K8=3B^tB+B^tMB-2J, on a trK8=176 et tr(K8^2)=4736.
+Les quatre etoiles centrales donnent chacune12 a leurs comptes,
+d'ou tr(Gamma K8)=3(48+a)+(48+b)-2(224+6e)
+                      =-256-12e+3a+b.
+Avec T8=24I-8Gamma-K8, il vient exactement
+ trT8=880,
+ tr(T8^2)=31872+192e+48a+16b.
+Les constantes de la geometrie ont ete evaluees par un script ponctuel
+sur les44 etiquettes, sans graphe du pair. Hors-grille, e<=3 et donc
+tr(T8^2)<=35008. Cauchy sur les valeurs propres non nulles donne
+ rangT>=880^2/35008=12100/547>22,
+soit rangT>=23. C'est tres inferieur a31, necessaire pour rejeter un
+bloc Conway. Cette estimation ne fait pas intervenir c_l ; elle ne
+fournit pas la borne de Schur recherchee et n'est pas une preuve NG5.
+Le nouveau resultat utile reste la cloture des retraits, et non une
+exclusion universelle. Aucun calcul lourd ni processus restant actif.
