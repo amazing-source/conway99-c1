@@ -91,6 +91,9 @@ def main():
     K8 = np.rint(8 * np.array([[kval(a, b) for b in S] for a in S])).astype(np.int64)
     Xl = [i for i in range(n) if 0 in S[i] or 1 in S[i]]
     Xm = [i for i in range(n) if 2 in S[i] or 3 in S[i]]
+    oddv_m = [(idx[frozenset((2, y))], idx[frozenset((3, y))]) for y in range(4, 14)]   # f_y, mode odd9
+    oddv_l = [(idx[frozenset((0, y))], idx[frozenset((1, y))]) for y in range(4, 14)]   # e_y
+    Q9 = np.linalg.qr(np.eye(10) - np.ones((10, 10)) / 10.0)[0][:, :9]   # orthonormal basis of 1^perp in R^10
     D = np.zeros((14, 84))
     for j, l in enumerate(LABELS):
         for y in l:
@@ -196,6 +199,24 @@ def main():
                 sol.add_clause([e[(idx[frozenset((a0, x))], idx[frozenset((a1, x))])]])
     trans_l = [(idx[frozenset((0, x))], idx[frozenset((1, x))]) for x in range(2, 14)]
     trans_m = [(idx[frozenset((2, x))], idx[frozenset((3, x))]) for x in list(range(0, 2)) + list(range(4, 14))]
+    # FIXSUB=<json> [FIXIDX=k] (15/10, (B') completion test): fix the induced graph on the labels of a smaller
+    # structure (e.g. a three-star (A) counterexample, labels X_l u L_2) and let the walk choose the remaining edges
+    if os.environ.get("FIXSUB"):
+        dsub = json.load(open(os.environ["FIXSUB"]))
+        if "structures" in dsub:
+            esub = dsub["structures"][int(os.environ.get("FIXIDX", "0"))]["edges"]
+        else:
+            esub = dsub["edges"]
+        lsub = [frozenset(l) for l in dsub["labels"]]
+        eset = {frozenset((lsub[i], lsub[j])) for i, j in esub}
+        inside = [i for i in range(n) if S[i] in set(lsub)]
+        nfix = 0
+        for i, j in itertools.combinations(inside, 2):
+            lit = e[(i, j)]
+            sol.add_clause([lit] if frozenset((S[i], S[j])) in eset else [-lit])
+            nfix += 1
+        print("FIXSUB %s: %d labels fixed, %d pairs fixed, %d edges" % (os.environ["FIXSUB"], len(inside), nfix, len(eset)),
+              flush=True)
     init = os.environ.get("INIT")            # warm start from a saved structure (same labels and group)
     if init:
         di = json.load(open(init))
@@ -255,6 +276,18 @@ def main():
             both = False
         lt = perp_min(T)
         lu = perp_min(7 * PiS - T)
+        # SAVE30=N (15/10): harvest the first N distinct PSD structures of numerical nullity >= 14 (rank <= 30), any mode
+        if (os.environ.get("SAVE30") and min(lt, lu) > -1e-9 and nul_num >= 14) or (os.environ.get("SAVE30ANY") and nul_num >= 14):
+            h30 = getattr(main, "h30", None)
+            if h30 is None:
+                h30 = main.h30 = set()
+            key30 = hash(G[np.triu_indices(n, 1)].tobytes())
+            if key30 not in h30 and len(h30) < int(os.environ.get("SAVE30") or os.environ.get("SAVE30ANY")):
+                h30.add(key30)
+                json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt, "lambda_U": lu,
+                           "nullity_numeric": nul_num,
+                           "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                          open(out + "_H30_%d.json" % len(h30), "w"))
         if min(lt, lu) > -1e-9:
             npsd += 1
             # 15/10: saving every PSD visit filled the folder with 460 000 files; save only the first SAVEPSD (default 20)
@@ -280,7 +313,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap", "disc"):
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap", "disc", "odd9", "b1"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -485,6 +518,73 @@ def main():
                 # rank > 30: penalty DISCRANKW per missing relation (env, default 1.0; 15/10: 10 per relation froze the
                 # walk on two isolated rank-30 structures)
                 s2 = -4.0 - float(os.environ.get("DISCRANKW", "1.0")) * float(14 - nul_num)
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
+        elif mode == "odd9":
+            # ODD9 stress test (15/10): push the m-odd vectors f_y (y outer) towards an extra relation beyond X_l (and the
+            # l-odd ones beyond X_m).  Gram of V2 = X_l + span(f_y) (34 x 34): it has >= c(l) + 2 zero eigenvalues
+            # (ker T_X and the star difference); score = -(the next smallest |eigenvalue|), min over both lines.
+            # ODD9PSD=1: only T, U >= 0 structures count.
+            if os.environ.get("ODD9PSD") and min(lt, lu) <= -1e-9:
+                s2 = -100.0 + 3.0 * min(lt, lu)
+            else:
+                gaps = []
+                for (Xi, odd_ix, cc) in ((Xl, oddv_m, cl), (Xm, oddv_l, cm)):
+                    # Schur complement S_f = G_f - C^T T_X^+ C (T_X >= 0 always, P3; rank 23 - c), S_f 1 = 0;
+                    # gap = least |eigenvalue| of S_f on the complement of 1 (0 <=> odd gain 8 < 9)
+                    Fm = np.zeros((n, 10))
+                    for k2, (p2, q2) in enumerate(odd_ix):
+                        Fm[p2, k2] = 1.0
+                        Fm[q2, k2] = -1.0
+                    TX = T[np.ix_(Xi, Xi)]
+                    wX, VX = np.linalg.eigh(TX)
+                    keep = wX > 1e-9
+                    Cm = (T @ Fm)[Xi, :]
+                    W2 = VX[:, keep].T @ Cm
+                    Sf = Fm.T @ T @ Fm - W2.T @ (W2 / wX[keep][:, None])
+                    evs = np.linalg.eigvalsh(Q9.T @ Sf @ Q9)
+                    gaps.append(float(np.min(np.abs(evs))))
+                gmin = min(gaps)
+                s2 = -gmin
+                bg = getattr(main, "bestgap", 99.0)
+                if gmin < bg:
+                    main.bestgap = gmin
+                    if gmin < 0.2 or mv % 50 == 0:
+                        print("move %d: odd gap %.5f (l-side %.5f, m-side %.5f), c = (%d,%d), PSD %s"
+                              % (mv, gmin, gaps[0], gaps[1], cl, cm, min(lt, lu) > -1e-9), flush=True)
+                if gmin < 1e-6:
+                    ko = getattr(main, "ko", 0) + 1
+                    main.ko = ko
+                    if ko <= 50:
+                        json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "gaps": gaps,
+                                   "lambda_T": lt, "lambda_U": lu,
+                                   "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                  open(out + "_ODD9_%d.json" % ko, "w"))
+                        print("move %d: ODD9 DEGENERATE CANDIDATE (gap %.2e), saved %s_ODD9_%d.json"
+                              % (mv, gmin, out, ko), flush=True)
+        elif mode == "b1":
+            # (B') test (15/10): a PSD four-star structure of rank <= 30 with a NON-special line (c = 1); in a Conway graph
+            # every line is special iff no such structure occurs.  score on PSD: -3 (missing relations below 14)
+            # - 2 (min(c) - 1); records and saves (cap 50) every PSD structure with nullity >= 14 and min(c) = 1
+            if min(lt, lu) > -1e-9:
+                s2 = -3.0 * max(0, 14 - nul_num) - 2.0 * (min(cl, cm) - 1)
+                if os.environ.get("B1KEEP1") and min(cl, cm) != 1:
+                    s2 = -60.0          # stay among structures with a non-special line, push the nullity up
+                bb = getattr(main, "bestb1", -999.0)
+                if s2 > bb:
+                    main.bestb1 = s2
+                    print("move %d: PSD, numerical nullity %d, c = (%d,%d), score %.1f (new best)" % (mv, nul_num, cl, cm, s2),
+                          flush=True)
+                if nul_num >= 14 and min(cl, cm) == 1:
+                    kb = getattr(main, "kb", 0) + 1
+                    main.kb = kb
+                    if kb <= 50:
+                        json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "lambda_T": lt,
+                                   "lambda_U": lu, "nullity_numeric": nul_num,
+                                   "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                  open(out + "_B1_%d.json" % kb, "w"))
+                        print("move %d: RANK <= 30 PSD WITH A NON-SPECIAL LINE (c = (%d,%d)), saved %s_B1_%d.json"
+                              % (mv, cl, cm, out, kb), flush=True)
             else:
                 s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "lowrank":

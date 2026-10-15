@@ -116,4 +116,5 @@ def main():
               % (name, mu, n - r, r, tested, classes), flush=True)
 
 
-main()
+if __name__ == "__main__":
+    main()

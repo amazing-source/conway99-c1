@@ -318,12 +318,12 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   of its 2079 flags with >= 4 mixed relations. By E4 no such universal cap exists: this route needs the rank condition.
 - Literature (3 quick web queries, not exhaustive): star complements (Cvetkovic-Rowlinson-Simic 1999; Rowlinson
   2007, 2012) are known; no application to (99,14,1,2) found.
-- E6 bis (VERIFIED exactly, ext4.py, log ext4_grid_c62.log, 01:55 UTC): the rank-30 grid object
+- E6 bis (VERIFIED exactly, ext4.py, log ext4_grid_c62.log, 01:32 UTC by file time): the rank-30 grid object
   fourstar_psd_grid_Z5h_c62.json has NO admissible placement for any of its 40 outer labels (3440 to 4248 admissible
   profiles per label, 0 to 34 pass (Tr), 0 pass (Tn)). The exact (Tn) residues p^T T_S^+ p - 5/2 of the (Tr)
   survivors have both signs and denominators dividing 150045 = 3 5 7 1429, the primes of disc(Lambda_S)
   (ext4_tn.py): no sign pattern to prove.
-- E7 (VERIFIED exactly, 15/10 about 01:23 UTC by file times; verify_counterexample.py + r7_scan.py): REFUTES (R7).
+- E7 (VERIFIED exactly, 15/10 01:22 UTC by file time; verify_counterexample.py + r7_scan.py): REFUTES (R7).
   r7_Z5h_c62_R7_163.json (walk sym4g.py mode r7 in the Z5h group, warm start from the c62 object): admissible, T >= 0
   of rank EXACTLY 30, U >= 0 of rank 35, c = (6,2), rank_7(8T_S4) = 25 <= 28. Three independent r7 walks (from c62,
   from the c22 object, and a cold start) reached rank_7 = 25 within minutes. So the 7-adic rank bound of L4/L22 is
@@ -333,7 +333,8 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   217, 231, 247 and by LAP/LAB on 08/10, not a new principle). LEMMA (any integral symmetric M of rank r): all
   non-zero r x r principal minors det M_H lie in one class of Q*/Q*^2. Proof: on R = M Z^n put b(Mx, My) = x^T M y;
   the M e_h (h in H) span a full-rank sublattice with Gram M_H, so det M_H = disc(R) [R : R_H]^2. (Checked on
-  Petersen, cube, Paley 9 (all subsets) and Paley 25 (3000 samples), sc_square_class.py: one class per eigenvalue.)
+  Petersen, cube, Paley 9 (all subsets) and Paley 25 (3000 samples), sc_square_class.py: one class per eigenvalue.; and on a REAL srg(243,22,1,2),
+  new243_trade_aut162: det(4I - A_H) = -2 x square for random 111-vertex H and for H containing N[v], sq243_check.py.)
   For M = 3I - A of a Conway graph: (R, b) = (pi_W Z^99, M), W = E_3^perp, so disc R = det(M|W) / det Lambda_3 =
   (-11 7^44) / (11 7^(14+k)) = -7^(30-k) (det Lambda_3 = 7^(14+k) 11: Codex L2; equivalently L22). Hence
   (SQ3) every 45-vertex induced subgraph H of a Conway graph has det(A_H - 3I) = 7^(30-k) n^2, n integer (n = 0 iff
@@ -352,14 +353,75 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   the 12 orbit sums (rank t, t + 4m = 30) must be 2 (m even) or 10 (m odd). Checked on three Z5h objects (t = 6, m = 6:
   trivial class = full class = 2 3 5 7) and the rank-35 c22 object (t = 7, m = 7: full = trivial x 5).
 
+- ODD9 status (EVIDENCE only, 15/10 01:47-02:00 UTC; odd9_check.py exact, odd9_axioms.py, sym4g.py mode odd9).
+  Statement: in every admissible four-star structure with T, U >= 0, the ten m-odd vectors f_y = 1_{2y} - 1_{3y}
+  (y outer) add exactly 9 to the rank beyond X_l (and symmetrically). Equivalently the odd Schur complement
+  S_f = G_f - C^T T_X^+ C (10 x 10, S_f 1 = 0 always) is non-singular on 1^perp; G_f = 6I - J/2 - Q_m alone is >= 2
+  on 1^perp (Q_m a signed 4-regular adjacency). Consequence (PROVED): ODD9 for Conway four-star blocks <=> every line
+  of a Conway graph is special, c(l) >= 2 + delta (since 23 - c(l) + 9 <= 30 - delta). It is NOT stronger than that:
+  in a Conway graph with a non-special line l every m forces an odd gain <= 8.
+  Data: ODD9 holds on every PSD structure tested, in every family, including the Z5h objects (where (N9) failed
+  through the EVEN part: c62 has even gain 0 beyond X_m), and on 140 random structures satisfying only (C1), (C1)+(C1')
+  or the full model (this only shows the generic value). Stress walks: without positivity the least non-trivial
+  eigenvalue of S_f drops to 2e-5 within minutes (so ODD9 is not a consequence of the counting axioms alone); with
+  T, U >= 0 the walks stay above 0.037 (identity, c11 and c55 seeds), 0.118 (h), 0.147 (Z5h); the earlier h-family
+  oddgap walks reached 0.0023 for the related h-odd eigenvalue. No proof; no counterexample.
+
+- E8 (VERIFIED exactly, 15/10 02:01 UTC by file time; verify_counterexample.py, mixed_view.py): REFUTES (LOW).
+  fourstar_psd_rank30_c33_h.json (= harv_h_r7_H30_4.json; walk sym4g.py r7 with R7RANKW=3 and SAVE30 in the group
+  <(0 1)(2 3)>, warm start from the E7 object): admissible, T >= 0 of rank EXACTLY 30, U >= 0 of rank 35,
+  c = (3,3), grid on (l,m), nullity 14 = 7 local + 7 mixed. So rank 30 is reachable with both lines of small c
+  (and 'mixed <= 6' is false as well). Harvest of that walk (scan30.py): ten distinct rank-30 PSD objects with
+  c = (6,2), (5,3), (4,2), (3,3), (4,4), (5,5); all have rank_7 25 (or 30 for the c55 seed), all fail DISC at 3 and 5,
+  all satisfy ODD9. Within one connected cluster of rank-30 PSD objects the square class and rank_7 did not change:
+  the arithmetic seems attached to the cluster (its lattice), not to c.
+- E8 bis (VERIFIED exactly, ext4.py, log ext4_c33_h.log, 02:21 UTC): the c = (3,3) rank-30 object has no admissible
+  placement for any of its 40 outer labels (0 to 24 profiles pass (Tr) per label, none passes (Tn)). Three rank-30
+  objects tested by extension (c55, c62, c33): all 40/40 dead.
+- E9 (VERIFIED exactly, ext3.py, logs ext3_A52_slow_partial.log (entry 38, all ten labels) and ext3_A52.log (all 52
+  entries, 02:31 UTC): for EVERY one of the 52 the first fourth-star label {3,4} already has no profile; none of them
+  has a rank-30 four-star completion): fourth-star column test on the three-star counterexamples to (A)
+  (stars 0, 1, 2; c(l) = 1; rank 30). For the exactly verified one (entry 38 of counterexamples_A_all.json =
+  counterexample_A_1.json) all ten labels {3,y} of the fourth star have 5490 to 5730 admissible profiles, 517 to 761
+  pass (Tr), and none has p^T T^+ p = 5/2 exactly (residues p^T T^+ p - 5/2 between -1.01 and +8.98, both signs):
+  this three-star object has no rank-30 four-star completion at all, so it cannot be the base of a counterexample
+  to (B'). [(B') link: a four-star structure with c(l) = 1 and rank <= 30 contains X_l u L_2 of rank <= 30, i.e.
+  a counterexample to (A); if it has rank exactly 30 its fourth-star labels must all pass this test.]
+- E10 (VERIFIED exactly, scan30.py, log scan30_all.log, 02:31 UTC): 331 DISTINCT admissible four-star structures with
+  T, U >= 0 and T of rank exactly 30 (harvested by sym4g.py SAVE30 in the groups Z5h, h and identity; exact symmetric
+  pivoting, so PSD and rank are exact). c distribution: (2,2) 182, (6,2)/(2,6) 86, (3,3) 23, (6,6) 15, (5,3)/(3,5) 9,
+  (4,4) 7, (4,2)/(2,4) 7, (5,5) 2. NEVER a line with c = 1. Every one satisfies ODD9 on both sides (odd gains 9, 9),
+  so the bound nullity <= 12 + min(c) is attained 182 times at c = 2. rank_7: 25 (127), 29 (202), 30 (2). DISC fails
+  for all 331 (robustly, odd exponents at 3 and/or 5). Caveat: three symmetric families plus walks seeded from them;
+  in Z5h the only possible values of c are 1, 2, 6, and 1 never occurs.
+- OBSERVATION (SQ30) (EVIDENCE only, 02:38 UTC): all 331 rank-30 PSD objects of E10 have det(8T_I) in the square
+  class 2 3 5 7^e EXACTLY (e = 1 when rank_7 is 25 or 29, e = 0 when rank_7 = 30; no other prime, cofactor a square),
+  while their three-star sub-blocks X_l u L_2 have scattered classes (2 3 7, 5 61, 5 23, 3 5 7 19 23, 5 17 4651, ...)
+  and X_l alone has class 1, 3, 5, 2 5 or 2 3 5. sc_7_null14.json (PSD, rank 30) also has class 2 3 5. A NON-PSD
+  rank-30 structure (sc_6_null14.json) has class -2, so the pattern is not forced by rank 30 alone. Two lineages only
+  (G1-c55 and Z5h). If 'PSD and rank 30 => class 2 3 5 7^e' were true, no Conway four-star block could have rank 30
+  (Conway needs class 2), i.e. delta(v,l,m) >= 1 at every pair; with ODD9 this would give c >= 3 on every line.
+  To test first in genuinely new families; no mechanism known.
+- Square classes beyond four stars (sqclass_any.py, exact, PSD or not): the 52 three-star (A) structures, the Z5
+  rank-30 three-star examples and z2b have scattered classes (odd primes such as 13, 19, 23, 29, 71, 127, 2801, ...;
+  v_2 of either parity). The pattern 2 3 5 7^e of the four-star clusters is therefore not a general law. No local
+  object of rank 30 found so far passes DISC.
+
 ## OPEN (none of these is established)
+- (B') [the live four-star question, 15/10 02:15 UTC] No admissible four-star structure with T, U >= 0 and nullity
+  >= 14 (rank <= 30) has a line with c = 1. In a Conway graph (B') <=> every line is special (c(l) >= 2 + delta).
+  ODD9 (odd gain exactly 9 beyond X_l, i.e. the odd Schur block S_f non-singular on 1^perp) implies (B') and gives
+  nullity <= 12 + min(c(l), c(m)), attained (c62 cluster: c(m) = 2, nullity 14, even gain 0). Data: every rank-30
+  PSD object found has min(c) >= 2; max nullity with a c = 1 line is 10 (15 425 archived visits, G1-descended, plus
+  tonight's runs); walks mode b1 (from 02:07 UTC, three families) never left min(c) >= 2. ODD9 fails without
+  positivity, so a proof must use T >= 0 (or U >= 0).
 - (15/10 night, see N9_REDUCTION_2026-10-15.md; (N9) and (NOGRID) REFUTED at about 01:14 UTC, E6) (N9) nullity(T_S4) <= 9 + min(c(l), c(m)) for every admissible PSD
   four-star structure [would exclude Conway with the census]; its two halves ODD9 (the m-odd vectors add exactly 9
   beyond X_l) [would make every Conway line special] and EVEN3 (the m-even vectors add >= 3); (NOGRID) no PSD
-  four-star structure has a grid on (l,m), and (LOW) nullity <= 13 when c(l), c(m) <= 3 [together: Conway excluded
+  four-star structure has a grid on (l,m), and (LOW) nullity <= 13 when c(l), c(m) <= 3 (REFUTED by E8) [together: Conway excluded
   with no census]; (R7) PSD four-star structures have rank_7 >= 29 [would exclude Conway via L22] -- REFUTED by E7
   (rank_7 = 25 at rank 30). Remaining local tests at four stars: DISC (SQ3) and the extension; both kill every object
-  found so far (four rank-30 objects), and DISC-targeted walks (sym4g.py mode disc) are running from 01:40 UTC.
+  found so far (four rank-30 objects), and DISC-targeted walks (sym4g.py mode disc) ran from 01:33 UTC.
 - (A) Every admissible three-star structure with T >= 0, U >= 0 and c(l) = 1 has rank 31 (no relation beyond the
   stars unless l is special). Evidence: no counterexample in 11 seeds x all rectangles (Codex), 6 812 exact
   third-star completions on a connected base (h3pp_inner.py), annealing to |lambda| ~ 1e-5; the residual Schur

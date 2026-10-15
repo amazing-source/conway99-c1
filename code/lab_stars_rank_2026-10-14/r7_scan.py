@@ -42,27 +42,32 @@ for j, l in enumerate(LABELS):
 Pi = np.eye(84) - D.T @ np.linalg.inv(D @ D.T) @ D
 pos = {frozenset(l): i for i, l in enumerate(LABELS)}
 
-for f in sys.argv[1:]:
-    d = json.load(open(f))
-    S = [frozenset(l) for l in d["labels"]]
-    n = len(S)
-    G = np.zeros((n, n), dtype=np.int64)
-    for i, j in d["edges"]:
-        G[i, j] = G[j, i] = 1
-    K8 = np.rint(8 * np.array([[kval(a, b) for b in S] for a in S])).astype(np.int64)
-    M8 = 24 * np.eye(n, dtype=np.int64) - 8 * G - K8
-    letters = sorted(set(y for s in S for y in s))
-    cnt = {y: sum(1 for s in S if y in s) for y in letters}
-    starl = [y for y in letters if cnt[y] == 12]
-    Z = np.array([[1.0 if y in s else 0.0 for s in S] for y in starl]).T
-    Qz, _ = np.linalg.qr(Z)
-    Pp = np.eye(n) - Qz @ Qz.T
-    T = M8 / 8.0
-    ix = [pos[s] for s in S]
-    U = 7 * Pi[np.ix_(ix, ix)] - T
-    lt = float(np.linalg.eigvalsh(Pp @ T @ Pp + 50 * (np.eye(n) - Pp))[0])
-    lu = float(np.linalg.eigvalsh(Pp @ U @ Pp + 50 * (np.eye(n) - Pp))[0])
-    rq = exact_rank(M8.tolist())
-    r7 = rank_mod(M8.tolist(), 7)
-    print("%s: n %d, stars %s, rank_Q %d, rank_7 %d, lambda_T %.4f, lambda_U %.4f, c %s"
-          % (f, n, starl, rq, r7, lt, lu, d.get("c")), flush=True)
+def _main():
+    for f in sys.argv[1:]:
+        d = json.load(open(f))
+        S = [frozenset(l) for l in d["labels"]]
+        n = len(S)
+        G = np.zeros((n, n), dtype=np.int64)
+        for i, j in d["edges"]:
+            G[i, j] = G[j, i] = 1
+        K8 = np.rint(8 * np.array([[kval(a, b) for b in S] for a in S])).astype(np.int64)
+        M8 = 24 * np.eye(n, dtype=np.int64) - 8 * G - K8
+        letters = sorted(set(y for s in S for y in s))
+        cnt = {y: sum(1 for s in S if y in s) for y in letters}
+        starl = [y for y in letters if cnt[y] == 12]
+        Z = np.array([[1.0 if y in s else 0.0 for s in S] for y in starl]).T
+        Qz, _ = np.linalg.qr(Z)
+        Pp = np.eye(n) - Qz @ Qz.T
+        T = M8 / 8.0
+        ix = [pos[s] for s in S]
+        U = 7 * Pi[np.ix_(ix, ix)] - T
+        lt = float(np.linalg.eigvalsh(Pp @ T @ Pp + 50 * (np.eye(n) - Pp))[0])
+        lu = float(np.linalg.eigvalsh(Pp @ U @ Pp + 50 * (np.eye(n) - Pp))[0])
+        rq = exact_rank(M8.tolist())
+        r7 = rank_mod(M8.tolist(), 7)
+        print("%s: n %d, stars %s, rank_Q %d, rank_7 %d, lambda_T %.4f, lambda_U %.4f, c %s"
+              % (f, n, starl, rq, r7, lt, lu, d.get("c")), flush=True)
+
+
+if __name__ == "__main__":
+    _main()
