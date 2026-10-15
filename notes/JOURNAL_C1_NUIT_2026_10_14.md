@@ -3379,3 +3379,76 @@ au-dela de la seule recherche d'un contre-exemple a MIX<=2.
 Outil conway_mixed_relations_budget.py ; artefact
 data/codex_local_global_20261015/mixed_relations_budget.json et copie
 portable codex_mixed_relations_budget.json. Aucun processus restant.
+
+### 15/10, reprise785 : c55 sans G1, puis axe ODD9
+
+781 acceptait le budget336 et annoncait des marches hors G1. Travail
+ci-dessous commence avant l'interruption, conserve au retour du matin.
+782-785 lus/acquittes ; reponse786 par le pont. Contre-exemples du pair
+acceptes (4 puis6 relations mixtes, c pouvant valoir1), sans re-audit.
+H-MATCH => point de Hamming accepte, mais H-MATCH et ODD9 restent ouverts.
+Codex prend T2 : ODD9 par Schur / couplages ; Claude travaille T3.
+La conjecture N9 refutee (nullite<=9+min(c)) n'est PAS le theoreme global
+LAB635 interdisant un neuf-ensemble a17 aretes. Distinction lue directement
+dans AUDIT_EXCLUSIONS_2026-10-15.md, branche LAB du matin, sans vieilles notes.
+
+GENERALISATION c55 NON GRILLE, SANS G1. La decomposition de chaque droite
+en cinq composantes partage ses six paires exterieures en une composante
+de deux paires et quatre singletons, ces derniers etant des grilles.
+Le recouvrement O appartient donc a la composante active des deux droites.
+Noter LA et RB leurs fibres actives exterieures. Les dix relations connues
+sur les indicatrices de fibres (huit grilles, O+LA et O+RB) imposent
+la compression normalisee H=t*w*w^t sur onze fibres de quatre sommets,
+w=eO-eLA-eRB, t=2-e(O)/2. Son entree LA,RB est aussi
+1-[A=B]-e(LA,RB)/4. Donc A!=B et0<t<=1, soit e(O)=2 ou3.
+Le cas3 donne avec le centre et ses quatre voisins un neuf-ensemble
+a17 aretes, exclu par le THEOREME GLOBAL accepte635. Les tests locaux
+de coeur seuls ne l'excluent pas :32 coeurs passent T/U PSD.
+
+Pour e(O)=2, normaliser A={4,5}, B={6,7}. Le coeur O+LA+RB a12 labels.
+Enumeration des3*3*24 choix de deux couplages et d'une permutation sur
+quatre lettres, avec connexite et C1/C2 :122 motifs de droite, dont
+36 avec e(O)=2,8 avec3,68 avec1,10 avec0. Les cas0/1 ne passent pas
+la compression complete precedente. Deux motifs avec recouvrement commun,
+les deux relations de noyau et C2 donnent128 coeurs distincts pour e(O)=2.
+Tous passent T/U PSD sur12 labels, rangT10 ; O,LA,RB induisent chacun
+un couplage parfait, O-LA et O-RB aussi ; LA-RB est vide.
+Les16 flips des quatre paires et l'echange simultane des deux droites
+et des deux paires exterieures donnent un groupe32 :18 types de coeur.
+
+Les huit noyaux de grilles imposent tous les nombres de voisins entre
+fibres : le quotient est EQUITABLE et identique au precedent quotient
+c55, sans imposer G1. Il reste19 blocs de couplage4x4, soit19 permutations
+arbitraires de S4. Sur les trois directions de Walsh non constantes,
+chacune agit par une permutation signee3x3 dont le produit des trois
+signes vaut+1 :24 choix, dont seulement4 diagonaux (ancienne restriction
+V4). Un coeur G1 ne rend pas automatiquement toute la completion G1.
+
+Le secteur constant de T a rang1 ; le secteur standard a dimension33,
+2T_std=C_T-2Gamma_std et3U_std=C_U+3Gamma_std, corrections entieres
+exportees. APRES les equations completes des quatre etoiles, deux
+relations ont des pivots1 dans les coordonnees10/01 de O : suppression
+par congruence, tests principaux31x31. Ainsi rangT44=1+rangT31 et
+nombre de relations mixtes=31-rangT31. Une completion Conway impose
+rang_Q(T31)<=29 et rang_F7(2T31)<=27. Ce n'est pas une exclusion.
+
+EXTENSION DES COMPTES GLOBAUX. z=T_far*1O, prolonge par0 sur la boule
+du centre, vaut+1 sur O,-1 sur LA/RB,0 sur les32 autres labels presents,
+et1-nO(u) sur les40 labels absents. Les relations de composantes donnent
+nO<=1 si u utilise A ou B, sinon nO<=2. Donc z est entier dans{0,+1,-1}.
+T_far^2=7T_far et1O^t*T*1O=4 donnent ||z||^2=28 ; z est de somme0,
+vecteur propre de valeur-4. Il a14 signes+ et14 signes-. Les quatre
+sommets O ont chacun neuf voisins parmi les40 absents, soit sum nO=36.
+Les comptes exterieurs0/1/2 sont donc exactement(10,24,6). Aucun G1 requis.
+La borne de29 profils brisant h, elle, utilise le catalogue G1 et N'EST
+PAS etendue. Adaptateur CP-SAT general add_completion_counts : histogramme
+et400 equations de comptage par composantes, aucune coupe d'automorphisme.
+
+Controles propres :128 coeurs distincts,18 orbites,24 actions S4 exactes,
+18 nouvelles fixtures de lifts equitables/Fourier ; elles ne sont PAS
+des bords PSD ou des graphes de Conway. Les catalogues de coeurs avaient
+ete controles exactement lors de leur production. Aucun germe du pair lu.
+18*24^19 reste un parametrage fini, PAS un cout abordable prouve.
+Outils four_star_c55_general_overlap.py, four_star_c55_permutation_lift.py ;
+donnees c55_general_overlap2.json, c55_general_overlap3.json,
+c55_permutation_lift.json. Famille generale et C1 toujours ouverts.
