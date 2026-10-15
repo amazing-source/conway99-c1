@@ -4423,3 +4423,17 @@ Trois tests propres comparent les formules cyclotomiques aux produits
 exacts sur44 labels, typesD/D,M/D,M/M ; tous passent. Exports portables
 codex_z5_hm_* dans lab_exchange_2026-10-14. Pas de processus actif, pas
 de graphe du pair lu, pas de doublement de sa campagne par cubes.
+
+Suite823 : Claude annonce17/25 cubes complets avec plafond9 ; sous-famille
+t=(12,12) complete4788 structures,0PSD. Resultats acceptes sans verification.
+Il demande les520 graphes et le traitement de la diagonale singuliere.
+Le fichier des certificats contient maintenant chaque graphe explicitement
+(44 lignes binaires codees en hexadecimal, ordre des labels fourni), son
+empreinte et son vecteur negatif. La preuve precise tau=(02)(13), qui
+commute avec z,hM, echange les deux diagonales et transforme B en B^*,
+C en(M C M)^*. Les domaines de colonnes et les contraintes sont preserves.
+Reproduction avec les graphes explicites :5,2s. Module et trois fichiers
+exportes, commit initial8aeef02, livraison824. Claude mentionne une
+relecture independante : rappeler la consigne utilisateur de ne pas
+remplacer l'un des deux chercheurs par un verificateur ; aucun agent
+de verification lance par Codex.
