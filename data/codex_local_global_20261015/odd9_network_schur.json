@@ -1,0 +1,105 @@
+{
+  "status": "EXACT_WEIGHTED_NETWORK_REDUCTION_ODD9_STILL_OPEN",
+  "line_formula": "8T_X=L8-u*u^T; L8=8(2I-Gamma_X)+3(I-F)+(I-M)+(I-FM).",
+  "notation": {
+    "F": "Swap the two central letters0 and1.",
+    "M": "Swap each outer letter with its mate.",
+    "u": "Twelve+1 coefficients on star0, twelve-1 on star1."
+  },
+  "proof": [
+    "Gamma_X is the union of two perfect matchings: one within the stars and one between the stars. Thus2I-Gamma_X is a graph Laplacian. F,M,FM are fixed-point-free involutions, so L8 is a weighted graph Laplacian, with positive conductances8,3,1,1 (add weights when edges coincide).",
+    "The exact geometry gives8T_X=L8-u*u^T. Also L8*u=24u, u^T*u=24, and every network component has zero sum of u. Subtracting u*u^T removes exactly this eigenmode. The remaining kernel consists of the c component indicators, hence rankT_X=23-c.",
+    "Let f_y=e_{2y}-e_{3y}, y=4,...,13. Their sum belongs to the span of X_l modulo the known star2-minus-star3 kernel. Choose P=[e_0-e_9,...,e_8-e_9] to span the coefficient-sum-zero subspace. These nine combinations represent the whole possible odd rank gain.",
+    "The root-letter incidence of F_odd*P is zero, hence K*F_odd*P=0. Put q=Gamma[X_l,:]*F_odd*P and d8=8P^T F_odd^T(3I-Gamma)F_odd P. Exact central-star counts give u^Tq=0. Positivity additionally forces each column of q to sum to zero on every network component.",
+    "Ground one vertex per component. The positive definite integer matrix G is the grounded principal submatrix of L8, of size24-c. With q_g its grounded rows, the exact odd Schur matrix is S9=d8-64q_g^T G^(-1)q_g. The missing u mode causes no correction since u^Tq=0. Its rank is precisely the odd gain beyond X_l.",
+    "The integer bordered matrix B=[[G,-8q_g],[-8q_g^T,d8]] has size33-c and detB=detG*detS9. detG is the product of weighted spanning-tree counts of the components. Under the producer hypothesis T>=0, S9 is PSD, so ODD9 is equivalent to detB>0. detB=0 produces an exact additional odd relation.",
+    "This is a new explicit potential/energy formulation. It does not establish strict positivity for all admissible four-star structures; U positivity and C2 have not yet been used to force it."
+  ],
+  "single_line_checks": {
+    "own_patterns": 122,
+    "component_histogram": {
+      "5": 122
+    }
+  },
+  "schur_fixtures": [
+    {
+      "components": 1,
+      "desired_schur_rank": 8,
+      "tree_product": "399786517578175215147417600",
+      "result": "PASS"
+    },
+    {
+      "components": 1,
+      "desired_schur_rank": 9,
+      "tree_product": "399786517578175215147417600",
+      "result": "PASS"
+    },
+    {
+      "components": 2,
+      "desired_schur_rank": 8,
+      "tree_product": "60086309346795847680000000",
+      "result": "PASS"
+    },
+    {
+      "components": 2,
+      "desired_schur_rank": 9,
+      "tree_product": "60086309346795847680000000",
+      "result": "PASS"
+    },
+    {
+      "components": 3,
+      "desired_schur_rank": 8,
+      "tree_product": "8669499651432382464000000",
+      "result": "PASS"
+    },
+    {
+      "components": 3,
+      "desired_schur_rank": 9,
+      "tree_product": "8669499651432382464000000",
+      "result": "PASS"
+    },
+    {
+      "components": 4,
+      "desired_schur_rank": 8,
+      "tree_product": "1172675536669900800000000",
+      "result": "PASS"
+    },
+    {
+      "components": 4,
+      "desired_schur_rank": 9,
+      "tree_product": "1172675536669900800000000",
+      "result": "PASS"
+    },
+    {
+      "components": 5,
+      "desired_schur_rank": 8,
+      "tree_product": "140896402145280000000000",
+      "result": "PASS"
+    },
+    {
+      "components": 5,
+      "desired_schur_rank": 9,
+      "tree_product": "140896402145280000000000",
+      "result": "PASS"
+    },
+    {
+      "components": 6,
+      "desired_schur_rank": 8,
+      "tree_product": "12230590464000000000000",
+      "result": "PASS"
+    },
+    {
+      "components": 6,
+      "desired_schur_rank": 9,
+      "tree_product": "12230590464000000000000",
+      "result": "PASS"
+    }
+  ],
+  "component_imbalance_fixture": "PASS: a new algebraic source violates a component sum while remaining perpendicular to u; the PSD obstruction is detected.",
+  "fixture_scope": "The twelve bordered fixtures are algebraic Gram matrices with prescribed Schur rank8 or9, not Conway borders. They test the reduction and zero-determinant branch, not ODD9.",
+  "limitations": [
+    "ODD9 remains open; no universal determinant lower bound is proved.",
+    "No peer graph, rank, positivity certificate or automorphism group was re-audited.",
+    "Finite matrix dimension is not an affordable enumeration bound for all choices of its entries."
+  ]
+}

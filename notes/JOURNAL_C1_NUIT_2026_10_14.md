@@ -3452,3 +3452,72 @@ ete controles exactement lors de leur production. Aucun germe du pair lu.
 Outils four_star_c55_general_overlap.py, four_star_c55_permutation_lift.py ;
 donnees c55_general_overlap2.json, c55_general_overlap3.json,
 c55_permutation_lift.json. Famille generale et C1 toujours ouverts.
+
+### 15/10 matin, T2 : ODD9 comme energie dans un reseau pondere
+
+NOUVELLE FORMULE EXPLICITE, sans hypothese h/G1. Sur les24 labels X_l,
+F e_{a,y}=e_{a^1,y}, M e_{a,y}=e_{a,y^1}, u=(1^12,-1^12). Gamma_X
+est la reunion de deux couplages : un dans chaque etoile et un entre elles.
+Alors, par les entrees geometriques K deja definies,
+ 8T_X = L8-u*u^t,
+ L8=8(2I-Gamma_X)+3(I-F)+(I-M)+(I-FM).
+C'est un VRAI laplacien de graphe pondere, de conductances8 sur Gamma,
+3 sur F,1 sur M et1 sur FM ; additionner les poids si une arete coincide.
+F et M sont seulement des permutations de labels, PAS des automorphismes
+de Gamma. Aucune commutation GammaF=FGamma n'est utilisee.
+
+L8u=24u et||u||^2=24. Les composantes du reseau sont equilibrees en u,
+car chacune contient les partenaires sous F. Retirer u*u^t supprime
+exactement cette direction propre ; les autres noyaux sont les c
+indicatrices de composantes. On retrouve rangT_X=23-c, cette fois avec
+un inverse explicite par potentiels de reseau utilisable pour ODD9.
+
+Poser f_y=e_{2y}-e_{3y}, y=4,...,13, et Fodd la matrice de ces colonnes.
+La somme des dix f_y differe d'un vecteur de X_l par la difference des
+etoiles2 et3, dans kerT. Les neuf colonnes P=(e_0-e_9,...,e_8-e_9)
+representent donc tout le gain impair. Leur incidence sur les14 lettres
+est nulle : K*Fodd*P=0. Poser
+ q=Gamma[X_l,:]*Fodd*P,
+ d8=8*P^t*Fodd^t*(3I-Gamma)*Fodd*P.
+Les comptes C1 donnent u^t*q=0 (chaque nouvelle etiquette a deux voisins
+dans chacune des etoiles0 et1). Sous T PSD, les sources q ont aussi somme0
+sur chaque composante, par les noyaux de T_X. Un echec de ce dernier test
+fournit immediatement un mineur de Gram2x2 a determinant negatif.
+
+Retirer une ligne/colonne de L8 par composante, pour obtenir G definie
+positive de taille24-c, et retirer les memes lignes de q pour obtenir qg.
+Les solutions de Kirchhoff donnent exactement
+ S9=d8-64*qg^t*G^-1*qg.
+Le mode u ne contribue pas, puisque q lui est orthogonal. Le RANG de S9
+est le gain des dix vecteurs impairs au-dela de X_l. Sous T PSD, S9 est
+PSD : ODD9 est donc equivalente a sa positivite STRICTE, ou a
+ det B >0, B=[[G,-8qg],[-8qg^t,d8]], entier de taille33-c.
+det B=det G * det S9, et det G est le produit des nombres d'arbres
+couvrants ponderes des composantes. Un determinant nul donne une relation
+impaire exacte par le potentiel8G^-1*qg*t, t dans kerS9.
+Cette formule ne prouve PAS det B>0 universellement. C2 et U PSD restent
+a exploiter pour interdire la saturation. Une petite dimension de matrice
+n'est pas une borne d'enumeration abordable de toutes ses entrees.
+
+CONTROLES PROPRES : identite du laplacien sur les122 motifs actifs c55
+produits par Codex ; six reseaux algebriques de c=1,...,6 composantes,
+avec noyaux/rangs attendus ; pour chacun, deux matrices de Gram fabriquees
+avec complement de Schur de rang8 puis9. Tous les complements exacts sont
+restitues, la branche determinant nul rend la bonne relation. Une source
+deliberement desequilibree sur une composante est rejetee. Ces douze
+fixtures ne sont PAS des bords admissibles ni des graphes de Conway.
+
+TEST D'UNE NOUVELLE EXPLICATION : le Schur10, a sommes de lignes nulles,
+pourrait-il etre toujours un laplacien ordinaire a conductances positives ?
+NON. Sur le c11 certifie du pair783 (certification ACCEPTEE, aucune PSD,
+aucun rang ni groupe recalcules), calcul de CES NOUVEAUX COEFFICIENTS :
+31 entrees hors diagonale negatives et14 positives ; maximum positif
+592/63, entre lettres exterieures5 et13, en normalisation8T. Donc l'argument
+par simple connexite d'un reseau positif n'est pas disponible pour le
+Schur final. Cela ne refute PAS ODD9 et ne reprend pas l'audit du temoin.
+Source fourstar_psd_c11_mix6.json, SHA256
+e2423b0b92be52387bb0c65f9d20c2396e8d1081c4d96737911b59168f4a0b9a.
+
+Code odd9_network_schur.py et odd9_conductance_probe.py ; artefacts
+odd9_network_schur.json et odd9_conductance_c11.json. Aucun processus
+restant. ODD9, la famille c55 generale et C1 restent ouverts.
