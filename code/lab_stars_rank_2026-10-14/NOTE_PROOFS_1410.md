@@ -239,7 +239,7 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   PSD structure (lambda_perp 0.032, exact rank 39) after about 110 000; being reproduced with the full model.
 - Without positivity, mixed relations exist: Z5 four-star structures with nullity 6 (5 of 300), parity pattern.
 
-## 14/10 LATE EVENING (22:25-23:05 UTC): the four-star level is satisfiable; arithmetic and extension kill the object
+## 14/10 LATE EVENING (22:25 UTC 14/10 to 00:00 UTC 15/10): positivity at four stars is satisfiable; every witness fails another forced condition (rank 30, rank_7 <= 28, or extension)
 - E1 (VERIFIED exactly; verify_counterexample.py night_urep_PSD_100.json edges 0,1,2,3): an ADMISSIBLE four-star
   structure with T >= 0 of rank EXACTLY 30 (30 x 30 block positive definite, LDL) and U >= 0 of rank 40, c = (5,5),
   family G1, sector nullities (10,1,1,2) (found by the U-repair walk sym4g.py urepair from sc_7; 586 hits, one
@@ -268,13 +268,27 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   c(l) = 3 resp. 2, nullity 10 resp. 9, i.e. FOUR mixed relations (ker_l + ker_m has dimension 6 resp. 5).
   REFUTES (A4) ('PSD at four stars forces c >= 2') and every universal cap 'mixed <= 3'. The G1 data (mixed <= 2,
   c >= 3) were an artefact of the symmetry. Still far from Conway on these flags: c = (3,1) needs nullity 14 + delta
-  (eight mixed relations), these have 10.
+  (eight mixed relations), these have nullity 10 (four mixed).
 - E5 (VERIFIED exactly, 14/10 23:55 UTC): fourstar_psd_c11_mix6.json (same walk, group <(0 1)(2 3)>): admissible
   four-star structure with c(l) = c(m) = 1 (BOTH lines non-special), T >= 0 of rank 34, U >= 0 of rank 40, nullity 10
   = 4 local + SIX mixed relations. The 'generic' configuration is PSD-compatible at four stars; for Conway it would
   need nullity 14 (ten mixed relations), rank 30 and rank_7 <= k. Walk statistics (5208 PSD structures with >= 4
   mixed): c = (1,1) nullity 8-10, (1,2) 9-10, (2,2) 10-11, (3,3) 12, (4,4) 12. rank_7 over about 6500 PSD structures
   (G1 and non-G1): always >= 30.
+- CONJECTURE (N9) (15/10 00:00 UTC, EVIDENCE only, under stress test): every admissible four-star structure with
+  T, U >= 0 has nullity(T_S4) <= 9 + min(c(l), c(m)); equivalently rank T_S4 - rank T_X >= 12 for both lines;
+  equivalently mixed <= 7 - max(c(l), c(m)) + [grid(l,m)]. Data: about 6000 PSD structures (G1, <(0 1)(2 3)>,
+  subgroups, near-symmetric), minimum exactly 12, attained by c55 (rank 30), c11 (rank 34), c31; never below.
+  U >= 0 is essential: sc_2_null14.json (T >= 0, U = 3 - sqrt 10 < 0, c = (6,6)) has nullity 16 > 15.
+  CONSEQUENCE (proved reduction): in a Conway graph rank T_S4 - rank T_X_l = 7 + c(l) - delta (G9, P3), so (N9) would
+  force c(l) >= 5 + delta for EVERY line, hence >= 4 grids on every line, 6 rho >= 924, rho >= 154 > 126 (Codex's exact
+  census certificate): Conway excluded. Caution: the refuted caps of E4 looked equally solid inside G1. Stress test:
+  sym4g.py mode 'schur' (PSD-first walk minimising the Schur rank), six runs from 00:00 UTC.
+  Stress test status 00:25 UTC: about 30 000 PSD visits in eight runs (h, identity, g2, from c11, c31, c55, c44;
+  two runs with a forced grid on (l,m) not yet PSD): minimum still 12. Among about 830 saved structures that are NOT
+  h-symmetric, the minimum is also exactly 12, attained by fourstar_psd_asym_c31.json (VERIFIED exactly: c = (3,1),
+  rank 34, 4 mixed relations, h-asymmetry 16). In every h-symmetric structure the 12 splits as 9 (the m-odd vectors
+  f_y, i.e. no relation has a non-trivial h-odd part) + at least 3 (the m-even vectors), see the board text above.
 - Reduction (grid_floor.py, Codex's identity, CONWAY_CONSTRAINTS G14): a cap 'mixed <= 2' would contradict proved
   bounds (rho >= 198 > 191), 'mixed <= 3' the census certificate (rho >= 154 > 126); Codex: every Conway graph has >= 336
   of its 2079 flags with >= 4 mixed relations. By E4 no such universal cap exists: this route needs the rank condition.

@@ -277,7 +277,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7"):
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -321,6 +321,27 @@ def main():
                           open(out + "_MIX3_%d.json" % nmix, "w"))
                 print("move %d: PSD WITH >= MIXT MIXED RELATIONS (numerical): nullity %d, c = (%d,%d), grid %d"
                       % (mv, nul_num, cl, cm, gr), flush=True)
+        elif mode == "schur":
+            # SCHUR12 stress test (15/10): on the PSD set, minimise min(rank T_S4 - rank T_Xl, rank T_S4 - rank T_Xm)
+            # (Conway needs 7 + c(l) - delta resp. 7 + c(m) - delta); save every PSD structure with value <= 11
+            if min(lt, lu) > -1e-9:
+                rk = n - nul_num
+                sch = min(rk - (23 - cl), rk - (23 - cm))
+                s2 = -float(sch) - 0.1 * float(absev[13])
+                bests = getattr(main, "bests", 99)
+                if sch < bests:
+                    main.bests = sch
+                    print("move %d: PSD with Schur rank %d (new minimum), rank %d, c = (%d,%d)" % (mv, sch, rk, cl, cm),
+                          flush=True)
+                if sch <= 11:
+                    ks = getattr(main, "ks", 0) + 1
+                    main.ks = ks
+                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "schur": sch,
+                               "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                              open(out + "_SCH_%d.json" % ks, "w"))
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "r7":
             # 7-adic stress test (15/10): on the PSD set, minimise rank_7(8T_S4) (Conway needs <= k <= 28, L4/L22/L23);
             # tie-break by pushing the 14th smallest |eigenvalue| down; save every PSD structure with rank_7 <= 29
