@@ -5534,3 +5534,78 @@ satisfont SYM et QUOT selon ses calculs, acceptes sans re-audit. Il ne
 les annonce pas prouves. Notre theoreme traite une famille de vecteurs
 violant C4DO sans supposer SYM ; il ne prouve pas SYM ni QUOT. Pas de
 reponse d'accuse de reception sans nouveau contenu. Aucun processus actif.
+
+## 15/10 - Suite862 : relations plates de support14, et annulation sur tout O
+
+862 lu/acquitte. LAB annonce R7 sous SYM : pour NG5, le second quotient
+doit gagner au moins c_l-1 dimensions ; automatique sous SYM si min c=1.
+Sa borne par tr(P_L P_M) passe98/109 structures, pas toutes. Sa marche
+impaire a atteint un trou3,1e-6 avec determinant81 exact non nul. Ces
+resultats sont acceptes sans re-audit. Il poursuit QUOT via V4/G21 ; notre
+travail ci-dessous est une preuve generale sur une famille de relations,
+sans supposer de symetrie.
+
+NOUVEAU THEOREME. Sous les memes hypotheses binaires C1/C2 et T/U PSD,
+si q appartient a kerT, Bq=0, q a coefficients0,+1,-1 et support<=14,
+alors q02=q03=q12=q13=0. C'est plus fort que la seule egalite C4DO dans
+cette classe. Toute relation plate d'incidence nulle touchant O a donc
+support>=16, meme si son double contraste sur O est nul.
+
+PREUVE. Bq=0 implique sum(q)=0, donc les deux signes ont la meme taille m.
+Kq=0 et Tq=0 donnent Gamma q=3q : le graphe H induit par chaque signe
+est de degre minimum3. Si un sommet v a degre d dans H, N_H(v) induit
+un couplage puisque lambda<=1. Chacun des d voisins doit donc rencontrer
+au moins un des m-1-d non-voisins de v. Chacun de ces derniers a au plus
+deux voisins communs avec v :
+  d <= 2(m-1-d), donc d <= floor(2(m-1)/3).
+Ainsi m<=5 est impossible, m=6 force le cas cubique deja traite.
+
+Pour m=7, degre maximum4. Un graphe cubique d'ordre impair est impossible,
+donc un sommet v a degre4. Ecrire N(v)={a,b,c,d}, les non-voisins {e,f}.
+La borne precedente est une egalite : N(v) est un couplage parfait,
+chaque voisin de v rencontre exactement un de e,f, et e,f ont chacun
+deux voisins dans N(v). Leur degre minimum3 force ef. Normaliser les
+aretes internes en ab,cd. Une paire ab ne peut avoir simultanement v
+et e comme voisins communs ; e choisit donc une extremite de chacune
+des deux aretes, et f les deux autres. A renommage pres, l'unique H7 est
+  va,vb,vc,vd,ab,cd,ea,ec,fb,fd,ef.
+Le centre v a degre4, les six autres degre3. Gamma q=3q force exactement
+une arete entre les deux signes : celle entre leurs deux centres.
+
+Deux etiquettes du meme signe ne peuvent partager une racine que si
+leur nombre de voisins communs dans H est <=1 moins leur adjacence.
+Dans H7, les seules paires permises sont
+  ea,ec,fb,fd,ef,ad,bc.
+Le centre v est isole dans ce graphe de compatibilite. Les six autres
+forment K3,3 prive de deux aretes independantes, donc aucun triangle.
+Toute racine apparait au plus deux fois par signe, et chacune des deux
+racines de l'etiquette v n'apparait qu'une fois dans ce signe.
+
+Si v etait dans O, deux racines centrales seraient singletons, donnant
+au plus1+1+2+2=6 incidences centrales pour7 etiquettes : impossible.
+Sinon une racine centrale est singleton ; les autres apparaissent au
+plus deux fois. Avec o etiquettes dans O, le total central est7+o et
+  7+o <= 1+2+2+2=7.
+Donc o=0, separement pour chacun des signes. Au support exactement14,
+cette conclusion ne requiert meme pas les comptes C1 ou la PSD une fois
+Gamma q=3q obtenu ; les caps C2 suffisent.
+
+Au support12, la classification precedente donnait au plus un sommet
+de O par prisme. Si l'un des prismes touche O, Bq=0 force les deux a
+le faire, avec le meme centre singleton. Leurs etiquettes O, distinctes
+car les signes sont disjoints, sont donc adjacentes dans le carre des
+etiquettes ; leur double contraste vaut+2 ou-2. L'obstruction spectrale
+deja prouvee exclut ce cas. Ainsi q|O=0 vaut aussi au support12.
+
+CERTIFICAT. four_star_flat_support_fourteen.py, standard Python uniquement,
+produit flat_kernel_support_fourteen.json. Apres la preuve de reduction,
+les6 choix normalises des voisins de e donnent4 presentations du meme
+H7 et2 violations de C2. Les4 compatibilites isolent v et sont sans
+triangle. Le coeur abstrait14 (deux H7 relies par leurs centres) verifie
+exactement Gamma q=3q et les caps sans etiquettes ; aucune existence
+d'etiquetage ou d'extension44 n'est affirmee. Les trois budgets spectraux
+du cas12 sont inclus. Execution0,16s, sans lecture de graphes du pair.
+
+PORTEE. Cette progression porte sur des coefficients plats et Bq=0.
+Les coefficients non plats, l'incidence non nulle et les supports>=16
+ne sont pas traites. C4DO generale, SYM, N9-NG, NG5 et NG7 restent ouverts.
