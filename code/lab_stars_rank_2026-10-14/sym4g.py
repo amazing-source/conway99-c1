@@ -456,9 +456,12 @@ def main():
         elif mode == "oddgap":
             # ODD-h test (15/10): one generator h; on the PSD set push the THIRD smallest eigenvalue of the h-odd sector
             # of T to 0 (two zeros = the star differences); save PSD structures with odd nullity >= 3
-            if min(lt, lu) > -1e-9:
-                Bo = [B for sg, B in sectors if sg == (-1,)][0]
-                evo = np.sort(np.linalg.eigvalsh(Bo.T @ T @ Bo))
+            # ODDONLY (15/10 night, N9NG_ATTACK R3): require positivity of the h-odd sector only (lambda_max of the
+            # signed odd quotient <= 3) and ignore the even sector and U: can the odd bound be tight without a grid?
+            Bo = [B for sg, B in sectors if sg == (-1,)][0]
+            evo = np.sort(np.linalg.eigvalsh(Bo.T @ T @ Bo))
+            oddonly = bool(os.environ.get("ODDONLY"))
+            if (evo[0] > -1e-9) if oddonly else (min(lt, lu) > -1e-9):
                 g3 = float(evo[2])
                 s2 = -g3
                 bestg = getattr(main, "bestg", 99.0)
@@ -483,7 +486,7 @@ def main():
                                "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
                               open(out + "_ODD_%d.json" % ko, "w"))
             else:
-                s2 = -100.0 + 3.0 * min(lt, lu)
+                s2 = -100.0 + 3.0 * (float(evo[0]) if oddonly else min(lt, lu))
         elif mode == "schur":
             # SCHUR12 stress test (15/10): on the PSD set, minimise min(rank T_S4 - rank T_Xl, rank T_S4 - rank T_Xm)
             # (Conway needs 7 + c(l) - delta resp. 7 + c(m) - delta); save every PSD structure with value <= 11
