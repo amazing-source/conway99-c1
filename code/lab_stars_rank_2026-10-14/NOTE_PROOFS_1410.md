@@ -407,6 +407,21 @@ counts towards the other letters, (C2) lambda/mu caps inside S.
   v_2 of either parity). The pattern 2 3 5 7^e of the four-star clusters is therefore not a general law. No local
   object of rank 30 found so far passes DISC.
 
+## AUDIT 15/10 (morning, user's request; full text in French: AUDIT_EXCLUSIONS_2026-10-15.md)
+- Every refutation witness re-verified exactly (11 four-star objects, all 52 (A) objects, z2b).
+- Missed and now recorded: the transversal bridge (G11, 't >= 8 on both lines' => P >= 924 > 852, Codex's certificate)
+  is consistent with all 331 rank-30 objects (t = (12,12) x 329, (8,8) x 2) but FRAGILE: in 800 408 logged PSD visits a
+  line with t <= 7 reaches nullity 13. (B') alone does not exclude Conway (needs (C)). All 331 objects fail DISC, so the
+  population of possible Conway blocks (rank 30 passing DISC, or nullity >= 15) has never been sampled. Z5 families force
+  the grid on (l,m), hence c >= 2: the absence of c = 1 there is not evidence; 329/331 rank-30 objects have the grid;
+  every PSD visit with a c = 1 line comes from one lineage (c11/c21/c31/asym seeds) and has nullity <= 10.
+- New combination: (SQ30) + (N15: no PSD four-star structure of nullity >= 15) would exclude Conway (every block would have
+  rank 30 and would have to pass DISC); delta = 0 is the generic case.
+- Mechanism seen in the Z5h rank-30 objects (mixed_view.py on seed_rank30_c22.json): the 9 mixed relations are
+  (l-even combination on X_l) + 5 (1_{2y} + 1_{3y}) for 9 of the 10 outer letters y: the m-even vectors of the
+  transversal-rich line m are absorbed by X_l (each relation lives on N[l] plus the line {y, z_2y, z_3y}, which forms
+  a prism with m). In the c11 object (h family) the 6 mixed relations are h-even and spread over many letters.
+
 ## OPEN (none of these is established)
 - (B') [the live four-star question, 15/10 02:15 UTC] No admissible four-star structure with T, U >= 0 and nullity
   >= 14 (rank <= 30) has a line with c = 1. In a Conway graph (B') <=> every line is special (c(l) >= 2 + delta).

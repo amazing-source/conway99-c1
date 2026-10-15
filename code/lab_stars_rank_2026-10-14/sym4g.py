@@ -223,7 +223,24 @@ def main():
         assert [sorted(l) for l in S] == di["labels"], "label order differs"
         eset = {tuple(x) for x in di["edges"]}
         assum0 = [e[(i, j)] if (i, j) in eset else -e[(i, j)] for i, j in itertools.combinations(range(n), 2)]
+        if os.environ.get("NOSQUARE"):
+            # 15/10 audit: forbid the closed square on (l, m) (no grid on the two lines); warm start near INIT by
+            # freeing every pair that touches the four cross labels {0,2}, {0,3}, {1,2}, {1,3}
+            cross = {idx[frozenset(p)] for p in ((0, 2), (0, 3), (1, 2), (1, 3))}
+            sqp = [(idx[frozenset((0, 2))], idx[frozenset((0, 3))]), (idx[frozenset((0, 2))], idx[frozenset((1, 2))]),
+                   (idx[frozenset((0, 3))], idx[frozenset((1, 3))]), (idx[frozenset((1, 2))], idx[frozenset((1, 3))])]
+            sol.add_clause([-e[p] for p in sqp])
+            assum0 = [e[(i, j)] if (i, j) in eset else -e[(i, j)] for i, j in itertools.combinations(range(n), 2)
+                      if i not in cross and j not in cross]
         ok, model = sol.solve(assum0)
+        if not ok and os.environ.get("NOSQUARE"):
+            # keep a shrinking random part of the fixed pairs until the no-square structure exists
+            for frac in (0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0):
+                part = [x for x in assum0 if rng.random() < frac]
+                ok, model = sol.solve(part)
+                if ok:
+                    print("warm start (no square): kept %.0f%% of the fixed pairs" % (100 * frac), flush=True)
+                    break
         print("warm start from %s: %s" % (init, ok), flush=True)
     else:
         ok, model = sol.solve()
@@ -567,7 +584,11 @@ def main():
             # every line is special iff no such structure occurs.  score on PSD: -3 (missing relations below 14)
             # - 2 (min(c) - 1); records and saves (cap 50) every PSD structure with nullity >= 14 and min(c) = 1
             if min(lt, lu) > -1e-9:
-                s2 = -3.0 * max(0, 14 - nul_num) - 2.0 * (min(cl, cm) - 1)
+                # 15/10 audit options: NULTARGET (default 14; 15 tests (N15)), CPEN (weight of min(c) - 1, default 2),
+                # TPEN (weight of min(t(l), t(m)) - 7 when positive, default 0; tests the transversal bridge (T8))
+                ntar = int(os.environ.get("NULTARGET", "14"))
+                s2 = (-3.0 * max(0, ntar - nul_num) - float(os.environ.get("CPEN", "2.0")) * (min(cl, cm) - 1)
+                      - float(os.environ.get("TPEN", "0")) * max(0, min(tl, tm) - 7))
                 if os.environ.get("B1KEEP1") and min(cl, cm) != 1:
                     s2 = -60.0          # stay among structures with a non-special line, push the nullity up
                 bb = getattr(main, "bestb1", -999.0)
@@ -575,6 +596,16 @@ def main():
                     main.bestb1 = s2
                     print("move %d: PSD, numerical nullity %d, c = (%d,%d), score %.1f (new best)" % (mv, nul_num, cl, cm, s2),
                           flush=True)
+                if nul_num >= 15 or (nul_num >= 14 and min(tl, tm) <= 7):
+                    kz = getattr(main, "kz", 0) + 1
+                    main.kz = kz
+                    if kz <= 50:
+                        json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "t": [tl, tm],
+                                   "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                   "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                  open(out + "_AUD_%d.json" % kz, "w"))
+                        print("move %d: AUDIT TARGET HIT: PSD, nullity %d, c = (%d,%d), t = (%d,%d), saved %s_AUD_%d.json"
+                              % (mv, nul_num, cl, cm, tl, tm, out, kz), flush=True)
                 if nul_num >= 14 and min(cl, cm) == 1:
                     kb = getattr(main, "kb", 0) + 1
                     main.kb = kb
