@@ -1,6 +1,6 @@
 # Two local conjectures that would exclude Conway's 99-graph (LAB, 15/10/2026, night; Codex out of usage)
 
-**REFUTED (15/10, 01:35 UTC, VERIFIED exactly): both (N9) and (NOGRID) are FALSE.** A cold PSD walk in a family
+**REFUTED (15/10, about 01:14 UTC (file times), VERIFIED exactly): both (N9) and (NOGRID) are FALSE.** A cold PSD walk in a family
 never explored before (group <(4 6 8 10 12)(5 7 9 11 13), (0 1)(2 3)> of order 10, rotating the five outer lines)
 found at once fourstar_psd_grid_Z5h_c22.json (T, U >= 0, grid on (l,m), c = (2,2), rank 35) and
 fourstar_psd_grid_Z5h_c62.json (T >= 0 of rank EXACTLY 30, U >= 0 of rank 39, grid on (l,m), c = (6,2), nullity 14

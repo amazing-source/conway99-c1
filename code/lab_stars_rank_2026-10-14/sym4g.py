@@ -22,6 +22,7 @@ from pycryptosat import Solver
 
 from stars_rank import build, kval, LABELS
 from z5_enum import exact_rank
+from disc_scan import sym_pivot_det, small_odd_primes
 
 
 def parse(cyc):
@@ -279,7 +280,7 @@ def main():
                           open(out + "_best.json", "w"))
                 print("move %d: c(l)=c(m)=1, new best EXACT nullity %d (lambda_T %.4f, lambda_U %.4f)"
                       % (mv, best_null, lt, lu), flush=True)
-                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap"):
+                if best_null >= 14 and min(lt, lu) > -1e-9 and mode not in ("mix3", "r7", "schur", "oddgap", "disc"):
                     print("H4' REFUTED (if exact positivity confirmed)", flush=True)
                     return
         if mode in ("sector", "urepair"):
@@ -396,6 +397,23 @@ def main():
                     if r7 == n:
                         break
                 s2 = -float(r7) - 0.1 * float(absev[13])
+                # R7RANKW (15/10, K22 question): penalty per missing relation below nullity 14 (a Conway four-star block
+                # has rank <= 30); rank-30 PSD records are tracked separately
+                rkw = float(os.environ.get("R7RANKW", "0"))
+                if rkw > 0:
+                    s2 -= rkw * max(0, 14 - nul_num)
+                    if min(lt, lu) > -1e-9 and nul_num >= 14:
+                        b30 = getattr(main, "best7r30", 99)
+                        if r7 < b30:
+                            main.best7r30 = r7
+                            k30 = getattr(main, "k30", 0) + 1
+                            main.k30 = k30
+                            json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "rank7": r7,
+                                       "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                       "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                      open(out + "_R30_%d.json" % k30, "w"))
+                            print("move %d: RANK-30 PSD with rank_7 = %d (new record, saved %s_R30_%d.json), c = (%d,%d)"
+                                  % (mv, r7, out, k30, cl, cm), flush=True)
                 best7 = getattr(main, "best7", 99)
                 if r7 < best7:
                     main.best7 = r7
@@ -404,10 +422,69 @@ def main():
                 if r7 <= 29 and min(lt, lu) > -1e-9:
                     k7 = getattr(main, "k7", 0) + 1
                     main.k7 = k7
-                    json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "rank7": r7,
-                               "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
-                               "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
-                              open(out + "_R7_%d.json" % k7, "w"))
+                    # 15/10: cap the files (SAVEPSD first ones, every new PSD minimum, at most 200 with rank_7 <= 28)
+                    b7p = getattr(main, "best7psd", 99)
+                    n28 = getattr(main, "n28", 0) + (1 if r7 <= 28 else 0)
+                    main.n28 = n28
+                    if k7 <= int(os.environ.get("SAVEPSD", "20")) or r7 < b7p or (r7 <= 28 and n28 <= 200):
+                        json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "rank7": r7,
+                                   "lambda_T": lt, "lambda_U": lu, "nullity_numeric": nul_num,
+                                   "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                  open(out + "_R7_%d.json" % k7, "w"))
+                    if r7 < b7p:
+                        main.best7psd = r7
+                        print("move %d: PSD with rank_7 = %d (new PSD minimum, saved as %s_R7_%d.json), c = (%d,%d)"
+                              % (mv, r7, out, k7, cl, cm), flush=True)
+            else:
+                s2 = -100.0 + 3.0 * min(lt, lu)
+        elif mode == "disc":
+            # DISC-targeted walk (15/10): on PSD structures of rank 30, Conway needs det(8T_I) = 2 x square
+            # (I a basis of the 44 labels; L17 with LAB's det K, Codex L2) and rank_7(8T_S4) <= 28 (L4, L22).
+            # score = -(primes < 20000 with the wrong exponent parity) - (cofactor not a square) - excess of rank_7
+            if min(lt, lu) > -1e-9 and nul_num >= 14:
+                rex, dex, _ = sym_pivot_det(M8.tolist())
+                if rex is None:
+                    s2 = -60.0
+                elif rex < 30:
+                    s2 = 0.0
+                    print("move %d: PSD with EXACT rank %d < 30 (c = (%d,%d))" % (mv, rex, cl, cm), flush=True)
+                else:
+                    oddp, cof = small_odd_primes(int(dex))
+                    A7 = [[int(x) % 7 for x in row] for row in M8.tolist()]
+                    r7 = 0
+                    for c in range(n):
+                        pv = next((i for i in range(r7, n) if A7[i][c]), None)
+                        if pv is None:
+                            continue
+                        A7[r7], A7[pv] = A7[pv], A7[r7]
+                        iv = pow(A7[r7][c], 5, 7)
+                        A7[r7] = [(x * iv) % 7 for x in A7[r7]]
+                        for i in range(n):
+                            if i != r7 and A7[i][c]:
+                                f7 = A7[i][c]
+                                A7[i] = [(x - f7 * y) % 7 for x, y in zip(A7[i], A7[r7])]
+                        r7 += 1
+                    wrong = len(set(oddp) ^ {2}) + (0 if math.isqrt(cof) ** 2 == cof else 1) + max(0, r7 - 28)
+                    s2 = -float(wrong)
+                    bw = getattr(main, "bestwrong", 99)
+                    if wrong < bw:
+                        main.bestwrong = wrong
+                        print("move %d: rank-30 PSD, DISC defect %d (odd primes %s, cofactor %s, rank_7 %d), c = (%d,%d)"
+                              % (mv, wrong, oddp, "1" if cof == 1 else "big", r7, cl, cm), flush=True)
+                    if wrong == 0:
+                        kd = getattr(main, "kd", 0) + 1
+                        main.kd = kd
+                        if kd <= 200:
+                            json.dump({"labels": [sorted(l) for l in S], "gens": gens_s, "c": [cl, cm], "rank7": r7,
+                                       "det8T_I_odd_primes": oddp, "lambda_T": lt, "lambda_U": lu,
+                                       "edges": [[i, j] for i in range(n) for j in range(i + 1, n) if G[i, j]]},
+                                      open(out + "_DISC_%d.json" % kd, "w"))
+                        if kd <= 5:
+                            print("move %d: DISC AND rank_7 PASS (saved %s_DISC_%d.json)" % (mv, out, kd), flush=True)
+            elif min(lt, lu) > -1e-9:
+                # rank > 30: penalty DISCRANKW per missing relation (env, default 1.0; 15/10: 10 per relation froze the
+                # walk on two isolated rank-30 structures)
+                s2 = -4.0 - float(os.environ.get("DISCRANKW", "1.0")) * float(14 - nul_num)
             else:
                 s2 = -100.0 + 3.0 * min(lt, lu)
         elif mode == "lowrank":
