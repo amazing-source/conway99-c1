@@ -3977,3 +3977,80 @@ Tout passe en moins d'une seconde. Artefact h_component_circulation.json.
 Aucun fichier de graphe du pair lu ; aucune nouvelle famille C1 exclue.
 Ce critere est un filtre sur les moyennes et une construction des seules
 orientations equitables du rectangle, PAS la construction d'un SRG.
+
+### 15/10, suite805 : defauts de conjugaison et tests de couplage de taille au plus4
+
+805 lu/acquitte. Le pair fournit l'involution cachee exacte g=h(4 6) de
+HB_1, qui ne preserve pas les mates. Son defaut D=K-gKg a rang2, spectre
++-1, et ses noyaux observes sont g-invariants (11 pairs,2 impairs).
+Ces donnees sont acceptees sans lire/re-auditer HB_1. Claude poursuit les
+marches a froid G1'' contenant h(4 5) mais pas h, avec G1 temoin. Aucun
+doublement de ces recherches par Codex.
+
+GENERALISATION GEOMETRIQUE. Pour TOUTE involution p des10 lettres
+exterieures, g=(0 1)(2 3)p agit librement sur les44 labels, meme si p ne
+preserve pas les mates. Soit M le matching des mates exterieurs et
+M'=pMp. Si Gamma est g-invariant, les seuls termes geometriques changes
+sont les incidences de mates exterieurs. Sur les40 labels(s,y),
+ D=K-gKg = (1/8) J4 tensor(M-M'),
+et D est nul dans les lignes/colonnes des quatre labels O. On a
+ gTg=T+D.
+La correction de U est L=(4*intersection-mateinc+2)/15, d'ou
+ gUg=U-(8/15)D.
+Ce ratio est different du simple signe oppose dans les parites preservant
+le cadre ; les tests doivent l'utiliser.
+
+RANG GEOMETRIQUE. L'union des deux matchings se decompose en cycles
+alternes2s, avec s1 pour une arete commune. M-M'=M(I-MM') ; MM' est le
+produit de deux s-cycles sur chaque composante. Le noyau y a dimension2,
+donc rang2s-2. Si c est le nombre de composantes, rangD=10-2c.
+Puisque gDg=-D, en parite g orthonormale
+ D=[[0,E],[E^t,0]], rangE=5-c<=4.
+T_mixte=-E/2, U_mixte=4E/15 : ces deux couplages sont FIXES par la
+geometrie, independants du graphe Gamma g-invariant.
+
+CLASSIFICATION FINIE DE LA GEOMETRIE. Les945 matchings M' sur10 lettres
+se repartissent selon les7 partitions de5. Comptes par rangE0,1,2,3,4 :
+1,20,140,400,384. Chaque type se realise par une involution p, obtenue
+par reflexion sur chacun des cycles alternes. Les controles symboliques
+ont porte sur ces7 representants, sans aucun graphe fourni par le pair.
+945 compte des matchings geometriques, PAS des bords, moyennes ou SRG.
+
+TEST EXACT DU COUPLAGE. Factoriser E=X Y^t, X,Y de rang colonne r<=4,
+rationnellement. Les diagonales A,C de T sont supposees PSD ; elles
+doivent contenir X,Y dans leurs images. Poser G_A=X^t A^+ X,
+G_C=Y^t C^+ Y. Ces metriques sont definies positives en taille r. Alors
+ T PSD ssi R_T=4 G_A^-1-G_C PSD.
+De meme avec les diagonales A',C' de U et leurs conditions de portee,
+ U PSD ssi R_U=(225/16) G_Aprime^-1-G_Cprime PSD.
+Preuve par complement de Schur sur les supports positifs, pour un bloc
+mixte aXY^t : le residu est (a^2 G_A)^-1-G_C. Les autres directions du
+complement restent strictement positives. Les tests diagonaux restent
+necessaires, mais le couplage est EXACTEMENT reduit a une matrice r<=4.
+Pour le swap non mate simple de805, r1 : deux inegalites scalaires.
+
+NULLITE ET LIMITE DU DIAGNOSTIC. Sous positivite,
+ nulliteT = nulliteT_moyen + nulliteR_T.
+En particulier N=gN ssi R_T est strictement positif (cas r0 compris).
+L'observation N=gN chez HB_1 signifie donc AUCUNE saturation du couplage :
+sa nullite13 est DEJA celle des blocs moyens (11 relations paires,2 impaires).
+Le defaut de rang2 ne suffit pas, seul, a forcer une relation de moins.
+Deux exemples algebriques propres avec le meme rang et les memes rapports
+T/U montrent les deux voies possibles vers14 :
+- moyenne de nullite14, residuT=3>0, residuU=209/16>0 ; noyau g-invariant ;
+- moyenne de nullite13, residuT=0, residuU=209/16>0 ; une saturation ajoute
+  une direction nulle et le noyau n'est pas g-invariant.
+Dans les deux cas, nulliteT14/nulliteU4, mais les matrices ne sont PAS des
+adjacences binaires et n'imposent PAS toute la geometrie C1/C2. Elles ne
+refutent ni la campagne du pair ni un theoreme specifique aux graphes.
+Pour demontrer le plafond13, il faut donc encore des contraintes sur la
+nullite des moyennes et la saturation du petit residu.
+
+OUTIL : h_geometric_defect.py, fonctions geometric_defect (ordre des labels
+parametrable), rank_factor, metric_on_range, coupling_residual. Les
+fonctions centrales ne dependent que de SymPy. L'export report utilise
+notre helper d'inertie deja exporte. Artefact h_geometric_defect.json.
+Controles :945 matchings,7 types exacts, ratio lower/upper, deux exemples
+abstraits de nullite14, trois petits blocs a couplage sous-critique, critique,
+sur-critique, et une obstruction de portee. Export execute en moins d'une
+seconde. Aucun processus actif ; aucune famille C1 exclue.

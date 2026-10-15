@@ -1,0 +1,120 @@
+{
+  "status": "EXACT_GEOMETRIC_DEFECT_COUPLING_RANK_AT_MOST_FOUR",
+  "formula": "For g=h*p and Gamma g-invariant, D=K-gKg=(J4 tensor (M-pMp))/8 on the40 outer-star labels, zero on the4 overlap labels. gTg=T+D and gUg=U-(8/15)D.",
+  "ranks": "If M union pMp has c alternating components on the ten outer letters, rankD=10-2c and mixed defect rank r=5-c<=4. Common matching edges count as components of size2.",
+  "parity": "In orthonormal g parity, D=[[0,E],[E^T,0]], T_mixed=-E/2 and U_mixed=(4/15)E. These mixed blocks are FIXED by geometry, independently of Gamma.",
+  "exact_psd": "Factor E=X*Y^T rationally. Under positive diagonal blocks and both range conditions, T PSD iff4*G_A^(-1)-G_C PSD, G_A=X^T A^+ X,G_C=Y^T C^+ Y. U PSD iff(225/16)*G_Aprime^(-1)-G_Cprime PSD. Both residuals have size r<=4.",
+  "nullity": "Under T PSD, nullityT=nullity(T_mean)+nullity(lower_residual). Thus kerT is g-invariant iff the lower residual is positive definite; this includes the rank-zero case vacuously.",
+  "proof": [
+    "Intersection counts and the constant geometric term are unchanged by any outer permutation. Only the outer mate-incidence matrix changes, equally in each of the4x4 central-star blocks, giving the tensor formula. Its coefficient in the upper correction is-1/15 instead of+1/8, hence the upper defect ratio-8/15.",
+    "On an alternating cycle of length2s, M-pMp=M*(I-M*pMp). The product of the two matchings consists of two s-cycles, so the kernel has dimension2 and the rank is2s-2, including rank0 for a common edge. Sum over components. Since g is an involution exchanging the matchings, gDg=-D and each parity off-block has half the defect rank.",
+    "Writing T_mixed=a*X*Y^T, range compatibility permits Schur complementation on the positive supports. The nontrivial residual is (a^2*G_A)^(-1)-G_C, with the same negative and zero inertia as the full Schur complement outside its positive unaffected directions. The scales are a=-1/2 for T and a=4/15 for U."
+  ],
+  "geometric_types": [
+    {
+      "partition": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "remated_matchings": 1,
+      "defect_rank": 0,
+      "coupling_rank": 0,
+      "mixed_defect_frobenius_squared": "0"
+    },
+    {
+      "partition": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "remated_matchings": 20,
+      "defect_rank": 2,
+      "coupling_rank": 1,
+      "mixed_defect_frobenius_squared": "1"
+    },
+    {
+      "partition": [
+        2,
+        2,
+        1
+      ],
+      "remated_matchings": 60,
+      "defect_rank": 4,
+      "coupling_rank": 2,
+      "mixed_defect_frobenius_squared": "2"
+    },
+    {
+      "partition": [
+        3,
+        1,
+        1
+      ],
+      "remated_matchings": 80,
+      "defect_rank": 4,
+      "coupling_rank": 2,
+      "mixed_defect_frobenius_squared": "3/2"
+    },
+    {
+      "partition": [
+        3,
+        2
+      ],
+      "remated_matchings": 160,
+      "defect_rank": 6,
+      "coupling_rank": 3,
+      "mixed_defect_frobenius_squared": "5/2"
+    },
+    {
+      "partition": [
+        4,
+        1
+      ],
+      "remated_matchings": 240,
+      "defect_rank": 6,
+      "coupling_rank": 3,
+      "mixed_defect_frobenius_squared": "2"
+    },
+    {
+      "partition": [
+        5
+      ],
+      "remated_matchings": 384,
+      "defect_rank": 8,
+      "coupling_rank": 4,
+      "mixed_defect_frobenius_squared": "5/2"
+    }
+  ],
+  "remated_matchings_by_coupling_rank": {
+    "0": 1,
+    "1": 20,
+    "2": 140,
+    "3": 400,
+    "4": 384
+  },
+  "abstract_nullity14_examples": [
+    {
+      "mean_nullity": 14,
+      "lower_residual": "3",
+      "upper_residual": "209/16",
+      "T_nullity": 14,
+      "U_nullity": 4,
+      "kernel_g_invariant": true,
+      "scope": "Abstract positive parity blocks, not a binary adjacency or a Conway border."
+    },
+    {
+      "mean_nullity": 13,
+      "lower_residual": "0",
+      "upper_residual": "209/16",
+      "T_nullity": 14,
+      "U_nullity": 4,
+      "kernel_g_invariant": false,
+      "scope": "Abstract positive parity blocks, not a binary adjacency or a Conway border."
+    }
+  ],
+  "peer805_interpretation": "The reported N=gN for HB_1 means its rank-one lower residual is STRICTLY positive: the coupling adds no null direction. Its13 rather than14 null vectors are a property of the mean blocks in that lineage, not a consequence of rankD=2 alone.",
+  "limitations": "No producer graph read or re-audited, no nullity14 graph constructed, and no family excluded. The945 count classifies remated geometric matchings, not adjacency matrices or means. The abstract examples do not impose all Conway geometry, binary entries or C1/C2."
+}
