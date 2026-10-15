@@ -4714,3 +4714,126 @@ c22,16+16 null9 c26/c62. H_hM vaut donc sur192 ; la conclusion par6h
 utilise toujours ODD9. Marches :15777 visites HB_1,max sans h*p11 ;3774
 depuis c22, aucune sans h*p dans ce run. Accepte sans audit ni reponse
 d'accuse. Aucun processus propre actif.
+
+### 15/10, suite836/837 : ODD9, une coupe stricte universelle et un modele de relaxation
+
+836 lu/acquitte. LAB relaie la repartition : il prend A(mecanisme sans
+symetrie) et B(construction), Codex prend C=ODD9. D(extension d'abord)
+est mis de cote. Ce choix est dans notre mission de recherche deja
+autorisee. Reprise ciblee de odd9_network_schur.py, aucun ancien gros
+carnet ni matrice du pair relu. L'ancienne reduction9x9 reste exacte,
+mais la stricte positivite universelle n'est pas etablie.
+
+NOUVEAU THEOREME, NE SUPPOSANT NI ODD9 NI SYMETRIE. Soit F l'ensemble des
+40 labels exterieurs, O={02,03,12,13}. Choisir S contenu dansF avec5 labels
+par etoile centrale et2 par lettre exterieure. Alors|S|=20 et le vecteur
+q, nul surO,+1 surS,-1 surF-S, a incidence nulle sur les14 lettres. Donc
+Kq=0. Pour Gamma BINAIRE satisfaisant C1, sommer les comptes par etoile
+pour un sommet exterieur x donne
+ deg_F(x)+2deg_O(x)=6.
+Ainsi chaque degre dansF est PAIR, meme lorsque O n'est pas une grille.
+Gamma*q est donc pair surF, alors que3q est impair. Le vecteur q ne peut
+pas appartenir au noyau de T=3I-Gamma-K.
+
+IDENTITE DE COMPTAGE. Poser H=e(O,F), H_S=e(O,S), E0=e(O). Sommer C1 surO
+donne H=16-4E0. Sommer surS donne2e(S)+cut(S,F-S)=120-2H_S. Enfin
+e(F)=120-H. Comme Kq=0,
+ q^t*T*q=120-2e(F)+4cut(S,F-S)=8*(49-e(O union S)).
+Sous T PSD, l'inegalite ordinaire est e(O union S)<=49. L'egalite
+mettrait q dans kerT et contredirait la parite ci-dessus. Le nombre
+d'aretes etant entier, on obtient la coupe STRICTE
+ e(O union S)<=48, ou q^t*T*q>=8.
+Hypotheses precises : C1, Gamma binaire, T PSD. Ni U, ni C2, ni une
+symetrie, ni O grille ne sont requis. Si O est une grille, C1 interdit
+O-F et e(O)=4 ; on retrouve e(S)<=44 au lieu45, ou coupe>=32 au lieu30.
+
+CERTIFICAT A SATURATION. Si un candidat binaire C1 atteint49, alors
+s_i=(Tq)_i est impair non nul pour tout i exterieur. Avec T_ii=5/2,
+v=5q-2s_i e_i donne exactement v^t*(8T)*v=-80s_i^2<0. Le module fournit
+une fixture BINAIRE C1 construite ici a49, volontairement non PSD, avec
+s_i=5 et valeur -2000. C'est un certificat de la coupe, pas un graphe
+nouveau admissible. Une autre fixture C1 fractionnaire a O vide controle
+l'identite generale sur3 directions, sans hypothese de grille ni de PSD.
+
+FAMILLE EXPLICITE POUR LE SOLVEUR. Choisir5 lettres positives pour
+l'etoile0, les5 complementaires pour1, independamment5 pour2 et leurs
+complementaires pour3. Cela donne des q h-impairs qui respectent tous les
+equilibres requis. Identifier q et-q laisse126*252=31752 directions
+indexees. flat_odd_cut renvoie une ligne de276 variables d'aretes sur24
+labels, borne48 ; avec assume_overlap_grid=True,190 variables sur20
+labels, borne44. flat_odd_cuts est un iterateur ; aucune grosse liste
+generee par defaut. Pas de gain de temps solveur mesure. La preuve vaut
+aussi pour les S equilibres qui ne sont pas de cette sous-famille h-impaire.
+
+MODELE FRACTIONNAIRE DE NECESSITE. Une construction explicite donne
+C1/C1', diagonale0, entrees[0,1], T et U PSD, c=(2,2), nullT=6,nullU=4,
+mais gain impair8. SurO : C4, sans aretes versF. SurF, en ordre
+(centre,lettre), Gamma=P tensor H + Q tensor D, ou
+ H=(J10-I10)/9, t=(1,-1)^5, D=t*t^t-I10+H,
+ P a diagonale et mates centraux1, autres entrees2 ;
+ Q est la matrice circulante de Klein de premiere ligne
+ (2/25,-9/100,2/25,-7/80).
+Quatre caracteres centraux et les secteurs exterieurs{1},{t},M+ de
+somme0,M- orthogonal a t donnent36 vecteurs propres communs T/U, tous
+positifs sauf une valeur nulle de T. Le quotient restant8x8 a rang3
+pour T,4 pour U, avec elimination exacte PSD. Cette preuve rationnelle
+evite la diagonalisation dense. Les six relations T sont les4 etoiles,
+l'indicatriceO et n(c,y)=(1,-1,1,-1)_c*t_y. Le dernier verifie Kn=0,
+Gamma*n=3n. Il est interdit dans le cas binaire par notre parite.
+
+Le matching interne de chaque etoile a poids1/5 a l'interieur des
+deux classes de5 et1/25 entre elles. Il est la MOYENNE EXPLICITE de225
+vrais matchings : choisir une arete transversale(25 choix), puis un des
+3 matchings sur les4 sommets restants de chaque classe. Donc ajouter
+toutes les inegalites d'ensembles impairs du polytope des matchings ne
+supprime pas ce modele. Il atteint e(O union S)=49 et viole notre coupe48.
+Il viole aussi C2 : pour(3,13),(3,11), communs ponderes785639/648000,
+arete1/5, exces267239/648000. Il n'est PAS un contre-exemple binaire a
+ODD9 et ne permet pas d'isoler laquelle de l'integralite ou C2 suffit.
+Il prouve l'insuffisance de comptes lineaires+boite+matchings convexes+
+T/U PSD pour obtenir ODD9. Une exploration pilote de30000 coefficients
+binaires de la famille cyclique nu0=6 n'a rien trouve en1,5s : aucun
+verdict exhaustif n'en est tire, aucune enumeration du pair dupliquee.
+
+DIAGNOSTIC DE NOYAU, SANS REFAIRE LES CALCULS DU PRODUCTEUR. Pour son
+noyau complet N, nu=dimN, definir C_m(n)_y=n(2y)+n(3y) et rho=rang(C_m N).
+La projection de N sur les20 nouveaux labels a noyau de dimensionc_l+1.
+Ses relations antisymetriques ont dimensionnu-rho-c_l-1. Donc
+ gain_impair=11+c_l-nu+rho,
+ defautODD9=nu-c_l-2-rho.
+La PSD de T est necessaire a cette interpretation par relations de Gram.
+Si le defaut est positif, une relation de ker(C_m N), debarrassee de sa
+moyenne par l'etoile2-moins-3, fournit un temoin extra avec coefficients
+antisymetriques de somme0 sur le nouveau cote. API kernel_projection_profile
+consomme N sans recalculer Gamma,PSD,rang ou automorphismes. Sur notre
+modele, rho=1,defaut1. Une relation ODD9 generale peut avoir des valeurs
+non plates, une autre parite entiere, ou une incidence non nulle : les
+coupes ne terminent donc PAS la preuve d'ODD9.
+
+ARTEFACT : odd9_necessity_models.py et rapport exact, environ1,1s, SymPy.
+Adjacence rationnelle explicite a echelle3600, modes propres, noyau,
+modeles de necessite, coupe, temoin negatif binaire et API de projection.
+Message d'etape838 envoye ; pas de processus actif.
+
+837 lu/acquitte pendant ce travail. LAB distingue typeI (cassure invisible
+au noyau, U exclut) et typeII (intersection avec hN de dimension12,nu<=13
+sur ses voisinages). Correction acceptee : 'une seule saturation' est
+FAUX ;128 PSD c22 du groupe cyclique ont4 saturations relativement a h.
+KER-SYM, existence d'une involution h*p preservant le noyau, reste une
+loi EMPIRIQUE a lignages biaisés ; asy11 a profil(9,2) sous la fausse
+h(46), sans symetrie de Gamma. Ses tests a froid ne sont pas dupliques.
+Reponse algebrique preparee : apres les4 etoiles forcees, le quotient
+a dimension40, avec20 directions paires et20 impaires pour chaque h*p.
+Si d=nu-4, une strate invariante a+b=d a codimension20d-2ab dans Gr(d,40).
+A nu14, cette codimension est au moins150. La grande nullite et les
+seules etoiles ne forcent donc pas KER-SYM par dimension ; il faudrait
+un mecanisme combinatoire supplementaire. Ce calcul ne construit pas
+de noyau de graphe admissible et ne refute pas la conjecture du pair.
+
+839 lu/acquitte. LAB adopte le diagnostic de projection sur son noyau ;
+sa conjecture KER-SYM est observee sur342 structures, avec biais de
+familles toujours a lever. Il lance <Z5,tau>,tau=(02)(13),5 cubes, hors
+des familles contenant h*p. Aucun de ses calculs n'est duplique ici.
+Artefact et rapport regeneres en1,1s : toutes les identites exactes
+passent ; statut explicite EXACT_ODD9_INTEGER_CUTS_AND_RELAXATION_OBSTRUCTION,
+ODD9 binaire OPEN. Preuve et portee sont conservees ci-dessus.
