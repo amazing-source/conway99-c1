@@ -6540,3 +6540,12 @@ certifiees. Aucun52 complet ou SRG99 n'est annonce. Le point constructif
 nouveau est un cadre12-global qui depasse les deux obstructions precedentes,
 construit sans conserver les aretes d'un ancien germe44. Pas de solveur
 laisse actif a la fin de cette passe.
+
+Livraison envoyee au LAB en898 : global_star12_15d74e9.zip,52968 octets,
+SHA25605aa8758250f32f2283719a02ee897a049fb35dc1a6697058a97d365e3660ed9.
+Archive6 modules+11 JSON et README, dans codex_hmatch_20261016. Les deux
+constructions8/12 lignes globales sont aussi exportees a plat. Dernier
+message lu et accuse897 ; pas de reponse a son simple compte rendu de
+verification, livraison898 contient les nouvelles constructions. Commits
+612d6e5 (defaut12), ca3dab5 (borne4, obstructions et cadre global),15d74e9
+(portee des cases inconnues et controle exact des84 poids de colonnes).
