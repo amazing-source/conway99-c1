@@ -81,6 +81,8 @@ seen = set()
 stats = collections.Counter()
 rel_ok = rel_bad = 0
 maxcor_ng = collections.Counter()
+bycz = collections.Counter()
+bycg = collections.Counter()
 examples = []
 nfiles = 0
 for dp, dn, fn in os.walk(root):
@@ -115,9 +117,17 @@ for dp, dn, fn in os.walk(root):
                     examples.append((f, side, s, r["nu"]))
             if not r["grid"]:
                 maxcor_ng[s["corQ"]] += 1
+                bycz[(s["c"], s["corQ"])] += 1
+            else:
+                bycg[(s["c"], s["corQ"])] += 1
         stats["grid" if r["grid"] else "nongrid"] += 1
 print("files %d, distinct structures %d, PSD %d (grid %d, non-grid %d)" % (nfiles, stats["structures"], stats["psd"],
       stats["grid"], stats["nongrid"]))
 print("relation dim P = corank(Q) + 1 on PSD sides: %d true, %d false; examples of failure: %s" % (rel_ok, rel_bad,
       examples))
 print("corank(Q) distribution on non-grid PSD sides:", dict(sorted(maxcor_ng.items())))
+print("non-grid PSD sides by (c, corank Q):", dict(sorted(bycz.items())))
+print("grid PSD sides by (c, corank Q):", dict(sorted(bycg.items())))
+need = {1: 10, 2: 9, 3: 8, 4: 7}
+print("non-grid sides with c <= 4 violating the Conway-killing bound corank <= 11 - c:",
+      sum(v for (c, k), v in bycz.items() if c in need and k > need[c]))

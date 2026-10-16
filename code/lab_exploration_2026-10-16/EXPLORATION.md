@@ -130,3 +130,26 @@ conjectures, raccourcis, paris.
   corank(Q) ≥ 8 : contradiction.
 - Prochaine étape : prouver Q7. Il faut trouver pourquoi l'espace des profils (ker Q ⊂ R^20) a dimension ≤ 7 sans grille,
   et pourquoi une grille ajoute 3 dimensions.
+
+### 16/10 environ 18:05-18:30 UTC : Q7 se scinde en deux lois, toutes deux vraies sur les données
+- Ventilation (`q_scan.py`), côtés PSD sans grille, (c, corank Q) :
+  - c = 1 : corank ≤ 7 (il suffirait de ≤ 10) ;
+  - c = 2 : ≤ 7 (il suffirait de ≤ 9) ;
+  - c = 3 : ≤ 7 (il suffirait de ≤ 8) ;
+  - c = 4 : ≤ 7 (il faut exactement ≤ 7, pas de marge) ;
+  - c = 5 : ≤ 7.
+  Aucune violation de la borne 11 − c qui tuerait Conway. Avec grille, corank va jusqu'à 11 (c = 2).
+- Décomposition (`q_split_scan.py`, environ 7 444 côtés sans grille) :
+  - ODDCONST : le rang des parties antisymétriques w_{2s} − w_{3s} vaut toujours exactement 1 (le vecteur trivial
+    χ_2 − χ_3) ;
+  - SYM6 : le rang des parties symétriques w_{2s} + w_{3s} est ≤ 6, avec toujours corank = 1 + rang symétrique.
+  Les grilles CASSENT ODDCONST (rang antisymétrique 2 ou 3, des centaines de cas) : c'est ainsi qu'elles gonflent le
+  noyau.
+- Donc Q7 ⟸ ODDCONST + SYM6 (sans grille).
+- Hypothèse LINE-SUM pour SYM6 RÉFUTÉE (`sym_linesum.py`, 0 sur 16) ; seule la somme totale nulle tient (16 sur 16).
+- Identité exacte : f(s) := w_{2s} + w_{3s} = (A_NY w)_s = ((3I − A_NN) x_N)_s pour les lettres s = 4..13, avec
+  x_N = (3I − A_NN)^+ A_NY w.
+- Pistes de preuve :
+  - ODDCONST est la partie ι_m-impaire (permutation formelle 2 ↔ 3 ; voir R5/R6 de N9NG_ATTACK) restreinte à Y. Le lemme
+    de signe R5 contrôle déjà l'énergie de (x ± ι_m x)/2 ;
+  - SYM6 doit venir de la structure de G_l à travers A_NY.
