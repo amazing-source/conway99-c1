@@ -43,23 +43,31 @@ def corner_graphs(edge_count):
     return result
 
 
-def rectangle_realizations(edges, raw, domains=None):
+def rectangle_realizations(edges, raw, domains=None, root_prism_budget=None):
     """Four genuine binary corner rows and their conditional T Gram."""
     domains = signature_domains(edges, raw) if domains is None else domains
     if not edges:
-        return {"feasible": True, "witnesses": [], "scope": "Empty nongrid quotient only."}
+        feasible = root_prism_budget is None or root_prism_budget >= 84
+        return {"feasible": feasible, "witnesses": [], "minimum_root_prism_sum":84,
+                "failed_rectangle":None if feasible else "global_prism_budget",
+                "scope": "Empty nongrid quotient only."}
     matrix = sp.Matrix(raw)
     anchors = list(matrix.rref()[1])
     small = matrix.extract(anchors, anchors)
     denominator = int(small.det())
     adjugate = (small.inv(method="DM") * denominator).applyfunc(int)
-    witnesses = []
+    witnesses, minimum_total = [], 0
     for item in domains:
         rectangle = tuple(item["rectangle"])
         signatures = [tuple(v) for v in item["signatures"]]
         coordinate = edges.index(rectangle) if rectangle in edges else None
         energy = int(matrix[coordinate, coordinate]) if coordinate is not None else 0
         patterns = corner_graphs(4-energy//2)
+        def prism_count(pattern):
+            adjacency = pattern[0]
+            return sum(adjacency[i][j] for i in range(4) for j in range(i+1,4)
+                       if set(RECTANGLE_LABELS[i]) & set(RECTANGLE_LABELS[j]))
+        patterns.sort(key=prism_count)
         vectors = [sp.Matrix([h[i] for i in anchors]) for h in signatures]
         gram = [[int((a.T*adjugate*b)[0]) for b in vectors] for a in vectors]
         target = tuple(item["target"])
@@ -79,7 +87,8 @@ def rectangle_realizations(edges, raw, domains=None):
                         denominator*t4[int(a)][int(b)]-4*gram[indices[int(a)]][indices[int(b)]])
                     if psd_or_witness(residual)["psd"]:
                         found = {"rectangle": rectangle, "signature_indices": indices,
-                                 "corner_adjacency": adjacency}
+                                 "corner_adjacency": adjacency,
+                                 "prism_edges":prism_count((adjacency,t4,degrees))}
                         break
                 if found is not None:
                     break
@@ -89,7 +98,12 @@ def rectangle_realizations(edges, raw, domains=None):
             return {"feasible": False, "failed_rectangle": rectangle,
                     "reason": "No binary corner graph and four signatures satisfy the conditional Gram."}
         witnesses.append(found)
-    return {"feasible": True, "witnesses": witnesses}
+        minimum_total += found["prism_edges"]
+        if root_prism_budget is not None and minimum_total > root_prism_budget:
+            return {"feasible":False,"failed_rectangle":"global_prism_budget",
+                    "partial_minimum_root_prism_sum":minimum_total,
+                    "reason":"Even the separate rectangle minima exceed the authorized root budget."}
+    return {"feasible": True, "witnesses": witnesses,"minimum_root_prism_sum":minimum_total}
 
 
 def bounds(rectangle, coordinate):

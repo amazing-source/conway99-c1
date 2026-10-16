@@ -22,9 +22,11 @@ from three_star_ambient_upper import psd_or_witness
 from root_rectangle_domains import rectangle_realizations
 
 
-def solve(template, seconds, realize_rectangles=False):
+def solve(template, seconds, realize_rectangles=False, root_prism_budget=None):
     edges = [tuple(e) for e in template["nongrid_edges"]]
     m = len(edges)
+    if root_prism_budget is not None and 4*(21-m)>root_prism_budget:
+        return {"status":"ROOT_GRID_BUDGET_EXCLUDED","grid_prism_lower_bound":4*(21-m),"cuts":[]}
     if not m:
         return {"status": "QUOTIENT_FEASIBLE", "R": [], "R_rank": 0, "cuts": []}
     nodes = template["component_graph_nodes"]
@@ -55,6 +57,14 @@ def solve(template, seconds, realize_rectangles=False):
         for j in range(m):
             model.add(sum(matrix[i][j] for i in incident) == 0)
     model.add(sum(matrix[i][i] for i in range(m)) <= 28 * len(anchors))
+    if root_prism_budget is not None:
+        degree_three_rectangles=[]
+        for i in range(m):
+            flag=model.new_bool_var(f"three_corner_edges_{i}")
+            model.add(matrix[i][i]==2).only_enforce_if(flag)
+            model.add(matrix[i][i]!=2).only_enforce_if(flag.Not())
+            degree_three_rectangles.append(flag)
+        model.add(4*(21-m)+3*sum(degree_three_rectangles)<=root_prism_budget)
     allowed = [(a, b, c) for a in (2, 4, 6, 8) for b in (2, 4, 6, 8)
                for c in range(-8, 5) if c*c <= a*b]
     for i, j in combinations(range(m), 2):
@@ -81,7 +91,7 @@ def solve(template, seconds, realize_rectangles=False):
         upper = psd_or_witness(28 * sp.eye(m) - candidate) if lower["psd"] else None
         if lower["psd"] and upper["psd"]:
             assert incidence * candidate == sp.zeros(len(nodes), m)
-            realization = rectangle_realizations(edges, candidate.tolist()) if realize_rectangles else None
+            realization = rectangle_realizations(edges, candidate.tolist(),root_prism_budget=root_prism_budget) if realize_rectangles else None
             if realization and not realization["feasible"]:
                 anchor_pairs = [(i,j) for i in anchors for j in anchors if i <= j]
                 variables = [matrix[i][j] for i,j in anchor_pairs]
@@ -115,19 +125,32 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seconds-per-template", type=float, default=3)
     parser.add_argument("--realize-rectangles", action="store_true")
+    parser.add_argument("--root-prism-budget",type=int)
+    parser.add_argument("--prior-grams",type=Path)
     args = parser.parse_args()
     data = json.loads(args.source.read_text(encoding="utf-8"))
+    prior = None
+    if args.prior_grams:
+        prior={r["template_index"]:r for r in json.loads(args.prior_grams.read_text(encoding="utf-8"))["records"]}
+        assert all(r["status"] in ("QUOTIENT_FEASIBLE","QUOTIENT_INFEASIBLE") for r in prior.values())
+    if args.root_prism_budget is not None:
+        assert args.realize_rectangles
     counts, output = Counter(), []
     started = time.monotonic()
     for i, item in enumerate(data["survivors"]):
-        result = solve(item, args.seconds_per_template, args.realize_rectangles)
+        if prior is not None and prior[i]["status"]=="QUOTIENT_INFEASIBLE":
+            continue
+        result = solve(item, args.seconds_per_template, args.realize_rectangles,args.root_prism_budget)
         counts[result["status"]] += 1
-        output.append({"template_index": i, "graph_mask": item["graph_mask"], **result})
+        output.append({"template_index": i, "graph_mask": item["graph_mask"],
+                       "root_prism_budget":args.root_prism_budget, **result})
         if i % 25 == 0 or result["status"] == "UNKNOWN":
             print(json.dumps({"completed": i+1, "counts": dict(counts)}), flush=True)
     result = {"source": str(args.source),
               "scope": "Finite necessary Gram quotients only, not completed 44- or 99-vertex graphs.",
               "includes_corner_realization": args.realize_rectangles,
+              "root_prism_budget":args.root_prism_budget,
+              "prior_grams":str(args.prior_grams) if args.prior_grams else None,
               "counts": dict(counts), "elapsed_seconds": time.monotonic()-started,
               "records": output}
     args.output.write_text(json.dumps(result, indent=2, default=int)+"\n", encoding="utf-8")

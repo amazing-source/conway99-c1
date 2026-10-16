@@ -3,20 +3,21 @@ QUOTIENT GLOBAL DES COMPOSANTES AUTOUR D'UNE RACINE
 
 Résultat et limite
 -----------------
-Si un Conway a au moins quatre composantes dans le voisinage de chacune
-de ses droites, choisir une racine sur une droite de c=4 ramène les sept
-droites de cette racine à 100 configurations de composantes restantes.
+Si le minimum global du nombre de composantes vaut quatre, les sept
+droites d'une racine bien choisie se ramènent à 79 configurations de
+composantes restantes. La première réduction donnait100 ; les sections7
+et8 ajoutent la moyenne globale des prismes et le modèle binaire complet.
 Cette couverture n'utilise ni ODD-PURE, ni SYM6, ni une symétrie du graphe.
 
-Le quotient de Gram associé a rang au plus quatre. Les 100 configurations
-ne sont PAS 100 graphes, ni 100 blocs de 44 sommets, ni 100 matrices de
+Le quotient de Gram associé a rang au plus quatre. Les 79 configurations
+ne sont PAS 79 graphes, ni 79 blocs de 44 sommets, ni 79 matrices de
 Gram fixées. Chaque configuration laisse plusieurs Gram et beaucoup
 d'arêtes possibles. Le calcul ferme une première étape de cette branche ;
 le coût d'une réalisation globale n'est pas encore établi.
 
 La borne antérieure c_min<=4 fournit la dichotomie :
   * c_min<=3 : le couplage précédent exige moins de rang symétrique ;
-  * c_min=4 : la présente couverture à 100 configurations s'applique.
+  * c_min=4 : la présente couverture à 79 configurations s'applique.
 La première branche n'est pas traitée par le présent calcul.
 
 1. Composantes et graphe des paires sans grille
@@ -193,3 +194,96 @@ paire sans grille, ajouter e(Q_ij)<=3 ; pour une grille e(Q_ij)=4.
 Cela permet de brancher sur les 100 configurations sans fixer un ancien
 bloc local ni une matrice de Gram témoin. La compatibilité binaire globale
 de ces contraintes reste le travail à accomplir.
+
+7. Choisir une racine avec au plus51 prismes incidents
+----------------------------------------------------
+Le nombre t(l) de prismes contenant la droite l vérifie, dans le repérage
+à une racine x de l={x,a,a*},
+  t(l)=somme_{b différent de a,a*} Gamma[(a,b),(a*,b)].
+C'est le nombre de triangles dans le voisinage cubique de l, chacun
+formant un prisme avec l. La borne déjà établie P<=852 et l'identité
+somme_l t(l)=2P donnent
+  somme_x somme_{l contenant x} t(l)=6P<=5112.
+Il existe donc une racine x avec
+  somme_{l contenant x} t(l)<=floor(5112/99)=51.           (6)
+
+Cette somme est exactement le nombre d'arêtes orthogonales des 21
+rectangles Q_ij : deux coins partagent une lettre. Les diagonales entre
+coins opposés ne sont pas comptées. Une grille contribue4. Si m est le
+nombre de paires sans grille, (6) impose 4(21-m)<=51, donc m>=9.
+Si toutes les sept droites avaient c>=5, leurs degrés dans G seraient
+au plus2, donc m<=7 : impossible ici. Dans la branche minimum global4,
+la racine choisie a bien au moins une droite de c=4.
+
+Parmi les100 configurations précédentes,13 ont m<9 et peuvent être
+écartées de cette NORMALISATION GLOBALE. Cela ne dit pas qu'un tel
+voisinage ne peut jamais apparaître à une autre racine.
+
+Pour chaque Gram R restant, l'outil énumère les graphes binaires internes
+à chaque rectangle dans l'ordre du nombre d'arêtes orthogonales. Il
+retient le minimum réalisable avec les signatures et (4). La somme de
+ces minima doit être <=51. Une coupe entière simple précède ce test :
+  4(21-m)+3*nombre{e : R_ee=2}<=51.
+En effet R_ee=2 signifie trois arêtes dans Q_e ; elles sont toutes
+orthogonales. Une diagonale consomme les deux quotas de lettres mates
+à chacun de ses bouts et n'est compatible qu'avec l'autre diagonale.
+
+Les97 verdicts antérieurs ne sont pas recalculés. Sur les103 quotients
+antérieurement faisables,16 sont écartés par m<9 (13 de minimum4 et les
+trois de minimum>=5). Les87 autres petits problèmes sont résolus :
+  8 INFEASIBLE supplémentaires,79 Gram réalisables séparément,0 UNKNOWN.
+Durée observée :6,3s. Les coupes dépendant de (6) sont étiquetées avec
+root_prism_budget=51 ; elles ne doivent pas servir à une racine arbitraire
+sans ajouter (6).
+
+  python root_component_gram.py templates.json --realize-rectangles \
+      --seconds-per-template 10 --prior-grams grams.json \
+      --root-prism-budget 51 --output budget51.json
+
+8. Intégration au graphe entier, première mesure
+-----------------------------------------------
+root_component_propagation.py propage (5), tous les comptes C1, les
+grilles, les bornes sans grille et les bornes exactes C2. Sur les100
+configurations avant choix de racine, cela fixe 1420 à1636 des3486
+variables binaires ; aucune n'est exclue par la seule propagation.
+Le résumé compact garde les comptes et empreintes des traces.
+
+root_component_global.py construit ensuite TOUTES les équations C1/C2
+sur les84 étiquettes, avec Gamma binaire et symétrique. Ce modèle est
+équivalent au SRG complet, avec les restrictions nécessaires du template.
+R est défini par les sommes d'arêtes et reste VARIABLE. Le Gram témoin
+de la petite recherche n'est jamais fixé. Les coupes PSD et les exclusions
+de Gram impossibles sont transférées, avec (6) lorsqu'elles en dépendent.
+
+La normalisation indépendante d'un matching d'étoile est désactivée :
+elle pourrait ne pas préserver le template. Le constructeur existant
+accepte désormais cette désactivation et la substitution d'arêtes déjà
+forcées. Contrôle du changement : avec et sans normalisation, dont un
+cas avec deux arêtes constantes, le modèle reconstruit un SRG(9,4,1,2)
+et vérifie tous ses degrés et toutes ses paires.
+
+Premier calcul complet avec (6), template198 :
+  c=[6,5,5,4,4,4,4],1592 arêtes fixées par déduction,1894 variables ;
+  85084 produits auxiliaires,87024 variables au total ;
+  INFEASIBLE en11,04s (un seul worker ; modèle construit en2,63s).
+Ce verdict porte sur TOUTES les réalisations de cette configuration,
+pas sur un Gram choisi ni un bloc44 préfixé. C'est un verdict CP-SAT ;
+un certificat UNSAT portable n'a pas encore été produit.
+
+Le template19, c=[4,4,4,4,4,4,4], a aussi été compilé et validé pour
+exercer le transfert des coupes de Gram interdit et des coupes PSD.
+Il reste2066 arêtes variables ; aucun solveur long n'y a été lancé.
+Avant ajout de (6), un calibrage sur le template189 était UNKNOWN en30s.
+Ce dernier est désormais inutile comme cas racine choisi, car m=7<9.
+On ne transforme pas cet UNKNOWN en contradiction intrinsèque du template.
+
+Manifeste courant : root_component_cover79.json.
+Il décrit les79 configurations, dont une INFEASIBLE au solveur global
+et78 non encore traitées à ce niveau. Cela ne prouve ni le coût total
+abordable des78, ni l'exclusion de la branche minimum<=3.
+
+Commande depuis la racine du dépôt :
+  python code/codex/root_component_global.py \
+      data/codex_line_resonance_20261016/root_component_templates.json \
+      data/codex_line_resonance_20261016/root_component_gram_budget51.json \
+      --template-index 198 --seconds 30 --output resultat.json

@@ -146,20 +146,27 @@ def coverage(k=14, enumerate_matchings=False, pointed=False):
 
 
 def build_global(k=14, normal_root=None, extra_cuts=False, gray_library=None, selected_case=None,
-                 low_prism_flag=False):
+                 low_prism_flag=False, normalize_star=True, initial_edges=None):
     assert k >= 4 and k % 2 == 0
     normal_root = (4 if k >= 6 else 0) if normal_root is None else normal_root
     if low_prism_flag:
         assert k == 14, 'The cap P<=852 and the low-line argument are Conway-specific.'
         normal_root = 0
     assert 0 <= normal_root < k
+    if not normalize_star:
+        assert selected_case is None and not low_prism_flag
     labels = [p for p in combinations(range(k),2) if p[1] != (p[0] ^ 1)]
     index = {p:i for i,p in enumerate(labels)}
     n = len(labels)
     model = cp_model.CpModel()
     graph = [[0]*n for _ in range(n)]
+    initial_edges = {} if initial_edges is None else initial_edges
     for p,q in combinations(range(n),2):
-        graph[p][q] = graph[q][p] = model.NewBoolVar('e_%d_%d' % (p,q))
+        graph[p][q] = graph[q][p] = initial_edges.get((p,q))
+        if graph[p][q] is None:
+            graph[p][q] = graph[q][p] = model.NewBoolVar('e_%d_%d' % (p,q))
+        else:
+            assert graph[p][q] in (0,1)
     for p,label in enumerate(labels):
         model.Add(sum(graph[p]) == k-2)
         for r in range(k):
@@ -188,11 +195,13 @@ def build_global(k=14, normal_root=None, extra_cuts=False, gray_library=None, se
     letters = [r for r in range(k) if r not in (normal_root,normal_root ^ 1)]
     assert all(letters[j ^ 1] == (letters[j] ^ 1) for j in range(len(letters)))
     star = [index[tuple(sorted((normal_root,r)))] for r in letters]
-    selectors = [model.NewBoolVar('star_type_%d'%i) for i in range(cover['case_count'])]
-    model.AddExactlyOne(selectors)
-    for selector,case in zip(selectors,cover['cases']):
-        for a,b in case['canonical_matching']:
-            model.AddImplication(selector,graph[star[a]][star[b]])
+    selectors = []
+    if normalize_star:
+        selectors = [model.NewBoolVar('star_type_%d'%i) for i in range(cover['case_count'])]
+        model.AddExactlyOne(selectors)
+        for selector,case in zip(selectors,cover['cases']):
+            for a,b in case['canonical_matching']:
+                model.AddImplication(selector,graph[star[a]][star[b]])
     if selected_case is not None:
         assert 0 <= selected_case < len(selectors)
         model.Add(selectors[selected_case] == 1)
@@ -237,10 +246,12 @@ def build_global(k=14, normal_root=None, extra_cuts=False, gray_library=None, se
         applied = add_gray_cuts(model,labels,graph,library['gray_cuts'])
         cuts['gray_patterns'] = [dict(name=cut['name'],edge_count=len(cut['edges']),upper_bound=cut['upper_bound']) for cut in applied]
     info = dict(parameters=[1+k+n,k,1,2],second_neighbourhood_size=n,
-                edge_variables=n*(n-1)//2,product_variables=len(products),normal_root=normal_root,
-                selected_case=selected_case,covers_all_graphs=(selected_case is None),
+                edge_variables=n*(n-1)//2-len(initial_edges),fixed_edge_constants=len(initial_edges),
+                product_variables=len(products),normal_root=normal_root,
+                selected_case=selected_case,covers_all_graphs=(selected_case is None and not initial_edges),
+                star_matching_normalization=normalize_star,
                 low_prism_flag=low_prism_flag,
-                fixed_local_seed=False,assumed_automorphism=False,coverage=cover,cuts=cuts)
+                fixed_local_seed=bool(initial_edges),assumed_automorphism=False,coverage=cover,cuts=cuts)
     return model, labels, graph, selectors, info
 
 
