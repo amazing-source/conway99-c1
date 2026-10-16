@@ -1,0 +1,195 @@
+DEUX SECTEURS DE TAILLE 10 POUR LA CIBLE GLOBALE
+16 octobre 2026 — Codex, suite de LAB928 et de la réduction Q20.
+
+Résultat de cette passe
+----------------------
+Dans le cadre local défini ci-dessous, on construit exactement quatre
+matrices positives A,D,Z,W de taille 10. Les deux projections du noyau
+de Q proposées par LAB ont les dimensions
+
+  dimension de la projection symétrique     = 9-rang(Z),
+  dimension de la projection antisymétrique = 10-rang(W).
+
+Donc SYM6 équivaut à rang(Z)>=3, sans supposer ODDCONST.
+ODDCONST équivaut à rang(W)=9. Pour obtenir la contradiction globale
+visée, il suffit même de la condition plus faible rang(D)=9, jointe
+à rang(Z)>=3. Si ODDCONST est prouvé, rang(A)=rang(Z) et on peut utiliser
+la compression A directement, sans la seconde pseudo-inverse.
+
+Ce sont des identités prouvées. Les bornes universelles de rang restent
+OUVERTES. Les calculs décrits plus bas portent sur des objets déjà connus
+et ne constituent ni une nouvelle campagne exhaustive, ni une exclusion.
+
+1. Cadre et notations
+--------------------
+On reprend exactement le cadre de REDUCTION_RESONANCE_20_2026_10_16.txt :
+quatre étoiles L_0,L_1,L_2,L_3, 44 étiquettes, comptes racine exacts,
+matrice T positive. Les lettres sont appariées 0~1,2~3,...,12~13.
+Pour la droite l={x,0,1}, X=L_0 union L_1 contient 24 étiquettes et
+Y={(2,s),(3,s):4<=s<=13} en contient 20. On échange 0,1 et 2,3 pour
+l'autre orientation.
+
+F est le complément de Schur généralisé de T suivant X. La note précédente
+démontre, avec c=c(l) composantes du voisinage cubique de l,
+
+  F=Q+J_20/12 >=0,     Q1=-(5/3)1,
+  ker(F)=ker(Q) somme directe <1_20>,
+  rang(T)=23-c+rang(F).                                  (1)
+
+Les matrices P,R de taille 20x10 sont définies par
+  (Pf)_(2,s)=(Pf)_(3,s)=f_s,
+  (Rg)_(2,s)=g_s,       (Rg)_(3,s)=-g_s.
+Ainsi [P R] est inversible et tout vecteur de Y s'écrit Pf+Rg. Ses sommes
+par paires sont 2f ; ses différences par paires sont 2g. Ces facteurs 2
+ne changent pas les dimensions des projections.
+
+Les deux constantes sont forcées : FP1=0 et FR1=0.
+Pour la seconde, voici une preuve qui n'utilise aucune symétrie du graphe.
+Notons chi_a l'indicatrice de L_a dans les 44 coordonnées. Les comptes
+racine donnent Gamma chi_a=2*1-chi_a-chi_(a^1). Avec l'incidence B,
+  B chi_a=1+11e_a-e_(a^1),
+  (3 B^t B+B^t M B)chi_a=32chi_a+8chi_(a^1)+8*1.
+Dans 8T=24I-8Gamma-3B^tB-B^tMB+2J, cela donne T chi_a=0.
+La restriction à Y d'un vecteur de ker(T) appartient à ker(F) par
+l'élimination de Schur. Restreindre chi_2-chi_3 donne R1 ; restreindre
+chi_2+chi_3 donne P1. L'argument vaut même avec un chevauchement grille.
+
+2. Éliminer séparément les différences et les sommes
+---------------------------------------------------
+Définissons
+  A=P^t F P,       C=P^t F R,       D=R^t F R.
+La congruence
+                  [ A   C   ]
+  [P R]^t F[P R]= [ C^t D   ] >=0                       (2)
+implique A,D>=0. Elle implique aussi les conditions d'image
+ker(D) inclus dans ker(C), ker(A) inclus dans ker(C^t).
+En effet, un vecteur d'énergie nulle d'une matrice positive appartient
+à son noyau. Ces conditions justifient les pseudo-inverses ci-dessous.
+
+Écrivons
+  Z=A-C D^+ C^t,           W=D-C^t A^+ C.                (3)
+Les deux matrices sont positives et annulent 1_10. La factorisation
+de Schur donne
+  rang(F)=rang(D)+rang(Z)=rang(A)+rang(W).               (4)
+
+Un vecteur Pf+Rg appartient à ker(F) si et seulement si
+  f dans ker(Z),     g=-D^+ C^t f+h,   h dans ker(D).    (5)
+Donc la projection sur f de ker(F) est exactement ker(Z).
+Or ker(Q)=ker(F) intersection 1_20 orthogonal, et
+  somme(Pf+Rg)=2*somme(f).
+La projection sur f de ker(Q) est donc ker(Z) intersection 1_10 orthogonal.
+Comme 1_10 appartient à ker(Z), cette intersection perd exactement une
+dimension. Ceci prouve
+  dim{(w_(2,s)+w_(3,s))_s : w dans ker(Q)}=9-rang(Z).    (6)
+
+En éliminant f au lieu de g, la projection sur g de ker(F) est ker(W).
+La direction supplémentaire 1_20 de ker(F) a g=0. En l'enlevant pour
+passer à ker(Q), la projection sur g ne change donc pas :
+  dim{(w_(2,s)-w_(3,s))_s : w dans ker(Q)}=10-rang(W).   (7)
+
+Les égalités (6),(7) établissent les équivalences annoncées pour SYM6
+et ODDCONST. Elles ne supposent ni l'une ni l'autre conjecture.
+
+3. Une condition impaire plus faible suffit
+-----------------------------------------
+Puisque D1=0, rang(D)<=9. La condition rang(D)=9 signifie exactement :
+les seuls vecteurs P0+Rg de ker(F), donc les seuls vecteurs PUREMENT
+antisymétriques du noyau, ont g constant. Elle n'interdit pas à un
+vecteur ayant f non nul d'avoir aussi g non constant.
+
+ODDCONST interdit cette seconde possibilité. Il implique rang(W)=9,
+puis rang(D)=9 puisque W=D-C^t A^+ C et 0<=W<=D. Par (4), il implique
+également rang(A)=rang(Z). Ainsi :
+
+  ODDCONST => SYM6 équivaut à rang(A)>=3 ;
+  rang(D)=9 et rang(Z)>=3 => rang(F)>=12.               (8)
+
+La seconde ligne suffit pour la cible Q7. Elle exige moins que prouver
+ODDCONST sur tous les vecteurs du noyau. LAB explore la condition impaire ;
+la réduction fournit une cible complémentaire pour le secteur symétrique.
+
+4. Seuil exact requis par une éventuelle complétion Conway
+--------------------------------------------------------
+La couverture déjà enregistrée, utilisant P<=852, assure un bloc sans
+grille avec c_min<=4. Orienter F depuis la droite de c minimum.
+Toute complétion Conway impose rang(T)<=30 et donc, par (1),
+  rang(F)<=7+c_min.                                    (9)
+Si l'on a démontré rang(D)=9 sur ce bloc, alors
+  rang(Z)<=c_min-2.                                    (10)
+
+Les contradictions à atteindre sont donc précisément :
+
+  c_min   rang(Z) permis par Conway   borne suffisante pour exclure
+     1              <=-1             rang(D)=9 suffit déjà
+     2              <= 0             rang(Z)>=1
+     3              <= 1             rang(Z)>=2
+     4              <= 2             rang(Z)>=3
+
+La borne uniforme SYM6 est suffisante mais plus forte que nécessaire
+pour c_min=2,3. Ce tableau ne classe pas les blocs et ne transforme pas
+une énumération inconnue en calcul abordable. Aucun rang négatif n'est
+possible : la première ligne est une contradiction immédiate sous la
+condition impaire seulement.
+
+5. Certificats courts possibles pour le rang symétrique
+------------------------------------------------------
+Pour une matrice Z positive, rang(Z)>=3 équivaut à l'existence d'un
+mineur PRINCIPAL d'ordre 3 strictement positif. Il n'y en a que 120,
+mais leurs coefficients dépendent du bloc local encore variable.
+Ce nombre 120 ne borne donc pas le nombre de blocs à examiner.
+
+Un critère suffisant, plus fort et scalaire, est
+  (tr Z)^2 > 2 tr(Z^2).                                (11)
+Il résulte de (tr Z)^2<=rang(Z)*tr(Z^2). L'inégalité doit être stricte.
+Si ODDCONST est disponible, on peut remplacer Z par A dans un critère
+de rang. On ne peut pas remplacer Z par A sans cette hypothèse : un
+complément de Schur peut perdre du rang.
+
+Les coefficients hors diagonale de Z ont les DEUX signes sur les objets
+sans grille calculés. Z n'est donc pas automatiquement la laplacienne
+d'un graphe à poids positifs. La positivité et Z1=0 ne suffisent pas à
+appliquer une formule de rang par composantes connexes.
+
+6. Calcul du nouvel invariant sur les objets disponibles
+-------------------------------------------------------
+Outil : code/codex/four_star_sym6_reduction.py.
+Entrée : data/codex_line_resonance_20261016/initial_objects.json.
+Sortie : data/codex_line_resonance_20261016/sym6_sectors.json.
+Arithmétique rationnelle exacte, sans relancer la génération des graphes,
+leur certification initiale ou le recensement beaucoup plus grand de LAB.
+Les deux orientations sont indiquées dans l'ordre l={x,0,1},m={x,2,3}.
+
+Objet                         grille   rang(D)  rang(Z)  dim sym  dim odd
+H30_23                        oui       8,8      1,1      8,8      2,2
+H30_10                        oui       8,8      2,1      7,8      2,2
+fourstar_psd_asym_c21          non       9,9      4,3      5,6      1,1
+fourstar_psd_asym_c31          non       9,9      5,3      4,6      1,1
+fourstar_psd_c11_mix6          non       9,9      3,3      6,6      1,1
+fourstar_psd_c21_mix4          non       9,9      5,4      4,5      1,1
+fourstar_psd_c31_mix4          non       9,9      5,3      4,6      1,1
+grid_Z5h_c22                  oui       9,9      5,5      4,4      1,1
+grid_Z5h_c62                  oui       9,9      4,0      5,9      1,1
+rank30_urep100                non       9,9      3,3      6,6      1,1
+
+Dans les 12 orientations sans grille, (11) suffit déjà à prouver le rang
+au moins 3. Pour F20, le même quotient de traces ne donnait que 9 dans
+l'orientation minimale et n'atteignait pas la cible 12. Le passage aux
+secteurs rend donc ce critère élémentaire utile sur ces exemples.
+On n'a PAS démontré (11) uniformément sur tous les blocs sans grille.
+
+L'objet grille grid_Z5h_c62 est instructif : dans l'orientation depuis
+la droite {x,2,3}, ODDCONST est vrai et D a rang 9, pourtant Z=0. L'échec
+de Q7 peut donc venir entièrement du secteur symétrique ; expliquer les
+directions impaires supplémentaires des H30 ne suffira pas à expliquer
+tous les exemples avec grille.
+
+LAB928 rapporte 7018 objets distincts, dont 6122 PSD, sans violation Q7
+sur les côtés sans grille de son corpus. Ce résultat de pair n'est pas
+recalculé ici et reste un résultat de corpus, pas une preuve universelle.
+Il motive la cible, sans se substituer à son argument mathématique.
+
+Portée : réduction exacte de SYM6 à un rang 3 de taille 10, séparation
+des deux mécanismes, condition impaire affaiblie et seuils nécessaires
+pour une complétion. La preuve universelle reste à trouver. Ces étapes
+contribuent à la contradiction GLOBALE recherchée et ne supposent aucun
+automorphisme non trivial du graphe de Conway.
