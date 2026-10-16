@@ -30,6 +30,7 @@ from conway_five_star_defect import (add_defect_cuts, measure_defects,
                                      add_attachment_demand_cuts, measure_attachment_demand,
                                      add_outside_support_cuts, measure_outside_support)
 from conway_phi_defect import add_phi_cuts
+from conway_gray_cuts import add_gray_cuts
 
 ALL_LABELS = [p for p in combinations(range(14), 2) if p[1] != (p[0] ^ 1)]
 DISC_CLASSES = ((2,14),(1,7))
@@ -190,7 +191,7 @@ def column_domain(label, core_labels, gamma, kernels, inverses, budgets, seconds
                 domains=domains, statistics=dict(stats), solver_seconds=solver.WallTime(),disc_obstructions=disc_obstructions)
 
 
-def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds, full=False, disc_context=None, initial_cuts=(), initial_psd_cuts=(), learn_psd=False):
+def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds, full=False, disc_context=None, initial_cuts=(), initial_psd_cuts=(), learn_psd=False, initial_gray_cuts=()):
     """Exact assembly using the two remaining Schur rank budgets."""
     started = time.monotonic()
     assert all(b >= 0 for b in budgets)
@@ -368,6 +369,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
     demand_cuts = add_attachment_demand_cuts(model,labels,graph,conjunction=conjunction)
     outside_support_cuts = add_outside_support_cuts(model,labels,graph,conjunction=conjunction)
     phi_cuts = add_phi_cuts(model,labels,graph,conjunction=conjunction)
+    gray_cuts = add_gray_cuts(model,labels,graph,initial_gray_cuts)
     label_index = {tuple(p):i for i,p in enumerate(missing)}
     iterations, rank_cuts = 0, list(initial_cuts)
     for cut in initial_cuts:
@@ -397,7 +399,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         remaining = started+seconds-time.monotonic()
         if remaining <= 0:
             return dict(status='ASSEMBLY_TIME_LIMIT',complete=False,pair_statistics=pair_stats,rank_cuts=rank_cuts,
-                        psd_cuts=psd_cuts,defect_cuts=defect_cuts,phi_cuts=phi_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                        psd_cuts=psd_cuts,gray_cuts=gray_cuts,defect_cuts=defect_cuts,phi_cuts=phi_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = 1
         solver.parameters.max_time_in_seconds = remaining
@@ -408,7 +410,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         model_candidates += len(collector.candidates)
         result = dict(status=solver.StatusName(status),complete=status in (cp_model.OPTIMAL,cp_model.INFEASIBLE),
                       pair_statistics=pair_stats,solver_seconds=solver.WallTime(),seconds=time.monotonic()-started,
-                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,defect_cuts=defect_cuts,phi_cuts=phi_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,gray_cuts=gray_cuts,defect_cuts=defect_cuts,phi_cuts=phi_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         if not collector.candidates:
             return result
         for values,edges in collector.candidates:
@@ -535,7 +537,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
 
 
 
-def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False, resume=None, learn_psd=False, psd_library=None, columns_only=False, stars=None):
+def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False, resume=None, learn_psd=False, psd_library=None, columns_only=False, stars=None, gray_library=None):
     started = time.monotonic()
     record = json.loads(Path(source).read_text(encoding='utf-8'))
     gamma, t8, u15, _, _ = prepare(record)
@@ -615,6 +617,7 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
     elif len(domains) == len(missing):
         old_cuts = previous.get('assembly',{}).get('rank_cuts',[]) if previous else []
         old_psd_cuts = previous.get('assembly',{}).get('psd_cuts',[]) if previous else []
+        old_gray_cuts = previous.get('assembly',{}).get('gray_cuts',[]) if previous else []
         missing_set = set(map(tuple,missing))
         available_labels = set(map(tuple,labels+missing))
         old_cuts = [cut for cut in old_cuts if all(tuple(p) in missing_set for p in cut['labels'])]
@@ -625,12 +628,17 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
             applicable = [cut for cut in supplied if all(tuple(p) in available_labels for p in cut['labels'])]
             old_psd_cuts = old_psd_cuts+applicable
             report['psd_library'] = dict(file=str(psd_library),supplied=len(supplied),applicable=len(applicable))
+        if gray_library:
+            library = json.loads(Path(gray_library).read_text(encoding='utf-8'))
+            supplied = library.get('assembly',library).get('gray_cuts',[])
+            old_gray_cuts = old_gray_cuts+supplied
+            report['gray_library'] = dict(file=str(gray_library),supplied=len(supplied))
         if reused_columns:
             print(json.dumps(dict(stage='RESUMED',columns=reused_columns,cuts=len(old_cuts),psd_cuts=len(old_psd_cuts))),flush=True)
-        joined = signed_join(labels,cg,missing,domains,inverses,budgets,max(.01,started+seconds-time.monotonic()),full,disc_context,old_cuts,old_psd_cuts,learn_psd)
+        joined = signed_join(labels,cg,missing,domains,inverses,budgets,max(.01,started+seconds-time.monotonic()),full,disc_context,old_cuts,old_psd_cuts,learn_psd,old_gray_cuts)
         report['assembly'] = joined
-        print(json.dumps({k:v for k,v in joined.items() if k not in ('labels','adjacency','adjacency99','T_residual_numerator','U_residual_numerator','pair_statistics','rank_cuts','psd_cuts','exact_pair_obstructions')}
-                         | dict(rank_cuts=len(joined.get('rank_cuts',[])),psd_cuts=len(joined.get('psd_cuts',[])),pair_witnesses=len(joined.get('exact_pair_obstructions',[])))),flush=True)
+        print(json.dumps({k:v for k,v in joined.items() if k not in ('labels','adjacency','adjacency99','T_residual_numerator','U_residual_numerator','pair_statistics','rank_cuts','psd_cuts','gray_cuts','exact_pair_obstructions')}
+                         | dict(rank_cuts=len(joined.get('rank_cuts',[])),psd_cuts=len(joined.get('psd_cuts',[])),gray_cuts=len(joined.get('gray_cuts',[])),pair_witnesses=len(joined.get('exact_pair_obstructions',[])))),flush=True)
         if 'adjacency' in joined:
             report['status'] = 'SRG99_CONSTRUCTED' if full else 'PARTIAL_REPAIR_CONSTRUCTED'
             hit_file = Path(output).with_name(Path(output).stem+'_CONSTRUCTION.json')
@@ -672,8 +680,9 @@ if __name__=='__main__':
     parser.add_argument('--resume',help='Reuse complete domains and applicable exact cuts on this identical core; the requested new vertices may change.')
     parser.add_argument('--learn-psd',action='store_true',help='Learn universal linear Gram inequalities from exactly certified negative integer vectors.')
     parser.add_argument('--psd-library',help='Reuse universal Gram inequalities from a report or library, including after changing the retained core.')
+    parser.add_argument('--gray-library',help='Reuse positive-edge pattern cuts certified by exact gray-block propagation.')
     parser.add_argument('--columns-only',action='store_true',help='Enumerate every requested column domain without building the joint assembly.')
     parser.add_argument('--stars',type=int,help='Repair directly on all labels incident with roots0..k-1 (k=5 gives52 vertices).')
     args=parser.parse_args()
     run(args.source,args.repairs,args.repair_index,args.output,tuple(map(int,args.outside.split(','))),
-        args.full,args.restore_only,args.seconds,args.per_column,args.disc,args.resume,args.learn_psd,args.psd_library,args.columns_only,args.stars)
+        args.full,args.restore_only,args.seconds,args.per_column,args.disc,args.resume,args.learn_psd,args.psd_library,args.columns_only,args.stars,args.gray_library)

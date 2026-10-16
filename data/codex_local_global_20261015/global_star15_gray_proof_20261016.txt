@@ -1,0 +1,110 @@
+16 octobre 2026 — Pourquoi la matrice affichée à 15 lignes ne se prolonge pas
+
+PORTÉE
+Il s'agit du témoin global_star15_balanced_search_20261016.json, pas de
+tous les cadres de 15 lignes et pas d'une preuve de non-existence de Conway.
+Les 15 lignes satisfont leurs comptes exacts mutuels et les capacités
+partielles contrôlées. Leur prolongement est néanmoins impossible.
+Une modification doit toucher au moins un des CINQ voisinages ci-dessous.
+Les autres lignes peuvent toutes être libérées : la contradiction subsiste.
+Ce support de cinq lignes a été réduit gloutonnement ; aucune minimalité
+absolue n'est affirmée.
+
+NOTATION
+Les 14 voisins de la racine sont appariés (0,1),(2,3),...,(12,13).
+Un sommet du bloc de 84 porte une paire {a,b} de racines non appariées.
+On note Lr l'ensemble des 12 étiquettes contenant r, et Gamma l'adjacence
+dans le bloc de 84. Les voisinages ci-dessous sont dans ce bloc uniquement.
+Les identités nécessaires sont :
+  |N(v) intersection Lr| = 2 - [r dans v] - [r xor 1 dans v],
+  |N(v) intersection N(w)| + Gamma(v,w) + |v intersection w| = 2.
+Chaque sommet du bloc a exactement 12 voisins dans le bloc.
+
+CINQ VOISINAGES DU TÉMOIN
+N({0,2}) = {0,5}, {1,9}, {2,10}, {3,13}, {4,9}, {4,11},
+           {5,7}, {6,11}, {6,12}, {7,8}, {8,13}, {10,12}.
+N({0,3}) = {0,11}, {1,5}, {2,13}, {3,11}, {4,8}, {4,10},
+           {5,12}, {6,9}, {6,12}, {7,9}, {7,13}, {8,10}.
+N({4,7}) = {0,8}, {0,9}, {1,3}, {1,9}, {2,11}, {2,12},
+           {3,12}, {4,13}, {5,10}, {6,11}, {7,13}, {8,10}.
+N({4,8}) = {0,3}, {0,12}, {1,2}, {1,12}, {2,10}, {3,10},
+           {4,9}, {5,6}, {6,13}, {7,11}, {7,13}, {8,11}.
+N({4,13})= {0,10}, {0,11}, {1,10}, {1,11}, {2,8}, {2,9},
+           {3,8}, {3,9}, {4,7}, {5,7}, {6,12}, {6,13}.
+
+EXCLUSIONS DIRECTES
+Posons x={7,13}. Ses voisins déjà fixés dans ces cinq lignes sont
+{0,3}, {4,7}, {4,8}. Ses quotas L4 et L7 sont donc déjà consommés.
+Les budgets de voisins communs de x avec {0,3}, {4,7}, {4,8} et {4,13}
+sont eux aussi consommés : respectivement par {4,8}, par aucun sommet
+du bloc (budget zéro), par {0,3}, et par {4,7}.
+Ces quatre voisinages interdisent donc tout autre voisin commun.
+
+Trois exclusions utilisant l'autre extrémité d'une arête complètent
+les listes utiles :
+- {3,10} et {0,3} partagent déjà la racine 3 et le sommet {4,8}.
+  Comme x est adjacent à {0,3}, il ne peut être adjacent à {3,10}.
+- Le quota L7 de {6,11} vaut 1, déjà consommé par {4,7}.
+  Il ne peut donc être adjacent à x, qui appartient à L7.
+- Le quota L13 de {6,12} vaut 1, déjà consommé par {4,13}.
+  Il ne peut donc être adjacent à x, qui appartient à L13.
+
+Après ces seules exclusions, les candidats encore possibles pour x sont :
+  dans L1 : {1,6}, {1,8}, {1,13} ; il en faut deux ;
+  dans L2 : {2,5}, {2,6} ; il en faut deux ;
+  dans L3, hors le voisin fixé {0,3} : {3,5}, {3,6}, {3,13} ; il en faut un ;
+  dans N({0,2}) : {0,5}, {3,13}, {8,13}, {10,12} ; il en faut deux.
+Les listes sont des possibilités restantes, pas des arêtes déjà choisies.
+
+CONTRADICTION EN SIX ÉTAPES
+1. Le quota L2 force x--{2,5} et x--{2,6}.
+2. Le quota L6 vaut 1. Il est consommé par {2,6}, donc
+   x--{1,6} et x--{3,6} sont impossibles.
+3. Le quota L1 force alors x--{1,8} et x--{1,13}.
+4. Le quota L8 est consommé par {4,8} et {1,8}, donc x--{8,13}=0.
+   Le quota L13 est consommé par {1,13}, donc x--{3,13}=0.
+5. Les deux voisins communs nécessaires à x et {0,2} sont désormais
+   forcément {0,5} et {10,12} : ces deux arêtes sont forcées.
+6. Le quota L3 force également x--{3,5}.
+Ainsi x a trois voisins {0,5}, {2,5}, {3,5} dans L5, alors que son quota
+L5 vaut exactement deux. Contradiction.
+
+CONSÉQUENCE POUR LE SOLVEUR
+Les cinq voisinages contiennent 58 arêtes non orientées distinctes.
+Dans un graphe de degré 12 sur le bloc de 84, imposer ces seules 58
+arêtes positives sature ces cinq lignes, donc fixe aussi tous leurs zéros.
+La contradiction prouve par conséquent l'inégalité nécessaire universelle
+  somme des 58 variables d'arête <= 57.
+Elle interdit ce motif précis, sans hypothèse de symétrie du graphe.
+Tout renommage préservant les sept paires de racines donne aussi une coupe.
+La bibliothèque contient le motif dans l'étiquetage présent uniquement.
+
+OUTILS ET ARTEFACTS
+- conway_gray_block.py : E symétrique binaire, quotas résiduels,
+  équations B E = 2J - intersections(F,U) - A B - B,
+  propagation entière et certificats rejouables sans solveur.
+- global_star15_gray_propagation_20261016.json : preuve issue des 15 lignes,
+  20 contraintes et 29 déductions dans le certificat réduit.
+- global_star15_gray_reduced_proof_20261016.json : cinq lignes suffisent,
+  certificat de 21 contraintes et 40 déductions.
+- conway_gray_cuts.py et global_star15_gray_cut_library_20261016.json :
+  export et application de la coupe ; le certificat de propagation est
+  reconstruit à partir des cinq voisinages avant application.
+- conway_core_repair.py --gray-library CHEMIN_JSON : coupe intégrée
+  lorsque toutes ses étiquettes sont présentes ; réutilisation lors d'une
+  reprise, indépendamment du noyau initial.
+- conway_star_extension.py contrôle désormais les quotas consommés chez
+  tous les sommets encore incomplets, en plus des comptes des lignes ajoutées.
+
+LIMITES DES RECHERCHES DE RÉPARATION
+Le L4 de ce témoin est lui-même INFEASIBLE dans la relaxation binaire
+linéaire globale (CP-SAT, un worker, 2,213 s). Aucune preuve linéaire
+fractionnaire n'a été extraite en cinq secondes : cela ne prouve pas
+la faisabilité fractionnaire.
+Une recherche de 40 cadres par échanges équilibrés a duré 44,781 s,
+avec une seconde par cadre ; six INFEASIBLE, les autres UNKNOWN.
+Sept de ces UNKNOWN ont reçu cinq secondes supplémentaires chacun :
+quatre INFEASIBLE et trois toujours UNKNOWN. Aucun cadre réparé passant
+ce filtre n'a été construit ; aucune composante complète n'est exclue.
+Les trois lignes hors L4 sont explicitement libérées lors de cette recherche.
+Les runs sont terminés. Aucun calcul de fond n'est laissé actif.

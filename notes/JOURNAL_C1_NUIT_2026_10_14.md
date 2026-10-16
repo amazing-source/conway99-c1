@@ -6643,3 +6643,46 @@ Livraison de cette passe : commit83ecbbe, archive global_star15_phi_83ecbbe.zip,
 68830 octets/20 fichiers ; SHA25627e1e5abd56dafd3b166398d75a5ade41e15492df21d1633d7291480ec983056.
 Message902 envoye avec la preuve jointe phi complete, les constructions
 et les limites. Dernier message pair lu et acquitte901.
+
+
+## 16/10/2026, 13h56 ? Le carre gris explique le blocage du temoin15
+
+Dilan a affiche et entoure le bloc gris69x69. Travail effectif de completion,
+avec lecture903/ack et livraison904. Pas de re-audit du pair.
+
+Le temoin15 de83ecbbe est NON PROLONGEABLE. conway_gray_block construit les
+variables symetriques du bloc E, les quotas residuels de TOUTES les lignes,
+et BE=2J-intersections-AB-B. Une propagation entiere suffit : certificat20
+contraintes/29 deductions pour les15 lignes. Apres reduction gloutonne,
+seuls les voisinages02,03,47,48,413 suffisent (21 contraintes/40 deductions).
+La preuve a la main force x={7,13} adjacent a {0,5},{2,5},{3,5}, trois
+sommets de L5 pour un quota de deux. Les autres dix lignes peuvent etre
+liberees, la contradiction demeure. Les15 lignes gardent leurs comptes
+partiels exacts : ce n'etait pas une construction84, et leur extension
+est desormais exclue. Aucun Conway generalement exclu.
+
+Les cinq voisinages totalisent58 aretes positives distinctes. Le degre12
+sature ces cinq lignes si les58 sont imposees, donc somme(ces58)<=57 est
+une coupe necessaire universelle, pour ce motif etiquete et ses renommages
+preservant les paires. conway_gray_cuts reconstruit la preuve entiere avant
+application ; core_repair accepte --gray-library et conserve les coupes
+lors des reprises. star_extension ajoute les quotas consommes aux autres
+extremites, chez tous les sommets encore incomplets ; verify_partial suit.
+
+Le L4 du temoin15 est lui-meme UNSAT dans la relaxation binaire lineaire
+globale (2.2133292s,1worker). Extraction Farkas5s sans separateur : ne pas
+conclure LP faisable. Recherche40 cadres par echanges equilibres44.781s,
+6 UNSAT/34 UNKNOWN a1s ; sept UNKNOWN prolonges a5s,4 UNSAT/3 UNKNOWN.
+Aucun cadre repare passant le filtre n'a ete construit, aucun composant
+complet exclu. Tous les runs sont termines, aucun worker reste actif.
+
+Controles propres adaptes : relecture arithmetique des certificats extraits,
+coupe58<=57 appliquee a un modele binaire, six modules compiles, chargement
+CLI core_repair avec --gray-library. Aucun calcul externe ni audit du pair.
+Code nouveau : conway_gray_block.py, conway_gray_repair.py, conway_gray_cuts.py.
+Donnees et preuve lisible : data/codex_local_global_20261015/global_star15_gray_*.
+Livraison904 : gray_block_obstruction_20261016.zip,137342octets,15fichiers,
+SHA2565450dd533ec8fcd74d35d0fb92641021895a309c0c7625ed6992ba59ed594b5e.
+La preuve PREUVE_BLOC_GRIS_15_LIGNES.txt et la bibliotheque sont aussi a plat
+sous lab_exchange_2026-10-14/codex_hmatch_20261016. A LAB903, signalement du
+vieux mecanisme de completion V13 comme piste a reutiliser lors de sa revue.

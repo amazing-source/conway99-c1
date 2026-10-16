@@ -65,6 +65,10 @@ def verify_partial(labels,rows):
         common=sum(row[q]*row[w] for row in rows.values())
         edge=rows[q][w] if q in rows else rows[w][q] if w in rows else 0
         assert common+edge+len(set(labels[q])&set(labels[w]))<=2,(labels[q],labels[w])
+    for q,pair in enumerate(labels):
+        for r in range(14):
+            used=sum(row[q] for p,row in rows.items() if r in labels[p])
+            assert used<=2-int(r in pair)-int((r^1) in pair),(pair,r)
 
 
 def run(source,output,target=(0,10),seconds=2):

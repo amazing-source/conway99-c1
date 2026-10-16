@@ -88,6 +88,21 @@ def build_extension(labels, fixed, selected, pair_constraints=False):
             elif used == 2:
                 guarded(rows[z][q] + rows[z][w] <= 1,
                         dict(kind='saturated_pair', row=labels[z], pair=[labels[q],labels[w]], used=used))
+    # A newly completed row also consumes root-star quotas of vertices
+    # whose own rows remain unknown. Check both ends of each new edge.
+    # These are the common-neighbour caps for a root and an unassigned
+    # vertex, complementary to the 84-by-84 caps above.
+    for q in range(n):
+        if q in rows:
+            continue
+        for r in range(14):
+            target = 2-int(r in labels[q])-int((r ^ 1) in labels[q])
+            used = sum(row[q] for p,row in fixed.items() if r in labels[p])
+            terms = [rows[z][q] for z in selected if r in labels[z]]
+            if terms or used > target:
+                guarded(sum(terms) <= target-used,
+                        dict(kind='unassigned_root_capacity', row=labels[q], root=r,
+                             fixed_used=used, target=target))
     products = {}
     def conjunction(a, b):
         if isinstance(a, int):
@@ -151,6 +166,10 @@ def solve_selected(labels, fixed, selected, seconds=10, pair_constraints=False):
                 common=sum(row[q]*row[w] for row in combined.values())
                 edge=combined[q][w] if q in combined else combined[w][q] if w in combined else 0
                 assert common+edge+len(set(labels[q])&set(labels[w]))<=2
+            for q,pair in enumerate(labels):
+                for r in range(14):
+                    used=sum(row[q] for p,row in combined.items() if r in labels[p])
+                    assert used<=2-int(r in pair)-int((r^1) in pair)
             result['all_partial_c2_caps']=True
     return result
 
