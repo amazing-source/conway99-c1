@@ -153,6 +153,11 @@ def run(source, output, lengths=(4, 6, 8), seconds=45, name=None):
             break
         candidate, transform, denominator, verdict, cycles = extract_graph(solver, chosen, cells, gamma, t8, u15)
         witnesses, added_cuts = [], 0
+        capacity = 2-candidate-candidate@candidate-B.T@B
+        covering = {}
+        for choice, cell in zip(chosen, cells):
+            if solver.Value(choice):
+                covering.update({int(i):choice for i in cell['support']})
         for column in active.values():
             d = np.array([solver.Value(x) for x in column['d']], dtype=np.int64)
             z = np.array([solver.Value(x) for x in column['z']], dtype=np.int64)
@@ -161,6 +166,13 @@ def run(source, output, lengths=(4, 6, 8), seconds=45, name=None):
             assert not np.any((transform@kt).T@(-8*d-k8))
             assert not np.any((transform@ku).T@(15*d-l15))
             assert all(d[i]+int(candidate[i]@d) <= 2-len(set(p)&set(column['label'])) for i, p in enumerate(LABELS))
+            for i,j in combinations(np.flatnonzero(d),2):
+                if capacity[i,j]==0:
+                    # The pair of selected cells fixes this old-pair
+                    # capacity, including the squared adjacency term.
+                    model.AddBoolOr([covering[i].Not(),covering[j].Not(),column['d'][i].Not(),column['d'][j].Not()])
+                    cuts['OLD_PAIR_CAPACITY'] += 1
+                    added_cuts += 1
             for form, inverse in [('T', t_inverse), ('U', u_inverse)]:
                 cut = schur_cut(model, column, z, inverse, form)
                 if cut:

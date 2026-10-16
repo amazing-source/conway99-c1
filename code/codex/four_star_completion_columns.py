@@ -123,6 +123,10 @@ def column_inequalities(label,gamma,kt,ku):
         coefficients=list(map(int,gamma[i]))
         coefficients[i]+=1
         add(coefficients,2-len(set(p)&set(label)),'common_neighbour_cap_%d'%i)
+    capacity=2-gamma-gamma@gamma-B.T@B
+    for i,j in combinations(range(44),2):
+        if capacity[i,j]==0:
+            add([int(k==i or k==j) for k in range(44)],1,'old_pair_cap_%d_%d'%(i,j))
     for i in range(44):
         coefficients=[int(j==i) for j in range(44)]
         add(coefficients,1,'binary_upper_%d'%i)
@@ -286,6 +290,10 @@ def linear_column_model(label,gamma,kt,ku):
             model.Add(expression<=target)
     for i,p in enumerate(LABELS):
         model.Add(variables[i]+sum(variables[j] for j in range(44) if gamma[i,j])<=2-len(set(p)&set(label)))
+    capacity=2-gamma-gamma@gamma-B.T@B
+    for i,j in combinations(range(44),2):
+        if capacity[i,j]==0:
+            model.Add(variables[i]+variables[j]<=1)
     return model,variables,None
 
 

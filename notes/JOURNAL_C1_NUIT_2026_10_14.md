@@ -6034,3 +6034,77 @@ nouveaux blocs passent par congruences exactes, pas re-audit des germes.
 Rapports conway_extension_switches_*_20261016.json. Pas de SRG99 trouve.
 Suite : achever l'assemblage des domaines exterieurs et leurs Gram, pour
 que le chemin de construction n'ait pas une etape finale laissee a faire.
+
+## 16/10, 09:50 locale — assemblage complet implemente et critere global suffisant
+
+four_star_complete.py termine maintenant le chemin44 ->84 ->99 pour un
+germe T de rang30. schur_domain_join.py fait l'assemblage exact. Pour deux
+colonnes d_x,d_y, leurs vecteurs t_x=-8d_x-k8_x determinent
+ t_x^t T8^+ t_y = -8*Gamma_xy-k8_xy.
+Ainsi les780 aretes entre les40 sommets manquants ne sont PLUS des variables
+libres une fois leurs colonnes choisies : chaque produit impose0 ou1, ou
+rejette la paire. Pour U, le residu apres Schur a rang40-rangU_SS. A rang1,
+ e_xy^2=e_xx*e_yy ne suffit pas : avec une ancre a de diagonale positive,
+ e_xy*e_aa=e_xa*e_ya pour toutes les paires est necessaire et suffisant.
+Le code traite aussi le rang0 et les rangs superieurs par PSD/rang exacts.
+
+Propagation par domaines et choix du domaine restant le plus petit,
+couples incompatibles elimines, puis controle des degres et de C2 sur
+TOUTE la matrice partielle, y compris les anciennes paires. A la feuille,
+les15 sommets racine+voisins sont ajoutes et A99^2=12I-A99+2J est controle
+exactement. Seule une matrice passant cette identite peut etre exportee
+avec le statut SRG99_CONSTRUCTED. Le depassement de temps reste INCOMPLETE.
+La voie positive a ete exercee sur le second voisinage du rook9 : une
+solution complete,9 sommets reconstruits, identite(9,4,1,2) exacte. Une
+option de signe parasite est rejetee ; une matrice3 de diagonale1 dont
+tous les mineurs2 de rang1 passent mais les signes sont incoherents est
+correctement rejetee. C'est un controle de notre nouvel assemblage, pas
+une verification independante d'un resultat LAB.
+
+COUPE SUPPLEMENTAIRE DE CONSTRUCTION. Si
+ c_ij=2-Gamma_ij-(Gamma^2)_ij-|label_i inter label_j|=0,
+une nouvelle colonne satisfait d_i+d_j<=1, car elle ajouterait sinon un
+voisin commun de trop a cette ancienne paire. Ajout a l'enumeration des
+colonnes, aux certificats Farkas, et aux reflexions conjointes par clause
+conditionnelle aux cellules. Les anciennes exclusions restent valides :
+elles utilisaient un systeme plus faible, sans cette coupe.
+- HB promu : certificat maintenant9 noeuds/5 feuilles, sur d_(3,11),
+  d_(3,10),d_(2,10),d_(1,13). Les5 sommes donnent respectivement
+ 0<=-10,-5,-5,-5,-65. Rapport conway_completion_hb1_paircaps_20261016.json.
+- urep100 : il reste exactement2 colonnes binaires pour(4,6), toutes deux
+  de normeT8=374784/20400=7808/425. La diagonale requise est20 ; le residu
+  de Schur692/425>0 augmente le rangT de30 a31. C'est la raison exacte
+  de leur impossibilite de prolongement. Ce n'est pas une preuve du mur
+  de rang31 pour tous les matchings casses.
+- Reflexions urep avec cette nouvelle coupe :11 candidats,12 clauses
+  old-pair,5 tangentesT,6 tangentesU,6 nogoodsT, puis impossible1,906s.
+
+CRITERE GLOBAL NECESSAIRE ET SUFFISANT (sans hypothese de symetrie).
+Sur les84 etiquettes completes, BB^t=11I-M+J et
+ Pi=I-(11B^tB+B^tMB-2J)/120
+est le projecteur sur kerB, rang70. Definir T,U par les formules habituelles.
+Pour tout Gamma symetrique binaire a diagonale nulle, T+U=7Pi. Si T,U sont
+PSD, ils s'annulent sur imB^t et les valeurs propres de T sont entre0 et7.
+Or traceT=84*(5/2)=210. Si rangT<=30, la somme des valeurs propres ne peut
+atteindre210 que si exactement30 valeurs valent7. Donc T^2=7T,
+rangT30, U=7Pi-T PSD de rang40 et TU=0.
+
+On a K B^t=4B^t+B^tM-2J ; T B^t=0 donne
+ Gamma B^t=2J-B^t-B^tM, donc notamment Gamma*1=12*1.
+Sur kerB, Gamma=3I-T a valeurs propres3 et-4. Sur imB^t, ses valeurs
+sont12 (constantes),0 (racines impaires sous M) et-2 (paires de racines,
+orthogonales aux constantes). Il en resulte partout
+ Gamma^2+Gamma+B^tB=12I+2J.
+Avec la racine, le matching des14 voisins et B, ceci donne exactement
+A99^2=12I-A99+2J. Reciproquement un SRG99 fournit ces Gram PSD et rangs.
+Le code controle encore l'identite finale, ce qui rend le resultat produit
+directement exploitable sans reconstituer la preuve de Gram.
+
+Portee : reduction constructive complete POUR UN germe de rangT30, qui
+respecte aussi bien les graphes asymetriques que symetriques. Aucun
+automorphisme n'est impose dans l'assemblage. Cela n'enumere pas tous les
+germes, ne prouve pas qu'un germe44 de rang30 existe dans tout C1, et ne
+prouve pas un cout global abordable. Les germes essayes sont impossibles
+a prolonger. Aucun SRG99 ni contre-exemple H-MATCH obtenu.
+Le resultat et les exports precedents ont ete transmis par882 ;881 etait
+un accuse de LAB, lu/acquitte sans reponse d'accuse.
