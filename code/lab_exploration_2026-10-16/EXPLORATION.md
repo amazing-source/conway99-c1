@@ -153,3 +153,38 @@ conjectures, raccourcis, paris.
   - ODDCONST est la partie ι_m-impaire (permutation formelle 2 ↔ 3 ; voir R5/R6 de N9NG_ATTACK) restreinte à Y. Le lemme
     de signe R5 contrôle déjà l'énergie de (x ± ι_m x)/2 ;
   - SYM6 doit venir de la structure de G_l à travers A_NY.
+
+### 16/10 environ 18:15-18:35 UTC : partage avec Codex, un lemme impair prouvé
+- Codex prend SYM6. Avec P f = (f, f) et R g = (g, −g), F devient [[A, C], [Cᵀ, D]] ; Z = A − C D⁺ Cᵀ. Alors
+  SYM6 ⟺ rank Z ≥ 3, et rank F = rank D + rank Z. Pour Q7 avec SYM6, il suffit d'avoir rank D = 9 (ODD-PURE : seuls
+  les multiples de (1, −1) sont des profils purement impairs). Données de Codex : rank D = 9 partout sans grille ; deux
+  traces de Z donnent déjà rang ≥ 3. Deux mécanismes de grille : Z5h_c62 garde ODDCONST et casse SYM6 ; HB/H30_23 casse
+  les deux.
+- ODDCONST n'est PAS combinatoire (`q_split_nonpsd.py`) : hors PSD, elle échoue sur 12 côtés sans grille (rang
+  antisymétrique 2-3). La positivité est indispensable.
+- `d_laplacian.py` : D n'est pas un laplacien (termes hors diagonale positifs jusqu'à 1,42 sans grille). Piste fermée.
+- LEMME IMPAIR (PROUVÉ). On note ι = (2 3), qui agit sur S par permutation formelle des lettres ; K est ι-invariant.
+  - Pour y impair (y_{ιu} = −y_u, donc nul sur les labels fixes Y'), avec δ_a = y_{2a} − y_{3a} pour a ∈ {0,1,4..13}
+    (12 indices) :
+    E(y) = yᵀTy = (1/4) δᵀ Φ δ, avec Φ = 6I − Aˢ − J/2.
+  - Aˢ est le graphe signé 4-régulier sur les 12 indices : arêtes M_2 et M_3 positives, arêtes φ_23 négatives, boucles
+    éventuelles −2. On a Aˢ1 = 0 et |Aˢ| ≤ 4 (Gershgorin), donc Φ ≥ 2I sur 1^⊥ et Φ1 = 0.
+  - Conséquence : les vecteurs impairs de ker T_S sont les multiples de la partie impaire de χ_2 − χ_3. Si x et ιx sont
+    dans ker T_S, alors x₋ = (x − ιx)/2 est dans ker T_S, et le profil impair de x est constant.
+  - Cas restant : x ∈ ker T_S avec ιx ∉ ker T_S. On pose Γ = Γˢ + Γᵃ (parties ι-symétrique et antisymétrique) et
+    Tˢ = 3I − Γˢ − K. Alors Tˢx₋ = Γᵃx₊, Tˢx₊ = Γᵃx₋, et E(x₋) = E(x₊) = ε = x₋ᵀΓᵃx₊ ≥ |δ⊥|²/2. Pour un profil
+    purement impair, x₊ est porté par X = L_0 ∪ L_1. Il faut montrer que ce couplage ne peut pas porter un δ non
+    constant.
+- Forme « contraction » du cas restant : T ⪰ 0 ⟺ ‖K_ι‖ ≤ 1, avec K_ι = (Tˢ_impair)^{+1/2} Γᵃ (Tˢ_pair)^{+1/2}.
+  Un profil purement impair non constant ⟺ valeur singulière 1 de K_ι, avec un vecteur singulier dont le profil est
+  non constant. C'est la même structure que la forme contraction de (H-MATCH) du 15/10, qui avait résisté : ODD-PURE est
+  une cousine de H-MATCH pour la transposition simple ι_m.
+- Complément de Codex (sym6 67ffa75) : avec rank D = 9, Conway exige rank Z ≤ c − 2. Donc :
+  - c = 1 est exclu par ODD-PURE seul ;
+  - c = 2 demande Z ≠ 0 ;
+  - c = 3 demande rank Z ≥ 2 ;
+  - c = 4 demande rank Z ≥ 3.
+  Z a des termes hors diagonale des deux signes (pas un laplacien). Piste scalaire : (tr Z)² > 2 tr Z² suffit.
+- BILAN de la soirée : Conway ⟸ [ODD-PURE (rank D = 9) + rank Z ≥ c − 1 pour c ≤ 4], sur les paires sans grille du
+  côté où c est minimal, avec P ≤ 852. Toutes ces conditions tiennent sur 100 % de nos données sans grille.
+  Rien n'est prouvé dans le cas général, hors le lemme impair.
