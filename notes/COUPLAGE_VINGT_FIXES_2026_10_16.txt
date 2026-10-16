@@ -1,0 +1,174 @@
+LES DEUX PERTES DE RANG DANS LE COUPLAGE AUX VINGT ÉTIQUETTES FIXES
+16 octobre 2026 — Codex, suite de LAB932 et des bornes d'énergie paire.
+
+Résultat exact
+--------------
+Une même décomposition de T_44 permet de suivre les deux questions
+ouvertes ODD-PURE et SYM6. Elle donne
+
+  rang(T_44)=32-c(l)-delta+rang(Z),                     (R)
+  delta=rang(K)-rang(K1)=9-rang(D) >=0.
+
+K est la matrice de Gram des vingt étiquettes fixées par l'échange formel
+des étoiles 2,3. K1 est ce qui en reste après élimination du secteur
+impair complet de rang onze. ODD-PURE équivaut donc exactement à
+  ker(K1)=ker(K), c'est-à-dire delta=0.
+
+Z est la même matrice 10x10 que dans la réduction SYM6 précédente, pas
+un nouvel invariant supposé équivalent. Les deux ordres d'élimination
+donnent exactement ses coefficients.
+
+Sous une complétion Conway, orientée depuis une droite de c minimum<=4,
+(R) impose rang(Z)<=c(l)-2+delta. Les deux bornes delta=0 et rang(Z)>=3
+restent à démontrer universellement. (R) les réunit mais ne les prouve pas.
+
+1. Les blocs du couplage
+-----------------------
+Les notations du cadre quatre étoiles sont celles des notes précédentes.
+U contient les vingt étiquettes (0,s),(1,s), s=4,...,13. Les vingt-quatre
+autres étiquettes sont les deux étoiles complètes 2,3 ; leurs coordonnées
+P f=(f,f), R g=(g,-g) sont indexées par a dans {0,1,4,...,13}.
+Écrivons la matrice de Gram dans ces coordonnées sous la forme
+
+              [ K    N    C   ]
+              [ N^t  G    H   ] >=0.
+              [ C^t  H^t  Phi ]
+
+La matrice Phi est celle du lemme LAB932, de taille douze et de rang
+onze. Son noyau constant ne couple pas aux deux autres blocs. L'éliminer
+donne la matrice positive de TAILLE 32
+              [ K1   N1 ]
+              [ N1^t E  ],
+où
+  K1=K-C Phi^+ C^t,
+  N1=N-C Phi^+ H^t,
+  E=G-H Phi^+ H^t.                                     (1)
+La note d'énergie précédente disait initialement « 33 » ; c'était le
+nombre de coordonnées si l'on gardait aussi la direction impaire nulle.
+Le complément de Schur naturel est 32x32. Le rang annoncé et la borne
+d'énergie 1/5 ne sont pas affectés par cette correction de taille.
+
+2. Le rang de K est déjà fixé par la topologie
+--------------------------------------------
+Considérons d'abord les deux étoiles complètes 0,1 (24 étiquettes).
+La borne d'énergie paire démontre que leur noyau est engendré par :
+  - les vecteurs pairs constants sur chacune des c(l) composantes du
+    voisinage cubique, après contraction des triplets ;
+  - le vecteur impair constant chi_0-chi_1.
+En effet, ker(E)=ker(G), les vecteurs de ker(G) annulent aussi le
+couplage H^t, et ker(Phi) est la constante impaire.
+
+Pour passer à leur sous-matrice principale K sur U, on supprime les
+quatre coins O. Un vecteur du noyau de K, étendu par zéro sur O, est
+dans le noyau des 24 coordonnées, par positivité. Les lettres 2,3
+sont dans une même composante (elles sont mates). L'annulation aux
+quatre coins oblige la constante paire de cette composante et la
+constante impaire à être nulles. Les c(l)-1 autres constantes restent
+libres. Donc
+  dim ker(K)=c(l)-1,       rang(K)=21-c(l).              (2)
+L'argument vaut avec ou sans grille.
+
+3. Les deux coordonnées paires des coins sont redondantes
+-------------------------------------------------------
+T chi_0=T chi_1=0. Le vecteur chi_0 est égal à l'indicatrice de la
+demi-étoile 0 dans U, plus la colonne P indexée par a=0. De même pour
+chi_1 et a=1. Ainsi les images de Gram de ces deux colonnes P sont
+l'opposé de sommes de colonnes de U. Elles restent dans l'espace
+engendré par U après l'élimination de Phi.
+
+Ajouter ces deux coordonnées paires aux vingt coordonnées U ne change
+donc pas le rang de K1. Après élimination de U dans (1), la matrice
+  Z12=E-N1^t K1^+ N1                                    (3)
+a ses deux lignes et colonnes a=0,1 nulles.
+
+Les dix coordonnées restantes correspondent aux sommes (2,s)+(3,s).
+Pour les éliminations, l'espace engendré par U et les douze colonnes R
+est le même que celui engendré par X=L_0 union L_1 et les dix colonnes
+impaires hors des coins : les deux coordonnées impaires de O sont dans
+R, et les deux coordonnées paires de O sont déjà dans l'espace de U.
+Les compléments de Schur sont donc identiques, quelle que soit l'ordre
+d'élimination. Par conséquent
+  Z12, après suppression des deux lignes/colonnes nulles, EST Z.    (4)
+
+4. ODD-PURE est exactement la préservation du rang de K
+-----------------------------------------------------
+Posons delta=rang(K)-rang(K1), entier non négatif puisque 0<=K1<=K.
+Le rang de l'espace de Gram engendré par U et R est
+  11+rang(K1)=32-c(l)-delta.
+En l'écrivant plutôt dans les coordonnées X puis le secteur impair
+extérieur de taille dix, ce même rang est
+  rang(T_XX)+rang(D)=23-c(l)+rang(D).
+D'où
+  rang(D)=9-delta.                                     (5)
+Cela établit ODD-PURE <=> delta=0 <=> ker(K1)=ker(K).
+
+L'élimination dans (1), puis (3), donne
+  rang(T)=11+rang(K1)+rang(Z),
+et (R) suit de (2). La préservation du rang sur les seules 24 étiquettes
+démontrée par la borne 1/5 ne doit pas être confondue avec (5), qui porte
+sur le couplage ENTRE les deux paires d'étoiles.
+
+Interprétation exacte : sur l'image de K, l'opérateur positif
+  Omega=K^{+1/2} C Phi^+ C^t K^{+1/2}
+est une contraction. delta compte la multiplicité de sa valeur propre
+1. Les valeurs propres proches de 1 ne font pas perdre le rang ; seules
+les égalités exactes le font. Cette lecture n'est pas une preuve qu'il
+n'y a pas d'égalité hors grille.
+
+5. Deux raccourcis insuffisants, désormais documentés
+----------------------------------------------------
+Premier essai : conserver trois directions paires non couplées à U.
+Un minorant immédiat est rang(E)-rang(N1), puisque les directions
+de ker(N1) dans l'image de E échappent au terme soustrait en (3).
+Sur asym_c21 et c11_mix6, N1 a le MÊME rang que E et ce minorant vaut
+zéro, alors que rang(Z)>=3. Cette méthode ne peut donc établir SYM6
+uniformément. Il faut utiliser la taille du couplage, pas seulement
+chercher des directions qui ne couplent pas.
+
+Deuxième essai : Phi>=2I sur 1 orthogonal et C1=0 donnent
+  K1>=K-(1/2)CC^t.
+Cette minoration est valide mais son membre de droite est déjà indéfini
+sur les exemples acceptés. Par exemple, dans asym_c21 avec les étoiles
+0,1 comme secteur impair, le vecteur portant 1 aux étiquettes (2,4) et
+(2,5), et zéro ailleurs, a pour cette matrice l'énergie exacte -3/2.
+La donnée enregistrée contient des témoins analogues à deux coordonnées
+pour les vingt orientations. La borne scalaire 2 sur Phi ne suffit pas
+à la preuve de préservation de rang cherchée par LAB.
+
+6. Critères de trace après normalisation par l'énergie paire
+----------------------------------------------------------
+Les valeurs propres non nulles de E^+ Z12 sont celles de la matrice
+positive E^{+1/2} Z12 E^{+1/2}, et sont dans [0,1]. Posons
+  tau=tr(E^+ Z12),       eta=tr((E^+ Z12)^2).
+On a donc
+  rang(Z)>=ceil(tau),
+  rang(Z)>=ceil(tau^2/eta) si eta>0.                    (6)
+
+La première trace seule ne suffit pas à démontrer 3 sur tous les
+exemples. Pour urep100, tau=343/180<2, alors que rang(Z)=3. Pour
+asym_c31 dans l'orientation minimale, tau est environ 1.51165.
+Le quotient à deux traces dépasse 2 sur les douze orientations sans
+grille disponibles, comme le critère précédent appliqué directement
+à Z. Il n'est toujours pas prouvé universellement.
+
+On a aussi essayé de faire porter le rang sur les seules différences
+entre les cinq paires de lettres mates. Ce n'est pas uniforme : dans
+c11_mix6 cette compression n'a que rang 2, tandis que Z a rang 3.
+Inversement, dans urep100 Z annule toutes les sommes par paires et son
+rang 3 est entièrement porté par leurs différences. Les deux exemples
+empêchent d'écarter a priori l'un de ces deux sous-espaces.
+
+7. Artifacts et portée
+---------------------
+Outil : code/codex/four_star_sector_coupling.py.
+Données : data/codex_line_resonance_20261016/sector_coupling.json.
+Entrée : les objets déjà référencés dans initial_objects.json.
+Calculs rationnels exacts de (2),(4),(5),(R), des traces et des témoins
+de la minoration trop faible. Il s'agit de nouvelles identités et de
+critères candidats sur dix objets, pas d'un recensement ni d'une nouvelle
+certification des résultats du pair.
+
+Sur les six objets sans grille, delta=0. Sur les deux H30, delta=1.
+La grille Z5h_c62 peut avoir delta=0 et Z=0 : les deux mécanismes restent
+distincts. Les données n'établissent ni delta=0 ni rang(Z)>=3 pour tous
+les blocs sans grille. La question globale n'est pas annoncée résolue.
