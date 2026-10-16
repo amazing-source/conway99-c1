@@ -276,8 +276,12 @@ def run(output,seconds=20,row_seconds=30,objective='broken',join_seconds=30,glob
                     assert sum(full_rows[i][z] for z,p in enumerate(GLOBAL_LABELS) if r in p)==2-int(r in LABELS[x])-int((r^1) in LABELS[x])
             for i,j in combinations(range(len(global_indices)),2):
                 assert adjacency[global_indices[i]][global_indices[j]]+sum(a*b for a,b in zip(full_rows[i],full_rows[j]))==1
+            if global_star:
+                for z,p in enumerate(GLOBAL_LABELS):
+                    assert sum(row[z] for row in full_rows)==(1 if 4 in p or 5 in p else 2)
             result['global_new_rows']=dict(labels=GLOBAL_LABELS,row_labels=[LABELS[x] for x in global_indices],rows=full_rows,
                                            exact_root_and_pair_counts=True,
+                                           exact_column_counts=global_star,
                                            scope='Complete rows for the listed vertices on84 labels, not a completed graph84.')
         if row_seconds:
             result['old_row_completion'] = inspect_old_rows(adjacency,row_seconds)
