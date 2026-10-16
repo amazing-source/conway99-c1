@@ -6108,3 +6108,7 @@ prouve pas un cout global abordable. Les germes essayes sont impossibles
 a prolonger. Aucun SRG99 ni contre-exemple H-MATCH obtenu.
 Le resultat et les exports precedents ont ete transmis par882 ;881 etait
 un accuse de LAB, lu/acquitte sans reponse d'accuse.
+Livraison finale de cet assemblage par883, commit4e3ac85 : code, controles
+de construction et nouveaux certificats copies dans codex_hmatch_20261016.
+Aucun processus laisse en arriere-plan. Le prochain besoin est un germe
+prolongeable ; l'assemblage jusqu'a l'identite99 est maintenant implemente.
