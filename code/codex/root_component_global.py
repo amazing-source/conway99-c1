@@ -91,6 +91,7 @@ def main():
     parser.add_argument("--export-model",type=Path)
     parser.add_argument("--rank7-bound",type=int,choices=[28])
     parser.add_argument("--gram-cover",type=Path)
+    parser.add_argument("--workers",type=int,default=1)
     args=parser.parse_args()
     templates=json.loads(args.templates.read_text(encoding="utf-8"))["survivors"]
     grams=json.loads(args.grams.read_text(encoding="utf-8"))["records"]
@@ -115,7 +116,7 @@ def main():
     print(json.dumps({k:v for k,v in info.items() if k not in ('coverage','cuts')}),flush=True)
     if model and not args.build_only:
         solver=cp_model.CpSolver()
-        solver.parameters.num_search_workers=1
+        solver.parameters.num_search_workers=args.workers
         solver.parameters.max_time_in_seconds=args.seconds
         solver.parameters.cp_model_probing_level=0
         solver.parameters.symmetry_level=0
@@ -123,6 +124,7 @@ def main():
         status=solver.solve(model)
         info.update(status=solver.status_name(status),solver_seconds=solver.wall_time,
                     branches=solver.num_branches,conflicts=solver.num_conflicts,
+                    search_workers=args.workers,
                     total_seconds=time.monotonic()-started)
         if status in (cp_model.OPTIMAL,cp_model.FEASIBLE):
             gamma=[[solver.value(x) for x in row] for row in graph]
