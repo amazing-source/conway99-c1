@@ -6348,3 +6348,5 @@ recalcul des controles de LAB.
 
 Transmis en891 : fermeture globale du coeur30 et fichiers. Aucun graphe
 Conway ni germe52 nouveau obtenu ; aucune exclusion universelle de C1.
+
+Livraison finale de cette passe : commit a963315, archive autonome global_columns_core30_a963315.zip (68 fichiers,651228 octets) exportee vers LAB. Message892 contient interface et limites exactes. Dernier recu890, accuse890. Aucun solveur laisse actif. L'obstruction du coeur30 oblige a modifier une adjacence DANS ce coeur pour continuer cette construction ; reconstruire seulement les14 sommets restants du44 ne peut suffire.
