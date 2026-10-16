@@ -1,0 +1,195 @@
+QUOTIENT GLOBAL DES COMPOSANTES AUTOUR D'UNE RACINE
+16 octobre 2026 — Codex, suite de LAB937. Branche min c = 4.
+
+Résultat et limite
+-----------------
+Si un Conway a au moins quatre composantes dans le voisinage de chacune
+de ses droites, choisir une racine sur une droite de c=4 ramène les sept
+droites de cette racine à 100 configurations de composantes restantes.
+Cette couverture n'utilise ni ODD-PURE, ni SYM6, ni une symétrie du graphe.
+
+Le quotient de Gram associé a rang au plus quatre. Les 100 configurations
+ne sont PAS 100 graphes, ni 100 blocs de 44 sommets, ni 100 matrices de
+Gram fixées. Chaque configuration laisse plusieurs Gram et beaucoup
+d'arêtes possibles. Le calcul ferme une première étape de cette branche ;
+le coût d'une réalisation globale n'est pas encore établi.
+
+La borne antérieure c_min<=4 fournit la dichotomie :
+  * c_min<=3 : le couplage précédent exige moins de rang symétrique ;
+  * c_min=4 : la présente couverture à 100 configurations s'applique.
+La première branche n'est pas traitée par le présent calcul.
+
+1. Composantes et graphe des paires sans grille
+--------------------------------------------
+Notons 0,...,6 les sept droites passant par la racine, chacune portant
+deux lettres mates. Q_ij est le rectangle de quatre étiquettes reliant
+les lettres de i à celles de j. Il y a 21 rectangles, disjoints, qui
+partitionnent les 84 étiquettes extérieures.
+
+Le voisinage cubique à 36 sommets d'une droite i se décompose en
+composantes de taille 6s. Une composante correspond à un ensemble S de
+s autres droites : elle contient leurs 2s lettres et les 4s étiquettes
+des rectangles Q_ij, j dans S. En effet les arêtes lettre-étiquette
+forcent les triplets, et l'arête entre lettres mates force les paires.
+
+Une composante s=1 est le prisme à six sommets : les deux matchings
+internes sont forcés, et la permutation croisée ne peut être l'échange,
+qui donnerait trois voisins communs à deux sommets. Elle équivaut à la
+grille sur i,j, donc à quatre arêtes dans Q_ij.
+
+Si c(i)>=4, les partitions possibles des six autres droites sont
+  1+1+1+1+1+1 ; 2+1+1+1+1 ; 3+1+1+1 ; 2+2+1+1.
+Le graphe G des paires SANS grille a donc des degrés 0,2,3 ou4.
+Au degré4, il faut encore choisir l'un des trois partages des voisins
+en deux paires. Ces choix représentent des composantes, pas des
+automorphismes. Au degré2 ou3, tous les voisins forment une composante.
+
+2. Une matrice de Gram entière, portée par au plus quatre directions
+-------------------------------------------------------------------
+T est la matrice de Gram 84x84 déjà définie dans les travaux précédents :
+  T=3I-Gamma-(3 B^tB+B^tMB-2J)/8,
+  0<=T<=7 Pi,   Pi=projection orthogonale sur ker B.
+Soit P la matrice 84x21 des indicatrices des Q_ij. Posons R=P^tTP.
+En notant W_ef le nombre d'arêtes entre deux rectangles, avec les arêtes
+internes comptées deux fois sur la diagonale, on obtient exactement :
+  R_ee=8-W_ee=8-2 e(Q_e),
+  R_ef=-W_ef              si e,f partagent une droite,
+  R_ef=4-W_ef             si e,f sont disjoints.
+
+Une grille donne R_ee=0, donc une ligne et colonne nulles par positivité.
+Sur les arêtes de G, R_ee appartient à {2,4,6,8}. Tous les coefficients
+de R sont entiers. Pour e!=f, -8<=R_ef<=4, et R_ef<=0 si e,f partagent
+une droite. La borne inférieure vient de Cauchy-Schwarz et R_ee<=8.
+
+Pour une composante (i,S), la somme sigma des indicatrices Q_ij satisfait
+sigma^t T sigma=0 : Gamma est 2-régulier sur ses 4s étiquettes et
+B sigma vaut 2s aux deux lettres de i, 2 aux 2s autres lettres.
+La substitution dans T donne zéro. Par positivité, T sigma=0.
+Ainsi les vecteurs de Gram v_ij satisfont
+  somme_{j dans S} v_ij=0.                              (1)
+Deux composantes distinctes d'une même droite n'ont pas d'arêtes entre
+elles ; les vecteurs de leurs rectangles sont donc orthogonaux.
+
+Construisons J : un sommet par composante non triviale (i,S), et une
+arête par paire sans grille ij, reliant les deux composantes qui la
+contiennent. J est simple, avec degrés2 ou3. Si C est son incidence
+NON ORIENTÉE, (1) donne C R=0. Pour toute composante connexe de J,
+rang(C)=nombre de sommets, moins un si elle est bipartie. D'où
+  dim ker C = |E(J)|-|V(J)|+nombre de composantes biparties.           (2)
+Le calcul complet ci-dessous donne dim ker C<=4 pour toutes les
+configurations considérées, avant même les exclusions supplémentaires.
+Le rang de R est donc au plus4. Le petit nombre ne suppose pas que les
+84 vecteurs individuels de T vivent en dimension4.
+
+Si C0 est l'incidence non orientée de K7, alors
+  P^t Pi P = 4I-(4/5) C0^t C0+(4/15)J
+           =4 projection sur ker C0.
+On en déduit la contrainte supplémentaire universelle
+  0<=R<=28I.                                             (3)
+
+3. Couverture exhaustive et trois exclusions structurelles
+----------------------------------------------------------
+root_component_quotient.py parcourt les 2^21 graphes étiquetés sur sept
+sommets, en code de Gray. Chaque graphe admet un étiquetage aux degrés
+croissants ; on conserve ces étiquetages puis quotient par toutes les
+permutations préservant les degrés. Aucun atlas externe n'est employé.
+
+Comptes obtenus :
+  8 266 graphes étiquetés aux degrés croissants dans {0,2,3,4} ;
+  221 graphes G à isomorphisme près ;
+  12 951 choix de composantes, avant quotient des partages au degré4.
+
+Trois exclusions nécessaires sont appliquées :
+  7 301 : une coordonnée est identiquement nulle dans ker C, alors que
+          le rectangle est sans grille et doit avoir une norme positive ;
+  5 012 : les équations aux sommets de degré2 imposent deux vecteurs
+          égaux au signe près, alors que deux composantes de la même
+          droite les imposent orthogonaux ;
+    271 : un sommet de degré3 répète une de ces directions. Deux vecteurs
+          égaux ont un produit scalaire positif interdit ; deux vecteurs
+          opposés forceraient le troisième à zéro par (1).
+
+Restent 367 choix, soit 200 à permutation des sept droites près. Trois
+ont tous leurs c>=5 ; les 197 autres ont minimum4.
+
+4. Faisabilité entière et positive du quotient
+----------------------------------------------
+root_component_gram.py laisse varier TOUS les coefficients de R dans
+leurs domaines entiers, impose CR=0, les zéros entre composantes d'une
+même droite, les signes, les mineurs PSD de taille2, et (3).
+
+Les contraintes PSD restantes sont traitées par coupes exactes : une
+direction entière d'énergie négative fournit une inégalité linéaire
+nécessaire. Les directions et les énergies négatives sont enregistrées.
+Comme im R est inclus dans ker C, un bloc principal sur au plus quatre
+coordonnées indépendantes détermine R tout entier et suffit au test PSD.
+
+Première passe : 94 modèles infaisables et 106 avec un Gram témoin.
+Il s'agit de verdicts du solveur entier CP-SAT sur le modèle enregistré,
+pas d'un certificat UNSAT portable indépendant du solveur.
+
+5. Retour aux quatre sommets de chaque rectangle
+------------------------------------------------
+Pour un sommet w du rectangle e, notons h_f=<g_w,v_f>. Ce vecteur est
+ENTIER, appartient à im R, et h^t R^+ h<=5/2. Les domaines exacts sont
+  h_e=2-degre_Qe(w) dans {0,1,2},
+  h_f dans {-2,-1,0}   si f partage une droite avec e,
+  h_f dans {-3,-2,-1,0,1} si f est disjoint de e.
+Les rectangles-grilles ont h_f=0 et sont supprimés des coordonnées.
+
+Choisir r<=4 coordonnées principales indépendantes de R détermine h
+depuis ces r coordonnées entières : au plus 5^r<=625 choix par rectangle.
+Le programme root_rectangle_domains.py utilise seulement de l'arithmétique
+entière pour tester l'intégralité des autres coordonnées et l'énergie.
+Sur les premiers Gram témoins, le plus grand domaine avait 16 éléments.
+
+Les quatre h des sommets de Q_e doivent sommer à la colonne R_e. On
+énumère aussi tous les graphes binaires internes au rectangle, respectant
+les quotas des lettres. Ils doivent avoir (8-R_ee)/2 arêtes et les
+degrés 2-h_e. Enfin on impose le complément de Schur positif
+  T[Q_e,Q_e] - H_e^t R^+ H_e >=0.                         (4)
+Ici T[Q_e,Q_e] a diagonale5/2, coefficient -1/4-Gamma sur deux coins
+partageant une lettre, et -Gamma sur deux coins opposés.
+
+Si un Gram R ne possède aucune réalisation (4) pour un rectangle, on
+interdit ce R entier, pas la configuration de composantes. Le solveur
+cherche alors un autre R. Le bloc principal de ker C, choisi AVANT la
+recherche, sert à cette interdiction ; on ne suppose pas le rang du
+Gram rejeté constant sur les autres solutions.
+
+Passe finale, tous les 200 modèles résolus, aucun UNKNOWN :
+  97 infaisables ; 103 avec Gram et réalisations séparées des rectangles.
+Les trois configurations de minimum c>=5 restent faisables à ce niveau.
+Dans la branche minimum c=4 : exactement 100 configurations restantes.
+Les réalisations séparées ne sont pas encore compatibles entre rectangles.
+Il faut conserver R variable lors d'une future réalisation globale ;
+fixer arbitrairement le témoin enregistré ferait perdre la couverture.
+
+6. Reproduction et prochaine contrainte globale
+-----------------------------------------------
+Outils : root_component_quotient.py, root_component_gram.py,
+root_rectangle_domains.py, dans code/codex. SymPy et OR-Tools requis
+pour les deux derniers ; le premier utilise seulement Python standard.
+
+  python root_component_quotient.py --output templates.json
+  python root_component_gram.py templates.json --realize-rectangles \
+      --seconds-per-template 10 --output grams.json
+
+Durées observées : environ4s puis8s. Ceci mesure le QUOTIENT, et ne
+préjuge pas du coût du graphe complet. Les données finales sont
+data/codex_line_resonance_20261016/root_component_templates.json et
+root_component_gram_realization.json. Les coupes rejetant des Gram et
+les témoins de chaque rectangle sont inclus dans le second fichier.
+
+Une configuration donne directement des contraintes de cardinalité
+globales sur Gamma, pour tout sommet-étiquette w et toute composante
+(i,S) de taille s :
+  somme_{q dans union_{j dans S} Q_ij} Gamma[w,q]
+    =3*[w dans cette union]+s*(1-n_i(w))-n_S(w),           (5)
+où n_i et n_S comptent les extrémités de l'étiquette w dans ces droites.
+C'est T sigma=0 écrit coefficient par coefficient. Les termes à droite
+sont connus, les arêtes de Gamma restent toutes variables. Pour une
+paire sans grille, ajouter e(Q_ij)<=3 ; pour une grille e(Q_ij)=4.
+Cela permet de brancher sur les 100 configurations sans fixer un ancien
+bloc local ni une matrice de Gram témoin. La compatibilité binaire globale
+de ces contraintes reste le travail à accomplir.
