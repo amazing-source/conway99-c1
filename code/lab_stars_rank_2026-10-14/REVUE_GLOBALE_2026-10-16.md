@@ -33,8 +33,9 @@ Aucun résultat de C1 n'a été relu par un humain.
    - Si la réponse est non, il n'y a pas de graphe de Conway.
    - Aujourd'hui la réponse est INCONNUE : sur 34 cas, 18 ont été lancés et tous les 18 sont en TIMEOUT à 90 min.
    - J'ai tout arrêté à 12:50 UTC (Valorant ouvert sur le PC du labo).
-   - Étalonnage (§8) : sur les paramètres de srg(243), où la réponse est oui, le solveur bloque aussi à cinq étoiles. Un
-     INCONNU n'est donc pas un indice de non-existence.
+   - Étalonnage (§8, corrigé en fin d'après-midi) : sur srg(243), où la réponse est oui, cadical trouve une structure à
+     cinq étoiles en 17 s, et CP-SAT en 76-87 s une fois mon encodage corrigé. Pour Conway (modèle 3 fois plus petit),
+     cadical reste indécis plus de 23 min et CP-SAT corrigé 7 fois 20 min. C'est un indice étalonné, pas une preuve.
 7. Codex a construit 15 lignes complètes et exactes sur les 84 labels (λ, μ et comptes de racines exacts, sans condition
    PSD). Des cadres partiels existent donc, et la non-extension n'est pas immédiate.
 8. Anciens outils à brancher tout de suite (§5) :
@@ -289,8 +290,26 @@ consommation.
 
 ## 8. Ajouts du 16/10 après-midi (après l'envoi du bilan)
 
-- **Étalonnage sur srg(243)** (`cp_generic.py`, CP-SAT, un seul worker, aucune arête fixée ; mêmes contraintes C1, C1'
-  et C2 avec 22 lettres) :
+- **CORRECTION (fin d'après-midi, à la demande de Dilan : « pourquoi le solveur bloque-t-il sur srg(243) ? »).** Le
+  blocage venait de mon encodage CP-SAT, pas du problème.
+  - Le journal CP-SAT montre 346 000 booléens dont seulement 4 186 arêtes. Les produits p ≥ e_it + e_jt − 1 n'étaient
+    liés que dans un sens : le solveur décidait sur ces variables libres et entretenait un programme linéaire à 280 000
+    colonnes. Résultat : 7,2 M décisions pour seulement 4 400 conflits en 400 s.
+  - Corrigé (`cp_probe.py --reify --order all --vsel min` : p = e_it ∧ e_jt, branchement sur les arêtes seulement, base
+    d'abord, valeur 0 d'abord) : K = 22 cinq étoiles trouvé en 87, 76, 76, 82 s (graines 1-4) ; quatre étoiles en 45 s.
+    Avec --reify seul (recherche par défaut), le temps est erratique : 152 et 214 s pour les graines 1-2, INCONNU à 1 200 s
+    pour les graines 3-4.
+  - Remarque de Codex (juste) : avec des sommes seulement majorées, p ≥ x + y − 1 est déjà une projection exacte. Le
+    lien dans les deux sens ne change pas la satisfiabilité, il aide seulement la propagation et le branchement. Les
+    anciens UNSAT restent valables.
+  - cadical, encodage stars_rank : K = 22 cinq étoiles SAT en 17 s (20 s avec l'encodage corrigé).
+  - Conway (52 labels), mêmes méthodes : 7 essais CP-SAT corrigés (graines, ordres, sans LP, 4 workers) tous INCONNUS à
+    1 200 s, avec 127 000 à 2,4 M conflits ; cadical indécis à 23 min ce matin, et 90 min par cas M_4.
+  - Les lignes ci-dessous (« un INCONNU n'est pas un indice ») reposaient sur l'encodage défectueux et sont remplacées
+    par : quand des structures à cinq étoiles existent de façon générique, les deux solveurs les trouvent en 17-90 s ;
+    pour Conway rien en plus de 20 min. Indice étalonné de rareté ou de non-existence, pas une preuve.
+- **Étalonnage sur srg(243), première version, encodage défectueux** (`cp_generic.py`, CP-SAT, un seul worker, aucune
+  arête fixée ; mêmes contraintes C1, C1' et C2 avec 22 lettres) :
   - 4 étoiles (76 labels) : trouvé en 34 s ;
   - 5 étoiles (92 labels) : INCONNU à 240 s, alors que de vraies structures existent (les huit srg(243)).
   Le même saut 4 → 5 étoiles bloque donc le solveur là où la réponse est oui. Un INCONNU à cinq étoiles pour Conway n'est
@@ -305,8 +324,20 @@ consommation.
   (étoile 4 non exacte). Jusqu'à 6 labels passent, le 7ᵉ est INFAISABLE (8 bases sur 8 ; une base casse déjà au 6ᵉ).
   - Noyau (`ext_rows_core.py`, échantillon 1) : les 6 labels {4,6..11} sont tous nécessaires, plus 31 labels de base sur
     44, sans aucun coin {02,03,12,13}. Pas de motif local.
-  - Problème sans base « 4 étoiles exactes + 7 labels {4,t} » (`plain_rows.py`) : INCONNU à 240 s. C'est une relaxation
-    de la cinquième étoile ; s'il était INFAISABLE, Conway serait exclu (après certification).
+  - Problème sans base « 4 étoiles exactes + 7 labels {4,t} » (`plain_rows.py`) : INCONNU à 240 s avec l'ancien
+    encodage. **CORRIGÉ :** avec l'encodage et les solveurs étalonnés, il a des solutions :
+    - cadical en 62 s (encodage corrigé) et 81 s (stars_rank) ;
+    - CP-SAT corrigé en 88 s (sans LP) et 224 s ;
+    - avec 6 labels, cadical en 11 s.
+    Le blocage au 7ᵉ label des bases aléatoires n'est donc PAS universel, et cette piste d'exclusion tombe.
+  - **Le vrai seuil est le 8ᵉ label** (`five_cnf.py`, `r7_batch.py`, cadical) :
+    - témoins à 7 labels trouvés pour 6 graines sur 7 (34 à 396 s), tous vérifiés indépendamment (`check_struct.py`) ;
+    - aucun des 6 n'accepte le 8ᵉ label {4,13} (UNSAT en 1,7 à 4,2 s) ni l'étoile 4 exacte (UNSAT en 0,7 à 2,9 s) ;
+    - problème sans base « 4 étoiles exactes + les 8 labels {4,t}, lettre 4 bornée » (appelé R8) : TIMEOUT à 1 800 s
+      dans les deux encodages. Cinq étoiles complètes (encodage corrigé) : TIMEOUT à 1 800 s.
+    - R8 est une relaxation de la cinquième étoile. **R8 INFAISABLE exclurait Conway** (après DRAT, modèle indépendant et
+      relecture). C'est la relaxation la plus faible encore indécise ce soir : 52 labels, 1 326 arêtes, la lettre 4 en simple
+      borne ; avec un label de moins (R7), la réponse est oui.
 - **Coût du découpage brut** (`five_cubes.py`) : avec M_4 et M_0 fixés au hasard (environ 3,5·10⁴ cubes à symétrie près),
   2 cubes sur 2 sont INCONNUS à 100 s. Le coût dépasse donc 1 000 heures CPU sans borne haute connue. Ce n'est pas un coût
   défendable avec le modèle actuel.
@@ -326,7 +357,48 @@ consommation.
   - si les densités interdites sont induites, K_99 suffit.
   Aucun changement de statut.
 
-## 9. Hygiène
+## 9. Le phénomène derrière les indices (16/10 soir, en cours)
+
+Question de Dilan : pourquoi des réponses si rapides pour srg(243) et les graphes existants, et rien ici ?
+
+Notations :
+- B est la base à quatre étoiles (L_0 ∪ ... ∪ L_3, 44 labels) ;
+- B' est l'ensemble des 36 labels de B qui évitent 4 et 5 ;
+- X = {4,t : t = 6..13} (8 labels), C4 = {r,4} (4 coins), C5 = {r,5}, K = {02, 03, 12, 13} ;
+- κ_y est le nombre de voisins de y dans K.
+
+1. **Comptage exact, PROUVÉ pour tout k** (λ = 1, μ = 2). Avec tous les labels {4,t} accrochés :
+   - Σ_{x ∈ X} |N(x) ∩ B| = 8(k − 6) − Σκ_x ;
+   - la capacité de B vaut Σ_y c(y,4) − Σ_{c ∈ C4} |N(c) ∩ B| = 8k − 56 + Σκ_c ;
+   - donc Σκ_x + Σκ_c ≥ 8, et ≤ 8 (chaque coin de K a au plus 2 voisins dans L_4).
+   Tout est donc serré : chaque label de B a exactement c(y,4) voisins dans L_4. Avec un label de moins, il reste 8 unités de
+   marge. C'est vrai aussi pour k = 22 : ce n'est pas encore le phénomène.
+2. **Le graphe Ω, PROUVÉ.** Les 36 labels de B' deviennent 36 arêtes distinctes d'un graphe Ω sur les 12 labels de L_4,
+   disjoint de M_4. Les 24 labels extérieurs qui évitent 5 prennent exactement les 24 paires restantes. Par étoile r,
+   Ω_r (10 arêtes) a des degrés imposés (2 pour chaque x, sauf corrections), donc c'est une union de chemins et de cycles.
+   - Densité : 36 sur 60 paires disponibles chez Conway (60 %), 68 sur 180 pour k = 22 (38 %).
+3. **Borne qui dépend de k, PROUVÉE.** Deux labels de X non adjacents ont exactement un voisin commun (μ = 2, lettre 4
+   commune). Le nombre de labels de B' dont les deux voisins de L_4 sont dans X est donc au plus 28 − a (a = arêtes de M_4
+   dans X).
+   - Chez Conway : 36 labels contre au plus 28 − a paires. Il faut n_1 + n_2 ≥ 8 + a, où n_i est le nombre de labels de
+     B' ayant i voisins dans C4.
+   - Pour k = 22 : 68 labels contre 120 paires, aucune contrainte.
+   Toutes les égalités de comptage restent compatibles (vérifié) : il faut encore la structure C2 de la base.
+4. **Mesures** (pas des preuves) :
+   - en forçant les 8 labels sur un témoin à 7 labels (`r8_soft.py`, minimum de contraintes violées), le meilleur
+     compromis laisse 3-4 labels {4,t} à court d'un voisin dans une étoile L_r : c'est un manque de capacité ;
+   - noyaux minimaux au niveau des arêtes (`r8_core.py`, python-sat, 3 témoins) : 79 à 81 faits, portant sur 39 ou 40
+     des 44 labels de base. Presque chaque test de suppression a atteint sa limite de 100 000 conflits : ces noyaux ne
+     sont minimaux qu'en apparence. Aucun petit motif local ; l'obstruction porte sur toute la base.
+   - R8 et la cinquième étoile avec cassage de symétrie lex-leader (3 071 éléments du groupe, 11,9 M clauses ; contrôle :
+     quatre étoiles reste SAT en 52 s) : TIMEOUT à 3 600 s (4 essais). Découpage par M_0 (52 classes) : 4 cas sur 4 en
+     TIMEOUT à 600 s.
+   - Lancés pour 2 h (16/10, 17:05 UTC) : cadical `--unsat` sur R8 avec et sans cassage de symétrie, et kissat 4.0.4
+     (python-sat) sur R8 avec cassage.
+5. **Prudence** : la rigidité observée est aussi ce qu'on attendrait d'un graphe asymétrique qui existerait. L'indice
+   « srg(243) va vite » parle des structures locales génériques, pas d'une preuve de non-existence.
+
+## 10. Hygiène
 
 - Le travail EXT84 du 16/10 n'est pas encore commité. À faire sur la branche privée habituelle (lab/theta-lp-2026-10-08).
 - Les documents de l'espace de travail postérieurs au 01/10 ne sont pas suivis par git (rapport 04) : risque de perte.
