@@ -5909,3 +5909,79 @@ d'autres germes de matchings casses.
 LIVRAISON878 : preuve, code et certificats transmis au pair, commit431c6c7.
 Export codex_hmatch_20261016 avec les dependances du script. Dernier message
 recu877, dernier envoi878. Aucun processus actif. H-MATCH reste ouvert.
+
+## 16/10 - Rappel de Dilan, reconstruction constructive des racines
+
+Dilan rappelle directement que l'objectif ne se limite pas a fermer des
+familles. Reprise active vers une construction et son prolongement.
+879 etait un accuse du pair, acquitte sans reponse. Le relais horaire du
+pair ne justifie pas l'arret de la mission.
+
+Premiere construction : partitions simultanees en cycles de racines de
+longueurs4/6/8 et singletons, R orthogonal fixant B. Contraintes binaires,
+C1' et C2 factorisees sur les paires de cellules (y compris Gamma^2).
+Le modele cherche directement un matching central casse. Aucun resultat
+sur urep100 et H30_23, verdicts finis en moins d'une seconde hors chargement.
+Ce n'est pas une preuve H-MATCH. Code hmatch_joint_reflection_partition.py.
+Correction ciblee du helper : le masque H-MATCH porte sur les4 etoiles
+centrales, pas sur toutes les paires partageant une racine exterieure.
+L'ancien masque pouvait etre trop large ; aucun faux candidat positif
+n'avait ete livre par les constructions concernees.
+
+Deuxieme construction : reconstruire les10 racines exterieures comme des
+transversales des4 groupes de10 sommets, puis choisir leurs5 paires mates.
+Les etoiles centrales et Gamma NON ETIQUETE restent fixes ; B, les noyaux,
+les rangs et les spectres des Gram sont libres. Une transversale satisfait
+les caps C2 sur toutes ses paires, et les comptes C1' (<=2 partout,<=1 sur
+elle-meme). Une paire mate exige en plus <=1 entre les deux transversales.
+Ces conditions sont suffisantes pour conserver C1/C1'/C2 dans cette famille.
+
+FILTRE SPECTRAL GENERAL. Pour Gamma q=3q et1^tq=0,
+ 8 q^tTq=-(Bq)^t(3I+M)(Bq).
+La PSD force Bq=0. Pour Gamma q=-4q,
+ 15 q^tUq=-(Bq)^t(4I-M)(Bq)-2(1^tq)^2,
+donc encore Bq=0 et1^tq=0. Toutes les nouvelles colonnes de racines doivent
+annihiler ces espaces propres, pour TOUS les partenaires M. Ce filtre
+reduit les transversales de1514 a22 sur H30_23, de2074 a546 sur urep100.
+
+REDUCTION EXACTE A DEUX MATRICES10. Poser C=B_cent, Mc=(01)(23), W=B_ext^t,
+ A0=24I-8Gamma-3C^tC-C^tMcC+2J,
+ D0=60I+15Gamma-4C^tC+C^tMcC-2J.
+Ils sont PSD car le germe accepte fournit T8/U15 PSD et l'on ajoute des
+formes positives. Pour une nouvelle incidence W et de nouveaux partenaires M,
+ T8=A0-W(3I+M)W^t, U15=D0-W(4I-M)W^t.
+Il faut les conditions d'image W dans imA0 et imD0. Sous ces conditions,
+ E_T=(3I-M)/8-W^t A0^+W >=0,
+ E_U=(4I+M)/15-W^t D0^+W >=0
+sont NECESSAIRES ET SUFFISANTES pour les deux positivites. Par les deux
+complements de Schur du meme bloc borde,
+ rankT=rankA0-10+rankE_T, rankU=rankD0-10+rankE_U.
+La cible rankT<=30 equivaut donc a rankE_T<=40-rankA0. Elle se propage sur
+les sous-matrices des racines choisies AVANT d'avoir fini leur couplage.
+La recherche exacte alterne choix d'une transversale et choix de son
+partenaire deja choisi ou encore a venir ; tous les couplages sont couverts.
+Les formes W^tA0^+W sont calculees rationnellement via un mineur principal
+inversible, avec test d'image exact ; aucune decision numerique de PSD.
+
+RESULTATS ET CONSTRUCTION POSITIVE.
+- urep100 : A0 rang37,D0 rang41 ;546 transversales puis168 apres les tests
+  individuels.399 noeuds, une incidence admissible T/U de nu>=14, H intact.
+  Enumeration complete0,875s ; le pilote naif de45s n'avait pas termine.
+- HB_1 casse nu13 accepte de LAB : A0 rang36,D0 rang40 ;80 transversales.
+  1437 noeuds,120 incidences admissibles T/U de nu>=14, toutes H intact.
+  Enumeration complete0,672s. Le pilote naif avait teste48146 partenaires
+  en45s sans terminer. Il ne constitue plus la limite du resultat.
+- Une incidence HB_1 a ete MATERIALISEE : nouveau bloc etiquete, T PSD
+  rang30/nu14, U PSD rang39 ; C1/C1'/C2 exacts. Les deux nouvelles matrices
+ 44 ont ete controlees exactement en plus de la construction Schur10.
+  Le Gamma non etiquete reste celui du germe. Il ne s'agit ni d'un nouveau
+  graphe non isomorphe, ni d'un SRG99 complet, ni d'un contre-exemple H-MATCH.
+
+Code hmatch_new_root_geometry.py (pilote) et hmatch_root_schur_search.py
+(reduction exacte). Rapports hmatch_root_schur_rank30_20261016.json et
+hmatch_root_schur_hb1_20261016.json ; construction
+hmatch_promoted_hb1_20261016.json. Les120 solutions sont des INCIDENCES,
+pas120 graphes non isomorphes. Les noyaux du producteur n'ont pas ete fixes
+ni re-audites. Livraison880, avec preuve et chemin de la construction.
+Suite active : essayer la completion de ce bloc44 au second voisinage84,
+avec rangT deja sature30 et rangU39 (rang global40). Aucun processus lourd.

@@ -37,7 +37,8 @@ def integer_kernel(matrix):
         w = [int(x*denominator) for x in v]
         divisor = reduce(gcd, map(abs, w))
         vectors.append([x//divisor for x in w])
-    return np.array(vectors, dtype=object).T
+    return (np.array(vectors, dtype=object).T if vectors
+            else np.empty((matrix.shape[1],0),dtype=object))
 
 
 def antipodal_gate(gamma, kernel, star):

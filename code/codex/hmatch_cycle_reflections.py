@@ -22,6 +22,7 @@ B = np.array([[int(r in p) for p in LABELS] for r in range(14)], dtype=np.int64)
 H = [INDEX[tuple(sorted(x ^ 1 if x < 4 else x for x in p))] for p in LABELS]
 ROOTS = [{b if a == r else a for a, b in LABELS if r in (a, b)} for r in range(14)]
 ROOT_INTERSECTION = B.T @ B
+CENTRAL_ROOT_INTERSECTION = B[:4].T @ B[:4]
 ROOT_LIMIT = np.array([[2-int(r in p)-int((r ^ 1) in p) for r in range(14)]
                       for p in LABELS], dtype=np.int64)
 
@@ -81,7 +82,7 @@ def new_candidate_checks(matrix):
     if np.any(capacity < 0):
         return 'C2'
     difference = matrix-matrix[np.ix_(H, H)]
-    matching_break = np.count_nonzero(difference*(ROOT_INTERSECTION > 0))
+    matching_break = np.count_nonzero(difference*(CENTRAL_ROOT_INTERSECTION > 0))
     return 'H_MATCH_BROKEN' if matching_break else 'H_MATCH_INTACT'
 
 
