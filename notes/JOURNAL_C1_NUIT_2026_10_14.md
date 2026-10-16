@@ -6686,3 +6686,75 @@ SHA2565450dd533ec8fcd74d35d0fb92641021895a309c0c7625ed6992ba59ed594b5e.
 La preuve PREUVE_BLOC_GRIS_15_LIGNES.txt et la bibliotheque sont aussi a plat
 sous lab_exchange_2026-10-14/codex_hmatch_20261016. A LAB903, signalement du
 vieux mecanisme de completion V13 comme piste a reutiliser lors de sa revue.
+
+
+## 16/10/2026 -- Couverture globale, reduction aux exces et apprentissage
+
+Consigne directe de Dilan : il demande une contradiction sur TOUT Conway/C1,
+ou une voie exhaustive au cout defendable. Arret de la campagne autour du
+temoin15 exclu. Pas de re-audit du travail de LAB. Message905 : partage de
+cette priorite et demande d'extraire de sa revue les reductions vraiment
+universelles ; H-MATCH demeure ouvert.
+
+conway_global_cover.py est un modele EXACT, necessaire et suffisant pour
+SRG99. Les84 etiquettes sont les paires non partenaires des14 racines.
+Gamma symetrique binaire, diagonale0, comptes racines exacts et
+Gamma^2_pq+Gamma_pq+|p intersection q|=2 suffisent a TOUS les comptes du99.
+Aucune symetrie ni ancien44/15 fixe. Reconstruction et controle exact du
+graphe entier si SAT. Normalisation d'une etoile : union du matching M et
+des partenaires physiques P, classes par partitions de6 (11 types).
+Les10395 matchings sont couverts, avec leur cardinalite exacte par type.
+
+Renforcement global : le cap existant P<=852 impose une droite de t minimum
+avec t<=7. Elle appartient a au plus3 grilles, donc a au plus9 drapeaux
+grilles sur18 ; on peut choisir un partenaire non-grille. Normaliser ce
+drapeau par L=(o,0,1),K=(o,2,3) oblige a preserver la paire2,3. La classe
+d'une etoile L0 est alors (partition de6,taille de la composante marquee) :
+19 types, enumeration complete10395. Le modele les autorise ENSEMBLE,
+avec t01<=7,t01<=les six autres t a o,carre central non-grille,2g<=t01.
+Ce n'est PAS19 graphes complets ; la taille des completions reste inconnue.
+Preuve lisible : conway_global_cover_proof_20261016.txt, sections1-4.
+
+Pilotes : complet non pointe30s UNKNOWN32.5s,0 branche ; complet pointe
+sans preprocessing/LP/symetrie60s UNKNOWN60.161s,77124 branches2369 conflits.
+Modele~292k variables avec les produits, construction5.8-6.3s.
+
+Nouvelle reduction utilisee par conway_global_lazy.py : les comptes racines
+exacts forcent degGamma12. Chaque ligne des quantites
+Gamma^2_pq+Gamma_pq+|p intersection q| a somme132+12+22=166=2*83.
+Imposer seulement <=2 force donc toutes les egalites. Une violation livre
+un motif positif interdit3/4/5/6 aretes (triangle,C4,diamant,K2,3 selon
+intersection et arete pq). Clause universelle verifiable sur ses etiquettes.
+Le moteur garde ces clauses et cherche parmi TOUS les graphes normalises.
+SAT conserve ses clauses internes pendant le run ; CP ne conserve que
+les coupes explicites entre resolutions. La reprise JSON recharge les
+coupes explicites, jamais une memoire interne pretendument persistante.
+
+Cette version a3505 variables CP (3486 aretes+19 selecteurs) et2361
+cardinalites, aucun produit. Version CNF G4 :41550 variables79749 clauses.
+Pilotes initiaux60s G4 et30s CP : UNKNOWN sans premier candidat. Le backend
+natif Minicard avait quitte avec code1 sans verdict au bout de8.6s ; ce
+n'est ni UNSAT ni UNKNOWN de solveur. Option retiree apres cet echec.
+
+Diagnostic constructif : les comptes racines sont bien faisables.
+conway_root_count_seed.py les construit avec252 variables d'orbites en
+0.23985s. La symetrie cyclique sert SEULEMENT a produire une indication
+initiale ; toutes ses aretes et cette symetrie sont liberees dans le modele
+global. Normalisation explicite vers le type pointe18, tous les comptes
+racines controles. Ce temoin viole1015 paires, exces total1596, donc n'est
+PAS un Conway ni une construction qui s'en rapproche au sens prouve.
+Il amorce2483 clauses universelles. Recherche CP globale45s avec ces coupes
+et une indication de valeurs : UNKNOWN44.948s,82561 branches156 conflits,
+aucun deuxieme candidat. Aucun graphe ni famille globale exclue.
+
+Controles propres adaptes aux nouveaux outils : couverture des matchings,
+SRG9 SAT avec controle de chaque paire, parametres19 UNSAT (complet et
+paresseux ; CP19 ferme en0.022s apres116 coupes). Ce sont des controles du
+nouvel encodage, pas un re-audit des germes du pair. Tous les calculs sont
+termines,1worker chacun ; aucun AWS ni solveur laisse actif.
+
+La procedure est finie au sens elementaire : chaque candidat fautif est
+elimine par une coupe, et il y a au plus2^3486 matrices. Cette borne est
+inabordable. Le cout effectif reste NON BORNE de facon abordable ; ni la
+couverture19 ni les2483 clauses ne sont une contradiction globale.
+Les points ouverts sont explicites dans le code, la preuve et les JSON.
