@@ -188,3 +188,16 @@ conjectures, raccourcis, paris.
 - BILAN de la soirée : Conway ⟸ [ODD-PURE (rank D = 9) + rank Z ≥ c − 1 pour c ≤ 4], sur les paires sans grille du
   côté où c est minimal, avec P ≤ 852. Toutes ces conditions tiennent sur 100 % de nos données sans grille.
   Rien n'est prouvé dans le cas général, hors le lemme impair.
+
+### 16/10 19:02 UTC : fin de session
+- R8 (8 labels {4,t}) : cadical `--unsat` 2 h avec cassage de symétrie complet, et 2 h sans : TIMEOUT tous les deux.
+  kissat via python-sat plante sur ce PC. R8 reste indécis par SAT.
+- Codex, suite du secteur impair (sans re-audit) : on décompose T44 en U (20 labels fixes), P (12 pairs), R (12 impairs).
+  Alors ODD-PURE ⟺ ker K1 = ker K (avec K = T_UU, K1 = K − C Φ⁺ Cᵀ), et δ = rank K − rank K1 = 9 − rank D. On a
+  rank T = 32 − c(l) − δ + rank Z. Sur ses objets sans grille δ = 0 ; sur HB (grille) δ = 1.
+- Codex, côté pair : borne d'énergie PROUVÉE à deux étoiles (E ≥ G/5). La perte de rang vient donc du couplage avec les
+  20 labels fixes. Impasse notée : « trois directions découplées de N1 ».
+- ÉTAT : Conway ⟸ [ODD-PURE + rank Z ≥ c − 1, pour les paires sans grille, côté c minimal ≤ 4] avec P ≤ 852.
+  - Prouvé : la réduction (Codex), le lemme impair (LAB), le comptage de dimensions (corank Q ≥ 12 − c).
+  - Ouvert : ODD-PURE dans le cas couplé (forme contraction, comme H-MATCH) et les rangs de Z.
+  - Données : aucune violation sur 7 444 côtés sans grille.
