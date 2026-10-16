@@ -223,3 +223,28 @@ conjectures, raccourcis, paris.
     sans grille ; ODD9 n'a été réfuté que par des grilles le 15/10).
 - `oddpure_hsplit.py` : sans symétrie h, λ_max monte aussi jusqu'à 0,990 (b_*.json, lignées asymétriques ; 110 côtés
   ≥ 0,95). Le danger n'est donc pas limité au cas h-invariant ; la preuve doit être exacte dans tous les cas.
+
+## 16/10 soir, après la critique de Dilan (« ouvert, ouvert ... il manque une idée, une mesure »)
+Diagnostic écrit (message à Dilan) :
+1. Tous les murs (H-MATCH, N9-NG, Q7, ODD-PURE + Z, R8) sont le MÊME énoncé dans d'autres coordonnées : un bloc local ne
+   porte pas la nullité que le spectre global impose, sauf s'il est plein de grilles. Les réductions sont exactes, donc
+   la difficulté est conservée, et les données saturent chaque borne (marge 0).
+2. Les lois locales validées sur des populations biaisées cassent l'une après l'autre (ODD9, (A), N9 sur les grilles,
+   SUM14, KER-SYM, R7, le 7ᵉ label).
+3. Tout ce qui a FERMÉ quelque chose était arithmétique : C3 (mod 3), C2 (réseaux), r ≤ 35 (F7), b = 26..32, c55 (F7),
+   Z5-hM (Q(ζ5)/F7), les 645 germes (DISC). Le « mou » ne donne que des reformulations.
+MESURE (`f7_rank_scan.py`, exact mod p, 6 122 blocs PSD distincts) :
+- sans grille (3 722) : rang_F7(8T_S) ≥ 30 toujours ; pour rang_Q = 30 (46 blocs), rang_F7 = 30, aucune chute ; des
+  chutes de 2 seulement à rang_Q ≥ 33 ;
+- avec grille : rang_F7 jusqu'à 25 (403 blocs à rang_Q 30), et aussi 26, 27, 28.
+- Conway exige rang_F7(8T_S) ≤ k ≤ 28 pour tout bloc principal (G13 de CONWAY_CONSTRAINTS : L4/L22 de Codex, statut P)
+  et possède une paire sans grille à chaque sommet (N2 de Codex). Donc :
+  (R7-NG) « tout bloc PSD sans grille a rang_F7 ≥ 29 » ⟹ pas de Conway.
+  Marge sur les données : 1 (minimum observé 30). Algèbre linéaire sur F7, exacte.
+- ANTÉRIORITÉ : le test rang_F7 ≤ 28 faisait partie de NG14 (THREE_RESULTS §5, 15/10), et (R7) sans « NG » avait été
+  réfuté par un objet à grille (E7, rang 25). Nouveau ce soir : la séparation systématique grille / sans grille.
+- Mécanisme mod 7 : (8T)² = 56·8T ≡ 0 mod 7 globalement, donc (8T_S)² ≡ −(8T)_{SZ}(8T)_{ZS} mod 7 (Z = les 40
+  labels extérieurs).
+- `f7_kernel_look.py`, bloc à grille n9ng_z5h_SCH_1 (rang_Q 30, rang_F7 25) : 5 directions mod 7 non relevables. Les
+  représentants ont des supports de 20-25 labels ; l'un est un vecteur de parité (+1/−1 alterné sur L_1 selon la
+  parité de la seconde lettre, −2 sur les labels impairs de L_2, −1 sur L_3). Pas encore de mécanisme lisible.
