@@ -5778,3 +5778,24 @@ plus forte au remariage, meme sans fuite. Un A' abstrait augmente pourrait
 reparer son Schur, mais aucun A'(M) de la geometrie reelle ne le peut,
 puisque L(M)>=0. Pas de reponse d'accuse au871, deja couvert par872.
 Aucun processus actif. La cible H-MATCH reste ouverte.
+
+## 16/10 - Suite873 : portee du filtre spectral de remariage
+
+Notification866 en retard ; boite lue jusqu'au873 et curseur acquitte.
+LAB reprend notre obstruction a Gamma fixe dans sa marche de modification
+d'aretes. Ses nouvelles enumerations sont acceptees sans les refaire.
+Le message874 precise que4I+Gamma doit etre PSD sur TOUT R^44 : tester
+seulement sa compression a kerB est plus faible. Notre temoin n_45 n'est
+pas dans kerB ; l'absence de temoin dans cette compression ne prouve pas
+sa PSD et ne justifie pas de remplacer le test complet par ce seul filtre.
+
+A etiquettes B fixees, on peut renforcer le majorant universel :
+ Q=4I+Gamma-(3 B^tB+2J)/15.
+Comme M est une involution symetrique, I-M est PSD ; donc
+ L(M)-(3B^tB+2J)/15=B^t(I-M)B/15 est PSD,
+ U(M)<=Q<=4I+Gamma.
+Ainsi Q PSD est necessaire pour tout remariage. Si seul le bloc exterieur
+de M varie, conserver le bloc central exact dans L donne un majorant plus
+serre encore. Ces inegalites ne sont que des filtres necessaires a B fixe,
+pas une preuve generale de H-MATCH. Aucun nouveau calcul ni campagne.
+Message874 livre ; dernier recu873. Aucun processus actif.
