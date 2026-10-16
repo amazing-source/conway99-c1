@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False):
     edges = [tuple(e) for e in template["nongrid_edges"]]
     raw = [[int(x) for x in row] for row in matrix.tolist()]
     domains = {tuple(r["rectangle"]): r for r in signature_domains(edges, raw)}
@@ -214,18 +214,27 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             model.add(graph[u][v] + sum(product(graph[u][z], graph[v][z]) for z in range(84))
                       == 2 - len(set(LABELS[u]) & set(LABELS[v])))
             c2_count += 1
+    minc_info=None
+    if minc_lines:
+        from root_component_minimum_partition import add_minimum_partitions
+        minc_info=add_minimum_partitions(model,graph,minc_lines)
+    profile_info=None
+    if six_prism_profiles:
+        from root_component_six_prism_profiles import add_six_prism_profiles
+        profile_info=add_six_prism_profiles(model,graph,template)
     info = {"pair_psd_tables": pair_tables, "pair_psd_rows": pair_rows, "c2_equations": c2_count,
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
             "eigen_equations": eigen, "eigen_products": eigen_products,
             "mate_flip_signature_normalization": mate_normalize,"explicit_four_sums":True,
-            "four_corner_tables":corner_info, "local_component_tables": local_info}
+            "four_corner_tables":corner_info, "local_component_tables": local_info,
+            "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info}
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -277,6 +286,9 @@ def main():
     parser.add_argument("--moments", type=Path)
     parser.add_argument("--prior", type=Path)
     parser.add_argument("--eigen", action="store_true")
+    parser.add_argument("--cpu-time", action="store_true")
+    parser.add_argument("--minc-lines",type=int,default=0)
+    parser.add_argument("--six-prism-profiles",action="store_true")
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -284,6 +296,8 @@ def main():
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    from root_component_resources import limit_research_process
+    resources=limit_research_process(4)
     local_tables = json.loads(args.local_tables.read_text()) if args.local_tables else None
     covers = {r["template_index"]: r for r in json.loads((args.directory / "root_component_gram_orbits20.json").read_text())["records"]}
     templates = json.loads((args.directory / "root_component_templates.json").read_text())["survivors"]
@@ -312,14 +326,16 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)
             record.update(counts=dict(Counter(r["status"] for r in cases)),
                           all_source_grams_processed=len(cases) == cover["gram_count"],
                           excluded=len(cases) == cover["gram_count"] and all(r["status"] == "INFEASIBLE" for r in cases))
-            args.output.write_text(json.dumps({"scope": __doc__, "layer": args.layer, "records": records}, separators=(",", ":")) + "\n", encoding="utf-8")
+            temporary=args.output.with_suffix('.json.tmp')
+            temporary.write_text(json.dumps({"scope": __doc__, "layer": args.layer,"resources":resources, "records": records}, separators=(",", ":")) + "\n", encoding="utf-8")
+            temporary.replace(args.output)
         print(json.dumps({k: v for k, v in record.items() if k != "cases"}), flush=True)
 
 

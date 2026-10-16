@@ -46,17 +46,23 @@ def main():
     parser.add_argument("--layer", type=int, choices=range(5), default=0)
     parser.add_argument("--eigen", action="store_true")
     parser.add_argument("--cpu-time", action="store_true", help="Budget actual process CPU time, excluding resource pauses.")
+    parser.add_argument("--minc-lines", type=int,default=0,help="Enforce global c>=4 at this many fixed nonroot lines.")
+    parser.add_argument("--six-prism-profiles",action="store_true")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
     parser.add_argument("--limit-new", type=int)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if not 1 <= args.jobs <= 6:
-        parser.error("The active CPU policy permits at most six jobs sharing six logical cores.")
+        parser.error("At most six jobs are allowed, all sharing the same four logical cores.")
     resources = limit_research_process(4)
     config = {"seconds": args.seconds, "layer": args.layer, "eigen": args.eigen}
     if args.cpu_time:
         config["cpu_time"] = True
+    if args.minc_lines:
+        config["minc_lines"] = args.minc_lines
+    if args.six_prism_profiles:
+        config["six_prism_profiles"] = True
     if args.local_tables:
         config["local_tables"] = str(args.local_tables)
     if args.retry_from:
@@ -90,7 +96,8 @@ def main():
         if completed.get(key, {}).get("status") != "INFEASIBLE":
             completed[key] = case
     options = {"seconds": args.seconds, "layer": args.layer, "workers": 1, "eigen": args.eigen,
-               "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time}
+               "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time,"minc_lines":args.minc_lines,
+               "six_prism_profiles":args.six_prism_profiles}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None

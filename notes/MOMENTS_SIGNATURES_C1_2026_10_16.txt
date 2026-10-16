@@ -258,3 +258,58 @@ pour la propagation. Aucun code particulier n'est choisi arbitrairement.
 Le filtre respecte l'ordre global des coins meme si la droite courante
 est la seconde coordonnee de Q. Pas de nouvelle exclusion de template
 encore attribuee a ce raccord au moment de ce journal.
+
+12. Minimum GLOBAL de composantes : coupes et partitions non racine (17/10)
+
+Les modeles precedents imposaient les composantes seulement aux sept
+lignes racine. Or la branche suppose c(l)>=4 pour TOUTE ligne l.
+Dans N(l), les trois couleurs ont des couplages parfaits entre elles
+et en elles. Chaque composante a donc6s sommets. Le total36 donne
+sum(s-1)=6-c(l)<=2.
+
+Consequence necessaire : impossible de trouver des ensembles connexes
+disjoints de tailles19, ou13+7, ou7+7+7. Les ensembles ne sont PAS
+supposes appartenir a des composantes distinctes. S'ils fusionnent,
+ceil((a+b)/6)-1 >= (ceil(a/6)-1)+(ceil(b/6)-1), donc leur exces total
+ne diminue pas. Une clause contient seulement le triangle l, une arete
+d'attachement de chaque sommet a l, et des arbres couvrants. Aucune
+absence d'arete n'est utilisee pour justifier une composante separee.
+root_component_global_minimum.py implemente ces clauses. Pilote7#353,
+180sCPU, termine UNKNOWN; des milliers de clauses nouvelles mais aucune
+exclusion. Ne pas confondre les candidats successifs avec des SRG.
+
+Encodage statique alternatif : regrouper les composantes en exactement
+quatre cases de tailles18+6+6+6 ou12+12+6+6. C'est possible pour toutes
+les partitions de6 en au moins4 parties; les couleurs ont respectivement
+6+2+2+2 ou4+4+2+2 sommets dans les cases. Aucune arete du voisinage ne
+traverse deux cases. Cela equivaut a c>=4 dans un vrai voisinage de
+ligne. Les noms des cases suivent leur premiere apparition dans une
+couleur connue : seule une symetrie AUXILIAIRE est retiree, aucune
+normalisation supplementaire de Gamma n'est imposee.
+root_component_minimum_partition.py et option --minc-lines. Sept tests
+sur des voisinages cubiques synthetiques : quatre partitions c>=4
+SAT, trois partitions c<=3 INFEASIBLE. Controles dans
+global_minc_partition_controls.json. Essais complets7#353 et9 ouverts.
+
+13. Frontiere a six prismes : profils de96 choix (17/10)
+
+Template7 possede une ligne racine c=6. Son voisinage est la reunion
+de six prismes de6 sommets. Les60 sommets exterieurs choisissent chacun
+UN voisin dans chaque prisme, deux voisins dans chacune des trois
+couleurs. Deux voisins (couleur0) sont fixes par le label du sommet.
+Les quatre choix restants ont96 possibilites : choisir deux prismes
+pour couleur1, puis quatre bits, soit6*16. Pour deux sommets de couleurs
+1/2 dans des prismes distincts, le nombre de voisins communs parmi les60
+vaut1 si les couleurs coincident,2 sinon. Les240 equations deviennent
+des sommes LINEAIRES d'indicatrices de profils (5760 avant filtrage),
+sans produits de variables d'aretes. Ce sont des consequences exactes
+de C1/C2; elles ne constituent pas une nouvelle exclusion par elles-memes.
+root_component_six_prism_profiles.py; option --six-prism-profiles.
+
+Recherche bibliographique ciblee : la page ProofAtlas indique que le
+cas six-prismes GENERAL demeure ouvert; seule une sous-branche de rang
+est annoncee exclue. Rien de cette annonce n'est ajoute comme axiome.
+https://www.proofatlas.ai/collaboration/conways-99-graph-conjecture/
+Le preprint2610.16266 du12/10 annonce une non-existence; il n'est PAS
+importe dans cette preuve. La recherche recente ne ferme donc aucun des
+trois cas. Ne pas reouvrir une verification generale de ces annonces.

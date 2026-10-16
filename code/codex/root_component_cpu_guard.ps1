@@ -102,4 +102,8 @@ try { while ($true) {
     }
     if (($taskNow - $taskLastSeen).TotalSeconds -gt 300 -or (Test-Path -LiteralPath $taskStopFile)) { break }
     Start-Sleep -Seconds 3
-} } finally { Resume-ResearchThreads $taskSuspended }
+} } finally {
+    Resume-ResearchThreads $taskSuspended
+    [pscustomobject]@{logical_cores=$MaximumCores; paused=$false; stopped=$true; time=(Get-Date).ToString('o')} |
+        ConvertTo-Json -Compress | Set-Content -LiteralPath $taskBudgetFile -Encoding UTF8
+}
