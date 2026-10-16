@@ -400,3 +400,101 @@ Les outils de campagne sauvegardent chaque résultat et reprennent seulement
 les cas non résolus. root_component_campaign.py --refresh-only consolide
 les calculs sans relancer le solveur. Les cas déjà exclus par une couche
 nécessaire ne sont pas recalculés au niveau global.
+
+12. Les petites matrices de Gram sont maintenant toutes énumérées
+----------------------------------------------------------------
+Pour les20 configurations de la section10, l'ensemble entier nécessaire
+des Gram R est désormais complètement calculé :116684 matrices en tout.
+Il ne s'agit plus d'un témoin choisi dans chaque configuration.
+
+Soit L une base de ker C normalisée pour que ses lignes aux coordonnées
+ancres forment l'identité. Toute matrice symétrique admissible est
+  R=L S L^t,
+où S est précisément le petit bloc principal sur les ancres. Avec
+G=L^t L, les deux conditions spectrales se réduisent exactement à
+  S>=0,   28 G^(-1)-S>=0.                                (7)
+En effet, pour L^t z=y, le minimum de ||z||^2 est y^t G^(-1)y.
+Ainsi (7) équivaut à 0<=R<=28I, même lorsque S est singulière.
+Les tests de matrices de taille<=4 emploient une élimination de Schur
+entière, y compris le cas d'un pivot nul : sa ligne doit alors être nulle.
+
+Dans18 configurations, l'énumération complète CP-SAT du petit modèle se
+termine rapidement. Pour les deux autres, on paramètre l'espace linéaire
+de R, après CR=0 et les orthogonalités, par des ENTRÉES indépendantes de R :
+  template7 : neuf diagonales et une entrée hors diagonale,
+      soit4^9*13=3407872 choix ;101010 Gram passent les conditions ;
+  template19 : neuf diagonales,
+      soit4^9=262144 choix ;12087 Gram passent les conditions.
+Toutes les autres entrées sont des fonctions linéaires rationnelles des
+paramètres. On teste exactement leur intégralité, leurs domaines, la
+trace, la borne de prismes simple, les mineurs2 puis (7).
+Les deux parcours finis ont pris respectivement4,88s et0,66s. Leurs
+paramétrisations rationnelles et tous les Gram retenus sont enregistrés.
+
+Cela résout l'énumération du QUOTIENT de Gram dans ces20 configurations.
+Cela ne constitue ni une énumération des graphes complets, ni une borne
+sur le temps nécessaire pour compléter leurs arêtes.
+
+13. Changement de noms des racines et passage au modèle global
+-------------------------------------------------------------
+On utilise ensuite les permutations des sept droites qui préservent
+exactement le template ET ses groupes de composantes. Elles agissent sur
+les Gram. Les116684 matrices forment5620 orbites, dont un représentant
+par orbite suffit. La somme des tailles d'orbites couvre la liste entière.
+Comme toutes les contraintes sont préservées, tout graphe éventuel
+pourrait être renommé pour avoir l'un des Gram représentants. On n'exige
+PAS qu'une de ces permutations soit un automorphisme du graphe.
+
+root_component_gram_table.py ajoute une table autorisée sur les entrées
+du petit bloc S. Reste permis TOUT représentant de la couverture complète,
+pas seulement le premier trouvé. Les listes interrompues de l'ancien
+essai CP-SAT sont refusées par cet outil ; seuls les enregistrements
+exhaustive=true et usable_as_gram_cover=true sont admis.
+
+Avec les tables complètes et seulement les126 équations C2 internes aux
+rectangles, quatre nouvelles configurations sont INFEASIBLE :
+  54 (4 Gram),91 (2 Gram),142 (5 Gram),153 (54 Gram).
+Ce test utilisait les listes avant quotient par les renommages.
+Le modèle GLOBAL avec table de13 représentants exclut ensuite le
+template28 en12,18s. Les autres essais globaux limités à15s restent
+UNKNOWN ; les tables ne sont donc pas présentées comme une résolution
+automatique du problème complet.
+
+Bilan présent :64 des79 configurations exclues,15 encore ouvertes :
+  4,6,7,9,11,19,26,86,98,102,103,106,110,148,197.
+Ces15 configurations ont ensemble5569 Gram représentants nécessaires.
+Le coût de leur énumération est établi ; celui de toutes leurs extensions
+binaires ne l'est pas. La branche minimum global c<=3 reste également
+ouverte et hors de cette couverture.
+
+14. Contraintes nouvelles sur chaque sommet individuel
+-----------------------------------------------------
+root_component_signature_cover.py calcule tous les h entiers possibles
+conditionnellement à chaque Gram, avec h dans im R et h^t R^+h<=5/2.
+Il élimine seulement les Gram sans sommes de quatre signatures ou sans
+réalisations séparées des rectangles, en conservant une couverture complète.
+
+Pour w dans Q_e et une coordonnée f, la variable du modèle est
+  h_f=2-degre_Qf(w) si e=f,
+  h_f=-degre_Qf(w) si e et f partagent une droite,
+  h_f=1-degre_Qf(w) si e et f sont disjoints.
+Un sélecteur choisit le Gram ;84 tables, une par sommet, imposent les
+signatures entières admissibles. Les coordonnées aux ancres de ker C
+suffisent, y compris lorsque le Gram choisi a un rang inférieur.
+
+Premier ensemble calculé :102,103,106,110,86,197, soit35 Gram représentants
+en tout. Les domaines et les84 tables sont construits et intégrés. Les
+tests de la couche1 donnent des solutions partielles ou des UNKNOWN,
+aucun graphe complet ni nouvelle exclusion. Il s'agit d'un renforcement
+exact prêt pour poursuivre les extensions, sans affirmation de gain de
+temps global à ce stade. Un essai du modèle complet102 avec ces tables
+reste UNKNOWN en15s ; il ne faut pas annoncer que cet ajout l'a résolu.
+
+Nouveaux fichiers principaux :
+  root_component_gram_enumeration.py : petit modèle entier exhaustif ;
+  root_component_gram_grid.py : parcours fini explicite des cas7 et19 ;
+  root_component_gram_orbits.py : quotient par renommage du template ;
+  root_component_gram_table.py : transfert d'une couverture complète ;
+  root_component_signature_cover.py : domaines exacts des sommets.
+Données complètes : root_component_gram_cover20_complete.json,
+root_component_gram_orbits20.json, root_component_signature_cover_probe.json.

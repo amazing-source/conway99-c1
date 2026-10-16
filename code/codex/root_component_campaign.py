@@ -25,6 +25,7 @@ def main():
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--retry-unknown", action="store_true")
     parser.add_argument("--refresh-only", action="store_true")
+    parser.add_argument("--gram-cover", type=Path)
     args = parser.parse_args()
     directory = args.directory.resolve()
     cover_path = directory / "root_component_cover79.json"
@@ -41,7 +42,8 @@ def main():
     }
     exclusions = {}
     for name in ("root_component_linear_obstructions.json", "root_component_rectangle_probe.json",
-                 "root_component_rectangle_obstructions.json", "root_component_letter_obstructions.json"):
+                 "root_component_rectangle_obstructions.json", "root_component_letter_obstructions.json",
+                 "root_component_gram_layer1_obstructions.json"):
         path = directory / name
         if not path.exists():
             continue
@@ -63,14 +65,20 @@ def main():
                     "exclusion_layer": 0, "integer_prism_lower_bound": result["integer_prism_lower_bound"]}
     started = time.monotonic()
     runs = []
+    if args.gram_cover:
+        args.gram_cover = args.gram_cover.resolve()
+        provenance[args.gram_cover.name] = hashlib.sha256(args.gram_cover.read_bytes()).hexdigest()
 
     def result_path(index):
-        return directory / f"root_component_global_{index}_budget51.json"
+        suffix = "_gramcover" if args.gram_cover else ""
+        return directory / f"root_component_global_{index}_budget51{suffix}.json"
 
     def refresh():
         results = []
         for item in cover["templates"]:
-            path = result_path(item["template_index"])
+            path = directory / f"root_component_global_{item['template_index']}_budget51_gramcover.json"
+            if not path.exists():
+                path = directory / f"root_component_global_{item['template_index']}_budget51.json"
             result = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
             status = result.get("status", "NOT_RUN")
             item["global_solver_status"] = status
@@ -119,7 +127,8 @@ def main():
         r["unfixed_binary_edges_after_propagation"], r["template_index"]))
     for item in ordered:
         status = item["global_solver_status"]
-        if item["exclusion_status"] == "EXCLUDED" or status in TERMINAL or (status == "UNKNOWN" and not args.retry_unknown):
+        first_gram_cover_run = args.gram_cover is not None and not result_path(item["template_index"]).exists()
+        if item["exclusion_status"] == "EXCLUDED" or status in TERMINAL or (status == "UNKNOWN" and not args.retry_unknown and not first_gram_cover_run):
             continue
         if args.limit and len(runs) >= args.limit:
             break
@@ -129,6 +138,8 @@ def main():
                    str(Path(__file__).with_name("root_component_global.py")),
                    str(templates_path), str(grams_path), "--template-index", str(index),
                    "--seconds", str(args.seconds), "--output", str(result_path(index))]
+        if args.gram_cover:
+            command += ["--gram-cover", str(args.gram_cover)]
         completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8")
         if completed.returncode:
             print(completed.stdout, flush=True)

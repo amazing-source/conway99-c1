@@ -1,4 +1,4 @@
-"""Lift one of the 100 component templates to the exact unseeded Conway model.
+"""Lift a component template to the exact unseeded Conway model.
 
 Gamma on all 84 labels and its rectangle Gram are variable. Only logically
 forced edges from the template are substituted. The independent matching
@@ -19,7 +19,7 @@ from conway_global_cover import build_global, reconstruct_and_check
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
 
 
-def build(template, gram_record,rank7_bound=None):
+def build(template, gram_record,rank7_bound=None,gram_cover=None):
     propagation = propagate(template)
     if propagation["status"] == "PROPAGATION_CONTRADICTION":
         return None, None, {"status":propagation["status"],"propagation":propagation}
@@ -48,6 +48,11 @@ def build(template, gram_record,rank7_bound=None):
             r[i][j]=r[j][i]=model.new_int_var(-8,0 if common else 4,f"R_{j}_{i}")
             model.add(r[i][j]==(0 if common else 4)-sum(graph[a][b] for a in corners for b in RECTANGLES[f]))
     model.add(sum(r[i][i] for i in range(m))<=28*template["kernel_dimension"])
+    gram_info=None
+    if gram_cover is not None:
+        assert root_prism_budget==51
+        from root_component_gram_table import add_gram_table
+        gram_info=add_gram_table(model,graph,template,gram_cover,matrix=r)
     for cut in gram_record["cuts"]:
         if cut["kind"]=="no_corner_realization":
             anchors=gram_record["anchors"]
@@ -70,6 +75,7 @@ def build(template, gram_record,rank7_bound=None):
                 quotient_psd_or_realization_cuts=len(gram_record["cuts"]),
                 root_prism_budget=root_prism_budget,
                 modular_rank_constraint=rank7,
+                complete_gram_cover=gram_info,
                 affordable_global_solve_proved=False)
     return model,graph,info
 
@@ -84,6 +90,7 @@ def main():
     parser.add_argument("--build-only",action="store_true")
     parser.add_argument("--export-model",type=Path)
     parser.add_argument("--rank7-bound",type=int,choices=[28])
+    parser.add_argument("--gram-cover",type=Path)
     args=parser.parse_args()
     templates=json.loads(args.templates.read_text(encoding="utf-8"))["survivors"]
     grams=json.loads(args.grams.read_text(encoding="utf-8"))["records"]
@@ -91,7 +98,11 @@ def main():
     template=templates[args.template_index]
     assert item["status"]=="QUOTIENT_FEASIBLE" and min(template["component_count_by_root_line"])==4
     started=time.monotonic()
-    model,graph,info=build(template,item,args.rank7_bound)
+    gram_cover=None
+    if args.gram_cover:
+        gram_cover=next(r for r in json.loads(args.gram_cover.read_text(encoding="utf-8"))["records"]
+                        if r["template_index"]==args.template_index)
+    model,graph,info=build(template,item,args.rank7_bound,gram_cover)
     info.update(template_index=args.template_index,component_count_by_root_line=template["component_count_by_root_line"],
                 build_seconds=time.monotonic()-started)
     if model:

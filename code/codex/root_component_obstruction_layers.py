@@ -30,7 +30,7 @@ def pair_layer(a, b):
     return 4
 
 
-def solve(template, layer, seconds, minimize_prisms=False):
+def solve(template, layer, seconds, minimize_prisms=False, gram_cover=None):
     propagation = propagate(template, use_c2=False)
     if propagation["status"] == "PROPAGATION_CONTRADICTION":
         return {"status": propagation["status"], "conflict": propagation["conflict"]}
@@ -51,6 +51,11 @@ def solve(template, layer, seconds, minimize_prisms=False):
         model.minimize(prism_sum)
     else:
         model.add(prism_sum <= 51)
+    gram_info = None
+    if gram_cover is not None:
+        assert not minimize_prisms, "This Gram cover used the root budget51."
+        from root_component_gram_table import add_gram_table
+        gram_info = add_gram_table(model, graph, template, gram_cover)
     products = {}
 
     def product(a, b):
@@ -84,6 +89,7 @@ def solve(template, layer, seconds, minimize_prisms=False):
     result = {"status": solver.status_name(status), "solver_seconds": solver.wall_time,
               "branches": solver.num_branches, "conflicts": solver.num_conflicts,
               "c2_equations": c2_count, "product_variables": len(products),
+              "complete_gram_cover": gram_info,
               "is_full_conway_model": layer == 4}
     if minimize_prisms:
         result["prism_lower_bound"] = solver.best_objective_bound
@@ -108,19 +114,23 @@ def main():
     parser.add_argument("--seconds", type=float, default=2)
     parser.add_argument("--indices", type=int, nargs="*")
     parser.add_argument("--minimize-prisms", action="store_true")
+    parser.add_argument("--gram-cover", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     templates = json.loads((args.directory / "root_component_templates.json").read_text(encoding="utf-8"))["survivors"]
     cover = json.loads((args.directory / "root_component_cover79.json").read_text(encoding="utf-8"))
     indices = args.indices if args.indices is not None else [r["template_index"] for r in cover["templates"]]
+    gram_covers = None if args.gram_cover is None else {r["template_index"]: r for r in json.loads(args.gram_cover.read_text(encoding="utf-8"))["records"]}
     records = []
     for index in indices:
-        result = {"template_index": index, **solve(templates[index], args.layer, args.seconds, args.minimize_prisms)}
+        result = {"template_index": index, **solve(templates[index], args.layer, args.seconds, args.minimize_prisms,
+                    None if gram_covers is None else gram_covers[index])}
         records.append(result)
         summary = {"scope": "Necessary component/C1 relaxation; only the selected C2 layer is imposed.",
                    "layer": args.layer, "layer_meaning": ["no_C2", "same_rectangle", "same_rectangle_or_letter", "shared_root_line", "all_pairs"][args.layer],
                    "root_prism_budget": None if args.minimize_prisms else 51,
-                   "minimizes_root_prisms": args.minimize_prisms, "no_Gram_cuts": True,
+                   "minimizes_root_prisms": args.minimize_prisms, "no_Gram_cuts": gram_covers is None,
+                   "complete_gram_cover_source": str(args.gram_cover) if args.gram_cover else None,
                    "counts": dict(Counter(r["status"] for r in records)), "records": records}
         args.output.write_text(json.dumps(summary, separators=(",", ":")) + "\n", encoding="utf-8")
         print(json.dumps({k: v for k, v in result.items() if k != "relaxation_edges"}), flush=True)
