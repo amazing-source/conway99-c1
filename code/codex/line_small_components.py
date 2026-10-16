@@ -8,7 +8,7 @@ Pair codegree upper bounds account for the shared vertex on the root line.
 
 import argparse
 from collections import Counter
-from itertools import permutations
+from itertools import combinations, permutations
 import json
 from pathlib import Path
 import time
@@ -24,15 +24,18 @@ def matchings(vertices):
             yield ((a, b),) + rest
 
 
-def enumerate_components(n):
+def enumerate_components(n, with_patterns=False):
     started = time.monotonic()
     ms = list(matchings(tuple(range(n))))
     histogram = Counter()
     witnesses = {}
     counts = Counter()
-    for p in permutations(range(n)):
-        for m1 in ms:
-            for m2 in ms:
+    projections = set()
+    codes = []
+    ps = list(permutations(range(n)))
+    for pi,p in enumerate(ps):
+        for mi1,m1 in enumerate(ms):
+            for mi2,m2 in enumerate(ms):
                 masks = [0] * (3*n)
                 def edge(a, b):
                     masks[a] |= 1 << b
@@ -69,25 +72,38 @@ def enumerate_components(n):
                                  if (masks[i] >> j) & 1)
                 assert triangles6 % 6 == 0
                 triangles = triangles6 // 6
+                if with_patterns:
+                    codes.append((pi,mi1,mi2))
+                    row = []
+                    for q in range(n//2):
+                        corners = [n+2*q,n+2*q+1,2*n+2*q,2*n+2*q+1]
+                        row.append(sum(1 << bit for bit,(i,j) in enumerate(combinations(corners,2)) if (masks[i]>>j)&1))
+                    projections.add(tuple(row))
                 histogram[triangles] += 1
                 witnesses.setdefault(triangles, {"cross_permutation": p, "internal_matchings": [m1, m2],
                     "edges": [[i,j] for i in range(3*n) for j in range(i) if (masks[i] >> j)&1]})
-    return {"vertices": 3*n, "counts": dict(counts), "triangle_histogram": dict(sorted(histogram.items())),
+    result = {"vertices": 3*n, "counts": dict(counts), "triangle_histogram": dict(sorted(histogram.items())),
             "witnesses": witnesses, "seconds": time.monotonic()-started,
             "scope": "Complete necessary component enumeration, not SRG completion."}
+    if with_patterns:
+        result.update(internal_rectangle_patterns=sorted(projections), projected_pattern_count=len(projections),
+                      cross_permutations=ps, internal_matchings=ms, component_code_triples=codes)
+    return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sizes", type=int, nargs="+", default=[2,4,6])
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--patterns", action="store_true")
     args = parser.parse_args()
     results = []
     for n in args.sizes:
-        result = enumerate_components(n)
+        result = enumerate_components(n,args.patterns)
         results.append(result)
         args.output.write_text(json.dumps({"records": results}, separators=(",", ":"))+"\n", encoding="utf-8")
-        print(json.dumps({k:v for k,v in result.items() if k != "witnesses"}), flush=True)
+        print(json.dumps({k:v for k,v in result.items() if k not in ("witnesses","internal_rectangle_patterns",
+                          "cross_permutations","internal_matchings","component_code_triples")}), flush=True)
 
 
 if __name__ == "__main__":

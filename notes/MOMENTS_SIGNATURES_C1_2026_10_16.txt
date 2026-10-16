@@ -88,3 +88,75 @@ Donc min c>=4 ne force PAS une contradiction par le seul minimum de
 triangles/prismes de chacune de ces petites composantes. Ce census
 n'est pas a isomorphisme pres et n'est pas un census de graphes SRG.
 Outil line_small_components.py ; donnee line_small_components.json.
+
+6. Dix fermetures acquises, recherche toujours active
+
+L'identite TH=7H et BH=0 donnent aussi Gamma H=-4H. Elle est imposee
+sommet par sommet avec produits bit d'arete * coordonnee de signature.
+Cela ferme98 et197 ; la couche2 ferme86 ; couche3 plus cette identite
+ferment les derniers Gram de6 et26. Bilan74/79, ouverts4,7,9,19,148.
+Fichiers root_component_signature_eigen_probe.json et
+root_component_signature_eigen_layer3.json, plus le checkpoint de la
+campagne root_component_signature_joint_remaining.json.
+Les nouveaux verdicts demeurent des verdicts solveur, pas des certificats
+UNSAT portables. La branche min c<=3 n'est toujours pas couverte.
+
+La normalisation --mate-normalize de ces derniers calculs compare
+lexicographiquement la liste des indices de signatures avec son image
+par chacune des7 permutations de lettres mates. Chaque Q_e et R sont
+fixes par ces renommages. Le minimum global d'une orbite de2^7 listes
+satisfait les7 comparaisons ; aucune symetrie du graphe n'est imposee.
+L'indice de signature a le meme sens avant/apres, car chaque sommet
+reste dans le MEME rectangle. Une permutation involutive de lignes est
+comparee par ses paires u<g(u), dans l'ordre de u ; cela donne exactement
+le premier indice pouvant differer dans la comparaison complete.
+
+7. Formulations et nouvelles tables pour les cinq cas difficiles
+
+root_component_projector.py impose H^tH=7R et GammaH=-4H sur toute la
+couverture, Gram variable. Les essais7 et19 demeurent UNKNOWN600s ;
+ne pas les interpreter comme fermes. Le7 avec tables locales reste aussi
+UNKNOWN600s. L'ajout ne constitue pas encore un gain de temps demontre.
+
+line_component_pattern_tables.json archive les permutations/couplages
+et122 ou102952 triplets de codes des composantes colorees12 ou18.
+root_component_local_tables.py relie ces codes a leurs aretes effectives.
+Sur UN composant choisi, les changements de lettres mates des racines
+de sa partie et l'echange des deux lettres de sa droite reduisent
+122 codes a30, et102952 a6854. Les images sont toutes controlees dans la
+liste exhaustive. Cette normalisation preserve le template et R ; elle
+ne se cumule pas arbitrairement avec une autre minimisation lexicographique.
+
+root_component_grid_boundary.py conserve seulement les aretes touchant
+les sommets des rectangles grilles et impose C2 a chaque paire de ces
+sommets. Les autres equations lineaires sont projetees sur des bornes
+en oubliant les inconnues du bloc sans-grille/sans-grille. C'est une
+relaxation necessaire sans Gram choisi et SANS borne51. Les essais
+en cours n'ont pas encore ferme de template supplementaire.
+root_component_boundary_sat.py traduit ce modele booleen en CNF ;
+1148 controles exhaustifs courts couvrent les egalites de cardinalite,
+les coefficients signes, les bornes et les contraintes conditionnelles.
+Tout modele SAT du bord est confronte aux contraintes source et aux C2.
+Un bord SAT ne serait pas un graphe de Conway complet.
+
+Normalisation du bord : pour deux rectangles grilles disjoints e,f,
+leurs aretes mutuelles forment un couplage parfait. Deux flips de lettres
+des droites de f permettent d'envoyer le voisin du coin00 de e au coin00
+de f. On ne repete cela qu'avec des droites-cibles jamais utilisees dans
+les sources ni les cibles precedentes. Chaque choix est donc realisable
+sans defaire les choix precedents. Ici deux couplages sont normalises.
+
+8. Essai spectral (pas de nouvelle exclusion)
+
+Pi=I-(11B^tB+B^tMB-2J)/120. Les matrices entieres necessaires PSD sont
+ L=8T=24I-8Gamma-3B^tB-B^tMB+2J,
+ U15=15(7Pi-T)=60I+15Gamma-4B^tB+B^tMB-2J.
+root_component_spectral_cuts.py arrondit des vecteurs propres proposes
+numeriquement, puis controle EXACTEMENT v^tLv<0 ou v^tU15v<0 avec v
+entier avant d'ajouter l'inegalite lineaire correspondante. Sur7 : huit
+coupes ajoutees au premier bord binaire de C1, ensuite UNKNOWN10s.
+Aucune conclusion spectrale globale ni contradiction numerique annoncee.
+
+Recherche bibliographique ciblee : aucun nouveau theoreme externe n'a
+ete importe dans ces exclusions. Les seules nouvelles contraintes
+ci-dessus sont derivees directement de C1/C2.

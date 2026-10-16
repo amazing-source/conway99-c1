@@ -63,6 +63,42 @@ def main():
                 exclusions[result["template_index"]] = {
                     "exclusion_method": "RATIONAL_LINEAR_CERTIFICATE", "exclusion_source": dual_path.name,
                     "exclusion_layer": 0, "integer_prism_lower_bound": result["integer_prism_lower_bound"]}
+    complete_grams_path = directory / "root_component_gram_orbits20.json"
+    if complete_grams_path.exists():
+        complete_grams = {r["template_index"]: r for r in json.loads(complete_grams_path.read_text(encoding="utf-8"))["records"]}
+        gram_exclusions = {}
+        for path in sorted(directory.glob("root_component_signature_*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            used = False
+            for record in data.get("records", []):
+                if "cases" not in record:
+                    continue
+                index = record["template_index"]
+                complete = complete_grams[index]
+                assert complete["exhaustive"] and complete["usable_as_gram_cover"]
+                assert record["complete_source_gram_count"] == complete["gram_count"]
+                for case in record["cases"]:
+                    if case["status"] == "INFEASIBLE":
+                        gi = case["gram_index"]
+                        assert case["gram_anchor_values"] == complete["gram_anchor_values"][gi]
+                        gram_exclusions.setdefault(index, {}).setdefault(gi, path.name)
+                        used = True
+            if used:
+                provenance[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        for index, cases in gram_exclusions.items():
+            if len(cases) == complete_grams[index]["gram_count"]:
+                assert set(cases) == set(range(complete_grams[index]["gram_count"]))
+                exclusions[index] = {"exclusion_method": "COMPLETE_GRAM_SIGNATURE_COVER",
+                                     "exclusion_source": sorted(set(cases.values())),
+                                     "excluded_gram_orbits": len(cases)}
+    for path in sorted(directory.glob("root_component_projector_*.json")):
+        result = json.loads(path.read_text(encoding="utf-8"))
+        if result.get("status") == "INFEASIBLE":
+            assert result["complete_gram_cover"]["exhaustive"]
+            assert not result["complete_gram_cover"]["fixed_single_gram"]
+            exclusions[result["template_index"]] = {"exclusion_method": "VARIABLE_GRAM_PROJECTOR",
+                                                     "exclusion_source": path.name}
+            provenance[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
     started = time.monotonic()
     runs = []
     if args.gram_cover:
