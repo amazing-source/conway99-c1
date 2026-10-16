@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import threading
 
 from ortools.sat.python import cp_model
 
@@ -86,7 +87,8 @@ def add_projector(model, graph, template, anchors):
             "identities": ["H=T P", "H^t H=7R", "Gamma H=-4H"]}
 
 
-def build(template, cover, layer=2, projector=True, local_tables=None, normalize_component=False):
+def build(template, cover, layer=2, projector=True, local_tables=None, normalize_component=False,
+          line_profiles=0,profile_triples=False,exact_triangles=False):
     prop = propagate(template)
     assert not prop["conflict"], prop["conflict"]
     fixed = {i: v for i, v, _ in prop["assignments"]}
@@ -128,9 +130,18 @@ def build(template, cover, layer=2, projector=True, local_tables=None, normalize
             model.add(graph[u][v] + sum(product(graph[u][z], graph[v][z]) for z in range(84))
                       == 2 - len(set(LABELS[u]) & set(LABELS[v])))
             c2_count += 1
+    profile_info=None
+    if line_profiles:
+        from root_component_line_profiles import add_line_profiles
+        profile_info=add_line_profiles(model,graph,template,line_profiles,triple_packing=profile_triples)
+    triangle_info=None
+    if exact_triangles:
+        from root_component_exact_triangles import add_exact_triangle_structure
+        triangle_info=add_exact_triangle_structure(model,graph,template)
     return model, graph, {"complete_gram_cover": gram_info, "projector": projector_info,
                           "C2_count": c2_count, "C2_products": len(products), "full_C2": layer == 4,
-                          "local_component_tables": local_info}
+                          "local_component_tables": local_info,"line_profiles":profile_info,
+                          "exact_triangle_structure":triangle_info}
 
 
 def main():
@@ -139,36 +150,77 @@ def main():
     parser.add_argument("--index", type=int, required=True)
     parser.add_argument("--layer", type=int, choices=range(5), default=2)
     parser.add_argument("--seconds", type=float, default=300)
-    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--grams", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--log-search",action="store_true")
+    parser.add_argument("--cpu-time",action="store_true")
+    parser.add_argument("--signature-domains",action="store_true")
+    parser.add_argument("--line-profiles",type=int,default=0)
+    parser.add_argument("--profile-triples",action="store_true")
+    parser.add_argument("--exact-triangles",action="store_true")
     args = parser.parse_args()
+    from root_component_resources import limit_research_process
+    resources=limit_research_process(4)
     templates = json.loads((args.directory / "root_component_templates.json").read_text())["survivors"]
     source = args.grams or args.directory / "root_component_gram_orbits20.json"
     cover = next(r for r in json.loads(source.read_text())["records"] if r["template_index"] == args.index)
     started = time.monotonic()
+    if args.signature_domains:
+        from root_component_signature_moments import gram_matrix
+        from root_rectangle_domains import signature_domains
+        rows={q:[] for q in RECTANGLES}
+        edges=[tuple(e) for e in templates[args.index]['nongrid_edges']]
+        for gi,values in enumerate(cover['gram_anchor_values']):
+            matrix=gram_matrix(cover,values)
+            domains=signature_domains(edges,[[int(x) for x in row] for row in matrix.tolist()])
+            for domain in domains:
+                rows[tuple(domain['rectangle'])]+=[[gi]+[h[a] for a in cover['anchors']] for h in domain['signatures']]
+        cover=dict(cover,row_signature_tables=[{'rectangle':list(q),'rows':rs} for q,rs in rows.items()])
     local_tables = None if args.local_tables is None else json.loads(args.local_tables.read_text())
     model, graph, info = build(templates[args.index], cover, args.layer, local_tables=local_tables,
-                              normalize_component=args.normalize_component)
+                              normalize_component=args.normalize_component,line_profiles=args.line_profiles,
+                              profile_triples=args.profile_triples,exact_triangles=args.exact_triangles)
     assert not model.validate(), model.validate()
     info.update(template_index=args.index, status="MODEL_BUILT", build_seconds=time.monotonic()-started,
                 variables=len(model.proto.variables), constraints=len(model.proto.constraints), source=str(source),
+                resources=resources,root_prism_budget=51,fixed_gram_witness=False,fixed_local_seed=False,
                 scope="Whole template with variable Gram; no graph automorphism or fixed local seed.")
-    args.output.write_text(json.dumps(info, indent=2)+"\n", encoding="utf-8")
+    def checkpoint():
+        temporary=args.output.with_suffix('.json.tmp')
+        temporary.write_text(json.dumps(info,indent=2)+'\n',encoding='utf-8')
+        temporary.replace(args.output)
+    checkpoint()
     print(json.dumps(info), flush=True)
     solver = cp_model.CpSolver()
     solver.parameters.num_search_workers = args.workers
-    solver.parameters.max_time_in_seconds = args.seconds
+    solver.parameters.max_time_in_seconds = max(600,100*args.seconds) if args.cpu_time else args.seconds
     solver.parameters.cp_model_probing_level = 0
     solver.parameters.symmetry_level = 0
     solver.parameters.linearization_level = 0
     solver.parameters.log_search_progress = args.log_search
-    status = solver.solve(model)
+    cpu_started=time.process_time()
+    done=threading.Event()
+    timer=None
+    if args.cpu_time:
+        def interrupt():
+            while not done.wait(.1):
+                if time.process_time()-cpu_started>=args.seconds:
+                    solver.stop_search()
+                    return
+        timer=threading.Thread(target=interrupt,daemon=True)
+        timer.start()
+    try:
+        status = solver.solve(model)
+    finally:
+        done.set()
+        if timer is not None:timer.join()
     info.update(status=solver.status_name(status), solver_seconds=solver.wall_time,
-                branches=solver.num_branches, conflicts=solver.num_conflicts)
+                branches=solver.num_branches, conflicts=solver.num_conflicts,
+                solver_cpu_seconds=time.process_time()-cpu_started,
+                budget_kind='process_cpu_seconds' if args.cpu_time else 'wall_seconds')
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         gamma = [[solver.value(x) for x in row] for row in graph]
         errors = Counter()
@@ -177,7 +229,7 @@ def main():
                 errors[pair_layer(u,v)] += 1
         info["violated_C2_by_layer"] = dict(errors)
         info["relaxation_edges"] = [[u,v] for u,v in PAIRS if gamma[u][v]]
-    args.output.write_text(json.dumps(info, indent=2)+"\n", encoding="utf-8")
+    checkpoint()
     print(json.dumps({k:v for k,v in info.items() if k != "relaxation_edges"}), flush=True)
 
 

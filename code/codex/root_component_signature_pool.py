@@ -5,7 +5,7 @@ exclusion; a feasible relaxation or an interrupted search remains open.
 """
 
 import argparse
-from collections import Counter
+from collections import Counter, deque
 from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
 from functools import lru_cache
 import json
@@ -48,6 +48,11 @@ def main():
     parser.add_argument("--cpu-time", action="store_true", help="Budget actual process CPU time, excluding resource pauses.")
     parser.add_argument("--minc-lines", type=int,default=0,help="Enforce global c>=4 at this many fixed nonroot lines.")
     parser.add_argument("--six-prism-profiles",action="store_true")
+    parser.add_argument("--line-profiles",type=int,default=0)
+    parser.add_argument("--profile-triples",action="store_true")
+    parser.add_argument("--triangle-cuts",action="store_true")
+    parser.add_argument("--exact-triangles",action="store_true")
+    parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
     parser.add_argument("--limit-new", type=int)
@@ -63,6 +68,16 @@ def main():
         config["minc_lines"] = args.minc_lines
     if args.six_prism_profiles:
         config["six_prism_profiles"] = True
+    if args.line_profiles:
+        config["line_profiles"] = args.line_profiles
+    if args.profile_triples:
+        config["profile_triples"] = True
+    if args.triangle_cuts:
+        config["triangle_cuts"] = True
+    if args.exact_triangles:
+        config["exact_triangles"] = True
+    if args.interleave:
+        config["interleave"] = True
     if args.local_tables:
         config["local_tables"] = str(args.local_tables)
     if args.retry_from:
@@ -97,7 +112,9 @@ def main():
             completed[key] = case
     options = {"seconds": args.seconds, "layer": args.layer, "workers": 1, "eigen": args.eigen,
                "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time,"minc_lines":args.minc_lines,
-               "six_prism_profiles":args.six_prism_profiles}
+               "six_prism_profiles":args.six_prism_profiles,"line_profiles":args.line_profiles,
+               "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
+               "exact_triangles":args.exact_triangles}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None
@@ -112,6 +129,12 @@ def main():
         for gi, values in enumerate(cover["gram_anchor_values"]):
             if (index, gi) not in completed and (retry is None or (index, gi) in retry):
                 tasks.append((index, gi, values, templates[index], cover, options))
+    if args.interleave:
+        groups={index:deque(t for t in tasks if t[0]==index) for index in args.indices}
+        tasks=[]
+        while any(groups.values()):
+            for index in args.indices:
+                if groups[index]:tasks.append(groups[index].popleft())
     if args.limit_new is not None:
         tasks = tasks[:args.limit_new]
     started = time.monotonic()

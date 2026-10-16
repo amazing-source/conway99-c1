@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False):
     edges = [tuple(e) for e in template["nongrid_edges"]]
     raw = [[int(x) for x in row] for row in matrix.tolist()]
     domains = {tuple(r["rectangle"]): r for r in signature_domains(edges, raw)}
@@ -57,6 +57,25 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         model.add(sum(variables[i] for i in ids) == target)
     for ids, upper, _ in bounds:
         model.add(sum(variables[i] for i in ids) <= upper)
+    triangle_info=None
+    if triangle_cuts:
+        # An adjacent pair sharing a label already has its unique common
+        # neighbour in N(o); it cannot belong to a triangle in Gamma.
+        seen=set()
+        histogram=Counter()
+        for u,v,w in combinations(range(84),3):
+            if len(set(LABELS[u]+LABELS[v]+LABELS[w]))==6:
+                continue
+            edges3=[graph[u][v],graph[u][w],graph[v][w]]
+            if any(isinstance(e,int) and e==0 for e in edges3):
+                continue
+            unknown=[e for e in edges3 if not isinstance(e,int)]
+            key=tuple(sorted(e.index for e in unknown))
+            if key not in seen:
+                model.add_bool_or([e.Not() for e in unknown])
+                histogram[len(key)]+=1
+                seen.add(key)
+        triangle_info=dict(histogram)
     local_info = None
     model.add(sum(graph[a][b] for corners in RECTANGLES.values() for a, b in combinations(corners, 2)
                   if set(LABELS[a]) & set(LABELS[b])) <= 51)
@@ -221,20 +240,30 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     profile_info=None
     if six_prism_profiles:
         from root_component_six_prism_profiles import add_six_prism_profiles
-        profile_info=add_six_prism_profiles(model,graph,template)
+        profile_info=add_six_prism_profiles(model,graph,template,triple_packing=profile_triples)
+    general_profiles=None
+    if line_profiles:
+        from root_component_line_profiles import add_line_profiles
+        general_profiles=add_line_profiles(model,graph,template,line_profiles,triple_packing=profile_triples)
+    exact_triangle_info=None
+    if exact_triangles:
+        from root_component_exact_triangles import add_exact_triangle_structure
+        exact_triangle_info=add_exact_triangle_structure(model,graph,template)
     info = {"pair_psd_tables": pair_tables, "pair_psd_rows": pair_rows, "c2_equations": c2_count,
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
             "eigen_equations": eigen, "eigen_products": eigen_products,
             "mate_flip_signature_normalization": mate_normalize,"explicit_four_sums":True,
             "four_corner_tables":corner_info, "local_component_tables": local_info,
-            "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info}
+            "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info,
+            "line_profiles":general_profiles,"shared_label_triangle_clauses":triangle_info,
+            "exact_triangle_structure":exact_triangle_info}
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -289,6 +318,10 @@ def main():
     parser.add_argument("--cpu-time", action="store_true")
     parser.add_argument("--minc-lines",type=int,default=0)
     parser.add_argument("--six-prism-profiles",action="store_true")
+    parser.add_argument("--line-profiles",type=int,default=0)
+    parser.add_argument("--profile-triples",action="store_true")
+    parser.add_argument("--triangle-cuts",action="store_true")
+    parser.add_argument("--exact-triangles",action="store_true")
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -326,7 +359,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)

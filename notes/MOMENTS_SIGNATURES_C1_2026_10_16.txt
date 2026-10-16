@@ -313,3 +313,96 @@ https://www.proofatlas.ai/collaboration/conways-99-graph-conjecture/
 Le preprint2610.16266 du12/10 annonce une non-existence; il n'est PAS
 importe dans cette preuve. La recherche recente ne ferme donc aucun des
 trois cas. Ne pas reouvrir une verification generale de ces annonces.
+
+14. Profils generaux, triples de voisins et premiers gains (17/10 00h50)
+
+Pour une ligne racine r avec composantes6s, tout sommet exterieur a s
+voisins dans chaque composante et deux dans chaque couleur. Ses deux
+voisins de couleur0 sont fixes par son label. On enumere tous ses quatre
+autres voisins : deux dans chaque etoile. Au plus4356 paires de paires
+avant contraintes; apres composantes,96..408 par sommet sur7/9/19.
+Les276 equations C2 sur les24 sommets des deux etoiles sont ecrites avec
+la somme des indicatrices de profils pour les60 voisins exterieurs;
+seuls les produits a l'interieur des24 restent. Pour7 ligne0,5760
+indicatrices et0 produit interieur;9 meilleureligne0,14592 indicatrices;
+19 meilleureligne6,15008 indicatrices et336 produits interieurs.
+
+Nouvelle force du code de profils : tout triple de sommets de N(l)
+apparait dans au plus UN profil exterieur choisi. Sinon deux sommets
+exterieurs auraient au moins trois voisins communs. Les contraintes
+sont des sommes lineaires<=1; on ignore les triples portes par les
+profils d'un seul sommet (son choix est deja exclusif).
+2880 contraintes pour7,3904 pour19. En plus, aucune triangle de Gamma
+ne peut contenir deux labels qui partagent une lettre : leur arete
+possede deja son unique voisin commun dans N(o). Clauses de2/3 aretes,
+sans produits auxiliaires. Ce sont des contraintes universelles SRG.
+
+Resultats acquis :7#353 INFEASIBLE45.88sCPU avec profils six-prismes;
+7#372 INFEASIBLE72.55sCPU,9#111 INFEASIBLE56.36sCPU,19#66 INFEASIBLE
+12.84sCPU avec profils generaux + triples + clauses de triangles.
+9#112 ensuite INFEASIBLE egalement. Aucun nouveau template entier ferme.
+Les anciens modeles complets7#353/minc1 (300sCPU) et9#111,112/minc1
+(120sCPU chacun) etaient UNKNOWN. Ils sont termines ou arretes, pas
+relances comme verifications. Le nouveau modele est sensiblement plus
+petit :~18.6k/28.2k variables pour7/19, contre~113k auparavant.
+
+15. Lambda1 exacte par triangles et coeurs60
+
+Nouvel encodage root_component_exact_triangles.py. Un indicateur q_xyz
+est EQUIVALENT a la presence des trois aretes; choisir seulement une
+decomposition d'aretes en triangles serait INSUFFISANT (exemple K7).
+Sur une arete Gamma avec labels disjoints, somme des q=arete. Les
+triangles contenant une paire de labels partageant une lettre sont
+interdits. Avec C1, cela impose lambda1 sur tout le graphe99. Chaque
+sommet de Gamma est dans5 triangles Gamma; il y en a donc140.
+
+Pour une ligne l, noter N ses36 voisins et X les60 autres sommets.
+Un x dans X a6 voisins dans N et8 dans X. Son voisinage total est un
+couplage de7 aretes. Si q(x) aretes joignent ses6 voisins de N, alors
+x appartient a1+q(x) triangles entierement dans X. Donc au moins1.
+Noter t(l) le nombre de triangles dans N; ce nombre est la somme des12
+aretes entre les deux etoiles portant la MEME lettre exterieure.
+Comptage des231 triangles :1 ligne l,18 triangles rencontrant l,
+t dans N,36-3t de type NNX,144+3t de type NXX, et32-t dans X.
+Le code impose cette derniere egalite et la couverture de chaque x.
+Si c(l)=6, N est six prismes : un x choisit un sommet par prisme, donc
+ses six voisins de N sont independants, q(x)=0. X est partitionne
+en20 triangles. Ces restrictions sont des consequences SRG, pas une
+preuve de non-existence. Cinq controles de l'encodage passent :K3 et
+bowtie positifs, K4/K7 et triangle avec lettre partagee negatifs.
+
+16. Spectre force du coeur60 (derive ici pour exploiter les profils)
+
+Notations distinctes de T84 : M99=3I-A+J/9, rang44. Apres elimination
+de la ligne l, le bloc sur N est K=3I-A_N-Z/4+J/12, ou Z indique
+l'egalite de couleur. Le couplage avec X est C=J/6-D. On a
+ CC^t=7K-K^2, CE=-(A_N+I)C,
+ou E=A_XX. Le noyau de K est de dimension c(l)+2 (composantes et
+les deux directions de couleur). Donc rangC=34-c et rangD=35-c.
+Sur imC^t, E a valeurs propres -1-a pour les valeurs propres a de A_N,
+en retirant3 de multiplicite c et deux directions0 de couleur.
+Sur kerD, les valeurs propres sont3 ou-4. La trace donne exactement
+3 de multiplicite18 et-4 de multiplicite7+c. E est8-regulier.
+Pour c6 : spectre E=8^1,3^18,1^12,(-1)^10,(-2)^6,(-4)^13.
+Le Schur sur60 a rang13 et trace91; K a spectre2^6,3^10,5^12,0^8.
+Identite CC^t=7K-K^2 controlee en matrices entieres dans le cas six
+prismes. Cette structure n'est PAS encore utilisee comme filtre de rang.
+
+17. Ressources et essais courants
+
+La limite de Dilan est<80% au Gestionnaire des taches. Le gardien
+suspend nos processus a70%; des pointes>80 ont ete vues alors qu'ils
+etaient deja suspendus, dues aux autres charges. Aucun autre logiciel
+n'est modifie. Nouveau gardien PID3516 : augmente sous55, reduit a65,
+suspend a70, reprend sous55, quatre coeurs logiques partages maximum.
+Le fichier stop permet une sortie propre et remet paused=false.
+Les campagnes sont maintenant budgetees en CPU reel. Les gros groupes
+muraux (corners0,9filtered,9full_minc,7profiles faible) sont arretes;
+les verdicts termines sont conserves. Ne pas les annoncer actifs.
+
+En cours : pool_profile_triples,9 essais interlaces7/9/19,2 processus,
+120sCPU chacun; single9#116 avec triangles exacts; projector9_triangles
+couvrant les74Gram du fichier filtered_20261017_0050 (Gram variable,
+84tables de signatures, GammaH, moments, lambda1, profils+triples,
+une seule normalisation de composante). Ce dernier est un essai sur
+TOUT le template9, pas sur un Gram temoin. Pas encore de verdict.

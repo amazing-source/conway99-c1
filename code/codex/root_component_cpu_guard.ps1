@@ -27,7 +27,7 @@ $taskPaused = $false
 $taskPausedAt = [datetime]::MinValue
 $taskStopFile = [System.IO.Path]::ChangeExtension($Log, '.stop')
 $taskBudgetFile = [System.IO.Path]::ChangeExtension($Log, '.budget.json')
-$taskBudget = $MaximumCores
+$taskBudget = 1
 $taskLastIncrease = Get-Date
 $taskLastSeen = Get-Date
 $taskLastLog = [datetime]::MinValue
@@ -41,12 +41,12 @@ try { while ($true) {
         $taskBudget = 1; $taskLastIncrease = $taskNow
         if (-not $taskPaused) { $taskPausedAt = $taskNow; $taskPaused = $true }
     }
-    elseif ($taskUtility -ge 60) { $taskBudget = [Math]::Max(1, $taskBudget - 1); $taskLastIncrease = $taskNow }
-    elseif ($taskUtility -lt 45 -and ($taskNow - $taskLastIncrease).TotalSeconds -ge 30) {
+    elseif ($taskUtility -ge 65) { $taskBudget = [Math]::Max(1, $taskBudget - 1); $taskLastIncrease = $taskNow }
+    elseif ($taskUtility -lt 55 -and ($taskNow - $taskLastIncrease).TotalSeconds -ge 30) {
         $taskBudget = [Math]::Min($MaximumCores, $taskBudget + 1)
         $taskLastIncrease = $taskNow
     }
-    if ($taskPaused -and $taskUtility -lt 50 -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
+    if ($taskPaused -and $taskUtility -lt 55 -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
         Resume-ResearchThreads $taskSuspended
         $taskPaused = $false
         $taskLastIncrease = $taskNow
