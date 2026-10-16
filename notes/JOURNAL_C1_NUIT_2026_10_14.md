@@ -6758,3 +6758,10 @@ elimine par une coupe, et il y a au plus2^3486 matrices. Cette borne est
 inabordable. Le cout effectif reste NON BORNE de facon abordable ; ni la
 couverture19 ni les2483 clauses ne sont une contradiction globale.
 Les points ouverts sont explicites dans le code, la preuve et les JSON.
+
+Livraison906 : commit0097ca5, global_cover_0097ca5_20261016.zip,
+107181octets/30 fichiers ; SHA256
+77060897bc3ee74f163280a2346f50bbc54aa3742ca397eacd086dab6cf00b37.
+README_GLOBAL_COVER.txt a plat dans codex_hmatch_20261016. La reprise des
+2483 clauses est controlee avec seconds=0, donc sans nouvelle exploration.
+Trois modules compiles, controles G4/CP termines, aucun worker actif.
