@@ -409,3 +409,24 @@ Logs : `h46_neareig.log`, `c1_ab.log`.
    - « a ≤ 1 » ⟺ λ_3(A_H) < 3 : écart min 0,040 (médiane 0,086) ;
    - « b ≥ 1 » ⟺ λ_max(F/F_33) > 0 : min 1,32 ; « b ≥ 2 » : λ_2 min 0,47.
    Donc c = 1 exclu ⟸ (a ≤ 1) ∧ (b ≥ 1). Aucun des deux n'est prouvé.
+
+## 17/10 : suite sur b ≥ 1 et l'angle « toute droite dans une grille » (Dilan : « continue sur ça »)
+Log : `c1_bstruct.log`.
+- b ≥ 1 ⟺ range(F) contient un vecteur non nul porté par Y_2 ⟺ une relation linéaire vérifiée par la partie Y_2 de
+  TOUS les profils. Pas de relation STRUCTURELLE : aucun vecteur fixe (antisymétrique de droite, différence ou somme
+  d'arête M) n'est dans R_o de façon systématique (1 à 2 % des cas) ; R_o ∩ (antisymétriques de droite) ≠ 0 dans
+  1 738 cas sur 1 862 seulement. b ≥ 1 est un fait de rang « générique ».
+- Voie par inégalités (flots de Thomson ⟹ minoration de F) : bloquée exactement par la direction serrée de H46.
+  Minorer F/F_33 demande d'inverser F_33, presque singulière (écart 0,007) ; des flots sous-optimaux rendent F'_33
+  indéfinie. b ≥ 1 n'est donc PAS plus facile que a ≤ 1 par cette voie.
+- « Toute droite est dans une grille » : aucun mécanisme de minoration connu (ρ ≤ 126 et P ≤ 852 sont des
+  majorations ; le nombre de grilles n'est pas forcé par les paramètres : 1485, 405, 621, 837 dans les 243). Les
+  vecteurs f_S = 3·1_S − A1_S + 1 (9-ensembles, A5) donnent pour chaque paire sans grille un vecteur propre −4
+  entier dans U (nul sur N[v]) de norme 14(4 − k), k = arêtes entre coins ; isotropes et orthogonaux mod 7 entre eux :
+  pas de contradiction de rang.
+- Fait général (entrelacement, vérifié) : dans Conway, tout sous-graphe induit sous-cubique à m ≥ 45 sommets a au
+  moins m − 44 composantes 3-régulières (λ_1..λ_{m−44} ≥ 3), chacune d'au moins 6 sommets (ni K4, ni K_{3,3}) ; donc
+  tout sous-graphe induit sous-cubique a au plus 52 sommets. Ne s'applique pas à c = 1 (tout sommet hors N[l] touche
+  G_l).
+- Bilan : la rigidité de c = 1 (sous ses deux formes a ≤ 1, b ≥ 1) relève du même noyau dur que ODDCONST / H-MATCH ;
+  aucune des deux voies ne la contourne.
