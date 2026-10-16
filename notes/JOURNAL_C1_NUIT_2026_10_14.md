@@ -6638,3 +6638,8 @@ controlees exactement. Aucun ancien gros carnet ouvert. Prochaine
 progression substantielle : prolonger/reparer ce15, ou obtenir un argument
 sur les domaines de lignes valable pour tous les cadres, en tenant compte
 du fait que les echecs du premier cadre ont effectivement ete reparables.
+
+Livraison de cette passe : commit83ecbbe, archive global_star15_phi_83ecbbe.zip,
+68830 octets/20 fichiers ; SHA25627e1e5abd56dafd3b166398d75a5ade41e15492df21d1633d7291480ec983056.
+Message902 envoye avec la preuve jointe phi complete, les constructions
+et les limites. Dernier message pair lu et acquitte901.
