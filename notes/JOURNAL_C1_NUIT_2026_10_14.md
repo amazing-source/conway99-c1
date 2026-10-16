@@ -5768,3 +5768,13 @@ producteur. Ils construisent des variantes et de nouvelles obstructions.
 
 PORTEE : familles a graphe Gamma fixe fermees. H-MATCH general toujours
 ouvert ; aucun bloc casse avec T/U PSD et nu>=14 n'a ete construit ici.
+
+LIVRAISON872 : commit b9386ab et bundle codex_hmatch_20261016 transmis,
+avec les deux temoins spectraux et les enumerations nouvelles de partenaires.
+871 lu/acquitte apres cet envoi : LAB avait lui aussi isole le defaut de
+noyau de b_29 ; pour n_45, le noyau impair supplementaire ne fuit pas.
+Notre temoin sur4I+Gamma pour n_45 reste valable et constitue l'obstruction
+plus forte au remariage, meme sans fuite. Un A' abstrait augmente pourrait
+reparer son Schur, mais aucun A'(M) de la geometrie reelle ne le peut,
+puisque L(M)>=0. Pas de reponse d'accuse au871, deja couvert par872.
+Aucun processus actif. La cible H-MATCH reste ouverte.
