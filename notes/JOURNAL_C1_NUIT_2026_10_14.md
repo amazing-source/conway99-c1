@@ -6125,3 +6125,103 @@ enumeration complete de tous les germes ni une exclusion de C1. Sa pause
 dans l'attente d'un choix de Dilan est une decision du pair, pas une
 nouvelle instruction utilisateur pour notre ligne constructive autorisee.
 Aucun accuse de contenu vide renvoye, aucun re-audit lance.
+
+## 16/10, direction explicite Dilan — microscopie et reparation des prolongements
+
+Dilan transmet sa conversation avec LAB : poursuivre l'outil de completion,
+identifier pourquoi44 ne se prolonge pas, chercher comment reparer, et ce
+qui se generalise. Partage885/886 : Codex prend urep100, LAB le HB promu ;
+deux recherches complementaires, aucun re-audit du certificat du pair.
+
+LIBERER LE RANG. Pour T PSD de rangr et K une base de son noyau, retirer
+les sommets D donne exactement
+ rank(T_CC)=r-|D|+rank(K[D,:]).
+En effet la perte de rang est dim(imT inter R^D), c'est-a-dire la dimension
+des vecteurs supportes sur D orthogonaux au noyau. On cherche donc un
+vecteur sparse v avec K^t v=0. four_star_rank_release.py utilise CP-SAT
+sur coefficients{-1,0,1}, puis calcule les petits profils de noyau exacts.
+Le calcul direct SymPy.rank sur le grand coeur s'etant revele lent, seul
+notre processus a ete arrete et remplace par cette formule de petits profils.
+
+Sur urep100,6 supports de taille3 trouves en moins d'une seconde. Le
+premier D={(0,3),(0,5),(3,10)} laisse41 sommets, rangT29/rangU39.
+La taille3 est minimale dans la boite testee. Extension de la preuve de
+minimalite a toute relation a2 termes : les4 indicatrices d'etoiles sont
+dans kerT par C1 ; chaque sommet appartient a au moins une etoile. Deux
+profils de noyau proportionnels devraient donc avoir le meme motif
+d'appartenance aux etoiles et un rapport1. Une relation reelle a2 termes
+se ramenerait ainsi a coefficients+1,-1, deja exclue par le solveur.
+Il faut donc au moins3 sommets retires pour abaisser le rang de ce T.
+
+CONSTRUCTION SUR COEUR PRINCIPAL. conway_core_repair.py laisse libres
+TOUTES les aretes incidentes aux sommets retires, puis les reconstruit
+ensemble avec x=(4,6). Pour chaque etiquette manquante, un modele binaire
+enumere ses colonnes vers le coeur, avec equations d'image des deux Gram,
+comptes de racines, caps C2, y compris les anciennes paires. Les residus
+de Schur diagonaux doivent etre >=0 ; rang residuel0 exige0. A rang1,
+les tables de paires et deux systemes de signes imposent les residus Gram.
+Pour des rangs residuels plus grands, la PSD et le rang exacts sont testes
+sur de petites matrices, puis une sous-matrice fautive produit un nogood
+sur ses seules colonnes et aretes libres. Les aretes deja forcees par les
+tables de paires sont omises du nogood. C1/C1'/C2 sont imposes sur tout
+le bloc reconstruit. Le mode complet84 ajoute ensuite la racine et ses
+14 voisins et exige l'identite SRG99 exacte avant tout export positif.
+
+MICROSCOPIE DES ESSAIS, avec domaines termines :
+- Coeur41 (T29/U39) : x a2 colonnes, chacun des3 anciens sommets en a1.
+  L'assemblage echoue deja sur la paire x,(0,3). Les deux choix possibles
+  d'arete donnent soit deux dimensions residuelles, soit un determinant
+  negatif. Une seule dimension etait disponible. Reparer seulement ces
+  trois sommets est donc impossible, meme en changeant leurs noyaux.
+- Coeur39, en liberant aussi(1,4),(2,6) : meme obstruction, memes deux
+  colonnes de x, anciens sommets encore forces.
+- On libere les voisins du sommet bloque(0,3), en plus du triple initial :
+  D de taille6, coeur38 T28/U37. Les domaines ont tailles2,3,1,1,1,1,1.
+  Deux candidats d'assemblage puis quatre petits temoins suffisent :
+  T sur{x,(3,10),(3,11)}, U sur{x,(0,5),(3,10),(3,11)}.
+- En liberant a leur tour les voisins de(3,10), on obtient un coeur33
+  T27/U33 et11 sommets anciens a reconstruire. Les domaines vont de1 a12.
+  Sans x, le modele reconstruit exactement le44 initial : controle positif
+  du NOUVEL algorithme, pas re-audit d'une preuve du pair. Avec x, deux
+  candidats puis temoins T4/U8 donnent l'impossibilite exacte.
+- En suivant le temoin vers(2,11), on ne fixe plus que30 sommets (T25/U30).
+  Les15 domaines sont tous enumeres :106 colonnes pour x et4 a140 pour
+  les autres. Assemblage encore INCOMPLET apres45s. Ce n'est pas un UNSAT.
+  Les caps de paires sont transmis directement aux tables de domaines pour
+  conserver les correlations et reduire les variables auxiliaires.
+
+APPORT LAB886-887 : THEOREME DISC accepte, sans relecture adverse.
+Tout espace global T8 de rang30 a classe de discriminant2 ou14 ; tout
+espace U15 de rang40 a classe1 ou7. Aucun lemme de parite n'est utilise ici.
+LAB rapporte que ses643 germes rang30 echouent a DISC, dont HB et urep.
+Il prend desormais la generation de germes satisfaisant ces classes.
+
+CONSEQUENCE NOUVELLE POUR LA REPARATION. Un coeur principal de rang30
+conserve la classe de l'espace de rang30 du germe. Si celle-ci est mauvaise,
+aucune modification des sommets retires ne peut donner un graphe global.
+Il est NECESSAIRE de faire baisser le rang du coeur pour changer cette
+classe. Cela justifie notre suppression minimale, et evite les reparations
+qui resteraient enfermees dans le meme espace arithmetique.
+
+Pour une base principale I du coeur de rangr, puis un ensemble J de
+30-r nouvelles colonnes dont le residu de Schur R_J est positif defini,
+ det(T8[I union J]) = det(T8[I])*det(R_J).
+La classe doit deja etre2 ou14, avant la completion globale. De meme
+pour U15 avec40-r et classes1 ou7. La matrice complete a entrees entieres
+rend le determinant entier ; tests exacts Delta=c*s^2 par division et
+isqrt, sans factoriser les determinants. Une classe mauvaise donne un
+nogood sur J, plus petit que celui provenant d'un depassement de rang.
+Option --disc, source du theoreme explicite dans les rapports.
+
+Sur le coeur41, les3 colonnes lineaires de x se divisent maintenant en
+1 echec PSD T et2 echecs DISC T. Les determinants de rang30 calcules ont
+classes30534=2*3*7*727 et79494=2*3*13249. Ce ne sont PAS la classe30
+du germe initial : la reparation change effectivement l'espace, mais
+ces deux choix restent interdits par la contrainte globale.
+Sur le coeur38, les coupes DISC T2/U3 remplacent les coupes de rangT3/U4.
+Sur coeur30, les coupes DISC sont integrees ; pilote45s encore incomplet.
+
+Artefacts : four_star_rank_release.py, conway_core_repair.py ; rapports
+rank_release_urep100_*, core_repair_urep100_*. Aucun45 prolongeable ni99
+construit. Les exclusions portent sur les coeurs fixes affiches, pas sur
+tous les germes. Dernier recu887 et envoi888 (formule de coupe de Schur-DISC).
