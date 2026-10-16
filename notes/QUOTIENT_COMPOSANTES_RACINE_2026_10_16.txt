@@ -326,3 +326,77 @@ Source de la borne : résultat antérieur r7<=43 et rang local r7-15,
 rappelé par LAB941/L22 et par A01 dans la synthèse du16/10. On n'annonce
 ici ni une nouvelle preuve de cette borne ni une preuve du minimum29
 sans grille proposé par LAB. L'ajout nouveau est son encodage exact.
+
+10. Localisation des obstructions : 59 des79 configurations écartées
+------------------------------------------------------------------
+Une première campagne globale bornée à30s par modèle a donné17 verdicts
+INFEASIBLE et7 UNKNOWN ;55 modèles n'ont pas été lancés. Elle a été
+interrompue volontairement quand une relaxation plus petite a permis
+d'écarter davantage de configurations sans terminer le modèle complet.
+
+root_component_obstruction_layers.py impose C1, les équations (5), les
+grilles, les bornes sans grille et (6). AUCUN Gram témoin ni aucune coupe
+PSD n'est fixé. La propagation initiale n'utilise PAS C2. Les couches
+ajoutent seulement certaines équations C2 :
+  0 : aucune ;
+  1 :126 paires de sommets dans un même rectangle Q_ij ;
+  2 : couche1 et paires partageant une lettre ;
+  3 : paires dont les étiquettes partagent une droite racine ;
+  4 : toutes les paires.
+SAT dans une couche incomplète n'est PAS une construction SRG. Les
+témoins enregistrés indiquent les équations C2 restantes qu'ils violent.
+
+Au premier passage :
+  9 configurations INFEASIBLE dans la couche0 ;
+  47 autres INFEASIBLE dans la couche1 ;
+  2 autres (124,192) INFEASIBLE dans la couche2 ;
+  1 autre (109) INFEASIBLE dans le modèle complet.
+Total sans doubles comptes :59 exclues,20 encore ouvertes. Les temps
+limites sont2s dans les couches0/1 et5s dans la couche2 ; UNKNOWN ne
+constitue jamais une exclusion. Les verdicts CP-SAT restent sans preuve
+UNSAT portable. Aucun emploi de la borne de rang modulo7 ici.
+
+Les20 indices ouverts sont :
+  4,6,7,9,11,19,26,28,54,86,91,98,102,103,106,110,142,148,153,197.
+Leurs noyaux de composantes ont dimension3 (17 cas) ou4 (3 cas).
+Le manifeste distingue désormais le statut du calcul global du statut
+d'exclusion par une relaxation : un UNKNOWN global peut ainsi être
+exclu rigoureusement par un modèle nécessaire plus petit, sans présenter
+ce premier UNKNOWN comme un résultat du solveur complet.
+
+11. Pourquoi huit cas dépassent le budget : certificats rationnels
+----------------------------------------------------------------
+Dans les neuf cas impossibles dès la couche0, minimiser la somme des
+prismes sans imposer (6) donne52 ou56. Huit possèdent déjà une obstruction
+dans la relaxation CONTINUE 0<=Gamma<=1 ; le cas52 a un optimum continu44
+et un optimum binaire52. Ce dernier reste une obstruction d'intégralité.
+
+Pour extraire des certificats courts, on moyenne UNIQUEMENT le programme
+linéaire sur les sept échanges indépendants a<->a*. Les contraintes
+linéaires, les composantes et l'objectif sont invariants. Tout graphe,
+même asymétrique, donnerait donc un point FRACTIONNAIRE invariant.
+On n'impose aucune symétrie au graphe. Les3486 variables d'arêtes ont378
+orbites sous ces échanges ; le programme quotient a environ600 lignes.
+
+Le solveur flottant ne fait que proposer des multiplicateurs. Ils sont
+convertis en fractions, puis l'identité suivante et sa borne sont
+calculées exactement, sans verdict de faisabilité flottant :
+  objectif = somme y_l * ligne_l + somme r_i*x_i,
+  objectif >= somme y_l*b_l + somme min(0,r_i).
+Les multiplicateurs d'égalités sont libres ; ceux des inégalités <=
+sont négatifs. La dernière somme utilise seulement0<=x_i<=1.
+
+Résultats exacts de root_component_prism_dual.py :
+  indices18,155 : somme des prismes >=56 ;
+  indices61,62,145,158,198 : somme >=52 ;
+  indice56 : somme >=51999971/1000000>51, donc >=52 pour un graphe.
+Ces huit cas contredisent directement (6). Le fichier
+root_component_prism_dual.json contient les orbites, les lignes retenues,
+les multiplicateurs et les résidus ;116 à143 termes par certificat.
+Ce sont des certificats arithmétiques de ces huit exclusions particulières,
+pas des certificats de toute la couverture79 ni de Conway en général.
+
+Les outils de campagne sauvegardent chaque résultat et reprennent seulement
+les cas non résolus. root_component_campaign.py --refresh-only consolide
+les calculs sans relancer le solveur. Les cas déjà exclus par une couche
+nécessaire ne sont pas recalculés au niveau global.
