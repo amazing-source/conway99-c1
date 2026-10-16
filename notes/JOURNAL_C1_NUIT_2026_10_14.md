@@ -5839,3 +5839,69 @@ n'excluent pas toute la classe obj53. Les autres graphes exigent leur
 propre temoin ou une preuve d'isomorphisme ; les echecs PSD deja obtenus
 par LAB restent ses resultats, sans nouvel audit ici.
 Dernier recu875, dernier envoi876. Aucun processus actif. H-MATCH ouvert.
+
+## 16/10 - Suite877 : rigidite des rematchings purs, meme a noyau variable
+
+877 lu/acquitte. LAB observe numeriquement l'absence de profils de noyau
+egaux dans une meme etoile a nullite>=14, sans preuve. Son interpretation
+exclut les torsions pures A NOYAU FIXE dans son echantillon. Aucun re-audit
+de cette observation. La construction ci-dessous autorise au contraire
+le changement du noyau, de sa dimension et du rang.
+
+LEMME GENERAL. Soit S une etoile, P son matching, et
+ V=projection_S(kerT), W=V inter ker(P+I).
+Remplacer seulement les aretes internes de S par un autre matching P'
+change T en T'=T-(P'-P), cette difference etant nulle hors S x S.
+Pour v dans W, choisir q dans kerT tel que q|S=v. Alors
+ q^t T' q=v^t(P-P')v=-v^t(I+P')v<=0,
+car P' est un matching et I+P' est PSD. Si T' est PSD, il faut egalite,
+donc (I+P')v=0. Ainsi P'v=-v pour TOUT v dans W. Chaque nouvelle arete ij
+doit relier deux profils W opposes : w_i+w_j=0 pour tous w dans W.
+Lorsque les seules paires opposees sont les anciennes aretes, P'=P.
+Cette conclusion ne suppose NI noyau preserve, NI rang preserve, NI U PSD.
+La PSD de T' et le noyau de T suffisent ; aucune hypothese de seuil14
+n'entre dans le lemme.
+
+APPLICATION EXACTE A DEUX GERMES ACCEPTES.
+- fourstar_psd_rank30_urep100 : projection de rang9 sur chaque etoile12,
+  rang7 sur ses10 etiquettes exterieures ; dimW=3 dans chaque etoile.
+- hv_h_c22_H30_23 : projection de rang12 sur chaque etoile, rang10 sur
+  ses etiquettes exterieures ; dimW=6 dans chaque etoile.
+Dans les8 cas, les SEULES paires de profils opposes sont exactement les
+6 aretes de l'ancien matching. Tous les rematchings purs d'une etoile
+sont donc exclus sur ces deux germes, y compris les longs cycles et les
+changements de noyau. Les autres aretes de Gamma ainsi que B et M sont
+fixes dans cette famille. Les huit certificats contiennent les profils
+entiers et leurs releves q dans kerT (T8 q=0, P q_S=-q_S verifies).
+
+Pour H30_23, on a meme une rigidite plus forte : si projection_S(kerT)
+est surjective et T'=T+D est PSD avec D supportee sur S x S, alors
+v^tDv>=0 pour tout v, donc D est PSD. Si sa diagonale est nulle, D=0.
+Aucune perturbation symetrique a diagonale nulle dans une seule etoile,
+meme sans prescrire un matching, n'est donc possible sur ce germe.
+
+CONSTRUCTIONS A QUATRE SOMMETS. Pour les anciennes aretes ab,cd remplacees
+par ac,bd, poser u=e_a-e_d, v=e_c-e_b ; Delta=uv^t+vu^t est le changement
+de Gamma. Si T-Delta est PSD, les formes u|kerT et v|kerT doivent etre
+soit toutes deux nulles, soit non nulles et NEGATIVEMENT proportionnelles.
+Deux formes independantes donnent un q dans kerT avec u.q=v.q non nul,
+donc q^t(T-Delta)q=-2(u.q)^2<0. Une proportion positive donne la meme
+contradiction. Si une seule forme est nulle, on obtient une energie nulle
+mais (T-Delta)q non nul : impossible pour une matrice PSD.
+
+Les120 switches possibles par germe (4 etoiles,15 paires d'aretes,2 choix)
+ont TOUS deux profils independants. Chaque nouvelle matrice dispose d'un
+temoin entier d'energie strictement negative sauvegarde dans le rapport.
+Aucun candidat PSD nouveau. La nullspace exacte a ete calculee pour
+fabriquer ces modifications et leurs certificats, sans recontroler les
+PSD/rangs annoncoes par le producteur. Calculs propres sous0,1s par germe,
+hors chargement Python, un seul processus a la fois.
+
+Code : hmatch_pure_switch_kernel_gate.py. Donnees :
+ hmatch_pure_switch_rank30_20261016.json,
+ hmatch_pure_switch_h30_23_20261016.json.
+PORTEE : deux germes, aucun enonce universel a nullite14, aucun contre-
+exemple ni preuve H-MATCH. Les modifications combinees de plusieurs blocs
+peuvent echapper a ce lemme puisque la formule de variation n'est alors
+plus limitee a P'-P. La rigidite d'un germe ne prouve pas l'inexistence
+d'autres germes de matchings casses.
