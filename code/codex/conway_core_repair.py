@@ -26,7 +26,9 @@ from hmatch_pure_switch_kernel_gate import integer_kernel
 from four_star_complete import sr_graph, is_srg
 from schur_domain_join import residual_rank_check
 from odd9_endpoint_mate_family import exact_psd
-from conway_five_star_defect import add_defect_cuts, measure_defects
+from conway_five_star_defect import (add_defect_cuts, measure_defects,
+                                     add_attachment_demand_cuts, measure_attachment_demand,
+                                     add_outside_support_cuts, measure_outside_support)
 
 ALL_LABELS = [p for p in combinations(range(14), 2) if p[1] != (p[0] ^ 1)]
 DISC_CLASSES = ((2,14),(1,7))
@@ -362,6 +364,8 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
             else:
                 model.Add(graph[i][j]+sum(conjunction(graph[i][z], graph[j][z]) for z in range(len(labels))) <= 2-root_common)
     defect_cuts,_ = add_defect_cuts(model,labels,graph,conjunction=conjunction)
+    demand_cuts = add_attachment_demand_cuts(model,labels,graph,conjunction=conjunction)
+    outside_support_cuts = add_outside_support_cuts(model,labels,graph,conjunction=conjunction)
     label_index = {tuple(p):i for i,p in enumerate(missing)}
     iterations, rank_cuts = 0, list(initial_cuts)
     for cut in initial_cuts:
@@ -391,7 +395,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         remaining = started+seconds-time.monotonic()
         if remaining <= 0:
             return dict(status='ASSEMBLY_TIME_LIMIT',complete=False,pair_statistics=pair_stats,rank_cuts=rank_cuts,
-                        psd_cuts=psd_cuts,defect_cuts=defect_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                        psd_cuts=psd_cuts,defect_cuts=defect_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = 1
         solver.parameters.max_time_in_seconds = remaining
@@ -402,7 +406,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         model_candidates += len(collector.candidates)
         result = dict(status=solver.StatusName(status),complete=status in (cp_model.OPTIMAL,cp_model.INFEASIBLE),
                       pair_statistics=pair_stats,solver_seconds=solver.WallTime(),seconds=time.monotonic()-started,
-                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,defect_cuts=defect_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,defect_cuts=defect_cuts,demand_cuts=demand_cuts,outside_support_cuts=outside_support_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         if not collector.candidates:
             return result
         for values,edges in collector.candidates:
@@ -514,6 +518,10 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
                           T_residual_numerator=residuals[0], U_residual_numerator=residuals[1])
             result['symmetry_defect'] = measure_defects(labels,adjacency)
             assert all(item['cut_satisfied'] for item in result['symmetry_defect'])
+            result['attachment_demand'] = measure_attachment_demand(labels,adjacency)
+            assert all(item['satisfied'] for item in result['attachment_demand'])
+            result['outside_common_support'] = measure_outside_support(labels,adjacency)
+            assert all(item['satisfied'] for item in result['outside_common_support'])
             if full:
                 full_graph = sr_graph(adjacency, labels, 14)
                 assert is_srg(full_graph, 14)

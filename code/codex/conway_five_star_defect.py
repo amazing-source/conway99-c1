@@ -23,6 +23,19 @@ If p_w,q_w already have e_w + c_w contributions from their mutual edge
 and common neighbours outside X, their remaining capacity is
 2-|p_w intersect q_w|-e_w-c_w. Cap it at one. The sum of these capacities
 strengthens the lower bound without fixing any old graph.
+
+For k=14 there is also a joint bound: at most FOUR of the8 attachment
+rows can be h-invariant on the whole old44. If five were invariant,
+their disjoint neighbourhoods would partition the36 old labels avoiding
+4,5 (and cover all four cross labels between {0,1} and {2,3}). Each of
+the three other rows meets each of these five neighbourhoods at most
+once. Their total old degree is at least20: it equals24 minus at most
+four incidences with cross labels. It is at most15+3+2=20: fifteen
+incidences in those five parts, three toward star5, and at most two
+toward star4 (an even number, at most3). Equality leaves one of the
+three rows needing a partner in X, but it meets all five invariant
+neighbourhoods and cannot be adjacent to any of them. The other two
+rows already have partners in the old part of star4. Contradiction.
 """
 from itertools import combinations
 from math import ceil
@@ -153,6 +166,16 @@ def add_defect_cuts(model, labels, graph, root_count=14, external_root=4,
                              contextual_capacity_cut=True,
                              scope='Necessary lambda1/mu2 condition; no symmetry assumed.'))
         expressions.append(dict(total=total,rows=row_defects,broken=broken))
+    if root_count == 14:
+        joint = []
+        for row,(left,right) in enumerate(zip(expressions[0]['broken'],expressions[1]['broken'])):
+            flag = model.NewBoolVar('defect_%d_joint_%d'%(external_root,row))
+            model.AddMaxEquality(flag,[left,right])
+            joint.append(flag)
+        model.Add(sum(joint)>=4)
+        expressions[0]['joint_broken'] = joint
+        for item in metadata:
+            item['joint_broken_rows_lower_bound'] = 4
     return metadata,expressions
 
 
@@ -180,4 +203,162 @@ def measure_defects(labels, adjacency, root_count=14, external_root=4):
                            contextual_lower_bound=contextual,
                            remaining_pair_capacities=capacities,
                            cut_satisfied=min(capacities,default=0)>=0 and sum(rows)>=contextual))
+    if root_count == 14 and report:
+        joint = sum(bool(a or b) for a,b in zip(report[0]['rows'],report[1]['rows']))
+        for item in report:
+            item['joint_broken_rows'] = joint
+            item['joint_broken_rows_lower_bound'] = 4
+            item['cut_satisfied'] &= joint >= 4
+    return report
+
+
+def add_attachment_demand_cuts(model,labels,graph,root_count=14,external_root=4,
+                               conjunction=None):
+    """A universal Hall bound on completing neighbours in the new star.
+
+    P consists of the four old labels {0,c},...,{3,c}; X is the new part
+    of L_c, and Y the old labels avoiding c,c^1. A z in Y with exactly
+    one neighbour x in X needs one more neighbour in P, because z has
+    exactly two neighbours in the complete star L_c. For each p in P,
+    C2 applied to x,p (already sharing root c) allows at most1-A[x,p]
+    such common neighbours. Consequently
+        private_Y_neighbours(x) + neighbours_in_P(x) <= 4.
+    This holds without fixing any old-old edge or imposing h. It is the
+    general form of the new five-demands/four-places obstruction.
+    """
+    specs=defect_specs(labels,root_count,external_root)
+    if not specs:
+        return []
+    xs=specs[0]['x_indices']
+    old=[i for i,p in enumerate(labels) if any(r in p for r in (0,1,2,3))]
+    ps=[i for i in old if external_root in labels[i]]
+    ys=[i for i in old if external_root not in labels[i] and (external_root^1) not in labels[i]]
+    assert len(ps)==4
+    if conjunction is None:
+        products={}
+        def conjunction(a,b):
+            if isinstance(a,int):
+                return b if a else 0
+            if isinstance(b,int):
+                return a if b else 0
+            key=tuple(sorted((a.Index(),b.Index())))
+            if key not in products:
+                z=model.NewBoolVar('demand_and_%d_%d'%key)
+                model.AddMultiplicationEquality(z,[a,b])
+                products[key]=z
+            return products[key]
+    private={}
+    for y in ys:
+        degree=sum(graph[x][y] for x in xs)
+        flag=model.NewBoolVar('private_%d_%d'%(external_root,y))
+        model.Add(degree<=2)
+        model.Add(degree==1).OnlyEnforceIf(flag)
+        model.Add(degree!=1).OnlyEnforceIf(flag.Not())
+        private[y]=flag
+    for x in xs:
+        demand=sum(conjunction(graph[x][y],private[y]) for y in ys)
+        model.Add(demand+sum(graph[x][p] for p in ps)<=4)
+    return [dict(external_root=external_root,new_rows=len(xs),old_candidates=len(ys),
+                 old_star_vertices=[labels[p] for p in ps],capacity=4,
+                 rule='private_Y_neighbours(x) + old_star_neighbours(x) <= 4',
+                 scope='Universal complete-star demand bound; no old graph or symmetry assumed.')]
+
+
+def measure_attachment_demand(labels,adjacency,root_count=14,external_root=4):
+    specs=defect_specs(labels,root_count,external_root)
+    if not specs:
+        return []
+    xs=specs[0]['x_indices']
+    old=[i for i,p in enumerate(labels) if any(r in p for r in (0,1,2,3))]
+    ps=[i for i in old if external_root in labels[i]]
+    ys=[i for i in old if external_root not in labels[i] and (external_root^1) not in labels[i]]
+    degrees={y:sum(int(adjacency[x][y]) for x in xs) for y in ys}
+    rows=[]
+    for x in xs:
+        private=[labels[y] for y in ys if degrees[y]==1 and adjacency[x][y]]
+        used=sum(int(adjacency[x][p]) for p in ps)
+        rows.append(dict(vertex=labels[x],private_neighbours=private,demand=len(private),
+                         capacity=4-used,old_star_neighbours=used,
+                         satisfied=len(private)<=4-used))
+    return rows
+
+
+def add_outside_support_cuts(model,labels,graph,root_count=14,external_root=4,
+                              conjunction=None):
+    """Every uncovered pair in X must admit an outside common neighbour.
+
+    Two nonmatched X vertices with no old common neighbour require one
+    new common neighbour. It cannot lie in L_(c^1), since every vertex
+    of that star has exactly one neighbour in L_c. It is therefore an
+    outside label {a,b}, with a,b in the k-6 exterior roots and not mates.
+    Both endpoints must have positive remaining root capacities at a,b.
+    A root set contains such a pair iff it is not contained in any one
+    mate pair. This gives cheap Boolean support constraints before any
+    assignment of the outside labels.
+    """
+    specs=defect_specs(labels,root_count,external_root)
+    if not specs:
+        return []
+    xs=specs[0]['x_indices']
+    old=[i for i,p in enumerate(labels) if any(r in p for r in (0,1,2,3))]
+    present=old+xs
+    exterior=[r for r in range(root_count) if r not in (0,1,2,3,external_root,external_root^1)]
+    if conjunction is None:
+        products={}
+        def conjunction(a,b):
+            if isinstance(a,int):
+                return b if a else 0
+            if isinstance(b,int):
+                return a if b else 0
+            key=tuple(sorted((a.Index(),b.Index())))
+            if key not in products:
+                z=model.NewBoolVar('outside_and_%d_%d'%key)
+                model.AddMultiplicationEquality(z,[a,b])
+                products[key]=z
+            return products[key]
+    available={}
+    for x in xs:
+        for r in exterior:
+            target=2-int(r in labels[x])-int((r^1) in labels[x])
+            used=sum(graph[x][z] for z in present if r in labels[z])
+            flag=model.NewBoolVar('outside_available_%d_%d'%(x,r))
+            model.Add(used<=target)
+            model.Add(used<=target-1).OnlyEnforceIf(flag)
+            model.Add(used==target).OnlyEnforceIf(flag.Not())
+            available[x,r]=flag
+    for x,y in combinations(xs,2):
+        old_common=sum(conjunction(graph[x][z],graph[y][z]) for z in old)
+        need=model.NewBoolVar('outside_required_%d_%d'%(x,y))
+        model.Add(need+graph[x][y]+old_common==1)
+        compatible={r:conjunction(available[x,r],available[y,r]) for r in exterior}
+        if not exterior:
+            model.Add(need==0)
+        for r in exterior:
+            if r>(r^1):
+                continue
+            model.Add(sum(flag for t,flag in compatible.items() if t not in (r,r^1))>=need)
+    return [dict(external_root=external_root,pairs=len(xs)*(len(xs)-1)//2,exterior_roots=exterior,
+                 rule='Every uncovered X pair admits a nonmate outside label within both residual root budgets.',
+                 scope='Necessary for global84 completion; no fixed old graph or symmetry assumed.')]
+
+
+def measure_outside_support(labels,adjacency,root_count=14,external_root=4):
+    specs=defect_specs(labels,root_count,external_root)
+    if not specs:
+        return []
+    xs=specs[0]['x_indices']
+    old=[i for i,p in enumerate(labels) if any(r in p for r in (0,1,2,3))]
+    present=old+xs
+    exterior=[r for r in range(root_count) if r not in (0,1,2,3,external_root,external_root^1)]
+    budgets={x:{r:2-int(r in labels[x])-int((r^1) in labels[x])
+               -sum(int(adjacency[x][z]) for z in present if r in labels[z]) for r in exterior} for x in xs}
+    report=[]
+    for x,y in combinations(xs,2):
+        need=1-int(adjacency[x][y])-sum(int(adjacency[x][z])*int(adjacency[y][z]) for z in old)
+        if need!=1:
+            continue
+        allowed=[r for r in exterior if budgets[x][r]>0 and budgets[y][r]>0]
+        possible=[(a,b) for a,b in combinations(allowed,2) if b!=(a^1)]
+        report.append(dict(pair=[labels[x],labels[y]],left_budgets=budgets[x],right_budgets=budgets[y],
+                           allowed_roots=allowed,possible_common_labels=possible,satisfied=bool(possible)))
     return report

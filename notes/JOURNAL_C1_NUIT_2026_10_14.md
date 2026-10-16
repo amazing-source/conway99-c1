@@ -6388,3 +6388,155 @@ a construire. Premiere obstruction microscopique identifiee : cinq
 sommets de X restent a apparier dans L4, nombre impair. La suite integre
 directement l'appariement L4 a la generation des attaches pour reparer
 ce blocage. Aucun claim d'exclusion C1 ni de nouvelle construction SRG.
+
+## 16/10 - Quatre lignes rompues, puis reconstruction depuis les attaches
+
+La nouvelle etoile complete renforce la borne : au plus QUATRE des8
+lignes d'attache peuvent etre invariantes par h sur le44 entier. Preuve :
+si cinq le sont, deux de ces lignes ne peuvent partager aucun voisin
+ancien, car h donnerait aussi son image (distincte), en plus de racine4.
+Elles evitent les8 etiquettes anciennes contenant4 ou5 (une paire h
+entiere depasserait les comptes vers ces racines). Le degre ancien d'une
+ligne vaut8-s, s etant son nombre de voisins parmi02,03,12,13. Ces quatre
+etiquettes ne sont vues qu'une fois par les cinq lignes, donc leur somme
+s<=4. Les cinq voisinages ont taille>=36, dans un ensemble de36 : ils
+le partitionnent exactement et couvrent les quatre etiquettes croisees.
+Six lignes invariantes etaient deja impossibles par le meme comptage.
+
+Restent trois lignes R. Leur degre ancien total vaut24-S_R>=20 : chaque
+etiquette croisee a deja un voisin dans les cinq lignes, et peut avoir
+au plus2 voisins dans l'etoile4 complete, donc S_R<=4. Chaque R touche
+chacun des cinq voisinages au plus une fois (mu2 et racine4 commune),
+soit15 incidences au maximum. Les anciennes etiquettes contenant5 en
+acceptent au plus3 (une par R). Les anciennes etiquettes contenant4 en
+acceptent un nombre q pair (appariement L4), avec q<=3, donc q<=2.
+Total<=15+3+2=20 : egalite partout. Chaque R touche les cinq voisinages,
+et exactement deux R sont deja appariees a un ancien sommet de L4.
+La troisieme doit s'apparier dans X, mais chacun des cinq invariants
+partage deja avec elle un ancien voisin et racine4 : ils ne peuvent
+etre adjacents puisque lambda1. Aucun partenaire ne reste. Contradiction.
+Cette preuve n'impose AUCUNE symetrie au44 ni au99. Coupe union des lignes
+rompues>=4 integree au constructeur. Preuve et code transmis en896.
+
+Nouveau constructeur de stage : conway_attachment_probe.py, ancien44
+entierement libre, choisit d'abord les8 attaches et l'appariement M4.
+Il atteint4 lignes rompues (D0=12,D2=14) en2,118s. Les contraintes
+combinatoires du graphe partiellement rempli sont calculees exactement ;
+les anciennes aretes inconnues ne sont PAS declarees absentes dans la
+phase de completion. Chaque ancienne ligne admet une completion prise
+separement. Leur assemblage symetrique est cependant UNSAT en0,049s,
+avant C2 ancien/ancien et avant PSD. Un coeur de11 groupes de comptes
+est extrait, puis une explication INTEGRALE exacte,19 termes tous de
+poids1, donne somme des coefficients0 et membre droit-1.
+
+Cette explication se simplifie ainsi. Pour x=(4,11), cinq anciens voisins
+z=(0,13),(1,12),(2,6),(3,6),(3,8) ont x comme unique voisin dans X.
+Chacun evite4,5 et doit donc avoir un deuxieme voisin dans L4, parmi
+P={04,14,24,34}. Pour chaque p de P, x et p partagent deja racine4,
+donc au plus un tel z peut etre commun : cinq demandes pour quatre places.
+Une autre ligne x=(4,7) avait meme six demandes pour quatre places.
+Ce ne sont pas des blocages lies a une ancienne base choisie.
+
+Generalisation universelle : Y=anciennes etiquettes evitant4,5 ; appeler
+prive de x un z de Y ayant exactement un voisin dans X, qui est x.
+Chaque prive demande une arete vers P, tandis que la capacite de p vaut
+au plus1-Gamma(x,p). Donc private_Y(x)+deg_P(x)<=4. Cette coupe ne fixe
+aucune arete ancienne et n'impose aucune symetrie. Elle est ajoutee a la
+generation d'attaches ET a conway_core_repair52/84. Le motif precedent
+est desormais rejete par cette seule coupe, sans reconstruire le44.
+
+Apres ajout : nouveau motif atteignant4 lignes rompues, M4 valide,
+demande<=capacite pour les8 lignes. Toutes les lignes anciennes passent
+et s'assemblent ensemble (SAT0,057s). Le blocage lineaire precedent est
+donc effectivement repare. Le controle complet C2 ancien/ancien reste
+UNKNOWN au pilote CP de20s ; aucun52 complet n'est annonce.
+Un encodeur SAT specialise sur CE motif (conway_attachment_sat.py) a
+ete ajoute : les aretes inconnues sont libres, tous les comptes sont
+exacts/majorants selon les etoiles completes. Controle positif propre
+a cet outil : partie lineaire SAT en0,187s total, matrice relue par les
+formules combinatoires exactes. Le calcul C2 complet est borne a60s.
+
+conway_linear_explanation.py utilise des propositions GLOP, mais ne
+retient un Farkas qu'apres sommation entiere exacte des coefficients et
+des bornes. Controle sur contradiction lineaire simple : certificat ;
+controle sur trois equations de parite a solution fractionnaire : aucun
+faux certificat lineaire. Un probleme d'indexation negative des domaines
+pybind a ete detecte pendant le developpement et corrige avant livraison.
+
+LAB895 accepte : les etiquettes hors L4/L5 codent bijectivement les60
+paires non appariees de L4,36 presentes dans S5 et24 encore exterieures.
+Notre coupe de demande est precisement la capacite residuelle des paires
+X-P dans ce design. Pas de verification du travail de LAB ; la recherche
+presente construit ses propres motifs et generalise leurs echecs.
+
+## 16/10 - Obstruction de support global, puis huit lignes globales construites
+
+Le pilote SAT sur le motif repare finit UNKNOWN apres60s. Sa trace DRAT
+inachevee n'est PAS un certificat, et n'est pas versionnee (76Mo). La
+question de ce motif a pourtant ete fermee par un autre chemin :
+conway_star_frame.py applique le design LAB895 aux12 lignes de L4 sur
+TOUTES les84 etiquettes. Les60 etiquettes hors L4/L5 choisissent chacune
+une paire nonM4, toutes distinctes ; L5 choisit une bijection vers L4.
+Les168 comptes de racines sont exacts. INFEASIBLE en0,0037s sans guards,
+puis0,276s avec extraction d'un coeur de6 equations de racines.
+
+Microscopiquement : X46 etX413 ne sont pas apparies et n'ont aucun
+voisin commun dans le44. Ils ont deja racine4 en commun et en demandent
+un autre dans Gamma. Ce voisin ne peut etre dans L5, dont chaque sommet
+n'a qu'un voisin dans L4 ; ni dans L4 (appariement). Il doit porter une
+etiquette {a,b} sur6..13, a,b non partenaires. Mais les budgets de racines
+restants pour les DEUX lignes n'autorisent que13. Impossible de former
+une etiquette. Autre temoin : X47/X412, seule lettre10 autorisee.
+
+La nouvelle coupe universelle, independante du motif, dit : chaque paire
+de X non appariee et sans voisin commun ancien doit admettre une paire
+de lettres non partenaires dans l'intersection de ses budgets positifs.
+Le code l'exprime par8 drapeaux de capacite par ligne, puis pour chaque
+paire X et chaque paire de lettres partenaires, exige un drapeau commun
+positif en dehors de cette paire lorsque le voisin commun reste requis.
+C'est exactement equivalent a l'existence d'une etiquette admissible.
+Integre a conway_core_repair52/84 ET a la generation des attaches.
+
+Troisieme motif construit en3,131s : supports individuels non vides,
+quatre lignes rompues, lignes anciennes individuellement possibles. Le
+design global le rejette encore en0,254s. Les7 besoins XX admettent meme
+un systeme de7 representants distincts ; ce seul Hall ne suffit donc
+pas. Il faut respecter aussi les capacites partagees des lettres dans
+chaque ligne, et les affectations de L5. Le coeur d'equations extrait
+est sauvegarde. Ce motif n'est pas abandonne indecis : il est exclu.
+
+Reparation structurelle suivante : les8 lignes nouvelles sont maintenant
+choisies d'emblee sur les84 etiquettes (--global-new-rows). On impose
+leurs degres12, tous leurs comptes de racines exacts, les caps colonnes
+vers L4 (1 pour L5,2 ailleurs), et leurs28 nombres de voisins communs
+Gamma exacts =1-arete. SUCCES en10,817s : huit lignes COMPLETES sur84,
+tout calcule exactement, avec quatre lignes rompant h. Elles prolongent
+un motif nouveau sans aucune base44 fixee. Ce n'est PAS un graphe84 ou
+un52 complet : les autres lignes et les Gram restent a construire.
+
+Nouvelle option --global-star : meme construction avec les12 lignes de
+L4, les aretes incidentes aux4 anciens sommets de L4 egalement libres,
+et degres des colonnes vers L4 exacts. Le pilote de45s est en cours au
+moment de cette entree ; son resultat sera consigne avant livraison.
+
+Controle positif du NOUVEAU modele de design : retrait explicite des
+equations de racines (--root-limit0), le motif precedent admet alors
+un design60 complet et un appariement L5, SAT0,140s. Les comptes C2
+des12 lignes et la preservation des attaches ont ete verifies exactement.
+Ce controle est clairement marque comme relaxation et non comme graphe.
+
+Resultat du pilote --global-star : SUCCES en38,483s, optimum4 lignes
+rompues. Les D0,D2 valent14,14, et les capacites consommees dans le
+nouveau cadre renforcent leurs bornes individuelles a14. Le fichier
+five_star_global_star_20261016.json contient les12 lignes sur84, leurs
+etiquettes et le graphe partiel52 avec toutes les aretes incidentes aL4.
+Comptes controles exactement : degres12,168 equations de racines,
+66 nombres de voisins communs Gamma =1-arete, colonnes horsL4 de poids
+1 dans L5 et2 ailleurs (le modele les impose exactement). Cette
+construction atteint donc la borne4 a CE stade de la completion.
+Les72 autres lignes ne sont pas completes. Les cases anciennes horsL4
+dans la matrice partielle sont des inconnues, et non des non-aretes
+certifiees. Aucun52 complet ou SRG99 n'est annonce. Le point constructif
+nouveau est un cadre12-global qui depasse les deux obstructions precedentes,
+construit sans conserver les aretes d'un ancien germe44. Pas de solveur
+laisse actif a la fin de cette passe.
