@@ -328,3 +328,16 @@ Ce que ça dit (honnêtement) :
    universel (rien n'y est forcé : 132 − 144 < 0). C'est Q7 : sans grille et c ≤ 4, nos données plafonnent à ν ≤ 13.
    => l'angle global renvoie à la surcharge rationnelle aux paires sans grille de petit c (Codex : c = 4, 64/79
    modèles exclus ; LAB : c ≤ 3).
+
+## 16/10 nuit : branche min c ≤ 3, ce qu'elle exige concrètement (`cle3_spectrum.py`, `cle3_spectrum.log`)
+- c(l) = nombre de morceaux du graphe cubique induit sur les 36 voisins de la droite l ; morceau de 6 = prisme (grille)
+  ou K_{3,3} (paire tordue). c(l) ≤ 3 ⟹ au plus 2 morceaux de 6, donc au moins 4 partenaires sans grille en chaque point.
+- Pour TOUTE paire sans grille (l, m) (pas besoin du « côté minimal ») : rank T_S = 23 − c(l) + rank F (F = Schur 20 × 20
+  sur les labels extérieurs de m) ; Conway exige rank F ≤ 7 + c(l). Identité de Codex rank T = 32 − c − δ + rank Z
+  vérifiée sur les 7 436 côtés sans grille admissibles (T ≥ 0, U ≥ 0) ; on a rank Z − δ = rank F − 9.
+- Données (7 436 côtés) : δ = 0 et rank Z ≥ 3 partout, donc rank F ≥ 12. Marges de la branche : c = 1 : 3 ; c = 2 : 2 ;
+  c = 3 : 1 (rank Z = 3 apparaît 14 fois à c = 3).
+- Spectre des saturations impaires (valeurs propres généralisées λ de (CΦ⁺Cᵀ, K), δ = #{λ = 1}) : au plus 2 valeurs
+  ≥ 0,99 par côté ; max λ_2 ≈ 0,97 ; max λ_3 ≈ 0,85 (c ≤ 2), 0,90 (c = 3) ; max λ_4 = 0,716 (c = 1).
+- Cible la plus accessible : c = 1, « rank F ≥ 9 » (marge 3), par exemple rank Z ≥ 2 (marge 1) et δ ≤ 2 (λ_3 ≤ 0,85).
+  Si rank Z = 3, Conway à c = 1 demanderait 4 saturations impaires EXACTES simultanées ; les données n'en approchent que 2.
