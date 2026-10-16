@@ -6350,3 +6350,41 @@ Transmis en891 : fermeture globale du coeur30 et fichiers. Aucun graphe
 Conway ni germe52 nouveau obtenu ; aucune exclusion universelle de C1.
 
 Livraison finale de cette passe : commit a963315, archive autonome global_columns_core30_a963315.zip (68 fichiers,651228 octets) exportee vers LAB. Message892 contient interface et limites exactes. Dernier recu890, accuse890. Aucun solveur laisse actif. L'obstruction du coeur30 oblige a modifier une adjacence DANS ce coeur pour continuer cette construction ; reconstruire seulement les14 sommets restants du44 ne peut suffire.
+
+## 16/10 - Du pigeonnier LAB893 au defaut quantitatif obligatoire
+
+LAB893 accepte sans re-audit : son modele cinq etoiles h-invariant est
+impossible par pigeonnier, tandis que le modele libre reste indetermine.
+Nouvelle consequence : aucune hypothese h n'est necessaire pour QUANTIFIER
+les ruptures obligatoires. Pour X={(4,y):6<=y<=13}, et w hors{2,3},
+poser a_w={2,w}, b_w=h(a_w), A_xw=Gamma(x,a_w), B_xw=Gamma(x,b_w).
+Chaque ligne a somme A=somme B=2, donc D=sum|A-B|=32-2P, P=sum A*B.
+Les colonnes w4 et5 n'acceptent aucun recouvrement (comptes C1/C1').
+Chacune des10 autres en accepte au plus UN : deux x qui verraient
+a_w ET b_w partageraient ces deux voisins et deja la racine4, impossible
+pour mu2. Cela renforce notamment les colonnes w0,1, dont la paire
+ancienne disjointe autorisait auparavant deux voisins communs.
+Ainsi P<=10, D>=12, et au moins3 lignes sont rompues, car D_x<=4.
+Meme preuve pour L0/L1. General k : |X|=k-6, P<=k-4, D>=2k-16.
+La borne initiale8 obtenue avec les seules capacites anciennes est
+renforcee a12 par ce comptage des paires NOUVELLES. Transmis en894.
+
+Les capacites deja consommees renforcent automatiquement la borne :
+c_w=min(1,2-|a_w inter b_w|-Gamma_ab-common_outside_X). Alors
+D>=4|X|-2 sum(c_w), colonnes w4,5 exclues de la somme. Un c_w negatif
+signale deja une violation C2. conway_five_star_defect.py implemente ces
+contraintes, les XOR et le compte minimal de lignes rompues. Le module
+conway_core_repair les ajoute des qu'il contient cinq etoiles, y compris
+en mode84, sans imposer de symetrie. Rien ne change sur les modeles44/45.
+
+Nouvelle experience constructive, pas verification du pair : relaxation
+des seules attaches X->44 avec comptes de racines, capacites vers L4,
+et au plus un voisin ancien commun par paire de X. Le minimum D0+D2=24
+est atteint en0,686s, et un motif explicite est sauvegarde. Les deux
+bornes12 sont donc simultanement atteignables dans CETTE relaxation.
+Le motif entier fixe passe aussi le nouvel encodeur (controle positif).
+Ce n'est PAS un52 admissible : les aretes anciennes et nouvelles restent
+a construire. Premiere obstruction microscopique identifiee : cinq
+sommets de X restent a apparier dans L4, nombre impair. La suite integre
+directement l'appariement L4 a la generation des attaches pour reparer
+ce blocage. Aucun claim d'exclusion C1 ni de nouvelle construction SRG.

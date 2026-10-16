@@ -26,6 +26,7 @@ from hmatch_pure_switch_kernel_gate import integer_kernel
 from four_star_complete import sr_graph, is_srg
 from schur_domain_join import residual_rank_check
 from odd9_endpoint_mate_family import exact_psd
+from conway_five_star_defect import add_defect_cuts, measure_defects
 
 ALL_LABELS = [p for p in combinations(range(14), 2) if p[1] != (p[0] ^ 1)]
 DISC_CLASSES = ((2,14),(1,7))
@@ -313,25 +314,25 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
     for cut in initial_psd_cuts:
         if add_psd_cut(cut):
             psd_cuts.append(cut)
+    products = {}
+    def conjunction(x, y):
+        if isinstance(x, int):
+            return y if x else 0
+        if isinstance(y, int):
+            return x if y else 0
+        if x.Index() == y.Index():
+            return x
+        key = tuple(sorted((x.Index(), y.Index())))
+        if key not in products:
+            z = model.NewBoolVar('and_%d_%d'%key)
+            model.AddMultiplicationEquality(z, [x,y])
+            products[key] = z
+        return products[key]
     if not full:
         # In the complete84 case, PSD plus the global rank/trace identity
         # already proves all SRG constraints. For a partial block, impose
         # its combinatorial conditions explicitly.
         incidence = np.array([[int(r in p) for p in labels] for r in range(14)], dtype=np.int64)
-        products = {}
-        def conjunction(x, y):
-            if isinstance(x, int):
-                return y if x else 0
-            if isinstance(y, int):
-                return x if y else 0
-            if x.Index() == y.Index():
-                return x
-            key = tuple(sorted((x.Index(), y.Index())))
-            if key not in products:
-                z = model.NewBoolVar('and_%d_%d'%key)
-                model.AddMultiplicationEquality(z, [x,y])
-                products[key] = z
-            return products[key]
         for i, label in enumerate(labels):
             model.Add(sum(graph[i]) <= 12)
             for r in range(14):
@@ -360,6 +361,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
                           +sum(conjunction(graph[i][z],graph[j][z]) for z in range(size,len(labels))) <= 2-root_common)
             else:
                 model.Add(graph[i][j]+sum(conjunction(graph[i][z], graph[j][z]) for z in range(len(labels))) <= 2-root_common)
+    defect_cuts,_ = add_defect_cuts(model,labels,graph,conjunction=conjunction)
     label_index = {tuple(p):i for i,p in enumerate(missing)}
     iterations, rank_cuts = 0, list(initial_cuts)
     for cut in initial_cuts:
@@ -389,7 +391,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         remaining = started+seconds-time.monotonic()
         if remaining <= 0:
             return dict(status='ASSEMBLY_TIME_LIMIT',complete=False,pair_statistics=pair_stats,rank_cuts=rank_cuts,
-                        psd_cuts=psd_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                        psd_cuts=psd_cuts,defect_cuts=defect_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = 1
         solver.parameters.max_time_in_seconds = remaining
@@ -400,7 +402,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         model_candidates += len(collector.candidates)
         result = dict(status=solver.StatusName(status),complete=status in (cp_model.OPTIMAL,cp_model.INFEASIBLE),
                       pair_statistics=pair_stats,solver_seconds=solver.WallTime(),seconds=time.monotonic()-started,
-                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,defect_cuts=defect_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         if not collector.candidates:
             return result
         for values,edges in collector.candidates:
@@ -510,6 +512,8 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
             assert not np.any(adjacency.sum(axis=1) > 12)
             result.update(evaluated=evaluated,filtered=filtered,assignment=values, labels=labels, adjacency=adjacency.tolist(),
                           T_residual_numerator=residuals[0], U_residual_numerator=residuals[1])
+            result['symmetry_defect'] = measure_defects(labels,adjacency)
+            assert all(item['cut_satisfied'] for item in result['symmetry_defect'])
             if full:
                 full_graph = sr_graph(adjacency, labels, 14)
                 assert is_srg(full_graph, 14)
