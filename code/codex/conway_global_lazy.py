@@ -53,6 +53,8 @@ class CardinalityCP:
         self.model.AddBoolOr([self.literal(lit) for lit in clause])
     def add_atmost(self,lits,bound):
         self.model.Add(sum(self.literal(lit) for lit in lits)<=bound)
+    def add_linear_cut(self,terms,lower):
+        self.model.Add(sum(weight*self.variables[var] for var,weight in terms.items())>=lower)
     def supports_atmost(self):
         return True
     def clear_interrupt(self):
@@ -177,11 +179,20 @@ def root_check(k,labels,candidate):
             assert observed==2-int(r in label)-int((r^1) in label)
 
 
-def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=10000,solver_name='glucose4',initial_candidate=None):
+def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=10000,solver_name='glucose4',initial_candidate=None,
+        learn_psd=False,psd_only=False,psd_library=None):
     assert solver_name in ('glucose4','cpsat'), 'The native Minicard pilot exited without a verdict on this Windows build.'
     start=time.monotonic()
     labels,graph,edges,cards,clauses,selectors,cover=problem(k,low_prism_flag)
     known={}
+    known_psd={}
+    if learn_psd or psd_only or psd_library:
+        assert k==14 and solver_name=='cpsat', 'Global PSD cuts currently use the Conway CP backend.'
+        from conway_global_psd import bases,canonical_cut,linearize,load_library,separate_psd
+        gram_bases=bases(labels)
+        if psd_library:
+            for cut in load_library(psd_library,labels):
+                known_psd[canonical_cut(cut,labels)]=cut
     initial_positives=None
     if initial_candidate:
         seed=json.loads(Path(initial_candidate).read_text(encoding='utf-8'))
@@ -199,6 +210,12 @@ def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=1
         for witness in old['universal_cuts']:
             clause=certified_clause(labels,graph,witness)
             known[clause]=witness
+        if old.get('psd_cuts'):
+            assert k==14 and solver_name=='cpsat'
+            from conway_global_psd import bases,canonical_cut,linearize,load_library,separate_psd
+            gram_bases=bases(labels)
+            for cut in old['psd_cuts']:
+                known_psd[canonical_cut(cut,labels)]=cut
     report=dict(root_count=k,labels=labels,parameters=[1+k+len(labels),k,1,2],
                 status='UNKNOWN',covers_all_graphs=True,fixed_local_seed=False,
                 low_prism_flag=low_prism_flag,coverage=cover,
@@ -207,6 +224,8 @@ def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=1
                 complete_global_decision=False,affordable_solve_proved=False,
                 inherited_universal_cuts=len(known),iterations=[],num_search_workers=1,
                 initial_candidate=initial_candidate,initial_candidate_only_a_soft_hint=True,
+                learn_psd=learn_psd,psd_only=psd_only,psd_library=psd_library,
+                inherited_psd_cuts=len(known_psd),
                 termination_reason=None)
     output=Path(output)
     best=None
@@ -227,6 +246,8 @@ def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=1
                 solver.add_atmost(lits,bound)
         for clause in known:
             solver.add_clause(list(clause))
+        for cut in known_psd.values():
+            solver.add_linear_cut(*linearize(cut,labels,graph,gram_bases))
         if initial_positives is not None:
             phases=[i if i in initial_positives else -i for i in range(1,len(edges)+len(selectors)+1)]
             solver.set_phases(phases)
@@ -267,7 +288,7 @@ def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=1
             cuts,statistics=separate(labels,graph,candidate)
             case=next(i for i,var in enumerate(selectors) if var in positives)
             entry=dict(iteration=iteration,elapsed_seconds=time.monotonic()-start,
-                       matching_case=case,**statistics)
+                       matching_case=case,source='SUPPLIED_ROOT_COUNT_SEED' if supplied else 'SOLVER',**statistics)
             report['iterations'].append(entry)
             if best is None or statistics['excess']<best:
                 best=statistics['excess']
@@ -279,27 +300,42 @@ def run(output,k=14,seconds=60,low_prism_flag=False,resume=None,max_iterations=1
                               adjacency=reconstruct_and_check(k,labels,candidate),exact_all_pair_check=True)
                 break
             new=0
-            for clause,witness in cuts.items():
-                # Every witness must be violated by the current candidate.
-                assert all(-lit in positives for lit in clause)
-                if clause not in known:
-                    solver.add_clause(list(clause))
-                    known[clause]=witness
-                    new+=1
-            assert new>0,'A repeated fully cut candidate is a solver/encoding error.'
+            new_psd=0
+            if learn_psd or psd_only:
+                for cut in separate_psd(labels,candidate):
+                    key=canonical_cut(cut,labels)
+                    if key in known_psd:
+                        continue
+                    terms,lower=linearize(cut,labels,graph,gram_bases)
+                    assert sum(weight for var,weight in terms.items() if var in positives)<lower
+                    solver.add_linear_cut(terms,lower)
+                    known_psd[key]=cut
+                    new_psd+=1
+            if not psd_only or not new_psd:
+                # Exact C2 cuts are a fallback if numerical separation finds
+                # no NEW integer PSD witness. No numerical PSD verdict is used.
+                for clause,witness in cuts.items():
+                    assert all(-lit in positives for lit in clause)
+                    if clause not in known:
+                        solver.add_clause(list(clause))
+                        known[clause]=witness
+                        new+=1
+            assert new+new_psd>0,'A repeated fully cut candidate is a solver/encoding error.'
             entry['added_universal_cuts']=new
+            entry['added_psd_cuts']=new_psd
             if iteration%10==0:
                 report.update(universal_cuts=list(known.values()),universal_cut_count=len(known),
+                              psd_cuts=list(known_psd.values()),psd_cut_count=len(known_psd),
                               checkpoint_seconds=time.monotonic()-start,termination_reason='RUNNING')
                 output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         else:
             report['termination_reason']='ITERATION_LIMIT'
         report['solver_stats']=solver.accum_stats()
     report.update(total_seconds=time.monotonic()-start,universal_cuts=list(known.values()),
-                  universal_cut_count=len(known))
+                  universal_cut_count=len(known),psd_cuts=list(known_psd.values()),psd_cut_count=len(known_psd))
     output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({key:value for key,value in report.items() if key not in
-                      ('labels','coverage','iterations','best_candidate','adjacency','universal_cuts')},ensure_ascii=False),flush=True)
+                      ('labels','coverage','iterations','best_candidate','adjacency','universal_cuts','psd_cuts')},ensure_ascii=False),flush=True)
     return report
 
 
@@ -313,5 +349,9 @@ if __name__=='__main__':
     parser.add_argument('--max-iterations',type=int,default=10000)
     parser.add_argument('--solver',choices=['glucose4','cpsat'],default='glucose4')
     parser.add_argument('--initial-candidate')
+    parser.add_argument('--learn-psd',action='store_true')
+    parser.add_argument('--psd-only',action='store_true',help='Separate PSD before C2; fall back to exact C2 cuts if no integer PSD witness is found.')
+    parser.add_argument('--psd-library')
     args=parser.parse_args()
-    run(args.output,args.roots,args.seconds,args.low_prism_flag,args.resume,args.max_iterations,args.solver,args.initial_candidate)
+    run(args.output,args.roots,args.seconds,args.low_prism_flag,args.resume,args.max_iterations,args.solver,args.initial_candidate,
+        args.learn_psd,args.psd_only,args.psd_library)

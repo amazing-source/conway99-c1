@@ -6765,3 +6765,51 @@ Livraison906 : commit0097ca5, global_cover_0097ca5_20261016.zip,
 README_GLOBAL_COVER.txt a plat dans codex_hmatch_20261016. La reprise des
 2483 clauses est controlee avec seconds=0, donc sans nouvelle exploration.
 Trois modules compiles, controles G4/CP termines, aucun worker actif.
+
+
+## 16/10/2026 -- Suite907 : les deux PSD suffisent globalement
+
+Message907 lu et acquitte. LAB fournit sa synthese des implications prouvees
+et18 TIMEOUT de90min sur les cas5etoiles (pas d'exclusion). Sa proposition
+de retour aux cadres15 ne remplace pas la consigne directe de Dilan :
+rester sur le global. Reponse908 : la contradiction5lignes grises est
+C1 exact, degres et caps C2 uniquement, sans aucune PSD/rang/DISC.
+
+Exploitation d'un ancien commentaire de conway_core_repair.py, formalisee
+dans conway_global_psd_equivalence_20261016.txt : pour Gamma84 BINAIRE,
+symetrique, diagonale0 et tous C1 exacts, les deux PSD sont SUFFISANTES.
+BBt=11I+J-M ; Gamma sur imBt a spectre12^1,-2^6,0^7. Sur kerB dim70,
+T=3I-Gamma,U=4I+Gamma et T+U=7I. Traces forcees par binarite et C1 :
+trT210,trT^2=1470=7trT. PSD des deux borne theta dans[0,7], et
+sum theta(7-theta)=0 force theta0 ou7. Donc tous C2, rangs30/40 et99 SRG.
+Pas de rang impose a part, pas d'H-MATCH, pas de coeur conserve.
+
+Moteur : nouveau conway_global_psd.py, separation numerique servant
+UNIQUEMENT a proposer des vecteurs, valeur negative certifiee en entiers.
+global_lazy accepte --learn-psd,--psd-only,--psd-library. Toute absence
+de temoin numerique laisse le controle C2 exact actif ; recours a une
+clause C2 si la separation ne produit pas de nouvelle coupe. La sauvegarde
+et resume conservent aussi les vecteurs PSD, independants du germe.
+
+Les398 anciennes coupes de conway_psd_cut_library sont reimportees dans
+le modele global19types. Sur notre temoin a comptes racines exacts,23
+vecteurs negatifs nouveaux, donc421 coupes au total. Pilote60s1worker :
+UNKNOWN59.828s,30217 branches104 conflits ; aucun deuxieme candidat.
+Le temoin initial viole deja des coupes anciennes : il sert de proposition
+de valeurs et de source de nouvelles inegalites, pas de solution pretendue
+du modele renforce. Les lignes du journal du solveur le distinguent par
+source=SUPPLIED_ROOT_COUNT_SEED. Aucun bord15/44 fixe.
+
+Obstacle continu identifie explicitement : Gamma0=(2J-Bt(I+M)B)/10 satisfait
+C1 avec entrees0,1/10,2/10 ; sur kerB Gamma0=0, donc T=3P etU=4P.
+Les deux PSD admettent ainsi un interieur relatif fractionnaire. Pour
+0<=Gamma<=1 avec C1, tr(TU)=1008-trGamma^2=sum Gamma_ij(1-Gamma_ij).
+La binarite exige zero ; le centre fractionnaire donne840. Une preuve
+globale doit exclure un point BINAIRE, pas simplement la relaxation PSD.
+
+Controles propres de l'integration : traces T8=1680,T8^2=94080,U15=4200,
+U15^2=441000 ; annihilation exacte deBt ; (15T8+8U15)^2=840*(15T8+8U15).
+Centre fractionnaire controle par entiers apres multiplication par10.
+Les23 nouvelles coupes rejettent le temoin et acceptent ce centre. Replay
+421 coupes avec seconds=0, sans solveur ; deux modules compiles. Aucun
+re-audit d'un temoin LAB. Tous les processus de cette passe sont termines.
