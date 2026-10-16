@@ -52,6 +52,8 @@ def main():
     parser.add_argument("--profile-triples",action="store_true")
     parser.add_argument("--triangle-cuts",action="store_true")
     parser.add_argument("--exact-triangles",action="store_true")
+    parser.add_argument("--short-vectors",action="store_true")
+    parser.add_argument("--linearization",type=int,choices=range(3),default=0)
     parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
@@ -76,6 +78,10 @@ def main():
         config["triangle_cuts"] = True
     if args.exact_triangles:
         config["exact_triangles"] = True
+    if args.short_vectors:
+        config["short_vectors"] = True
+    if args.linearization:
+        config['linearization'] = args.linearization
     if args.interleave:
         config["interleave"] = True
     if args.local_tables:
@@ -114,7 +120,7 @@ def main():
                "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time,"minc_lines":args.minc_lines,
                "six_prism_profiles":args.six_prism_profiles,"line_profiles":args.line_profiles,
                "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
-               "exact_triangles":args.exact_triangles}
+               "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None

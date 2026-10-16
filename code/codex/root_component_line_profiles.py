@@ -34,7 +34,7 @@ def add_triple_packing(model, rows):
     return count
 
 
-def root_profiles(graph, template, root):
+def root_profiles(graph, template, root, signature_data=None):
     lookup={p:i for i,p in enumerate(LABELS)}
     parts=[tuple(p) for p in template['nontrivial_component_groups'][root]]
     grouped={j for p in parts for j in p}
@@ -47,6 +47,8 @@ def root_profiles(graph, template, root):
     locations={w:(part_of[a//2],colour) for colour,row in enumerate(stars) for a,w in zip(letters,row)}
     masks=[sum(1<<position[w] for w in vertices if locations[w][0]==i) for i in range(len(parts))]
     rows={}
+    projections={}
+    original_count=0
     for w,label in enumerate(LABELS):
         if root in tuple(a//2 for a in label):
             continue
@@ -58,19 +60,40 @@ def root_profiles(graph, template, root):
             forced={v for v in row if isinstance(graph[w][v],int) and graph[w][v]==1}
             choices.append([tuple(p) for p in combinations(allowed,2) if forced.issubset(p)])
         profiles=[]
+        active=[]
+        allowed_projections=None
+        if signature_data is not None:
+            edges,signatures,indicators=signature_data
+            active=[i for i,e in enumerate(edges) if root in e]
+            allowed_projections={tuple(h[i] for i in active) for h in signatures[w]}
+        def projection(profile):
+            return tuple((0 if own & set(edges[i]) else 1)-
+                         sum(set(a//2 for a in LABELS[v])==set(edges[i]) for v in profile)
+                         for i in active)
         for a in choices[0]:
             for b in choices[1]:
                 profile=tuple(sorted(a+b))
                 mask=sum(1<<position[v] for v in profile)
                 if all((mask & cmask).bit_count()==target for cmask,target in zip(masks,targets)):
+                    original_count+=1
+                    # C1 also bounds the counts at the two original labels and their mates.
+                    if any(sum(letter in LABELS[v] for v in profile)>1
+                           for letter in {x for a in label for x in (a,a^1)}):
+                        continue
+                    if allowed_projections is not None and projection(profile) not in allowed_projections:
+                        continue
                     profiles.append(profile)
         rows[w]=profiles
+        if signature_data is not None:
+            projections[w]={'active':active,'profile_keys':[projection(p) for p in profiles],
+                            'signature_keys':[tuple(h[i] for i in active) for h in signatures[w]]}
     return {'root':root,'vertices':vertices,'locations':locations,'rows':rows,
-            'flag_count':sum(map(len,rows.values())),'component_sizes':[6*len(p) for p in parts]}
+            'flag_count':sum(map(len,rows.values())),'component_sizes':[6*len(p) for p in parts],
+            'signature_projections':projections,'unfiltered_flag_count':original_count}
 
 
-def add_line_profiles(model, graph, template, count, triple_packing=False):
-    candidates=[root_profiles(graph,template,root) for root in range(7)]
+def add_line_profiles(model, graph, template, count, triple_packing=False, signature_data=None):
+    candidates=[root_profiles(graph,template,root,signature_data) for root in range(7)]
     candidates.sort(key=lambda x:(x['flag_count'],x['root']))
     records=[]
     products={}
@@ -95,6 +118,12 @@ def add_line_profiles(model, graph, template, count, triple_packing=False):
             flags=[model.new_bool_var(f'line_profile_{root}_{w}_{i}') for i in range(len(profiles))]
             model.add_exactly_one(flags)
             profile_rows.append((w,profiles,flags))
+            if signature_data is not None:
+                projection=data['signature_projections'][w]
+                signature_flags=signature_data[2][w]
+                for key in set(projection['signature_keys']):
+                    model.add(sum(flag for flag,k in zip(flags,projection['profile_keys']) if k==key)==
+                              sum(flag for flag,k in zip(signature_flags,projection['signature_keys']) if k==key))
             for v in locations:
                 model.add(graph[w][v]==sum(flag for flag,profile in zip(flags,profiles) if v in profile))
             for flag,profile in zip(flags,profiles):
@@ -105,6 +134,8 @@ def add_line_profiles(model, graph, template, count, triple_packing=False):
             model.add(graph[u][v]+inside+sum(terms)==2-len(set(LABELS[u]) & set(LABELS[v])))
         records.append({'root_line':root,'component_sizes':data['component_sizes'],
                         'profile_flags':data['flag_count'],'outside_vertices':len(data['rows']),
+                        'unfiltered_profile_flags':data['unfiltered_flag_count'],
+                        'joint_signature_projection':signature_data is not None,
                         'common_neighbour_equations':len(contributions),
                         'triple_packing_constraints':add_triple_packing(model,profile_rows) if triple_packing else 0})
     return {'records':records,'inside_products':len(products),'scope':__doc__}

@@ -406,3 +406,82 @@ couvrant les74Gram du fichier filtered_20261017_0050 (Gram variable,
 84tables de signatures, GammaH, moments, lambda1, profils+triples,
 une seule normalisation de composante). Ce dernier est un essai sur
 TOUT le template9, pas sur un Gram temoin. Pas encore de verdict.
+
+18. Petits vecteurs entiers du reseau H (17/10, vers01h15)
+
+Pour tout h entier avec Gamma h=-4h, sa somme est nulle. Si h(v)=m,
+la somme sur N(v) est-4m et celle sur les autres sommets est3m.
+L'inegalite x^2>=|x| pour x entier donne ||h||^2>=m^2+7|m|.
+Si h=Hc et c est une combinaison ENTIERE des colonnes, ||h||^2=7c^tRc.
+Norme R2 : coordonnees0,+1,-1, sept de chaque signe. Norme R4 : |h(v)|<=2.
+
+Pour la norme2, deux positifs adjacents auraient chacun>=5 voisins
+negatifs parmi7, donc>=3 voisins communs, impossible. De meme pour
+les negatifs. Chaque positif a exactement4 voisins negatifs; les21
+paires positives comptent au total7*C(4,2)=42 voisins communs : chacune
+en a donc exactement2 dans les negatifs. AUCUN voisin commun exterieur
+ne peut s'ajouter. Les sept positifs portent ainsi chacun deux labels
+sans repetition, et forment un couplage parfait sur les14 labels.
+Les sept negatifs aussi. Les deux ensembles induisent2-(7,4,2).
+Coupes :28 egalites de couplage par direction courte; interdiction de
+meme signe si deux sommets sont adjacents OU partagent un label.
+Le balayage non ordonne impose aussi les14 comptes par paire de labels
+(2positifs et2negatifs par droite racine). Ce sont des conditions
+necessaires; un modele de moments satisfiable n'est toujours pas un graphe.
+
+Enumeration COMPLETE des directions R-norme<=4 : si S est la matrice
+sur les ancres, P=R[ancres,:], une base de Hermite B du reseau engendre
+par les colonnes de P a Gram B^t S^-1 B. La coordonnee d'un h sur cette
+base est B^t S^-1 h_ancres. Bornes exactes des coefficients par
+z_i^2<=4(G^-1)_ii. Pas de troncature heuristique aux petits coefficients.
+Controles A1,A2,A2 a generateur redondant,D4 (12racines et12vecteurs
+norme4 a signe pres) passes. Filtre initial sans couplages : pas encore
+d'exclusion; nouveau balayage AVEC couplages : deja12Gram du template7
+exclus sur115 traites. Rapport root_component_signature_short_matchings.
+Ce n'est pas encore une fermeture de template. Ancien short_scan arrete
+proprement apres checkpoints pour liberer son coeur partage.
+
+Les profils de voisinage sont aussi couples maintenant aux signatures H :
+le profil d'un sommet hors d'une droite determine ses comptes sur chaque
+rectangle incident a cette droite. Suppression des profils sans signature
+compatible et egalite des indicateurs par classe de projection. Les limites
+C1 sur les labels du sommet et leurs conjugues sont appliquees avant
+creation des indicateurs. Essai7#438 :2droites, triangles exacts, directions
+courtes, toujours en cours au moment de cette note.
+
+Fin du pilote profils+triples9cas : nouveaux verdicts sauvegardes; les
+verdicts UNKNOWN restent ouverts. Essai9#116 triangles exacts :UNKNOWN
+120sCPU. Projector9 sur74Gram toujours en cours. Gouverneur partage actif,
+1coeur la plupart du temps, pause automatique a70% de charge totale.
+Pont :954 lu/ack,956 envoye (theoreme petites normes et absence de borne
+universelle positive sur les grilles en c1). Aucun re-audit demande a LAB.
+
+19. Obstruction universelle des rectangles a3 aretes
+
+La norme2 d'une COLONNE originale de R est impossible, dans tout graphe
+99, sans hypothese sur les composantes ni les automorphismes.
+En effet R_QQ=8-2e(Q)=2 implique e(Q)=3. Les seules configurations C1
+surQ a3 aretes sont les quatre cheminsP4 contenus dans son carre
+orthogonal (controle exact corner_graphs(3)). Le vecteur H_Q vaut1 aux
+extremites,0 aux deux sommets internes. Ces deux extremites partagent
+un label, contrairement au couplage parfait du lemme de norme14.
+Donc e(Q) appartient a{0,1,2,4}, jamais3.
+
+Le balayage direct de l'inventaire0050 retire648Grams :100/557 pour7,
+10/74 pour9,538/1085 pour19. Rapport root_component_signature_no_path4.
+Apres union et nouvel export0120 :457,64,547Gram ouverts; toujours76/79.
+Ce resultat est une obstruction locale valable globalement, PAS une
+contradiction pour tout Conway. Il n'est pas base sur un verdictSAT.
+Les controles4motifsP4 ont tous les deux signes positifs surun labelcommun.
+Au niveau des codes de composants :114/122codes12 et96584/102952codes18
+survivent, donc aucune fermeture automatique d'une taille de composante.
+
+Les pilotes7#438 (19.41sCPU) et9#116 (16.39sCPU) ont finiINFEASIBLE avec
+les nouvelles coupes, mais ils ont eux-memes une diagonale2; leur exclusion
+est desormais aussi couverte par la preuve courte. Le projector9_triangles
+sur74Gram a atteint son budget300sCPU sans fermeture (voir son rapport).
+Nouveau balayage des1068Gram sansP4 : short_matchings_nop4,0.5sCPU par
+modele de moments. Pilote6cas interlaces short_lp,2processus60sCPU, profils
+sur2droites, signatures couplees, triangles exacts et relaxationLPniveau2.
+
+Pont957 (selon reponse d'envoi) : preuveP4 et impact communiques a LAB.

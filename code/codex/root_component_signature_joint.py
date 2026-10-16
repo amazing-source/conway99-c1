@@ -25,10 +25,15 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False):
     edges = [tuple(e) for e in template["nongrid_edges"]]
     raw = [[int(x) for x in row] for row in matrix.tolist()]
     domains = {tuple(r["rectangle"]): r for r in signature_domains(edges, raw)}
+    short_data, short_info = None, None
+    if short_vectors:
+        from root_component_short_vectors import short_directions, filter_domains, evaluations
+        short_data = short_directions(matrix)
+        short_info = filter_domains(domains, short_data)
     anchors = list(matrix.rref()[1])
     small = matrix.extract(anchors, anchors)
     det = int(small.det())
@@ -39,6 +44,13 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         corner_tables = enumerate_corner_rows(edges, matrix, domains, anchors, det, adj)
         for table in corner_tables:
             item = domains[table["rectangle"]]
+            if short_data is not None:
+                from root_rectangle_domains import RECTANGLE_LABELS
+                values = [evaluations(h, short_data, roots_only=True) for h in item["signatures"]]
+                table["rows"] = [row for row in table["rows"] if all(
+                    not (edge or set(RECTANGLE_LABELS[i]) & set(RECTANGLE_LABELS[j])) or
+                    not any(a == b != 0 for a, b in zip(values[row[i]], values[row[j]]))
+                    for edge, (i, j) in zip(row[4:], combinations(range(4), 2)))]
             used = sorted({i for row in table["rows"] for i in row[:4]})
             remap = {old: new for new, old in enumerate(used)}
             item["signatures"] = [item["signatures"][i] for i in used]
@@ -85,7 +97,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         reduced = [tuple(h[i] for i in anchors) for h in signatures]
         if not signatures:
             model.add(False)
-            return model, graph, {"empty_domain": list(rectangle)}
+            return model, graph, {"empty_domain": list(rectangle), "short_vector_filter": short_info}
         for w in corners:
             hs[w], hfull[w] = reduced, signatures
             selectors[w] = model.new_int_var(0, len(signatures) - 1, f"signature_{w}")
@@ -185,7 +197,22 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                         eigen_products += 1
                 model.add(sum(terms) == -4 * coordinates[u][i])
     pair_tables, pair_rows = 0, 0
-    if pair_psd:
+    short_masks = None
+    if short_data is not None:
+        short_masks = [[(
+            sum(1 << i for i, x in enumerate(values) if x == 1),
+            sum(1 << i for i, x in enumerate(values) if x == -1))
+            for values in [evaluations(h, short_data, roots_only=True) for h in hfull[w]]]
+            for w in range(84)]
+        root_count = sum(d['norm'] == 2 for d in short_data['directions'])
+        for root_id in range(root_count):
+            for letter in range(14):
+                for sign in (0, 1):
+                    model.add(sum(flag for w in range(84) if letter in LABELS[w]
+                                  for flag, mask in zip(indicators[w], short_masks[w])
+                                  if mask[sign] & (1 << root_id)) == 1)
+        short_info['root_label_matching_equations'] = 28 * root_count
+    if pair_psd or short_data is not None:
         def inner(a, b):
             return sum(a[i] * adj[i][j] * b[j] for i in range(len(anchors)) for j in range(len(anchors)))
         norms = [[20 * det - 8 * inner(h, h) for h in hs[w]] for w in range(84)]
@@ -204,8 +231,12 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                     for b, hv in enumerate(hs[v]):
                         ip = inner(hu, hv)
                         for e in possible_edges:
+                            if (e or common) and short_masks is not None and (
+                                short_masks[u][a][0] & short_masks[v][b][0] or
+                                short_masks[u][a][1] & short_masks[v][b][1]):
+                                continue
                             off = (base8 - 8 * e) * det - 8 * ip
-                            if off * off <= norms[u][a] * norms[v][b]:
+                            if not pair_psd or off * off <= norms[u][a] * norms[v][b]:
                                 allowed.append([a, b] if isinstance(edge, int) else [a, b, e])
                 pair_cache[cache_key] = allowed
             if len(allowed) < len(hs[u]) * len(hs[v]) * len(possible_edges):
@@ -244,7 +275,8 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     general_profiles=None
     if line_profiles:
         from root_component_line_profiles import add_line_profiles
-        general_profiles=add_line_profiles(model,graph,template,line_profiles,triple_packing=profile_triples)
+        general_profiles=add_line_profiles(model,graph,template,line_profiles,triple_packing=profile_triples,
+                                          signature_data=(edges,hfull,indicators))
     exact_triangle_info=None
     if exact_triangles:
         from root_component_exact_triangles import add_exact_triangle_structure
@@ -257,13 +289,13 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             "four_corner_tables":corner_info, "local_component_tables": local_info,
             "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info,
             "line_profiles":general_profiles,"shared_label_triangle_clauses":triangle_info,
-            "exact_triangle_structure":exact_triangle_info}
+            "exact_triangle_structure":exact_triangle_info,"short_vector_filter":short_info}
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -271,7 +303,8 @@ def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_norma
     solver.parameters.max_time_in_seconds = max(600,100*seconds) if cpu_time else seconds
     solver.parameters.cp_model_probing_level = 0
     solver.parameters.symmetry_level = 0
-    solver.parameters.linearization_level = 0
+    solver.parameters.linearization_level = linearization
+    info['linearization_level'] = linearization
     search_cpu_start = time.process_time()
     timer_done = threading.Event()
     timer = None
@@ -322,6 +355,8 @@ def main():
     parser.add_argument("--profile-triples",action="store_true")
     parser.add_argument("--triangle-cuts",action="store_true")
     parser.add_argument("--exact-triangles",action="store_true")
+    parser.add_argument("--short-vectors",action="store_true")
+    parser.add_argument("--linearization",type=int,choices=range(3),default=0)
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -359,7 +394,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)
