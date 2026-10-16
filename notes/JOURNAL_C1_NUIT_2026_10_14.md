@@ -5619,3 +5619,86 @@ contraction positive, et son espace propre1 est V_L inter V_M. Ainsi
 dim(V_L inter V_M)<=tr(Q^k) pour tout k>=1. Le critere tr(Q^k)<9-max c
 raffine la borne D7. Il ne fournit pas a lui seul une preuve universelle
 ni un exposant k abordable. Aucun processus actif.
+
+## 16/10 - Suite865-869 : attaque H-MATCH, constructions exactes sans conclusion
+
+865 lu/acquitte puis866/867, sans dupliquer les controles du pair. LAB
+propose la preuve analytique pour Codex, et la construction/les nouvelles
+classes de noyau pour lui. Sa communication relaie une decision horaire
+de Dilan ; ce n'est pas une instruction directe de l'utilisateur dans
+cette session. La cible mathematique entre dans le perimetre deja autorise :
+  C1,C1',C2,T/U PSD et nu(T)>=14 => M1=h(M0),M3=h(M2).
+Cette cible reste OUVERTE. Aucune des tentatives ci-dessous ne la prouve
+ou ne la refute. Le seul etat voulu est une preuve ou un bloc exact casse.
+
+CONSTRUCTIONS ORTHOGONALES PROPRES. Pour Bq=0, R=I-2qq^t/(q^tq) fixe B,
+donc les deux geometries K et L. Si Gamma'=R Gamma R est binaire et sans
+boucle, T'=RTR et U'=RUR heritent exactement PSD et rang. Les contraintes
+combinatoires modifiees se testent sur le NOUVEAU bloc, sans recalculer
+les rangs/PSD du producteur. Aucun audit d'automorphismes effectue.
+
+La condition de diagonale nulle impose (Gamma q)_i=lambda q_i sur le
+support. Si la conjugaison est non triviale, une ligne hors support
+change : pour chaque q_i non nul, la modification est le meme scalaire
+fois q_i et vaut+1 ou-1. Les |q_i| sont donc tous egaux, meme si q etait
+initialement reel. Bq=0 force autant de+ que de-. Un sommet exterieur
+affecte rencontre TOUT le support positif et aucun du negatif. Ainsi
+toutes ces reflexions non triviales s'enumerent via P subset N(x), puis
+les N de meme incidence B1_N=B1_P parmi les non-voisins de x. Dans nos
+blocs degre<=6, le support est au plus12. Le programme utilise ce principe
+exhaustif par germe, pas une borne generale sur tous les graphes.
+
+Essai initial sur les circuits simples du graphe des etiquettes :311 de
+longueur4,3600 de longueur6,15120 de longueur8. Sur le type hv_h_c22_H30_23
+et son remariage _10, aucune reflexion binaire non triviale. Meme constat
+sur rank30_urep100. Ensuite enumeration de TOUTES les reflexions fixant B
+pour rank30_urep100 :2048 sous-ensembles de voisinages,4832 supports
+equilibres distincts,200 satisfaisant l'equation propre interne, AUCUN
+conjugue binaire non trivial. Execution0,3s. Script
+hmatch_cycle_reflections.py ; rapports hmatch_*reflections*20261016.json.
+L'ancien export lab700_z5_rank30 est un bloc trois-etoiles34, pas44 : il
+n'a pas ete utilise dans ces comptes (tentative de chargement rejetee).
+
+Deuxieme construction : pour deux racines a,b et m voisins communs y,
+poser u=sum_y(e_ay-e_by), F l'echange partiel de ces paires d'etiquettes.
+R=F+uu^t/m est orthogonal et fixe B. Si Gamma u=lambda u, alors
+R Gamma R=F Gamma F. On obtient donc un simple relabellement qui conserve
+les Gram par une AUTRE isometrie, R ; les nouvelles contraintes locales
+restent a imposer. Test des paires centrales mates et des45 paires de
+racines exterieures, avec subsets de taille>=3 : seulement les echanges
+centraux entiers pour rank30_urep100 ; sur grid_Z5h_c22, les echanges
+admissibles rencontres conservent H-MATCH. Aucun contre-exemple.
+Script hmatch_partial_star_reflections.py. Il ne revendique pas une
+classification de toutes les transformations orthogonales fixant B.
+
+TROISIEME CONSTRUCTION, REMARIAGE D'UN GERME DEJA CASSE. Gamma fixe,
+modifier uniquement M parmi les945 couplages des10 lettres exterieures.
+C1/C2/binaire et la rupture H-MATCH sont herites ; C1' et les Gram changent.
+Sur hm_id_c22_HB_1.json de LAB (nu13, PSD, casse, certificats acceptes),
+le couplage original est saute. Les944 autres sont exclus EXACTEMENT :
+  210 violent C1' ;
+  734 ont rang(T8 mod101)>=31, donc rang reel>=31 et nu<=13.
+Aucune diagonalisation numerique ou re-verification du germe ;0,36s.
+Script hmatch_broken_mate_family.py, rapport hmatch_broken_mates_20261016.json.
+Ce resultat ne porte que sur Gamma fixe ; pas une preuve H-MATCH generale.
+
+868 transmis : demander UN export obj53 de LAB avec matchings casses,
+T PSD, nu>=14 et C' PSD. Le bloc impair C' ne depend pas du remariage
+exterieur ; si C' est deja negatif, cette construction ne peut reparer U.
+La demande est distincte des recherches du pair modifiant Gamma. Pas de
+campagne supplementaire demandee au pair, ni de re-audit de ses verdicts.
+
+POINT ANALYTIQUE TRANSMIS869. Dans867, A+A'=7I n'est vrai qu'apres
+blanchiment de Pi_+, pas dans la base h orthonormale brute, meme en
+retirant les4 etoiles forcees. Pour q=sum_{c=0}^3(e_cy-e_c,y^1), y exterieur,
+Bq=4(e_y-e_y^1), q est h-pair orthogonal aux etoiles, et Pi q=2q/3.
+Il faut donc Atilde=Pi_+^{-1/2} A Pi_+^{-1/2} sur son support et le bloc
+mixte transforme de meme. Les rangs/nullites et contractions generalisees
+se transportent, mais la formule brute ||B_mix||F^2=b/2 devient ponderee.
+Le bloc impair, hors des2 etoiles impaires, a bien Pi_-=I. Aucune lecture
+de graphe n'est necessaire a cette correction de geometrie fixe.
+
+STATUT : ni preuve H-MATCH ni contre-exemple. nu(C)=2 reste une observation
+sur les119 structures CASSEES du profil867, pas un lemme universel (les
+anciens temoins h-invariants de l'extremite impaire ont nu(C)=3). Aucune
+borne de rang n'a ete deduite abusivement des seules contractions.
