@@ -33,6 +33,8 @@ Aucun résultat de C1 n'a été relu par un humain.
    - Si la réponse est non, il n'y a pas de graphe de Conway.
    - Aujourd'hui la réponse est INCONNUE : sur 34 cas, 18 ont été lancés et tous les 18 sont en TIMEOUT à 90 min.
    - J'ai tout arrêté à 12:50 UTC (Valorant ouvert sur le PC du labo).
+   - Étalonnage (§8) : sur les paramètres de srg(243), où la réponse est oui, le solveur bloque aussi à cinq étoiles. Un
+     INCONNU n'est donc pas un indice de non-existence.
 7. Codex a construit 15 lignes complètes et exactes sur les 84 labels (λ, μ et comptes de racines exacts, sans condition
    PSD). Des cadres partiels existent donc, et la non-extension n'est pas immédiate.
 8. Anciens outils à brancher tout de suite (§5) :
@@ -285,7 +287,46 @@ Usage : couper le modèle en c(l0), c(l1) ∈ {1, ≥ 2} et ajouter les égalit�
 Pas de longue campagne et pas de cloud sans ton accord. Tant qu'un jeu est ouvert sur le PC, je reste en basse
 consommation.
 
-## 8. Hygiène
+## 8. Ajouts du 16/10 après-midi (après l'envoi du bilan)
+
+- **Étalonnage sur srg(243)** (`cp_generic.py`, CP-SAT, un seul worker, aucune arête fixée ; mêmes contraintes C1, C1'
+  et C2 avec 22 lettres) :
+  - 4 étoiles (76 labels) : trouvé en 34 s ;
+  - 5 étoiles (92 labels) : INCONNU à 240 s, alors que de vraies structures existent (les huit srg(243)).
+  Le même saut 4 → 5 étoiles bloque donc le solveur là où la réponse est oui. Un INCONNU à cinq étoiles pour Conway n'est
+  pas un indice de non-existence (rejoint la calibration par solution plantée du structures lab). Avec 20 min, le cas
+  K = 22 trouve une solution en 351 s ; celui de Conway (52 labels seulement) reste INCONNU à 1 500 s.
+- **Taux d'extension de bases aléatoires** (`ext_rate.py` : base à quatre étoiles tirée par objectif aléatoire, puis
+  test de la cinquième étoile) :
+  - K = 22 : 5 bases obtenues sur 8 tirages, et les 5 s'étendent (solutions en 41-54 s) ;
+  - K = 14 (Conway) : 8 bases sur 8 ne s'étendent pas (INFAISABLE en 6-24 s), en plus des 34 bases variées du matin.
+  La barrière de la cinquième étoile est donc propre à Conway. C'est une motivation, pas une preuve.
+- **Où ça casse** (`ext_rows.py`) : on accroche seulement les labels {4,6}, {4,7}, ..., avec la lettre 4 en simple borne
+  (étoile 4 non exacte). Jusqu'à 6 labels passent, le 7ᵉ est INFAISABLE (8 bases sur 8 ; une base casse déjà au 6ᵉ).
+  - Noyau (`ext_rows_core.py`, échantillon 1) : les 6 labels {4,6..11} sont tous nécessaires, plus 31 labels de base sur
+    44, sans aucun coin {02,03,12,13}. Pas de motif local.
+  - Problème sans base « 4 étoiles exactes + 7 labels {4,t} » (`plain_rows.py`) : INCONNU à 240 s. C'est une relaxation
+    de la cinquième étoile ; s'il était INFAISABLE, Conway serait exclu (après certification).
+- **Coût du découpage brut** (`five_cubes.py`) : avec M_4 et M_0 fixés au hasard (environ 3,5·10⁴ cubes à symétrie près),
+  2 cubes sur 2 sont INCONNUS à 100 s. Le coût dépasse donc 1 000 heures CPU sans borne haute connue. Ce n'est pas un coût
+  défendable avec le modèle actuel.
+- **Cadres de Codex vus à cinq étoiles** (`five_from_frame.py`) :
+  - 15 lignes fixées : INFAISABLE en 9 s (cohérent avec son bloc gris, obstruction par quotas C1/C2 seuls) ;
+  - 12 lignes de L_4 seules : INCONNU à 240 s.
+- **Noyau minimal de HB** (`ext5_core.py`, minimal à 20 s près) : 30 des 44 labels, aucun coin. Il contient les
+  appariements croisés « alignés » {0,t}~{1,t} et {2,t}~{3,t}. L'obstruction n'est pas un petit motif local : pas de
+  lemme court à en tirer.
+- **Identité de trace de Codex** vérifiée indépendamment : sous C1 exact et binarité, tr T = 210 et tr T² = 1470 sur ker B.
+  Donc C1 + binaire + T, U ⪰ 0 ⟺ srg(99). Codex note que le centre fractionnaire Γ0 = (2J − Bᵀ(I+M)B)/10 vérifie C1 avec
+  T = 3P et U = 4P : la positivité continue seule n'est jamais infaisable.
+- **Littérature** : la prépublication arXiv 2610.16266 (Natal, Al-saadi, 12/10/2026) annonce la non-existence par un
+  programme SOS. La borne T(99) ≤ 55 est seulement numérique (flottants, pas de certificat exact), et fausse telle
+  qu'énoncée :
+  - 11 grilles 3×3 disjointes ont 66 triangles, sans diamant ni K_{2,3} (contre-exemple de Codex, vérifié) ;
+  - si les densités interdites sont induites, K_99 suffit.
+  Aucun changement de statut.
+
+## 9. Hygiène
 
 - Le travail EXT84 du 16/10 n'est pas encore commité. À faire sur la branche privée habituelle (lab/theta-lp-2026-10-08).
 - Les documents de l'espace de travail postérieurs au 01/10 ne sont pas suivis par git (rapport 04) : risque de perte.
