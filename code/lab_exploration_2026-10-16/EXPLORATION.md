@@ -214,3 +214,12 @@ conjectures, raccourcis, paris.
   entiers (C1, C2), et non une inégalité de norme.
 - Lecture du cas extrémal : un vecteur y = (u, 0_P, z) du noyau, antisymétrique sur tous les labels échangés, avec
   uᵀKu > 0. Son miroir ιy a l'énergie 4uᵀKu. Si ker T est ι-invariant, le cas est vide (lemme impair).
+- Anatomie des quasi-saturations (`near_saturation.py`, `oddpure_anatomy.py`) :
+  - les 340 côtés avec λ_max ≥ 0,99 ont un vecteur extrême u exactement impair sous l'autre transposition
+    (⟨u, miroir u⟩/⟨u,u⟩ = −1) ; le vecteur y = (u, z) est donc impair sous h = (01)(23), avec u dans (−,+) et z dans
+    (+,−) ;
+  - le secteur (−,−) de R^44 est 1-dimensionnel, réduit à w_C (les coins) ;
+  - dans le cas h-invariant, ODD-PURE se ramène à ODD9-NG (graphe signé quotient sur 22 orbites sans valeur propre 3,
+    sans grille ; ODD9 n'a été réfuté que par des grilles le 15/10).
+- `oddpure_hsplit.py` : sans symétrie h, λ_max monte aussi jusqu'à 0,990 (b_*.json, lignées asymétriques ; 110 côtés
+  ≥ 0,95). Le danger n'est donc pas limité au cas h-invariant ; la preuve doit être exacte dans tous les cas.
