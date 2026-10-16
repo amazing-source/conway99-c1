@@ -99,9 +99,64 @@ No mechanism forcing n_1(K) <= 13 - dim(N n hN) was found.
       8 Gamma_RS q = 2 (1^T q) 1_R - B_R^T (3I + M) B_S q, i.e. Gamma_RS q = 0 when B_S q = 0.
     Target: the coexistence of the >= 4 broken blocks per vertex forced by G18.  Bounded pilot first; no feasibility
     claimed.
-- (filled later)
+- 04:46 UTC, second harvest (seeds Z5h c22 and h42): 218 objects, 215 NEW kernel classes (401 known before).  All 215
+  enumerated COMPLETELY (14 055 structures, 455 PSD): no broken member.
+- TOTAL of the night (complete SAT enumerations, no certificate):
+  * 416 kernel classes, 412 complete, about 253 600 structures;
+  * nullity-14 classes: 315 new ones, no broken member at all;
+  * nullity-13 and nullity-12 classes, and the homogeneous classes of every known broken lineage: broken members only
+    up to nullity 13.
+  So no broken structure of nullity >= 14 exists in any of them, PSD or not.
+  The four stopped classes (G1 c55 and relatives) are being rerun with 6 600 s caps (ksat_big_*.log).
+- 05:05 UTC, big_a (the nullity-13 class of c1_G1_c55_PSD_2): COMPLETE, 70 336 structures (1 133 s), no broken member.
+  The nullity-13 sweep is therefore 80 / 80 complete, 89 586 structures, with no broken structure at all.
+- 06:36 UTC, two of the three large nullity-12 classes, rerun with 6 600 s caps; both still NOT complete:
+  * big_b (class of c1_G1_c55_PSD_3): 344 891 structures; broken members up to nullity 13 (6 at 13, all non-PSD);
+  * big_c/newk_0 (nu12/newk_10): 312 191 structures; broken members up to nullity 13 (1 128 at 13, non-PSD); 48 PSD
+    members of nullity 14, all h-related.
+  So no broken structure of nullity >= 14 appears in about 657 000 further structures.  The last class (nu12/newk_12,
+  rerun as big_c/newk_1) started at 06:36 UTC with the same cap and ends at about 08:27 UTC.
+- 05:15 UTC, a small structural fact behind the rigidity (profile_ties.py, numerical 1e-7).
+  * In all 892 distinct T, U PSD structures of nullity >= 14 on file (853 grid, 39 non-grid), no two labels of the
+    same star have identical kernel profiles.
+  * A PURE matching twist (Delta-rows e_{0a} - e_{0b} inside L_0) preserves the kernel only if x(0a) = x(0b) for every
+    kernel vector.
+  * So no pure twist exists in the class of any known object.  Broken class members, as in obj53, need combined
+    twists (l-block + cross + m-block).
+  This is data, not a lemma.  A proof that same-star profiles are distinct at nullity >= 14 would exclude pure twists
+  in Case I, and only them.
+  Threshold (profile_ties_all.py, whole corpus, PSD or not):
+  * same-star profile ties are COMMON at every nullity from 6 to 13, PSD or not (for example 100 of the 126 TU
+    structures of nullity 13, and the HB_1 lineage);
+  * they NEVER occur at nullity >= 14 (578 TU, 60 + 720 + 1 T-only at nullity 14, 15, 16, 2 non-PSD), the broken obj53
+    members of nullity 14-15 included.
+  So the separation of same-star labels by the kernel switches on exactly at the H-MATCH threshold, independently of
+  positivity.  It is unexplained.  Distinct-profile counts at nullity 14 are a candidate first lemma towards
+  rigidity, but they do not exclude combined twists.
+- Codex (msg after 877, commit 431c6c7): a PROVED criterion for pure rematchings.
+  * Setting: a star with matching P, and W = proj_star(ker T) n ker(P + I).
+  * If replacing P by P' alone keeps T PSD, then P' v = -v for every v in W, even when the kernel or the rank changes.
+    Proof: for q in ker T with restriction v, q^T T' q = -v^T (I + P') v <= 0.
+  * Switch form: T' = T - (u v^T + v u^T) PSD forces u|ker and v|ker to be both 0, or nonzero and negatively
+    proportional.
+  * Applied to two seeds (urep100, hv_h_c22_H30_23): in each of the 4 stars the only opposite pairs are the 6 old edges,
+    so no pure rematching of any star is possible, whatever the new kernel.
+  * Scope: the criterion is general, the blocking is proved for those two seeds only; combined modifications stay
+    open.
+- Codex, constructive side (messages of 07:15 and 07:45; commits up to 1d7fae3; his results, not re-audited by me):
+  * HB_1's unlabelled graph, relabelled ("promoted"), gives blocks with T of rank 30 (nullity 14) and U of rank 39;
+  * all 120 admissible geometries he found at nullity >= 14 keep (H-MATCH);
+  * the promoted block does NOT extend: the outer vertex (4,6) has no compatible column (exact Farkas certificate);
+  * he is now attempting a joint construction towards a 99-vertex graph (44 -> 84 -> 99).  He relays the user's
+    reminder not to stop at closing families.  No srg(99) has been built so far.
+- 07:48 UTC, final state of the class sweeps:
+  * 416 classes, 413 complete, about 853 000 structures; no broken structure of nullity >= 14 in any of them, PSD or
+    not;
+  * counted without double counting: each stopped class counts once, by its largest run;
+  * the last large nullity-12 class (nu12/newk_12) is still running past 08:00 (ends about 08:27 UTC).  Its 600 s
+    run had 40 063 structures, with broken members only up to nullity 13.
 
-## 5. Reading of the night (draft, to be confirmed at 08:00)
+## 5. Reading of the night
 - The 13-wall holds in every class we can enumerate completely.  In most classes there is no broken structure at all,
   even without positivity: the kernel determines the structure up to h.  Broken members appear only in classes with a
   very large kernel symmetry group (obj53: |G_N| = 1 920).  There, positivity kills them, through U.  The closest one
@@ -114,3 +169,13 @@ No mechanism forcing n_1(K) <= 13 - dim(N n hN) was found.
 - So (H-MATCH) remains a well-supported conjecture.  Its proof needs either an idea we do not have or an exhaustive
   enumeration whose size we cannot estimate: PSD four-star structures are reached only near symmetric seeds, so the
   space cannot be sampled uniformly.
+
+## 6. Verdict (08:00 UTC, as agreed)
+Neither outcome has been reached: no proof of (H-MATCH), and no exact broken PSD block of nullity >= 14.  Per the
+agreed frame, the local route is declared exhausted.
+The night strengthened the evidence: the 13-wall holds in every class we can enumerate, and pure rematchings are
+blocked by Codex's criterion.  It brought no mechanism.  Options for the user:
+  1. write up the reduction (C1_REDUCTION_OUTLINE_2026-10-16.md);
+  2. Codex's global or constructive line: the coexistence of the >= 4 forced broken blocks per vertex, or his
+     extension attempt towards 99 vertices;
+  3. stop C1 or move to a bounded project (C2 without computation).
