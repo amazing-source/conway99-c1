@@ -5985,3 +5985,52 @@ pas120 graphes non isomorphes. Les noyaux du producteur n'ont pas ete fixes
 ni re-audites. Livraison880, avec preuve et chemin de la construction.
 Suite active : essayer la completion de ce bloc44 au second voisinage84,
 avec rangT deja sature30 et rangU39 (rang global40). Aucun processus lourd.
+
+## 16/10, 09:40 locale — prolongement effectif et construction avec sommets exterieurs
+
+Le nouveau bloc HB promu a ete pousse vers le graphe complet. Pour une
+etiquette exterieure x=(a,b), d=Gamma[S,x],
+ k8=3 B_S^t b_x+B_S^t M b_x-2*1,
+ l15=4 B_S^t b_x-B_S^t M b_x+2*1.
+Les colonnes des deux Gram sont t=-8d-k8 et u=15d-l15. La PSD globale
+force t dans imT8 et u dans imU15. Comme rangT8=30 est deja le rang
+global, t^t T8^+t=20. Pour U, u^t U15^+u<=50. Les conditions d'image,
+les comptes de racines et les caps partiels C2 forment un modele binaire
+lineaire44, AVANT tout test quadratique.
+
+HB promu : les40 congruences individuelles passent. Pourtant(4,6) n'a
+aucune colonne binaire. Le reseau des equations est soluble sur Z et la
+relaxation LP est faisable : ces deux tests seuls ne suffisent pas.
+Certificat fini exact :31 noeuds,16 feuilles ; chaque feuille combine
+des inegalites entieres avec multiplicateurs entiers non negatifs pour
+obtenir0<=un entier strictement negatif. Racine : d_(3,10)=0 ou1.
+Le LP propose les supports ; SymPy reconstruit les poids rationnels et
+les sommes sont controles sur les entiers. Le certificat complet figure
+dans conway_completion_promoted_hb1_columns_20261016.json.
+
+Code four_star_completion_columns.py : equations des noyaux, recherche
+de colonnes, normes de Schur, certificats de reseau/Farkas/arbre binaire.
+Filtre integre a hmatch_root_schur_search.py (--extension-probe) : les120
+incidences HB de nu>=14 echouent toutes sur(4,6), enumeration terminee
+en4,765s. Une incidence locale valide n'est donc pas encore un germe99.
+
+Suite CONSTRUCTIVE, sans imposer de matching central casse :
+conway_extension_switches.py choisit une partition de reflexions R ET
+une colonne d du sommet manquant. Poser z=120 R d. Comme BR=B,
+les equations de noyaux sont qT.z=-15 qT.k8 et qU.z=8 qU.l15.
+Sur une cellule de reflexion S/m, m z_cell=120 S d_cell ; les caps C2
+s'ecrivent (S Gamma)[i,:].z+120m*d_i<=120m*(2-intersection).
+Tout est lineaire conditionnel a la cellule choisie. Les noyaux changent.
+Pour les normes, yT=-8z-120k8, yU=15z-120l15. L'inverse rationnel
+principal donne des coupes tangentes EXACTES de norme<=20/50. Si la
+normeT est<20, ce z precis est interdit car le rang global augmenterait.
+Ces exclusions portent sur z, pas sur un noyau fixe ni un matching fixe.
+
+Pilotes termines, un worker : HB promu et H30_23 echouent deja a la
+colonne lineaire(4,6). urep100 produit29 candidats binaires avec0 ou168
+aretes modifiees ;21 coupesT,21 coupesU et8 nogoods T suffisent ensuite
+a conclure l'impossibilite dans cette famille,4,531s. Les controles des
+nouveaux blocs passent par congruences exactes, pas re-audit des germes.
+Rapports conway_extension_switches_*_20261016.json. Pas de SRG99 trouve.
+Suite : achever l'assemblage des domaines exterieurs et leurs Gram, pour
+que le chemin de construction n'ait pas une etape finale laissee a faire.

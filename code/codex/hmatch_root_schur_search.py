@@ -101,7 +101,7 @@ def materialize(source,report_file,output):
     return artifact
 
 
-def run(source,output,name,seconds):
+def run(source,output,name,seconds,extension_probe=False):
     started=time.monotonic()
     records=json.loads(Path(source).read_text(encoding='utf-8'))
     if 'labels' in records:
@@ -155,10 +155,12 @@ def run(source,output,name,seconds):
     statistics=Counter()
     first_control=None
     hit=None
+    extension_candidate=None
+    extension_failures=[]
     last_print=time.monotonic()
 
     def visit(used,selected,partners,et,eu):
-        nonlocal last_print,first_control,hit
+        nonlocal last_print,first_control,hit,extension_candidate
         if time.monotonic()>=deadline:
             raise TimeoutError
         statistics['nodes']+=1
@@ -186,6 +188,19 @@ def run(source,output,name,seconds):
                 statistics['H_MATCH_INTACT']+=1
                 if first_control is None:
                     first_control=certificate
+                if extension_probe:
+                    from four_star_completion_columns import probe_extension
+                    probe=probe_extension(candidate,seconds=max(.01,min(10,deadline-time.monotonic())))
+                    statistics['EXTENSION_'+probe['status']]+=1
+                    if probe['status']=='ALL_LINEAR_COLUMNS_FEASIBLE':
+                        target=Path(output).with_name(Path(output).stem+'_EXTENSION_CANDIDATE.json')
+                        target.write_text(json.dumps(dict(source=record_name,source_file=str(source),labels=LABELS,
+                            edges=[[i,j] for i,j in combinations(range(44),2) if candidate[i,j]],
+                            exact_certificates=dict(T_PSD=True,U_PSD=True,rank_T=certificate['rank_T'],rank_U=certificate['rank_U']),
+                            construction=certificate,linear_extension_witnesses=probe),indent=2)+'\n',encoding='utf-8')
+                        extension_candidate=str(target)
+                    elif len(extension_failures)<6:
+                        extension_failures.append(dict(local_solution=statistics['ADMISSIBLE_GEOMETRIES'],**probe))
                 return
             # These are genuinely NEW candidate forms: check the constructed
             # integer adjacency and both exact full forms before delivering.
@@ -232,17 +247,18 @@ def run(source,output,name,seconds):
                 if new_mate>=0:
                     next_partners[new_mate]=len(selected)
                 visit(used|columns[i]['mask'],selected+[i],next_partners,nt,nu)
-                if hit:
+                if hit or extension_candidate:
                     return
     exhausted=False
     try:
         if rank_bound>=0:
             visit(0,[],[],[],[])
-        exhausted=hit is None
+        exhausted=hit is None and extension_candidate is None
     except TimeoutError:
         pass
     result=dict(**summary,source_file=str(source),statistics=dict(statistics),
                 exhausted=exhausted,hit=hit,first_admissible_intact_control=first_control,
+                extension_candidate=extension_candidate,extension_failure_examples=extension_failures,
                 seconds=time.monotonic()-started,
                 scope='Exact reconstruction of all outer-root transversals and outer mate matchings on these fixed central stars and this fixed unlabelled Gamma, with new spectra/kernels/ranks. Exhaustiveness only if exhausted=true. No universal H-MATCH claim.')
     Path(output).write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
@@ -256,5 +272,6 @@ if __name__=='__main__':
     parser.add_argument('--output',required=True)
     parser.add_argument('--name')
     parser.add_argument('--seconds',type=float,default=45)
+    parser.add_argument('--extension-probe',action='store_true')
     args=parser.parse_args()
-    run(args.source,args.output,args.name,args.seconds)
+    run(args.source,args.output,args.name,args.seconds,args.extension_probe)
