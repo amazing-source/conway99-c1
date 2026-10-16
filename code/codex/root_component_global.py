@@ -19,7 +19,7 @@ from conway_global_cover import build_global, reconstruct_and_check
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
 
 
-def build(template, gram_record):
+def build(template, gram_record,rank7_bound=None):
     propagation = propagate(template)
     if propagation["status"] == "PROPAGATION_CONTRADICTION":
         return None, None, {"status":propagation["status"],"propagation":propagation}
@@ -57,6 +57,11 @@ def build(template, gram_record):
             v=cut["vector"]
             expression=sum(v[i]*v[j]*r[i][j] for i in range(m) for j in range(m) if v[i] and v[j])
             model.add(expression>=0 if cut["kind"]=="R_psd" else expression<=cut["rhs"])
+    rank7=None
+    if rank7_bound is not None:
+        assert rank7_bound==28, "Only the accepted necessary bound28 is enabled here."
+        from modular_rank_factor import add_four_star_rank7
+        rank7=add_four_star_rank7(model,labels,graph,edges[0],rank7_bound)
     info.update(status="MODEL_BUILT",covers_all_graphs=False,
                 coverage_scope="One component template in the exhaustive minimum-c=4 cover.",
                 fixed_local_seed=False,fixed_gram_witness=False,
@@ -64,6 +69,7 @@ def build(template, gram_record):
                 template_forced_edges=len(fixed),root_component_equations=len(equations),
                 quotient_psd_or_realization_cuts=len(gram_record["cuts"]),
                 root_prism_budget=root_prism_budget,
+                modular_rank_constraint=rank7,
                 affordable_global_solve_proved=False)
     return model,graph,info
 
@@ -77,6 +83,7 @@ def main():
     parser.add_argument("--seconds",type=float,default=30)
     parser.add_argument("--build-only",action="store_true")
     parser.add_argument("--export-model",type=Path)
+    parser.add_argument("--rank7-bound",type=int,choices=[28])
     args=parser.parse_args()
     templates=json.loads(args.templates.read_text(encoding="utf-8"))["survivors"]
     grams=json.loads(args.grams.read_text(encoding="utf-8"))["records"]
@@ -84,7 +91,7 @@ def main():
     template=templates[args.template_index]
     assert item["status"]=="QUOTIENT_FEASIBLE" and min(template["component_count_by_root_line"])==4
     started=time.monotonic()
-    model,graph,info=build(template,item)
+    model,graph,info=build(template,item,args.rank7_bound)
     info.update(template_index=args.template_index,component_count_by_root_line=template["component_count_by_root_line"],
                 build_seconds=time.monotonic()-started)
     if model:

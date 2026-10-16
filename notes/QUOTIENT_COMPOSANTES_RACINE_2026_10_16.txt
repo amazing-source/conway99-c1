@@ -287,3 +287,42 @@ Commande depuis la racine du dépôt :
       data/codex_line_resonance_20261016/root_component_templates.json \
       data/codex_line_resonance_20261016/root_component_gram_budget51.json \
       --template-index 198 --seconds 30 --output resultat.json
+
+9. Suite de LAB941 : rang modulo7 encodé en option
+------------------------------------------------
+LAB941 rapporte un minimum observé de30 pour rang_F7(8T_S) sur3722
+blocs PSD sans grille, alors que la borne nécessaire acceptée L22 est28.
+Le minimum observé n'est PAS transformé en théorème ni ajouté au modèle.
+
+La seule borne nécessaire <=28 est désormais encodable par l'option
+  --rank7-bound 28
+sur un bloc complet de44 étiquettes correspondant à une paire sans
+grille du template. Pour M=8T_S modulo7, on impose exactement
+  M = U V  sur F7,   U de taille44x28, V de taille28x44.
+Cette factorisation équivaut à rang(M)<=28 : une factorisation de rang
+r<=28 se complète avec des colonnes/lignes nulles. U et V sont
+INDÉPENDANTS ; écrire U U^t imposerait injustement un type de forme.
+Aucun choix préalable de28 pivots n'est fixé.
+
+Les entrées des facteurs sont des entiers de0 à6. Les produits sont
+entiers de0 à36. Chaque entrée impose une congruence linéaire via une
+variable quotient. Comme8T_ij=baseline-8Gamma_ij, la cible modulo7 est
+baseline-Gamma_ij. Les représentants bruts peuvent valoir -1 ; ce cas
+est correctement pris en charge par le quotient.
+
+Coût de l'encodage sur44 :2464 entrées de facteurs,54208 produits,
+1936 quotients. C'est une option, car l'utilité pratique de ces variables
+supplémentaires n'a pas encore été mesurée. Elle ne fait pas partie du
+verdict11s sur198, antérieur et indépendant de cette borne arithmétique.
+
+Contrôles exacts du codage : I2 interdit au rang1 et admis au rang2 ;
+une matrice non nulle de rang1 admise au rang1 ; zéro admis au rang0 ;
+le cas brut contenant -1 donne bien la matrice [[6,1],[5,2]] de rang1
+sur F7. Le modèle complet du template19 avec l'option est compilé et
+valide :163609 variables,166611 contraintes. Aucun long calcul n'y a
+été lancé. Donnée : root_component_global_19_rank7_build.json.
+
+Source de la borne : résultat antérieur r7<=43 et rang local r7-15,
+rappelé par LAB941/L22 et par A01 dans la synthèse du16/10. On n'annonce
+ici ni une nouvelle preuve de cette borne ni une preuve du minimum29
+sans grille proposé par LAB. L'ajout nouveau est son encodage exact.
