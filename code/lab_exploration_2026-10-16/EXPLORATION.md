@@ -392,3 +392,20 @@ Scripts/logs : `c1_robust46.py/.log`, `c1_defect.py/.log`, `c1_trace_ratio.log`,
   N_3 − B_3ᵀ L⁺ B_3 ≻ 0 sur l'orthogonal des vecteurs n_K.
 - srg(243,22,1,2) connus : c(l) ≥ 2 pour TOUTES les droites des 4 graphes (BvLS 10 ; twin {2,3,10} ; Γ3 {4,5,10} ;
   Γ4 {5,7,10}), toujours au moins une composante prisme : chaque droite est dans une grille. c = 1 n'arrive jamais.
+
+## 17/10 : rigidité pour c = 1 (Dilan : « vas-y »)
+Logs : `h46_neareig.log`, `c1_ab.log`.
+1. Avec T_S ⪰ 0 (positivité du bloc, vraie dans Conway) : tout vecteur propre (valeur 3) de A_H, H = N(l) ∪ Y_3, se
+   prolonge par 0 sur Y_2 en vecteur propre de A_W' ; il vérifie donc aussi les 10 équations de Y_2 (gratuites par
+   positivité), ses sommes de groupes sont nulles, et dans Conway c'est un vecteur propre GLOBAL porté par les
+   46 sommets de H (nul sur l). Un tel vecteur donne un profil (0, ζ) dont la partie ι-impaire (−ζ/2, ζ/2) est non
+   constante : H46-c1 ⟸ ODDCONST (comme ODD-PURE) ; c'est la même difficulté de fond (vecteur du noyau « chiral »,
+   cas d'égalité de la contraction ‖K_ι‖ ≤ 1).
+2. Anatomie : le quasi-vecteur propre est proche d'un vecteur « de composante » pour une coupure presque réalisée de
+   G_l (ajustement en escalier 0,75 à 0,95, recouvrement Fiedler jusqu'à 0,98) ; G_l des données a toujours un goulot
+   (a(G_l) ≤ 0,14) ; mais l'écart à 3 ne suit pas a(G_l).
+3. Découpage par moyeu (exact) : dim ker F = (1 + a) + (10 − b), a = mult_3(A_H) = dim(P ∩ R^{Y_3}) − 1,
+   b = rang de F/F_33 (Schur sur Y_2). Conway exige a ≥ b + 1. Données (1 862 cas, deux moyeux) : a = 0, b ∈ {3..6} ;
+   - « a ≤ 1 » ⟺ λ_3(A_H) < 3 : écart min 0,040 (médiane 0,086) ;
+   - « b ≥ 1 » ⟺ λ_max(F/F_33) > 0 : min 1,32 ; « b ≥ 2 » : λ_2 min 0,47.
+   Donc c = 1 exclu ⟸ (a ≤ 1) ∧ (b ≥ 1). Aucun des deux n'est prouvé.
