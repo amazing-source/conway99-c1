@@ -201,3 +201,16 @@ conjectures, raccourcis, paris.
   - Prouvé : la réduction (Codex), le lemme impair (LAB), le comptage de dimensions (corank Q ≥ 12 − c).
   - Ouvert : ODD-PURE dans le cas couplé (forme contraction, comme H-MATCH) et les rangs de Z.
   - Données : aucune violation sur 7 444 côtés sans grille.
+
+### 16/10 après la fin de session : marge d'ODD-PURE (`oddpure_margin.py`)
+- Calcul : λ_max = plus grande valeur propre généralisée de (CΦ⁺Cᵀ, K) hors de ker K ; ODD-PURE ⟺ λ_max < 1. Côtés
+  PSD, les deux orientations.
+- δ = 9 − rank D = 0 sur tous les côtés sans grille. Les 872 côtés avec δ > 0 sont des grilles (cohérent avec
+  ODDCONST).
+- La marge n'est PAS uniforme : λ_max s'étale de 0,5 à 0,99993 (`wmix_h_c44_m4_MIX3_5243.json`, c44), avec 106 côtés
+  au-dessus de 0,995.
+- Conséquence : aucune borne de contraction uniforme (λ_max ≤ 1 − ε) ne peut prouver ODD-PURE. La preuve doit être
+  algébrique ou exacte : montrer qu'une saturation λ = 1 avec un profil impair non constant contredit les comptes
+  entiers (C1, C2), et non une inégalité de norme.
+- Lecture du cas extrémal : un vecteur y = (u, 0_P, z) du noyau, antisymétrique sur tous les labels échangés, avec
+  uᵀKu > 0. Son miroir ιy a l'énergie 4uᵀKu. Si ker T est ι-invariant, le cas est vide (lemme impair).
