@@ -301,3 +301,30 @@ Ce que ça dit (honnêtement) :
   labels lointains Z, ou deux accidents 7-adiques. Cibles nettes : (T1) sans grille ⟹ b = 0 (structurel, à prouver) ;
   (T2) borner z (vecteurs propres −4 portés par Z) ; (T3) σ dans Conway est un recollement GLOBAL (U et U^⊥ en 7, de
   rang k ≤ 28), pas un accident : c'est là que le local ne peut pas conclure seul.
+
+## 16/10 nuit, suite : l'angle global (demande de Dilan : « prends l'angle global »)
+1. Formalisation au niveau d'un sommet v (exact) :
+   - Γ_v (84 labels) a le spectre 12, 3^40, 0^7, (−2)^6, (−4)^30 (identité srg sur les labels + C1) ; sur les
+     équilibrés, (Γ_v − 3)(Γ_v + 4) = 0 ; mod 7, N = Γ_v − 3I vérifie N² = 0 sur ker_7 B et rang_F7(Γ_v − 3I) = 14 + k.
+   - Mod 7 sur tout le graphe : radical commun C_0 = (A − 3I)(1^⊥) (autodual, dim 14 + k) ; ker_7(A − 3I)/C_0 =
+     Q_3 ⊥ Q_{−4}, de dimensions 40 − k et 30 − k. Le réseau des vecteurs propres −4 entiers a un Gram mod 7 de rang
+     30 − k ∈ {2, 4, 6, 8} ; celui des vecteurs propres 3, de rang 40 − k. (Théorie standard du p-rang, pas nouvelle.)
+   - Pour un bloc S : rang_F7(8T_S) = rang de la forme discriminante de M_U restreinte à l'image de S, ≤ k.
+   VERDICT : la « coexistence » de la dégénérescence 7-adique sur les 21 paires est AUTOMATIQUE (héritée de rang ≤ k
+   pour la matrice 84 × 84 du sommet) : pas de contrainte cachée entre paires. Le contenu est entièrement local.
+2. Calibration sur les srg(243,22,1,2) CONNUS (`cal243_ball.py`, `cal243_universal.py`, logs `cal243_ball_*.log`) :
+   analogue exact (valeurs propres 4 et −5, 4 − (−5) = 9, p = 3), boule à quatre étoiles = 99 sommets, transfert par
+   positivité identique. Aux paires SANS grille, dans les trois graphes non-BvLS :
+   - n4 = n5 = 4 : seuls les vecteurs propres UNIVERSELS (A + 5I)(e_u − e_w), (A − 4I)(e_u − e_w) vivent sur la boule ;
+   - noyau mod 3 de la boule = noyau global restreint = minimum forcé : twin 13 = 13, Γ3 9 = 9, Γ4 20 (forcé 18) ;
+   - donc presque tout est du RECOLLEMENT (σ = 5, 1, 12 au-delà des 8 rationnels) ;
+   - grilles : noyau local plus gros (14 à 39), b5 = 0 partout (pas de vecteur −5 localisé ; le vecteur de parité de
+     Conway exige 6 voisins = 1 + 5, la résonance k = 14 ; à 243 la parité l'interdit).
+   LEÇON : dans un vrai graphe, le recollement p-adique est le mécanisme NORMAL aux paires sans grille, et il sature
+   exactement la borne globale. L'absence de recollement dans nos blocs Conway vient très probablement de leur mode de
+   génération (jamais conditionnés par F7). R7-NG n'est pas une loi structurelle crédible ; ne pas investir dans sa preuve.
+3. Ce qui est propre à Conway : la surcharge RATIONNELLE. Chaque boule doit porter ν ≥ 54 − 40 = 14 vrais vecteurs
+   propres 3 (4 universels + ≥ 10 non universels), alors qu'à 243 les boules sans grille n'en portent aucun non
+   universel (rien n'y est forcé : 132 − 144 < 0). C'est Q7 : sans grille et c ≤ 4, nos données plafonnent à ν ≤ 13.
+   => l'angle global renvoie à la surcharge rationnelle aux paires sans grille de petit c (Codex : c = 4, 64/79
+   modèles exclus ; LAB : c ≤ 3).
