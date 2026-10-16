@@ -856,6 +856,10 @@ def main():
             # the score is lambda_min(U); off it, worse than any plateau point
             if nul_num >= 14 and lt > -1e-9:
                 s2 = lu
+            elif os.environ.get("SOFTPLAT"):
+                # SOFTPLAT=w (16/10 night): soft plateau, so that the walk can cross between nullity-14 components
+                # (the hard -10 penalty kept the obj53 near-misses inside their own complete kernel class)
+                s2 = min(lu, 0.0) - float(os.environ["SOFTPLAT"]) * max(0, 14 - nul_num) + 3.0 * min(0.0, lt)
             else:
                 s2 = -10.0 + 3.0 * min(lt, lu) - 2.0 * max(0, 14 - nul_num)
             bu = getattr(main, "bestu2", -999.0)
