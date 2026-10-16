@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import threading
 
 from ortools.sat.python import cp_model
 import sympy as sp
@@ -57,9 +58,6 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     for ids, upper, _ in bounds:
         model.add(sum(variables[i] for i in ids) <= upper)
     local_info = None
-    if local_tables is not None:
-        from root_component_local_tables import add_local_component_tables
-        local_info = add_local_component_tables(model, graph, template, local_tables)
     model.add(sum(graph[a][b] for corners in RECTANGLES.values() for a, b in combinations(corners, 2)
                   if set(LABELS[a]) & set(LABELS[b])) <= 51)
     selectors, indicators, hs, hfull = [None] * 84, [None] * 84, [None] * 84, [None] * 84
@@ -96,6 +94,14 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         corner_info = {"tables": len(corner_tables), "rows": sum(len(t["rows"]) for t in corner_tables),
                        "test": "Exact four-corner conditional PSD and four-signature sums.",
                        "domain_support_pruned": True}
+    if local_tables is not None:
+        from root_component_local_tables import add_local_component_tables
+        corner_patterns = None if corner_tables is None else {
+            t["rectangle"]: {sum(bit << i for i,bit in enumerate(row[4:])) for row in t["rows"]}
+            for t in corner_tables}
+        signature_data = None if corner_tables is None else (edges,domains,corner_tables,selectors)
+        local_info = add_local_component_tables(model, graph, template, local_tables,
+                                                corner_patterns=corner_patterns,signature_data=signature_data)
     for i, j in combinations_with_replacement(range(len(anchors)), 2):
         model.add(sum(flag * h[i] * h[j] for w in range(84) for flag, h in zip(indicators[w], hs[w]))
                   == 7 * int(matrix[anchors[i], anchors[j]]))
@@ -217,20 +223,38 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False):
     started = time.monotonic()
     model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
     solver.parameters.num_search_workers = workers
-    solver.parameters.max_time_in_seconds = seconds
+    solver.parameters.max_time_in_seconds = max(600,100*seconds) if cpu_time else seconds
     solver.parameters.cp_model_probing_level = 0
     solver.parameters.symmetry_level = 0
     solver.parameters.linearization_level = 0
-    status = solver.solve(model)
+    search_cpu_start = time.process_time()
+    timer_done = threading.Event()
+    timer = None
+    if cpu_time:
+        def stop_after_cpu_budget():
+            while not timer_done.wait(.1):
+                if time.process_time() - search_cpu_start >= seconds:
+                    solver.stop_search()
+                    return
+        timer = threading.Thread(target=stop_after_cpu_budget, daemon=True)
+        timer.start()
+    try:
+        status = solver.solve(model)
+    finally:
+        timer_done.set()
+        if timer is not None:
+            timer.join()
     info.update(status=solver.status_name(status), solver_seconds=solver.wall_time,
-                branches=solver.num_branches, conflicts=solver.num_conflicts)
+                branches=solver.num_branches, conflicts=solver.num_conflicts,
+                solver_cpu_seconds=time.process_time()-search_cpu_start,
+                budget_kind="process_cpu_seconds" if cpu_time else "wall_seconds")
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         gamma = [[solver.value(x) for x in row] for row in graph]
         errors = Counter()

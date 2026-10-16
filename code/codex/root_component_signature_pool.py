@@ -16,6 +16,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_signature_joint import solve
 from root_component_signature_moments import gram_matrix
+from root_component_resources import limit_research_process
 
 
 @lru_cache(maxsize=None)
@@ -41,15 +42,21 @@ def main():
     parser.add_argument("directory", type=Path)
     parser.add_argument("--indices", type=int, nargs="+", required=True)
     parser.add_argument("--seconds", type=float, default=10)
-    parser.add_argument("--jobs", type=int, default=4)
+    parser.add_argument("--jobs", type=int, default=2)
     parser.add_argument("--layer", type=int, choices=range(5), default=0)
     parser.add_argument("--eigen", action="store_true")
+    parser.add_argument("--cpu-time", action="store_true", help="Budget actual process CPU time, excluding resource pauses.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
     parser.add_argument("--limit-new", type=int)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if not 1 <= args.jobs <= 6:
+        parser.error("The active CPU policy permits at most six jobs sharing six logical cores.")
+    resources = limit_research_process(4)
     config = {"seconds": args.seconds, "layer": args.layer, "eigen": args.eigen}
+    if args.cpu_time:
+        config["cpu_time"] = True
     if args.local_tables:
         config["local_tables"] = str(args.local_tables)
     if args.retry_from:
@@ -83,7 +90,7 @@ def main():
         if completed.get(key, {}).get("status") != "INFEASIBLE":
             completed[key] = case
     options = {"seconds": args.seconds, "layer": args.layer, "workers": 1, "eigen": args.eigen,
-               "mate_normalize": True, "corners": True}
+               "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None
@@ -112,7 +119,7 @@ def main():
                             "all_source_grams_processed": complete,
                             "excluded": complete and all(c["status"] == "INFEASIBLE" for c in cases)})
         data = {"scope": __doc__, "options": config,
-                "jobs": args.jobs, "elapsed_seconds": time.monotonic() - started, "records": records}
+                "jobs": args.jobs, "resources": resources, "elapsed_seconds": time.monotonic() - started, "records": records}
         temporary = args.output.with_suffix(".json.tmp")
         temporary.write_text(json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8")
         temporary.replace(args.output)
@@ -120,7 +127,7 @@ def main():
     checkpoint()
     print(json.dumps({"new_cases": len(tasks), "inherited_exclusions": len(excluded)}), flush=True)
     todo = iter(tasks)
-    with ProcessPoolExecutor(max_workers=args.jobs) as pool:
+    with ProcessPoolExecutor(max_workers=args.jobs, initializer=limit_research_process, initargs=(4,)) as pool:
         pending = {}
         for _ in range(args.jobs):
             task = next(todo, None)

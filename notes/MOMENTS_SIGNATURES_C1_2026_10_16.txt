@@ -209,3 +209,52 @@ un outil experimental; la fermeture148 vient du modele local ci-dessus.
 Processus conjoint ancien corners_small arrete volontairement pendant
 le cas4, pour liberer les coeurs aux tables locales plus fortes. Ses
 verdicts termines sont conserves; son enregistrement4 est INCOMPLET.
+10. Template4 ferme; politique CPU revisee a la demande de Dilan
+
+Le16/10 vers23h55, template4 est ferme57/57 :
+- Gram53 [6,-3,2,6,-3,6], INFEASIBLE185.91s,
+  root_component_signature_4_last_full.json;
+- Gram55 [6,-3,3,6,-3,6], INFEASIBLE202.00s,
+  root_component_signature_pool_4_cpu2.json.
+Les autres Gram proviennent des rapports precedents du cas4. Le manifeste
+est76/79; restent7,9,19. Cela ferme12 des15 cas initialement demandes.
+Ces deux derniers calculs utilisent C2 complet, GammaH, les quatre coins
+et les composantes locales. Leurs resultats sont des verdicts CP-SAT.
+
+Dilan demande de garder la charge totale du Gestionnaire des taches
+SOUS80%, et autorise la poursuite des calculs. Les anciens groupes ont
+ete arretes en conservant les checkpoints. Les nouveaux processus sont
+en priorite basse, avec une affinite PARTAGEE de quatre coeurs logiques
+au maximum. Le gardien root_component_cpu_guard.ps1 observe la charge
+globale, reduit l'affinite a partir de60%, suspend seulement nos arbres
+Python a70%, puis reprend sous50%. Des pointes venant d'autres charges
+restent possibles; aucune autre application n'est modifiee. La premiere
+version par simple affinite avait vu une pointe97%; elle a ete remplacee
+par cette version avec suspension. Log : cpu_guard.log. Le fichier
+cpu_guard.stop permet une sortie propre, qui reprend les threads suspendus.
+Ne pas tuer brutalement le gardien pendant une suspension.
+
+Les nouveaux budgets --cpu-time du pool mesurent le temps CPU du processus,
+avec un observateur arretant CP-SAT au budget; les pauses de ressources
+ne consomment donc pas le budget de recherche. Une limite murale de
+securite demeure; UNKNOWN reste toujours ouvert. Les rapports distinguent
+solver_cpu_seconds et solver_seconds, ainsi que budget_kind.
+
+11. Raccord direct des signatures sur les composantes
+
+Une composante locale est codee par P,M0,M1. Pour le sommet (couleur,i),
+les deux voisins dans les rectangles incidents a sa droite sont M_c(i)
+et P(i), ou P^-1(i) pour l'autre couleur. Donc, pour toute coordonnee k
+incidente a la droite, h_k = 2[rectangle propre=k] - nombre de ces deux
+voisins dans Q_k. Les autres parties de la meme droite ont coordonnee0.
+Cette projection est determinee par le code local.
+
+root_component_local_tables.py filtre maintenant les codes par les
+six aretes permises dans chaque Q, puis par les QUATRE projections de
+signatures permises dans sa table de coins. Les signatures partielles
+sont directement reliees aux selecteurs globaux H. C'est une consequence
+necessaire des tables locales et des equations H=TP, rendue explicite
+pour la propagation. Aucun code particulier n'est choisi arbitrairement.
+Le filtre respecte l'ordre global des coins meme si la droite courante
+est la seconde coordonnee de Q. Pas de nouvelle exclusion de template
+encore attribuee a ce raccord au moment de ce journal.
