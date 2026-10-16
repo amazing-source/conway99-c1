@@ -369,3 +369,26 @@ Scripts : `c1_network.py`, `c1_signed.py`, `c1_starsets.py`-like checks (`c1_sta
 3. Statut : réduction rigoureuse ; l'énoncé H46-c1 est vérifié sur 100 % des données (biaisées : 93 % h-symétriques) ;
    PAS de preuve. Pistes : inégalité de réseau électrique (marge 0,0073 au pire), énumération exhaustive de (G_l,
    attaches de Y_x) avec certificat, ou filtre dans les modèles globaux de Codex.
+
+## 17/10 : c = 1, marge et mécanisme (demande de Dilan : « prouve ou procède comme Codex, ta marge est plus large »)
+Scripts/logs : `c1_robust46.py/.log`, `c1_defect.py/.log`, `c1_trace_ratio.log`, `c1_lambda9.log`, `c1_structV.py/.log`,
+`c1_structV9.log`, `c1_nearsat.log`, `c1_cpsat.py`, `c243_components.py/.log`.
+- La marge existe dans la bonne formulation : il faut rank F ≥ 9 ; λ_9(F) ≥ 0,52 sur les 931 côtés (médiane 0,95).
+  Mais elle est dans des directions NON canoniques :
+  - Pboth (motif (1,−1,−1,1) sur {2s, 2s', 3s, 3s'}, 5 dim) : F ≥ 0,15 ; Phub⁰ (motif (1,1,−1,−1), somme nulle, 4 dim) :
+    F ≥ 0,12 ; leur réunion = espace impair non constant : serré (0,0002, c'est ODD-PURE), à cause du couplage ;
+  - les espaces pairs contiennent des profils exacts (noyau) ; la direction quasi saturée est étalée sur les 5 droites
+    (75 % Pboth, 25 % Phub).
+  - Bornes de trace : δ ≤ ½ Σ E_s inutile (Σ E_s = 25 à 33 ; C est maximal, 80 incidences, aucune annulation) ;
+    tr F/λ_max ∈ [4,8 ; 6,2] et (tr F)²/tr F² ∈ [7,95 ; 9,45] : insuffisant.
+  - Meilleur ensemble de 46 sommets (recherche exhaustive C(20,10) sur les côtés les plus serrés) : écart ≤ 0,076.
+- Façon Codex : son quotient de Gram (rang R ≤ dim ker C ≤ 4 pour c ≥ 4) dégénère à c = 1 (jusqu'à 14). Modèle CP-SAT
+  exhaustif local (`c1_cpsat.py` : axiomes cp6 + connexité de G_l + N vecteurs du noyau mod 5 sur W') : même N = 2
+  (que toutes les données satisfont) reste UNKNOWN en 240 s (2 cœurs). Force brute impraticable sans quotient.
+- MÉCANISME (exact) : sur H = N(l) ∪ Y_x, les vecteurs propres de valeur propre 3 des données sont exactement les
+  vecteurs « de composantes » : ξ constant sur chaque composante de G_l, ζ = 0 sur Y_x, avec Σ_K α_K n_K(y) = 0 où
+  n_K(y) = nombre d'attaches de y dans la composante K (comptes FORCÉS par Tσ = 0, relation (5) de Codex) ; d'où
+  multiplicité c − 1. Pour c = 1, aucun. Énoncé à prouver (rigidité) : pas d'autre vecteur propre, i.e.
+  N_3 − B_3ᵀ L⁺ B_3 ≻ 0 sur l'orthogonal des vecteurs n_K.
+- srg(243,22,1,2) connus : c(l) ≥ 2 pour TOUTES les droites des 4 graphes (BvLS 10 ; twin {2,3,10} ; Γ3 {4,5,10} ;
+  Γ4 {5,7,10}), toujours au moins une composante prisme : chaque droite est dans une grille. c = 1 n'arrive jamais.
