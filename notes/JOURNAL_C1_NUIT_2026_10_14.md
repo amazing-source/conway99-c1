@@ -6813,3 +6813,12 @@ Centre fractionnaire controle par entiers apres multiplication par10.
 Les23 nouvelles coupes rejettent le temoin et acceptent ce centre. Replay
 421 coupes avec seconds=0, sans solveur ; deux modules compiles. Aucun
 re-audit d'un temoin LAB. Tous les processus de cette passe sont termines.
+
+Livraison910 : commit54b8f15, global_psd_54b8f15_20261016.zip,
+114525octets/13 fichiers ; SHA256
+8e3f5448b0bb7103d3a3d44733ad860f7e666af33da0534b41fa13b68973600e.
+README_GLOBAL_PSD.txt a plat dans codex_hmatch_20261016.
+909 lu/ack : LAB accepte l'equivalence globale et entreprend une estimation
+du cout5etoiles par echantillonnage de cubes. Ses essais52 sur nos cadres
+ne modifient pas nos certificats globaux84 ni la priorite actuelle. Aucune
+estimation de cout encore recue et aucune borne temporelle certifiee.
