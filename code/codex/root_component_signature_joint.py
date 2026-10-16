@@ -24,7 +24,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None):
     edges = [tuple(e) for e in template["nongrid_edges"]]
     raw = [[int(x) for x in row] for row in matrix.tolist()]
     domains = {tuple(r["rectangle"]): r for r in signature_domains(edges, raw)}
@@ -32,6 +32,16 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     small = matrix.extract(anchors, anchors)
     det = int(small.det())
     adj = [[int(x) for x in row] for row in (small.inv() * det).tolist()]
+    corner_tables = None
+    if four_corners:
+        from root_component_corner_tables import enumerate_corner_rows
+        corner_tables = enumerate_corner_rows(edges, matrix, domains, anchors, det, adj)
+        for table in corner_tables:
+            item = domains[table["rectangle"]]
+            used = sorted({i for row in table["rows"] for i in row[:4]})
+            remap = {old: new for new, old in enumerate(used)}
+            item["signatures"] = [item["signatures"][i] for i in used]
+            table["rows"] = [[remap[i] for i in row[:4]] + row[4:] for row in table["rows"]]
     propagation = propagate(template)
     if propagation["conflict"]:
         raise ValueError(propagation["conflict"])
@@ -46,6 +56,10 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         model.add(sum(variables[i] for i in ids) == target)
     for ids, upper, _ in bounds:
         model.add(sum(variables[i] for i in ids) <= upper)
+    local_info = None
+    if local_tables is not None:
+        from root_component_local_tables import add_local_component_tables
+        local_info = add_local_component_tables(model, graph, template, local_tables)
     model.add(sum(graph[a][b] for corners in RECTANGLES.values() for a, b in combinations(corners, 2)
                   if set(LABELS[a]) & set(LABELS[b])) <= 51)
     selectors, indicators, hs, hfull = [None] * 84, [None] * 84, [None] * 84, [None] * 84
@@ -69,6 +83,19 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                 base = 2 if rectangle == coordinate else (0 if set(rectangle) & set(coordinate) else 1)
                 model.add(sum(graph[w][q] for q in RECTANGLES[coordinate]) +
                           sum(flag * h[ci] for flag, h in zip(flags, signatures)) == base)
+    for rectangle,vertices in RECTANGLES.items():
+        target=domains[rectangle]["target"]
+        for ci,anchor in enumerate(anchors):
+            model.add(sum(flag*h[ci] for w in vertices for flag,h in zip(indicators[w],hs[w]))==target[anchor])
+    corner_info=None
+    if four_corners:
+        for table in corner_tables:
+            vertices = RECTANGLES[table["rectangle"]]
+            model.add_allowed_assignments([selectors[w] for w in vertices] +
+                                          [graph[u][v] for u,v in combinations(vertices,2)], table["rows"])
+        corner_info = {"tables": len(corner_tables), "rows": sum(len(t["rows"]) for t in corner_tables),
+                       "test": "Exact four-corner conditional PSD and four-signature sums.",
+                       "domain_support_pruned": True}
     for i, j in combinations_with_replacement(range(len(anchors)), 2):
         model.add(sum(flag * h[i] * h[j] for w in range(84) for flag, h in zip(indicators[w], hs[w]))
                   == 7 * int(matrix[anchors[i], anchors[j]]))
@@ -137,20 +164,25 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         def inner(a, b):
             return sum(a[i] * adj[i][j] * b[j] for i in range(len(anchors)) for j in range(len(anchors)))
         norms = [[20 * det - 8 * inner(h, h) for h in hs[w]] for w in range(84)]
+        pair_cache = {}
         for u, v in PAIRS:
             common = len(set(LABELS[u]) & set(LABELS[v]))
             mate_common = sum((a ^ 1) in LABELS[v] for a in LABELS[u])
             base8 = 2 - 3 * common - mate_common
             edge = graph[u][v]
             possible_edges = [edge] if isinstance(edge, int) else [0, 1]
-            allowed = []
-            for a, hu in enumerate(hs[u]):
-                for b, hv in enumerate(hs[v]):
-                    ip = inner(hu, hv)
-                    for e in possible_edges:
-                        off = (base8 - 8 * e) * det - 8 * ip
-                        if off * off <= norms[u][a] * norms[v][b]:
-                            allowed.append([a, b] if isinstance(edge, int) else [a, b, e])
+            cache_key = (id(hs[u]), id(hs[v]), base8, tuple(possible_edges))
+            allowed = pair_cache.get(cache_key)
+            if allowed is None:
+                allowed = []
+                for a, hu in enumerate(hs[u]):
+                    for b, hv in enumerate(hs[v]):
+                        ip = inner(hu, hv)
+                        for e in possible_edges:
+                            off = (base8 - 8 * e) * det - 8 * ip
+                            if off * off <= norms[u][a] * norms[v][b]:
+                                allowed.append([a, b] if isinstance(edge, int) else [a, b, e])
+                pair_cache[cache_key] = allowed
             if len(allowed) < len(hs[u]) * len(hs[v]) * len(possible_edges):
                 columns = [selectors[u], selectors[v]] + ([] if isinstance(edge, int) else [edge])
                 model.add_allowed_assignments(columns, allowed)
@@ -180,13 +212,14 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
             "eigen_equations": eigen, "eigen_products": eigen_products,
-            "mate_flip_signature_normalization": mate_normalize}
+            "mate_flip_signature_normalization": mate_normalize,"explicit_four_sums":True,
+            "four_corner_tables":corner_info, "local_component_tables": local_info}
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -222,8 +255,12 @@ def main():
     parser.add_argument("--eigen", action="store_true")
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
+    parser.add_argument("--corners",action="store_true")
+    parser.add_argument("--gram-indices", type=int, nargs="+")
+    parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    local_tables = json.loads(args.local_tables.read_text()) if args.local_tables else None
     covers = {r["template_index"]: r for r in json.loads((args.directory / "root_component_gram_orbits20.json").read_text())["records"]}
     templates = json.loads((args.directory / "root_component_templates.json").read_text())["survivors"]
     earlier = {}
@@ -242,6 +279,8 @@ def main():
         record = {"template_index": index, "complete_source_gram_count": cover["gram_count"], "cases": cases}
         records.append(record)
         for gi, values in enumerate(cover["gram_anchor_values"]):
+            if args.gram_indices is not None and gi not in args.gram_indices:
+                continue
             if args.limit_grams is not None and gi >= args.limit_grams:
                 break
             prev = earlier.get((index, gi), {})
@@ -249,7 +288,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)

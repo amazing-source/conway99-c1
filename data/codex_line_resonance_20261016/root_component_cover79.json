@@ -1329,9 +1329,16 @@
       "unfixed_binary_edges_after_propagation": 1996,
       "global_solver_status": "UNKNOWN",
       "portable_unsat_proof": false,
-      "exclusion_status": "OPEN",
+      "exclusion_status": "EXCLUDED",
       "global_solver_result": "root_component_global_148_budget51_gramcover.json",
-      "global_solver_seconds": 15.023998700000002
+      "global_solver_seconds": 15.023998700000002,
+      "exclusion_method": "COMPLETE_GRAM_SIGNATURE_COVER",
+      "exclusion_source": [
+        "root_component_signature_148_last_local.json",
+        "root_component_signature_corner_moments_all.json",
+        "root_component_signature_corners_small.json"
+      ],
+      "excluded_gram_orbits": 59
     },
     {
       "template_index": 153,
@@ -1757,14 +1764,13 @@
     }
   ],
   "exclusion_counts": {
-    "OPEN": 5,
-    "EXCLUDED": 74
+    "OPEN": 4,
+    "EXCLUDED": 75
   },
   "open_template_indices": [
     4,
     7,
     9,
-    19,
-    148
+    19
   ]
 }

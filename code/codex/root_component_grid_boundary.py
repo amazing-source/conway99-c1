@@ -20,7 +20,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
 
 
-def build(template, normalize=False):
+def build(template, normalize=False, full=False):
     nongrid = {tuple(e) for e in template["nongrid_edges"]}
     grid_vertices = sorted(w for e,corners in RECTANGLES.items() if e not in nongrid for w in corners)
     ys = set(grid_vertices)
@@ -28,7 +28,7 @@ def build(template, normalize=False):
     assert not prop["conflict"],prop["conflict"]
     fixed = {i:v for i,v,_ in prop["assignments"]}
     model = cp_model.CpModel()
-    variables = [fixed[i] if i in fixed else (model.new_bool_var(f"e{i}") if u in ys or v in ys else None)
+    variables = [fixed[i] if i in fixed else (model.new_bool_var(f"e{i}") if full or u in ys or v in ys else None)
                  for i,(u,v) in enumerate(PAIRS)]
     graph = [[0]*84 for _ in range(84)]
     for (u,v),value in zip(PAIRS,variables):
@@ -60,7 +60,11 @@ def build(template, normalize=False):
             model.add(p>=a+b-1)
             products[key]=p
         return products[key]
-    for u,v in combinations(grid_vertices,2):
+    if full:
+        model.add(sum(graph[u][v] for corners in RECTANGLES.values() for u,v in combinations(corners,2)
+                      if set(LABELS[u])&set(LABELS[v]))<=51)
+    c2_vertices=list(range(84)) if full else grid_vertices
+    for u,v in combinations(c2_vertices,2):
         model.add(graph[u][v]+sum(product(graph[u][z],graph[v][z]) for z in range(84))
                   ==2-len(set(LABELS[u])&set(LABELS[v])))
     normalizations=[]
@@ -77,7 +81,8 @@ def build(template, normalize=False):
             used.update(e)
             used.update(f)
     return model,graph,{"grid_vertices":grid_vertices,"exact_linear_rows":exact,"relaxed_linear_rows":relaxed,
-                       "C2_equations":len(grid_vertices)*(len(grid_vertices)-1)//2,
+                       "C2_equations":len(c2_vertices)*(len(c2_vertices)-1)//2,"full_conway_model":full,
+                       "root_prism_budget":51 if full else None,
                        "product_variables":len(products),"forgotten_edge_variables":sum(x is None for x in variables),
                        "grid_matching_mate_normalization":normalizations}
 

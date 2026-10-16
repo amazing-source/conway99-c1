@@ -122,12 +122,13 @@ def main():
     parser.add_argument("--seconds",type=float,default=180)
     parser.add_argument("--solver",default="glucose4")
     parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--full",action="store_true")
     args=parser.parse_args()
     templates=json.loads((args.directory/"root_component_templates.json").read_text())["survivors"]
     records=[]
     for index in args.indices:
         started=time.monotonic()
-        model,graph,info=build(templates[index],normalize=True)
+        model,graph,info=build(templates[index],normalize=True,full=args.full)
         enc=encode(model)
         info.update(template_index=index,cnf_variables=enc.nv,cnf_clauses=len(enc.clauses),
                     build_seconds=time.monotonic()-started,status="CNF_BUILT",solver=args.solver)
@@ -138,7 +139,7 @@ def main():
             timer.start()
             try:status=solver.solve_limited(expect_interrupt=True)
             finally:timer.cancel()
-            info.update(status="SAT_BOUNDARY" if status else ("UNSAT" if status is False else "UNKNOWN"),
+            info.update(status=("SAT_FULL" if args.full else "SAT_BOUNDARY") if status else ("UNSAT" if status is False else "UNKNOWN"),
                         seconds=time.monotonic()-started,stats=solver.accum_stats())
             if status:
                 assignment=[int(x>0) for x in solver.get_model()[:len(model.proto.variables)]]
@@ -148,6 +149,9 @@ def main():
                     assert gamma[u][v]+sum(gamma[u][z]*gamma[v][z] for z in range(84))==2-len(set(LABELS[u])&set(LABELS[v]))
                 info["boundary_edges"]=[[u,v] for u,v in PAIRS if gamma[u][v]==1]
                 info["source_model_checked"]=True
+                if args.full:
+                    from conway_global_cover import reconstruct_and_check
+                    info["adjacency99"]=reconstruct_and_check(14,LABELS,gamma)
         records.append(info)
         args.output.write_text(json.dumps({"scope":__doc__,"records":records},separators=(",",":"))+"\n",encoding="utf-8")
         print(json.dumps({k:v for k,v in info.items() if k!="boundary_edges"}),flush=True)

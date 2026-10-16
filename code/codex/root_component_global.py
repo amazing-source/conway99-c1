@@ -19,7 +19,7 @@ from conway_global_cover import build_global, reconstruct_and_check
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
 
 
-def build(template, gram_record,rank7_bound=None,gram_cover=None):
+def build(template, gram_record,rank7_bound=None,gram_cover=None,normalize_grid_matchings=False):
     propagation = propagate(template)
     if propagation["status"] == "PROPAGATION_CONTRADICTION":
         return None, None, {"status":propagation["status"],"propagation":propagation}
@@ -53,6 +53,19 @@ def build(template, gram_record,rank7_bound=None,gram_cover=None):
         assert root_prism_budget==51
         from root_component_gram_table import add_gram_table
         gram_info=add_gram_table(model,graph,template,gram_cover,matrix=r)
+    normalizations=[]
+    if normalize_grid_matchings:
+        nongrid=set(edges)
+        grids=[e for e in RECTANGLES if e not in nongrid]
+        used=set()
+        while True:
+            choices=[(e,f) for e in grids for f in grids if not set(e)&set(f) and not set(f)&used]
+            if not choices:break
+            e,f=min(choices)
+            model.add(graph[RECTANGLES[e][0]][RECTANGLES[f][0]]==1)
+            normalizations.append([e,f])
+            used.update(e)
+            used.update(f)
     for cut in gram_record["cuts"]:
         if cut["kind"]=="no_corner_realization":
             anchors=gram_record["anchors"]
@@ -76,6 +89,7 @@ def build(template, gram_record,rank7_bound=None,gram_cover=None):
                 root_prism_budget=root_prism_budget,
                 modular_rank_constraint=rank7,
                 complete_gram_cover=gram_info,
+                grid_matching_mate_normalization=normalizations,
                 affordable_global_solve_proved=False)
     return model,graph,info
 
@@ -92,6 +106,9 @@ def main():
     parser.add_argument("--rank7-bound",type=int,choices=[28])
     parser.add_argument("--gram-cover",type=Path)
     parser.add_argument("--workers",type=int,default=1)
+    parser.add_argument("--normalize-grid-matchings",action="store_true")
+    parser.add_argument("--symmetry-level",type=int,choices=range(4),default=0)
+    parser.add_argument("--search-log",action="store_true")
     args=parser.parse_args()
     templates=json.loads(args.templates.read_text(encoding="utf-8"))["survivors"]
     grams=json.loads(args.grams.read_text(encoding="utf-8"))["records"]
@@ -103,7 +120,7 @@ def main():
     if args.gram_cover:
         gram_cover=next(r for r in json.loads(args.gram_cover.read_text(encoding="utf-8"))["records"]
                         if r["template_index"]==args.template_index)
-    model,graph,info=build(template,item,args.rank7_bound,gram_cover)
+    model,graph,info=build(template,item,args.rank7_bound,gram_cover,args.normalize_grid_matchings)
     info.update(template_index=args.template_index,component_count_by_root_line=template["component_count_by_root_line"],
                 build_seconds=time.monotonic()-started)
     if model:
@@ -119,8 +136,9 @@ def main():
         solver.parameters.num_search_workers=args.workers
         solver.parameters.max_time_in_seconds=args.seconds
         solver.parameters.cp_model_probing_level=0
-        solver.parameters.symmetry_level=0
+        solver.parameters.symmetry_level=args.symmetry_level
         solver.parameters.linearization_level=0
+        solver.parameters.log_search_progress=args.search_log
         status=solver.solve(model)
         info.update(status=solver.status_name(status),solver_seconds=solver.wall_time,
                     branches=solver.num_branches,conflicts=solver.num_conflicts,

@@ -160,3 +160,52 @@ Aucune conclusion spectrale globale ni contradiction numerique annoncee.
 Recherche bibliographique ciblee : aucun nouveau theoreme externe n'a
 ete importe dans ces exclusions. Les seules nouvelles contraintes
 ci-dessus sont derivees directement de C1/C2.
+9. Quatre coins couples, puis composantes colorees : 75/79 exclus
+
+Les tables de root_component_corner_tables.py enumerent TOUTES les
+realisations de chaque Q : quatre signatures, six aretes internes,
+somme des signatures = colonne R, et positivite du Schur conditionnel.
+Pour des ancrages independants S de R, d=det(S), adj=d S^-1 :
+ K_Q = d (4 T_Q) - 4 H_Q adj H_Q^t >= 0.
+Ici 4T_Q a diagonale10, coefficients -1-4Gamma sur les paires partageant
+une lettre, -4Gamma sur les deux paires opposees. Les graphes des quatre
+coins sont enumeres exhaustivement. Le test PSD est entier.
+Les domaines individuels sont ensuite restreints aux signatures qui
+apparaissent dans au moins une de ces realisations. Aucune affectation
+particuliere de quatre signatures n'est imposee.
+
+Les sommes P^t H=R sont maintenant explicites dans le modele conjoint.
+Leur absence explicite auparavant affaiblissait la relaxation, sans
+invalider les exclusions deja obtenues. Avec GammaH=-4H elles etaient
+consequences des autres identites, mais propageaient mal.
+
+Le nouveau filtre root_component_corner_moments.py choisit pour chaque Q
+une contribution possible aux moments H^tH et au nombre de prismes.
+La faisabilite de ce filtre n'est PAS une realisation du graphe.
+Le pool root_component_signature_pool.py conserve les indices de Gram
+originaux, reprend les exclusions acquises et sauvegarde chaque verdict.
+Seuls les verdicts INFEASIBLE ferment un Gram; OPTIMAL reste une
+realisation du modele necessaire choisi.
+
+NOUVELLE FERMETURE : template148, 59/59 Gram exclus en combinant
+root_component_signature_eigen_148.json,
+root_component_signature_corners_small.json,
+root_component_signature_148_last_local.json.
+Le dernier Gram, indice21, ancres [4,-1,2,6,-3,4], tombe en17.59s avec
+les tables completes de composantes12/18, les quatre coins, GammaH,
+les moments et1806 equations C2. Aucune normalisation de composante
+supplementaire n'est appliquee avec les flips lexicographiques.
+Le manifeste confirme75/79 : ouverts4,7,9,19.
+
+Essais termines sans exclusion supplementaire : modeles complets a
+Gram variable7 et19, 900s chacun UNKNOWN. Bord grille cinq templates
+UNKNOWN180s. Balayage lazy de voisinage pour148#21 : UNKNOWN apres
+six candidats et11918 petites clauses, aucun verdict reutilise.
+Les clauses lazy sont necessaires : Gamma_uv + communs(u,v) <=2-|u cap v|.
+Avec les degres12, leur somme par ligne est144 des deux cotes; toutes
+les bornes superieures impliquent donc les egalites. Ce chemin reste
+un outil experimental; la fermeture148 vient du modele local ci-dessus.
+
+Processus conjoint ancien corners_small arrete volontairement pendant
+le cas4, pour liberer les coeurs aux tables locales plus fortes. Ses
+verdicts termines sont conserves; son enregistrement4 est INCOMPLET.
