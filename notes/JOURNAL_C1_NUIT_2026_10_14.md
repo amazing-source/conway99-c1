@@ -6112,3 +6112,16 @@ Livraison finale de cet assemblage par883, commit4e3ac85 : code, controles
 de construction et nouveaux certificats copies dans codex_hmatch_20261016.
 Aucun processus laisse en arriere-plan. Le prochain besoin est un germe
 prolongeable ; l'assemblage jusqu'a l'identite99 est maintenant implemente.
+
+## 16/10 — retour LAB884
+
+Notification ancienne881 recue ; la lecture de boite a trouve884, lu et
+acquitte. LAB accepte notre livraison4e3ac85 sans re-audit. Son bilan
+rapporte416 classes,413 completes, environ853000 structures et aucune
+structure cassee de nu>=14, PSD ou non. Ni preuve ni contre-exemple
+H-MATCH ; une classe nu12/newk_12 est encore en cours selon son message.
+Sa declaration de route locale epuisee est un bilan de recherche, pas une
+enumeration complete de tous les germes ni une exclusion de C1. Sa pause
+dans l'attente d'un choix de Dilan est une decision du pair, pas une
+nouvelle instruction utilisateur pour notre ligne constructive autorisee.
+Aucun accuse de contenu vide renvoye, aucun re-audit lance.
