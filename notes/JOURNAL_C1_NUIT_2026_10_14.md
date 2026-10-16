@@ -5702,3 +5702,69 @@ STATUT : ni preuve H-MATCH ni contre-exemple. nu(C)=2 reste une observation
 sur les119 structures CASSEES du profil867, pas un lemme universel (les
 anciens temoins h-invariants de l'extremite impaire ont nu(C)=3). Aucune
 borne de rang n'a ete deduite abusivement des seules contractions.
+
+## 16/10 - Suite870 : deux obstructions independantes des partenaires exterieurs
+
+870 lu/acquitte. LAB confirme la precision de normalisation869 : sa formule
+Phi supposait implicitement le blanchiment, ses profils numeriques utilisaient
+directement les blocs bruts et restent inchanges. Il fournit deux germes
+casses dont la nullite T est annoncee numeriquement14 et15 ; ces verdicts
+ne sont pas re-audites. Les deux fichiers sont sous son work/stars_rank :
+ hmatch_tools_2026-10-15/near53/n_45.json,
+ hmatch_tools_2026-10-15/dump_obj53/b_29.json.
+
+ENUMERATION NOUVELLE EXACTE DES PARTENAIRES. A Gamma fixe, sur les944
+couplages exterieurs autres que celui du producteur :
+ - n_45 : les944 ont rang(T8 mod101)>=31, donc nu(T)<=13 ;
+ - b_29 :921 ont cette borne de rang,4 echouent T PSD exactement,
+   19 echouent U PSD exactement.
+Aucun contre-exemple H-MATCH. Temps0,47s et0,67s. On n'utilise ni tolérance
+spectrale ni rang numerique pour ces rejets. Les fichiers
+hmatch_broken_mates_near53_20261016.json et _obj53_20261016.json enregistrent
+les nouveaux couplages et leurs verdicts. Le couplage original est saute.
+
+PREUVE PLUS FORTE SUR CES DEUX GRAPHES. Pour toute involution des racines M,
+ L(M)=[B^t(4I-M)B+2J]/15 >=0,
+car les valeurs propres de4I-M sont3 et5. Donc
+ U(M)=4I+Gamma-L(M) <= 4I+Gamma.
+Un vecteur entier w avec w^t(4I+Gamma)w<0 exclut TOUS les couplages M sans
+les enumerer. Puisque le spectre de Gamma est invariant par relabellement,
+cela exclut aussi toute tentative de reparer U en changeant les etiquettes
+du meme graphe. Il faut modifier ses aretes.
+
+Pour n_45, le certificat donne un w de hauteur16, norme carree3496 et
+ w^t(4I+Gamma)w=-20.
+Donc lambda_min(Gamma)<=-4-5/874<-4 et w^tU(M)w<=-20 pour tout M.
+Le vecteur a ete propose par un calcul flottant sur4I+Gamma, puis l'energie
+NEGATIVE ENTIERE a ete calculee exactement. Aucun verdict PSD/T du germe
+n'intervient dans cette preuve. Une premiere recherche restreinte a kerB
+n'avait rien donne : son absence de temoin n'etait pas un certificat PSD.
+
+Pour b_29, le mecanisme est plus explicite. Poser q|O=0 et, en colonnes
+exterieures4..13 :
+ q0=(2,2,-2,-2,-1,1,1,-1,0,0), q1=-q0,
+ q2=(2,2,-2,-2,1,-1,-1,1,0,0), q3=-q2.
+Alors Bq=0. Pour z=(4I+Gamma)q on trouve z|O=0 et
+ z0=z1=(0,0,0,0,-1,-1,-1,-1,2,2), z2=z3=-z0.
+Ainsi Bz=0, q.z=0, ||q||^2=80, ||z||^2=48 et
+ z^t(4I+Gamma)z=192.
+Le vecteur w=3q-z est entier, de hauteur6, Bw=0, ||w||^2=768 et
+ w^tU(M)w=w^t(4I+Gamma)w=192-6*48=-96 POUR TOUT M.
+Son quotient de Rayleigh pour Gamma est-33/8<-4.
+
+Le q provient du noyau de la compression impaire de U, apres retrait des
+deux etoiles forcees pour obtenir Bq=0. Le fait que Uq=z non nul, alors que
+q^tUq=0, est une fuite de la direction d'energie nulle vers le bloc pair.
+Ce diagnostic est distinct du controle deja effectue par le pair : il
+explique pourquoi AUCUN partenaire M ne peut reparer le graphe fixe.
+Meme si Bz n'avait pas ete nul, U(M)<=10I (degre Gamma<=6) aurait donne
+le temoin uniforme10q-z d'energie<=-480 ; le w ci-dessus est plus petit.
+
+Code hmatch_mate_invariant_obstruction.py ; certificats
+hmatch_mate_obstruction_near53_20261016.json et _obj53_20261016.json.
+Les vecteurs, les etiquettes et les energies exactes y sont sauvegardes.
+Les deux outils ne re-auditent ni rang T, ni PSD T, ni automorphismes du
+producteur. Ils construisent des variantes et de nouvelles obstructions.
+
+PORTEE : familles a graphe Gamma fixe fermees. H-MATCH general toujours
+ouvert ; aucun bloc casse avec T/U PSD et nu>=14 n'a ete construit ici.
