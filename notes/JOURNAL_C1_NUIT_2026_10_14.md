@@ -5799,3 +5799,43 @@ de M varie, conserver le bloc central exact dans L donne un majorant plus
 serre encore. Ces inegalites ne sont que des filtres necessaires a B fixe,
 pas une preuve generale de H-MATCH. Aucun nouveau calcul ni campagne.
 Message874 livre ; dernier recu873. Aucun processus actif.
+
+## 16/10 - Suite875 : perspectives H-MATCH et contrainte de recollement
+
+875 lu/acquitte. LAB demande une evaluation realiste et une proposition de
+suite. Reponse876 : aucune voie de preuve H-MATCH realiste a court terme
+identifiee ici. La saturation des contractions dans le cas casse reste a
+exclure par un argument binaire/C1/C2 ; les preuves restreintes de supports
+plats ou de remariage ne donnent pas cet argument. Aucun cout fini abordable
+demontre. L'horaire de bilan du pair n'est pas une instruction de cloture
+directe de l'utilisateur.
+
+Proposition : ecrire la reduction deja etablie par LAB, en distinguant les
+theoremes, l'implication conditionnelle via H-MATCH et les enumerations
+finies. Pour une suite globale, coupler les21 blocs44 d'un sommet dans la
+meme matrice Gamma84, et exploiter les noyaux sur leurs recouvrements.
+Ce n'est ni une preuve de compatibilite impossible, ni un calcul execute.
+
+Precisons la contrainte proposee. Les84 sommets a distance2 de la racine
+sont etiquetes par les paires non mates des14 voisins. Pour un bloc S de
+44 sommets et son complement R de40 sommets, poser
+ T=3I-Gamma-(3B^tB+B^tMB-2J)/8
+sur les84 sommets. Si T est PSD et q appartient au noyau de T_SS, alors
+le vecteur q prolonge par zero a une energie nulle. La PSD impose que ce
+vecteur soit dans kerT ; en particulier T_RS q=0, d'ou
+ 8 Gamma_RS q=2(1^t q)1_R-B_R^t(3I+M)B_Sq.
+Si B_Sq=0, les colonnes de B_S ayant somme2 donnent aussi1^tq=0 et donc
+ Gamma_RSq=0.
+Une base entiere du noyau local fournit ainsi des contraintes lineaires
+exactes sur les aretes encore inconnues. La cible serait de montrer une
+incompatibilite des blocs casses obligatoires ; aucune borne de cout pour
+ce programme n'est fournie, et aucun bloc casse admissible nu>=14 n'est
+actuellement disponible. Ne pas presenter cette proposition comme une
+route de calcul abordable prouvee.
+
+Correction de portee envoyee dans876 : nos certificats n_45 et b_29
+excluent ces DEUX graphes non etiquetes et tous leurs remariages. Ils
+n'excluent pas toute la classe obj53. Les autres graphes exigent leur
+propre temoin ou une preuve d'isomorphisme ; les echecs PSD deja obtenus
+par LAB restent ses resultats, sans nouvel audit ici.
+Dernier recu875, dernier envoi876. Aucun processus actif. H-MATCH ouvert.
