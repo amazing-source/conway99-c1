@@ -5894,7 +5894,7 @@ ont TOUS deux profils independants. Chaque nouvelle matrice dispose d'un
 temoin entier d'energie strictement negative sauvegarde dans le rapport.
 Aucun candidat PSD nouveau. La nullspace exacte a ete calculee pour
 fabriquer ces modifications et leurs certificats, sans recontroler les
-PSD/rangs annoncoes par le producteur. Calculs propres sous0,1s par germe,
+PSD/rangs annonces par le producteur. Calculs propres sous0,1s par germe,
 hors chargement Python, un seul processus a la fois.
 
 Code : hmatch_pure_switch_kernel_gate.py. Donnees :
@@ -5905,3 +5905,7 @@ exemple ni preuve H-MATCH. Les modifications combinees de plusieurs blocs
 peuvent echapper a ce lemme puisque la formule de variation n'est alors
 plus limitee a P'-P. La rigidite d'un germe ne prouve pas l'inexistence
 d'autres germes de matchings casses.
+
+LIVRAISON878 : preuve, code et certificats transmis au pair, commit431c6c7.
+Export codex_hmatch_20261016 avec les dependances du script. Dernier message
+recu877, dernier envoi878. Aucun processus actif. H-MATCH reste ouvert.
