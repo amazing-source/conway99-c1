@@ -341,3 +341,31 @@ Ce que ça dit (honnêtement) :
   ≥ 0,99 par côté ; max λ_2 ≈ 0,97 ; max λ_3 ≈ 0,85 (c ≤ 2), 0,90 (c = 3) ; max λ_4 = 0,716 (c = 1).
 - Cible la plus accessible : c = 1, « rank F ≥ 9 » (marge 3), par exemple rank Z ≥ 2 (marge 1) et δ ≤ 2 (λ_3 ≤ 0,85).
   Si rank Z = 3, Conway à c = 1 demanderait 4 saturations impaires EXACTES simultanées ; les données n'en approchent que 2.
+
+## 16/10 nuit : c = 1, de façon fine (demande de Dilan : « rigoureuse et fine, microscopique »)
+Scripts : `c1_network.py`, `c1_signed.py`, `c1_starsets.py`-like checks (`c1_starsets.log`), `h46_scan.py`, `h46_lambda2.log`,
+`h46_det.py`, logs `c1_network.log`, `c1_signed.log`, `c1_bottleneck.log`, `c1_modp_nullity.log`, `h46_scan.log`, `h46_det.log`.
+1. Réduction exacte (prouvée à la main, vérifiée sur les 931 côtés c = 1) : avec l = {v,0,1}, m = {v,2,3}, G_l = graphe
+   cubique induit sur les 36 voisins de l (chaque sommet a exactement 1 voisin dans chacun des 3 groupes N(v)\l, L_0, L_1),
+   Y = 20 labels {2,s}, {3,s} :
+   - les points v, 0, 1 se découplent : seules les combinaisons x_p − x̄ (2 vecteurs universels) et x̄ (t = x̄/12)
+     interviennent ; ν(T_S) = 2 + dim ker F avec F = 3I − A_YY + J/12 − Bᵀ L⁺ B (L = laplacien de G_l, B = adjacence
+     G_l × Y, chaque y ∈ Y a exactement 6 voisins dans G_l, 2 par groupe). Conway exige dim ker F ≥ 12 ; données 5 à 8.
+   - Conway à c = 1 exige en particulier un profil purement impair non constant (δ ≥ 1) : ODD-PURE(c = 1) ⟹ c = 1 exclu.
+     Forme signée : ODD-PURE ⟺ la plus grande valeur propre 3 du graphe signé SG (46 sommets : G_l + 10 lettres impaires,
+     poids ±1/√2 et A_σ/2) est de multiplicité exactement 2 (vérifié : 931/931). Marge nulle : λ_3(SG) jusqu'à 2,999926.
+   - Pas de corrélation entre cette saturation et la connectivité algébrique de G_l (corr 0,07).
+2. CRITÈRE H46 (nouveau, net) : soit x ∈ N(l) (ici x = 3, lettre de m) et Y_x = N(x) \ N[l] (10 sommets) ;
+   H = N(l) ∪ Y_x a 46 sommets. Entrelacement (spectre 14, 3^54, (−4)^44) : dans Conway, λ_2(A_H) = 3 EXACTEMENT pour
+   tout sous-graphe induit de 46 sommets. Données :
+   - c = 1 (3 480 cas, deux choix de x) : λ_2(A_H) ∈ [2,9107 ; 2,9927] < 3, jamais 3 ;
+   - c ≥ 2 : λ_2(A_H) = 3, multiplicité de 3 = c − 1 exactement (sans grille).
+   Donc H46-c1 : « si G_l est connexe, λ_2(A_H) < 3 » ⟹ aucune droite de Conway n'a c = 1. H ne fait intervenir NI le
+   second point 2 de m NI ses labels : l'objet local se réduit à G_l (3 appariements sur 12 lettres) + les 10 voisins de x.
+   Forme exacte : λ_2(A_H) < 3 ⟺ F_3 = (3I − A_33 − B_3ᵀ L⁺ B_3) restreint aux vecteurs de somme nulle (9 dim) est défini
+   positif (inertie : In(3I − A_H) = (36 + p(F_3), z(F_3), 1 + n(F_3))).
+   det(3I − A_H) = −16 200 × Δ (2^3·3^4·5^2 divise toujours), Δ ≠ 0 sur les données ; aucun petit premier ne divise
+   toujours Δ (7 : 2/30, 11 : 3/30) : pas de preuve par congruence simple.
+3. Statut : réduction rigoureuse ; l'énoncé H46-c1 est vérifié sur 100 % des données (biaisées : 93 % h-symétriques) ;
+   PAS de preuve. Pistes : inégalité de réseau électrique (marge 0,0073 au pire), énumération exhaustive de (G_l,
+   attaches de Y_x) avec certificat, ou filtre dans les modèles globaux de Codex.
