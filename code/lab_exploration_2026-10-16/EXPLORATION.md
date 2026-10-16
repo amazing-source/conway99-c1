@@ -248,3 +248,56 @@ MESURE (`f7_rank_scan.py`, exact mod p, 6 122 blocs PSD distincts) :
 - `f7_kernel_look.py`, bloc à grille n9ng_z5h_SCH_1 (rang_Q 30, rang_F7 25) : 5 directions mod 7 non relevables. Les
   représentants ont des supports de 20-25 labels ; l'un est un vecteur de parité (+1/−1 alterné sur L_1 selon la
   parité de la seconde lettre, −2 sur les labels impairs de L_2, −1 sur L_3). Pas encore de mécanisme lisible.
+
+## 16/10 nuit : la forme lisible de la chute 7-adique (demande de Dilan : « la forme lisible pour comprendre exactement le système »)
+Scripts : `f7_classform.py`, `f7_letters.py`, `f7_balanced.py`, `f7_charpoly.py`, `f7_lmin_check.py`, `f7_parity_check.py`,
+`f7_tau_check.py`, `build_cache.py` (cache dédoublonné : 486 669 fichiers → 7 023 structures, 6 122 PSD). Tables :
+`f7_balanced.log`, `f7_admissible_table.log`. Tout est exact (mod 7 ; rangs rationnels = max des rangs modulo deux
+grands premiers, 0 désaccord sur 6 122 blocs).
+
+Énoncés exacts (preuves de quelques lignes) :
+- (E1) h « équilibré » (B_S h = 0 : chaque lettre a une somme nulle) ⟹ 8T_S h = 8(3I − Γ_S) h (les termes en B
+  s'annulent, Jh = ½ Σ_r (Bh)_r = 0). Donc mod 7, sur les équilibrés, ker_7(8T_S) = ker_7(Γ_S − 3I), qui contient les
+  vrais vecteurs propres 3 ET −4 du graphe des labels, puisque 3 ≡ −4 mod 7.
+- (E2) 8T_S = 8 × complément de Schur de 3I − A_W, W = {v} ∪ N(v) ∪ S (59 sommets), relativement au bloc 15 × 15 de
+  {v} ∪ N(v) (dét = −2^23, inversible sur Z_(7)) : ker_7(8T_S) = vecteurs propres mod 7 de la boule de 59 sommets pour
+  la valeur propre 3 ≡ −4.
+- (E3) T + U = 7Π (Π = projecteur sur les équilibrés, 7-entier : dét BBᵀ = 24·10^6·12^7) ⟹ T_S ≡ −U_S mod 7. Côté 3
+  (noyau de T_S) et côté −4 (noyau de U_S) se confondent mod 7. U_S ≥ 0 ⟺ A_W ≥ −4 (entrelacement côté −4).
+- (E4) Dans Conway : T = 7P_U, U = {vecteurs propres −4 nuls sur {v} ∪ N(v)} (dim 30). Alors
+  rang_Q(T_S) = 30 − z, z = dim(U ∩ R^Z) (vecteurs propres −4 portés par les 40 labels extérieurs Z) ;
+  mult. de la valeur propre 7 de T_S (= 56 pour 8T_S) = b = dim(U ∩ R^S) (vecteurs propres −4 portés par S) ;
+  rang_F7(8T_S) = 30 − z − b − σ, σ = recollement 7-adique de la partie oblique.
+  La borne F7 (≤ 28) dit EXACTEMENT : z + b + σ ≥ 2 pour chaque sommet et chaque paire de droites.
+  Par A + 4I ≥ 0, tout vecteur propre −4 de Γ_S est un vrai vecteur propre −4 du graphe (donc automatiquement équilibré).
+
+Mesure (5 173 blocs avec T_S ≥ 0 ET U_S ≥ 0) :
+- grille (1 455) : σ = 0 dans TOUS ; la chute est exactement b ∈ {0, 1, 3, 4, 5} ; rang_Q ≥ 30 (z = 0).
+  Compatibles F7 : (rang 30, b = 5) ×403 [famille Z5h] et (rang 31, b = 4) ×60, rien d'autre.
+- sans grille (3 718) : b = 0 TOUJOURS ; chute = σ ≤ 3, sporadique ; rang_Q ≥ 30 ; minimum rang_F7 = 30.
+- Forme explicite de b en grille : produit de parités h({r,s}) = σ(r)σ(s) sur les 40 labels extérieurs, 0 aux coins,
+  σ(mate a) = −σ(a) ; chaque label extérieur a 1 voisin de même signe et 5 de signe opposé (1 − 5 = −4). Il donne la
+  dimension 1 de b dans 1 178 blocs ; les autres vecteurs −4 (b = 3, 4, 5) sont « doublement impairs » :
+  h_{1s} = −h_{0s}, h_{3s} = −h_{2s}, coins 0 (1 239 des 1 261 blocs à b ≥ 1, toutes positivités confondues).
+  Les « vecteurs de classe » 3(e_12 − e_03) + 1_{3,E} − 1_{1,O} du support minimal sont ces vecteurs −4 décalés par un
+  vecteur du noyau rationnel (même ombre sur les lettres : `f7_letters.py`).
+- σ (sans grille) : un facteur irréductible de degré ~10 du polynôme caractéristique (partie équilibrée) qui a 3 pour
+  racine mod 7, ou un facteur de degré 11-28 de charpoly(8T_S) de terme constant divisible par 7 (ex. 7·2^34). Aucune
+  structure lisible : arithmétique accidentelle.
+
+Corrections de calibration :
+- 945 des 2 400 blocs à grille et 4 sans grille de nos données violent A ≥ −4 (U_S non PSD, λ_min(Γ_S) jusqu'à −4,57) :
+  ils n'ont jamais été des candidats. Ils contenaient TOUS les blocs à grille de rang_Q 28-29 et toutes les chutes
+  sporadiques en grille. Le tableau du 16/10 soir (`f7_rank_scan.py`) ne filtrait que T_S ≥ 0.
+- « chutes de 2 seulement à rang_Q ≥ 33 » (plus haut) : en fait jusqu'à 3 (2 blocs, rang 33 → 30).
+- BIAIS : 3 474 des 3 722 blocs sans grille ont τ = (01)(23) comme automorphisme ; 248 seulement sont asymétriques.
+
+Ce que ça dit (honnêtement) :
+- Il y a UN seul mécanisme structurel mod 7 : la confluence 3 ≡ −4, visible comme valeur propre 56 de 8T_S (vecteurs
+  propres −4 localisés sur S). Il n'apparaît qu'avec une grille.
+- Sans grille, R7-NG n'est pas un mécanisme caché : rang_F7 = rang_Q − (accidents). La séparation « ≥ 30 » vient du
+  rang rationnel (≥ 30, et ≥ 31 pour c ≤ 4 : c'est Q7) ; R7-NG ≈ Q7 + contrôle des accidents.
+- Pour Conway à une paire sans grille (N2) : il faut z + σ ≥ 2 si b = 0 : deux vecteurs propres −4 portés par les 40
+  labels lointains Z, ou deux accidents 7-adiques. Cibles nettes : (T1) sans grille ⟹ b = 0 (structurel, à prouver) ;
+  (T2) borner z (vecteurs propres −4 portés par Z) ; (T3) σ dans Conway est un recollement GLOBAL (U et U^⊥ en 7, de
+  rang k ≤ 28), pas un accident : c'est là que le local ne peut pas conclure seul.

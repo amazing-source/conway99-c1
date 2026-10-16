@@ -88,55 +88,56 @@ def pick(root, wq, w7):
     return None
 
 
-if "--file" in sys.argv:
-    path = sys.argv[sys.argv.index("--file") + 1]
-else:
-    wq, w7 = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 3 else (30, 25)
-    path = pick(sys.argv[1], wq, w7)
-print("block:", path)
-S, E = load(path)
-M = t8(S, E)
-k7 = null_mod(M.tolist(), 7)
-ker = sp.Matrix(M.tolist()).nullspace()
-Kint = []
-for v in ker:
-    den = sp.ilcm(*[sp.fraction(x)[1] for x in v])
-    w = [int(x * den) for x in v]
-    g = 0
-    for x in w:
-        g = sp.igcd(g, x)
-    Kint.append([x // g for x in w])
-# saturate at 7: while the reduction mod 7 is dependent, divide a suitable combination by 7
-changed = True
-while changed:
-    changed = False
-    R, piv = rref_mod(Kint, 7) if Kint else ([], [])
-    if len(R) < len(Kint):
-        # find a combination sum c_i K_i = 0 mod 7 with some c_i != 0
-        Mt = [[Kint[i][j] for i in range(len(Kint))] for j in range(44)]
-        rel = null_mod(Mt, 7)
-        c = rel[0]
-        vec = [sum((c[i] if c[i] <= 3 else c[i] - 7) * Kint[i][j] for i in range(len(Kint))) for j in range(44)]
-        assert all(x % 7 == 0 for x in vec)
-        vec = [x // 7 for x in vec]
-        i0 = next(i for i in range(len(c)) if c[i])
-        Kint[i0] = vec
-        changed = True
-print("rank_Q %d, rank_F7 %d, dim ker_7 %d, dim N mod 7 %d" % (44 - len(ker), 44 - len(k7), len(k7),
-                                                               len(rref_mod(Kint, 7)[0])))
-# complement of N_7 in ker_7, reduced
-basisN = rref_mod(Kint, 7)[0]
-comp = []
-for g in k7:
-    if len(rref_mod(basisN + comp + [g], 7)[0]) > len(basisN) + len(comp):
-        comp.append(g)
-# reduce the complement modulo N_7 to small support (greedy: subtract N_7 combinations to clear entries)
-Rc, pivc = rref_mod(basisN + comp, 7)
-names = ["".join(str(t) for t in sorted(l)) for l in S]
-print("complement directions (rref of N_7 + complement, rows beyond N_7 shown):")
-Rn, pivn = rref_mod(basisN, 7)
-full, pivf = rref_mod(basisN + comp, 7)
-extra = [row for row, pcol in zip(full, pivf) if pcol not in pivn]
-for row in extra:
-    supp = [(names[j], row[j] if row[j] <= 3 else row[j] - 7) for j in range(44) if row[j]]
-    print("   support %d: %s" % (len(supp), supp))
+if __name__ == "__main__":
+    if "--file" in sys.argv:
+        path = sys.argv[sys.argv.index("--file") + 1]
+    else:
+        wq, w7 = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 3 else (30, 25)
+        path = pick(sys.argv[1], wq, w7)
+    print("block:", path)
+    S, E = load(path)
+    M = t8(S, E)
+    k7 = null_mod(M.tolist(), 7)
+    ker = sp.Matrix(M.tolist()).nullspace()
+    Kint = []
+    for v in ker:
+        den = sp.ilcm(*[sp.fraction(x)[1] for x in v])
+        w = [int(x * den) for x in v]
+        g = 0
+        for x in w:
+            g = sp.igcd(g, x)
+        Kint.append([x // g for x in w])
+    # saturate at 7: while the reduction mod 7 is dependent, divide a suitable combination by 7
+    changed = True
+    while changed:
+        changed = False
+        R, piv = rref_mod(Kint, 7) if Kint else ([], [])
+        if len(R) < len(Kint):
+            # find a combination sum c_i K_i = 0 mod 7 with some c_i != 0
+            Mt = [[Kint[i][j] for i in range(len(Kint))] for j in range(44)]
+            rel = null_mod(Mt, 7)
+            c = rel[0]
+            vec = [sum((c[i] if c[i] <= 3 else c[i] - 7) * Kint[i][j] for i in range(len(Kint))) for j in range(44)]
+            assert all(x % 7 == 0 for x in vec)
+            vec = [x // 7 for x in vec]
+            i0 = next(i for i in range(len(c)) if c[i])
+            Kint[i0] = vec
+            changed = True
+    print("rank_Q %d, rank_F7 %d, dim ker_7 %d, dim N mod 7 %d" % (44 - len(ker), 44 - len(k7), len(k7),
+                                                                   len(rref_mod(Kint, 7)[0])))
+    # complement of N_7 in ker_7, reduced
+    basisN = rref_mod(Kint, 7)[0]
+    comp = []
+    for g in k7:
+        if len(rref_mod(basisN + comp + [g], 7)[0]) > len(basisN) + len(comp):
+            comp.append(g)
+    # reduce the complement modulo N_7 to small support (greedy: subtract N_7 combinations to clear entries)
+    Rc, pivc = rref_mod(basisN + comp, 7)
+    names = ["".join(str(t) for t in sorted(l)) for l in S]
+    print("complement directions (rref of N_7 + complement, rows beyond N_7 shown):")
+    Rn, pivn = rref_mod(basisN, 7)
+    full, pivf = rref_mod(basisN + comp, 7)
+    extra = [row for row, pcol in zip(full, pivf) if pcol not in pivn]
+    for row in extra:
+        supp = [(names[j], row[j] if row[j] <= 3 else row[j] - 7) for j in range(44) if row[j]]
+        print("   support %d: %s" % (len(supp), supp))
