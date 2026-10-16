@@ -521,7 +521,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
 
 
 
-def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False, resume=None, learn_psd=False, psd_library=None):
+def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False, resume=None, learn_psd=False, psd_library=None, columns_only=False, stars=None):
     started = time.monotonic()
     record = json.loads(Path(source).read_text(encoding='utf-8'))
     gamma, t8, u15, _, _ = prepare(record)
@@ -538,11 +538,18 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
     deleted = [LABELS[i] for i in repair['removed_indices']]
     missing = ([p for p in ALL_LABELS if p not in labels] if full
                else deleted if restore_only else [tuple(outside)]+deleted)
+    if stars is not None:
+        assert not full and not restore_only and 4 <= stars <= 14
+        requested=[p for p in ALL_LABELS if p[0] < stars]
+        assert all(p in requested for p in labels)
+        missing=[p for p in requested if p not in labels]
+        full = len(requested)==84
     print(json.dumps(dict(stage='CORE', size=len(core), T_rank=len(inverses[0][0]), U_rank=len(inverses[1][0]),
                           deleted=deleted, missing=len(missing), seconds=time.monotonic()-started)), flush=True)
     report = dict(source_file=str(source), repair_file=str(repair_file), repair_index=repair_index,
                   core_indices=core, core_labels=labels, core_adjacency=cg.tolist(), missing_labels=missing, rank_budgets=budgets,
-                  inverse_denominators=[str(inv[2]) for inv in inverses], columns=[], status='INCOMPLETE',learn_psd=learn_psd)
+                  inverse_denominators=[str(inv[2]) for inv in inverses], columns=[], status='INCOMPLETE',learn_psd=learn_psd,
+                  requested_stars=stars,target_size=len(labels)+len(missing))
     previous = json.loads(Path(resume).read_text(encoding='utf-8')) if resume else None
     if previous:
         assert previous['core_indices'] == core
@@ -589,7 +596,9 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
             original = LABELS.index(label)
             neighbours = np.flatnonzero(gamma[original,core]).tolist()
             assert any(d['neighbours']==neighbours for d in entry['domains']), 'The new domain model must retain the accepted original column.'
-    if len(domains) == len(missing):
+    if len(domains) == len(missing) and columns_only:
+        report.update(status='COLUMN_DOMAINS_COMPLETE',reused_columns=reused_columns)
+    elif len(domains) == len(missing):
         old_cuts = previous.get('assembly',{}).get('rank_cuts',[]) if previous else []
         old_psd_cuts = previous.get('assembly',{}).get('psd_cuts',[]) if previous else []
         missing_set = set(map(tuple,missing))
@@ -649,6 +658,8 @@ if __name__=='__main__':
     parser.add_argument('--resume',help='Reuse complete domains and applicable exact cuts on this identical core; the requested new vertices may change.')
     parser.add_argument('--learn-psd',action='store_true',help='Learn universal linear Gram inequalities from exactly certified negative integer vectors.')
     parser.add_argument('--psd-library',help='Reuse universal Gram inequalities from a report or library, including after changing the retained core.')
+    parser.add_argument('--columns-only',action='store_true',help='Enumerate every requested column domain without building the joint assembly.')
+    parser.add_argument('--stars',type=int,help='Repair directly on all labels incident with roots0..k-1 (k=5 gives52 vertices).')
     args=parser.parse_args()
     run(args.source,args.repairs,args.repair_index,args.output,tuple(map(int,args.outside.split(','))),
-        args.full,args.restore_only,args.seconds,args.per_column,args.disc,args.resume,args.learn_psd,args.psd_library)
+        args.full,args.restore_only,args.seconds,args.per_column,args.disc,args.resume,args.learn_psd,args.psd_library,args.columns_only,args.stars)

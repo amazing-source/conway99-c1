@@ -6272,3 +6272,79 @@ de determiner si l'obstruction concerne deja tout changement du44 dans
 ce coeur, ou seulement son prolongement. Les etiquettes manquantes peuvent
 desormais changer lors de --resume : domaines reutilises par etiquette,
 coupes retenues uniquement lorsque toutes leurs etiquettes sont presentes.
+
+
+## 16/10, 11:05 - Projection globale84 : coeur30 exclu
+
+Le calcul local44/45 etait encore incomplet. Nouvelle approche : les54
+colonnes manquantes vers le coeur30 sont TOUTES enumerees (2,641s,15
+domaines reutilises). Toutes non vides, tailles4 a277. Donc aucun sommet
+ne bloque seul. Les etiquettes couvrent maintenant exactement les84.
+Pour chaque sommet du coeur, son degre final doit valoir12 et ses comptes
+de voisins par racine doivent valoir2-[r dans p]-[mate(r) dans p]. Pour
+chaque paire du coeur, le nombre de nouveaux voisins communs doit etre
+EXACTEMENT 2-|p inter q|-Gamma_pq-(Gamma_CC^2)_pq. Ces conditions sont
+un modele de choix d'une colonne par etiquette, sans aucune arete entre
+les54 sommets nouveaux. conway_core_column_design.py :30 equations de
+degre,420 de comptes par racine,435 de paires. UNSAT en25,283s de solveur
+(26,094s total), un worker. Il est donc impossible de completer ce coeur
+vers le graphe global, MEME en changeant toutes les aretes incidentes aux
+14 anciens sommets liberes. Cela ferme le cas que les recherches locales
+44/45 n'avaient pas termine. Ne ferme pas les autres coeurs possibles.
+
+Le premier noyau d'equations CP contient627 equations (302 racines,325
+paires). La relaxation fractionnaire passe : le separateur lineaire global
+ne trouve aucune marge, optimum numerique0. Une congruence GF2 simple
+passe aussi (rang506 sur885 caracteristiques,7224 differences de colonnes).
+Ces impasses sont bornees et n'invalident pas le UNSAT entier.
+
+Extraction d'une preuve exacte plus lisible en cours par choix de colonnes.
+conway_core_column_dual.py cherche y tel que
+ sum_p min_{d dans domaine(p)} y.f_p(d) > y.target.
+GLOP propose y, puis un vecteur entier est reconstruit et TOUS les minima
+et la marge sont calcules en entiers. Sur les4 colonnes de(1,2), choix1
+et3 exclus par marges entieres9 et3. Les choix0 et2 sont subdivises sur
+les8 colonnes de(2,11). Ce n'est pas un re-audit du pair : c'est l'anatomie
+d'une NOUVELLE obstruction globale trouvee par notre outil.
+
+Temoin PSD lisible extrait du travail precedent : P de7 sommets et N de8
+sommets (etiquettes dans conway_signed15_obstruction_20261016.json).
+Pour v=1_P-1_N, v^t T8 v=236-16(e(P)+e(N)-e(P,N)). Donc la difference
+d'aretes est au plus14 dans tout Conway. Un candidat donnait15, soit
+v^t T8 v=-4. Cette inegalite est universelle dans les etiquettes fixes ;
+elle ne depend pas du coeur30. Code+librairie PSD envoyes au LAB en889.
+
+Etat de l'explication detaillee :47 feuilles fermees par separateurs
+integers sur les3 etiquettes,7 encore sans separateur. Les tentatives
+de preuve par seules bornes de comptes (10k noeuds,46,797s) puis par bornes
+et47 separateurs (20k noeuds,32,453s) sont INCOMPLETES. Elles ne sont pas
+le certificat du verdict : l'exclusion du coeur30 est acquise par le
+modele global CP termine en26,094s. Les gros arbres exploratoires sont
+archives en gzip, et leur statut est conserve dans un petit resume.
+
+LAB890 accepte sans re-audit : impossible d'etendre ses31 bases44 fixes
+a l'etoile complete d'une lettre exterieure (52 etiquettes). Sans base,
+le modele5 etoiles reste inconclusif. Il dispose d'une preuve DRAT pour
+HB et d'un controle positif243 de SON modele. Codex garde la reparation
+de coeurs libres et le passage aux comptes globaux ; les approches sont
+complementaires. Notre exclusion du coeur30 ne fixe deja plus le44, mais
+seulement30 sommets. Elle n'utilise NI DISC NI H-MATCH : budgets5/10,
+aucun filtre DISC unitaire dans les domaines, seulement image/PSD/C2
+locaux necessaires, puis les comptes exacts globaux.
+
+--stars5 ajoute au constructeur la cible52 COMPLETE, anciens sommets
+retires et8 nouveaux sommets reconstruits ensemble. Elle impose les
+comptes exacts de l'etoile4, puisqu'elle est complete, et les caps usuels
+sur tout le bloc. Les22 domaines du coeur30 ont ete recuperes du cache84
+en0,140s : controle de raccordement, pas nouvelle exclusion du meme coeur.
+Les demandes dont les etiquettes couvrent84 passent au mode complet99.
+
+Le nouveau module de comptes est parametre par root_count (14 par defaut).
+Controle positif de CE nouvel outil sur le srg9 des tours3x3 : deux
+sommets fixes du second voisinage, deux autres a choisir parmi des
+domaines contenant la vraie solution et des distracteurs. SAT, et tous
+les comptes exacts de la solution reconstruite sont satisfaits. Aucun
+recalcul des controles de LAB.
+
+Transmis en891 : fermeture globale du coeur30 et fichiers. Aucun graphe
+Conway ni germe52 nouveau obtenu ; aucune exclusion universelle de C1.
