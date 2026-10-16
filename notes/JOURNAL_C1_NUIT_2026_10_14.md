@@ -6225,3 +6225,50 @@ Artefacts : four_star_rank_release.py, conway_core_repair.py ; rapports
 rank_release_urep100_*, core_repair_urep100_*. Aucun45 prolongeable ni99
 construit. Les exclusions portent sur les coeurs fixes affiches, pas sur
 tous les germes. Dernier recu887 et envoi888 (formule de coupe de Schur-DISC).
+
+
+## 16/10, 10:50 - Apprendre des echecs de reconstruction
+
+Le solveur traite maintenant64 assemblages par appel CP-SAT, garde les
+coupes exactes entre les passes (--resume), et reutilise les domaines
+complets. L'adjacence du coeur est sauvegardee pour controler les reprises.
+Sur coeur30, la passe120s partant de372 coupes a parcouru704 candidats,
+329 examens exacts et termine avec1030 coupes. Recherche INCOMPLETE,
+pas une impossibilite. Un controle positif reconstruit le44 original.
+
+DISC de corang2 est desormais applique directement aux tables de paires.
+Sur coeur38, les2 colonnes de x et3 de(0,3), avec deux valeurs d'arete,
+donnent12 combinaisons :9 echecs PSD/rang et3 echecs DISC. Toutes exclues
+en0,203s, avant tout assemblage CP. C'est un certificat sur une paire,
+conditionnel au coeur38, pas une exclusion generale des germes.
+
+NOUVELLE INTEGRATION --learn-psd : au-dela des nogoods conditionnels aux
+domaines, un candidat negatif donne un vecteur entier v tel que
+ v^t T8 v < 0 ou v^t U15 v < 0.
+Les vecteurs sont proposes numeriquement, mais la negativite est calculee
+exactement en entiers. Aucune valeur propre flottante n'exclut un candidat.
+Puis on impose, sur les ARETES VARIABLES du modele, l'inegalite universelle
+ v^t (24I-8Gamma-3B^tB-B^tMB+2J) v >= 0
+ou
+ v^t (60I+15Gamma-4B^tB+B^tMB-2J) v >= 0.
+Ces coupes lineaires ne fixent ni le coeur, ni les anciens noyaux, ni un
+tuple de domaines. Elles sont donc transportables entre reparations.
+--psd-library lit ces vecteurs dans un rapport et reprend ceux dont les
+etiquettes sont presentes dans le nouveau modele. Leur condition de
+validite est seulement la PSD globale necessaire au graphe de Conway.
+Ce n'est pas un nouveau theoreme de PSD : c'est l'extraction de contraintes
+concretes generalisables a partir des echecs microscopiques observes.
+Une reduction gloutonne des coefficients garde la negativite exacte pour
+produire des temoins plus petits et lisibles. La recherche coeur30 avec
+ces coupes est en cours ; aucun bloc45 admissible n'a encore ete obtenu.
+
+Premiere passe PSD120s terminee :448 assemblages,202 examens exacts,
+1434 nogoods cumules et398 inegalites universelles. Statut INCOMPLETE.
+28 de ces inegalites ne font pas intervenir x : transportees du coeur30
+au coeur33, elles preservent le44 original (reconstruit exactement).
+560 nogoods ne font pas intervenir x non plus : ils sont repris dans un
+modele de reconstruction44 avec le coeur30, sans imposer x. Cela permet
+de determiner si l'obstruction concerne deja tout changement du44 dans
+ce coeur, ou seulement son prolongement. Les etiquettes manquantes peuvent
+desormais changer lors de --resume : domaines reutilises par etiquette,
+coupes retenues uniquement lorsque toutes leurs etiquettes sont presentes.

@@ -10,7 +10,7 @@ import argparse
 from collections import Counter
 from itertools import combinations, product
 import json
-from math import isqrt
+from math import gcd, isqrt
 from pathlib import Path
 import sys
 import time
@@ -57,6 +57,52 @@ def positive_principal_set(matrix, size):
             chosen = trial
             if len(chosen) == size:
                 return chosen
+    return None
+
+
+def negative_integer_vector(matrix):
+    """Numerics propose a short vector; integer arithmetic certifies it.
+
+    A missed negative direction merely produces no cut. No eigenvalue
+    estimate is used to exclude a candidate or certify feasibility.
+    """
+    eigenvalues, eigenvectors = np.linalg.eigh(np.asarray(matrix,dtype=float))
+    if eigenvalues[0] >= -1e-8:
+        return None
+    direction = eigenvectors[:,0]
+    direction /= max(abs(direction))
+    for exponent in range(13):
+        vector = list(map(int,np.rint(direction*(2**exponent))))
+        divisor = gcd(*vector)
+        if not divisor:
+            continue
+        vector = [v//divisor for v in vector]
+        if next(v for v in vector if v) < 0:
+            vector = [-v for v in vector]
+        value = sum(vector[i]*int(matrix[i,j])*vector[j]
+                    for i in range(len(vector)) for j in range(len(vector)))
+        if value < 0:
+            # Keep a small, readable certificate. Each deletion/reduction is
+            # accepted only when its exact quadratic value remains negative.
+            improved = True
+            while improved:
+                improved = False
+                for i,weight in enumerate(vector):
+                    if not weight:
+                        continue
+                    dot = sum(int(matrix[i,j])*v for j,v in enumerate(vector))
+                    for replacement in (0,1 if weight > 0 else -1):
+                        if abs(replacement) >= abs(weight):
+                            continue
+                        change = replacement-weight
+                        trial = value+2*change*dot+change*change*int(matrix[i,i])
+                        if trial < 0:
+                            vector[i],value = replacement,trial
+                            improved = True
+                            break
+            if next(v for v in vector if v) < 0:
+                vector = [-v for v in vector]
+            return vector,value
     return None
 
 
@@ -140,7 +186,7 @@ def column_domain(label, core_labels, gamma, kernels, inverses, budgets, seconds
                 domains=domains, statistics=dict(stats), solver_seconds=solver.WallTime(),disc_obstructions=disc_obstructions)
 
 
-def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds, full=False, disc_context=None):
+def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds, full=False, disc_context=None, initial_cuts=(), initial_psd_cuts=(), learn_psd=False):
     """Exact assembly using the two remaining Schur rank budgets."""
     started = time.monotonic()
     assert all(b >= 0 for b in budgets)
@@ -177,6 +223,7 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         k8, l15 = offsets(missing[i], missing[j])
         allowed = []
         failed_pairs = []
+        table_disc_failures = Counter()
         root_common = len(set(missing[i])&set(missing[j]))
         for ai, left in enumerate(coordinates[i]):
             for aj, right in enumerate(coordinates[j]):
@@ -199,9 +246,26 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
                                 T_determinant_numerator=str(left[2]*right[2]-rt*rt),
                                 U_determinant_numerator=str(left[3]*right[3]-ru*ru)))
                         continue
+                    disc_failed = False
+                    if disc_context:
+                        for f,det in enumerate(determinants):
+                            if budgets[f] == 2 and det:
+                                determinant,remainder = divmod(disc_context[f]*det,inverses[f][2]**2)
+                                assert remainder == 0
+                                check = disc_check(determinant,f)
+                                if not check['allowed']:
+                                    disc_failed = True
+                                    table_disc_failures[('T','U')[f]] += 1
+                                    if len(domains[i])*len(domains[j]) <= 16:
+                                        failed_pairs.append(dict(left_choice=ai,right_choice=aj,edge=edge,
+                                            violation='DISC',form=('T','U')[f],**check))
+                                    break
+                    if disc_failed:
+                        continue
                     parity_options = [([int((rt,ru)[f] < 0)] if (rt,ru)[f] else [0,1]) for f in signs]
                     allowed.extend((ai, aj, edge, common, *parities) for parities in product(*parity_options))
-        pair_stats.append(dict(left=i, right=j, pairs=len(domains[i])*len(domains[j]), allowed_rows=len(allowed)))
+        pair_stats.append(dict(left=i, right=j, pairs=len(domains[i])*len(domains[j]), allowed_rows=len(allowed),
+                               direct_disc_failures=dict(table_disc_failures)))
         if not allowed:
             return dict(status='INCOMPATIBLE_COLUMN_PAIR', complete=True, empty_pair=[missing[i], missing[j]],
                         pair_statistics=pair_stats, exact_pair_obstructions=failed_pairs)
@@ -214,6 +278,41 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
         model.AddAllowedAssignments([choices[i], choices[j], edge, common_var, *parities], allowed)
         graph[size+i][size+j] = graph[size+j][size+i] = edge
     labels = list(core_labels)+list(missing)
+    gram_bases = []
+    for f,diagonal in enumerate((20,50)):
+        gram_bases.append(np.array([[diagonal if i == j else -offsets(p,q)[f]
+                                    for j,q in enumerate(labels)] for i,p in enumerate(labels)],dtype=np.int64))
+    full_label_index = {tuple(p):i for i,p in enumerate(labels)}
+    psd_cuts = []
+    psd_seen = set()
+    def add_psd_cut(cut):
+        f = ('T','U').index(cut['form'])
+        vector = [0]*len(labels)
+        for p,value in zip(cut['labels'],cut['weights']):
+            vector[full_label_index[tuple(p)]] = value
+        key = (f,tuple(vector))
+        if key in psd_seen:
+            return False
+        psd_seen.add(key)
+        constant = sum(vector[i]*int(gram_bases[f][i,j])*vector[j]
+                       for i in range(len(labels)) for j in range(len(labels)))
+        coefficients,variables = [],[]
+        for i,j in combinations(range(len(labels)),2):
+            coefficient = 2*(-8,15)[f]*vector[i]*vector[j]
+            if not coefficient:
+                continue
+            if isinstance(graph[i][j],int):
+                constant += coefficient*graph[i][j]
+            else:
+                coefficients.append(coefficient)
+                variables.append(graph[i][j])
+        divisor = gcd(constant,*coefficients)
+        assert divisor
+        model.Add(sum((c//divisor)*v for c,v in zip(coefficients,variables)) >= -constant//divisor)
+        return True
+    for cut in initial_psd_cuts:
+        if add_psd_cut(cut):
+            psd_cuts.append(cut)
     if not full:
         # In the complete84 case, PSD plus the global rank/trace identity
         # already proves all SRG constraints. For a partial block, impose
@@ -261,107 +360,168 @@ def signed_join(core_labels, gamma, missing, domains, inverses, budgets, seconds
                           +sum(conjunction(graph[i][z],graph[j][z]) for z in range(size,len(labels))) <= 2-root_common)
             else:
                 model.Add(graph[i][j]+sum(conjunction(graph[i][z], graph[j][z]) for z in range(len(labels))) <= 2-root_common)
-    iterations, rank_cuts = 0, []
+    label_index = {tuple(p):i for i,p in enumerate(missing)}
+    iterations, rank_cuts = 0, list(initial_cuts)
+    for cut in initial_cuts:
+        if cut.get('violation') == 'DISC':
+            assert disc_context is not None
+        variables = [choices[label_index[tuple(p)]] for p in cut['labels']]
+        forbidden = list(cut['domain_indices'])
+        for pair,value in zip(cut['free_edge_pairs'],cut['edge_values']):
+            i,j = (label_index[tuple(p)] for p in pair)
+            variables.append(graph[size+i][size+j])
+            forbidden.append(value)
+        model.AddForbiddenAssignments(variables,[forbidden])
+    evaluated = model_candidates = filtered = 0
+
+    class CandidateBatch(cp_model.CpSolverSolutionCallback):
+        def __init__(self):
+            super().__init__()
+            self.candidates = []
+        def on_solution_callback(self):
+            values = [self.Value(x) for x in choices]
+            edges = {(i,j):self.Value(graph[size+i][size+j]) for i,j in combinations(range(count),2)}
+            self.candidates.append((values,edges))
+            if len(self.candidates) >= 64:
+                self.StopSearch()
+
     while True:
         remaining = started+seconds-time.monotonic()
         if remaining <= 0:
-            return dict(status='ASSEMBLY_TIME_LIMIT',complete=False,pair_statistics=pair_stats,rank_cuts=rank_cuts,iterations=iterations)
+            return dict(status='ASSEMBLY_TIME_LIMIT',complete=False,pair_statistics=pair_stats,rank_cuts=rank_cuts,
+                        psd_cuts=psd_cuts,iterations=iterations,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
         solver = cp_model.CpSolver()
         solver.parameters.num_search_workers = 1
         solver.parameters.max_time_in_seconds = remaining
-        status = solver.Solve(model)
+        solver.parameters.enumerate_all_solutions = True
+        collector = CandidateBatch()
+        status = solver.Solve(model,collector)
         iterations += 1
-        result = dict(status=solver.StatusName(status), complete=status in (cp_model.OPTIMAL, cp_model.INFEASIBLE),
-                      pair_statistics=pair_stats, solver_seconds=solver.WallTime(), seconds=time.monotonic()-started,
-                      iterations=iterations,rank_cuts=rank_cuts)
-        if status not in (cp_model.OPTIMAL,cp_model.FEASIBLE):
+        model_candidates += len(collector.candidates)
+        result = dict(status=solver.StatusName(status),complete=status in (cp_model.OPTIMAL,cp_model.INFEASIBLE),
+                      pair_statistics=pair_stats,solver_seconds=solver.WallTime(),seconds=time.monotonic()-started,
+                      iterations=iterations,rank_cuts=rank_cuts,psd_cuts=psd_cuts,model_candidates=model_candidates,evaluated=evaluated,filtered=filtered)
+        if not collector.candidates:
             return result
-        values = [solver.Value(x) for x in choices]
-        adjacency = np.array([[x if isinstance(x, int) else solver.Value(x) for x in row] for row in graph], dtype=np.int64)
-        residuals = []
-        incompatible = False
-        for f, (inverse, scale, diagonal) in enumerate(zip(inverses, (-8,15), (20,50))):
-            residual = [[0]*count for _ in range(count)]
-            for i in range(count):
-                residual[i][i] = coordinates[i][values[i]][2+f]
-                for j in range(i):
-                    geometry = offsets(missing[i], missing[j])[f]
-                    cross = scale*int(adjacency[size+i,size+j])-geometry
-                    residual[i][j] = residual[j][i] = inverse[2]*cross-int(coordinates[i][values[i]][f]@inverse[1]@coordinates[j][values[j]][f])
-            residuals.append(residual)
-            witness = None
-            disc_certificate = None
-            if disc_context and budgets[f]:
-                proposed = positive_principal_set(residual,budgets[f])
-                if proposed is not None:
-                    minor = int(sp.Matrix([[residual[a][b] for b in proposed] for a in proposed]).det(method='domain-ge'))
-                    determinant,remainder = divmod(disc_context[f]*minor,inverse[2]**budgets[f])
-                    assert remainder == 0
-                    check = disc_check(determinant,f)
-                    if not check['allowed']:
-                        witness = proposed
-                        disc_certificate = check
-            if witness is None and not residual_rank_check(residual,budgets[f]):
-                witness = list(range(count))
-                for i in list(witness):
-                    trial = [j for j in witness if j != i]
-                    principal = [[residual[a][b] for b in trial] for a in trial]
-                    if trial and not residual_rank_check(principal,budgets[f]):
-                        witness = trial
-            if witness is not None:
-                incompatible = True
-                variables = [choices[i] for i in witness]
-                forbidden = [values[i] for i in witness]
-                free_pairs = []
-                for i,j in combinations(witness,2):
-                    if i > j:
-                        i,j = j,i
-                    left,right = coordinates[i][values[i]],coordinates[j][values[j]]
-                    k8,l15 = offsets(missing[i],missing[j])
-                    common = (masks[i][values[i]]&masks[j][values[j]]).bit_count()+len(set(missing[i])&set(missing[j]))
-                    possible_edges = []
-                    for edge in (0,1):
-                        if common+edge > 2:
-                            continue
-                        rt = td*(-8*edge-k8)-int(left[0]@products_t[j][values[j]])
-                        ru = ud*(15*edge-l15)-int(left[1]@products_u[j][values[j]])
-                        dets = [left[2]*right[2]-rt*rt,left[3]*right[3]-ru*ru]
-                        if all(det >= 0 and (budgets[g] > 1 or det == 0) for g,det in enumerate(dets)):
-                            possible_edges.append(edge)
-                    assert int(adjacency[size+i,size+j]) in possible_edges
-                    if len(possible_edges) > 1:
-                        variables.append(graph[size+i][size+j])
-                        forbidden.append(int(adjacency[size+i,size+j]))
-                        free_pairs.append([missing[i],missing[j]])
-                model.AddForbiddenAssignments(variables,[forbidden])
-                principal = [[residual[a][b] for b in witness] for a in witness]
-                psd,rank,reason = exact_psd(principal)
-                rank_cuts.append(dict(form=('T','U')[f],rank_budget=budgets[f],
-                    labels=[missing[i] for i in witness],domain_indices=[values[i] for i in witness],
-                    free_edge_pairs=free_pairs,edge_values=forbidden[len(witness):],
-                    violation='DISC' if disc_certificate else 'RANK_BUDGET' if psd else 'NOT_PSD',observed_rank=rank if psd else None,
-                    disc_certificate=disc_certificate,
-                    exact_psd_reason=reason,denominator=str(inverse[2]),
-                    residual_numerator=[[str(residual[a][b]) for b in witness] for a in witness]))
-        if incompatible:
-            if iterations <= 5 or iterations % 25 == 0:
-                print(json.dumps(dict(stage='SMALL_SCHUR_CUTS',iterations=iterations,cuts=len(rank_cuts))),flush=True)
-            continue
-        incidence = np.array([[int(r in p) for p in labels] for r in range(14)], dtype=np.int64)
-        c2 = adjacency@adjacency+adjacency+incidence.T@incidence
-        np.fill_diagonal(c2, 0)
-        assert not np.any(c2 > 2)
-        assert not np.any(adjacency.sum(axis=1) > 12)
-        result.update(assignment=values, labels=labels, adjacency=adjacency.tolist(),
-                      T_residual_numerator=residuals[0], U_residual_numerator=residuals[1])
-        if full:
-            full_graph = sr_graph(adjacency, labels, 14)
-            assert is_srg(full_graph, 14)
-            result['adjacency99'] = full_graph.tolist()
-        return result
+        for values,edges in collector.candidates:
+            covered = False
+            for cut in rank_cuts:
+                if not all(values[label_index[tuple(p)]] == value for p,value in zip(cut['labels'],cut['domain_indices'])):
+                    continue
+                if all(edges[tuple(sorted(label_index[tuple(p)] for p in pair))] == value
+                       for pair,value in zip(cut['free_edge_pairs'],cut['edge_values'])):
+                    covered = True
+                    break
+            if covered:
+                filtered += 1
+                continue
+            evaluated += 1
+            adjacency = np.zeros((size+count,size+count),dtype=np.int64)
+            adjacency[:size,:size] = gamma
+            for i,value in enumerate(values):
+                neighbours = domains[i][value]['neighbours']
+                adjacency[size+i,neighbours] = adjacency[neighbours,size+i] = 1
+            for (i,j),value in edges.items():
+                adjacency[size+i,size+j] = adjacency[size+j,size+i] = value
+            if learn_psd:
+                for f,scale in enumerate((-8,15)):
+                    certificate = negative_integer_vector(gram_bases[f]+scale*adjacency)
+                    if certificate is not None:
+                        vector,value = certificate
+                        support = [i for i,v in enumerate(vector) if v]
+                        cut = dict(form=('T','U')[f],labels=[labels[i] for i in support],
+                                   weights=[vector[i] for i in support],negative_value=value,
+                                   scope='Universal Conway Gram PSD inequality; independent of the retained core.')
+                        if add_psd_cut(cut):
+                            psd_cuts.append(cut)
+            residuals = []
+            incompatible = False
+            for f, (inverse, scale, diagonal) in enumerate(zip(inverses, (-8,15), (20,50))):
+                residual = [[0]*count for _ in range(count)]
+                for i in range(count):
+                    residual[i][i] = coordinates[i][values[i]][2+f]
+                    for j in range(i):
+                        geometry = offsets(missing[i], missing[j])[f]
+                        cross = scale*int(adjacency[size+i,size+j])-geometry
+                        residual[i][j] = residual[j][i] = inverse[2]*cross-int(coordinates[i][values[i]][f]@inverse[1]@coordinates[j][values[j]][f])
+                residuals.append(residual)
+                witness = None
+                disc_certificate = None
+                if disc_context and budgets[f]:
+                    proposed = positive_principal_set(residual,budgets[f])
+                    if proposed is not None:
+                        minor = int(sp.Matrix([[residual[a][b] for b in proposed] for a in proposed]).det(method='domain-ge'))
+                        determinant,remainder = divmod(disc_context[f]*minor,inverse[2]**budgets[f])
+                        assert remainder == 0
+                        check = disc_check(determinant,f)
+                        if not check['allowed']:
+                            witness = proposed
+                            disc_certificate = check
+                if witness is None and not residual_rank_check(residual,budgets[f]):
+                    witness = list(range(count))
+                    for i in list(witness):
+                        trial = [j for j in witness if j != i]
+                        principal = [[residual[a][b] for b in trial] for a in trial]
+                        if trial and not residual_rank_check(principal,budgets[f]):
+                            witness = trial
+                if witness is not None:
+                    incompatible = True
+                    variables = [choices[i] for i in witness]
+                    forbidden = [values[i] for i in witness]
+                    free_pairs = []
+                    for i,j in combinations(witness,2):
+                        if i > j:
+                            i,j = j,i
+                        left,right = coordinates[i][values[i]],coordinates[j][values[j]]
+                        k8,l15 = offsets(missing[i],missing[j])
+                        common = (masks[i][values[i]]&masks[j][values[j]]).bit_count()+len(set(missing[i])&set(missing[j]))
+                        possible_edges = []
+                        for edge in (0,1):
+                            if common+edge > 2:
+                                continue
+                            rt = td*(-8*edge-k8)-int(left[0]@products_t[j][values[j]])
+                            ru = ud*(15*edge-l15)-int(left[1]@products_u[j][values[j]])
+                            dets = [left[2]*right[2]-rt*rt,left[3]*right[3]-ru*ru]
+                            if all(det >= 0 and (budgets[g] > 1 or det == 0) for g,det in enumerate(dets)):
+                                possible_edges.append(edge)
+                        assert int(adjacency[size+i,size+j]) in possible_edges
+                        if len(possible_edges) > 1:
+                            variables.append(graph[size+i][size+j])
+                            forbidden.append(int(adjacency[size+i,size+j]))
+                            free_pairs.append([missing[i],missing[j]])
+                    model.AddForbiddenAssignments(variables,[forbidden])
+                    principal = [[residual[a][b] for b in witness] for a in witness]
+                    psd,rank,reason = exact_psd(principal)
+                    rank_cuts.append(dict(form=('T','U')[f],rank_budget=budgets[f],
+                        labels=[missing[i] for i in witness],domain_indices=[values[i] for i in witness],
+                        free_edge_pairs=free_pairs,edge_values=forbidden[len(witness):],
+                        violation='DISC' if disc_certificate else 'RANK_BUDGET' if psd else 'NOT_PSD',observed_rank=rank if psd else None,
+                        disc_certificate=disc_certificate,
+                        exact_psd_reason=reason,denominator=str(inverse[2]),
+                        residual_numerator=[[str(residual[a][b]) for b in witness] for a in witness]))
+            if incompatible:
+                if evaluated <= 5 or evaluated % 25 == 0:
+                    print(json.dumps(dict(stage='SMALL_SCHUR_CUTS',batches=iterations,evaluated=evaluated,cuts=len(rank_cuts),psd_cuts=len(psd_cuts))),flush=True)
+                continue
+            incidence = np.array([[int(r in p) for p in labels] for r in range(14)], dtype=np.int64)
+            c2 = adjacency@adjacency+adjacency+incidence.T@incidence
+            np.fill_diagonal(c2, 0)
+            assert not np.any(c2 > 2)
+            assert not np.any(adjacency.sum(axis=1) > 12)
+            result.update(evaluated=evaluated,filtered=filtered,assignment=values, labels=labels, adjacency=adjacency.tolist(),
+                          T_residual_numerator=residuals[0], U_residual_numerator=residuals[1])
+            if full:
+                full_graph = sr_graph(adjacency, labels, 14)
+                assert is_srg(full_graph, 14)
+                result['adjacency99'] = full_graph.tolist()
+            return result
+        if status == cp_model.OPTIMAL:
+            result.update(status='INFEASIBLE_AFTER_EXACT_SCHUR_FILTERS',complete=True,evaluated=evaluated,filtered=filtered)
+            return result
 
 
-def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False):
+
+def run(source, repair_file, repair_index, output, outside=(4,6), full=False, restore_only=False, seconds=60, per_column=5, disc=False, resume=None, learn_psd=False, psd_library=None):
     started = time.monotonic()
     record = json.loads(Path(source).read_text(encoding='utf-8'))
     gamma, t8, u15, _, _ = prepare(record)
@@ -381,8 +541,20 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
     print(json.dumps(dict(stage='CORE', size=len(core), T_rank=len(inverses[0][0]), U_rank=len(inverses[1][0]),
                           deleted=deleted, missing=len(missing), seconds=time.monotonic()-started)), flush=True)
     report = dict(source_file=str(source), repair_file=str(repair_file), repair_index=repair_index,
-                  core_indices=core, core_labels=labels, missing_labels=missing, rank_budgets=budgets,
-                  inverse_denominators=[str(inv[2]) for inv in inverses], columns=[], status='INCOMPLETE')
+                  core_indices=core, core_labels=labels, core_adjacency=cg.tolist(), missing_labels=missing, rank_budgets=budgets,
+                  inverse_denominators=[str(inv[2]) for inv in inverses], columns=[], status='INCOMPLETE',learn_psd=learn_psd)
+    previous = json.loads(Path(resume).read_text(encoding='utf-8')) if resume else None
+    if previous:
+        assert previous['core_indices'] == core
+        if 'core_adjacency' in previous:
+            assert previous['core_adjacency'] == cg.tolist(), 'Cannot reuse domains from a different principal core.'
+        else:
+            prior_source = json.loads(Path(previous['source_file']).read_text(encoding='utf-8'))
+            prior_gamma, *_ = prepare(prior_source)
+            assert prior_gamma[np.ix_(core,core)].tolist() == cg.tolist()
+        assert previous.get('disc_enabled',False) == disc
+        report['resumed_from'] = str(resume)
+    previous_columns = {tuple(p):entry for p,entry in zip(previous['missing_labels'],previous['columns'])} if previous else {}
     if disc_context:
         report.update(disc_enabled=True,core_principal_determinants=list(map(str,disc_context)),
                       disc_theorem_source='LAB messages886-887; necessary global classes T:2 or14, U:1 or7. No parity lemma assumed.')
@@ -394,15 +566,19 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
                     Path(output).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
                     print(json.dumps(dict(status=report['status'],form=('T','U')[f])),flush=True)
                     return report
-    domains = []
-    for label in missing:
+    domains, reused_columns = [], 0
+    for column_index,label in enumerate(missing):
         remaining = started+seconds-time.monotonic()
         if remaining <= 0:
             break
-        entry = column_domain(label, labels, cg, kernels, inverses, budgets, min(per_column,remaining),disc_context=disc_context)
+        if tuple(label) in previous_columns and previous_columns[tuple(label)]['complete']:
+            entry = previous_columns[tuple(label)]
+            reused_columns += 1
+        else:
+            entry = column_domain(label, labels, cg, kernels, inverses, budgets, min(per_column,remaining),disc_context=disc_context)
+            print(json.dumps(dict(stage='COLUMN', label=label, complete=entry['complete'], count=len(entry['domains']),
+                                  status=entry['status'], statistics=entry.get('statistics'))), flush=True)
         report['columns'].append(entry)
-        print(json.dumps(dict(stage='COLUMN', label=label, complete=entry['complete'], count=len(entry['domains']),
-                              status=entry['status'], statistics=entry.get('statistics'))), flush=True)
         if entry['complete'] and not entry['domains']:
             report.update(status='NO_COMPLETION_OF_CORE', empty_label=label)
             break
@@ -414,10 +590,24 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
             neighbours = np.flatnonzero(gamma[original,core]).tolist()
             assert any(d['neighbours']==neighbours for d in entry['domains']), 'The new domain model must retain the accepted original column.'
     if len(domains) == len(missing):
-        joined = signed_join(labels,cg,missing,domains,inverses,budgets,max(.01,started+seconds-time.monotonic()),full,disc_context)
+        old_cuts = previous.get('assembly',{}).get('rank_cuts',[]) if previous else []
+        old_psd_cuts = previous.get('assembly',{}).get('psd_cuts',[]) if previous else []
+        missing_set = set(map(tuple,missing))
+        available_labels = set(map(tuple,labels+missing))
+        old_cuts = [cut for cut in old_cuts if all(tuple(p) in missing_set for p in cut['labels'])]
+        old_psd_cuts = [cut for cut in old_psd_cuts if all(tuple(p) in available_labels for p in cut['labels'])]
+        if psd_library:
+            library = json.loads(Path(psd_library).read_text(encoding='utf-8'))
+            supplied = library.get('assembly',library).get('psd_cuts',[])
+            applicable = [cut for cut in supplied if all(tuple(p) in available_labels for p in cut['labels'])]
+            old_psd_cuts = old_psd_cuts+applicable
+            report['psd_library'] = dict(file=str(psd_library),supplied=len(supplied),applicable=len(applicable))
+        if reused_columns:
+            print(json.dumps(dict(stage='RESUMED',columns=reused_columns,cuts=len(old_cuts),psd_cuts=len(old_psd_cuts))),flush=True)
+        joined = signed_join(labels,cg,missing,domains,inverses,budgets,max(.01,started+seconds-time.monotonic()),full,disc_context,old_cuts,old_psd_cuts,learn_psd)
         report['assembly'] = joined
-        print(json.dumps({k:v for k,v in joined.items() if k not in ('labels','adjacency','adjacency99','T_residual_numerator','U_residual_numerator','pair_statistics','rank_cuts','exact_pair_obstructions')}
-                         | dict(rank_cuts=len(joined.get('rank_cuts',[])),pair_witnesses=len(joined.get('exact_pair_obstructions',[])))),flush=True)
+        print(json.dumps({k:v for k,v in joined.items() if k not in ('labels','adjacency','adjacency99','T_residual_numerator','U_residual_numerator','pair_statistics','rank_cuts','psd_cuts','exact_pair_obstructions')}
+                         | dict(rank_cuts=len(joined.get('rank_cuts',[])),psd_cuts=len(joined.get('psd_cuts',[])),pair_witnesses=len(joined.get('exact_pair_obstructions',[])))),flush=True)
         if 'adjacency' in joined:
             report['status'] = 'SRG99_CONSTRUCTED' if full else 'PARTIAL_REPAIR_CONSTRUCTED'
             hit_file = Path(output).with_name(Path(output).stem+'_CONSTRUCTION.json')
@@ -440,7 +630,7 @@ def run(source, repair_file, repair_index, output, outside=(4,6), full=False, re
             report['status'] = 'NO_COMPLETION_OF_CORE'
     report['seconds'] = time.monotonic()-started
     Path(output).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    print(json.dumps({k:v for k,v in report.items() if k not in ('columns','assembly','core_labels','core_indices','missing_labels')}),flush=True)
+    print(json.dumps({k:v for k,v in report.items() if k not in ('columns','assembly','core_labels','core_indices','core_adjacency','missing_labels')}),flush=True)
     return report
 
 
@@ -456,6 +646,9 @@ if __name__=='__main__':
     parser.add_argument('--seconds',type=float,default=60)
     parser.add_argument('--per-column',type=float,default=5)
     parser.add_argument('--disc',action='store_true',help='Use the global lattice square classes supplied by LAB886-887 as construction cuts.')
+    parser.add_argument('--resume',help='Reuse complete domains and applicable exact cuts on this identical core; the requested new vertices may change.')
+    parser.add_argument('--learn-psd',action='store_true',help='Learn universal linear Gram inequalities from exactly certified negative integer vectors.')
+    parser.add_argument('--psd-library',help='Reuse universal Gram inequalities from a report or library, including after changing the retained core.')
     args=parser.parse_args()
     run(args.source,args.repairs,args.repair_index,args.output,tuple(map(int,args.outside.split(','))),
-        args.full,args.restore_only,args.seconds,args.per_column,args.disc)
+        args.full,args.restore_only,args.seconds,args.per_column,args.disc,args.resume,args.learn_psd,args.psd_library)
