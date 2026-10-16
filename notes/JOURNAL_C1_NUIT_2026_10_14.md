@@ -6549,3 +6549,92 @@ message lu et accuse897 ; pas de reponse a son simple compte rendu de
 verification, livraison898 contient les nouvelles constructions. Commits
 612d6e5 (defaut12), ca3dab5 (borne4, obstructions et cadre global),15d74e9
 (portee des cases inconnues et controle exact des84 poids de colonnes).
+
+
+## 16/10 ? Suite899 : appariements reels, reparation12->13->15
+
+Message899 lu puis acquitte ; LAB propose de passer aux appariements
+croises reels phi et a une seconde etoile complete. Message901 lu et
+acquitte ensuite : son resultat de symetrie h(67) est accepte, sans
+re-audit. Il confirme notre premier lemme phi (envoye900).
+
+Deux preuves sans hypothese de symetrie sont maintenant ecrites dans
+`code/codex/conway_phi_defect.py` et leurs coupes sont integrees au
+reconstructeur52/84. Pour une droite centrale, P compte les triangles
+entre X et les aretes du matching croise, t ses aretes transversales,
+delta l'arete transversale de lettre4. Chaque arete ne peut avoir qu'un
+sommet de triangle ; les transversales sont deja prises par la racine,
+et les deux aretes incidentes a la lettre4 sont indisponibles si elles
+sont non transversales. Ainsi P+t-2delta<=10, D=32-2P>=10 : au moins3
+lignes X rompent chaque phi. Pour l'union des deux phi, au moins4 lignes
+rompent, sauf eventuellement quand les DEUX diagonales02--13 et03--12
+sont presentes (la borne reste3 dans ce cas).
+
+Preuve du renforcement joint : cinq lignes invariantes choisissent des
+composantes K2 disjointes du graphe des deux matchings. Les etiquettes
+croisees ne peuvent etre choisies que par diagonale commune aux deux
+matchings ; les etiquettes04,14,24,34 sont interdites. Si c diagonales
+sont choisies, il faut40-4c etiquettes non croisees parmi36, donc c>=1.
+Si une seule est choisie et l'autre n'existe pas, les deux etiquettes
+croisees restantes ont leurs deux voisins L4 dans P={04,14,24,34}.
+Elles ne peuvent plus toucher les trois lignes X restantes. Ces trois
+lignes doivent alors avoir au moins22 voisins anciens avec multiplicite,
+mais disposent d'au plus15 incidences dans les cinq blocs invariants et3
+dans P :22<=18, contradiction. Preuve complete et hypotheses au module.
+
+Anatomie du cadre12 livre precedemment : quatre lignes de L0 (07,09,010,
+013) echouent deja avec les comptes racines et C2 versL4. Relaxation
+fractionnaire possible, aucun XOR simple apres propagation : ce ne sont
+pas quatre petits certificats lineaires. En ajoutant toutes les capacites
+C2 sur les paires encore non completees,06 echoue aussi (certificat de
+Farkas entier70 termes, somme0<=-24). Six autres lignes de L0 sont
+individuellement possibles. Ces verdicts concernent ce cadre, pas tous.
+
+NOUVEAU mecanisme de reparation prouve : les60 colonnes horsL4/L5 sont
+les paires non appariees deL4. Pour deux lignes i,j, choisir des paires
+entiere de colonnes {i,k},{j,k}, et echanger i/j si la difference des
+incidences de lettres est nulle. On peut ajouter l'echange de leurs deux
+colonnes deL5 au meme bilan. Cela conserve les comptes racines, la
+bijection des paires, l'appariement interneM4 et tous les C2 deL4.
+`conway_star_trades.py` enumere exactement ces echanges a chaque cadre.
+Ce n'est pas une enumeration de tous les cadres.
+
+SUCCES12->13 : apres3 echanges (8,28,40 aretes modifiees a chaque etape),
+la ligne010 auparavant impossible devient constructible.30 cadres visites,
+1,813s, `global_star_balanced_path_010_20261016.json`. Les13 lignes sont
+completes sur84 ; toutes leurs equations et toutes les caps partielles
+sont exactes. Les autres lignes restent inconnues.
+
+Ce13 ne se prolonge pas a touteL0. Enumeration TERMINEE des domaines :
+seules02,03,08,013 peuvent etre ajoutees, et chacune a UNE seule ligne
+possible. Leurs six paires ne sont pas compatibles :02/03 ont0 voisin
+Gamma commun au lieu de1 ;02/08 et02/013 en ont3 ;03/08 en a2 ;03/013
+en a0 ;08/013 exigent une arete d'un cote et son absence de l'autre.
+La racine0 est deja commune : les0/2/3 sont des comptes dansGamma,
+auxquels s'ajoute cette racine. Domaines et tableau integral :
+`global_star13_L0_row_domains_20261016.json`. Le constructeur choisit02,
+obtient14 lignes, et prouve qu'aucune seconde ligne deL0 ne peut s'ajouter
+au13 FIXE. `global_star13_grow_L0_20261016.json`.
+
+SUCCES suivant : on libere de nouveau les choix deL4 et de010, au lieu
+de transformer cet echec local en impossibilite generale. Un echange entre
+47 et412 sur les six colonnes18,611,311,810,610,13 (12 aretes modifiees)
+permet de reconstruire ENSEMBLE010,02,03. Resultat15 lignes completes :
+`global_star15_balanced_search_20261016.json`,5 cadres testes,6,266s.
+L4 complete et4 lignes deL0 (04,02,03,010). Toute la matrice partielle
+respecte les caps de voisins communs, et chaque ligne assignee est exacte.
+La verification integree porte sur notre nouvelle construction, pas celle
+du pair. Elle ne transforme pas ce15 en graphe complet.
+
+Limites terminees et explicites : deux essais CP libres de45s et30s sont
+UNKNOWN. Recherche par echanges visant les23 lignes L0 unionL4 :100 cadres
+testes en17,343s,175 cadres restent en file, donc INCOMPLETE. Les echanges
+gardent M4 fixe ; son union avec les mates des lettres est un cycle10 et
+une arete commune. Ni ce typeM4, ni les deux etoiles, ni Conway ne sont
+exclus. Tous les solveurs de cette passe sont termines.
+
+Code compile, modele des coupes phi valide, donnees positives13/14/15
+controlees exactement. Aucun ancien gros carnet ouvert. Prochaine
+progression substantielle : prolonger/reparer ce15, ou obtenir un argument
+sur les domaines de lignes valable pour tous les cadres, en tenant compte
+du fait que les echecs du premier cadre ont effectivement ete reparables.
