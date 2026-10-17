@@ -499,3 +499,24 @@ ENTIER de norme 7·|coupe_S| (Codex : HᵗH = 7R ; R restreint à la racine = la
   - Remarque : la version « droite » du lemme des 2-coupes vaut aussi À L'INTÉRIEUR d'une composante de 12 ou 18
     sommets (ensemble équilibré de 6 sommets coupé par 2 arêtes) ; elle pourrait filtrer les tables locales 12/18 de
     Codex. Non transmis (consigne : laisser Codex seul).
+- PARTITION ÉQUITABLE CO-HEAWOOD (prouvée, vérifiée en fractions exactes, `coheawood_partition_check.py`) : pour tout
+  vecteur propre −4 entier de norme 14, la partition support (14) / liés (70) / libres (15) est équitable, de quotient
+  [[4,10,0],[2,9,3],[0,14,0]] : un sommet lié a 1 voisin +, 1 voisin −, 9 liés, 3 libres ; les 15 libres forment un
+  COCLIQUE dont tous les voisins sont liés. Preuve : A s = 4s + 2·1_L (s = indicatrice du support), puis projection de s
+  sur les espaces propres 14, 3, −4 (‖s₃‖² = 120/11, ‖s₋₄‖² = 10/9) ; les valeurs (s₃(u), s₋₄(u)) sont forcées dans
+  chaque classe. Vue du sommet v quand v est libre : P et N sont deux couplages parfaits des 14 lettres, et les 14 labels
+  libres forment un 2-facteur des lettres. PAS NOUVEAU : c'est le « monde » d'un vecteur de norme 14 déjà écrit le
+  09-10/10 (`work/c1_theta_lp_2026-10-07/NOTE.md`, 17.90 et 17.95 étapes 1-3 : biplan, 70 sommets de bord, 15 sommets
+  lointains en coclique ; Lemme N14 : AUCUN vecteur de norme 14 au rang 7-adique 37, calcul exhaustif non audité).
+  Re-dérivé ici sans relire ; seule la mise en forme « partition équitable [[4,10,0],[2,9,3],[0,14,0]] » est d'ici.
+  Ajoutée au modèle du cas I (`case1_coheawood.py --att --eq`) : toujours SAT (23 s) ; avec la bijection lointaine
+  (`--gga`) : SAT ; avec les comptes exacts lettre/label (`--ggb`) ou L_0/L_1 (`--ggc`) : UNKNOWN en 100 s.
+  Calculs suspendus ensuite : RAM du PC à 85 % sans calcul LAB (FiveM), Codex prévenu (message 960), 1 worker max.
+- SYNTHÈSE (17/10 vers 04:00) : le cas I et toute la partie « coupée » de c = 1 retombent dans le monde des vecteurs
+  courts de la campagne du 09-10/10 (stratégie de type Lam : au rang 37 un vecteur entier de norme 14, 16, 18 ou 20 est
+  FORCÉ, section 3 de NOTE.md ; norme 14 exclue au rang 37 par N14 ; normes 16, 18, 20 et rangs 39-43 ouverts).
+  Conséquence conditionnelle (N14 non audité) : au rang 37, aucun multigraphe de rectangles M_i n'a de 2-coupe, donc le
+  cas I est vide au rang 37. La partie « générique » de c = 1 (111 côtés sur 1 884 dans nos données, et sans doute la
+  majorité des types de droite) n'a pas de vecteur court local : elle n'est atteignable que par les vecteurs courts
+  FORCÉS globalement (pas liés à la droite), c'est-à-dire la campagne de rang 37. Les deux routes (B pour c ≤ 3 et
+  le rang 37) se rejoignent.

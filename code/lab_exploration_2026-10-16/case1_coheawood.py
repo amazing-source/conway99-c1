@@ -130,7 +130,7 @@ for k in range(60):
     sup = m.NewBoolVar("")
     m.AddBoolOr([pos[k], neg[k], sup.Not()]); m.AddImplication(pos[k], sup); m.AddImplication(neg[k], sup)
     for r in (0, 1):
-        if "--full" in sys.argv:
+        if "--full" in sys.argv or "--att" in sys.argv:
             m.Add(sum(att[(k, r, x)] for x in X) == 2)
         else:
             m.Add(sum(att[(k, r, x)] for x in X) == 2).OnlyEnforceIf(sup)
@@ -141,7 +141,7 @@ for k in range(60):
     val = s - kv - sum(att[(k, r, x)] for r in (0, 1) for x in Sl)
     m.Add(val == 1).OnlyEnforceIf(pos[k])
     m.Add(val == -1).OnlyEnforceIf(neg[k])
-    if "--full" in sys.argv:
+    if "--full" in sys.argv or "--att" in sys.argv:
         m.Add(val == 0).OnlyEnforceIf(sup.Not())
 # distinct attachment pairs (bijection): two support labels never share both attachments in a star
 for k, k2 in itertools.combinations(range(60), 2):
@@ -219,13 +219,17 @@ for k, k2 in itertools.combinations(range(60), 2):
             for P_ in (pos, neg):
                 m.AddBoolOr([P_[k].Not(), P_[k2].Not(), att[(k, r, x)].Not(), att[(k2, r, x)].Not()] + zero_u)
 
-if "--full" in sys.argv:
+FULL = "--full" in sys.argv
+if FULL or "--gga" in sys.argv:
     # (A') bijection: every non-mu pair of a star is the attachment pair of exactly one far label
     for r in (0, 1):
         for x, y in itertools.combinations(X, 2):
             prs = [AND(att[(k, r, x)], att[(k, r, y)]) for k in range(60)]
             m.Add(sum(prs) + mu[(r, x, y)] == 1)
-    # (B) letter / label counts and (C) L_0 / L_1 cross counts (exact srg counts)
+def common_in_G(u, w):
+    return sum(AND(gadj(u, t), gadj(w, t)) for t in G if t not in (u, w))
+if FULL or "--ggb" in sys.argv:
+    # (B) letter / label counts (exact srg counts)
     def common_in_G(u, w):
         return sum(AND(gadj(u, t), gadj(w, t)) for t in G if t not in (u, w))
     for xl in X:
@@ -235,11 +239,14 @@ if "--full" in sys.argv:
                 tgt_adj = 1 if xl == x else 0
                 lhs = sum(att[(k, r, x)] for k, z in enumerate(Dl) if xl in z)
                 m.Add(lhs + common_in_G(u, w) == (1 if tgt_adj else 2))
+if FULL or "--ggc" in sys.argv:
+    # (C) L_0 / L_1 cross counts (exact srg counts)
     for x in X:
         for y in X:
             u, w = (0, x), (1, y)
             lhs = sum(AND(att[(k, 0, x)], att[(k, 1, y)]) for k in range(60))
             m.Add(lhs + common_in_G(u, w) + sg[(x, y)] == 2)
+if FULL or "--far" in sys.argv:
     # (D) linked condition at far labels off the support, (E) far degree 8
     for k in range(60):
         sup_k = m.NewBoolVar("")
@@ -255,6 +262,63 @@ if "--full" in sys.argv:
                 mi.append(AND(att[(k, u[0], u[1])], hn[u]))
         m.Add(sum(pl) == sum(mi)).OnlyEnforceIf(sup_k.Not())
         m.Add(sum(pl) <= 1).OnlyEnforceIf(sup_k.Not())
+        m.Add(sum(F[(k, k2)] for k2 in range(60) if k2 != k) == 8)
+
+if "--eq" in sys.argv:
+    # equitable partition of a co-Heawood vector (proved, EXPLORATION.md 17/10): support / linked / free with
+    # support: 4 opposite, 0 same, 10 linked, 0 free; linked: 1 +, 1 -, 9 linked, 3 free; free: 14 linked (free = coclique)
+    assert "--att" in sys.argv or "--full" in sys.argv
+    L01 = [u for u in G if u[0] != "L"]
+    freeL = {u: m.NewBoolVar("fL") for u in L01}
+    for u in L01:
+        for x in (hp[u], hn[u]):
+            if not isinstance(x, int):
+                m.AddBoolOr([x.Not(), freeL[u].Not()])
+    freeF = [m.NewBoolVar("fF") for _ in range(60)]
+    for k in range(60):
+        m.AddBoolOr([pos[k].Not(), freeF[k].Not()]); m.AddBoolOr([neg[k].Not(), freeF[k].Not()])
+    for r in (0, 1):                                   # the points 0, 1: free neighbours = v + two labels of their star
+        m.Add(sum(freeL[(r, x)] for x in X) == 2)
+    m.Add(sum(freeF) == 10)
+    for x in X:                                        # letters: free neighbours = v + exactly 2 labels
+        m.Add(freeL[(0, x)] + freeL[(1, x)] + sum(freeF[k] for k, z in enumerate(Dl) if x in z) == 2)
+    def counts_L(u):
+        pl = [AND(gadj(u, t), hp[t]) for t in L01 if t != u and not isinstance(hp[t], int)]
+        mi = [AND(gadj(u, t), hn[t]) for t in L01 if t != u and not isinstance(hn[t], int)]
+        fr = [AND(gadj(u, t), freeL[t]) for t in L01 if t != u]
+        for k in range(60):
+            e = att[(k, u[0], u[1])]
+            pl.append(AND(e, pos[k])); mi.append(AND(e, neg[k])); fr.append(AND(e, freeF[k]))
+        return sum(pl), sum(mi), sum(fr)
+    for u in L01:
+        P_, N_, Fr = counts_L(u)
+        sup_lits = [x for x in (hp[u], hn[u]) if not isinstance(x, int)]
+        lk = m.NewBoolVar("lk")                        # linked = not support, not free
+        m.AddBoolOr(sup_lits + [freeL[u], lk])
+        for x in sup_lits + [freeL[u]]:
+            m.AddBoolOr([x.Not(), lk.Not()])
+        m.Add(Fr == 0).OnlyEnforceIf(freeL[u]); m.Add(P_ == 0).OnlyEnforceIf(freeL[u]); m.Add(N_ == 0).OnlyEnforceIf(freeL[u])
+        m.Add(Fr == 3).OnlyEnforceIf(lk); m.Add(P_ == 1).OnlyEnforceIf(lk); m.Add(N_ == 1).OnlyEnforceIf(lk)
+        for x in sup_lits:
+            m.Add(Fr == 0).OnlyEnforceIf(x)
+    for k in range(60):
+        pl = [AND(F[(k, k2)], pos[k2]) for k2 in range(60) if k2 != k]
+        mi = [AND(F[(k, k2)], neg[k2]) for k2 in range(60) if k2 != k]
+        fr = [AND(F[(k, k2)], freeF[k2]) for k2 in range(60) if k2 != k]
+        for u in L01:
+            e = att[(k, u[0], u[1])]
+            for x in ([hp[u]] if not isinstance(hp[u], int) else []):
+                pl.append(AND(e, x))
+            for x in ([hn[u]] if not isinstance(hn[u], int) else []):
+                mi.append(AND(e, x))
+            fr.append(AND(e, freeL[u]))
+        lk = m.NewBoolVar("lkF")
+        m.AddBoolOr([pos[k], neg[k], freeF[k], lk])
+        for x in (pos[k], neg[k], freeF[k]):
+            m.AddBoolOr([x.Not(), lk.Not()])
+        m.Add(sum(fr) == 0).OnlyEnforceIf(freeF[k]); m.Add(sum(pl) == 0).OnlyEnforceIf(freeF[k]); m.Add(sum(mi) == 0).OnlyEnforceIf(freeF[k])
+        m.Add(sum(fr) == 3).OnlyEnforceIf(lk); m.Add(sum(pl) == 1).OnlyEnforceIf(lk); m.Add(sum(mi) == 1).OnlyEnforceIf(lk)
+        m.Add(sum(fr) == 0).OnlyEnforceIf(pos[k]); m.Add(sum(fr) == 0).OnlyEnforceIf(neg[k])
         m.Add(sum(F[(k, k2)] for k2 in range(60) if k2 != k) == 8)
 sv = cp_model.CpSolver()
 sv.parameters.num_search_workers = workers
