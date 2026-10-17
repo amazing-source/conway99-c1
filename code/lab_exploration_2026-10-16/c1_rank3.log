@@ -90,3 +90,9 @@ Float control check_note_chatgpt_1017.py: all 6 122 positive cache blocks and 33
   (rank-30 objects: rank D0 = m3 exactly).  numpy pinv default cutoff gave 12 false failures (fixed threshold).
 Corrections: m3 = K0 on positive blocks is positivity, not tau-symmetry (3-SPEC cuts no positive block); 'Conway <=> D=0'
   only for m3 = 0; cut-vector constant is 1_{G_l} (prompt 2.5 and c1_exact_kill.py docstring fixed).
+--- 18/10: integer bounds on rectangle vectors h = T P c (idea relayed by Codex) ---
+Single rectangles h_Q (norm 28/42/56; c1_hq_pairs.py): no violation anywhere (h_Q integral on S; big entries on corners).
+Norm-28 combinations c in {-1,0,1}^11, c^T R c = 4 (c1_h28_combos.py, 45 s): integer kills with visible norm <= 28:
+  positive 1 210/1 740 (all already E3/C2a; 0 of the 40 RL/C2b-only sides); non-positive 51/144 (45 free of E3/C2a);
+  lemma-free walks 5/17 (5 more only by visible norm > 28 = non-positivity).  One kill rechecked with exact fractions.
+  No exclusion: no positive lemma-free c=1 structure is known, so (Q) is untouched.

@@ -752,3 +752,35 @@ L'utilisateur a donné son accord (« stv ») ; le test a été fait sur un seul
     1_{G_l}, pas 1. Le code `c1_balcut.py` était juste.
 - **Observation annexe** : le cache contient 720 blocs positifs de rang T_S = 29 (m₃ = 5, rang D₀ = 4) et un de rang 28
   (m₃ = 4, rang D₀ = 2). Aucun n'est un côté c = 1 positif : ceux-ci ont ν ∈ {7, …, 10}.
+
+## 18/10 : filtres entiers sur les vecteurs de rectangles (idée relayée par Codex)
+
+- **Principe.** Dans Conway, pour c ∈ {−1,0,1}¹¹ sur les 11 rectangles visibles en v, h = T P c (nul sur v et les
+  lettres) est un vecteur propre entier de valeur −4, de norme exacte 7 cᵀRc. Les bornes entières PROUVÉES s'appliquent
+  à ses coordonnées visibles (les 44 étiquettes de S) :
+  - une coordonnée : m² + 7|m| ≤ N (Codex §18) ;
+  - deux coordonnées : la borne de paire (Codex `17b4198` = note ChatGPT, Th. 4.1).
+- **Un seul rectangle** (`c1_hq_pairs.py`, sortie dans `c1_hq_pairs.log`) : h_Q = T1_Q, de norme 28, 42 ou 56.
+  - Aucune violation, ni sur les 1 884 côtés c = 1, ni sur les structures des marches.
+  - h_Q est toujours entier sur S.
+  - Les ±2 sont surtout aux coins du rectangle (h = 2 − deg_Q), où les bornes ne mordent pas.
+- **Combinaisons de norme 28** (cᵀRc = 4 ; `c1_h28_combos.py`, 45 s, sortie dans `c1_h28_combos.log`). Conditions
+  testées :
+  - |h| ≤ 2 ;
+  - au plus un +2 et un −2 ;
+  - aucun ±1 de même signe voisin d'un ±2 ;
+  - masses visibles ≤ 14 − ε₊ − ε₋.
+
+  Les combinaisons dont la norme visible dépasse déjà 28 sont comptées à part : ce n'est qu'un défaut de positivité
+  (T_S(7I − T_S) ⪰ 0 en défaut), pas une obstruction entière.
+  - Un cas contrôlé indépendamment, en fractions exactes avec T tiré de la formule du prompt : marche graine 31.
+  - VÉRIFIÉ, obstruction entière à norme visible ≤ 28 :
+    - côtés positifs : 1 210/1 740 tués. Ils étaient tous déjà tués par E3 ou C2a ; 0 des 40 côtés tués seulement par
+      RL ou C2b ;
+    - côtés non positifs : 51/144, dont 45 sans E3 ni C2a ;
+    - marches sans lemme : 5 sur 17 (graines 32, 33, 418575, 44940 et rank3walk 2). Cinq autres ne sont tuées que par
+      la norme, donc par leur non-positivité.
+- **Bilan : pas d'exclusion.**
+  - C'est un nouveau filtre exact, indépendant de RL et de C2b sur les données positives.
+  - Il réduit la classe sans lemme connue, mais elle est non positive.
+  - Sur nos données, aucun bloc positif ne survit déjà aux anciens lemmes : ces filtres ne peuvent donc pas trancher (Q).
