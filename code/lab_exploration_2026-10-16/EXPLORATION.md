@@ -520,3 +520,15 @@ ENTIER de norme 7·|coupe_S| (Codex : HᵗH = 7R ; R restreint à la racine = la
   majorité des types de droite) n'a pas de vecteur court local : elle n'est atteignable que par les vecteurs courts
   FORCÉS globalement (pas liés à la droite), c'est-à-dire la campagne de rang 37. Les deux routes (B pour c ≤ 3 et
   le rang 37) se rejoignent.
+
+## 17/10 : recherche bibliographique ciblée (demande de Dilan) — voir `BIBLIO_C1_2026-10-17.md`
+- Sources sérieuses retenues : compléments étoilés (Cvetković-Rowlinson-Simić ; Milošević 2008 pour (57,14,1,4) ;
+  Stevanović-Milošević 2009 pour (81,20,1,6)), représentation euclidienne (Bondarenko-Radchenko 2013, famille λ = 1 où
+  la symétrie h est FORCÉE parce que g = k ; Bondarenko-Prymak-Radchenko 2017), ensembles intrigants des PQ
+  (Bamberg-De Clerck-Durante), graphes cubiques aléatoires (Robinson-Wormald, Friedman), graphes signés (Acharya,
+  Stanić, Belardo-Cioabă-Koolen-Wang), asymétrie (Babai), commutations (Ihringer ; B8 : aucune GM dans notre famille),
+  échantillonnage quasi uniforme (UniGen, CMSGen).
+- Biais MESURÉ : trou laplacien de G_l, médiane 0,088 sur nos c = 1 contre 0,312 sur des types uniformes.
+- Premier test non biaisé de H46 : nullité exacte 3 (jamais 4) sur 131 structures positives issues de types génériques.
+- Bloc à quatre étoiles : la méthode simple n'atteint pas la positivité (contrôle compris) ; à refaire avec une
+  recherche orientée positivité depuis des départs aléatoires.

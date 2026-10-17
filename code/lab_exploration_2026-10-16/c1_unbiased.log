@@ -1,0 +1,23 @@
+# c1_connectivity_bias.py distinct_cache.jsonl 3000 7   (Laplacian gap of G_l, i.e. algebraic connectivity)
+data c = 1 sides                     n =  1884  gap: min 0.062  q10 0.067  median 0.088  q90 0.141  max 0.613  share < 0.17: 0.934
+random line types (axioms, c = 1)    n =  3000  gap: min 0.074  q10 0.216  median 0.312  q90 0.402  max 0.559  share < 0.17: 0.029
+# c1_h46_random.py 25 23 15   (random generic line type + random completion of H = G_l u Y_3 under the local caps)
+random c = 1 types completed: 25 ; lambda_2(A_H): min 3.1789 median 3.3658 max 3.5596   (Conway needs exactly 3; data 2.911..2.993)
+# c1_h46_descent.py 6 5 40   (attachment swaps, all caps kept, minimise lambda_2(A_H))
+type 1: gap(G_l) 0.421  lambda_2(A_H): start 3.1918 -> best 2.9744  (<= 3)
+type 2: gap(G_l) 0.309  lambda_2(A_H): start 3.4680 -> best 3.0698  (> 3)
+type 3: gap(G_l) 0.331  lambda_2(A_H): start 3.3976 -> best 2.9505  (<= 3)
+type 4: gap(G_l) 0.342  lambda_2(A_H): start 3.3163 -> best 3.0696  (> 3)
+type 5: gap(G_l) 0.289  lambda_2(A_H): start 3.3667 -> best 2.9788  (<= 3)
+type 6: gap(G_l) 0.446  lambda_2(A_H): start 3.3178 -> best 2.8360  (<= 3)
+# c1_h46_boundary.py 4 5 1500   (W = N[l] u Y_3, 49 vertices; walk inside lambda_2(A_W) <= 3; exact nullity of A_W - 3I; Conway needs >= 4)
+type 1: gap 0.421  positive structures visited 0
+type 2: gap 0.299  positive structures visited 44  nullity histogram {3: 44}
+type 3: gap 0.379  positive structures visited 33  nullity histogram {3: 33}
+type 4: gap 0.352  positive structures visited 54  nullity histogram {3: 54}
+# c1_ball59_random.py 3 101 600 40 ; 3 202 300 40 (with Y-Y 2-switches)   (four-star ball, 59 vertices, two hubs 2 and 3)
+random types: lambda_2(A_W) 3.64..4.05 -> 3.49..3.67 : positivity NOT reached (6 types)
+# CONTROL c1_ball59_random.py 3 303 300 40 --data distinct_cache.jsonl  (line types of our data, Y completed at random)
+data types (gaps 0.418, 0.088, 0.088): lambda_2 3.62..3.71 -> 3.52..3.60 : positivity NOT reached either
+=> the four-star failure is a weakness of this simple pipeline (random Y + local moves), NOT evidence about the line
+   type; PSD four-star blocks need a stronger positivity-seeking search (as used for the data, but from random starts).
