@@ -70,6 +70,7 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
         rows,relabelings=allowed_rows(masks,tuple(incidence))
         model.add_allowed_assignments(nongrid,rows)
         flow_equations=0;flow_variables=0;old_rectangle_bounds=0
+        spectral_energy_cuts=0;energy_tables=0;pairing_equations=0
         if eigen_context is not None:
             # The21 rectangle vectors at any root have zero sum at each of
             # its seven incident lines. Pair them with the OLD eigenvectors
@@ -79,6 +80,7 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
             original=items[0]['old_root_rectangles']
             observed={tuple(sorted((lines.index(tuple(item['base_vertices'][:2])),
                                     lines.index(tuple(item['base_vertices'][2:]))))):item for item in items}
+            projections=[]
             for di,qnorm in enumerate(eigen_context['lattice_norms']):
                 ys={};cap=isqrt(8*qnorm)
                 for item in original:
@@ -100,12 +102,68 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
                 for a in range(7):
                     model.add(sum(value for pair,value in ys.items() if a in pair)==0)
                     flow_equations+=1
+                projections.append(ys)
+                squares={}
+                for (a,b),value in ys.items():
+                    # Some old-root sums are expressions rather than variables.
+                    y=model.new_int_var(-cap,cap,f'rotated_energy_sum_{root}_{di}_{a}_{b}')
+                    model.add(y==value)
+                    square=model.new_int_var(0,cap*cap,f'rotated_energy_square_{root}_{di}_{a}_{b}')
+                    model.add_allowed_assignments([y,square],[(v,v*v) for v in range(-cap,cap+1)])
+                    squares[a,b]=square;energy_tables+=1
+                for a in range(7):
+                    # Incident rectangle vectors have a positive semidefinite
+                    # Laplacian Gram with diagonal<=8, hence operator<=16I.
+                    model.add(sum(v for pair,v in squares.items() if a in pair)<=16*qnorm)
+                    spectral_energy_cuts+=1
+                local_energy=[]
+                for li,(u,v) in enumerate(lines):
+                    hu=eigen_context['values'][di][u];hv=eigen_context['values'][di][v]
+                    ulo,uhi=eigen_context['bounds'][di][u];vlo,vhi=eigen_context['bounds'][di][v]
+                    energy=model.new_int_var(0,8*qnorm,f'rotated_star_energy_{root}_{di}_{li}')
+                    allowed=[]
+                    for x in range(ulo,uhi+1):
+                        for y in range(vlo,vhi+1):
+                            cost=3*(x*x+y*y)+2*x*y
+                            if cost<=8*qnorm:allowed.append((x,y,cost))
+                    model.add_allowed_assignments([hu,hv,energy],allowed)
+                    local_energy.append(energy);energy_tables+=1
+                # Projection of h away from the new closed star has norm
+                # 7q-(7/8)L, L=sum_pairs(3(h_u^2+h_v^2)+2h_uh_v).
+                # The21 Gamma rectangles are disjoint four-sets, so their
+                # squared sums total at most4 times that remaining norm.
+                model.add(2*sum(squares.values())+7*sum(local_energy)<=56*qnorm)
+                spectral_energy_cuts+=1
+            for a in range(7):
+                neighbours=[b for b in range(7) if b!=a]
+                incident={b:incidence[max(a,b)-1] if min(a,b)==0 else
+                    nongrid[pair_index[min(a,b)-1,max(a,b)-1]] for b in neighbours}
+                four=model.new_bool_var(f'rotated_four_nongrids_{root}_{a}')
+                model.add(sum(incident.values())==4).only_enforce_if(four)
+                model.add(sum(incident.values())!=4).only_enforce_if(four.Not())
+                pairing={}
+                for b,c in combinations(neighbours,2):
+                    if any(isinstance(incident[x],int) and incident[x]==0 for x in (b,c)):continue
+                    flag=model.new_bool_var(f'rotated_component_pair_{root}_{a}_{b}_{c}')
+                    model.add(flag<=four)
+                    for x in (b,c):model.add(flag<=incident[x])
+                    pairing[b,c]=flag
+                    for ys in projections:
+                        model.add(ys[tuple(sorted((a,b)))]+ys[tuple(sorted((a,c)))]==0).only_enforce_if(flag)
+                        pairing_equations+=1
+                for b in neighbours:
+                    model.add(sum(flag for pair,flag in pairing.items() if b in pair)==incident[b]).only_enforce_if(four)
+                # Four nongrid neighbours force the 12+12+6+6 pattern. Its
+                # two size12 components pair opposite rectangle vectors.
         info.append({'root_letter':root,'old_line_nongrid_incidence':incidence,
                      'fixed_matched_lines':[list(line) for line in lines],
                      'realized_rectangles':len(items),'allowed_nongrid_graphs':len(rows),
                      'cover_relabelings_before_deduplication':relabelings,
                      'cross_chart_zero_sum_equations':flow_equations,
                      'missing_rectangle_projection_variables':flow_variables,
-                     'old_root_rectangle_projection_bounds':old_rectangle_bounds})
+                     'old_root_rectangle_projection_bounds':old_rectangle_bounds,
+                     'spectral_energy_inequalities':spectral_energy_cuts,
+                     'spectral_energy_tables':energy_tables,
+                     'degree_four_component_pairing_equations':pairing_equations})
     return {'all_prebudget_component_templates':200,'all_prebudget_nongrid_graphs':116,
             'roots':info,'new_root_prism_budget':None,'scope':__doc__}

@@ -1113,3 +1113,46 @@ empreintes des28entrees/code concordantes,1coeur par job,condition RAM>=4Go.
 Il a choisi une limite externe7200s/job et extinction automatique5h. Ces
 actions sont coteLAB; nous n'avons ni cree ni modifie ses machines.
 Dernierlu/ack978,dernierenvoye979 a01h24m16. Prochaine vie avant02h09.
+
+32. 18/10 vers01h50 : norme disponible et obstruction locale identifiee.
+
+Dans une nouvelle etoile a (h_a=0), N(a) est un couplage M sur14sommets.
+Le Gram E_-4 surN(a) vaut (3I-M+J/9)/7. Sur les valeurs dont la somme est0,
+son inverse vaut7(3I+M)/8. Poser L=3*sum_N(a) h^2+h_N(a)^t M h_N(a).
+La projection de h sur l'espace propre-4 nul sur cette nouvelle etoile a
+norme carree7q-7L/8. Les21rectangles sont des quatre-ensembles disjoints,
+et leurs sommes y_ij s'y calculent apres projection. Donc
+                         2*sum_(i<j)y_ij^2+7L <=56q.
+Pour chaque droite i, son Gram de rectangles est une matrice laplacienne,
+diagonale<=8, donc rayon spectral<=16 : sum_(j!=i)y_ij^2<=16q.
+Tout est encode par tables de carres et de couts sur les six paires connues
+de l'etoile Gamma. Les deux voisins restants, o et a*, ont valeur0.
+Si le degre non-grille d'une droite vaut4, ses deux composantes12 imposent
+deux paires de vecteurs opposes. Une meme paire est choisie pour toutes les
+directions h; les equations reifiees y_ij+y_ik=0 sont imposees ensemble.
+
+Pilote193 cross_chart :code1 [0,4,5] INFEASIBLE0.891CPU sans recherche;
+code2 [0,4,8] UNKNOWN90.172CPU. L'exclusion rapide du code1 n'est PAS une
+preuve que les bornes de norme nouvelles sont decisives : diagnostic exact,
+ses rectangles impliquant l'ancienne droite ont e=[4,4,4,3,2,2]. C'est E3
+qui le refute directement. Pour code0 [0,4,4] :[4,4,4,3,3,3]; pour code2 :
+[4,4,4,2,2,2]. Parmi les35codes de193, les indices0,1,4,5 ont ce defaut.
+
+Nouveau filtre de composantes, root_component_e3_colours.py. Pour chaque
+arete de couplage u-v dans CHACUNE des3couleurs, les quatre voisins dans
+les deux autres couleurs forment un rectangle a un point de L. Interdire
+e3 sur ces rectangles est totalement local et independant du Gram/budget.
+La table anterieure 'rotated' testait un AUTRE motif (mates d'un triangle),
+mais pas tous ces rectangles. Nouvelle table e3_all_colours :
+taille6 :1->1;taille12 :110->104;taille18 :93688->89488.
+4206codes retires avec un temoin local individuel (couleur,arete,quatrecoins)
+dans line_component_e3_all_colours_certificate.json. Les index de permutations
+et couplages restent identiques. Une nouvelle couverture canonique est
+necessaire : les anciens index de branches ne se transportent pas tels quels.
+L'ancienne table et le lot AWS restent intacts.
+
+Pilote7#1069 TERMINE UNKNOWN120.25CPU,102549branches/18531conflits,
+114853variables/491810contraintes;32identites de bins sur4directions ont
+bien ete construites. Pas d'exclusion7. Ressources : la RAM libre est
+descendue a1.8Go; le demarrage du second modele a ete differe. Apres fin7,
+4Go libres. Garder un seul modele lourd local tant que le PC est utilise.
