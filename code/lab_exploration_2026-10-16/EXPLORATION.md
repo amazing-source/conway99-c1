@@ -532,3 +532,22 @@ ENTIER de norme 7·|coupe_S| (Codex : HᵗH = 7R ; R restreint à la racine = la
 - Premier test non biaisé de H46 : nullité exacte 3 (jamais 4) sur 131 structures positives issues de types génériques.
 - Bloc à quatre étoiles : la méthode simple n'atteint pas la positivité (contrôle compris) ; à refaire avec une
   recherche orientée positivité depuis des départs aléatoires.
+
+## 17/10 : toutes nos structures positives c = 1 sont exclues par des lemmes entiers exacts ; marches contraintes
+Scripts : `c1_exact_kill.py`, `c1_hard_walk.py`, `c1_negdir.py` (+ `unbiased_walks/`). Log : `c1_unbiased.log`.
+- **Décompte exact** : les 1 740 côtés positifs (T_S ⪰ 0) à c(l) = 1 de toutes nos données sont TOUS exclus, sans rang ni
+  solveur : rectangle à 3 arêtes (lemme de Codex) 1 603 ; 2-coupe alignée de type interdit 97 ; vecteur de norme 14 du
+  réseau des 11 rectangles visibles, violant co-Heawood 38 ; 2-coupe équilibrée non alignée (deux arêtes de jumeaux dans
+  le même groupe : les bouts intérieurs partagent le point de l) 2. Aucun survivant.
+- Positivité et connexité : aucun côté positif c = 1 n'a un trou laplacien ≥ 0,30 (59 côtés à grand trou, tous non
+  positifs) ; les blocs positifs « cassés » (couplages non h-liés, 50 côtés) sont aussi à goulot et aussi exclus.
+- **Marches contraintes** (rectangles à 3 arêtes interdits, configurations à vecteur court pénalisées) : en 41 000
+  mouvements depuis trois départs, la positivité n'est JAMAIS atteinte (meilleur λ_min −0,28) ; le contrôle sans
+  contrainte l'atteint (+0,039). Les meilleurs blocs contraints sont génériques (trou 0,38-0,47), λ_min(T) ≈ −0,32,
+  direction extrême à 40-50 % dans les rectangles de racine ; la Gram R des rectangles reste PSD (l'obstruction est
+  plus fine que R).
+- Énoncé fini qui en ressort (non prouvé) : (SV1) tout bloc à quatre étoiles avec c(l) = 1 et T_S, U_S ⪰ 0 contient une
+  des quatre configurations E3, C2a, RL, C2b. Comme chacune est exclue par un lemme exact, (SV1) exclurait toute droite
+  c = 1. Piste de preuve à la Codex : modèle SAT/MILP (axiomes locaux, connexité de G_l, configurations interdites) +
+  coupes de positivité LINÉAIRES en Γ (xᵀT_S x = 3‖x‖² − xᵀΓx − xᵀKx ≥ 0 pour x entier fixé), ajoutées paresseusement
+  (méthode des coupes exactes de Codex, `psd_exact_cuts.py`) ; infaisabilité = preuve, avec certificat.

@@ -78,4 +78,5 @@ def main():
     print("(min balanced even cut, q): count", dict(sorted(agg.items(), key=str)))
 
 
-main()
+if __name__ == "__main__":
+    main()

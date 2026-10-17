@@ -21,3 +21,21 @@ random types: lambda_2(A_W) 3.64..4.05 -> 3.49..3.67 : positivity NOT reached (6
 data types (gaps 0.418, 0.088, 0.088): lambda_2 3.62..3.71 -> 3.52..3.60 : positivity NOT reached either
 => the four-star failure is a weakness of this simple pipeline (random Y + local moves), NOT evidence about the line
    type; PSD four-star blocks need a stronger positivity-seeking search (as used for the data, but from random starts).
+# --- 17/10 later: positivity and the exact lemmas on ALL our c = 1 data, and constrained walks
+# python c1_exact_kill.py distinct_cache.jsonl
+PSD four-star sides with c(l) = 1: 1740
+first killing lemma: {'E3': 1603, 'C2a': 97, 'RL': 38, 'C2b': 2}      (no survivor)
+# gap of G_l versus positivity, all 1884 c = 1 sides (survivors_gap.py): PSD sides have gap < 0.30 always
+gap [0, 0.14): 1679 sides, 1664 PSD ; [0.14, 0.20): 114, 73 PSD ; [0.20, 0.30): 32, 3 PSD ; [0.30, 1): 59, 0 PSD
+# broken (not h-related) PSD c = 1 sides: 50, gap 0.086..0.139, all killed (E3/C2a + RL)
+# sym4g.py with the TRIVIAL group, cold start, psd mode, c(l) = 1: 5879 moves, no PSD visit (best -0.37)
+# sym4g.py trivial group, warm start from a PSD c = 1 data block, HREQ penalty: leaves positivity at once (3 PSD visits)
+# c1_hard_walk.py (PSD-seeking walk, rectangles with 3 edges forbidden, cheap short-vector tests penalised):
+seed 7, warm (init_c1_2), 240 s, 23464 moves: best -0.2820, positive 0
+seed 11, cold, NFREE 6, TEMP0 0.5, 130 s, 9860 moves: best -0.3224, positive 0
+seed 12, warm (init_c1_0), NFREE 6, TEMP0 0.5, 130 s, 7628 moves: best -0.3297, positive 0
+CONTROL seed 7, same warm start, no constraint: best +0.0394, 14 positive visits
+# c1_negdir.py on the best constrained blocks: gap(G_l) 0.47 and 0.38 (generic), lambda_min T -0.32, U -0.15/-0.14;
+#   the extreme T-eigenvector has 40-50 % of its weight in the span of the 12 root rectangles (5 % for a PSD data block);
+#   rectangle Gram R = P^t T_S P is PSD in all cases (the obstruction is finer than R); their root rectangles have
+#   e(Q) in {0, 1} (R_ee = 8 or 6), the PSD data blocks have e = 3 rectangles (R_ee = 2) killed by Codex's lemma.
