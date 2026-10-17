@@ -13,7 +13,7 @@ from itertools import combinations
 from root_component_propagation import LABELS, RECTANGLES
 
 
-def add_minimum_partitions(model, gamma, count):
+def add_minimum_partitions(model, gamma, count, balance=False):
     graph=[[0]*99 for _ in range(99)]
     for a in range(14):
         graph[0][a+1]=graph[a+1][0]=1
@@ -31,11 +31,22 @@ def add_minimum_partitions(model, gamma, count):
             if isinstance(edge,int) and edge==1 and len(common)==1:
                 lines.append((next(iter(common))+1,u+15,v+15))
     lines=sorted(set(lines))[:count]
-    return add_partitions_for_lines(model,graph,lines)
+    return add_partitions_for_lines(model,graph,lines,balance=balance)
 
 
-def add_partitions_for_lines(model, graph, lines):
+def add_partitions_for_lines(model, graph, lines, balance=False):
     """Use any fixed triangle whose first colour class is already known."""
+    products={};balance_equations=0
+    def product(a,b):
+        if isinstance(a,int):return b if a else 0
+        if isinstance(b,int):return a if b else 0
+        if a.index==b.index:return a
+        key=tuple(sorted((a.index,b.index)))
+        if key not in products:
+            v=model.new_bool_var(f'minc_balance_product_{len(products)}')
+            model.add(v<=a);model.add(v<=b);model.add(v>=a+b-1)
+            products[key]=v
+        return products[key]
     for line_number,line in enumerate(lines):
         outside=[w for w in range(99) if w not in line]
         known=[w for w in outside if graph[line[0]][w]==1]
@@ -76,6 +87,16 @@ def add_partitions_for_lines(model, graph, lines):
                         model.add(both>=edge+flags[w][j]-1)
                         terms.append(both)
                 model.add(sum(terms)==2*half)
+            if balance:
+                # A union S of components of N(L), of size6s and with2s
+                # vertices per colour, satisfies sum_x d_S(x)=60s and
+                # sum_x d_S(x)^2=60s^2 outside L union N(L). Thus each
+                # exterior vertex has exactly s neighbours in S.
+                for x in outside:
+                    terms=[product(graph[x][y],flags[y][j]) for y in outside]
+                    model.add(sum(terms)==3*flags[x][j]).only_enforce_if(members[x])
+                    model.add(sum(terms)==half).only_enforce_if(members[x].Not())
+                    balance_equations+=2
         for u,v in combinations(outside,2):
             edge=graph[u][v]
             if isinstance(edge,int):
@@ -86,4 +107,6 @@ def add_partitions_for_lines(model, graph, lines):
                 conditions=[edge,members[u],members[v]]
             model.add(bins[u]==bins[v]).only_enforce_if(conditions)
     return {'global_minimum_components':4,'lines':lines,
-            'auxiliary_bins_per_line':4,'normalization':'First occurrence in fixed colour class only.'}
+            'auxiliary_bins_per_line':4,'normalization':'First occurrence in fixed colour class only.',
+            'component_degree_balance':balance,'component_degree_equations':balance_equations,
+            'component_degree_products':len(products)}

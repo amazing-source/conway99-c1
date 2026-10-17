@@ -47,6 +47,7 @@ def main():
     parser.add_argument("--eigen", action="store_true")
     parser.add_argument("--cpu-time", action="store_true", help="Budget actual process CPU time, excluding resource pauses.")
     parser.add_argument("--minc-lines", type=int,default=0,help="Enforce global c>=4 at this many fixed nonroot lines.")
+    parser.add_argument("--minc-balance",action="store_true")
     parser.add_argument("--six-prism-profiles",action="store_true")
     parser.add_argument("--line-profiles",type=int,default=0)
     parser.add_argument("--profile-triples",action="store_true")
@@ -72,6 +73,8 @@ def main():
     config = {"seconds": args.seconds, "layer": args.layer, "eigen": args.eigen}
     if args.cpu_time:
         config["cpu_time"] = True
+    if args.minc_balance:
+        config["minc_balance"] = True
     if args.minc_lines:
         config["minc_lines"] = args.minc_lines
     if args.six_prism_profiles:
@@ -138,7 +141,7 @@ def main():
                "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization,
                "normalize_component":args.normalize_component,"upper_projector":args.upper_projector,
                "rotated_boundary":args.rotated_boundary,"stabilizer_normalize":args.stabilizer_normalize,
-               "short_norm":args.short_norm,"grid_rotations":args.grid_rotations}
+               "short_norm":args.short_norm,"grid_rotations":args.grid_rotations,"minc_balance":args.minc_balance}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None

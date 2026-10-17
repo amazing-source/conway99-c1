@@ -61,8 +61,9 @@ def add_lambda_one_triangles(model, graph, labels):
                                'edge_triangle_equations':equations,'forbidden_shared_label_triangles':len(forbidden)}
 
 
-def add_exact_triangle_structure(model, graph, template):
+def add_exact_triangle_structure(model, graph, template, triangle_context=None):
     triangles,incident,info=add_lambda_one_triangles(model,graph,LABELS)
+    if triangle_context is not None:triangle_context.extend(triangles)
     for flags in incident:model.add(sum(flags)==5)
     lookup={p:i for i,p in enumerate(LABELS)}
     core_info=[]

@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--seconds',type=float,default=20,help='Actual CPU seconds per component branch.')
     parser.add_argument('--limit-new',type=int)
     parser.add_argument('--minc-lines',type=int,default=1)
+    parser.add_argument('--minc-balance',action='store_true')
     parser.add_argument('--line-profiles',type=int,default=1)
     parser.add_argument('--layer',type=int,default=0,choices=range(5))
     parser.add_argument('--local-tables',type=Path,required=True)
@@ -52,13 +53,13 @@ def main():
         line_profiles=args.line_profiles,profile_triples=True,exact_triangles=True,
         short_vectors=True,normalize_component=True,component_branch_context=context,
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
-        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm)
+        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance)
     assert not model.validate(), model.validate()
     assert context, 'A component cover is required; solve an empty base domain directly instead.'
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm

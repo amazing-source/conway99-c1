@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0, minc_balance=False):
     assert not (mate_normalize and normalize_component), 'Use a single ordered normalization hierarchy.'
     assert not normalize_component or local_tables is not None
     assert not stabilizer_normalize or normalize_component
@@ -331,7 +331,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     minc_info=None
     if minc_lines:
         from root_component_minimum_partition import add_minimum_partitions
-        minc_info=add_minimum_partitions(model,graph,minc_lines)
+        minc_info=add_minimum_partitions(model,graph,minc_lines,balance=minc_balance)
     profile_info=None
     if six_prism_profiles:
         from root_component_six_prism_profiles import add_six_prism_profiles
@@ -344,7 +344,11 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     exact_triangle_info=None
     if exact_triangles:
         from root_component_exact_triangles import add_exact_triangle_structure
-        exact_triangle_info=add_exact_triangle_structure(model,graph,template)
+        triangle_context=[]
+        exact_triangle_info=add_exact_triangle_structure(model,graph,template,triangle_context)
+        if short_data is not None:
+            from root_component_short_vectors import add_short_triangle_cuts
+            short_info['triangle_sign_cuts']=add_short_triangle_cuts(model,triangle_context,short_data,hfull,indicators)
     grid_rotation_info=None
     if grid_rotations:
         from root_component_rotated_rectangles import add_grid_rotations
@@ -363,9 +367,9 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0, minc_balance=False):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector,rotated_boundary=rotated_boundary,stabilizer_normalize=stabilizer_normalize,short_norm=short_norm,grid_rotations=grid_rotations)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector,rotated_boundary=rotated_boundary,stabilizer_normalize=stabilizer_normalize,short_norm=short_norm,grid_rotations=grid_rotations,minc_balance=minc_balance)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -420,6 +424,7 @@ def main():
     parser.add_argument("--eigen", action="store_true")
     parser.add_argument("--cpu-time", action="store_true")
     parser.add_argument("--minc-lines",type=int,default=0)
+    parser.add_argument("--minc-balance",action="store_true")
     parser.add_argument("--six-prism-profiles",action="store_true")
     parser.add_argument("--line-profiles",type=int,default=0)
     parser.add_argument("--profile-triples",action="store_true")
@@ -470,7 +475,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,grid_rotations=args.grid_rotations)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,grid_rotations=args.grid_rotations,minc_balance=args.minc_balance)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)

@@ -931,3 +931,55 @@ cotes c=1 : quelques obstructions nouvelles sur des nonpositifs, aucune
 exclusion. Il a pousse3497d55 et fusionne surmain14471be a la demande de Dilan.
 Ressources : un seul coeur logique partage/BelowNormal; pauses automatiques
 frequentes pendant utilisation PC (charges39-74%). Aucun coeur ajoute.
+
+28. 18/10 vers00h58 : bilan exterieur des composantes et masses sur droites.
+
+Le pilote7_four_cuts finit UNKNOWN120.34CPU;317759branches/70155conflits.
+Le modele suivant, template7_full_balanced, est de STAGE3 : toutes les
+identites DDt, DH, H^2+H+DtD. 300239variables/952369contraintes, construction
+9.66CPU;594equations de grilles variables et720 de bilan des quatre coupes.
+Session44066/Python24304,120CPU, encore actif a00h57. Pas de verdict nouveau.
+
+Bilan de composantes applique aux coupes tournees. Si S est une UNION de
+composantes de N(L), de taille6s et2s de chaque couleur, chaque sommet de S
+possede10 voisins exterieurs au voisinage ferme de L. Sur ses60 exterieurs,
+sum d=60s. Avec A^2=12I-A+2J, somme des carres totale=72s-18s+72s^2;
+retirer les sommets de S (54s) et de L (12s^2) donne sum d^2=60s^2.
+La variance de d autour de s est donc nulle : tous les d valent s.
+C'est la resonance connue des composantes, appliquee ici aux bins AUXILIAIRES
+non fixes; pas une nouvelle classification des voisinages.
+--prism-cut-balance impose ces egalites aux60exterieurs de chacun des4cuts.
+--minc-balance est maintenant transmis par joint/pool/local_branch pour
+les partitions generales de droites non racines. Au sommet x de N(L),
+le nombre de voisins dans le bin j vaut3*flag_j(x); hors du voisinage il
+vaut s_j. Tous les produits edge*flag sont exacts, sans choix de germe.
+
+NOUVELLE coupe sur les vecteurs propres courts (preuve directe).
+Pour tout vecteur propre entier h de valeur-4, sum h=0; poser S=sum h_+.
+Pour toute droite L (triangle), somme_{N(L)}h=-6*somme_L h : chaque voisin
+exterieur voit exactement un point de L, et les aretes internes donnent
+2*somme_L h dans la somme des equations propres. Ainsi
+                  6*abs(somme_L h) <= S <= ||h||^2/2.
+La derniere borne utilise h entier : sum h^2 >= sum abs(h)=2S.
+En particulier, a norme28, aucun triangle n'est strictement positif ou
+strictement negatif; il demanderait S>=18 contre S<=14. Avec les anciennes
+bornes sur les doubles, cela donne |somme_L h|<=2. Cette coupe est maintenant
+ajoutee aux triangles REELS de Gamma (flags equivalant aux trois aretes).
+Pour les directions de normes42/56, le modele utilise la masse S EXACTE,
+lineaire dans les indicateurs de signatures, avec6*abs(somme_L h)<=S.
+La borne basse ceil(N/(2m)) sur S vient de h^2<=m*abs(h) lorsque|h|<=m.
+Aucun automorphisme, aucun postulat d'existence, aucun temoin fixe utilise.
+Ces nouveaux ajouts ne sont PAS charges dans les deux solveurs deja actifs.
+
+Pool9_all_grid_patterns arrete proprement en conservant le checkpoint apres
+196 :223INF herites,174/183/193/196 UNKNOWN, pas de nouvelle exclusion.
+Remplacement par une couverture locale de9#174 :18codes, couche2,6rotations,
+norme<=8, stabilisateur;30CPU parcode. Session43317/Python30852.
+Le code0 est INFEASIBLE21.625CPU; les17 autres restent a traiter. Un code
+ne ferme pas le Gram. La passe a charge la version AVANT minc-balance et
+les nouvelles coupes de masse sur triangles. Continuer les branches qui
+progressent; utiliser les nouvelles coupes pour les prochains Gram/UNKNOWN.
+
+Six modules syntaxiquement compiles apres ajout minc-balance. Modele complet7
+valide avant solveur. Les coupes de masse attendent encore leur premier
+modele pilote. Total ferme reste12/15 (76/79);17 Gram9restentouverts.

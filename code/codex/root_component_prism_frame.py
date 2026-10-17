@@ -123,7 +123,7 @@ permutations relabel an arbitrary completion; no automorphism is assumed.
             'scope':'A common row-major minimum under prism and cell relabellings.'}
 
 
-def add_prism_cut_partitions(model,h,cells,count):
+def add_prism_cut_partitions(model,h,cells,count,d=None,product=None):
     """Apply global c>=4 at the four known triangles in the two frame prisms.
 
 For such a triangle T, the original line and the other triangle of its
@@ -131,6 +131,9 @@ prism form one isolated prism in N(T). The other thirty neighbours are
 exactly the core vertices selecting a vertex of T. Their induced cubic
 graph must therefore have at least three components. Merge these into
 three nonempty balanced bins (sizes18+6+6 or12+12+6), without cross edges.
+When D and a product builder are supplied, a bin of size6s also has exactly
+s neighbours at every vertex outside T union N(T). Indeed sum d=60s and
+sum d^2=60s^2 for a union of components, so its exterior variance is zero.
     """
     assert 0<=count<=4
     records=[]
@@ -149,20 +152,32 @@ three nonempty balanced bins (sizes18+6+6 or12+12+6), without cross edges.
             model.add(bins[x]<=previous+1)
             maximum=model.new_int_var(1,3,f'prism_cut_{ci}_max_{i}')
             model.add_max_equality(maximum,[previous,bins[x]]);previous=maximum
+        balance_equations=0
         for j in range(3):
             half=model.new_int_var(1,3,f'prism_cut_{ci}_half_{j}')
             for row in colours:model.add(sum(flags[x][j] for x in row)==2*half)
+            if d is not None:
+                assert product is not None
+                for u in range(36):
+                    if u//6==prism:continue
+                    model.add(sum(product(d[u][x],flags[x][j]) for x in vertices)==half)
+                    balance_equations+=1
+                for y in range(60):
+                    if y in bins:continue
+                    model.add(sum(product(h[y][x],flags[x][j]) for x in vertices)==half)
+                    balance_equations+=1
         for x,y in combinations(vertices,2):
             edge=h[x][y]
             if isinstance(edge,int):
                 if edge:model.add(bins[x]==bins[y])
             else:model.add(bins[x]==bins[y]).only_enforce_if(edge)
         records.append({'prism':prism,'triangle_bit':bit,'core_vertices':vertices,
-                        'minimum_components_inside_cut':3,'known_separate_prism_component':True})
+                        'minimum_components_inside_cut':3,'known_separate_prism_component':True,
+                        'exterior_component_balance_equations':balance_equations})
     return {'global_minimum_components':4,'cuts':records,'scope':add_prism_cut_partitions.__doc__}
 
 
-def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangles=False,normalize_prisms=False,template_seven=False,prism_matchings=False,prism_cut_partitions=0,grid_perfect_codes=False):
+def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangles=False,normalize_prisms=False,template_seven=False,prism_matchings=False,prism_cut_partitions=0,grid_perfect_codes=False,prism_cut_balance=False):
     assert not template_seven or (stage>=1 and all(len(g)==6 for g in groups))
     assert not prism_matchings or (stage>=1 and core_triangles and all(len(g)==6 for g in groups))
     cells=[(p,q,copy) for p in range(6) for q in range(6,12)
@@ -353,7 +368,8 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
             'scope':'H is the disjoint union of twenty triangles and six perfect matchings, one within each prism incidence partition.'}
     if prism_cut_partitions:
         assert h is not None
-        cut_info=add_prism_cut_partitions(m,h,cells,prism_cut_partitions)
+        cut_info=add_prism_cut_partitions(m,h,cells,prism_cut_partitions,
+            d=d if prism_cut_balance else None,product=product if prism_cut_balance else None)
     return m,d,h,{'stage':stage,'full_SRG_equations':stage==3,'cells':[list(t) for t in cells],
                   'DDt_pair_equations':630,'DH_equations':dh_count,'core_pair_equations':core_count,
                   'DH_rows':dh_rows,
@@ -395,6 +411,7 @@ def main():
     p.add_argument('--prism-matchings',action='store_true')
     p.add_argument('--prism-cut-partitions',type=int,default=0,choices=range(5))
     p.add_argument('--grid-perfect-codes',action='store_true')
+    p.add_argument('--prism-cut-balance',action='store_true')
     p.add_argument('--seconds',type=float,default=60)
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
@@ -404,7 +421,8 @@ def main():
     raw=tables_path.read_bytes();library=json.loads(raw);orbits=json.loads(orbit_path.read_bytes())
     assert orbits['source_sha256']==hashlib.sha256(raw).hexdigest()
     c,colours,groups,descriptors=neighbourhood(library,orbits,args.family,args.first,args.second)
-    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines,args.rotated_rectangles,args.core_triangles,args.normalize_prisms,args.template_seven,args.prism_matchings,args.prism_cut_partitions,args.grid_perfect_codes)
+    if args.prism_cut_balance and not args.prism_cut_partitions:p.error('--prism-cut-balance requires --prism-cut-partitions')
+    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines,args.rotated_rectangles,args.core_triangles,args.normalize_prisms,args.template_seven,args.prism_matchings,args.prism_cut_partitions,args.grid_perfect_codes,args.prism_cut_balance)
     assert not m.validate(),m.validate()
     info.update(status='MODEL_BUILT',scope=__doc__,family=args.family,first=args.first,second=args.second,
                 components=descriptors,resources=resources,build_cpu_seconds=time.process_time()-started,

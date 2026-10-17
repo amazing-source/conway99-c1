@@ -162,6 +162,72 @@ def admissible(signature, data):
                for v, d in zip(evaluations(signature, data), data["directions"]))
 
 
+def add_short_triangle_cuts(model, triangles, data, signatures, indicators):
+    """No strict same-sign triangle for an integral -4 vector of norm28.
+
+For any line L, sum_{N(L)} h = -6 sum_L h, since each exterior
+neighbour meets L exactly once. A strict same-sign triangle has absolute
+sum at least3, hence opposite-sign mass at least18. But integral h with
+norm28 and sum0 has each sign mass at most14. This proves the exclusion.
+The argument does not use an assumed automorphism or a selected witness.
+    """
+    selected=[i for i,d in enumerate(data['directions']) if d['norm']==4]
+    cache={}
+    def values(h):
+        key=tuple(h)
+        if key not in cache:cache[key]=evaluations(h,data)
+        return cache[key]
+    clauses=0;auxiliary=0;forced_absent=0
+    for di in selected:
+        for sign in (-1,1):
+            flags=[]
+            for w,rows in enumerate(signatures):
+                active=[i for i,h in enumerate(rows) if sign*values(h)[di]>0]
+                if not active:flag=0
+                elif len(active)==len(rows):flag=1
+                else:
+                    flag=model.new_bool_var(f'short_triangle_sign_{di}_{sign}_{w}')
+                    model.add(flag==sum(indicators[w][i] for i in active));auxiliary+=1
+                flags.append(flag)
+            for vertices,triangle in triangles:
+                fs=[triangle,*[flags[w] for w in vertices]]
+                if any(isinstance(f,int) and not f for f in fs):continue
+                unknown=[f for f in fs if not isinstance(f,int)]
+                model.add_bool_or([f.Not() for f in unknown]);clauses+=1
+                if len(unknown)<=1:forced_absent+=1
+    mass_equations=0;mass_directions=0;coordinate_variables=0
+    for di,direction in enumerate(data['directions']):
+        if direction['norm']<6:continue
+        norm=7*direction['norm'];maximum=direction['maximum_coordinate']
+        mass=model.new_int_var((norm+2*maximum-1)//(2*maximum),norm//2,f'short_line_mass_{di}')
+        model.add(mass==sum(max(0,values(h)[di])*flag
+            for rows,fs in zip(signatures,indicators) for h,flag in zip(rows,fs)))
+        coordinates=[];bounds=[]
+        for w,rows in enumerate(signatures):
+            vs=[values(h)[di] for h in rows];lo,hi=min(vs),max(vs)
+            if lo==hi:value=lo
+            else:
+                value=model.new_int_var(lo,hi,f'short_line_value_{di}_{w}')
+                model.add(value==sum(v*flag for v,flag in zip(vs,indicators[w])))
+                coordinate_variables+=1
+            coordinates.append(value);bounds.append((lo,hi))
+        for vertices,triangle in triangles:
+            expression=6*sum(coordinates[w] for w in vertices)
+            for sign in (-1,1):
+                upper=6*sum(bounds[w][1] if sign==1 else -bounds[w][0] for w in vertices)
+                if upper<=(norm+2*maximum-1)//(2*maximum):continue
+                constraint=model.add(sign*expression<=mass)
+                if not isinstance(triangle,int):constraint.only_enforce_if(triangle)
+                elif not triangle:raise AssertionError('Triangle list contains a false constant.')
+                mass_equations+=1
+        mass_directions+=1
+    return {'norm28_directions':len(selected),'sign_indicators':auxiliary,
+            'same_sign_triangle_clauses':clauses,'unit_or_empty_clauses':forced_absent,
+            'general_line_mass_directions':mass_directions,'general_line_mass_equations':mass_equations,
+            'general_line_mass_coordinates':coordinate_variables,
+            'scope':add_short_triangle_cuts.__doc__}
+
+
 def filter_domains(domains, data):
     before = sum(len(item["signatures"]) for item in domains.values())
     for item in domains.values():
