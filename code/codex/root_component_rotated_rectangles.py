@@ -18,16 +18,17 @@ from root_component_propagation import LABELS
 from root_component_boundary_psd import fixed_line_graph
 
 
-def add_rotated_rectangles(model, graph, template, tables, root, part, code, count):
+def add_rotated_rectangles(model, graph, template, tables, root, part, code, count, rectangle_context=None):
     fixed=fixed_line_graph(graph,template,tables,root,part,code)
     stars=[[w for w,p in enumerate(LABELS) if 2*root+bit in p] for bit in range(2)]
     outside=[w for w,p in enumerate(LABELS) if all(a//2!=root for a in p)]
     assert len(outside)==60
     assert all(isinstance(fixed[u][v],int) for star in stars for u in star for v in star)
-    return add_fixed_star_rectangles(model,fixed,[(2*root+bit,star,outside) for bit,star in enumerate(stars)],count)
+    return add_fixed_star_rectangles(model,fixed,[(2*root+bit,star,outside) for bit,star in enumerate(stars)],count,
+                                     rectangle_context=rectangle_context)
 
 
-def add_grid_rotations(model, graph, count):
+def add_grid_rotations(model, graph, count, rectangle_context=None):
     """Use all already fixed prism lines, without fixing any component code."""
     stars=[]
     for root in range(7):
@@ -35,10 +36,10 @@ def add_grid_rotations(model, graph, count):
         for bit in range(2):
             star=[w for w,p in enumerate(LABELS) if 2*root+bit in p]
             stars.append((2*root+bit,star,outside))
-    return add_fixed_star_rectangles(model,graph,stars,count)
+    return add_fixed_star_rectangles(model,graph,stars,count,rectangle_context=rectangle_context)
 
 
-def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=(), rectangle_constraints=None, grid_dominance_roots=()):
+def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=(), rectangle_constraints=None, grid_dominance_roots=(), rectangle_context=None):
     """Rooted stars list (root identifier, known colour class, outside60)."""
     plans=[]
     for root_letter,star,outside in rooted_stars:
@@ -107,6 +108,9 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         model.add(sum(es)!=3)
         model.add(sum(es)<=4)
         model.add_allowed_assignments(es,edge_patterns)
+        if rectangle_context is not None:
+            rectangle_context.append({'root':root_letter,'base_vertices':[*first,*second],
+                                      'corners':cs,'edges':es})
         prescribed_grid=rectangle_constraints(root_letter,first,second,es) if rectangle_constraints is not None else None
         if root_letter in grid_dominance_roots and prescribed_grid is not False:
             # Here root_letter is an actual vertex index in a full graph.

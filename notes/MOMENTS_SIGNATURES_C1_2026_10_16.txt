@@ -1008,3 +1008,47 @@ C est l'incidence non orientee7x14, rang7, noyau7, aucune coordonnee nulle
 sur tout le noyau. Cela passe le filtre des coordonnees nulles, et contredit
 ker<=5 AVANT faisabilite Gram; ne pretend pas donner un Gram ou un Conway.
 Les sept grilles imposent seulement le cout de base28 dans le budget51.
+
+30. 18/10 vers01h23 : calcul distant prepare, nouvelles contraintes spectrales.
+
+LAB973/975 transmet la demande de Dilan de concentrer les deux chercheurs
+sur7,9,19 et de lancer le lot sur deux machines AWS, sous son controle.
+Manifestes JSONL/TSV980taches fournis, commitd5be688 pousse; runtime fige
+5694bb5. Par Gram :1worker,120CPU/code,900CPUsolveur cumulees, limite murale
+externe1800s. Le manifeste porte456/16/508. Details notes/AWS_7_9_19_2026_10_18.txt.
+Le total nominal245hCPU de budgets ne prouve aucun temps de fermeture.
+LAB retourne les rapports bruts sur sa branche; aucun nouvel UNKNOWN ne
+sera transforme en exclusion. Pont976/977; dernier lu/ack975.
+
+Arret des deux anciens essais locaux pour reserver le PC aux nouvelles
+contraintes :183 arrete apres82.83CPU de processus, sans verdict final;
+193 garde un premier code UNKNOWN45.078CPU, reste non traite. Le lot AWS
+peut traiter ces deux Gram. Nouveau pilote193 session8028,2codes60CPU,
+rotated_spectral_pilot : modele construit,144tables spectrales nouvelles.
+Il a charge la version AVANT les identites de bins ci-dessous.
+
+Grilles et rectangles tournes : soit S l'ensemble de9 sommets forme d'une
+racine, de deux de ses droites et des quatre autres voisins communs des
+paires croisees. Si le rectangle a e aretes, S a14+e aretes. Le projecteur
+orthogonal complet sur l'espace propre-4 est
+                     E=(3I-A+J/9)/7.
+Donc 1_S^t E1_S=(8-2e)/7. Pour h entier, Ah=-4h, ||h||^2=7q,
+                     (sum_S h)^2 <= q*(8-2e).
+La racine tournee appartient aux14anciens voisins ou h=0; les huit autres
+valeurs sont selectionnees exactement dans Gamma. Une table(e,sum_S h)
+utilise floor(sqrt(q*(8-2e))) calcule par isqrt, sans flottants.
+Pour e=4 on retrouve sum_S h=0, meme lorsque les coins sont variables.
+Implementation --rotated-signatures danslocal_branch; automatique pour
+grid_rotations+short_vectors dansjoint. Les contraintes de choix de coin
+ont passe un petit test de bord : somme nulle imposee pour e4, limite4
+pour e2/q4, la valeur adjacente interdite est rejetee dans les deux cas.
+
+Bins variables de composantes : si S est une union de composantes de N(L)
+de taille6s, on a A(1_S+s1_L)=3(1_S+s1_L)+s1. Par orthogonalite,
+                       sum_S h+s*sum_L h=0.
+Les appartenances aux bins et les valeurs h restent inconnues; les produits
+sont exacts. Seules des directions lineairement independantes du reseau
+court sont utilisees (selection rationnelle). Ceci s'ajoute automatiquement
+aux partitions non racines quand short_vectors est actif. Test du produit
+taille*valeur de ligne passe; premier modele reel encore a lancer.
+Ces changements restent separes du code fige du lot AWS.

@@ -39,6 +39,7 @@ def main():
     parser.add_argument('--short-norm',type=int,default=4)
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
+    parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -48,13 +49,14 @@ def main():
     values=cover['gram_anchor_values'][args.gram_index]
     template=json.loads((args.directory/'root_component_templates.json').read_text())['survivors'][args.index]
     tables=json.loads(args.local_tables.read_text())
-    context={}
+    context={};rotation_values={} if args.rotated_signatures else None
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=args.minc_lines,
         line_profiles=args.line_profiles,profile_triples=True,exact_triangles=True,
         short_vectors=True,normalize_component=True,component_branch_context=context,
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
-        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance)
+        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance,
+        rotated_signature_context=rotation_values)
     assert not model.validate(), model.validate()
     base_model_only=not context
     if base_model_only:
@@ -65,7 +67,7 @@ def main():
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -118,7 +120,11 @@ def main():
             print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
         if args.rotated_rectangles and not base_model_only:
             from root_component_rotated_rectangles import add_rotated_rectangles
-            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles)
+            rectangle_context=[]
+            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
+            if args.rotated_signatures:
+                from root_component_short_vectors import add_rotated_signature_cuts
+                rotated_info['short_signature_cuts']=add_rotated_signature_cuts(branch_model,rectangle_context,rotation_values)
             print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()
