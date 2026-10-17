@@ -1,0 +1,35 @@
+{
+  "status": "PROVED",
+  "scope": "A precise obstruction to incidence-fixing four-cycle reflections of the currently supplied closed-set examples. This does not prove assertion(A).",
+  "setup": {
+    "incidence": "D_S is the14-by34 unsigned root-label incidence matrix. Let l={0,1}, b=2, S=L_0 union L_1 union L_2. Let M be a set of r outer root lines, with q=1_(l times M). Assume Tq=0.",
+    "closed_set_formula": "For a label(c,x) in X=L_0 union L_1, (Kq)_(c,x)=q_(c,x). For a third-star label(b,x), (Kq)_(b,x)=1_(b in letters(M))+1_(x in letters(M))-r.",
+    "proof_of_formula": "D_S*q equals2r at0 and1,2 on each of the2r letters of M, and0 elsewhere; sum(q)=4r. Substitute into8K=3D_S^t D_S+D_S^t B_mate D_S-2J."
+  },
+  "orthogonal_reflection": {
+    "definition": "An alternating four-cycle u of D_S has two+1 and two-1 entries, D_S*u=0, and norm squared4. H=I-u*u^t/2 is orthogonal and fixes D_S^t pointwise.",
+    "spectral_effect": "Since K and Pi_SS are polynomials in D_S^t and D_S plus I, H commutes with both. If Gamma'=H*Gamma*H is a binary zero-diagonal adjacency, T'=H*T*H and U'=H*U*H. Ranks and both PSD properties are preserved exactly. The new relation is Hq.",
+    "binary_test": "Zero diagonal requires Gamma*u restricted to support(u) to equal theta*u for one integer theta. Every outside value (Gamma*u)_j must then lie in{-2,0,2}. These conditions are also sufficient for binary zero-diagonal conjugation."
+  },
+  "closed_four_label_obstruction": {
+    "hypothesis": "M consists only of the third-star root line{2,3}.",
+    "claim": "Every orthogonal transformation fixing D_S^t pointwise fixes this closed four-label relation q, so cannot turn it into a connected-Q counterexample. This includes the straight geometric grid and the exchanged cross-matching case distinguished by peer722.",
+    "proof": "q=D_S^t*w where w_0=w_1=w_2=w_3=1/2 and w_4=...=w_13=-1/2. Hence Hq=q. The relation remains supported on the two mate stars, forcing Q to remain disconnected under the two-star kernel theorem."
+  },
+  "two_line_component_containing_b": {
+    "hypothesis": "r=2 and the third-star line{2,3} belongs to M.",
+    "claim": "No alternating four-cycle reflection that moves q can produce ANY nonnegative zero-diagonal adjacency Gamma' satisfying(3I-Gamma'-K)Hq=0.",
+    "proof": [
+      "Four-cycles between the two mate stars fix q. Every moving four-cycle uses one mate star a in{0,1}, the third star b=2, a letter x of M other than2,3, and a letter y outside M.",
+      "Choose its sign as u=e_(a,y)-e_(a,x)+e_(b,x)-e_(b,y). Then u^t*q=-1, so z=2Hq=2q+u.",
+      "The only negative entry of z is z_(b,y)=-1. Every other entry is nonnegative. Since K*u=0 and(Kq)_(b,y)=1+0-2=-1, we get(3z-Kz)_(b,y)=-3+2=-1.",
+      "The kernel equation would require(Gamma'*z)_(b,y)=-1. But Gamma' has nonnegative entries and zero diagonal, so this entry is a sum of nonnegative terms. Contradiction."
+    ],
+    "relation_to_z2b": "This proves a whole template obstruction, independently of the particular z2b edges. The finite scan of z2b has32 moving four-cycles:22 fail the diagonal condition and10 fail integrality."
+  },
+  "remaining_directions": [
+    "The obstruction does not apply to a2+4 split when b lies in the component of size4. In the displayed extremal-coordinate argument, the problematic right-hand side becomes+1 rather than-1.",
+    "It also does not apply to a3+3 split. The current supplied grid and z2b examples place b in the small component, so they do not explore these other templates.",
+    "Larger incidence-preserving transformations and transformations preserving only the three star relations are not excluded."
+  ]
+}

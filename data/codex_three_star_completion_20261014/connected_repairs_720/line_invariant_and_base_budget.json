@@ -1,0 +1,33 @@
+{
+  "status": "PROVED_CONDITIONAL_ON_A_CONWAY_GRAPH",
+  "line_invariant": {
+    "claim": "For a triangle-line l={v,a,a'}, c(v,l)+1=dim(E_3(A) intersect R^(N[l])). In particular c(v,l) is independent of the chosen vertex v of l.",
+    "attribution": "Intrinsic-line argument proposed by Claude720; the explicit frame inverse below supplies a self-contained proof using our two-star classification.",
+    "frame": "Let F=3I-A[N[v]]. Its14-by14 letter block is H=3I-B_mate, positive definite with inverse(3I+B_mate)/8. The remaining Schur pivot is3-1^t H^-1 1=3-7=-4. Thus F is invertible with inertia(14 positive,1 negative).",
+    "elimination": "Write3I-A in blocks F,-E;-E^t,3I-Gamma. The far residual is T=3I-Gamma-E^t F^-1 E, and E^t F^-1 E=K=(3D^t D+D^t B_mate D-2J)/8. Restricting an eigenvector of A with eigenvalue3 to its far coordinates is a bijection to kerT; its frame coordinates are uniquely F^-1 E times those coordinates.",
+    "positivity": "The Conway spectrum14,3,-4 gives inertia(44 positive,1 negative,54 zero) to3I-A. Eliminating F gives T PSD of rank30.",
+    "support": "For X=L_a union L_a', N[l]=N[v] union X. A vector in kerT_X, extended by zero outside X, has zero quadratic energy for the PSD matrix T, hence belongs to kerT. Conversely a full kernel vector supported on X restricts to kerT_X. Thus the supported E_3 space has dimension nullity(T_X)=c+1.",
+    "canonical_two_dimensions": "The two vectors(A+4I)(e_v-e_a) and(A+4I)(e_v-e_a') lie in E_3 and are supported on N[l], because(A-3I)(A+4I)=2J. On the three line coordinates they restrict to3(e_v-e_a) and3(e_v-e_a'), so they are independent. Their far restrictions are the negatives of the two star indicators. A special line has eigenvectors beyond these two canonical ones."
+  },
+  "base_column_budget": {
+    "scope": "A fixed two-mate-star boundary, before choosing any third star. This gives affordable per-base necessary domains, not an affordable enumeration of all bases.",
+    "known_boundary": "The root, its14 letters and X form39 vertices. The remaining60 far labels are the nonmate pairs among the12 letters outside{a,a'}.",
+    "profiles": "Each remaining vertex has exactly2 neighbours in each of L_a and L_a', so its unknown adjacency to X has C(12,2)^2=4356 raw profiles. It also has2 fixed neighbours among the frame letters. Consequently the remaining induced graph is8-regular.",
+    "rank": "The two-star theorem gives r=rank(T_X)=23-c, so a full completion has residual Gram rank30-r=7+c beyond X.",
+    "projection_budget": "Put M=8T and choose a nonsingular principal basis I of M_X. For each remaining label u, let m_u=M[X,u]. Then sum_u m_u[I]^t M[I,I]^-1 m_u[I]=56r-480=808-56c. Each summand lies in[0,20].",
+    "proof": "The full matrix M is56 times a rank30 orthogonal projector. For any r-dimensional span of its Gram vectors, the sum of all84 squared projection lengths is56r. The24 vectors indexed by X are already in that span and contribute24*20=480. Subtracting gives the formula. The60 diagonal deficits sum to1200-(808-56c)=56(7+c).",
+    "connected_case": "c=1 gives r=22, residual rank8, projection sum752, and deficit sum448.",
+    "implementation_status": "The budget and4356 raw count are proved. A dedicated two-star column-domain implementation is not supplied in this commit; the existing three-star preprocessor addresses a different boundary. No claim that the budget eliminates every connected base."
+  },
+  "peer_722": {
+    "status": "PEER_PROOF_ACCEPTED_NO_INDEPENDENT_AUDIT",
+    "claim": "For two root lines l,m, the44-label four-star block of an actual Conway graph has at least12-c_l-c_m+1_(closed four-label square) kernel relations outside the sum of the two line-supported kernel spaces. This is at least1, and at least10 if both lines are non-special.",
+    "correction": "A singleton Q component is a closed four-label square with either a straight or an exchanged cross matching; it is not necessarily the geometric grid."
+  },
+  "conjecture_status": {
+    "A": "OPEN: every locally admissible three-star boundary with both Grams PSD and connected Q has rank31.",
+    "B": "OPEN: every Conway graph has a special line.",
+    "C": "OPEN: every Conway graph has a non-special line.",
+    "logic": "A would force every line of any Conway graph to be special, so A implies B; A and C together would exclude Conway. B alone gives a reduction to decomposable bases; no affordable total count is established."
+  }
+}

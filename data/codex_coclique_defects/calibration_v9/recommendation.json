@@ -1,0 +1,32 @@
+{
+  "created_utc": "2026-10-13T14:29:02.831024+00:00",
+  "verdict": "Six 180s searches UNKNOWN. No D and no C1 exclusion.",
+  "short_screen": {
+    "portfolio": "boolean",
+    "workers": 8,
+    "seconds": 180,
+    "reason": "About20% lower observed memory in two matched-seed comparisons; time-to-proof advantage NOT established"
+  },
+  "complementary": {
+    "portfolio": "balanced",
+    "reason": "Retains small LP engines, excludes every max_lp variant; one memory observation only"
+  },
+  "strengthened_model": {
+    "moments": true,
+    "proof": "Main note section51",
+    "reason": "Necessary residual column moments,1444 variables/2888 constraints added. Low memory cost observed; search advantage not established"
+  },
+  "evidence_limit": "One hard instance, two seeds for two portfolios, one seed for the others. Parallel CP-SAT is not deterministic from seed alone.",
+  "command_example": "python code/codex/coclique_calibration.py <NEW_OUTPUT_DIRECTORY> --portfolio boolean --seconds 180 --seed 3 --moments",
+  "frozen_model_files": [
+    "models/5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc.pb",
+    "models/973c76b6d0c630573f5c685286a05f68d7a6201ac8a7e935804d778e49247516.pb"
+  ],
+  "learned_clause_database_reused": false,
+  "additional_long_run_started": false,
+  "do_not_infer": [
+    "More conflicts means closer to a contradiction",
+    "Fixed edge domains are universal lemmas",
+    "These six UNKNOWN results exclude (0,2)"
+  ]
+}

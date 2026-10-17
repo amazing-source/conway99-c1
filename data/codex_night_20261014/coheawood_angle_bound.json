@@ -1,0 +1,126 @@
+{
+  "coefficient_bound": {
+    "max_norm": 24,
+    "max_abs_entry": 1,
+    "rejected_twos": [
+      {
+        "positive_twos": 1,
+        "negative_twos": 0,
+        "mass": 8,
+        "squared_norm": 18,
+        "reason": "not_enough_negative_neighbors_outside_the_plus_two"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 0,
+        "mass": 9,
+        "squared_norm": 20,
+        "reason": "not_enough_negative_neighbors_outside_the_plus_two"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 0,
+        "mass": 10,
+        "squared_norm": 22,
+        "reason": "two_negative_vertices_have_more_than_two_common_neighbors"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 0,
+        "mass": 11,
+        "squared_norm": 24,
+        "reason": "nine_positive_vertices_exceed_six_available_negative_pairs"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 1,
+        "mass": 8,
+        "squared_norm": 20,
+        "reason": "positive_one_cannot_have_weighted_negative_degree_four"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 1,
+        "mass": 9,
+        "squared_norm": 22,
+        "reason": "minus_two_and_remaining_negative_one_have_six_common_neighbors"
+      },
+      {
+        "positive_twos": 1,
+        "negative_twos": 1,
+        "mass": 10,
+        "squared_norm": 24,
+        "reason": "nonadjacent_twos_require_eight_independent_neighbors; adjacent_twos_require_six_edges_where_only_four_are_available"
+      }
+    ]
+  },
+  "induced_minimum_degree_three": {
+    "10": 21,
+    "12": 49,
+    "13": 14,
+    "14": 1
+  },
+  "subsets_checked": 16383,
+  "excluded_absolute_inner_products": [
+    3,
+    5,
+    6,
+    7
+  ],
+  "possible_absolute_inner_products": [
+    0,
+    1,
+    2,
+    4
+  ],
+  "absolute_inner_product_four_requires": "aligned induced four-cycle intersection",
+  "absolute_inner_product_two_requires": "aligned two-vertex intersection of opposite signs",
+  "sign_subgraph_edge_bounds": {
+    "7": 0,
+    "8": 0,
+    "9": 1,
+    "10": 1,
+    "11": 2,
+    "12": 3
+  },
+  "sign_subgraph_constraint": "9*e + sum_v binom(d_same_sign(v),2) <= p*(p-7)",
+  "outside_incidence_constraint": "5*e + W <= p*p-19*p+99",
+  "outside_incidence_identity": "sum_outside (a-1)*(a-2)/2 = p*p-19*p+99-5*e-W",
+  "norm24_three_edges_case": {
+    "each_sign_graph": "three disjoint edges",
+    "outside_degree_one_in_each_sign": 42,
+    "outside_degree_two_in_each_sign": 33
+  },
+  "global_coheawood_bound": {
+    "srg_four_cycles": 2079,
+    "four_cycles_per_coheawood": 21,
+    "max_coheawoods_per_four_cycle": 4,
+    "five_coheawood_residual_norm": 10,
+    "unsigned": 396,
+    "signed": 792
+  },
+  "sign_subgraphs_triangle_free": true,
+  "four_cycle_complements": [
+    452,
+    657,
+    802,
+    1232,
+    1376,
+    1584,
+    2181,
+    2340,
+    2593,
+    3112,
+    4244,
+    4358,
+    4626,
+    5144,
+    6156,
+    8385,
+    8514,
+    8707,
+    9288,
+    10249,
+    12298
+  ]
+}

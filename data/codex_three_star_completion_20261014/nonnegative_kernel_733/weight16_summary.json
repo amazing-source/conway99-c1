@@ -1,0 +1,37 @@
+{
+  "scope": "Normalized nonnegative integral extra kernel relations of total weight16 for the connected-Q three-star boundary problem. No complete graph or local PSD boundary is constructed.",
+  "coefficient_bound": "The diagonal of8T is20; every off-diagonal entry is at least-10. For q>=0 and Tq=0,20q_i<=10(w-q_i), so3q_i<=w. At w16 all coefficients are in0..5.",
+  "direct_enumeration": {
+    "complete": true,
+    "description": "Enumerate unordered pairs of three-entry coefficient vectors with compatible common residue0 or4; enumerate multisets of five such outside pairs with total weight<=16; then enumerate four overlap coefficients. Coverage uses only the mate-pair flips/permutations and centre0/1 swap, and may retain duplicate isomorphism classes.",
+    "seconds": 2.641,
+    "normalized_profiles": 1420,
+    "single_row_exclusions": 993,
+    "row_domain_survivors": 427,
+    "source": "weight16_direct_profiles.json"
+  },
+  "linear_scan": {
+    "complete": true,
+    "seconds": 17.735,
+    "exact_Farkas_exclusions": 151,
+    "total_exact_excluded_profiles": 1144,
+    "remaining_fractionally_feasible_profiles": 276,
+    "certificate_types": {
+      "kernel_equations_and_edge_bounds_only": 80,
+      "also_root_letter_caps": 71
+    },
+    "no_spectral_orientation_cut_needed_in_certificates": true,
+    "source": "weight16_linear_scan.json"
+  },
+  "joint_construction": {
+    "coefficient_table": "All276 surviving profiles in one CP-SAT model; no numerical infeasibility is used without an exact certificate.",
+    "seconds": 40.031,
+    "local_candidates": 4,
+    "new_exact_negative_T_cuts": 6,
+    "previous_exact_PSD_cuts_reused": 6,
+    "status": "TIME_LIMIT_NO_EXCLUSION",
+    "result": "All four local candidates fail PSD(T). The full weight16 family remains open.",
+    "source": "weight16_joint_construction.json"
+  },
+  "status": "A remains open. The established minimum positive weight of an extra relation is16; it is not raised to20. All pilot computations have finished."
+}

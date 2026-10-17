@@ -1,0 +1,149 @@
+COUVERTURE DE TOUS LES CONWAY ET RECHERCHE GLOBALE -- 16/10/2026
+
+STATUT
+Cette note prouve une couverture exhaustive et une equivalence de modeles.
+Elle ne prouve ni la non-existence de Conway, ni un cout abordable pour
+l'epuisement de cette couverture. Aucune hypothese d'automorphisme n'est
+utilisee. Un resultat UNKNOWN ne ferme aucune branche.
+
+1. Les84 etiquettes sont obligatoires, pas un germe choisi.
+
+Dans un SRG(99,14,1,2), choisir un sommet o. Son voisinage est constitue de
+sept aretes disjointes, car lambda=1. Numeroter ces14 voisins de0 a13 avec
+les partenaires r et r xor1. Chaque sommet hors {o} union N(o) a exactement
+deux voisins dans N(o). Ils ne sont pas partenaires, car une arete de N(o)
+a deja o pour unique voisin commun. Reciproquement, deux racines non
+partenaires ont exactement deux voisins communs : o et un unique sommet
+exterieur. Les84 sommets exterieurs sont donc exactement les paires p={a,b}
+de racines non partenaires.
+
+2. Modele binaire exact, sans graine.
+
+Gamma est une matrice symetrique binaire84x84, diagonale nulle. Imposer :
+
+ (R) sum_{q contenant r} Gamma[p,q] = 2-[r dans p]-[r xor1 dans p],
+ (C) Gamma^2[p,q]+Gamma[p,q]+|p intersection q| = 2, pour p!=q.
+
+(R) compte les voisins communs d'une racine et d'un sommet exterieur.
+En sommant sur r, chaque voisin de p est compte deux fois : deg_Gamma=12.
+(C) est exactement le compte des voisins communs de deux sommets exterieurs.
+Les autres comptes (o avec une racine, o avec un sommet exterieur, deux
+racines) sont deja fixes par l'etiquetage. Par consequent (R)+(C) est
+NECESSAIRE ET SUFFISANT pour reconstruire le SRG99 entier.
+
+3. Normalisation d'une etoile :11 types, ou19 avec une paire marquee.
+
+Dans L_a={p:a dans p}, (R) impose un appariement M de12 sommets. Les12
+lettres exterieures portent aussi leur appariement physique P. P union M
+se decompose en cycles alternes ; une arete commune compte comme un cycle
+de demi-longueur1. Les demi-longueurs forment une partition de6.
+
+Deux tels appariements sont equivalents par permutation des six paires
+physiques et retournement de leurs extremites si et seulement si cette
+partition est la meme. Pour le sens constructif, parcourir chaque cycle
+en alternant une arete P puis une arete M et numeroter les paires dans
+l'ordre du parcours. Les retournements et permutations ainsi obtenus
+s'etendent aux14 racines et aux84 etiquettes. Ce sont des RENOMMAGES,
+jamais une hypothese d'automorphisme du graphe inconnu.
+
+Il y a11 partitions de6. Pour une partition avec a_l parties de taille l,
+le nombre d'appariements etiquetes est
+  6! * 2^(6-nombre_de_parties) / produit_l (l^a_l * a_l!).
+Le total est11!!=10395.
+
+Si une paire physique est distinguee, on ne peut plus la deplacer vers une
+autre composante. Il faut en plus retenir la taille l de sa composante.
+Ce couple (partition, taille marquee) est complet : placer la paire
+marquee en premier dans son cycle, puis parcourir les autres cycles.
+Il donne19 types. Chacun contient la proportion l*a_l/6 de l'orbite non
+marquee. L'enumeration des10395 appariements confirme ces cardinalites.
+Les19 types sont admis ENSEMBLE. Ils ne representent PAS19 graphes complets.
+
+4. Un point de depart contraint est inevitable.
+
+Acquis reutilise : P_global<=852, certificat rationnel exact dans
+../c1-codex/data/codex_order9_prism_cap.json. Les231 triangles-droites ont
+des nombres de partenaires-prismes t(L), avec sum_L t(L)=2P_global<=1704.
+Choisir une droite de t minimum donne t<=7 puisque8*231=1848.
+
+Acquis reutilise : chaque grille contenant une droite utilise deux de ses
+prismes, et deux grilles distinctes n'utilisent pas le meme prisme.
+Une droite basse est donc dans au plus3 grilles. Chacune fournit trois
+partenaires de drapeaux grille parmi les18 droites rencontrant L.
+Au moins neuf partenaires sont non-grilles. Choisir un tel partenaire K,
+prendre o=L intersection K, et numeroter L=(o,0,1), K=(o,2,3).
+
+Dans ces coordonnees :
+  t(L)=sum_{y=2..13} Gamma[{0,y},{1,y}] <=7.
+En effet un triangle-prisme oppose a L contient un unique voisin y de o,
+et ses deux autres sommets sont forces : {0,y} et {1,y}.
+
+Le drapeau est une grille exactement quand les quatre aretes du carre
+sur02,03,12,13 sont presentes :02--03,12--13,02--12,03--13. Avec les cinq
+sommets o,0,1,2,3 cela donne les neuf sommets de la grille. Les autres
+aretes possibles du carre sont alors interdites par lambda=1. Le drapeau
+non-grille impose donc la somme des quatre aretes<=3.
+
+On peut aussi imposer t(L)<=t(L') pour les six autres droites a o, et
+2*nombre_de_grilles_par_L<=t(L). La normalisation de L0 preserve la paire
+marquee2,3 : c'est la couverture19 types ci-dessus. Tout Conway entre
+dans ce modele apres renommage. Aucun des anciens germes44 ou15 n'est fixe.
+
+5. Reduction globale des egalites aux interdictions d'exces.
+
+Supposer seulement (R), la symetrie, la binarite et la diagonale nulle.
+Pour tout p, deg_Gamma(p)=12. Donc
+  sum_{q!=p} Gamma^2[p,q] =12^2-12=132,
+  sum_{q!=p} Gamma[p,q] =12,
+  sum_{q!=p} |p intersection q| =22.
+Le total est166=2*83. Si chacune des83 sommes correspondantes est<=2,
+alors elles valent TOUTES2. Les seules bornes superieures (C<=) suffisent
+ainsi a donner le SRG complet. La version pour k racines a pour total
+k*(k-2)-2=2*(n-1), n=k*(k-2)/2.
+
+Une violation fournit un motif positif interdit de taille au plus6 :
+ - p,q partagent une racine et sont adjacents : un voisin commun en plus
+   donne trois aretes interdites ensemble ;
+ - p,q partagent une racine : deux voisins communs donnent quatre aretes ;
+ - p,q sont disjoints et adjacents : deux voisins communs donnent cinq aretes ;
+ - p,q sont disjoints : trois voisins communs donnent six aretes.
+Chaque motif donne une clause OU des negations de ses aretes. Le certificat
+de chaque clause indique p,q, ses voisins communs et l'eventuelle arete pq.
+Sa validite se controle directement sur les etiquettes et la borne2.
+
+Le moteur conway_global_lazy.py ajoute ces clauses au modele GLOBAL. Toutes
+les aretes restent libres. Il peut reutiliser ces clauses dans un autre
+calcul ; elles ne dependent pas de la graine qui les a revelees. Dans son
+moteur SAT, les clauses internes apprises sont aussi gardees entre les
+candidats d'un meme run. Dans son moteur CP, seules les coupes explicites
+sont gardees entre deux resolutions. Une reprise depuis JSON recharge les
+coupes explicites, pas la memoire interne du solveur.
+
+La procedure est finie : un candidat incorrect est exclu a chaque iteration
+et il y a au plus2^3486 matrices d'aretes etiquetees. Cette borne elementaire
+est INABORDABLE et n'est pas presentee comme une solution au probleme.
+La normalisation, les comptes exacts et l'apprentissage reduisent cet espace
+sans fournir encore de borne abordable sur le nombre de candidats effectifs.
+
+6. Initialisation sans restriction de la recherche globale.
+
+Un petit modele auxiliaire construit une matrice satisfaisant (R), en
+utilisant les rotations des sept paires et un retournement simultane.
+Il a252 variables d'orbites et trouve un temoin en0,240s. Apres renommage,
+ce temoin est dans le type pointe18. Il viole1015 bornes de paires et a
+un exces total1596 : ce n'est PAS un Conway.
+
+Il sert seulement a amorcer les coupes et donner des phases/indications de
+valeurs au solveur global. Aucune de ses aretes ni sa symetrie ne sont
+imposees. Le programme controle explicitement ses contraintes de base
+avant de l'utiliser. Tous les19 types restent disponibles a la recherche.
+
+7. Portee et exigence pour une conclusion globale.
+
+SAT ne sera annonce qu'apres reconstruction99 et verification exacte de
+tous les degres et tous les comptes de paires. UNSAT sur le modele couvrant
+tous les cas constituerait un verdict global du solveur ; un certificat
+portable devra encore etre produit pour une preuve publiable. Aucun de
+ces deux verdicts n'a ete obtenu pour99 dans les pilotes rapportes.
+Le fichier des resultats distingue explicitement couverture exhaustive,
+decision complete et cout de resolution abordable prouve.

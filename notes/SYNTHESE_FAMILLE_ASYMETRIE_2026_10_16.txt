@@ -1,0 +1,464 @@
+SYNTHÈSE : ASYMÉTRIE, SATURATION ET COMPLÉTION DANS SRG(v,k,1,2)
+16 octobre 2026 — Codex — suite de la demande transmise par LAB921.
+
+Résultat de cette synthèse
+-------------------------
+Le rapprochement utile est spécifique à Conway : k=14 est exactement le
+seuil où la valeur propre 3 du voisinage cubique d'un triangle rejoint la
+valeur propre positive du graphe entier. Deux rigidités déjà établies,
+l'équilibre des composantes et le caractère couvrant des grilles, portent
+le même facteur k-14. La formule de variance ci-dessous le rend explicite.
+Le comptage de la cinquième étoile est également serré seulement à k=14
+parmi les quatre grandes lignes de paramètres.
+
+Ce n'est pas une nouvelle exclusion, ni une preuve que l'asymétrie est
+impossible. C'est une explication commune de contraintes auparavant
+dispersées, et une manière précise de les appliquer aux complétions.
+Il ne faut pas compter ces conséquences corrélées comme autant de preuves
+indépendantes de non-existence.
+
+Méthode et périmètre
+-------------------
+Relecture ciblée des neuf rapports du 16 octobre dans C:/home/researcher/cw/review,
+des données structurelles propres du 14 octobre, du modèle global actuel,
+et des messages LAB916,918,920,921. Les résultats du pair sont utilisés avec
+leurs hypothèses et leur statut, sans refaire ses constructions ou preuves.
+Les grandes anciennes notes n'ont pas été rouvertes. Ce registre consolide
+les réductions principales recensées par ces rapports ; il ne prétend pas
+avoir relu chaque ancienne preuve ni chaque journal de calcul.
+
+Les vérifications nouvelles se limitent à l'algèbre et aux cinq lignes
+numériques de cette note. Script : code/codex/family_saturation_synthesis.py.
+Données : data/codex_family_synthesis_20261016/parameter_saturation.json.
+
+Notation : A est l'adjacence du graphe entier. Gamma est celle des 84
+étiquettes éloignées d'une racine pour Conway. « C1 » peut désigner le cas
+Aut(G)={1} ; les contraintes nommées C1 dans le code sont, elles, des
+équations de comptage à la racine. Elles ne supposent aucune asymétrie.
+
+1. Pourquoi il n'y a que cinq paramètres non complets
+--------------------------------------------------
+Le comptage autour d'une arête donne k(k-2)=2(v-k-1), donc v=1+k²/2.
+Le voisinage de chaque sommet est une union d'arêtes : k est pair.
+Sur 1 orthogonal, A²+A-(k-2)I=0. Posons d=sqrt(4k-7),
+r=(d-1)/2, s=-(d+1)/2 et m=k/2.
+
+Si r,s étaient irrationnels, leurs multiplicités seraient égales. La trace
+donnerait v-1=2k, donc k=4, dont le discriminant est pourtant 9. Ainsi d est
+un entier impair et les multiplicités sont
+  f=m²+m(m-2)/d,       g=2m²-f,       m=(d²+7)/8.
+Comme 64m(m-2)=(d²+7)(d²-9) et pgcd(d,64)=1, leur intégralité équivaut à d|63.
+Le cas d=1 est K3, exclu de la définition non complète étudiée ici.
+
+    v        k     d       r,s           f,g             k-14
+    9        4     3       1,-2          4,4             -10
+    99       14    7       3,-4          54,44             0
+    243      22    9       4,-5          132,110           8
+    6273     112   21      10,-11        3280,2992         98
+    494019   994   63      31,-32        250914,243104     980
+
+Ce sont cinq lignes de paramètres, pas cinq graphes : la ligne 243 contient
+au moins nos huit classes. La grille 9 est connue ; les existences 99,
+6273 et 494019 ne sont pas résolues dans les acquis utilisés ici.
+La divisibilité par 7 des trois écarts spectraux des cas ouverts est une
+observation arithmétique ; elle n'est pas un théorème sur leurs automorphismes.
+
+2. Une même saturation derrière deux rigidités de Conway
+------------------------------------------------------
+Fixons un triangle l. Écrivons M=N(l)\l, et F=V\(l union M).
+Chaque sommet de M touche exactement un sommet de l, d'où trois couches
+de k-2 sommets. L'induit sur M est cubique : un appariement dans chaque
+couche et un appariement parfait entre chaque paire de couches.
+Ainsi |M|=3(k-2), |F|=(k-2)(k-4)/2 ; les degrés M->F et F->M valent k-4 et 6.
+
+Soit C une composante ENTIÈRE de G[M], ou une union de telles composantes,
+et c=|C|. Les trois couches contiennent c/3 sommets de C. Pour z dans F,
+notons n_C(z)=|N(z) intersection C|. Les identités générales du lemme
+d'équilibre, déjà établies dans la recherche, sont
+  somme_F n_C = (k-4)c,
+  somme_F n_C² = (k-14)c + 5c²/3.
+
+En centrant à la moyenne 2c/(k-2), pour k>4, on obtient exactement
+
+  somme_{z dans F} (n_C(z)-2c/(k-2))²
+       = (k-14)c(1-c/[3(k-2)]).                         (V)
+
+Preuve matricielle donnant aussi les hypothèses : si L est l'adjacence
+de M, E l'incidence M-l et D l'incidence M-F, alors le bloc M de
+A²+A-(k-2)I=2J donne
+  DD^t = (k-2)I-L-L²+2J-EE^t.
+Comme L1_C=3 1_C et EE^t1_C=(c/3)1_M,
+  DD^t1_C = (k-14)1_C+(5c/3)1_M.
+Le produit scalaire avec 1_C donne le deuxième moment. Le premier vient
+du degré k-4 vers F. Soustraire la moyenne donne (V).
+
+Autre lecture : h=1_C-c1_M/[3(k-2)] satisfait Lh=3h, E^th=0 et 1^th=0.
+Alors ||D^th||²=(k-14)||h||², avec
+  k-14=(r-3)(3-s).
+À k=14, h s'étend par zéro en un vecteur propre global de valeur 3.
+La variance nulle force CHAQUE n_C(z)=c/6, et c est divisible par 6.
+À k=22, la variance vaut 8c(1-c/60) : une composante propre peut présenter
+des fluctuations ; on ne peut pas lui imposer artificiellement l'égalité.
+À k=4, F est vide ; les moments imposent c=6 pour C non vide, donc M connexe.
+
+Limite décisive : si M est connexe, c=3(k-2), h=0 et (V) n'ajoute rien.
+Une simple partie induite cubique d'un bloc incomplet ne suffit pas : il
+faut avoir établi qu'il s'agit d'une composante complète du vrai M.
+
+Prenons maintenant une grille induite Q=3x3, donc |Q|=9 et degré interne 4.
+Chaque paire adjacente de Q a déjà son unique voisin commun dans Q ;
+chaque paire non adjacente en a déjà deux. Un sommet extérieur ne peut
+donc toucher deux sommets de Q. Le nombre d'arêtes sortant de Q est
+9(k-4). Par conséquent le nombre de sommets extérieurs sans voisin dans Q est
+
+  v-9-9(k-4) = (k-4)(k-14)/2.                         (G)
+
+    (v,k)           extérieurs touchant Q       extérieurs ne touchant pas Q
+    (9,4)           0                          0
+    (99,14)         90                         0
+    (243,22)        162                        72
+    (6273,112)      972                        5292
+    (494019,994)    8910                       485100
+
+À 99, une grille est donc un code parfait au sens que chaque extérieur a
+exactement un voisin dans Q. Si l est une ligne de Q, Q\l est une composante
+prisme de six sommets de M : son degré interne y est déjà trois. Le cas
+c=6 de (V) impose alors un voisin dans Q\l à chaque sommet de F.
+(V) et (G) expriment deux aspects liés de la même saturation.
+L'existence d'une grille dans tout Conway N'EST PAS démontrée par ceci.
+
+3. La cinquième étoile : autre budget serré à 99
+---------------------------------------------
+Dans le cadre de LAB918-920, quatre étoiles fournissent un ensemble B' de
+4k-20 étiquettes. La partie nouvelle X de la cinquième étoile a k-6 sommets.
+Son induit est un appariement ; posons a=|E(X)|. Chaque sommet de B' doit
+avoir deux voisins dans l'étoile entière L4=X union Y. Une paire non
+adjacente de X peut recevoir au plus un tel voisin commun de B', et une
+paire adjacente aucun : ses deux extrémités ont déjà la lettre 4 en commun.
+Deux sommets de B' ne peuvent donc consommer la même paire de X.
+
+Au moins
+  D_k = 4k-20-binomial(k-6,2)+a
+      = 8+a-(k-14)(k-7)/2
+étiquettes de B' doivent toucher Y ; si D_k<0, la borne utile est zéro.
+
+    k       D_k                   plage de a
+    14      8+a                   0..4
+    22      -52+a                 0..8
+    112     -5137+a               0..53
+    994     -483622+a             0..494
+
+Seul Conway force ici un débordement positif. Ce comptage ne présume
+aucune symétrie. LAB signale que les capacités de paires correspondantes
+sont déjà encodées dans R8 ; les réénoncer n'ajoute pas de force logique.
+Il manque une incompatibilité de l'arrangement des arêtes, pas ce seul total.
+Le mot « budget » désigne ici cette capacité de paires, pas un coût de calcul.
+
+4. Où l'asymétrie peut réellement se cacher
+-----------------------------------------
+La régularité, même forte, fixe des nombres de voisins ; un automorphisme
+est une permutation qui préserve SIMULTANÉMENT toutes les incidences.
+Pour lambda=1, les arêtes appartiennent chacune à un unique triangle.
+Cela n'interdit pas l'asymétrie : notre graphe ligne d'un graphe cubique
+asymétrique sans triangles donne un graphe 4-régulier de 30 sommets,
+lambda=1, asymétrique. Il n'est pas fortement régulier.
+Des SRG asymétriques avec d'autres lambda sont également présents dans
+nos contrôles. Aucun de ces deux faits ne fournit encore lambda=1, mu=2.
+
+À une racine x, le squelette K_x conserve toutes les arêtes touchant N[x]
+et les arêtes de transport, dont le triangle est complété par N(x).
+Il porte déjà TOUS les sommets. Pour mu=2, le transport est une union de
+cycles de longueur au moins quatre ; le résidu est (k-4)-régulier, lambda=1.
+Les mots de lettres le long des cycles peuvent détruire toute symétrie
+fixant x, même quand les voisinages immédiats sont tous des appariements.
+
+Nos huit classes à 243, ordres des groupes acceptés des résultats existants :
+  BvLS       3 849 120          Gamma5       2 916
+  twin           4 320         Gamma6         108
+  Gamma3           864         Gamma7         162
+  Gamma4         3 888         Gamma8         108
+Toutes ont les mêmes paramètres et spectre 22,4^132,(-5)^110.
+Ce tableau ne recalcule pas leurs groupes et ne revendique pas que ces
+huit classes épuisent tous les SRG de ces paramètres.
+
+Dans Gamma6 et Gamma8, certains K_x enracinés sont RIGIDES. Cela est
+visible sur un seul cycle de transport de longueur respectivement 68 et
+40 couvrant les 22 lettres. Pourtant |Aut(G)|=108 : les symétries déplacent
+x vers 107 autres racines, sans qu'aucune ne fixe x non trivialement.
+Donc « lambda=1,mu=2 impose un stabilisateur local non trivial » est FAUX.
+
+Si une classe intrinsèque de racines a taille m et |Aut(K_x,x)|=h,
+  |Aut(G)| <= m h.
+Un x intrinsèquement unique avec h=1 prouverait l'asymétrie. Un squelette
+rigide seul ne suffit pas, et ne prouve pas non plus l'unicité de complétion.
+BvLS et twin fournissent déjà deux complétions différentes d'un même
+squelette enraciné dans les expériences existantes.
+
+Le corpus 243 est lié à des constructions très particulières : sept des
+huit graphes partagent le bloc de Hamming replié à 81 sommets ; les quatre
+premiers ont une présentation en revêtement cyclique Z3 ; les quatre
+suivants n'ont pas de spread régulier. Ce ne sont pas huit tirages
+indépendants dans l'espace de tous les SRG(243,22,1,2).
+L'absence d'asymétrie dans ce corpus suggère d'étudier la persistance des
+équivalences entre racines, mais ne donne aucun pourcentage de non-existence.
+
+5. Le pont logique manquant entre peu de complétions et symétrie
+--------------------------------------------------------------
+Soit H un objet partiel ÉTIQUETÉ sur tous les sommets, avec domaine des
+cases inconnues, et K son groupe d'automorphismes préservant ce domaine.
+K agit sur l'ensemble C(H) des complétions admissibles. Si une complétion G
+est asymétrique, son stabilisateur dans K est trivial. Son orbite contient
+donc |K| complétions étiquetées distinctes. Ainsi
+
+  |C(H)| < |K|  =>  aucune complétion asymétrique de H.  (O)
+
+En particulier |C(H)|<=2 et |K|>2 suffiraient. Il faut une borne sur les
+complétions ÉTIQUETÉES, pas seulement « une classe à isomorphisme près ».
+Le simple cadre racine de Conway a 2^7*7!=645120 automorphismes et n'impose
+pas pour autant l'impossibilité de 645120 complétions par réétiquetage.
+
+Nous avons des cadres petits avec beaucoup de symétries, et des grands
+bords 43/44 avec au plus deux complétions sous les hypothèses du théorème
+de complétion. Nous n'avons pas établi que le MÊME bord inévitable possède
+à la fois ces deux propriétés. Un grand bord peut avoir |K|=1.
+C'est la lacune précise d'un argument « rigidité donc symétrie ».
+Les équations (V),(G) resserrent des incidences ; elles ne construisent pas
+d'elles-mêmes une permutation globale.
+
+6. Registre consolidé des réductions et de leur portée
+----------------------------------------------------
+Les références R01..R09 sont les rapports de revue listés à la fin.
+« acquis » signifie utilisé avec son statut enregistré ; aucune nouvelle
+campagne indépendante de vérification n'a été effectuée ici.
+
+GÉOMÉTRIE ET COMPTAGES UNIVERSELS
+U01. Cadre racine 1+14+84, paires non appariées de 14 lettres. Gamma est
+     12-régulier. Tous les comptages racine et tous les comptages de paires
+     sont équivalents au SRG99. Aucun automorphisme supposé. [R01,R03,A1]
+U02. Boule de triangle 3+36+60, voisinage cubique, équilibre c/6. Acquis
+     universel ; trivial pour une seule composante. [R03,A6-A7 ; §2 ici]
+U03. Grille9 couvrante ; partitions et transport induits. Acquis SI une
+     grille existe. N'impose pas sa présence. [R03,A2-A4]
+U04. Aucun sommet de Hamming (21 grilles) ; borne g(x)<=17 enregistrée
+     ensuite. Notre exclusion nocturne de l'étoile complète redonne un
+     cas plus ancien ; ce n'est pas une réduction supplémentaire. [R05,L8-L11]
+U05. Propagation des torsions, exclusions des états tout-ancrés, contraintes
+     sur les classes touchées : conditions nécessaires ; les configurations
+     très tordues ne sont pas globalement exclues. [R03,R05]
+U06. Census de petits sous-graphes, bornes globales P<=852 prismes et
+     nombre de grilles<=126 : acquis numériques exacts enregistrés. Ils
+     remplacent les anciennes bornes plus faibles 1151,1150,1354. [R07,R09]
+U07. Normalisation : choisir une droite minimisant ses prismes (t<=7),
+     puis un partenaire non-grille, réduit à 19 types POINTÉS. Couverture
+     globale, pas 19 graphes ni 19 petits calculs. [code conway_global_cover]
+U08. Motif tordu de Makhnev : 373 classes puis 174 candidats nécessaires
+     restants. Réduction finie du motif, pas de ses complétions. [R07,R08]
+U09. Holonomie : loi de parité établie et fermetures particulières exclues.
+     Les lois de transport plus fortes conjecturées ne sont pas générales.
+     Ne pas remettre les conjectures réfutées dans le solveur. [R08,R09]
+
+ARITHMÉTIQUE, RANGS ET VECTEURS COURTS
+A01. r7=rank_F7(A+4I)=rank_F7(A-3I), impair ; fenêtre enregistrée
+     {37,39,41,43}. Rangs locaux r7-15 et contraintes de discriminant.
+     Ce ne sont pas des ordres de groupes d'automorphismes. [R03,R05,R07]
+A02. Theta/séries modulaires et certificats de Farkas excluent les rangs
+     bas et imposent des vecteurs courts. Ils laissent quatre rangs.
+     L'existence du réseau admissible n'est pas celle du graphe. [R07]
+A03. Rang37, norme14 : monde Fano/co-Heawood exclu par énumération exacte
+     enregistrée, sans certificat de preuve complet archivé dans la revue.
+     Trois mondes de norme16 fermés ne classent pas toute la norme16.
+     Normes18/20 et rangs supérieurs ne sont pas clos. [R07,R10-R11]
+A04. Rang37 et voisinage de droite sans triangle ni carré : connexité
+     obtenue par le théorème LAP. Cette connexité rend l'équilibre de U02
+     trivial sur cette droite ; ne pas supposer un prisme. [R07,R16]
+A05. Collision/comptage de vecteurs courts : les marges disponibles ne
+     donnent pas l'exclusion recherchée. Le profil sans prismes n'est pas
+     rejeté par les seuls census utilisés. [R07,§2.4 ; R09]
+A06. Discriminants des résidus PSD T30 et U40, classes {2,14} et {1,7} :
+     filtres nécessaires acceptés de LAB. Les 643 germes rang30 examinés
+     les échouent ; ce corpus n'est pas la totalité des germes. [LAB886-887]
+A07. Critères de genre/discriminant mod4 : utiles ailleurs, mais les
+     paramètres de Conway survivent. Pas d'obstruction arithmétique finale.
+     [R03,A9-A10 ; relevé de littérature du 16/10]
+
+COMPLÉTION, PSD ET CONTRAINTES ENTIÈRES
+C01. Formule générale de complétion d'un bord B et de ses incidences D :
+     réduction au noyau de [D;1^t], E=E0+3P-7Q, Q projecteur avec rang fixé.
+     Reformulation exacte ; construire B,D reste le problème. [R08,R09,V13]
+C02. Différence de rang2 entre deux adjacences Conway : seulement une
+     transposition de sommets. C'est le rang de la différence, pas r7.
+     N'interdit pas les échanges de rang plus élevé. [R08,V14]
+C03. Tout Conway possède des bords positifs de taille43/44 : avec bord et
+     incidences fixés, au plus8192 signes puis <=2 complétions étiquetées,
+     isomorphes ; bord44 positif, unicité. B,D n'ont pas été énumérés avec
+     un coût abordable prouvé. L'invariant |K| requis par (O) manque. [R09,V15]
+C04. Fermeture des défauts par intégralité, modes0/-1 et contrôlabilité :
+     égalités supplémentaires sous leurs hypothèses ; plusieurs branches
+     se ferment algébriquement sur certaines colonnes, sans être exclues.
+     Les 61 branches et 255 essais UNKNOWN du 13/10 ne sont pas une preuve.
+     [R08 ; RECHERCHE_ACTIVE_C1, V10-V11]
+C05. Bloc quatre étoiles de44 étiquettes, H-MATCH => non-existence :
+     implication enregistrée, mais H-MATCH reste OUVERT. Tester 850000
+     configurations proches de familles connues n'est pas exhaustif. [R09]
+C06. Famille c55/G1 exclue sous les filtres arithmétiques indiqués ;
+     NG5/NG7/N9-NG et la totalité des quatre-étoiles ne sont pas fermées.
+     Les ensembles de 416 classes/643 germes restent conditionnels. [R09]
+C07. Filtres de noyaux, secteurs symétriques/antisymétriques, supports
+     plats <=14, borne de couplage, contraintes de rematching : lemmes
+     utilisables sur chaque candidat ; pas encore H-MATCH universel. [R09]
+C08. Outil44->84->99, colonnes exactes, Schur, DISC et coupes de rang/PSD :
+     élimine ou assemble un germe. Ses échecs ne couvrent pas les autres
+     germes. Coeur30 fermé par projection globale dans le solveur, sans
+     trace de preuve intégrale complète à ce stade. [R09 ; a963315]
+C09. Réflexions phi : ruptures nécessaires et coupes conjointes ajoutées.
+     Elles concernent de vrais appariements ; ne pas confondre leur défaut
+     avec une hypothèse d'automorphisme. [code conway_phi_defect ; LAB901]
+C10. Cadres12->13->15 lignes de Gamma construits par échanges équilibrés.
+     Le témoin15 précis est ensuite exclu par cinq de ses lignes et les
+     quotas des lignes inconnues. Coupe58 arêtes<=57. C'est une preuve
+     pour ce motif, pas pour tout cadre15 ni pour Conway. [AGENTS 16/10]
+C11. R7 libre : six témoins SAT enregistrés par LAB. Chacun échoue à son
+     prolongement R8 fixé ; la variante R8 à base libre est encore UNKNOWN
+     au message921. L'ancienne impossibilité universelle du 7e label est
+     retirée. Toutes R8 impossibles => Conway impossible. [LAB916,918,920]
+C12. Pigeonhole de cinquième étoile : >=8+a sommets de B' touchent Y.
+     Déjà porté par les capacités C2 du modèle LAB ; arrangement encore
+     possible au niveau du seul comptage. [§3 ; LAB918-920]
+C13. Modèle global sans germe : tous les comptages racine sont exacts.
+     Les bornes supérieures C2 suffisent par conservation des sommes166.
+     Coupes universelles sur3..6 arêtes, réutilisables entre candidats.
+     2483 clauses initiales n'ont pas donné de verdict global. [0097ca5]
+C14. Sur ker(B) de dimension70, T=3I-Gamma, U=4I+Gamma. Pour Gamma
+     BINAIRE et tous les comptages racine, tr(T)=210 et tr(T²)=1470.
+     T>=0 et U>=0 impliquent spec(T) dans{0,7}, donc tous les C2 :
+     équivalence GLOBALE. Bibliothèque421 coupes, pilote UNKNOWN. [54b8f15]
+C15. Centre fractionnaire Gamma0=(2J-B^t(I+M)B)/10 : mêmes comptages,
+     T=3P,U=4P. L'identité tr(TU)=somme_ij Gamma_ij(1-Gamma_ij) montre où
+     l'intégralité intervient. Une relaxation PSD continue ne suffit pas.
+     [code conway_global_psd ; 54b8f15]
+
+ASYMÉTRIE, CONSTRUCTIONS ET SOUS-FAMILLES
+S01. SRG asymétriques existent pour d'autres lambda ; lambda1 asymétrique
+     régulier30 construit, non SRG. Évite une fausse loi générale.
+     [data/codex_lambda_one_construction_20261014 ; R09]
+S02. Huit243 et transport : stabilisateurs locaux triviaux possibles même
+     avec mu2 ; équivalence globale de racines maintenue dans Gamma6/8.
+     Le mécanisme à expliquer est ce maintien, pas l'uniformité locale.
+     [§4 ; structural_results.json]
+S03. Quatre revêtements Z3 de BH classifiés par calcul. Le problème S3
+     possède une CNF UNSAT avec DRAT vérifié ; la fidélité de l'encodage
+     mathématique reste distincte du certificat SAT. Cela ne classe pas
+     les243 sans spread régulier. [R07,R42-R43]
+S04. Bloc de Hamming replié81 : exactement sept complétions non isomorphes
+     enregistrées (BvLS,Gamma3-8). C'est cette sous-famille qui est fermée,
+     pas tous les graphes243. [R07,R45]
+S05. Aucun ensemble de switching Godsil-McKay d'une cellule pour les
+     grands paramètres ; pas de spread RÉGULIER pour Conway (quotient33
+     impossible). N'interdit ni tous les échanges multicellules, ni toute
+     partition en triangles, ni une construction depuis zéro. [R03,R07]
+S06. Codes de flips et bornes sur les stabilisateurs de cadres : concernent
+     des sous-groupes définis, pas tous les automorphismes. Une symétrie
+     partielle peut être brisée par les incidences manquantes. [R08,R09]
+S07. Critère d'orbite (O) : le pont exact entre nombre de complétions et
+     asymétrie. Aucun bord universel réunissant ses hypothèses strictes
+     n'a encore été établi. [§5]
+S08. Coclique de Hoffman22 => design2-(22,4,2), intersection2 avec chaque
+     grille et contraintes de complétion. Mais une coclique22 ou21 n'est
+     pas forcée ; exclure toutes ces branches donnerait seulement alpha<=20.
+     À243, le maximum théorique45 n'est généralement pas atteint dans
+     le corpus. [R03,A13 ; R07,R48-R50]
+S09. Tissages11 avec couplages tous iso/anti : exclusions via plan d'ordre10.
+     Présence du tissage et restriction des couplages non imposées à tout
+     Conway ; aucune exclusion générale par cette route. [R09]
+S10. C3/C7 : preuves formelles enregistrées dans R02 ; C2 : exclusion156/156
+     annoncée, avec recertification de raccourcis de transfert encore
+     signalée comme suspendue dans R04. Autres ordres premiers : références
+     à conserver dans la chaîne. « Exclure C1 exclut tout Conway » dépend
+     de cette chaîne entière ; nos modèles U01/C11/C13/C14, eux, traitent
+     directement tout SRG99, indépendamment de ces exclusions de symétrie.
+
+CONJECTURES RETIRÉES ET INFÉRENCES À NE PAS RÉUTILISER
+F01. « Connexité+PSD force rang31 sur trois étoiles » : faux, germe rang30.
+F02. ODD9 universel, KER-SYM sans la nullité14, SUM14 sans14, MIX<=2 : faux.
+     Les versions démontrées avec hypothèses restent des filtres. [R09]
+F03. Tous les cycles de transport ont longueur multiple de4 : faux (twin30).
+     La parité observée sur huit graphes n'est pas une preuve universelle.
+F04. Squelette rigide => complétion unique ; peu de classes isomorphes =>
+     peu de complétions étiquetées ; grand bord rigide => automorphisme : faux.
+F05. Absence de switching d'une cellule => aucune construction asymétrique :
+     non démontré. Absence de Conway symétrique => aucun échange entre deux
+     Conway asymétriques : non démontré non plus.
+F06. Tous les243 proviennent effectivement de3-ovoïdes : non établi par la
+     simple compatibilité des paramètres. Ne pas convertir un modèle de
+     construction en classification des objets possibles. [R08]
+F07. UNSAT d'un germe, absence de contre-exemple dans un corpus, nombre de
+     conflits, rang élevé ou nombreux UNKNOWN => pourcentage d'exclusion
+     globale : aucune de ces conversions n'est justifiée.
+
+7. Ce que la réunion des résultats permet de viser concrètement
+-------------------------------------------------------------
+La saturation de §2 est un mécanisme de propagation exact. Pour toute
+boule de droite M ENTIÈRE déjà déterminée dans un modèle, calculer ses
+composantes C et imposer à chaque sommet éloigné présent z
+  somme_{u dans C} Gamma[z,u] = |C|/6
+avec les contributions des lettres connues si C en contient.
+Pour une ligne à travers la racine, M contient12 lettres et24 étiquettes.
+Le calcul des composantes ne demande pas d'automorphisme. Une taille non
+divisible par6, ou un quota déjà dépassé, exclut ce bloc dans tout Conway.
+Le message922 demande à LAB si R8 charge déjà ces égalités ; aucun gain
+de propagation n'est revendiqué avant sa réponse et une expérience ciblée.
+Si M est connexe, ce test est seulement le quota total6 déjà connu.
+
+Pour généraliser un échec, garder ses hypothèses visibles : quels blocs
+sont entièrement fixés, quelles composantes sont entières, quels quotas
+sont universels. Un certificat doit viser toutes les réalisations de la
+configuration décrite, ou produire une coupe universelle comme C10/C13.
+Fixer un noyau propre à un témoin puis appeler son impossibilité « globale »
+ferait perdre le problème de la compatibilité des différents noyaux.
+
+Deux voies couvrent réellement tout le graphe dans les outils actuels :
+(i) R8 libre est une relaxation nécessaire ; une exclusion exhaustive ou
+    un lemme universel d'incompatibilité R8 suffirait.
+(ii) Le modèle84 global, avec comptages racine et intégralité, est exact
+    soit par les C2, soit par les deux PSD. Il laisse les19 types et leurs
+    arêtes variables. Un certificat global y suffit sans H-MATCH ni Aut=1.
+Leur temps jusqu'à preuve n'est pas borné de manière abordable aujourd'hui.
+La voie H-MATCH reste complémentaire, et le critère d'orbite offre une
+vraie cible pour une preuve par symétrie si un bord inévitable adéquat apparaît.
+
+Jugement de recherche : la rigidité de99 a maintenant une cause commune
+visible et une traduction en contraintes. Pour243 et les deux grandes
+tailles, ce même mécanisme laisse une marge positive ; il ne motive pas
+une impossibilité générale de l'asymétrie dans toute la famille. Pour99,
+la question forte est de savoir si toutes les égalités locales saturées
+peuvent se recoller globalement. Ni un automorphisme forcé ni l'impossibilité
+de ce recollement ne sont encore démontrés.
+
+Sources courtes et traçabilité
+-----------------------------
+R01 C:/home/researcher/cw/review/01_origin.md
+R02 C:/home/researcher/cw/review/02_symmetry_c3_c7.md
+R03 C:/home/researcher/cw/review/03_c2_labs_structures.md (A1-A15)
+R04 C:/home/researcher/cw/review/04_c2_routeC_researcher2.md (bilan et statut C2)
+R05 C:/home/researcher/cw/review/05_c1_notes_00_99.md (L1-L25, limites)
+R06 C:/home/researcher/cw/review/06_c1_notes_100plus_branches.md (carte partielle)
+R07 C:/home/researcher/cw/review/07_workspace_c1_0713.md (§2.1-2.7)
+R08 C:/home/researcher/cw/review/08_workspace_1314.md (complétions/asymétrie)
+R09 C:/home/researcher/cw/review/09_codex_14_16oct.md (local/global, statuts)
+Les rapports peuvent être antérieurs aux derniers messages du16/10 :
+les corrections R7 et témoin15 de cette note tiennent compte des suites.
+
+data/codex_asymmetry_mechanisms_20261014/structural_results.json
+data/codex_local_global_20261015/conway_global_cover_proof_20261016.txt
+code/codex/conway_global_cover.py
+code/codex/conway_global_lazy.py
+code/codex/conway_global_psd.py
+AGENTS.md, entrées16/10 relatives au témoin15, couverture globale et PSD.
+Pont : messages916-922 ; résultats et propositions du pair utilisés avec portée.
+Relevé bibliographique :
+C:/home/researcher/Desktop/Recherche_Conway/lab_exchange_2026-10-14/
+codex_hmatch_20261016/literature_20261016/RELEVE_LITTERATURE_2026-10-16.txt
+
+Le changement de ce jour est cette synthèse et l'identité centrée (V),
+déduite du lemme d'équilibre déjà connu. Aucun nouveau graphe, aucune
+nouvelle famille exclue, aucun recalcul de groupe, aucun long solveur lancé.

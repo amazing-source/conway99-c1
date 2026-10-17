@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "name": "rook_one_vertex",
+      "boundary_rank": 1,
+      "rank": 2,
+      "nullity": 6,
+      "regularity_rank_gain": 1,
+      "old_formula_symmetric": false
+    },
+    {
+      "name": "rook_open_edge",
+      "boundary_rank": 2,
+      "rank": 3,
+      "nullity": 4,
+      "regularity_rank_gain": 1,
+      "old_formula_symmetric": false,
+      "affine_dimension": 3,
+      "affine_assignments": 8,
+      "binary_linear_candidates": 8,
+      "completions": 4,
+      "solver_verdict": "OPTIMAL"
+    },
+    {
+      "name": "rook_irregular_border",
+      "boundary_rank": 3,
+      "rank": 4,
+      "nullity": 2,
+      "regularity_rank_gain": 1,
+      "old_formula_symmetric": false,
+      "affine_dimension": 0,
+      "affine_assignments": 1,
+      "binary_linear_candidates": 1,
+      "completions": 1,
+      "solver_verdict": "UNIQUE_BINARY"
+    },
+    {
+      "name": "rook_open_injective",
+      "boundary_rank": 4,
+      "rank": 4,
+      "nullity": 0,
+      "regularity_rank_gain": 0,
+      "old_formula_symmetric": true,
+      "affine_dimension": 0,
+      "affine_assignments": 1,
+      "binary_linear_candidates": 1,
+      "completions": 1,
+      "solver_verdict": "UNIQUE_BINARY"
+    },
+    {
+      "name": "petersen_one_vertex",
+      "boundary_rank": 1,
+      "rank": 2,
+      "nullity": 7,
+      "regularity_rank_gain": 1,
+      "old_formula_symmetric": false
+    },
+    {
+      "name": "petersen_open_pair",
+      "boundary_rank": 2,
+      "rank": 3,
+      "nullity": 5,
+      "regularity_rank_gain": 1,
+      "old_formula_symmetric": false,
+      "affine_dimension": 7,
+      "affine_assignments": 128,
+      "binary_linear_candidates": 24,
+      "completions": 12,
+      "solver_verdict": "OPTIMAL"
+    },
+    {
+      "name": "rook_closed_compatibility",
+      "boundary_rank": 3,
+      "rank": 3,
+      "nullity": 1,
+      "regularity_rank_gain": 0,
+      "old_formula_symmetric": true,
+      "legacy_agreement": true
+    }
+  ],
+  "norm18_symbolic_status": "PASS",
+  "python": "3.12.10",
+  "sympy": "1.14.0",
+  "sources": {
+    "coclique_global_completion.py": "54cc121854704a254e0311960ed6b0d1744a64905b4336029fdc8b4b77bc4c7e",
+    "coclique_regular_completion.py": "0cf7c921a405d11d247fb5908c04e1b2d83254abb9e46ae6e436deffdf538d29",
+    "coclique_affine_completion.py": "c6866cfcb26d0857e5f5e820c82e48ed1aea05592331322397256f72b9c49dff",
+    "check_coclique_regular_completion.py": "b0e2c1d6c376dcbe2d45fd701a01820f383bcea01296538be87ed21ce8e86723"
+  },
+  "seconds": 0.35899999999674037,
+  "scope": "Generalized completion theorem on new small boundaries; no Conway factor or exclusion"
+}

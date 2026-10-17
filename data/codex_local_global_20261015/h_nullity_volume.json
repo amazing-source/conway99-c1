@@ -1,0 +1,134 @@
+{
+  "status": "JOINT_T_U_VOLUME_OBSTRUCTION_TO_EXTRA_NULLITY",
+  "setup": "Let T=[[A,B],[B^T,C]] in h parity and T0=diag(A,C). Let i=nullity(T0). Reduce to the positive supports of A,C and short the U diagonal blocks to those supports, obtaining S,Q. Assume S,Q are positive definite there.",
+  "kernel_fact": "For T PSD, ker(T0)=ker(T) intersection h*ker(T), since 2*T0=T+h*T*h. Put K=A^(-1/2)*B*C^(-1/2). T PSD iff all singular values of K are<=1. Exactly p singular values equal1 iff nullity(T)=i+p.",
+  "upper_fact": "U PSD implies L=S^(-1/2)*B*Q^(-1/2)=P*K*R is a contraction, where P=S^(-1/2)*A^(1/2) and R=C^(1/2)*Q^(-1/2).",
+  "necessary_volume": "If nullity(T)>=i+p, then product_{j=1}^p alpha_j * product_{j=1}^p beta_j <=1, where alpha_j are the p SMALLEST generalized eigenvalues of (A,S) and beta_j those of (C,Q).",
+  "proof": [
+    "On the positive lower supports, congruence reduces T to [[I,K],[K^T,I]]. Each singular value1 of K supplies exactly one additional null vector; positivity bounds every singular value by1.",
+    "If at least p singular values equal1, the operator norm of the p-th exterior power of K is1. K=P^(-1)*L*R^(-1) and ||exterior^p L||<=1 imply the product of the p smallest singular values of P and of R is<=1.",
+    "Squaring gives the asserted product of generalized eigenvalues: squared singular values of P are those of (A,S), and squared singular values of R are those of (C,Q).",
+    "For rational t, negative inertia of A-t*S counts generalized eigenvalues strictly below t. At most j-1 negative directions certifies alpha_j>=t, including equality and repeated eigenvalues. Rational lower bounds whose combined product exceeds1 certify the obstruction without algebraic root isolation."
+  ],
+  "fixture": {
+    "one_direction_test": {
+      "status": "INCONCLUSIVE",
+      "target_extra_nullity": 1,
+      "mean_nullity": 12,
+      "nullity_at_least_excluded": null,
+      "nullity_at_most": null,
+      "bottom_product_lower_bound": "1/2",
+      "even_certificate": {
+        "all_certified": true,
+        "checks": [
+          {
+            "index": 1,
+            "threshold": "1/2",
+            "inertia": {
+              "positive": 1,
+              "negative": 0,
+              "zero": 1
+            },
+            "valid": true
+          }
+        ],
+        "product_lower_bound": "1/2"
+      },
+      "odd_certificate": {
+        "all_certified": true,
+        "checks": [
+          {
+            "index": 1,
+            "threshold": "1",
+            "inertia": {
+              "positive": 0,
+              "negative": 0,
+              "zero": 2
+            },
+            "valid": true
+          }
+        ],
+        "product_lower_bound": "1"
+      },
+      "scope": "Conditional on the stated positive definite support blocks, correct shorting, range constraints, and simultaneous T/U positivity. No claim about other means."
+    },
+    "two_direction_test": {
+      "status": "EXTRA_NULLITY_EXCLUDED",
+      "target_extra_nullity": 2,
+      "mean_nullity": 12,
+      "nullity_at_least_excluded": 14,
+      "nullity_at_most": 13,
+      "bottom_product_lower_bound": "2",
+      "even_certificate": {
+        "all_certified": true,
+        "checks": [
+          {
+            "index": 1,
+            "threshold": "1/2",
+            "inertia": {
+              "positive": 1,
+              "negative": 0,
+              "zero": 1
+            },
+            "valid": true
+          },
+          {
+            "index": 2,
+            "threshold": "4",
+            "inertia": {
+              "positive": 0,
+              "negative": 1,
+              "zero": 1
+            },
+            "valid": true
+          }
+        ],
+        "product_lower_bound": "2"
+      },
+      "odd_certificate": {
+        "all_certified": true,
+        "checks": [
+          {
+            "index": 1,
+            "threshold": "1",
+            "inertia": {
+              "positive": 0,
+              "negative": 0,
+              "zero": 2
+            },
+            "valid": true
+          },
+          {
+            "index": 2,
+            "threshold": "1",
+            "inertia": {
+              "positive": 0,
+              "negative": 0,
+              "zero": 2
+            },
+            "valid": true
+          }
+        ],
+        "product_lower_bound": "1"
+      },
+      "scope": "Conditional on the stated positive definite support blocks, correct shorting, range constraints, and simultaneous T/U positivity. No claim about other means."
+    },
+    "lower_with_one_saturated_direction": {
+      "positive": 3,
+      "negative": 0,
+      "zero": 1
+    },
+    "upper_with_same_coupling": {
+      "positive": 4,
+      "negative": 0,
+      "zero": 0
+    },
+    "common_zero_modes": "The displayed4x4 matrices have no common zero modes; direct sum with12 common zeros realizes the reported13-versus14 illustration algebraically."
+  },
+  "own_checks": {
+    "known_signature_congruences": 18,
+    "zero_diagonal_pivot": "PASS",
+    "invalid_threshold_not_certified": "PASS"
+  },
+  "limitations": "No peer mean read or excluded. The test targets a mean of nullity12 when seeking nullity14; it says nothing with p=0 about the earlier rank(A)=10, rank(C)=20 means of nullity14. Actual KHOMOG classes may allow the mean kernel to grow; use its actual nullity, not just an included12-dimensional subspace."
+}

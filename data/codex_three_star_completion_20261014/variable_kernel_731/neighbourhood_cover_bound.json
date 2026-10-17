@@ -1,0 +1,34 @@
+{
+  "status": "PROVED_NEIGHBOURHOOD_COVER_BOUND_AND_FIRST_WEIGHT_SHAPES",
+  "scope": "Any SRG(v,k,1,2). C=im_F2(A)=Fix(A). No assumption on the automorphism group and no peer matrix is used.",
+  "notation": "For a nonzero word x in C, let X be its support, w=|X| and d_y=|N(y) intersect X|. Then w is even, d_y is odd on X and even outside X.",
+  "exact_identity": {
+    "formula": "sum_{y outside X} d_y(d_y-2) + sum_{y in X} d_y(d_y-1) = w*(2w-k-2).",
+    "proof": "Count ordered pairs of distinct vertices in X with a common neighbour: sum_y d_y(d_y-1)=2w(w-1)-2e(X). Also sum_{y outside X}d_y=kw-2e(X). Subtraction gives the identity. Every term displayed on the left is nonnegative by the parity conditions."
+  },
+  "cover_bound": {
+    "hypothesis": "X is contained in the union of the open neighbourhoods of h distinct centres, all outside X.",
+    "inequality": "w >= h*k/(2h-1), rounded upward to an even integer, in addition to w>=(k+2)/2.",
+    "proof": "Let t be the sum of the h centre degrees into X; t>=w. Their contribution is at least t^2/h-2t by Cauchy. If w>=h, this is at least w^2/h-2w. The exact identity then gives w*(2w-k-2)>=w^2/h-2w, hence the claimed bound. If w<h, the bound already follows from w>=(k+2)/2, since k<=2w-2<2h-1.",
+    "discrete_strengthening": "For even w=2h*a+2b, 0<=b<h, the h centre contributions are at least R_h(w)=4h*a*(a-1)+8a*b. Thus w*(2w-k-2)>=R_h(w). The minimum is obtained by spreading the even centre degrees as evenly as possible; increasing their sum above w cannot lower it.",
+    "one_neighbourhood": "For h=1 the bound gives w>=k. Since X is contained in a k-element neighbourhood, X must equal that whole neighbourhood. The corresponding word exists: it is a column of A.",
+    "three_neighbourhoods": "For Conway k14, w>=10. For SRG(243,22,1,2), w>=14. These are deductions from the parameters, not independent audits of the studied243 examples."
+  },
+  "Conway_weight10_on_three_neighbourhoods": {
+    "degree_alternatives": "The induced graph on X is either five disjoint edges, or has four vertices of degree3 and six vertices of degree1.",
+    "proof": "At w10,k14 the identity has right side40. The three centres contribute at least R_3(10)=16. Thus the internal sum is at most24. Internal odd degrees1,3,5,7 contribute0,6,20,42 respectively. Every outside contribution d(d-2) is divisible by8, so the internal sum is divisible by8. The only possibilities are zero, or four terms6: one term20 leaves room for no term6 and is not divisible by8; a term42 is already too large.",
+    "second_case_exterior": "With four internal degrees3, the outside sum is exactly16. The three centre degrees are therefore a permutation of(4,4,2), and every other outside vertex has zero or two neighbours in X.",
+    "six_abstract_shapes": "Besides the matching, there are precisely five possible abstract induced graphs. Distinguish the four degree3 vertices H. If c is the number of edges between degree1 vertices, then e(H)=3+c. Five or six edges on H violate lambda=1, so e(H) is3 or4. The3-edge graphs on four vertices are P4, K1,3 and K3 plus an isolated vertex; the4-edge graphs are C4 and the paw. Attach3-deg_H(v) leaves to each vertex of H and match any remaining degree1 vertices. This determines one ten-vertex shape for each of these five H.",
+    "limit": "These are necessary abstract shapes. No embedding of any of them as a codeword support in Conway is asserted."
+  },
+  "parameter_243_weight14_on_three_neighbourhoods": {
+    "conclusion": "Such a support, if it exists, must induce seven disjoint edges.",
+    "proof": "For k22,w14, the right side is56 and the three-centre contribution is at least R_3(14)=40. The internal contribution is at most16 and divisible by8. Internal degree5 already costs20; one or two degrees3 cost6 or12, neither divisible by8; four cost24 and exceed16. All internal degrees are therefore1.",
+    "interpretation": "The same parity mechanism gives a stronger localization restriction at the243 parameters. It does not force any automorphism."
+  },
+  "dual_corollary_using_peer731": {
+    "accepted_input": "Peer731 proves that a nonzero word of ker_F2(A) has weight>=8 for Conway.",
+    "new_localization_corollary": "A dual word of weight8 would induce a coclique, with every outside degree zero or two. It cannot be supported on the far labels of three stars by the same eight-incidences versus six argument. Consequently the dual code restricted to these far labels has minimum nonzero weight at least9; parity of dual weights is not assumed even."
+  },
+  "solver_use": "Apply these necessary global restrictions when converting an integer spectral relation to a binary codeword. They may exclude completions of local PSD boundaries; they do not automatically exclude a local counterexample to assertion(A)."
+}

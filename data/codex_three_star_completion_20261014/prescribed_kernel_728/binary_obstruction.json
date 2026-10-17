@@ -1,0 +1,37 @@
+{
+  "status": "PROVED_BINARY_MINIMUM_DISTANCE_AND_PRESCRIBED_KERNEL_OBSTRUCTION",
+  "scope": "Every SRG(v,k,1,mu) with positive even mu; the Conway application is SRG(99,14,1,2). No automorphism hypothesis is used.",
+  "binary_code": {
+    "definition": "C=im(A) over F2. The local neighbourhood is a matching, so k is even. The SRG identity A^2=(k-mu)I+(1-mu)A+mu*J gives A^2=A over F2. Thus C={x:Ax=x}.",
+    "notation": "For a nonzero binary word x with support X of size w, let e be the number of edges induced by X and d_v=|N(v) intersect X|, as ordinary integers.",
+    "parity": "d_v is odd on X and even outside X. In particular each vertex of X has an internal neighbour, 2e>=w, and w is even by the handshake identity.",
+    "exact_pair_count": "sum_v d_v(d_v-1)=mu*w(w-1)-2*(mu-1)*e.",
+    "parity_lower_bound": "For even d>=0, d(d-1)>=d; for odd d>=1, d(d-1)>=d-1. Since sum_v d_v=k*w, the left side is at least (k-1)*w.",
+    "conclusion": "(k-1)*w <= mu*w(w-1)-2*(mu-1)*e <= mu*w(w-1)-(mu-1)*w. Therefore w>=2+(k-2)/mu, rounded up to an even integer.",
+    "Conway": "Every nonzero word in im_F2(A) has even weight at least8.",
+    "parameter_243_22_1_2": "The same argument gives weight at least12 for any SRG(243,22,1,2). This is a parameter-level deduction, not an audit of any example.",
+    "equality_case_Conway": "A weight8 word must induce exactly four disjoint edges, and every vertex outside its support has zero or two neighbours in it. There are exactly52 outside vertices with two neighbours and39 with none. This is a necessary structure, not an assertion that such a word exists."
+  },
+  "kernel_to_code": {
+    "full_far_setup": "The84 far labels are all nonmate unordered pairs of the14 root letters. D has one column of weight2 per label. K=(3D^tD+D^tBD-2J)/8, where B exchanges mate letters. For an actual Conway graph, T=3I-Gamma-K is PSD (indeed7 times a rank30 projector).",
+    "lemma": "Let z be an integer vector on the84 labels, with Tz=0, Dz even and Kz even, entry by entry. Extend z mod2 by zeros on the root and its14 neighbours. Then A(z mod2)=z mod2. Therefore either all z entries are even or at least8 of them are odd.",
+    "lemma_proof": "The frame part of A(z mod2) is (0,Dz mod2)=0. The far part is Gamma*z mod2=(3z-Kz) mod2=z mod2.",
+    "partial_boundary_use": "If a locally specified PSD principal block T_S has T_S*z_S=0, any actual completion propagates this relation to the full T after zero extension, because a zero quadratic value in a PSD matrix lies in its kernel. The full Kz and Dz are determined from labels, without knowing the missing edges.",
+    "three_star_strengthening": "A nonzero word of C supported only on the34 far labels of three stars has weight at least10. Indeed weight8 would force every root letter, which lies outside the support, to have zero or two neighbours in it. But the three star centres cover all8 labels, hence contribute at least8 incidences, whereas each can contribute at most2, a contradiction. Thus the preceding partial-boundary test rejects odd weights2,4,6 AND8."
+  },
+  "closed_indicator_family": {
+    "definition": "Take l={0,1}, a union M of r outside mate pairs, and q=1_{l times M} on the84 far labels. No assumption that a candidate graph still has this closed component is made.",
+    "incidence_counts": "Dq has value2r on letters0,1, value2 on the2r letters of M, and0 elsewhere. Its mate values agree.",
+    "Kq_formula": "For every far label p, (Kq)_p=r*|p intersect{0,1}|+|p intersect M|-r, an integer.",
+    "obstruction": "For any integer u with Du=0, put z=2q+u. Then Dz is even and Kz=2Kq is even (Ku=0). If the number of odd entries of u is2,4 or6, no actual Conway graph can have Tz=0.",
+    "prescribed_templates": "The two tested vectors use u=e_(0,y)-e_(0,4)+e_(2,4)-e_(2,y), with (M,y)=({4,5,6,7},8) or ({4,5,6,7,8,9},10). In both cases Du=0 and exactly four entries of u are odd, so any actual completion is ruled out analytically.",
+    "reflection_corollary": "For an incidence four-cycle u with entries(+1,-1,+1,-1), H=I-u*u^t/2. If a closed indicator q is changed with q^t*u odd, then 2Hq=2q-(q^t*u)u has four odd entries. Consequently a binary local boundary produced with this reflected kernel can never extend to Conway, even if its two residual Grams are PSD.",
+    "limits": "This rules out the stated integer kernel family. It does not exclude all rank30 boundaries, all connected Q boundaries, any complete component split, or the asymmetric C1 branch. The local statement(A) remains open."
+  },
+  "bounded_construction": {
+    "script": "code/codex/three_star_prescribed_kernel.py",
+    "results": "Both r2.json and r3.json report CP-SAT INFEASIBLE without adding a spectral cut; the continuous linear relaxations were feasible. These are computational exclusions of the two stated locally constrained templates, separate from the general analytic noncompletion obstruction.",
+    "model": "561 binary edges, the3 forced star relations and prescribed extra relation, root-letter common-neighbour caps, far-pair common-neighbour caps, and16 two-sided necessary orientation PSD cuts. One worker per independent bounded instance; no seed graph input.",
+    "proof_status": "The binary-distance theorem and kernel corollary have the elementary proofs above. The two weight4 local UNSAT statuses are solver results without an exported SAT proof certificate. Four subsequent weight10 templates have exact nonnegative linear-combination certificates, with15,18,24,22 terms and combined inequality0<=-1. Only kernel equations and edge bounds occur, not PSD cuts. These prove those four individual templates impossible even fractionally. No successful new SRG or counterexample to(A) was constructed."
+  }
+}

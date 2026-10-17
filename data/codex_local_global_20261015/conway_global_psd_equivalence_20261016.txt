@@ -1,0 +1,70 @@
+DEUX CONDITIONS PSD SUFFISENT GLOBALEMENT -- 16/10/2026, suite LAB907
+
+Portee : equivalence exacte sur les84 sommets, pas une non-existence.
+C'est l'exploitation globale du mecanisme de rang/trace deja indique dans
+conway_core_repair.py ; aucune nouveaute bibliographique n'est revendiquee.
+
+Hypotheses : Gamma binaire symetrique84x84, diagonale0, et TOUS les comptes
+racines C1 exacts. B est l'incidence14x84 des paires de racines non mates.
+M est la matrice d'appariement des14 racines ; J est la matrice de uns.
+
+On a BB^t=11I+J-M. Ses valeurs propres sont24,10,12, de multiplicites1,6,7.
+B est donc de rang14. Les C1 donnent
+  Gamma B^t = 2J - B^t(I+M).
+Sur imB^t, Gamma agit par12, -2,0 avec les memes multiplicites. Le noyau
+K=kerB est invariant, de dimension70. Soit P sa projection orthogonale.
+
+Poser T=(3I-Gamma)|K et U=(4I+Gamma)|K, prolonges par zero sur imB^t.
+Les expressions explicites, LINEAIRES en Gamma, sont
+  T8=8T  =24I-8Gamma-3B^tB-B^tMB+2J,
+  U15=15U=60I+15Gamma-4B^tB+B^tMB-2J.
+En particulier T+U=7P.
+
+La binarite et les C1 imposent degGamma12, trGamma=0 et trGamma^2=1008.
+Apres retrait des14 dimensions connues : tr(Gamma|K)=0,
+tr((Gamma|K)^2)=1008-(144+6*4)=840. Par consequent
+  trT=3*70=210,
+  trT^2=9*70+840=1470=7trT.
+
+Si T et U sont PSD, toute valeur propre theta de T sur K est dans[0,7].
+La somme des nombres nonnegatifs theta*(7-theta) est nulle. Chacun vaut
+zero : T^2=7T, donc Gamma|K a seulement les valeurs propres3 et-4.
+Sur K on obtient Gamma^2+Gamma=12I. Sur imB^t, les valeurs12,-2,0 donnent
+respectivement156,2,0, exactement celles de12I+2J-B^tB. Donc sur TOUT84 :
+  Gamma^2+Gamma=12I+2J-B^tB.
+Ce sont tous les C2. La reconstruction99 est ainsi un SRG(99,14,1,2).
+Les rangs30 et40 decoulent des traces ; il n'est pas necessaire de les
+imposer separement dans ce modele global. La reciproque PSD est immediate.
+
+Obstacle reel : l'integralite ne peut pas etre remplacee par une simple LP.
+
+La matrice fractionnaire
+  Gamma0=(2J-B^t(I+M)B)/10
+a diagonale0 et entrees0,1/10,2/10. Elle satisfait tous les C1, agit par
+zero sur K, et donne T=3P,U=4P : les deux PSD passent strictement sur K.
+Le code construit et controle exactement10Gamma0 sans flottants.
+
+Pour toute matrice a entrees dans[0,1] satisfaisant ces memes C1,
+  tr(TU)=1008-tr(Gamma^2)=sum_ij Gamma_ij*(1-Gamma_ij).
+Au centre fractionnaire cette valeur est840 ; pour une matrice binaire
+elle vaut zero. L'eventuelle contradiction globale doit donc exclure une
+matrice BINAIRE dans cet ensemble spectral, pas seulement en exhiber une
+solution fractionnaire ou constater que les deux PSD sont compatibles.
+
+Implementation : conway_global_psd.py transforme tout vecteur entier q en
+l'inegalite q^T T8 q>=0 ou q^T U15 q>=0. Des vecteurs propres numeriques
+proposent q ; seule une valeur quadratique entiere strictement negative
+autorise une exclusion. Une absence de temoin numerique n'est JAMAIS une
+certification PSD. Le moteur garde alors le controle combinatoire exact
+de tous les C2 et peut ajouter une clause de paire comme recours.
+
+--psd-only active cette separation globale dans conway_global_lazy.py.
+--psd-library recharge les398 anciennes inegalites universelles, sans
+garder aucun ancien coeur. Les19 types restent tous admis. La reprise
+sauvegarde les vecteurs et reconstruit leurs coefficients pour les84 labels.
+
+Controles propres : sur le temoin C1 construit precedemment, tracesT8=1680,
+T8^2=94080,U15=4200,U15^2=441000 ; annihilation deB^t exacte.23 nouveaux
+vecteurs negatifs donnent des coupes qui excluent le temoin et acceptent
+le centre fractionnaire. Cela controle l'integration, sans verifier a
+nouveau un graphe de LAB. Aucun verdict global ni cout abordable prouve.

@@ -1,0 +1,206 @@
+{
+  "labels": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      11
+    ],
+    [
+      0,
+      12
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      12
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      2,
+      10
+    ],
+    [
+      2,
+      11
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      13
+    ]
+  ],
+  "prescribed_kernel": [
+    0,
+    0,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    0
+  ],
+  "linear_relaxation": {
+    "status": 0,
+    "optimal_code": 0,
+    "iterations": 457,
+    "meaning": "Numerical continuous relaxation; no exact infeasibility certificate."
+  },
+  "scope": "One prescribed kernel family, not all connected Q boundaries.",
+  "solver": "OR-Tools CP-SAT, one worker",
+  "cuts": [],
+  "iterations": [
+    {
+      "iteration": 0,
+      "status": "INFEASIBLE",
+      "solver_seconds": 1.666303,
+      "branches": 65835
+    }
+  ],
+  "status": "PRESCRIBED_FAMILY_UNSAT_BY_CP_SAT",
+  "elapsed_seconds": 2.061999999998079,
+  "local_candidates": 0,
+  "template": {
+    "closed_pairs": [
+      2,
+      3,
+      4
+    ],
+    "x": 4,
+    "y": 10,
+    "formula": "z=2*closed_indicator+incidence_rectangle"
+  }
+}

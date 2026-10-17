@@ -1,0 +1,83 @@
+{
+  "status": "PARKED; no calculation launched; theoretical work continues separately",
+  "saved_repository_commit_before_this_archive": "4a99a51",
+  "previous_construction_commit": "be64ea7",
+  "run_summary": "data/codex_lambda_one_construction_20261014/construction_run_summary.json",
+  "existing_results": "30 bounded construction runs retained in place; no asymmetric SRG found; time limits are not exclusions",
+  "exact_K0_target": "data/codex_asymmetry_mechanisms_20261014/gamma6_root0_target.json",
+  "exact_K0_solver_implemented": false,
+  "exact_K0_restart_command": null,
+  "required_before_exact_K0_search": [
+    "Add decided-pair constraints fixing all closed-star rows AND all transport edges; a closed-star boundary alone is not K0.",
+    "Block the one labelled Gamma6 seed; a different completion would avoid all eight known classes.",
+    "Use the accepted seed properties without repeating full seed audits; check genuinely new candidate graphs.",
+    "Keep root rigidity separate from full asymmetry; a completion may still move the root."
+  ],
+  "python_environment": "../c1-lambda1-env/Scripts/python.exe",
+  "previous_engine_replay_configuration": {
+    "scope": "A preserved configuration of the old bounded378 experiment, NOT the proposed exact K0 search; not executed here",
+    "report": "data/codex_lambda_one_construction_20261014/incremental/g378_r35_s901_cp/result.json",
+    "recorded_engine_sha256": "1280d8a2463f52fbf7bddeb047da1d3fe36f3707b495961125ccc1db94f31310",
+    "interpreter_flags": [
+      "-I",
+      "-u",
+      "-X",
+      "utf8"
+    ],
+    "argv": [
+      "code/codex/lambda_one_search/incremental_construct.py",
+      "--edges",
+      "data/codex_lambda_one_construction_20261014/seed378/hemi_s1.edges",
+      "--parameters",
+      "52,1,8",
+      "--boundary-json",
+      "data/codex_lambda_one_construction_20261014/parked_campaign/archived_g378_r35_boundary.json",
+      "--seed",
+      "901",
+      "--backend",
+      "cp-sat",
+      "--seconds",
+      "420.0",
+      "--row-seconds",
+      "5.0",
+      "--row-cap",
+      "8",
+      "--node-cap",
+      "10000",
+      "--canonical-free-types",
+      "--output",
+      "data/codex_lambda_one_construction_20261014/future_replay_g378_r35"
+    ],
+    "caution": "Legacy engine still checks the supplied seed; adapt it to the current no-duplicate-audit instruction before restarting. This configuration is saved for reference, not a request to run it."
+  },
+  "commands_used_for_light_analysis": [
+    [
+      "code/codex/asymmetry_triangle_transport.py"
+    ],
+    [
+      "code/codex/triangle_transport_local_experiment.py"
+    ],
+    [
+      "code/codex/triangle_transport_words.py"
+    ]
+  ],
+  "saved_file_hashes": {
+    "code/codex/lambda_one_search/cp_backend.py": "a5e69b138338bf710f68a8eba72e2ed96bda75a09b6b2a893e74b6673eaae1b5",
+    "code/codex/lambda_one_search/incremental_construct.py": "b54fa9e49f2affd5373aca458b2a08decc6b89908c1b3e9324464940dd74eb4e",
+    "code/codex/lambda_one_search/lab_engine/aut_tools.py": "1a637a9c82b8448bcdab988a796f8dc6018787c75b9bd0bc996eb418f518b510",
+    "code/codex/lambda_one_search/lab_engine/boundary_census.py": "e41e17d159d71e26de089897392562521990a26c94f220729824cf6c64628d29",
+    "code/codex/lambda_one_search/lab_engine/regular_subgroups.py": "fd651260e751ef238a620f2ac4caa55ac4d2d7df72c4622cd2f0a5a16466875f",
+    "code/codex/lambda_one_search/lab_engine/row_census.py": "7bfedec6a744ab198095801fa417fa9055aa082976cc841d3213e3088d292178",
+    "code/codex/lambda_one_search/lab_engine/row_clique.py": "f4577a8132c2c28f3a447fde3d8dae1ff917a15f886d7062d7609ead6d8dbf23",
+    "code/codex/lambda_one_search/lab_engine/trade_bfs.py": "979183d36bce161c89377a295fab5ff36364bda6ed23b83dd0cf42799340673d",
+    "code/codex/lambda_one_search/lazy_construct.py": "50ca73d6c997823fa0afef7211ba5479cc58ad4eac7a8c1ed2e87e6754c197aa",
+    "code/codex/lambda_one_search/mixed_windows.py": "5ec8fa2242d69b23972ba36c701888ed459d0c75e0f71287a2b269ab0857ab6c",
+    "code/codex/lambda_one_search/payne9_construct.py": "8d55d116036d661a65710349abe3135d23873f571830da970e7c4f951c816e06",
+    "code/codex/lambda_one_search/payne9_obstruction.py": "56f70252e9c8a3d30dc20bad36c367eee4e1257cbca58901cb2588dae9085cc1",
+    "code/codex/lambda_one_search/spectral_bounds.py": "0387c48ce0d2630a11480d82824a4f7741b77429c094a4d3722289950415acb4",
+    "code/codex/lambda_one_search/payne9_repair.cpp": "fecc9d68b46f8ccbebd72016782b216a3ca9e1dd0b4facb9391a866779f65aca",
+    "data/codex_lambda_one_construction_20261014/construction_run_summary.json": "670de9f4f06d6afc2f5ba9092310ec03bb24ff048166e19fd1338688759e6a85",
+    "data/codex_asymmetry_mechanisms_20261014/gamma6_root0_target.json": "fd2cf0e943aa8f1c2827e0043f1b1f885a603585b89939e2341139e350ab5666",
+    "data/codex_asymmetry_synthesis_20261014/lab_sources/new243_trade_aut108.edges": "f49476e0726074e3d6328466594b7f32917b00be719a24eb27427f6cba927b2e"
+  }
+}

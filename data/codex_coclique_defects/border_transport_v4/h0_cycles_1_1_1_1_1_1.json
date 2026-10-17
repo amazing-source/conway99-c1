@@ -1,0 +1,81 @@
+{
+  "source": "data\\codex_coclique_defects\\variable_core_hcomplete_h0\\cycles_1_1_1_1_1_1.json",
+  "scope": "All completions and residual coclique colourings of this fixed induced border",
+  "vertices": 99,
+  "border": 59,
+  "fixture": {
+    "status": "PASS",
+    "graph": "3x3 rook",
+    "variables": 16,
+    "equations": 21
+  },
+  "stages": [
+    {
+      "mode": "matching",
+      "variables": 1887,
+      "equations": 182,
+      "packing": 0,
+      "lp_status": 0,
+      "lp_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "seconds": 0.01600000000325963,
+      "status": "EXACT_CONTRADICTION",
+      "left": 1,
+      "upper": 0,
+      "certificate_equations": [
+        {
+          "coefficient": 1,
+          "reason": [
+            "common",
+            27,
+            12
+          ],
+          "star": true,
+          "rhs": 1,
+          "variables": [
+            283,
+            288
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            85,
+            12
+          ],
+          "star": true,
+          "rhs": 0,
+          "variables": [
+            283,
+            1317,
+            1705,
+            1805,
+            1806,
+            1809
+          ]
+        },
+        {
+          "coefficient": -1,
+          "reason": [
+            "common",
+            97,
+            12
+          ],
+          "star": true,
+          "rhs": 0,
+          "variables": [
+            288,
+            424,
+            1329,
+            1717,
+            1809,
+            1876,
+            1880
+          ]
+        }
+      ],
+      "certificate_packing": [],
+      "positive_edges": []
+    }
+  ]
+}

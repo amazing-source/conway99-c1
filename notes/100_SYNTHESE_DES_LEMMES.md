@@ -1,5 +1,20 @@
 # 100 — Synthèse des 21 lemmes : ce qu'ils donnent ensemble
 
+> **Correction de portée, 15/10/2026 (suite au message LAB 849).**
+> La « proposition de cohérence » du §4 ne construit qu'un profil satisfaisant
+> les **conséquences scalaires affichées**. Elle ne fournit pas de transitions,
+> matrices ou géométrie réalisant simultanément les énoncés structurels.
+> La phrase « aucune combinaison ne peut donner de contradiction » est donc
+> trop forte si elle porte sur les lemmes entiers, leurs preuves, ou les résultats
+> postérieurs. Leur absence actuelle de contradiction n'est pas une preuve
+> d'impossibilité de toute future combinaison. Nouveau résultat du 15/10 :
+> P=0 admet même un point **entier non négatif** du census fourni aux ordres
+> 7, 8 et 9 (6 435 comptes), mais sa compatibilité avec les blocs complets
+> reste ouverte. Autre conséquence nouvelle : P<=852 force au moins 254
+> drapeaux non-grille contenant une droite à t<=7. Preuves, portée et fichiers
+> dans le [journal du 14–15 octobre](JOURNAL_C1_NUIT_2026_10_14.md), section
+> « Suite849–850 : census entier sans prisme et 254 blocs obligatoires ».
+
 *25/09, 06 h. Question de l'utilisateur : « T'as 21 lemmes, tu les as jamais mis ensemble pour arriver à une
 conclusion ? » Réponse honnête : ils avaient été combinés au coup par coup (L15 + L16, L20 + L20 bis/ter, L21 ⊃ L20),
 jamais systématiquement. Voici la synthèse complète. Conclusion en §4 : **aucune combinaison des 21 lemmes ne peut

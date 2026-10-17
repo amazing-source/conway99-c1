@@ -1,0 +1,42 @@
+{
+  "peer_messages_consumed_without_audit": [752, 754],
+  "peer_status": {
+    "best_reported_PSD_nullity": 12,
+    "best_reported_PSD_T_rank": 32,
+    "reported_nullity13_example": "Not PSD; not usable for Conway completion.",
+    "PSD_four_star_T_rank_at_most30_seed_available": false
+  },
+  "own_four_star_extension_reduction": {
+    "old_far_labels": 44,
+    "missing_far_labels": 40,
+    "overlap_labels": [[0,2],[0,3],[1,2],[1,3]],
+    "raw_profiles_per_missing_label": 4949026,
+    "meet_in_the_middle_table_entries": [4356,4356],
+    "complexity_caution": "8712 counts stored table entries, not the full running time. All matching pairs still have to be considered; their number depends on the seed.",
+    "known_four_star_equations": "Each old star contributes exactly2 neighbours to any missing label. The overlap mask fixes residual sizes in four disjoint blocks of10 labels.",
+    "rank30_lower_norm": "m=-8h-K8(S,u), m_I^T (8T_II)^-1 m_I=20.",
+    "rank_below30_lower_norm": "The same quantity is at most20; equality is not imposed.",
+    "rank40_upper_norm": "n=15h-4*intersection+mate-2, n_J^T (15U_JJ)^-1 n_J=50.",
+    "certification_contract": "Consume producer exact rank/PSD and principal T basis. Optional producer rank(U)=40. No independent seed rank or PSD audit.",
+    "implementation": "code/codex/four_star_column_domains.py",
+    "validation": "Exact raw and table counts,221801 profiles with a prescribed overlap, and both sparse quadratic forms checked on own primitives.",
+    "applied_to_seed": false
+  },
+  "own_G1_rank_target_theorem": {
+    "group": "Generators (0 1)(4 5)(6 7)(8 9)(10 11)(12 13) and (2 3)(4 5)(6 7)(8 9)(10 11)(12 13).",
+    "character_dimensions": [11,11,11,11],
+    "known_star_nullities": [2,1,1,0],
+    "trivial_block_rank_lower_bound": "6-min(c_left,c_right)",
+    "nontrivial_nullity_lower_bound_when_total_rank_at_most30": "9-min(c_left,c_right)",
+    "additional_nontrivial_relations_beyond_two_star_differences": "7-min(c_left,c_right)",
+    "c44_case": "At least5 nontrivial kernel dimensions, including the two forced star differences. Thus at least3 additional nontrivial relations in total, counting any already found.",
+    "minimal_targets": "Ten overlapping minimal threshold patterns(1+a,1+b,c) with a+b+c=3. A rank30 candidate necessarily satisfies at least one of them; the patterns alone do not prove rank30 or positivity.",
+    "scope": "Only the local G1-invariant family. No assumption that G1 extends to automorphisms of a full Conway graph.",
+    "implementation": "code/codex/four_star_g1_sectors.py",
+    "validation": "Exact group action, eleven regular orbits, character orthogonality, two-star orbit counts and forced star types; no graph input read."
+  },
+  "Conway_or_C1_excluded": false,
+  "full_SRG_constructed": false,
+  "global_affordable_enumeration_proved": false,
+  "ongoing_local_computation": false
+}

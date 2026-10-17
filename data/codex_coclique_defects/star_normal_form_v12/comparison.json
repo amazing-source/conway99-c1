@@ -1,0 +1,57 @@
+{
+  "scope": "All (0,2), same V10 necessary equations, different proven representatives",
+  "runs": [
+    {
+      "name": "baseline",
+      "variables": 272224,
+      "constraints": 843270,
+      "edge_variables": 4231,
+      "product_variables": 257271,
+      "model_bytes": 42437412,
+      "model_sha256": "5ef64ae6738739c13901aa3a3dba89b6b4009377c9bcd4a948cd312b5ee4267c",
+      "peak_memory_bytes": 4564787200,
+      "status": "UNKNOWN",
+      "solve_seconds": 61.413716900000004
+    },
+    {
+      "name": "canonical",
+      "variables": 258064,
+      "constraints": 801267,
+      "edge_variables": 4103,
+      "product_variables": 243223,
+      "model_bytes": 40335649,
+      "model_sha256": "681fe2ca39bc282040c4a48606457b00bb8e27c1aa5337ef7da3b0a04e8fcdf5",
+      "peak_memory_bytes": 4387622912,
+      "status": "UNKNOWN",
+      "solve_seconds": 61.1241556
+    }
+  ],
+  "removed_variables": 14160,
+  "removed_constraints": 42003,
+  "removed_edge_variables": 128,
+  "memory_reduction_fraction": 0.03881107272645701,
+  "quadruple_counts_by_negative_budget": [
+    16,
+    48,
+    104,
+    160,
+    209,
+    237,
+    251,
+    255,
+    256
+  ],
+  "source_snapshots_match_runs": true,
+  "baseline_model_unchanged": true,
+  "source_hashes": {
+    "check_coclique_star_normal_form.py": "224f1642f09aa7351a5d1bf0ef01454856fb775401d4eaa9ca6b8f5a05e953f7",
+    "coclique_calibration.py": "7fc4f77486ca98a6c562ddd34a6ba2760538fce8f10e4514586c055c6e21ace6",
+    "coclique_column_coexistence.py": "37bed2c9875934157654ce57a50bc154407f721f0a2dbd9b33173aba9055c996",
+    "coclique_global_boundary.py": "f421d3e48bf63c0eae0e6a2d565fe4184427ca7a227dd606003b56b5e4144b2f",
+    "coclique_partition_campaign.py": "e90b4e3047bdd54f21f628c6564a89960b861e5f9431bb5ec2198c4e9576420c",
+    "coclique_residual_partition.py": "24965f627a798c3fae49a05a9fa2f722026cbebc2d34332f0d9c1bffb00b009a",
+    "coclique_solver_diagnostics.py": "0836d39b51729c064d9fb2f1b773a7fd7073178cf6d4daa5e1c80b206b0e76a0",
+    "coclique_star_normal_form.py": "f65e99b90889c6162b5672b537bb47cb83304ef28cf117e71a558e50942930fe"
+  },
+  "verdict": "Modest encoding and observed memory reduction only; two UNKNOWN results, no C1 exclusion and no time-to-proof gain established"
+}

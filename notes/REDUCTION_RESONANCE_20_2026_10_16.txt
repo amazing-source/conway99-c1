@@ -1,0 +1,226 @@
+RÉDUCTION EXACTE À UNE MATRICE DE TAILLE20 : SUITE DE LAB925
+16 octobre 2026 — Codex. Proposition initiale Q de LAB ; resserrement ci-dessous.
+
+Résultat nouveau de cette passe
+------------------------------
+Pour un bloc de quatre étoiles satisfaisant les comptages à la racine et
+la positivité T, la matrice Q de LAB925 vérifie
+  V=0,                 Q 1 = -(5/3) 1,
+  F=Q+J/12 >= 0,       F 1 = 0,
+  nu(T_44) = c(l)+2+corank(Q) = c(l)+1+corank(F),
+  rank(T_44) = 23-c(l)+rank(F).                          (R)
+
+Ici c(l) est le nombre de composantes du voisinage cubique complet de l.
+En choisissant l avec c(l)=min(c(l),c(m)), N9-NG, c'est-à-dire
+  nu(T_44) <= 9+min(c(l),c(m))  pour un chevauchement sans grille,
+est EXACTEMENT équivalent à
+
+                    rank(F) >= 12.                     (CIBLE)
+
+La proposition plus forte corank(Q)<=4 échoue déjà sur nos blocs locaux
+acceptés. Elle n'est pas nécessaire : la borne exacte à viser est7 pour
+l'orientation choisie. La preuve de (CIBLE) pour tous les blocs admissibles
+sans grille est OUVERTE. Aucun nouveau graphe Conway n'est exclu ici.
+
+1. Objet et hypothèses
+---------------------
+On fixe une racine x et ses14 voisins (« lettres ») appariés
+0~1,2~3,...,12~13. L_a est l'étoile des12 étiquettes {a,b}, b!=a,a^1.
+S=L_0 union L_1 union L_2 union L_3 contient44 étiquettes, O étant les
+quatre coins {0,2},{0,3},{1,2},{1,3}. Gamma est leur adjacence binaire.
+B est l'incidence14x44 lettres-étiquettes et M le mate des14 lettres.
+
+Les comptes des quatre étoiles sont EXACTS : pour toute étiquette p de S
+et a dans{0,1,2,3},
+  somme_{q dans L_a} Gamma[p,q] = 2-[a dans p]-[a^1 dans p].
+Les caps de voisins communs et la seconde positivité U font partie du
+cadre admissible de la recherche ; ils ne sont pas tous nécessaires à (R).
+
+On utilise
+  T=3I-Gamma-(3 B^tB+B^tMB-2J)/8 >= 0.
+Ces hypothèses ne demandent ni automorphisme, ni égalité rank(T)=30,
+ni discriminant particulier, ni symétrie de couplage.
+
+A désigne l'adjacence du bloc U de59 sommets constitué de x, des14 lettres,
+et des44 étiquettes. Toutes les arêtes entre ces59 sommets sont fixées.
+Ce n'est pas un graphe SRG autonome ; ce n'est pas non plus un graphe99.
+
+Prenons l={x,0,1}, m={x,2,3}, N=N(l)\l (36 sommets), Y=U\(l union N)
+(20 étiquettes). Alors N se partage en trois couches de12 sommets :
+les lettres2..13, L_0 et L_1. L=A_NN est cubique, avec un appariement
+dans chaque couche et entre chaque paire de couches.
+Écrivons E=A_Nl, D=A_YN, H=3I-L et P le projecteur orthogonal sur ker(H).
+H est la laplacienne d'un graphe cubique, donc ker(H) est engendré par
+les indicatrices de ses c=c(l) composantes. H^+ est sa pseudo-inverse.
+
+La matrice proposée par LAB est
+  Q=3I_20-A_YY-D H^+ D^t,          V=D H^+ E.
+
+2. Pourquoi le noyau de T est le noyau propre3 sur U
+-------------------------------------------------
+Posons S_U=3I_59-A+J_59/9. Dans S_U, le bloc principal des14 lettres est
+  C=3I_14-M+J_14/9,
+  C^{-1}=(3I_14+M)/8-J_14/64.
+Il est défini positif. L'élimination de ces14 coordonnées laisse la
+coordonnée x nulle et le complément de Schur T ci-dessus. Ainsi
+  S_U est congruent à diag(C,0,T),
+  S_U>=0,                dim ker(S_U)=1+nu(T).
+
+Le vecteur h, valant4 en x,1 sur les14 lettres,0 sur les étiquettes,
+appartient à ker(S_U) et sa somme vaut18. Comme
+  3I-A=S_U-J/9,
+multiplier (3I-A)z=0 par h^t impose somme(z)=0. Donc
+  ker(3I-A)=ker(S_U) intersection 1 orthogonal,
+  dim ker(3I-A)=nu(T).                                  (1)
+La condition somme(z)=0 enlève exactement une dimension puisque h a
+une somme non nulle. Cette étape évite de confondre nu avec la nullité
+d'une matrice décalée par J.
+
+3. L'équilibre des composantes est disponible dans ce bloc
+--------------------------------------------------------
+Pour toute composante C_j de N, chaque couche en contient |C_j|/3 sommets.
+Le vecteur h_j=1_Cj-(|C_j|/36)1_N, prolongé par zéro à U, a énergie nulle
+pour S_U : Lh_j=3h_j, et sa somme est nulle. Comme S_U>=0, S_U h_j=0.
+La ligne Y de cette égalité donne D h_j=0. Or D1_N=6 1_Y, par les comptes
+à la racine. On obtient donc, pour toute composante ENTIÈRE,
+  D1_Cj=(|C_j|/6)1_Y,         E^t1_Cj=(|C_j|/3)1_l.       (2)
+Les tailles sont des multiples de6 dès que Y est non vide.
+On n'applique pas (2) à une composante supposée d'un voisinage incomplet.
+
+4. Les trois dimensions supplémentaires disparaissent : V=0
+----------------------------------------------------------
+Sur les vecteurs constants par couche, L a pour quotient J_3.
+Chaque composante rencontre les couches en parts égales ; par conséquent
+  H^+ E = E/3-J_{36,3}/9.
+Chaque y de Y a exactement deux voisins dans chacune des trois couches :
+  DE=2J_{20,3},          D1_N=6 1_Y.
+Il s'ensuit immédiatement
+  V=D H^+ E=0,          E^t H^+ E=4I_3-(4/3)J_3.          (3)
+
+Soit z dans ker(3I-A), écrit (z_l,z_N,z_Y). L'équation sur N admet
+  z_N=H^+(Ez_l+D^tz_Y)+somme_j alpha_j 1_Cj,
+avec compatibilité (par (2))
+  2s+t=0,     s=somme z_l,     t=somme z_Y.
+Posons beta=somme_j |C_j|alpha_j/6.
+L'équation sur l, utilisant A_ll=J_3-I_3 et (3), devient
+  s/3=2 beta.
+L'équation sur Y devient Qz_Y=beta1. Donc t=-12beta, et
+  (Q+J/12)z_Y=0.
+
+Réciproquement, pour tout z_Y dans ker(F), fixer beta=-t/12, choisir
+z_l de somme -t/2 (deux degrés de liberté), puis les alpha_j de somme
+pondérée6beta (c-1 degrés de liberté), reconstruit tout z du noyau.
+Avec (1), ceci prouve déjà
+  nu(T)=c+1+corank(F).                                   (4)
+
+5. Un vecteur forcé donne Q1=-5/3
+-------------------------------
+Considérons w sur U, valant
+  -6 en x ;
+  +3 sur les lettres2,3 ; -2 sur les12 autres lettres ;
+  +1 sur les étiquettes de L_2 union L_3 ; 0 sur les autres étiquettes.
+Les quatre comptages racine donnent directement Aw=3w : une étiquette
+dans L_2 union L_3 reçoit1 par ses lettres et2 par ces étoiles ; une autre
+reçoit-4 par ses lettres et4 par ces étoiles. Les équations sur les lettres
+et x se lisent de la même manière.
+
+Pour l={x,0,1}, w_Y=1, s=w_x+w_0+w_1=-10. L'élimination précédente donne
+beta=s/6=-5/3 et donc Q1=-5/3 1. Comme Q est symétrique, son noyau est
+orthogonal à1 ; l'ajout de J/12 change uniquement la valeur propre sur1,
+de -5/3 à0 (|Y|/12=20/12). Ainsi
+  ker(F)=ker(Q) somme directe <1>,
+  corank(F)=corank(Q)+1.
+L'identité (R) suit de (4). Elle s'applique aussi aux chevauchements grilles.
+
+Pour la positivité de F, prendre un y arbitraire, t=somme y, choisir
+z_l de somme -t/2 et alpha_j de somme pondérée -t/2. Alors l'équation sur
+N est soluble, le vecteur z ainsi construit a somme0, et l'élimination
+quadratique donne
+  z^t S_U z = z^t(3I-A)z = y^t(Q+J/12)y.
+La positivité de S_U implique celle de F. Aucun arrondi spectral n'intervient.
+
+F est également le complément de Schur de T_44 suivant les24 coordonnées
+X=L_0 union L_1 (pseudo-inverse sur l'image). En effet, minimiser l'énergie
+de S_U sur l union N, à y fixé, donne y^tFy ; éliminer d'abord les14 lettres
+donne T, puis éliminer X donne le même minimum. La formule par la laplacienne
+H rend ce complément de Schur explicite. Il ne s'agit donc pas d'une
+nouvelle contrainte indépendante de la PSD déjà connue, mais d'une réduction
+exacte exploitable avec la structure cubique et les composantes de N.
+
+6. Cible précise et lien avec tout Conway
+---------------------------------------
+Écrire c_min=min(c(l),c(m)), et orienter Q depuis cette droite.
+L'identité prouvée donne les équivalences
+  nu(T)<=9+c_min
+  <=> corank(Q)<=7
+  <=> corank(F)<=8
+  <=> rank(F)>=12.                                      (5)
+Dans l'autre orientation, la borne de corank(Q) est7+c_min-c_max.
+En particulier les deux corangs Q diffèrent exactement de c(m)-c(l).
+Ces égalités donnent une reformulation de N9-NG, pas sa preuve.
+
+La couverture déjà acquise utilisant P<=852 assure une droite contenant
+au plus7 prismes, et un partenaire non-grille. Cette droite a au plus4
+composantes : avec5 composantes de tailles multiples de6 dans36 sommets,
+au moins4 composantes ont taille6 ; chacune est un prisme et donne deux
+prismes contenant la droite, donc au moins8. Une composante cubique6
+de type K3,3 est interdite par mu=2, d'où le prisme.
+Ainsi le bloc inévitable a c_min<=4.
+
+Dans un Conway, le projecteur négatif global a rang44, dont14 directions
+sont déjà fixées par les lettres. Le T local est un bloc principal du
+résidu de rang30, donc rank(T)<=30. Par (R), il faudrait
+  rank(F)<=30-23+c_min=7+c_min<=11.                      (6)
+
+Prouver (CIBLE) pour les blocs sans grille pertinents opposerait12 à11
+et exclurait TOUT Conway, sans aucune hypothèse sur son automorphisme.
+Les sources de la couverture et de P<=852 restent celles enregistrées
+dans la synthèse et conway_global_cover_proof_20261016.txt ; elles ne
+sont pas recalculées ici. Le point ouvert unique de cette implication
+est la borne universelle (CIBLE), avec les hypothèses du cadre admissible.
+Il n'est pas nécessaire de classifier tous les blocs avec c_min>=5.
+
+7. Exploration exacte du nouvel invariant, sans recalcul des objets
+-----------------------------------------------------------------
+Programme : code/codex/four_star_line_resonance.py.
+Résultats : data/codex_line_resonance_20261016/initial_objects.json.
+Dix objets acceptés, chacun dans les deux orientations ; environ3 secondes.
+La construction et la certification initiales des objets ne sont pas refaites.
+
+Objet                           grille   c(l),c(m)  nu(T)  corangs Q   rang F
+                                                                        c_min
+fourstar_psd_asym_c21             non       2,1      10      6,7         12
+fourstar_psd_asym_c31             non       3,1      10      5,7         12
+fourstar_psd_c11_mix6             non       1,1      10      7,7         12
+fourstar_psd_c21_mix4             non       2,1       9      5,6         13
+fourstar_psd_c31_mix4             non       3,1      10      5,7         12
+fourstar_psd_rank30_urep100       non       5,5      14      7,7         12
+fourstar_psd_grid_Z5h_c22         oui       2,2       9      5,5         14
+fourstar_psd_grid_Z5h_c62         oui       6,2      14      6,10         9
+hv_h_c22_H30_23                  oui       2,2      14     10,10         9
+hv_h_c22_H30_10                  oui       3,2      14      9,10         9
+
+Les noms des fichiers ne remplacent pas leurs invariants calculés ; H30_10
+a ici3 composantes à gauche malgré son nom contenant c22.
+Les six objets non-grille satisfont (CIBLE), cinq à égalité. Ceci ne porte
+que sur six objets, dont certains peuvent être apparentés. Ce n'est pas
+une estimation statistique de la conjecture. urep100 est déjà connu comme
+non prolongeable ; son corang7 n'est pas un contre-exemple à une propriété
+qui exigerait, en plus, une complétion99.
+
+Le calcul sauvegarde Q sous forme d'une matrice entière divisée par un
+dénominateur, une base entière de son noyau, et un mineur principal non nul
+de taille égale au rang annoncé. L'équilibre et les identités de cette
+nouvelle élimination sont contrôlés exactement. Les sources sont identifiées
+par chemin et SHA256. Aucun calcul de groupe d'automorphismes n'est exécuté.
+
+La borne élémentaire rank(F)>=(trF)^2/tr(F²), dans l'orientation c_min,
+donne seulement9 après arrondi supérieur sur chacun des six non-grille.
+Elle ne démontre donc pas12, même sur ces exemples de rang12/13. Cela
+indique qu'il faut utiliser davantage que ces deux traces : la structure
+des incidences, un mineur forcé, ou une restriction sur les relations du
+noyau. Aucun temps abordable pour une énumération exhaustive n'est établi.
+
+Portée finale : nouvelle équivalence et outil20x20 exact ; borne universelle
+rank(F)>=12 ouverte ; aucune exclusion globale ou nouvelle construction.
+Transmission initiale à LAB : message926, en réponse à925 lu/ack.

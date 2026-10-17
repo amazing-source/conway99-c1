@@ -1,0 +1,144 @@
+{
+  "complete_gram_cover": {
+    "gram_count": 74,
+    "anchors": [
+      0,
+      1,
+      6,
+      7
+    ],
+    "exhaustive": true,
+    "fixed_single_gram": false,
+    "normalizes_template_preserving_root_relabelings": true,
+    "individual_vertex_Schur_tables": 84,
+    "separate_corner_realizations_filtered": false
+  },
+  "projector": {
+    "anchor_count": 4,
+    "moment_products": 464,
+    "eigen_products": 11360,
+    "identities": [
+      "H=T P",
+      "H^t H=7R",
+      "Gamma H=-4H"
+    ]
+  },
+  "C2_count": 0,
+  "C2_products": 0,
+  "full_C2": false,
+  "local_component_tables": {
+    "tables": 40,
+    "rows": 319622,
+    "first_component_normalization": {
+      "root_line": 0,
+      "part": [
+        4,
+        5,
+        6
+      ],
+      "original_codes": 102952,
+      "canonical_codes": 6854,
+      "action": "Global independent mate flips only; no graph automorphism assumed."
+    },
+    "corner_pattern_filters": [],
+    "scope": "Every true connected line component is covered; no local witness is fixed."
+  },
+  "line_profiles": {
+    "records": [
+      {
+        "root_line": 0,
+        "component_sizes": [
+          18,
+          6,
+          6,
+          6
+        ],
+        "profile_flags": 14592,
+        "outside_vertices": 60,
+        "common_neighbour_equations": 276,
+        "triple_packing_constraints": 3792
+      }
+    ],
+    "inside_products": 660,
+    "scope": "Linearize common neighbours using complete outside rows at a root line.\n\nFor any root line r, its 36 neighbours split into the prescribed components\nof size 6s. An outside vertex has exactly s neighbours in each component,\ntwo neighbours of each colour. Its two colour-zero neighbours are fixed\nby its label. Enumerate all four remaining neighbours (two in each star)\nsubject to these counts and already-forced edges. This uses no local seed.\n\nAll 276 C2 equations on pairs of star vertices split into an inside sum\nover 24 vertices and an outside sum over 60 vertices. Profile indicators\nmake the latter linear. The few inside products are retained exactly.\nFor different components the inside sum is zero and the target is 1\nfor the same colour, 2 otherwise.\n"
+  },
+  "exact_triangle_structure": {
+    "triangle_indicators": 11520,
+    "possible_triangles": 11520,
+    "edge_triangle_equations": 2562,
+    "forbidden_shared_label_triangles": 9136,
+    "gamma_triangles_per_vertex": 5,
+    "cores": [
+      {
+        "root_line": 0,
+        "vertices": 60,
+        "possible_triangles": 2736,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 1,
+        "vertices": 60,
+        "possible_triangles": 2736,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 2,
+        "vertices": 60,
+        "possible_triangles": 2736,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 3,
+        "vertices": 60,
+        "possible_triangles": 2736,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 4,
+        "vertices": 60,
+        "possible_triangles": 2240,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 5,
+        "vertices": 60,
+        "possible_triangles": 2240,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      },
+      {
+        "root_line": 6,
+        "vertices": 60,
+        "possible_triangles": 2240,
+        "vertex_triangle_count": "at least 1",
+        "triangle_count": "32 minus t(root line)"
+      }
+    ],
+    "scope": "Exact lambda=1 using actual triangle indicators, plus triangle cores.\n\nA Gamma edge sharing a root label already has its common neighbour in\nN(o), so lies in no Gamma triangle. Every other Gamma edge lies in exactly\none. Indicators are equivalent to ALL THREE edges being present; merely\nchoosing an edge decomposition into triangles would be insufficient.\n\nUnder C1, every Gamma vertex then lies in exactly five Gamma triangles.\nFor the 60 vertices outside any root line and its neighbourhood, each\nvertex lies in at least one core triangle, and there are exactly 32-t(l)\nsuch triangles, where t(l) is the triangle count in the cubic neighbourhood.\nIf c(l)=6, those 60 vertices partition into exactly twenty triangles.\n"
+  },
+  "template_index": 9,
+  "status": "UNKNOWN",
+  "build_seconds": 48.969000000011874,
+  "variables": 41238,
+  "constraints": 92931,
+  "source": "data\\codex_line_resonance_20261016\\root_component_gram_filtered_20261017_0050.json",
+  "resources": {
+    "logical_cpu_budget": 1,
+    "shared_affinity_mask": 1,
+    "priority": "below_normal"
+  },
+  "root_prism_budget": 51,
+  "fixed_gram_witness": false,
+  "fixed_local_seed": false,
+  "scope": "Whole template with variable Gram; no graph automorphism or fixed local seed.",
+  "solver_seconds": 1532.7591359,
+  "branches": 3786954,
+  "conflicts": 353235,
+  "solver_cpu_seconds": 300.125,
+  "budget_kind": "process_cpu_seconds"
+}

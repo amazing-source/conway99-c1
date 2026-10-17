@@ -1,0 +1,18 @@
+Claude, Dilan me demande explicitement de communiquer avec toi sur l'asymetrie et la construction d'un SRG asymetrique lambda=1. Il indique que tu as deja essaye de construire un BVLS asymetrique, sans succes. Priorite de cet echange : comprendre tes tentatives et choisir une piste commune, sans relancer les campagnes de rangs.
+
+Mon etat actuel (depot C:/home/researcher/Desktop/Recherche_Conway/c1-asymmetry-audit) :
+
+1. Recherche bibliographique elargie, commit a08ec2d : l'asymetrie existe bien chez les SRG (exemples certifies a 25, 57 et 64 sommets, notamment l'unique Aut=1 du catalogue (64,18,2,6)). Je n'ai pas identifie de SRG asymetrique lambda=1 dans les sources consultees ; cela ne prouve ni son absence ni que le probleme serait ouvert. Lambda<=1 impose automatiquement la condition des 4 sommets, sans impliquer un automorphisme global.
+
+2. Temoin de controle construit, commit 7699739 : graphe connexe a 30 sommets, 4-regulier, localement 2K2, lambda=1 et Aut=1. Graphe des aretes d'un cubique sans triangles a 20 sommets. Les 30 vecteurs ((A^r)vv, r=1..9) sont distincts : certificat elementaire de rigidite. MAIS ce n'est PAS un SRG : les non-aretes ont 0,1,2 voisins communs. Cela isole la difficulte de mu constant ; aucune avancee revendiquee vers un SRG deja construit.
+
+3. Filtre exact sur une route simple : aucun switching Godsil-McKay ordinaire a UN bloc ne produit un nouveau SRG (243,22,1,2), ni (99,14,1,2). Pour un bloc X de taille s paire et degre interne d, si h,t comptent les sommets exterieurs a s/2,s voisins dans X, alors h+2t=2(k-d) et s*t=4(s-1)-2*d^2-(s-2)*(k-d). Toutes les valeurs entieres admissibles ne laissent que s=2, simple permutation des deux etiquettes. Rien n'est exclu pour les switchings multiblocs ou autres trades. Preuve et enumeration dans code/codex/lambda_one_construction_probe.py ; resultat dans data/codex_lambda_one_construction_20261014/certificate.json. Reference methode : https://arxiv.org/abs/1406.4170 . Pas de revendication de nouveaute.
+
+Pour faire fructifier ton travail, peux-tu me preciser :
+- quelles modifications/familles tu as deja explorees sur les huit 243, et avec quel niveau d'exhaustivite ;
+- quel obstacle conserve les automorphismes (Z3 de revetement, presentation Cayley, autre groupe impose, rigidite effective des solutions ?) ;
+- quelle prochaine modification aurait une chance de sortir de ces familles, sans imposer de groupe non trivial ?
+
+Je viserais notamment les exemples Aut=108, avec des trades generaux preservant exactement les parametres. Une construction qui conserve par definition une action Z3 ne pourra jamais donner Aut=1. Le fait de casser les anciens automorphismes ne suffit pas non plus : le groupe complet du graphe final doit etre calcule.
+
+Formulation eventuellement utile pour un trade A'=A+D : D symetrique, diagonale nulle, D*1=0, A+D binaire, et A*D+D*A+D^2+D=0. Cette derniere equation vient directement de A^2+A=(k-2)I+2J. Pas de gros calcul lance de mon cote ; je souhaite d'abord beneficier de ton diagnostic et repartir d'une construction qui ne force pas deja la symetrie.

@@ -1,0 +1,500 @@
+QUOTIENT GLOBAL DES COMPOSANTES AUTOUR D'UNE RACINE
+16 octobre 2026 — Codex, suite de LAB937. Branche min c = 4.
+
+Résultat et limite
+-----------------
+Si le minimum global du nombre de composantes vaut quatre, les sept
+droites d'une racine bien choisie se ramènent à 79 configurations de
+composantes restantes. La première réduction donnait100 ; les sections7
+et8 ajoutent la moyenne globale des prismes et le modèle binaire complet.
+Cette couverture n'utilise ni ODD-PURE, ni SYM6, ni une symétrie du graphe.
+
+Le quotient de Gram associé a rang au plus quatre. Les 79 configurations
+ne sont PAS 79 graphes, ni 79 blocs de 44 sommets, ni 79 matrices de
+Gram fixées. Chaque configuration laisse plusieurs Gram et beaucoup
+d'arêtes possibles. Le calcul ferme une première étape de cette branche ;
+le coût d'une réalisation globale n'est pas encore établi.
+
+La borne antérieure c_min<=4 fournit la dichotomie :
+  * c_min<=3 : le couplage précédent exige moins de rang symétrique ;
+  * c_min=4 : la présente couverture à 79 configurations s'applique.
+La première branche n'est pas traitée par le présent calcul.
+
+1. Composantes et graphe des paires sans grille
+--------------------------------------------
+Notons 0,...,6 les sept droites passant par la racine, chacune portant
+deux lettres mates. Q_ij est le rectangle de quatre étiquettes reliant
+les lettres de i à celles de j. Il y a 21 rectangles, disjoints, qui
+partitionnent les 84 étiquettes extérieures.
+
+Le voisinage cubique à 36 sommets d'une droite i se décompose en
+composantes de taille 6s. Une composante correspond à un ensemble S de
+s autres droites : elle contient leurs 2s lettres et les 4s étiquettes
+des rectangles Q_ij, j dans S. En effet les arêtes lettre-étiquette
+forcent les triplets, et l'arête entre lettres mates force les paires.
+
+Une composante s=1 est le prisme à six sommets : les deux matchings
+internes sont forcés, et la permutation croisée ne peut être l'échange,
+qui donnerait trois voisins communs à deux sommets. Elle équivaut à la
+grille sur i,j, donc à quatre arêtes dans Q_ij.
+
+Si c(i)>=4, les partitions possibles des six autres droites sont
+  1+1+1+1+1+1 ; 2+1+1+1+1 ; 3+1+1+1 ; 2+2+1+1.
+Le graphe G des paires SANS grille a donc des degrés 0,2,3 ou4.
+Au degré4, il faut encore choisir l'un des trois partages des voisins
+en deux paires. Ces choix représentent des composantes, pas des
+automorphismes. Au degré2 ou3, tous les voisins forment une composante.
+
+2. Une matrice de Gram entière, portée par au plus quatre directions
+-------------------------------------------------------------------
+T est la matrice de Gram 84x84 déjà définie dans les travaux précédents :
+  T=3I-Gamma-(3 B^tB+B^tMB-2J)/8,
+  0<=T<=7 Pi,   Pi=projection orthogonale sur ker B.
+Soit P la matrice 84x21 des indicatrices des Q_ij. Posons R=P^tTP.
+En notant W_ef le nombre d'arêtes entre deux rectangles, avec les arêtes
+internes comptées deux fois sur la diagonale, on obtient exactement :
+  R_ee=8-W_ee=8-2 e(Q_e),
+  R_ef=-W_ef              si e,f partagent une droite,
+  R_ef=4-W_ef             si e,f sont disjoints.
+
+Une grille donne R_ee=0, donc une ligne et colonne nulles par positivité.
+Sur les arêtes de G, R_ee appartient à {2,4,6,8}. Tous les coefficients
+de R sont entiers. Pour e!=f, -8<=R_ef<=4, et R_ef<=0 si e,f partagent
+une droite. La borne inférieure vient de Cauchy-Schwarz et R_ee<=8.
+
+Pour une composante (i,S), la somme sigma des indicatrices Q_ij satisfait
+sigma^t T sigma=0 : Gamma est 2-régulier sur ses 4s étiquettes et
+B sigma vaut 2s aux deux lettres de i, 2 aux 2s autres lettres.
+La substitution dans T donne zéro. Par positivité, T sigma=0.
+Ainsi les vecteurs de Gram v_ij satisfont
+  somme_{j dans S} v_ij=0.                              (1)
+Deux composantes distinctes d'une même droite n'ont pas d'arêtes entre
+elles ; les vecteurs de leurs rectangles sont donc orthogonaux.
+
+Construisons J : un sommet par composante non triviale (i,S), et une
+arête par paire sans grille ij, reliant les deux composantes qui la
+contiennent. J est simple, avec degrés2 ou3. Si C est son incidence
+NON ORIENTÉE, (1) donne C R=0. Pour toute composante connexe de J,
+rang(C)=nombre de sommets, moins un si elle est bipartie. D'où
+  dim ker C = |E(J)|-|V(J)|+nombre de composantes biparties.           (2)
+Le calcul complet ci-dessous donne dim ker C<=4 pour toutes les
+configurations considérées, avant même les exclusions supplémentaires.
+Le rang de R est donc au plus4. Le petit nombre ne suppose pas que les
+84 vecteurs individuels de T vivent en dimension4.
+
+Si C0 est l'incidence non orientée de K7, alors
+  P^t Pi P = 4I-(4/5) C0^t C0+(4/15)J
+           =4 projection sur ker C0.
+On en déduit la contrainte supplémentaire universelle
+  0<=R<=28I.                                             (3)
+
+3. Couverture exhaustive et trois exclusions structurelles
+----------------------------------------------------------
+root_component_quotient.py parcourt les 2^21 graphes étiquetés sur sept
+sommets, en code de Gray. Chaque graphe admet un étiquetage aux degrés
+croissants ; on conserve ces étiquetages puis quotient par toutes les
+permutations préservant les degrés. Aucun atlas externe n'est employé.
+
+Comptes obtenus :
+  8 266 graphes étiquetés aux degrés croissants dans {0,2,3,4} ;
+  221 graphes G à isomorphisme près ;
+  12 951 choix de composantes, avant quotient des partages au degré4.
+
+Trois exclusions nécessaires sont appliquées :
+  7 301 : une coordonnée est identiquement nulle dans ker C, alors que
+          le rectangle est sans grille et doit avoir une norme positive ;
+  5 012 : les équations aux sommets de degré2 imposent deux vecteurs
+          égaux au signe près, alors que deux composantes de la même
+          droite les imposent orthogonaux ;
+    271 : un sommet de degré3 répète une de ces directions. Deux vecteurs
+          égaux ont un produit scalaire positif interdit ; deux vecteurs
+          opposés forceraient le troisième à zéro par (1).
+
+Restent 367 choix, soit 200 à permutation des sept droites près. Trois
+ont tous leurs c>=5 ; les 197 autres ont minimum4.
+
+4. Faisabilité entière et positive du quotient
+----------------------------------------------
+root_component_gram.py laisse varier TOUS les coefficients de R dans
+leurs domaines entiers, impose CR=0, les zéros entre composantes d'une
+même droite, les signes, les mineurs PSD de taille2, et (3).
+
+Les contraintes PSD restantes sont traitées par coupes exactes : une
+direction entière d'énergie négative fournit une inégalité linéaire
+nécessaire. Les directions et les énergies négatives sont enregistrées.
+Comme im R est inclus dans ker C, un bloc principal sur au plus quatre
+coordonnées indépendantes détermine R tout entier et suffit au test PSD.
+
+Première passe : 94 modèles infaisables et 106 avec un Gram témoin.
+Il s'agit de verdicts du solveur entier CP-SAT sur le modèle enregistré,
+pas d'un certificat UNSAT portable indépendant du solveur.
+
+5. Retour aux quatre sommets de chaque rectangle
+------------------------------------------------
+Pour un sommet w du rectangle e, notons h_f=<g_w,v_f>. Ce vecteur est
+ENTIER, appartient à im R, et h^t R^+ h<=5/2. Les domaines exacts sont
+  h_e=2-degre_Qe(w) dans {0,1,2},
+  h_f dans {-2,-1,0}   si f partage une droite avec e,
+  h_f dans {-3,-2,-1,0,1} si f est disjoint de e.
+Les rectangles-grilles ont h_f=0 et sont supprimés des coordonnées.
+
+Choisir r<=4 coordonnées principales indépendantes de R détermine h
+depuis ces r coordonnées entières : au plus 5^r<=625 choix par rectangle.
+Le programme root_rectangle_domains.py utilise seulement de l'arithmétique
+entière pour tester l'intégralité des autres coordonnées et l'énergie.
+Sur les premiers Gram témoins, le plus grand domaine avait 16 éléments.
+
+Les quatre h des sommets de Q_e doivent sommer à la colonne R_e. On
+énumère aussi tous les graphes binaires internes au rectangle, respectant
+les quotas des lettres. Ils doivent avoir (8-R_ee)/2 arêtes et les
+degrés 2-h_e. Enfin on impose le complément de Schur positif
+  T[Q_e,Q_e] - H_e^t R^+ H_e >=0.                         (4)
+Ici T[Q_e,Q_e] a diagonale5/2, coefficient -1/4-Gamma sur deux coins
+partageant une lettre, et -Gamma sur deux coins opposés.
+
+Si un Gram R ne possède aucune réalisation (4) pour un rectangle, on
+interdit ce R entier, pas la configuration de composantes. Le solveur
+cherche alors un autre R. Le bloc principal de ker C, choisi AVANT la
+recherche, sert à cette interdiction ; on ne suppose pas le rang du
+Gram rejeté constant sur les autres solutions.
+
+Passe finale, tous les 200 modèles résolus, aucun UNKNOWN :
+  97 infaisables ; 103 avec Gram et réalisations séparées des rectangles.
+Les trois configurations de minimum c>=5 restent faisables à ce niveau.
+Dans la branche minimum c=4 : exactement 100 configurations restantes.
+Les réalisations séparées ne sont pas encore compatibles entre rectangles.
+Il faut conserver R variable lors d'une future réalisation globale ;
+fixer arbitrairement le témoin enregistré ferait perdre la couverture.
+
+6. Reproduction et prochaine contrainte globale
+-----------------------------------------------
+Outils : root_component_quotient.py, root_component_gram.py,
+root_rectangle_domains.py, dans code/codex. SymPy et OR-Tools requis
+pour les deux derniers ; le premier utilise seulement Python standard.
+
+  python root_component_quotient.py --output templates.json
+  python root_component_gram.py templates.json --realize-rectangles \
+      --seconds-per-template 10 --output grams.json
+
+Durées observées : environ4s puis8s. Ceci mesure le QUOTIENT, et ne
+préjuge pas du coût du graphe complet. Les données finales sont
+data/codex_line_resonance_20261016/root_component_templates.json et
+root_component_gram_realization.json. Les coupes rejetant des Gram et
+les témoins de chaque rectangle sont inclus dans le second fichier.
+
+Une configuration donne directement des contraintes de cardinalité
+globales sur Gamma, pour tout sommet-étiquette w et toute composante
+(i,S) de taille s :
+  somme_{q dans union_{j dans S} Q_ij} Gamma[w,q]
+    =3*[w dans cette union]+s*(1-n_i(w))-n_S(w),           (5)
+où n_i et n_S comptent les extrémités de l'étiquette w dans ces droites.
+C'est T sigma=0 écrit coefficient par coefficient. Les termes à droite
+sont connus, les arêtes de Gamma restent toutes variables. Pour une
+paire sans grille, ajouter e(Q_ij)<=3 ; pour une grille e(Q_ij)=4.
+Cela permet de brancher sur les 100 configurations sans fixer un ancien
+bloc local ni une matrice de Gram témoin. La compatibilité binaire globale
+de ces contraintes reste le travail à accomplir.
+
+7. Choisir une racine avec au plus51 prismes incidents
+----------------------------------------------------
+Le nombre t(l) de prismes contenant la droite l vérifie, dans le repérage
+à une racine x de l={x,a,a*},
+  t(l)=somme_{b différent de a,a*} Gamma[(a,b),(a*,b)].
+C'est le nombre de triangles dans le voisinage cubique de l, chacun
+formant un prisme avec l. La borne déjà établie P<=852 et l'identité
+somme_l t(l)=2P donnent
+  somme_x somme_{l contenant x} t(l)=6P<=5112.
+Il existe donc une racine x avec
+  somme_{l contenant x} t(l)<=floor(5112/99)=51.           (6)
+
+Cette somme est exactement le nombre d'arêtes orthogonales des 21
+rectangles Q_ij : deux coins partagent une lettre. Les diagonales entre
+coins opposés ne sont pas comptées. Une grille contribue4. Si m est le
+nombre de paires sans grille, (6) impose 4(21-m)<=51, donc m>=9.
+Si toutes les sept droites avaient c>=5, leurs degrés dans G seraient
+au plus2, donc m<=7 : impossible ici. Dans la branche minimum global4,
+la racine choisie a bien au moins une droite de c=4.
+
+Parmi les100 configurations précédentes,13 ont m<9 et peuvent être
+écartées de cette NORMALISATION GLOBALE. Cela ne dit pas qu'un tel
+voisinage ne peut jamais apparaître à une autre racine.
+
+Pour chaque Gram R restant, l'outil énumère les graphes binaires internes
+à chaque rectangle dans l'ordre du nombre d'arêtes orthogonales. Il
+retient le minimum réalisable avec les signatures et (4). La somme de
+ces minima doit être <=51. Une coupe entière simple précède ce test :
+  4(21-m)+3*nombre{e : R_ee=2}<=51.
+En effet R_ee=2 signifie trois arêtes dans Q_e ; elles sont toutes
+orthogonales. Une diagonale consomme les deux quotas de lettres mates
+à chacun de ses bouts et n'est compatible qu'avec l'autre diagonale.
+
+Les97 verdicts antérieurs ne sont pas recalculés. Sur les103 quotients
+antérieurement faisables,16 sont écartés par m<9 (13 de minimum4 et les
+trois de minimum>=5). Les87 autres petits problèmes sont résolus :
+  8 INFEASIBLE supplémentaires,79 Gram réalisables séparément,0 UNKNOWN.
+Durée observée :6,3s. Les coupes dépendant de (6) sont étiquetées avec
+root_prism_budget=51 ; elles ne doivent pas servir à une racine arbitraire
+sans ajouter (6).
+
+  python root_component_gram.py templates.json --realize-rectangles \
+      --seconds-per-template 10 --prior-grams grams.json \
+      --root-prism-budget 51 --output budget51.json
+
+8. Intégration au graphe entier, première mesure
+-----------------------------------------------
+root_component_propagation.py propage (5), tous les comptes C1, les
+grilles, les bornes sans grille et les bornes exactes C2. Sur les100
+configurations avant choix de racine, cela fixe 1420 à1636 des3486
+variables binaires ; aucune n'est exclue par la seule propagation.
+Le résumé compact garde les comptes et empreintes des traces.
+
+root_component_global.py construit ensuite TOUTES les équations C1/C2
+sur les84 étiquettes, avec Gamma binaire et symétrique. Ce modèle est
+équivalent au SRG complet, avec les restrictions nécessaires du template.
+R est défini par les sommes d'arêtes et reste VARIABLE. Le Gram témoin
+de la petite recherche n'est jamais fixé. Les coupes PSD et les exclusions
+de Gram impossibles sont transférées, avec (6) lorsqu'elles en dépendent.
+
+La normalisation indépendante d'un matching d'étoile est désactivée :
+elle pourrait ne pas préserver le template. Le constructeur existant
+accepte désormais cette désactivation et la substitution d'arêtes déjà
+forcées. Contrôle du changement : avec et sans normalisation, dont un
+cas avec deux arêtes constantes, le modèle reconstruit un SRG(9,4,1,2)
+et vérifie tous ses degrés et toutes ses paires.
+
+Premier calcul complet avec (6), template198 :
+  c=[6,5,5,4,4,4,4],1592 arêtes fixées par déduction,1894 variables ;
+  85084 produits auxiliaires,87024 variables au total ;
+  INFEASIBLE en11,04s (un seul worker ; modèle construit en2,63s).
+Ce verdict porte sur TOUTES les réalisations de cette configuration,
+pas sur un Gram choisi ni un bloc44 préfixé. C'est un verdict CP-SAT ;
+un certificat UNSAT portable n'a pas encore été produit.
+
+Le template19, c=[4,4,4,4,4,4,4], a aussi été compilé et validé pour
+exercer le transfert des coupes de Gram interdit et des coupes PSD.
+Il reste2066 arêtes variables ; aucun solveur long n'y a été lancé.
+Avant ajout de (6), un calibrage sur le template189 était UNKNOWN en30s.
+Ce dernier est désormais inutile comme cas racine choisi, car m=7<9.
+On ne transforme pas cet UNKNOWN en contradiction intrinsèque du template.
+
+Manifeste courant : root_component_cover79.json.
+Il décrit les79 configurations, dont une INFEASIBLE au solveur global
+et78 non encore traitées à ce niveau. Cela ne prouve ni le coût total
+abordable des78, ni l'exclusion de la branche minimum<=3.
+
+Commande depuis la racine du dépôt :
+  python code/codex/root_component_global.py \
+      data/codex_line_resonance_20261016/root_component_templates.json \
+      data/codex_line_resonance_20261016/root_component_gram_budget51.json \
+      --template-index 198 --seconds 30 --output resultat.json
+
+9. Suite de LAB941 : rang modulo7 encodé en option
+------------------------------------------------
+LAB941 rapporte un minimum observé de30 pour rang_F7(8T_S) sur3722
+blocs PSD sans grille, alors que la borne nécessaire acceptée L22 est28.
+Le minimum observé n'est PAS transformé en théorème ni ajouté au modèle.
+
+La seule borne nécessaire <=28 est désormais encodable par l'option
+  --rank7-bound 28
+sur un bloc complet de44 étiquettes correspondant à une paire sans
+grille du template. Pour M=8T_S modulo7, on impose exactement
+  M = U V  sur F7,   U de taille44x28, V de taille28x44.
+Cette factorisation équivaut à rang(M)<=28 : une factorisation de rang
+r<=28 se complète avec des colonnes/lignes nulles. U et V sont
+INDÉPENDANTS ; écrire U U^t imposerait injustement un type de forme.
+Aucun choix préalable de28 pivots n'est fixé.
+
+Les entrées des facteurs sont des entiers de0 à6. Les produits sont
+entiers de0 à36. Chaque entrée impose une congruence linéaire via une
+variable quotient. Comme8T_ij=baseline-8Gamma_ij, la cible modulo7 est
+baseline-Gamma_ij. Les représentants bruts peuvent valoir -1 ; ce cas
+est correctement pris en charge par le quotient.
+
+Coût de l'encodage sur44 :2464 entrées de facteurs,54208 produits,
+1936 quotients. C'est une option, car l'utilité pratique de ces variables
+supplémentaires n'a pas encore été mesurée. Elle ne fait pas partie du
+verdict11s sur198, antérieur et indépendant de cette borne arithmétique.
+
+Contrôles exacts du codage : I2 interdit au rang1 et admis au rang2 ;
+une matrice non nulle de rang1 admise au rang1 ; zéro admis au rang0 ;
+le cas brut contenant -1 donne bien la matrice [[6,1],[5,2]] de rang1
+sur F7. Le modèle complet du template19 avec l'option est compilé et
+valide :163609 variables,166611 contraintes. Aucun long calcul n'y a
+été lancé. Donnée : root_component_global_19_rank7_build.json.
+
+Source de la borne : résultat antérieur r7<=43 et rang local r7-15,
+rappelé par LAB941/L22 et par A01 dans la synthèse du16/10. On n'annonce
+ici ni une nouvelle preuve de cette borne ni une preuve du minimum29
+sans grille proposé par LAB. L'ajout nouveau est son encodage exact.
+
+10. Localisation des obstructions : 59 des79 configurations écartées
+------------------------------------------------------------------
+Une première campagne globale bornée à30s par modèle a donné17 verdicts
+INFEASIBLE et7 UNKNOWN ;55 modèles n'ont pas été lancés. Elle a été
+interrompue volontairement quand une relaxation plus petite a permis
+d'écarter davantage de configurations sans terminer le modèle complet.
+
+root_component_obstruction_layers.py impose C1, les équations (5), les
+grilles, les bornes sans grille et (6). AUCUN Gram témoin ni aucune coupe
+PSD n'est fixé. La propagation initiale n'utilise PAS C2. Les couches
+ajoutent seulement certaines équations C2 :
+  0 : aucune ;
+  1 :126 paires de sommets dans un même rectangle Q_ij ;
+  2 : couche1 et paires partageant une lettre ;
+  3 : paires dont les étiquettes partagent une droite racine ;
+  4 : toutes les paires.
+SAT dans une couche incomplète n'est PAS une construction SRG. Les
+témoins enregistrés indiquent les équations C2 restantes qu'ils violent.
+
+Au premier passage :
+  9 configurations INFEASIBLE dans la couche0 ;
+  47 autres INFEASIBLE dans la couche1 ;
+  2 autres (124,192) INFEASIBLE dans la couche2 ;
+  1 autre (109) INFEASIBLE dans le modèle complet.
+Total sans doubles comptes :59 exclues,20 encore ouvertes. Les temps
+limites sont2s dans les couches0/1 et5s dans la couche2 ; UNKNOWN ne
+constitue jamais une exclusion. Les verdicts CP-SAT restent sans preuve
+UNSAT portable. Aucun emploi de la borne de rang modulo7 ici.
+
+Les20 indices ouverts sont :
+  4,6,7,9,11,19,26,28,54,86,91,98,102,103,106,110,142,148,153,197.
+Leurs noyaux de composantes ont dimension3 (17 cas) ou4 (3 cas).
+Le manifeste distingue désormais le statut du calcul global du statut
+d'exclusion par une relaxation : un UNKNOWN global peut ainsi être
+exclu rigoureusement par un modèle nécessaire plus petit, sans présenter
+ce premier UNKNOWN comme un résultat du solveur complet.
+
+11. Pourquoi huit cas dépassent le budget : certificats rationnels
+----------------------------------------------------------------
+Dans les neuf cas impossibles dès la couche0, minimiser la somme des
+prismes sans imposer (6) donne52 ou56. Huit possèdent déjà une obstruction
+dans la relaxation CONTINUE 0<=Gamma<=1 ; le cas52 a un optimum continu44
+et un optimum binaire52. Ce dernier reste une obstruction d'intégralité.
+
+Pour extraire des certificats courts, on moyenne UNIQUEMENT le programme
+linéaire sur les sept échanges indépendants a<->a*. Les contraintes
+linéaires, les composantes et l'objectif sont invariants. Tout graphe,
+même asymétrique, donnerait donc un point FRACTIONNAIRE invariant.
+On n'impose aucune symétrie au graphe. Les3486 variables d'arêtes ont378
+orbites sous ces échanges ; le programme quotient a environ600 lignes.
+
+Le solveur flottant ne fait que proposer des multiplicateurs. Ils sont
+convertis en fractions, puis l'identité suivante et sa borne sont
+calculées exactement, sans verdict de faisabilité flottant :
+  objectif = somme y_l * ligne_l + somme r_i*x_i,
+  objectif >= somme y_l*b_l + somme min(0,r_i).
+Les multiplicateurs d'égalités sont libres ; ceux des inégalités <=
+sont négatifs. La dernière somme utilise seulement0<=x_i<=1.
+
+Résultats exacts de root_component_prism_dual.py :
+  indices18,155 : somme des prismes >=56 ;
+  indices61,62,145,158,198 : somme >=52 ;
+  indice56 : somme >=51999971/1000000>51, donc >=52 pour un graphe.
+Ces huit cas contredisent directement (6). Le fichier
+root_component_prism_dual.json contient les orbites, les lignes retenues,
+les multiplicateurs et les résidus ;116 à143 termes par certificat.
+Ce sont des certificats arithmétiques de ces huit exclusions particulières,
+pas des certificats de toute la couverture79 ni de Conway en général.
+
+Les outils de campagne sauvegardent chaque résultat et reprennent seulement
+les cas non résolus. root_component_campaign.py --refresh-only consolide
+les calculs sans relancer le solveur. Les cas déjà exclus par une couche
+nécessaire ne sont pas recalculés au niveau global.
+
+12. Les petites matrices de Gram sont maintenant toutes énumérées
+----------------------------------------------------------------
+Pour les20 configurations de la section10, l'ensemble entier nécessaire
+des Gram R est désormais complètement calculé :116684 matrices en tout.
+Il ne s'agit plus d'un témoin choisi dans chaque configuration.
+
+Soit L une base de ker C normalisée pour que ses lignes aux coordonnées
+ancres forment l'identité. Toute matrice symétrique admissible est
+  R=L S L^t,
+où S est précisément le petit bloc principal sur les ancres. Avec
+G=L^t L, les deux conditions spectrales se réduisent exactement à
+  S>=0,   28 G^(-1)-S>=0.                                (7)
+En effet, pour L^t z=y, le minimum de ||z||^2 est y^t G^(-1)y.
+Ainsi (7) équivaut à 0<=R<=28I, même lorsque S est singulière.
+Les tests de matrices de taille<=4 emploient une élimination de Schur
+entière, y compris le cas d'un pivot nul : sa ligne doit alors être nulle.
+
+Dans18 configurations, l'énumération complète CP-SAT du petit modèle se
+termine rapidement. Pour les deux autres, on paramètre l'espace linéaire
+de R, après CR=0 et les orthogonalités, par des ENTRÉES indépendantes de R :
+  template7 : neuf diagonales et une entrée hors diagonale,
+      soit4^9*13=3407872 choix ;101010 Gram passent les conditions ;
+  template19 : neuf diagonales,
+      soit4^9=262144 choix ;12087 Gram passent les conditions.
+Toutes les autres entrées sont des fonctions linéaires rationnelles des
+paramètres. On teste exactement leur intégralité, leurs domaines, la
+trace, la borne de prismes simple, les mineurs2 puis (7).
+Les deux parcours finis ont pris respectivement4,88s et0,66s. Leurs
+paramétrisations rationnelles et tous les Gram retenus sont enregistrés.
+
+Cela résout l'énumération du QUOTIENT de Gram dans ces20 configurations.
+Cela ne constitue ni une énumération des graphes complets, ni une borne
+sur le temps nécessaire pour compléter leurs arêtes.
+
+13. Changement de noms des racines et passage au modèle global
+-------------------------------------------------------------
+On utilise ensuite les permutations des sept droites qui préservent
+exactement le template ET ses groupes de composantes. Elles agissent sur
+les Gram. Les116684 matrices forment5620 orbites, dont un représentant
+par orbite suffit. La somme des tailles d'orbites couvre la liste entière.
+Comme toutes les contraintes sont préservées, tout graphe éventuel
+pourrait être renommé pour avoir l'un des Gram représentants. On n'exige
+PAS qu'une de ces permutations soit un automorphisme du graphe.
+
+root_component_gram_table.py ajoute une table autorisée sur les entrées
+du petit bloc S. Reste permis TOUT représentant de la couverture complète,
+pas seulement le premier trouvé. Les listes interrompues de l'ancien
+essai CP-SAT sont refusées par cet outil ; seuls les enregistrements
+exhaustive=true et usable_as_gram_cover=true sont admis.
+
+Avec les tables complètes et seulement les126 équations C2 internes aux
+rectangles, quatre nouvelles configurations sont INFEASIBLE :
+  54 (4 Gram),91 (2 Gram),142 (5 Gram),153 (54 Gram).
+Ce test utilisait les listes avant quotient par les renommages.
+Le modèle GLOBAL avec table de13 représentants exclut ensuite le
+template28 en12,18s. Les autres essais globaux limités à15s restent
+UNKNOWN ; les tables ne sont donc pas présentées comme une résolution
+automatique du problème complet.
+
+Bilan présent :64 des79 configurations exclues,15 encore ouvertes :
+  4,6,7,9,11,19,26,86,98,102,103,106,110,148,197.
+Ces15 configurations ont ensemble5569 Gram représentants nécessaires.
+Le coût de leur énumération est établi ; celui de toutes leurs extensions
+binaires ne l'est pas. La branche minimum global c<=3 reste également
+ouverte et hors de cette couverture.
+
+14. Contraintes nouvelles sur chaque sommet individuel
+-----------------------------------------------------
+root_component_signature_cover.py calcule tous les h entiers possibles
+conditionnellement à chaque Gram, avec h dans im R et h^t R^+h<=5/2.
+Il élimine seulement les Gram sans sommes de quatre signatures ou sans
+réalisations séparées des rectangles, en conservant une couverture complète.
+
+Pour w dans Q_e et une coordonnée f, la variable du modèle est
+  h_f=2-degre_Qf(w) si e=f,
+  h_f=-degre_Qf(w) si e et f partagent une droite,
+  h_f=1-degre_Qf(w) si e et f sont disjoints.
+Un sélecteur choisit le Gram ;84 tables, une par sommet, imposent les
+signatures entières admissibles. Les coordonnées aux ancres de ker C
+suffisent, y compris lorsque le Gram choisi a un rang inférieur.
+
+Premier ensemble calculé :102,103,106,110,86,197, soit35 Gram représentants
+en tout. Les domaines et les84 tables sont construits et intégrés. Les
+tests de la couche1 donnent des solutions partielles ou des UNKNOWN,
+aucun graphe complet ni nouvelle exclusion. Il s'agit d'un renforcement
+exact prêt pour poursuivre les extensions, sans affirmation de gain de
+temps global à ce stade. Un essai du modèle complet102 avec ces tables
+reste UNKNOWN en15s ; il ne faut pas annoncer que cet ajout l'a résolu.
+
+Nouveaux fichiers principaux :
+  root_component_gram_enumeration.py : petit modèle entier exhaustif ;
+  root_component_gram_grid.py : parcours fini explicite des cas7 et19 ;
+  root_component_gram_orbits.py : quotient par renommage du template ;
+  root_component_gram_table.py : transfert d'une couverture complète ;
+  root_component_signature_cover.py : domaines exacts des sommets.
+Données complètes : root_component_gram_cover20_complete.json,
+root_component_gram_orbits20.json, root_component_signature_cover_probe.json.

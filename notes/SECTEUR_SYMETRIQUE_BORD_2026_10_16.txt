@@ -1,0 +1,181 @@
+LE TERME DE BORD QUI DISTINGUE UNE GRILLE DANS LE SECTEUR SYMÉTRIQUE
+16 octobre 2026 — Codex, suite de la réduction SYM6 (67ffa75).
+
+Résultat nouveau
+----------------
+Avant les éliminations complètes conduisant à Z, une compression G de
+taille 10 est une laplacienne avec des attaches aux quatre coins O.
+Si e désigne le nombre d'arêtes induites par O, le poids total de ces
+attaches vaut exactement r=8-2e. Il est nul pour une grille, positif
+pour un chevauchement sans grille.
+
+Dans ce second cas, l'élimination de la SEULE direction 1_O transforme
+G en une véritable laplacienne à poids positifs
+  L=G-rho rho^t/r.
+Si c(m) est le nombre de composantes du voisinage de l'autre droite m,
+  rang(G)=11-c(m),            rang(L)=10-c(m).
+
+Ces identités sont démontrées ci-dessous. Elles rendent explicite une
+différence entre grilles et non-grilles, mais ne démontrent pas SYM6 :
+les éliminations restantes peuvent encore diminuer le rang. En particulier
+la borne rang(L)>=5 du cadre sans grille NE se transmet PAS à Z.
+
+1. Objet, conventions et matrices
+--------------------------------
+Le cadre est celui de REDUCTION_RESONANCE_20_2026_10_16.txt et
+REDUCTION_SYM6_10_2026_10_16.txt. Les 44 étiquettes sont l'union des
+étoiles 0,1,2,3, avec comptes racine exacts et T positif. On pose
+  l={x,0,1}, m={x,2,3},
+  X=L_0 union L_1,
+  O={(0,2),(0,3),(1,2),(1,3)},
+  Y={(2,s),(3,s):s=4,...,13}.
+P envoie f sur les coordonnées (f_s,f_s) de Y. M_10 apparie 4~5,...,12~13.
+
+On ne confond pas la compression avant élimination
+  G=P^t T_YY P
+avec celle calculée après élimination de X,
+  A=P^t F P.
+Z est ensuite le complément de Schur du secteur antisymétrique dans F.
+
+2. La compression est une laplacienne avec attaches
+--------------------------------------------------
+La colonne s de B_Y P vaut e_2+e_3+2e_s. En développant la formule de T,
+  G=(9/2)I_10-(1/2)M_10-P^t Gamma_YY P.                 (1)
+Pour s différent de t, G_st<=0 : le poids de l'arête st est
+  w_st=(1/2)[t=s^1] + somme_{a,b dans{2,3}} Gamma_(a,s),(b,t).
+Les arêtes verticales (2,s)~(3,s) contribuent à la diagonale agrégée,
+pas à une arête entre deux sommets distincts du graphe pondéré.
+
+Chaque y de Y a deux voisins au total dans L_2 union L_3. Définissons
+  rho_s = somme_{a dans{2,3}, o dans O} Gamma_(a,s),o.
+Les sommes de lignes de (1) sont donc
+  G1=rho,        rho_s>=0.                              (2)
+Ainsi G est la laplacienne des poids w_st, plus diag(rho).
+
+Chaque coin possède lui aussi exactement deux voisins dans L_2 union L_3.
+Les quatre coins fournissent huit incidences, dont 2e restent dans O :
+  r=somme rho_s=8-2e.                                  (3)
+Dans ce cadre e<=4, et e=4 est précisément le chevauchement grille.
+En effet, les comptes des quatre étoiles imposent au plus deux voisins
+dans O par coin ; un voisin sur la diagonale opposée consomme les deux
+quotas des étoiles mates et interdit tout second voisin dans O. Si tous
+les degrés valent deux, seules les quatre arêtes du carré subsistent.
+Donc r=0 dans une grille, tandis que r>0 en l'absence de grille.
+On ne suppose pas ici que les valeurs intermédiaires de e sont toutes
+réalisables ; l'identité ne demande pas leur classification.
+
+3. Le rang de G se lit dans le voisinage cubique de m
+---------------------------------------------------
+Le voisinage N(m) contient les douze lettres a autres que 2,3, et les
+vingt-quatre étiquettes de L_2 union L_3. Pour chaque lettre a, contractons
+les deux arêtes a~(2,a), a~(3,a). On obtient un multigraphe sur les douze
+lettres a, dont la connexité est inchangée. Ses arêtes viennent du mate
+des lettres et des arêtes de Gamma entre les deux étoiles. Les boucles
+créées par contraction n'affectent pas les composantes.
+
+Les lettres 0 et 1 sont adjacentes par le mate, donc appartiennent à une
+même composante distinguée. Supprimons ces deux lettres contractées.
+Le graphe sur les dix lettres restantes a exactement les supports des
+poids w_st de (1). Les arêtes du mate ont un poids 1/2 plutôt que 1,
+ce qui ne change pas sa connexité. Les seules attaches aux deux lettres
+supprimées sont les arêtes entre Y et O, comptées par rho.
+
+Chaque composante du multigraphe initial distincte de la composante
+distinguée donne une composante sans attache. Il y en a c(m)-1.
+Les morceaux restants de la composante distinguée ont tous au moins
+une attache : sinon ils n'auraient jamais été reliés aux lettres 0,1.
+
+Une laplacienne avec attaches a pour noyau les indicatrices de ses
+composantes sans attache. Il s'ensuit, sans calcul spectral approché,
+  dim ker(G)=c(m)-1,          rang(G)=11-c(m).            (4)
+Cette formule vaut aussi lorsque r=0.
+
+4. Une seule élimination traite exactement le bord non-grille
+------------------------------------------------------------
+Soient u=1_O dans les coordonnées X, T_X=T_XX, et K=T_XY P.
+Le vecteur chi_2+chi_3 est dans ker(T), par les comptes racine. Il vaut
+u sur X et P1 sur Y. Par conséquent,
+  T_X u+K1=0,          K^t u=-G1=-rho,
+  u^t T_X u=1^tG1=r.                                   (5)
+
+Lorsque r>0, la matrice de Gram de la direction u et des dix colonnes P
+est donc
+               [ r    -rho^t ]
+               [ -rho   G    ].
+Éliminer sa première coordonnée donne exactement
+  L=G-rho rho^t/r.                                     (6)
+L1=0, et pour s!=t les poids deviennent
+  w'_st=w_st+rho_s rho_t/r >=0.
+Il s'agit donc cette fois d'une véritable laplacienne à poids positifs.
+Les composantes munies d'une attache sont toutes reliées entre elles
+par les nouveaux poids rho_s rho_t/r. Elles deviennent une seule
+composante. Les c(m)-1 composantes sans attache restent séparées.
+Ainsi L possède exactement c(m) composantes et
+  rang(L)=10-c(m).                                     (7)
+
+Dans le cadre PSD utilisé ici, les composantes de N(m) ont des tailles
+multiples de six. Une composante de six contenant les six sommets
+spéciaux (lettres 0,1 et coins O) donnerait le chevauchement grille.
+Sans grille, cette composante contient donc au moins douze sommets.
+Il reste au plus quatre autres composantes de taille au moins six :
+  c(m)<=5, donc rang(L)>=5.                            (8)
+La divisibilité des tailles et le cadre admissible sont ceux de la
+réduction précédente ; (8) ne prétend pas suivre de (1) seule.
+
+5. Ce qui reste à maîtriser, avec une formule exacte
+--------------------------------------------------
+Posons, dans les 24 coordonnées de X,
+  R_X=T_X-(T_Xu)(T_Xu)^t/r,
+  K_0=K+(T_Xu)rho^t/r.
+Ce sont les Gram et couplage résiduels après projection orthogonale
+sur la direction de Gram représentée par u. Éliminer le reste de X
+donne exactement
+  A=L-K_0^t R_X^+ K_0.                                 (9)
+La formule utilise une matrice R_X singulière ; ses directions nulles
+ne couplent pas à K_0, par positivité. On a
+  rang(R_X)=rang(T_X)-1=22-c(l).
+Elle peut se démontrer en représentant T comme une matrice de Gram,
+puis en projetant d'abord hors de T^{1/2}u et ensuite hors du reste
+de l'espace engendré par X. L'ordre des deux projections imbriquées
+donne le même complément de Schur que l'élimination directe de X.
+
+Il reste ensuite l'élimination du secteur impair, qui donne Z. D'où
+  0<=Z<=A<=L<=G.                                       (10)
+Les rangs peuvent donc DIMINUER à chacune de ces étapes. Prouver un
+rang au moins cinq pour L ne prouve aucun rang au moins cinq pour Z.
+Le point désormais explicite est le terme de perte dans (9), puis
+le couplage impair C D^+ C^t déjà isolé dans la note SYM6.
+
+Si ODDCONST était démontré, rang(A)=rang(Z) et seule la perte dans (9)
+compterait. ODD-PURE, sur lequel LAB travaille, est plus faible et ne
+permet pas cette dernière simplification à lui seul.
+
+6. Exploration exacte du nouvel invariant
+----------------------------------------
+Outil : code/codex/four_star_sym6_boundary.py.
+Sortie : data/codex_line_resonance_20261016/sym6_boundary.json.
+Entrée : les dix objets déjà référencés dans initial_objects.json.
+Les identités et le rang par composantes de cette nouvelle élimination
+sont calculés en rationnels, en environ une seconde. Ni certification
+des graphes ni recensement du pair n'est relancé.
+
+Objet sans grille       r    rang(G), deux côtés   rang(L)   rang(A)
+asym_c21                8          10,9              9,8       4,3
+asym_c31                8          10,8              9,7       5,3
+c11_mix6                8          10,10             9,9       3,3
+c21_mix4                8          10,9              9,8       5,4
+c31_mix4                8          10,8              9,7       5,3
+rank30_urep100          4           6,6               5,5       3,3
+
+Tous les exemples grilles ont r=0. Sur ces six objets sans grille,
+ODDCONST tient déjà d'après le calcul précédent, donc rang(A)=rang(Z).
+Cette égalité ne doit pas être extrapolée aux blocs encore inconnus.
+
+Par exemple c11_mix6 perd SIX directions après l'élimination du bord :
+rang(L)=9 puis rang(A)=3. Une argumentation disant simplement « le bord
+non-grille apporte des directions » serait donc insuffisante. La cible
+est de contrôler la perte exacte, pas d'ignorer le complément de Schur.
+
+Portée : forme combinatoire explicite du secteur symétrique initial,
+un terme de bord nul exactement sur les grilles, une première élimination
+à rang entièrement connu. La borne universelle rang(Z)>=3 reste ouverte.

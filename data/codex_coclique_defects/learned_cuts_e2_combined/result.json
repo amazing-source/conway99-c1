@@ -1,0 +1,80 @@
+{
+  "core": "data\\codex_coclique_defects\\core_a0_e2.json",
+  "core_sha256": "449a63e61d346a5b484db5cdb7e8888645935213b28aaf3ceea47bc1302264ce",
+  "source_sha256": "179d74ee58b5e541b5f1c5fe3a35118888d442c5160da7c66df4ce324feb6597",
+  "seconds": 153.01599999997416,
+  "iterations": 4,
+  "cuts": 10,
+  "pruned_oracle": true,
+  "trace": [
+    {
+      "step": 0,
+      "status": "OPTIMAL",
+      "seconds": 42.3959807,
+      "cuts": 7,
+      "products": 14450,
+      "branches": 5450,
+      "conflicts": 0,
+      "individually_feasible_vertices": 80,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 0.2029999999795109,
+      "kind": "conditional_cover",
+      "positive_terms": 21
+    },
+    {
+      "step": 1,
+      "status": "OPTIMAL",
+      "seconds": 35.075826500000005,
+      "cuts": 8,
+      "products": 14450,
+      "branches": 1793,
+      "conflicts": 0,
+      "individually_feasible_vertices": 79,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 0.4220000000204891,
+      "kind": "conditional_cover",
+      "positive_terms": 23
+    },
+    {
+      "step": 2,
+      "status": "OPTIMAL",
+      "seconds": 36.617252400000005,
+      "cuts": 9,
+      "products": 14450,
+      "branches": 1742,
+      "conflicts": 0,
+      "individually_feasible_vertices": 81,
+      "oracle": "EXACT_CONTRADICTION",
+      "oracle_seconds": 2.3280000000086147,
+      "kind": "shared_edge_polynomial",
+      "positive_terms": 2575
+    },
+    {
+      "step": 3,
+      "status": "OPTIMAL",
+      "seconds": 31.0477355,
+      "cuts": 10,
+      "products": 15380,
+      "branches": 1676,
+      "conflicts": 1,
+      "individually_feasible_vertices": 81,
+      "oracle": "NO_CERTIFICATE",
+      "oracle_seconds": 2.0939999999827705
+    }
+  ],
+  "inherited": [
+    "data\\codex_coclique_defects\\learned_cuts_e2_run1\\certificate_000.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_run1\\certificate_001.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_run1\\certificate_002.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_pruned\\certificate_000.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_pruned\\certificate_001.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_pruned\\certificate_002.json",
+    "data\\codex_coclique_defects\\learned_cuts_e2_pruned\\certificate_003.json"
+  ],
+  "parameters": {
+    "iterations": 5,
+    "seconds_per_master": 90.0,
+    "workers": 6
+  },
+  "scope": "Cuts valid for all common populations of this fixed support; no global C1 claim"
+}

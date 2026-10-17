@@ -1,0 +1,68 @@
+{
+  "bridge_messages_consumed": [745, 746],
+  "peer_result_746_consumed_without_audit": {
+    "four_star_PSD_boundary_exists": true,
+    "T_rank": 34,
+    "U_rank": 40,
+    "Q_component_counts": [3, 4],
+    "local_admissibility": "Producer certified C1, C1prime, C2 and four forced stars.",
+    "meaning": "Positivity alone on four stars is possible. Rank34 is too large for a Conway boundary."
+  },
+  "own_coupling_theorem": {
+    "labels": "All44 nonmate pairs meeting centres0,1,2,3; exterior letters4..13.",
+    "q": "D_ext^T z; z mate-symmetric with zero sum, or mate-antisymmetric.",
+    "Tq": "alpha*q-Gamma*q, with alpha=1 in the symmetric sector and2 in the antisymmetric sector.",
+    "integer_quantities": "h=(alpha*||q||^2-q^T Gamma q)/2, s_i=alpha*q_i-(Gamma q)_i.",
+    "necessary_PSD_minor": "5h >= s_i^2 for every row i.",
+    "integer_linear_cuts": "5h >= (2t+1)*s_i-t*(t+1) for each integer t. At an integer candidate, t=s_i separates every violated minor.",
+    "saturation": "h=0 forces Gamma*q=alpha*q.",
+    "exact_negative_witness_if_saturation_fails": "w=2q-sign(s_i)*e_i has w^T(8T)w=20-32*abs(s_i)<=-12.",
+    "logical_caution": "The row equality is conditional on h=0. Integer secant cuts need integer Gamma and are not asserted for arbitrary fractional PSD matrices."
+  },
+  "own_strict_upper_theorem": {
+    "N": "15U",
+    "Nq_symmetric": "48q+15Gamma*q",
+    "Nq_antisymmetric": "40q+15Gamma*q",
+    "statement": "If Gamma is integer and U is PSD, its compression to either exterior sector is positive definite.",
+    "proof": "A nonzero vector of zero quadratic value in a PSD matrix is in its kernel. It would give Gamma eigenvalue -16/5 or -8/3; a rational eigenvalue of an integer matrix is an integer. Contradiction.",
+    "explicit_cut_family": [
+      {
+        "sector": "mate_antisymmetric",
+        "pair_coefficients": "Exactly three nonzero entries in {-1,0,1}^5, modulo a global sign.",
+        "count": 40,
+        "norm_q_squared": 24,
+        "sum_qiqj_Gammaij_lower_bound": -31,
+        "ordinary_PSD_lower_bound": -32
+      },
+      {
+        "sector": "mate_symmetric_zero_sum",
+        "pair_coefficients": "Permutations of(2,1,0,-1,-2), modulo a global sign.",
+        "count": 60,
+        "norm_q_squared": 80,
+        "sum_qiqj_Gammaij_lower_bound": -127,
+        "ordinary_PSD_lower_bound": -128
+      }
+    ],
+    "rounding_reason": "For each listed direction q^T N q is strictly positive and a multiple of30, so it is at least30.",
+    "group_assumption": "None.",
+    "Q_connectivity_assumption": "None."
+  },
+  "own_extension_batch": {
+    "new_seed_count": 51,
+    "producer_excluded_seed_index_skipped": 38,
+    "complete_empty_domains_at_label": [4, 6],
+    "kernel_compatible_profiles": 410745,
+    "kernel_and_capacity_compatible_profiles": 5771,
+    "norm_less_than20": 303,
+    "norm_equal20": 0,
+    "norm_greater_than20": 5468,
+    "elapsed_seconds": 2.844,
+    "PSD_audits_run": false,
+    "scope": "All52 supplied seeds fail completion, combining the51 new exclusions with the producer's existing exclusion. This does not classify every h3-symmetric seed."
+  },
+  "validation": "Own exact identities, counts and negative witness checked on an algebraic fixture. No peer structure re-audited. No solver acceleration measured.",
+  "H4_prime": "OPEN",
+  "A4": "OPEN; peer conjecture, not a constraint imposed as true.",
+  "Conway_or_C1_excluded": false,
+  "full_SRG_constructed": false
+}

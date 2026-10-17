@@ -1,0 +1,34 @@
+{
+  "status": "PROVED_COMPLETE_TWO_MATE_STAR_KERNEL_CLASSIFICATION",
+  "scope": "Conway parameters(99,14,1,2), two mate stars X=L_a union L_a' with24 far labels. This classifies all kernel relations supported on X, not all relations involving a third star.",
+  "hypotheses": "For every vertex of X, Gamma_X has exactly one neighbour in L_a and one in L_a'. This follows from the local SRG counts and makes Gamma_X2-regular. Its edges consist of internal matchings and a cross-star matching.",
+  "forced_relations": "The two star indicators are annihilated by T_X=3I-Gamma_X-K_X. Their span is invariant under both Gamma_X and K_X, so its22-dimensional orthogonal complement H is invariant too.",
+  "sum_of_squares": {
+    "notation": "Write q=(f,g) on the two copies of the12 outside letters. On H, sum(f)=sum(g)=0. Let B be the matching permutation on those12 letters.",
+    "K_form": "q^t K_X q = [3*||f+g||^2+(f+g)^t B(f+g)]/8.",
+    "identity": "q^t T_X q = sum_{yz in E(Gamma_X)}(q_y-q_z)^2 + (1/2)*sum_x(f_x-g_x)^2 + (1/8)*sum_{mate pairs{x,x'}}(f_x+g_x-f_x'-g_x')^2.",
+    "proof": "Split T_X=(2I-Gamma_X)+(I-K_X) on H. The first term is the graph Laplacian. Expanding the last two squares gives ||q||^2-q^tK_Xq. All summands are nonnegative.",
+    "consequence": "Every such two-mate-star matrix is PSD. Its extra kernel consists exactly of vectors constant across each Gamma edge, identical on the two star copies, and identical on mate letters. No random sampling or eigenvalue tolerance is needed."
+  },
+  "connectivity_theorem": {
+    "auxiliary_graph": "Form Q on the six root lines other than l={a,a'}. Every Gamma_X edge between labels with outside letters x,y joins their mate-pair indices in Q; ignore loops and repeated edges.",
+    "components": "Let M_1,...,M_c be the connected components of Q. Then Y_j=l times M_j is a union of Gamma_X cycles and its indicator is a kernel vector. Conversely every extra kernel vector is constant on these closed sets, after removing the two forced star components.",
+    "dimension": "There are c component values with one weighted zero-sum condition on H, hence dim(ker T_X intersect H)=c-1. Therefore nullity(T_X)=c+1 and rank(T_X)=23-c.",
+    "generators": "The two star indicators and all c indicators1_{Y_j} generate the kernel. Their only dependence is sum_j1_{Y_j}=1_{L_a}+1_{L_a'}.",
+    "propagation": "If a larger principal block T_S containing X is PSD, every kernel vector supported on X propagates to a kernel vector of T_S, since its quadratic value is zero. A third star adds a further independent forced relation, so rank(T_S)<=32-c."
+  },
+  "interpretation": {
+    "connected": "c=1 gives the usual two-star rank22, with no extra relation supported on the two stars.",
+    "two_components": "c=2 gives two-star rank21 and forces three-star rank<=30 once the larger block is PSD. The component-size splits are1+5,2+4,3+3.",
+    "singleton_component": "Under the abstract internal/cross matching hypotheses alone, a singleton component is a closed four-label4-cycle with straight or exchanged cross matching. Under the full partial Conway root-letter caps, the exchanged case is impossible: z_ab then has two far neighbours containing b', in addition to the known common neighbour b with root letter b', violating mu=2. Thus in an admissible boundary a singleton component is a genuine3x3 grid. Peer727 retracts the broader interpretation in722; the abstract two-star kernel theorem itself is unchanged.",
+    "closed_eight_cycle": "A component of two outer root lines gives an eight-label closed set; Claude's bridge714 example realizes it by an8-cycle rather than the designated grid.",
+    "open_case": "If Q is connected, a rank30 three-star block would require an extra relation not supported on the two mate stars. This theorem neither rules it out nor classifies it.",
+    "construction_use": "One may impose a disconnected auxiliary graph and the resulting linear closed-set equations before searching for the remaining third-star edges, rather than targeting an accidental numerical zero eigenvalue. No full SRG is thereby constructed."
+  },
+  "provenance": {
+    "peer_trigger": "Claude bridge714 supplied the closed8-cycle counterexample to the local claim that rank30 forces the designated grid. Its rank and PSD certifications are accepted.",
+    "new_work": "The complete two-star kernel classification and sum-of-squares proof are derived here; this is not a second audit of the peer's rank.",
+    "own_algebra_check": "Exact22-dimensional restricted matrix identity, plus a newly constructed two-star matching example with component sizes2+4. No existing peer matrix rank is recomputed.",
+    "script": "code/codex/two_mate_star_structure.py"
+  }
+}

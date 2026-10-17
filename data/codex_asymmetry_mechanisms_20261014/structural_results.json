@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-14",
+  "question": "Where can asymmetry occur when every immediate neighborhood is the same matching?",
+  "inputs": "Previously supplied SRGs are accepted; no duplicate computation of their full automorphism groups",
+  "definitions": {
+    "root": "x",
+    "far_vertices": "F_x=V minus (N(x) union {x})",
+    "transport_graph": "T_x has vertex set F_x and edge yz exactly when yz is an edge of G whose unique triangle has its third vertex in N(x)",
+    "rooted_skeleton": "K_x retains all edges touching N[x], plus all T_x edges; x is distinguished",
+    "residual_graph": "U_x=G[F_x] minus the edges of T_x"
+  },
+  "proved_from_lambda_one": [
+    "For each y in F_x and each a in N(x) intersect N(y), the triangle through ay has third vertex z in F_x. Otherwise x and y would both complete an edge inside N(x).",
+    "Distinct a give distinct z, because otherwise the edge yz would lie in two triangles. Hence T_x is mu-regular.",
+    "No T_x edge can lie in a triangle wholly in F_x: it already has its unique triangle completed in N(x). Therefore T_x is triangle-free, and every triangle of G[F_x] lies wholly in U_x.",
+    "G[F_x] is (k-mu)-regular. Thus U_x is (k-2mu)-regular, and every edge of U_x lies in exactly one triangle of U_x.",
+    "For mu=2, T_x is a disjoint union of cycles of length at least four. Their lengths form an intrinsic vertex invariant, despite the constant immediate matching neighborhoods.",
+    "An automorphism of G fixing x induces an automorphism of the rooted K_x. Thus Aut(G)_x is a subgroup of Aut(K_x,x).",
+    "If the intrinsic color class of x has size m and Aut(K_x,x) has order h, then |Aut(G)| <= m*h by orbit-stabilizer. In particular, a unique intrinsic root with a rigid rooted skeleton proves full asymmetry."
+  ],
+  "new_computations": {
+    "bvls243": "One cycle signature, rooted skeleton order 81749606400 = 2^11*11!: all matching permutations survive this layer.",
+    "gamma5": "One cycle signature, rooted skeleton order12, giving global bound243*12=2916.",
+    "gamma6": "Four intrinsic classes of sizes27,54,54,108; respective skeleton orders4,2,2,1. Every product is108. Root0 lies in the108-class and has rigid skeleton.",
+    "gamma7": "Three intrinsic classes of size81, skeleton order2 each. Global bound162.",
+    "gamma8": "Four intrinsic classes of sizes27,54,54,108; respective skeleton orders4,2,2,1. Global bound108. Root0 has rigid skeleton.",
+    "hemi378": "The histogram of 4-cycle counts at vertices of T_x already separates69 intrinsic classes:59 of size6,5 of size3,4 of size2,1 singleton. Their skeleton orders are respectively1,2,3,6. Every product is6.",
+    "hemi378_unique_root": "Vertex375 is intrinsically unique, but its rooted skeleton has order6. The354 vertices in six-element classes have rigid rooted skeletons."
+  },
+  "interpretation": [
+    "A nontrivial point stabilizer is not forced by lambda=1, even with mu=2: the gamma6 and gamma8 examples contain intrinsically described rigid rooted skeletons.",
+    "Root rigidity and distinguishability of the root are separate requirements. Known symmetries may survive entirely by moving a rigid root to other globally equivalent roots.",
+    "These observations supply an asymmetry criterion, not a construction of a new asymmetric SRG and not a nonexistence argument for Conway."
+  ],
+  "empirical_question_not_a_theorem": "CORRECTION: all cycles in the eight stored243 examples are even, but not all are divisible by4: twin243 has length30 cycles. The partial99 example with cycles4,11,69 shows only that evenness is not forced by the stated local constraints; its global completability remains unknown.",
+  "transition_system_mu_two": {
+    "base_graph": "H=K_k minus the matching P induced by N(x)",
+    "far_vertices": "Exactly one far vertex for every nonmatched pair {a,b} of N(x); this follows from mu=2.",
+    "transitions": "The triangles through a in N(x) pair the H-edges incident with a. Transport cycles are the circuits of this transition system.",
+    "group_description": "Aut(K_x,x) is exactly the group of permutations of N(x) preserving P and the unoriented collection of circuit words. Consecutive letters encode each far vertex.",
+    "finite_certificate": "A circuit whose length L occurs once and whose word uses all k letters determines each rooted automorphism by one of at most 2L dihedral alignments. Repeated letters, P, and the remaining circuit words filter those alignments.",
+    "gamma6": "The unique length68 circuit at root0 spans all22 letters. Equality of repeated letters alone rejects all135 nonidentity dihedral alignments.",
+    "gamma8": "The unique length40 circuit at root0 spans all22 letters. Equality of repeated letters alone rejects all79 nonidentity alignments.",
+    "meaning": "Rooted rigidity can already be encoded in one circuit; no full graph automorphism calculation is required."
+  },
+  "local_cycle_divisibility_counterexample": {
+    "file": "local_t7_s1401_5.edges",
+    "status": "PARTIAL graph only; not an SRG and no claim of global completability",
+    "cycles": [
+      4,
+      11,
+      69
+    ],
+    "rooted_skeleton_group_order": 1,
+    "unassigned_neighbors_per_far_vertex": 10,
+    "satisfied": "Closed-star rows complete; present edges have exactly one common neighbor; nonedges have at most two.",
+    "conclusion": "Evenness is not forced by these local constraints alone. Divisibility by four is already false in the complete twin243 graph, which has cycles of length30."
+  },
+  "fixed_skeleton_completion_corollary": {
+    "hypothesis": "Let m count roots of the SEED with the same invariant of K_x itself (here the unrefined T_x invariant), h=|Aut(K_x,x)|, and suppose accepted |Aut(G)|=m*h.",
+    "conclusion": "A different labelled SRG completion with exactly the same rooted skeleton K_x cannot be isomorphic to the seed G.",
+    "proof": "The orbit of x has at least |Aut(G)|/h=m points and lies in the m-class, so equals it; the point stabilizer has size h. Thus all rooted skeleton isomorphisms from K_x to a compatible K_y are restrictions of actual automorphisms of G. The skeleton has the entire vertex set. An isomorphism of another completion to G would therefore also be an automorphism of G, forcing that completion to equal G.",
+    "application": "The computed bounds are saturated for Gamma5-8 and hemi378, using the full group orders already supplied by the peer. Hence a search keeping their rooted skeletons may block the one labelled seed without separately enumerating isomorphic copies.",
+    "limit": "A different completion would be a new isomorphism class, but not automatically asymmetric. No such completion has been constructed."
+  },
+  "completion_uniqueness_status": "Not proved for Gamma6 or Gamma8. Root rigidity and saturation of the local automorphism bound do not imply uniqueness of completion. See skeleton_completion_theory.json."
+}

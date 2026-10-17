@@ -1,0 +1,3422 @@
+{
+  "partition": [
+    6
+  ],
+  "root_h": 1,
+  "vertices": 60,
+  "hcomplete": true,
+  "population": true,
+  "triangle": false,
+  "scope": "All normalized (0,2) cores and borders for this partition and epsilon",
+  "relaxation": "Variable border with lifted capacity cuts, not a full SRG",
+  "status": "OPTIMAL",
+  "seconds": 23.802649000000002,
+  "cuts": 214,
+  "branches": 65553,
+  "conflicts": 5826,
+  "workers": 2,
+  "limit_seconds": 120.0,
+  "local_integer_factors": true,
+  "closed_star_balances": true,
+  "factor_packing": false,
+  "triangle_capacity": true,
+  "simple_factors": true,
+  "model_stats": "satisfaction model '': (model_fingerprint: 0x10696ab20ca8e64e)\n#Variables: 53'539 (51'947 primary variables)\n  - 49'432 Booleans in [0,1]\n  - 4'035 in [0,2]\n  - 62 in [0,4]\n  - 8 in [0,5]\n  - 2 constants in {0,1} \n#kBoolAnd: 406 (#enforced: 406) (#literals: 2'030)\n#kBoolOr: 459 (#enforced: 406) (#literals: 1'677)\n#kLinMax: 634 (#expressions: 1'759)\n#kLinear1: 6'736 (#enforced: 6'735 #multi: 2'772)\n#kLinear2: 94'844 (#enforced: 3'934 #multi: 317)\n#kLinear3: 44'894 (#enforced: 872 #multi: 142)\n#kLinearN: 4'026 (#enforced: 979 #multi: 32) (#terms: 132'614)",
+  "response_stats": "CpSolverResponse summary:\nstatus: OPTIMAL\nobjective: 0\nbest_bound: 0\nintegers: 40425\nbooleans: 49163\nconflicts: 5826\nbranches: 65553\npropagations: 32302261\ninteger_propagations: 21209423\nrestarts: 18\nlp_iterations: 0\nwalltime: 23.8026\nusertime: 23.8026\ndeterministic_time: 22.2271\ngap_integral: 0\nsolution_fingerprint: 0x8d9ce3faff94aae8\n",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      19
+    ],
+    [
+      0,
+      35
+    ],
+    [
+      0,
+      42
+    ],
+    [
+      0,
+      43
+    ],
+    [
+      0,
+      44
+    ],
+    [
+      0,
+      45
+    ],
+    [
+      0,
+      46
+    ],
+    [
+      0,
+      47
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      21
+    ],
+    [
+      1,
+      28
+    ],
+    [
+      1,
+      32
+    ],
+    [
+      1,
+      37
+    ],
+    [
+      1,
+      48
+    ],
+    [
+      1,
+      49
+    ],
+    [
+      1,
+      50
+    ],
+    [
+      1,
+      51
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      2,
+      12
+    ],
+    [
+      2,
+      13
+    ],
+    [
+      2,
+      18
+    ],
+    [
+      2,
+      26
+    ],
+    [
+      2,
+      36
+    ],
+    [
+      2,
+      41
+    ],
+    [
+      2,
+      52
+    ],
+    [
+      2,
+      53
+    ],
+    [
+      2,
+      54
+    ],
+    [
+      2,
+      55
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      3,
+      14
+    ],
+    [
+      3,
+      15
+    ],
+    [
+      3,
+      20
+    ],
+    [
+      3,
+      24
+    ],
+    [
+      3,
+      31
+    ],
+    [
+      3,
+      34
+    ],
+    [
+      3,
+      56
+    ],
+    [
+      3,
+      57
+    ],
+    [
+      3,
+      58
+    ],
+    [
+      3,
+      59
+    ],
+    [
+      4,
+      14
+    ],
+    [
+      4,
+      23
+    ],
+    [
+      4,
+      26
+    ],
+    [
+      4,
+      30
+    ],
+    [
+      4,
+      38
+    ],
+    [
+      5,
+      8
+    ],
+    [
+      5,
+      25
+    ],
+    [
+      5,
+      29
+    ],
+    [
+      5,
+      34
+    ],
+    [
+      5,
+      39
+    ],
+    [
+      6,
+      9
+    ],
+    [
+      6,
+      22
+    ],
+    [
+      6,
+      28
+    ],
+    [
+      6,
+      38
+    ],
+    [
+      6,
+      39
+    ],
+    [
+      7,
+      10
+    ],
+    [
+      7,
+      27
+    ],
+    [
+      7,
+      29
+    ],
+    [
+      7,
+      38
+    ],
+    [
+      7,
+      41
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      8,
+      12
+    ],
+    [
+      8,
+      20
+    ],
+    [
+      8,
+      29
+    ],
+    [
+      8,
+      33
+    ],
+    [
+      8,
+      40
+    ],
+    [
+      9,
+      13
+    ],
+    [
+      9,
+      22
+    ],
+    [
+      9,
+      25
+    ],
+    [
+      9,
+      30
+    ],
+    [
+      9,
+      37
+    ],
+    [
+      10,
+      12
+    ],
+    [
+      10,
+      15
+    ],
+    [
+      10,
+      22
+    ],
+    [
+      10,
+      27
+    ],
+    [
+      10,
+      32
+    ],
+    [
+      10,
+      40
+    ],
+    [
+      11,
+      13
+    ],
+    [
+      11,
+      14
+    ],
+    [
+      11,
+      15
+    ],
+    [
+      11,
+      21
+    ],
+    [
+      11,
+      39
+    ],
+    [
+      11,
+      42
+    ],
+    [
+      12,
+      15
+    ],
+    [
+      12,
+      18
+    ],
+    [
+      12,
+      23
+    ],
+    [
+      12,
+      33
+    ],
+    [
+      12,
+      35
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      13,
+      19
+    ],
+    [
+      13,
+      23
+    ],
+    [
+      13,
+      36
+    ],
+    [
+      13,
+      40
+    ],
+    [
+      14,
+      25
+    ],
+    [
+      14,
+      27
+    ],
+    [
+      14,
+      31
+    ],
+    [
+      14,
+      33
+    ],
+    [
+      15,
+      24
+    ],
+    [
+      15,
+      30
+    ],
+    [
+      15,
+      42
+    ],
+    [
+      16,
+      17
+    ],
+    [
+      16,
+      18
+    ],
+    [
+      16,
+      19
+    ],
+    [
+      16,
+      20
+    ],
+    [
+      16,
+      21
+    ],
+    [
+      16,
+      22
+    ],
+    [
+      16,
+      23
+    ],
+    [
+      16,
+      24
+    ],
+    [
+      16,
+      25
+    ],
+    [
+      16,
+      26
+    ],
+    [
+      16,
+      27
+    ],
+    [
+      16,
+      28
+    ],
+    [
+      16,
+      29
+    ],
+    [
+      16,
+      42
+    ],
+    [
+      17,
+      30
+    ],
+    [
+      17,
+      31
+    ],
+    [
+      17,
+      32
+    ],
+    [
+      17,
+      33
+    ],
+    [
+      17,
+      34
+    ],
+    [
+      17,
+      35
+    ],
+    [
+      17,
+      36
+    ],
+    [
+      17,
+      37
+    ],
+    [
+      17,
+      38
+    ],
+    [
+      17,
+      39
+    ],
+    [
+      17,
+      40
+    ],
+    [
+      17,
+      41
+    ],
+    [
+      17,
+      42
+    ],
+    [
+      18,
+      19
+    ],
+    [
+      18,
+      30
+    ],
+    [
+      18,
+      47
+    ],
+    [
+      18,
+      50
+    ],
+    [
+      18,
+      59
+    ],
+    [
+      19,
+      31
+    ],
+    [
+      19,
+      45
+    ],
+    [
+      19,
+      51
+    ],
+    [
+      20,
+      21
+    ],
+    [
+      20,
+      32
+    ],
+    [
+      20,
+      54
+    ],
+    [
+      20,
+      57
+    ],
+    [
+      21,
+      33
+    ],
+    [
+      21,
+      44
+    ],
+    [
+      21,
+      53
+    ],
+    [
+      21,
+      58
+    ],
+    [
+      22,
+      23
+    ],
+    [
+      22,
+      34
+    ],
+    [
+      22,
+      47
+    ],
+    [
+      22,
+      49
+    ],
+    [
+      22,
+      55
+    ],
+    [
+      23,
+      35
+    ],
+    [
+      23,
+      48
+    ],
+    [
+      23,
+      57
+    ],
+    [
+      23,
+      58
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      24,
+      36
+    ],
+    [
+      24,
+      46
+    ],
+    [
+      24,
+      48
+    ],
+    [
+      24,
+      49
+    ],
+    [
+      25,
+      37
+    ],
+    [
+      25,
+      45
+    ],
+    [
+      25,
+      53
+    ],
+    [
+      26,
+      27
+    ],
+    [
+      26,
+      38
+    ],
+    [
+      26,
+      44
+    ],
+    [
+      26,
+      55
+    ],
+    [
+      26,
+      56
+    ],
+    [
+      27,
+      39
+    ],
+    [
+      27,
+      46
+    ],
+    [
+      27,
+      51
+    ],
+    [
+      27,
+      52
+    ],
+    [
+      28,
+      29
+    ],
+    [
+      28,
+      40
+    ],
+    [
+      28,
+      43
+    ],
+    [
+      28,
+      50
+    ],
+    [
+      28,
+      56
+    ],
+    [
+      29,
+      41
+    ],
+    [
+      29,
+      59
+    ],
+    [
+      30,
+      41
+    ],
+    [
+      30,
+      49
+    ],
+    [
+      30,
+      57
+    ],
+    [
+      31,
+      32
+    ],
+    [
+      31,
+      49
+    ],
+    [
+      31,
+      53
+    ],
+    [
+      32,
+      45
+    ],
+    [
+      32,
+      52
+    ],
+    [
+      33,
+      34
+    ],
+    [
+      33,
+      44
+    ],
+    [
+      33,
+      51
+    ],
+    [
+      33,
+      55
+    ],
+    [
+      34,
+      47
+    ],
+    [
+      34,
+      50
+    ],
+    [
+      34,
+      58
+    ],
+    [
+      35,
+      36
+    ],
+    [
+      35,
+      46
+    ],
+    [
+      35,
+      50
+    ],
+    [
+      35,
+      56
+    ],
+    [
+      36,
+      43
+    ],
+    [
+      36,
+      51
+    ],
+    [
+      37,
+      38
+    ],
+    [
+      37,
+      48
+    ],
+    [
+      37,
+      55
+    ],
+    [
+      37,
+      58
+    ],
+    [
+      37,
+      59
+    ],
+    [
+      39,
+      40
+    ],
+    [
+      39,
+      44
+    ],
+    [
+      39,
+      46
+    ],
+    [
+      39,
+      59
+    ],
+    [
+      40,
+      47
+    ],
+    [
+      40,
+      53
+    ],
+    [
+      40,
+      56
+    ],
+    [
+      40,
+      57
+    ],
+    [
+      41,
+      45
+    ],
+    [
+      41,
+      48
+    ],
+    [
+      41,
+      54
+    ],
+    [
+      42,
+      43
+    ],
+    [
+      42,
+      52
+    ],
+    [
+      42,
+      54
+    ],
+    [
+      43,
+      55
+    ],
+    [
+      43,
+      58
+    ],
+    [
+      44,
+      47
+    ],
+    [
+      44,
+      54
+    ],
+    [
+      44,
+      59
+    ],
+    [
+      45,
+      52
+    ],
+    [
+      45,
+      57
+    ],
+    [
+      46,
+      49
+    ],
+    [
+      46,
+      53
+    ],
+    [
+      46,
+      55
+    ],
+    [
+      47,
+      48
+    ],
+    [
+      47,
+      53
+    ],
+    [
+      48,
+      56
+    ],
+    [
+      49,
+      51
+    ],
+    [
+      49,
+      54
+    ],
+    [
+      50,
+      57
+    ],
+    [
+      51,
+      57
+    ],
+    [
+      51,
+      59
+    ],
+    [
+      52,
+      53
+    ],
+    [
+      52,
+      58
+    ],
+    [
+      55,
+      57
+    ],
+    [
+      56,
+      59
+    ]
+  ],
+  "coclique": [
+    19,
+    20,
+    24,
+    26,
+    28,
+    30,
+    33,
+    35,
+    37,
+    39,
+    52
+  ],
+  "remaining_population": [
+    {
+      "vertices": [
+        4,
+        5
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        6
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        8
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        10
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        12
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        4,
+        15
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        5,
+        7
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        5,
+        10
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        5,
+        13
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        5,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        5,
+        15
+      ],
+      "count": 2,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        6,
+        8
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        6,
+        10
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        6,
+        11
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        6,
+        12
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        6,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        6,
+        15
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        7,
+        9
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        7,
+        11
+      ],
+      "count": 2,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        7,
+        12
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        7,
+        13
+      ],
+      "count": 2,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        8,
+        11
+      ],
+      "count": 2,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        8,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        8,
+        15
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        9,
+        10
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        9,
+        11
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        9,
+        12
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        9,
+        13
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        9,
+        15
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        10,
+        13
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        10,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        11,
+        12
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        12,
+        14
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        13,
+        15
+      ],
+      "count": 1,
+      "coclique_count": 0
+    }
+  ],
+  "factors": [
+    {
+      "vertex": 18,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 18,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 18,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 18,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 18,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 18,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        6,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 19,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 20,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 21,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 22,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 22,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 22,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 22,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 22,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 23,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 23,
+      "type": [
+        5,
+        7
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 23,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 23,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 23,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        4,
+        5
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 24,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 25,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 26,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 27,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 27,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 27,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 27,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 27,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        6,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 28,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 29,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 30,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        4,
+        5
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 31,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 32,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 33,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 33,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 33,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 33,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 33,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 34,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        6,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 35,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        5,
+        7
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        6,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 36,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 37,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 37,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 37,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 37,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 37,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 38,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 39,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 39,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 39,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 39,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 39,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 40,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 40,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 40,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 40,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 41,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        4,
+        5
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        5,
+        7
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 42,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 43,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        6,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 44,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 45,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 46,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 47,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 48,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 49,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        6,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 50,
+      "type": [
+        10,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        5,
+        7
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        6,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 51,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        6,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 52,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        4,
+        6
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        7,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 53,
+      "type": [
+        9,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        4,
+        5
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        4,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        8,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        9,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 54,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        4,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        5,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        7,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 55,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        4,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        5,
+        7
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        9,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 56,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 57,
+      "type": [
+        5,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 57,
+      "type": [
+        5,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 57,
+      "type": [
+        6,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 57,
+      "type": [
+        7,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 57,
+      "type": [
+        9,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        5,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        6,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        7,
+        9
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        8,
+        11
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        8,
+        15
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 58,
+      "type": [
+        12,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        4,
+        8
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        4,
+        10
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        9,
+        13
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        10,
+        14
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        11,
+        12
+      ],
+      "count": 1
+    },
+    {
+      "vertex": 59,
+      "type": [
+        13,
+        15
+      ],
+      "count": 1
+    }
+  ],
+  "verified": true
+}

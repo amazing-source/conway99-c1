@@ -1,0 +1,163 @@
+{
+  "status": "EXACT_SIGN_REDUCTION_AND_OPERATOR_CUTS",
+  "proof": [
+    "The supplied range equations are homogeneous rational equations R*epsilon=0. RREF expresses every epsilon as L*z using actual free coordinates of epsilon; z therefore consists of signs.",
+    "The exact remaining requirement is that every row of L*z have magnitude one. A two-term row a*z_i+c*z_j forces z_i*z_j=(1-a^2-c^2)/(2*a*c). Values other than +/-1 are impossible; valid values identify sign variables, repeatedly.",
+    "All original constraints and direction cuts are invariant under global sign reversal. Fix one remaining sign to+1: at most2^(d-1) trials suffice for a mean of reduced dimension d. This is a conditional per-mean bound, not a uniform bound over all means.",
+    "PSD tested against (u,+/-v) gives the absolute linear cut |2*u^T*B*v|<=u^T*Aprime*u+v^T*Cprime*v. The cut is exact for rational vectors even when found by floating-point singular vectors; it sees individual directions rather than total energy."
+  ],
+  "pair_propagation": {
+    "channels": 3,
+    "equation_rank": 1,
+    "linear_dimension": 2,
+    "status": "EXACT_SIGN_LIFT",
+    "propagated_dimension": 1,
+    "pair_merges": 1,
+    "trials_mod_global_sign": 1,
+    "lift": [
+      [
+        "-1"
+      ],
+      [
+        "1"
+      ],
+      [
+        "1"
+      ]
+    ],
+    "scope": "The remaining row conditions |L*z|=1 are mandatory; range feasibility alone is not graph admissibility or PSD."
+  },
+  "odd_row_obstruction": {
+    "channels": 3,
+    "equation_rank": 1,
+    "linear_dimension": 2,
+    "status": "NO_SIGN_VECTOR",
+    "reason": "Odd sum in a primitive integer homogeneous row.",
+    "primitive_row": [
+      1,
+      1,
+      1
+    ]
+  },
+  "nonlinear_fixture": {
+    "status": "ORIENTATIONS_SURVIVE_NECESSARY_FILTERS",
+    "trials": 4,
+    "range_feasible_mod_sign": 3,
+    "survivors_mod_sign": 3,
+    "sample_representatives": [
+      [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      [
+        1,
+        1,
+        -1,
+        1
+      ],
+      [
+        -1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "scope": "An exhaustive result for this fixed channel system and supplied valid constraints only; no assertion about untested means or Conway."
+  },
+  "cancelling_channel_leakage": {
+    "status": "ORIENTATIONS_SURVIVE_NECESSARY_FILTERS",
+    "trials": 1,
+    "range_feasible_mod_sign": 1,
+    "survivors_mod_sign": 1,
+    "sample_representatives": [
+      [
+        1,
+        1
+      ]
+    ],
+    "scope": "An exhaustive result for this fixed channel system and supplied valid constraints only; no assertion about untested means or Conway."
+  },
+  "own_small_systems_against_direct_sign_count": 48,
+  "operator_fixture": {
+    "dimension": 10,
+    "weighted_frobenius_squared": "9/4",
+    "normalized_operator_norm": "3/2",
+    "cuts": [
+      {
+        "coefficients": [
+          -3,
+          3
+        ],
+        "rhs": 4,
+        "meaning": "abs(sum coefficients[k]*epsilon[k])<=rhs",
+        "scope": "Necessary operator-direction cut, not a sufficient PSD test."
+      },
+      {
+        "coefficients": [
+          -3,
+          -3
+        ],
+        "rhs": 4,
+        "meaning": "abs(sum coefficients[k]*epsilon[k])<=rhs",
+        "scope": "Necessary operator-direction cut, not a sufficient PSD test."
+      }
+    ],
+    "enumeration": {
+      "status": "ALL_ORIENTATIONS_EXCLUDED_BY_SUPPLIED_CONSTRAINTS",
+      "trials": 2,
+      "range_feasible_mod_sign": 2,
+      "survivors_mod_sign": 0,
+      "sample_representatives": [],
+      "scope": "An exhaustive result for this fixed channel system and supplied valid constraints only; no assertion about untested means or Conway."
+    }
+  },
+  "large_dimension_guard": {
+    "status": "NOT_ENUMERATED",
+    "dimension": 40,
+    "trials_mod_global_sign": 549755813888,
+    "max_dimension": 14
+  },
+  "forty_simple_cycle_family": {
+    "universal_trials_per_mean_mod_h": 4096,
+    "proof": [
+      "There are no broken channels incident with O, so the first two rows and columns of B vanish. The two even star vectors (2,2,1_L,1_R) and (0,0,1_L,-1_R), and the two odd star vectors (1,1,1_L,0_R) and (1,-1,0_L,1_R), imply zero row and column sums separately in B_LL,B_LR,B_RL,B_RR.",
+      "Every simple channel contributes one nonzero entry of magnitude1/2 in each direction of its supported pair. On each internal ten-cycle, the row equations propagate a sign around the cycle, giving at most one free sign (or no sign solution).",
+      "Write D for the simple bipartite support of the twenty crossed channels, with V active vertices and c components. Row and column sums of B_LR give a signed version of the ordinary bipartite incidence matrix, of rank V-c. Thus the crossed linear solution space has dimension20-V+c. An odd support degree already forbids a sign solution.",
+      "If all active degrees are even, each component of D has at least four vertices. Suppose V-c<=8. There are at most two components. One component would have at most nine vertices; the even degree bound a*(2*floor(b/2)) and b*(2*floor(a/2)) gives at most16 edges for a+b<=9. Two components have at most ten total vertices, each at least four, hence at most13 edges by the bipartite edge bound floor(v^2/4). Both contradict twenty edges. Therefore V-c>=9.",
+      "The two internal sign dimensions plus the crossed space give total dimension at most2+20-V+c<=13. A set of pivot-free ORIGINAL signs parameterizes all solutions, so <=2^12=4096 trials modulo h suffice for each fixed mean. If all crossed degrees are2, D consists of at most five even cycles and the bound improves to2^(1+c)<=64."
+    ],
+    "dimension_sharp_abstract_support": {
+      "status": "PROVED_PER_MEAN_ORIENTATION_BOUND",
+      "cross_active_vertices": 10,
+      "cross_components": 1,
+      "sign_dimension_at_most": 13,
+      "trials_mod_h_at_most": 4096,
+      "universal_trials_at_most": 4096,
+      "all_cross_degrees_two": false,
+      "scope": "Every admissible orientation of this fixed mean satisfies the four star relations. Enumeration must also impose all remaining row magnitudes, C1/C2 and PSD. No bound on the number of different means."
+    },
+    "own_abstract_support_enumeration": {
+      "status": "ORIENTATIONS_SURVIVE_NECESSARY_FILTERS",
+      "trials": 4096,
+      "range_feasible_mod_sign": 552,
+      "survivors_mod_sign": 552,
+      "sample_representatives": [],
+      "scope": "An exhaustive result for this fixed channel system and supplied valid constraints only; no assertion about untested means or Conway."
+    },
+    "degree_two_support_bound": {
+      "status": "PROVED_PER_MEAN_ORIENTATION_BOUND",
+      "cross_active_vertices": 20,
+      "cross_components": 5,
+      "sign_dimension_at_most": 7,
+      "trials_mod_h_at_most": 64,
+      "universal_trials_at_most": 4096,
+      "all_cross_degrees_two": true,
+      "scope": "Every admissible orientation of this fixed mean satisfies the four star relations. Enumeration must also impose all remaining row magnitudes, C1/C2 and PSD. No bound on the number of different means."
+    },
+    "scope": "A proven affordable orientation step for this family of fixed means. No classification, affordable bound on the number of means, or exclusion of C1 follows. The tightness example is an abstract channel support, not a constructed C1 border."
+  },
+  "fixture_scope": "Own algebraic fixtures only. No fixture is asserted to be a binary Conway border or an SRG; no peer mean read.",
+  "limitations": "No new C1 family or actual mean excluded. The actual reduced dimensions of the peer means have not been computed here."
+}

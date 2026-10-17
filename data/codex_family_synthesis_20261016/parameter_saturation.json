@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-16",
+  "scope": "Exact arithmetic and algebra for a synthesis; no new graph exclusion.",
+  "parameter_completeness": "For a noncomplete SRG(v,k,1,2), integral multiplicities imply an odd spectral gap d dividing 63. The d=1 case is complete K3 and is omitted.",
+  "hypotheses": {
+    "component": "C is a whole component or union of components of G[N(line) minus line].",
+    "grid": "An induced 3 by 3 grid is present; its existence is not assumed universally.",
+    "capacity": "The four-star/fifth-star setup of LAB 918-920, k >= 14."
+  },
+  "rows": [
+    {
+      "v": 9,
+      "k": 4,
+      "lambda": 1,
+      "mu": 2,
+      "spectral_gap": 3,
+      "restricted_eigenvalues": [
+        1,
+        -2
+      ],
+      "restricted_multiplicities": [
+        4,
+        4
+      ],
+      "line_neighborhood_M_size": 6,
+      "far_from_line_F_size": 0,
+      "component_variance_coefficient_k_minus_14": -10,
+      "component_variance": "(k-14)*c*(1-c/(3*(k-2)))",
+      "component_variance_mean": "2*c/(k-2) (F is empty at k=4)",
+      "induced_grid_external_vertices_without_grid_neighbor": 0,
+      "induced_grid_external_vertices_with_one_grid_neighbor": 0,
+      "five_star_capacity": null
+    },
+    {
+      "v": 99,
+      "k": 14,
+      "lambda": 1,
+      "mu": 2,
+      "spectral_gap": 7,
+      "restricted_eigenvalues": [
+        3,
+        -4
+      ],
+      "restricted_multiplicities": [
+        54,
+        44
+      ],
+      "line_neighborhood_M_size": 36,
+      "far_from_line_F_size": 60,
+      "component_variance_coefficient_k_minus_14": 0,
+      "component_variance": "(k-14)*c*(1-c/(3*(k-2)))",
+      "component_variance_mean": "2*c/(k-2) (F is empty at k=4)",
+      "induced_grid_external_vertices_without_grid_neighbor": 0,
+      "induced_grid_external_vertices_with_one_grid_neighbor": 90,
+      "five_star_capacity": {
+        "base_Bprime_size": 36,
+        "X_size": 8,
+        "internal_X_edges_a_min": 0,
+        "internal_X_edges_a_max": 4,
+        "raw_forced_Y_labels_lower_bound": "8 + a",
+        "raw_bound_offset": 8,
+        "interpretation": "The actual lower bound is max(0, offset+a)."
+      }
+    },
+    {
+      "v": 243,
+      "k": 22,
+      "lambda": 1,
+      "mu": 2,
+      "spectral_gap": 9,
+      "restricted_eigenvalues": [
+        4,
+        -5
+      ],
+      "restricted_multiplicities": [
+        132,
+        110
+      ],
+      "line_neighborhood_M_size": 60,
+      "far_from_line_F_size": 180,
+      "component_variance_coefficient_k_minus_14": 8,
+      "component_variance": "(k-14)*c*(1-c/(3*(k-2)))",
+      "component_variance_mean": "2*c/(k-2) (F is empty at k=4)",
+      "induced_grid_external_vertices_without_grid_neighbor": 72,
+      "induced_grid_external_vertices_with_one_grid_neighbor": 162,
+      "five_star_capacity": {
+        "base_Bprime_size": 68,
+        "X_size": 16,
+        "internal_X_edges_a_min": 0,
+        "internal_X_edges_a_max": 8,
+        "raw_forced_Y_labels_lower_bound": "-52 + a",
+        "raw_bound_offset": -52,
+        "interpretation": "The actual lower bound is max(0, offset+a)."
+      }
+    },
+    {
+      "v": 6273,
+      "k": 112,
+      "lambda": 1,
+      "mu": 2,
+      "spectral_gap": 21,
+      "restricted_eigenvalues": [
+        10,
+        -11
+      ],
+      "restricted_multiplicities": [
+        3280,
+        2992
+      ],
+      "line_neighborhood_M_size": 330,
+      "far_from_line_F_size": 5940,
+      "component_variance_coefficient_k_minus_14": 98,
+      "component_variance": "(k-14)*c*(1-c/(3*(k-2)))",
+      "component_variance_mean": "2*c/(k-2) (F is empty at k=4)",
+      "induced_grid_external_vertices_without_grid_neighbor": 5292,
+      "induced_grid_external_vertices_with_one_grid_neighbor": 972,
+      "five_star_capacity": {
+        "base_Bprime_size": 428,
+        "X_size": 106,
+        "internal_X_edges_a_min": 0,
+        "internal_X_edges_a_max": 53,
+        "raw_forced_Y_labels_lower_bound": "-5137 + a",
+        "raw_bound_offset": -5137,
+        "interpretation": "The actual lower bound is max(0, offset+a)."
+      }
+    },
+    {
+      "v": 494019,
+      "k": 994,
+      "lambda": 1,
+      "mu": 2,
+      "spectral_gap": 63,
+      "restricted_eigenvalues": [
+        31,
+        -32
+      ],
+      "restricted_multiplicities": [
+        250914,
+        243104
+      ],
+      "line_neighborhood_M_size": 2976,
+      "far_from_line_F_size": 491040,
+      "component_variance_coefficient_k_minus_14": 980,
+      "component_variance": "(k-14)*c*(1-c/(3*(k-2)))",
+      "component_variance_mean": "2*c/(k-2) (F is empty at k=4)",
+      "induced_grid_external_vertices_without_grid_neighbor": 485100,
+      "induced_grid_external_vertices_with_one_grid_neighbor": 8910,
+      "five_star_capacity": {
+        "base_Bprime_size": 3956,
+        "X_size": 988,
+        "internal_X_edges_a_min": 0,
+        "internal_X_edges_a_max": 494,
+        "raw_forced_Y_labels_lower_bound": "-483622 + a",
+        "raw_bound_offset": -483622,
+        "interpretation": "The actual lower bound is max(0, offset+a)."
+      }
+    }
+  ],
+  "checks": "Spectral traces, SRG feasibility, and centered-variance polynomial coefficients exact over Q."
+}

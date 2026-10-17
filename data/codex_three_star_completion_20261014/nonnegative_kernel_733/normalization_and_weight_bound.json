@@ -1,0 +1,30 @@
+{
+  "setting": "A locally admissible34-label three-star boundary, T PSD and Q connected. An extra relation means an element of ker(T) outside the span of the three star indicators.",
+  "normalization": {
+    "integrality": "The rational integer matrix8T has a rational kernel basis. An extra real relation therefore yields an extra integral relation after scaling.",
+    "nonnegative": "The sum of the three star indicators is strictly positive on every label. Add a sufficiently large integer multiple of it to make q>=0.",
+    "star_minimal": "While q is positive on an entire star, subtract that star indicator. This preserves integrality, nonnegativity, the kernel condition, and independence from the star span. Each subtraction decreases w=sum(q) by12, so the process terminates with a zero in each star.",
+    "tail_nonconstant": "If the ten coefficients on the third-star-only tail are constant a, subtract a*1_L2. The result is supported on X=L0 union L1. The connected two-star kernel theorem then places it in span(1_L0,1_L1), contradicting extra independence.",
+    "height": "Peer733 excludes a binary extra relation, so max(q)>=2. No finite universal bound on max(q) is asserted.",
+    "residue": "From d_i=d_mate mod4, t_i=3d_i+d_mate has residue0 or4 modulo8. All t_i share that residue. In addition w is divisible by4."
+  },
+  "analytic_exclusion_below12": {
+    "claim": "An extra nonnegative integral relation cannot have w=4 or8; consequently w>=12.",
+    "general_facts": "For every mate pair, d_i+d_mate<=w because labels never contain mates. Also d0+d1+d2=w+q02+q12>=w. A zero q_ij implies t_i+t_j<=2w. If d0+d1=w, the third-star-only tail is zero.",
+    "weight4": "A common residue4 would force each of the seven mate pairs to contribute at least2 to sum(d)=8, impossible. Residue0 leaves only degree pairs(0,0),(2,2). Exactly two pairs are active. If pair0 is inactive, centre2 has degree at most2 and cannot cover w=4. If pair0 is active, d0+d1=4 and the tail vanishes. Both contradict an extra relation.",
+    "weight8_residue4": "Each pair contributes at least2 to sum(d)=16. Thus six pairs are(1,1), and one pair is(0,4) or(4,0). In every placement d0+d1+d2<=6<8, impossible.",
+    "weight8_residue0_balanced": "Allowed pairs are(0,0),(2,2),(4,4),(1,5),(5,1). If no pair is unbalanced, d0=d1=4 forces a zero tail, so exclude this case first. If d2=d3=4, degree4 at letter3 forces d0+d1>=4; the remaining balanced possibilities then give d0=d1=2. Thus d0+d1+d2=w=8 and q02=q12=0. Their zero-row inequalities force d0=d1=0, a contradiction. Otherwise d0,d1,d2<=2 and cannot cover8.",
+    "weight8_residue0_unbalanced": "The degree budget16 forces exactly two unbalanced(1,5) pairs and one balanced(2,2) pair. If pair0 is balanced and pair1 is unbalanced with d2=5, then q02+q12=1, but both zero-row inequalities require q02,q12>=1. Other placements with pair0 balanced fail coverage. If pair0 is unbalanced and pair1 balanced, q02+q12=0, but the overlap incident with the degree5 centre has t-sum24>16. Inactivity of pair1 also fails coverage. Hence pairs0 and1 are both unbalanced; normalize(d0,d1)=(1,5),(d2,d3)=(5,1), and let(a,a') be the remaining active pair of degrees(2,2).",
+    "weight8_unique_profile": "The zero-row inequalities and degrees force q02=1,q12=2,q13=1,q1a=q1a'=q2a=q2a'=1, and all other entries0. At row(1,2), the kernel equation requires(Gamma q)_12=4. All positive coefficients away from row12 are1 and lie in L1 union L2. The two star equations permit only one neighbour in each of these stars, so(Gamma q)_12<=2. Contradiction."
+  },
+  "weight12_finite_exclusion": {
+    "claim": "Every normalized nonnegative extra relation has w>=16.",
+    "method": "Exhaust all integer coefficients0..12 with w=12, the necessary congruences, nonnegative required row sums, a zero on each star, nonconstant tail, and max(q)>=2. Centre swap and permutations/flips of the five outside mate pairs normalize without deleting any orbit.",
+    "enumeration": "CP-SAT exhaustive enumeration completed:19 normalized profiles, not asserted to be19 distinct isomorphism classes. Exact independent row domains exclude17 profiles. The remaining profiles10 and12 admit exact rational Farkas contradictions using kernel equations, local inequalities, and edge bounds. The certificate functions check coefficient cancellation with integer arithmetic.",
+    "files": ["weight12_profiles.json", "weight12_profile_10.json", "weight12_profile_12.json"],
+    "proof_status": "Finite computational exclusion with exact row/Farkas contradictions. Coverage is also supplied by an explicit combinatorial enumeration of five outside mate-pair triples and four overlap coefficients, completed in0.078s with the same19 profiles. This supplies a direct finite route independent of CP-SAT coverage; it is not an analytic classification of all19 profiles."
+  },
+  "construction_pilot": "The unrestricted normalized height2 graph search produced two new locally admissible coefficient/adjacency candidates of weight24. Both fail PSD(T). Six exact negative-vector cuts were added. The40-second run ended without exclusion or a PSD candidate.",
+  "small_positive_kernel_corollary": "Under the stated hypotheses, the nonnegative integer kernel vectors with sum<=12 are exactly0 and the three individual star indicators. Indeed an extra relation of those weights is excluded, while integral vectors in the star span have integral coefficients (read them on the exclusive groups), nonnegative coefficients when the vector is nonnegative, and weight12 times their sum.",
+  "scope": "These are restrictions on an additional kernel relation, not a proof of(A), Conway nonexistence, or symmetry. A normalized extra relation of weight16 or greater remains possible."
+}

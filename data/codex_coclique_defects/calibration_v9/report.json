@@ -1,0 +1,567 @@
+{
+  "captured_utc": "2026-10-13T14:27:33.508549+00:00",
+  "runs": [
+    {
+      "name": "balanced_s1",
+      "portfolio": "balanced",
+      "seed": 1,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 180.96502710000001,
+      "presolve_seconds": 37.22,
+      "peak_gib": 4.339,
+      "conflicts": 259327,
+      "exported_clause_counts": 326987,
+      "reduced_edge_domains": 288,
+      "domain_reference": "presolve_s1",
+      "additional_edge_domains_vs_presolve": 16,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 58.84,
+            "variables_left": 215234,
+            "variables_total": 216633,
+            "constraints_left": 256096,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 89.84,
+            "variables_left": 214301,
+            "variables_total": 216633,
+            "constraints_left": 253725,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 118.35,
+            "variables_left": 214087,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 140.65,
+            "variables_left": 214079,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 178.13,
+            "variables_left": 214056,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 178.13,
+        "variables_left": 214056,
+        "variables_total": 216633,
+        "constraints_left": 253531,
+        "constraints_total": 258184
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [default_lp, no_lp, probing, probing_no_lp, quick_restart, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 interleaved subsolvers: [feasibility_pump, rins/rens]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]",
+        "5 ignored subsolvers: [max_lp, max_lp_sym, objective_lb_search_max_lp, objective_shaving_max_lp, probing_max_lp]"
+      ]
+    },
+    {
+      "name": "boolean_moments_s1",
+      "portfolio": "boolean",
+      "seed": 1,
+      "model_sha256": "973c76b6d0c630573f5c685286a05f68d7a6201ac8a7e935804d778e49247516",
+      "moments": true,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 181.1814539,
+      "presolve_seconds": 38.55,
+      "peak_gib": 3.941,
+      "conflicts": 758547,
+      "exported_clause_counts": 363219,
+      "reduced_edge_domains": 290,
+      "domain_reference": null,
+      "additional_edge_domains_vs_presolve": null,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 59.93,
+            "variables_left": 216326,
+            "variables_total": 218075,
+            "constraints_left": 258777,
+            "constraints_total": 261067
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 89.82,
+            "variables_left": 215536,
+            "variables_total": 218075,
+            "constraints_left": 256322,
+            "constraints_total": 261067
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 119.96,
+            "variables_left": 215318,
+            "variables_total": 218075,
+            "constraints_left": 256220,
+            "constraints_total": 261067
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 149.54,
+            "variables_left": 215313,
+            "variables_total": 218075,
+            "constraints_left": 256220,
+            "constraints_total": 261067
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 158.9,
+            "variables_left": 215304,
+            "variables_total": 218075,
+            "constraints_left": 256220,
+            "constraints_total": 261067
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 158.9,
+        "variables_left": 215304,
+        "variables_total": 218075,
+        "constraints_left": 256220,
+        "constraints_total": 261067
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [auto_no_lp, no_lp, portfolio_no_lp, probing_no_lp, quick_alt_no_lp, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+      ]
+    },
+    {
+      "name": "boolean_s1",
+      "portfolio": "boolean",
+      "seed": 1,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 180.75002880000002,
+      "presolve_seconds": 24.28,
+      "peak_gib": 3.94,
+      "conflicts": 552959,
+      "exported_clause_counts": 358013,
+      "reduced_edge_domains": 288,
+      "domain_reference": "presolve_s1",
+      "additional_edge_domains_vs_presolve": 16,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": {
+            "seconds": 29.98,
+            "variables_left": 216484,
+            "variables_total": 216633,
+            "constraints_left": 257531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 59.63,
+            "variables_left": 214737,
+            "variables_total": 216633,
+            "constraints_left": 254786,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 87.68,
+            "variables_left": 214078,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 118.04,
+            "variables_left": 214067,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 138.4,
+            "variables_left": 214063,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 168.88,
+            "variables_left": 214049,
+            "variables_total": 216633,
+            "constraints_left": 253531,
+            "constraints_total": 258184
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 168.88,
+        "variables_left": 214049,
+        "variables_total": 216633,
+        "constraints_left": 253531,
+        "constraints_total": 258184
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [auto_no_lp, no_lp, portfolio_no_lp, probing_no_lp, quick_alt_no_lp, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+      ]
+    },
+    {
+      "name": "boolean_s2",
+      "portfolio": "boolean",
+      "seed": 2,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 181.0718922,
+      "presolve_seconds": 37.34,
+      "peak_gib": 3.892,
+      "conflicts": 524147,
+      "exported_clause_counts": 356878,
+      "reduced_edge_domains": 290,
+      "domain_reference": null,
+      "additional_edge_domains_vs_presolve": null,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 60.0,
+            "variables_left": 215271,
+            "variables_total": 216633,
+            "constraints_left": 255637,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 89.16,
+            "variables_left": 214210,
+            "variables_total": 216633,
+            "constraints_left": 253666,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 119.65,
+            "variables_left": 213895,
+            "variables_total": 216633,
+            "constraints_left": 253429,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 147.69,
+            "variables_left": 213887,
+            "variables_total": 216633,
+            "constraints_left": 253429,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 177.67,
+            "variables_left": 213883,
+            "variables_total": 216633,
+            "constraints_left": 253337,
+            "constraints_total": 258184
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 177.67,
+        "variables_left": 213883,
+        "variables_total": 216633,
+        "constraints_left": 253337,
+        "constraints_total": 258184
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [auto_no_lp, no_lp, portfolio_no_lp, probing_no_lp, quick_alt_no_lp, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+      ]
+    },
+    {
+      "name": "legacy_s1",
+      "portfolio": "legacy",
+      "seed": 1,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 181.4047712,
+      "presolve_seconds": 36.48,
+      "peak_gib": 4.912,
+      "conflicts": 278079,
+      "exported_clause_counts": 90473,
+      "reduced_edge_domains": 288,
+      "domain_reference": "presolve_s1",
+      "additional_edge_domains_vs_presolve": 16,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 59.31,
+            "variables_left": 215322,
+            "variables_total": 216633,
+            "constraints_left": 255671,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 88.23,
+            "variables_left": 214985,
+            "variables_total": 216633,
+            "constraints_left": 255113,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 119.82,
+            "variables_left": 214762,
+            "variables_total": 216633,
+            "constraints_left": 253995,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 148.47,
+            "variables_left": 214711,
+            "variables_total": 216633,
+            "constraints_left": 253995,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 180.0,
+            "variables_left": 214666,
+            "variables_total": 216633,
+            "constraints_left": 253903,
+            "constraints_total": 258184
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 180.0,
+        "variables_left": 214666,
+        "variables_total": 216633,
+        "constraints_left": 253903,
+        "constraints_total": 258184
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [default_lp, max_lp_sym, no_lp, probing, quick_restart, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 interleaved subsolvers: [feasibility_pump, rins/rens]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]",
+        "2 ignored subsolvers: [max_lp, probing_max_lp]"
+      ]
+    },
+    {
+      "name": "legacy_s2",
+      "portfolio": "legacy",
+      "seed": 2,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": false,
+      "status": "UNKNOWN",
+      "seconds": 181.5272103,
+      "presolve_seconds": 37.49,
+      "peak_gib": 4.902,
+      "conflicts": 259726,
+      "exported_clause_counts": 89299,
+      "reduced_edge_domains": 290,
+      "domain_reference": null,
+      "additional_edge_domains_vs_presolve": null,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        },
+        {
+          "at_seconds": 60,
+          "last_model_event": {
+            "seconds": 59.92,
+            "variables_left": 215286,
+            "variables_total": 216633,
+            "constraints_left": 256090,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 90,
+          "last_model_event": {
+            "seconds": 89.72,
+            "variables_left": 214976,
+            "variables_total": 216633,
+            "constraints_left": 255390,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 120,
+          "last_model_event": {
+            "seconds": 119.32,
+            "variables_left": 214790,
+            "variables_total": 216633,
+            "constraints_left": 254174,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 150,
+          "last_model_event": {
+            "seconds": 149.29,
+            "variables_left": 214578,
+            "variables_total": 216633,
+            "constraints_left": 253887,
+            "constraints_total": 258184
+          }
+        },
+        {
+          "at_seconds": 180,
+          "last_model_event": {
+            "seconds": 178.92,
+            "variables_left": 214523,
+            "variables_total": 216633,
+            "constraints_left": 253887,
+            "constraints_total": 258184
+          }
+        }
+      ],
+      "last_model_update": {
+        "seconds": 178.92,
+        "variables_left": 214523,
+        "variables_total": 216633,
+        "constraints_left": 253887,
+        "constraints_total": 258184
+      },
+      "actual_portfolio": [
+        "6 full problem subsolvers: [default_lp, max_lp_sym, no_lp, probing, quick_restart, quick_restart_no_lp]",
+        "2 first solution subsolvers: [fj, fs_random_no_lp]",
+        "2 interleaved subsolvers: [feasibility_pump, rins/rens]",
+        "2 helper subsolvers: [neighborhood_helper, synchronization_agent]",
+        "2 ignored subsolvers: [max_lp, probing_max_lp]"
+      ]
+    },
+    {
+      "name": "presolve_s1",
+      "portfolio": "legacy",
+      "seed": 1,
+      "model_sha256": "5a29aa8518171c4eb2cb5f3fbe7e869f377a705436c5e640581dcde00bf801cc",
+      "moments": false,
+      "mixed": "coclique",
+      "presolve_only": true,
+      "status": "UNKNOWN",
+      "seconds": 35.3731136,
+      "presolve_seconds": null,
+      "peak_gib": 1.554,
+      "conflicts": null,
+      "exported_clause_counts": 0,
+      "reduced_edge_domains": 272,
+      "domain_reference": "presolve_s1",
+      "additional_edge_domains_vs_presolve": 0,
+      "trajectory_30s": [
+        {
+          "at_seconds": 30,
+          "last_model_event": null
+        }
+      ],
+      "last_model_update": null,
+      "actual_portfolio": []
+    }
+  ],
+  "meaning": "A bounded exploratory calibration; no optimality claim for the configuration",
+  "warnings": [
+    "UNKNOWN provides no C1 exclusion",
+    "Conflict/export counts are activity, not unique excluded cases or time-to-proof",
+    "Tightened domains may depend on presolve representatives; do not transfer or combine",
+    "Same seed does not make an eight-worker run deterministic",
+    "Compare portfolios within the same model hash; model strengthening is a separate experiment"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "name": "r1_5_C13",
+  "status": "UNKNOWN",
+  "seconds": 180.75544831300002,
+  "workers": 4,
+  "scope": "All coclique21 (0,2), partitioned by unordered negative degrees and triangle location",
+  "ignored_subsolvers": [
+    "*max_lp*",
+    "feasibility_pump",
+    "rins/rens"
+  ],
+  "actual_portfolio": [
+    "3 full problem subsolvers: [no_lp, probing_no_lp, quick_restart_no_lp]",
+    "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+  ],
+  "search_start_seconds": 29.62,
+  "search_stats": {
+    "no_lp": {
+      "Bools": 232084,
+      "Conflicts": 88656,
+      "Branches": 405805,
+      "Restarts": 365,
+      "BacktrackToRoot": 31407,
+      "Backtrack": 158099,
+      "BoolPropag": 529227764,
+      "IntegerPropag": 203467170
+    },
+    "probing_no_lp": {
+      "Bools": 232234,
+      "Conflicts": 766,
+      "Branches": 698919,
+      "Restarts": 0,
+      "BacktrackToRoot": 697730,
+      "Backtrack": 697799,
+      "BoolPropag": 378969065,
+      "IntegerPropag": 326031868
+    },
+    "quick_restart_no_lp": {
+      "Bools": 232084,
+      "Conflicts": 28487,
+      "Branches": 4420343,
+      "Restarts": 2531,
+      "BacktrackToRoot": 32248,
+      "Backtrack": 89466,
+      "BoolPropag": 333635269,
+      "IntegerPropag": 199500413
+    }
+  },
+  "clauses_shared": {
+    "no_lp": {
+      "#Exported": 11897,
+      "#Imported": 3161,
+      "#BinaryRead": 1256903,
+      "#BinaryTotal": 1259883
+    },
+    "probing_no_lp": {
+      "#Exported": 1215657,
+      "#Imported": 6869,
+      "#BinaryRead": 1259883,
+      "#BinaryTotal": 1259883
+    },
+    "quick_restart_no_lp": {
+      "#Exported": 41297,
+      "#Imported": 3504,
+      "#BinaryRead": 1259883,
+      "#BinaryTotal": 1259883
+    }
+  },
+  "sat_stats": {
+    "no_lp": {
+      "ClassicMinim": 66364,
+      "LitRemoved": 971277,
+      "LitRemovedBinary": 609338,
+      "LitLearned": 5665554,
+      "LitForgotten": 4165822,
+      "Subsumed": 16301
+    },
+    "probing_no_lp": {
+      "ClassicMinim": 5,
+      "LitRemoved": 13,
+      "LitRemovedBinary": 142,
+      "LitLearned": 821,
+      "LitForgotten": 0,
+      "Subsumed": 20
+    },
+    "quick_restart_no_lp": {
+      "ClassicMinim": 16272,
+      "LitRemoved": 130960,
+      "LitRemovedBinary": 92988,
+      "LitLearned": 2294332,
+      "LitForgotten": 989875,
+      "Subsumed": 3112
+    }
+  },
+  "lp_dimensions": {},
+  "lp_stats": {},
+  "shared_bounds": {
+    "no_lp": {
+      "Num": 1402,
+      "Sym": 0
+    },
+    "probing_no_lp": {
+      "Num": 1382,
+      "Sym": 1
+    },
+    "quick_restart_no_lp": {
+      "Num": 1115,
+      "Sym": 2
+    }
+  },
+  "total_worker_conflicts": 117909,
+  "model_update_count": 165,
+  "model_samples_5min": [],
+  "last_model_update": {
+    "seconds": 178.88,
+    "variables_left": 228875,
+    "variables_total": 232861,
+    "constraints_left": 269274,
+    "constraints_total": 271656
+  },
+  "final_resource": {
+    "utc": "2026-10-13T15:18:46.716117+00:00",
+    "pid": 3569,
+    "cpu_seconds": 613.368007411,
+    "working_set": 3262070784,
+    "peak_working_set": 3262070784,
+    "average_cpu_cores": 3.995832488539224
+  },
+  "peak_working_set": 3262070784,
+  "persisted_learned_clause_database": false,
+  "cautions": [
+    "UNKNOWN is not a nonexistence certificate",
+    "Counters do not measure the fraction of graphs excluded",
+    "Worker conflicts measure activity, not comparative effectiveness",
+    "Different models and time budgets prevent a controlled speed comparison",
+    "Shared clauses are exchanged within this run, not saved as a reusable database"
+  ]
+}

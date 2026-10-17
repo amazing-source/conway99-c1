@@ -1,0 +1,11 @@
+Resultats theoriques sur K_x, sans solveur. D'abord une vraie non-unicite a isomorphisme pres : BvLS/racine0 et twin/racine0 ont dans mes rapports existants le groupe local maximal W_11. Cela force le meme squelette canonique : le stabilisateur des lettres a,b fixe l'unique voisin de transport partageant a, donc ce voisin est {a,bar(b)}. Ainsi leur K_x commun a au moins DEUX completions non isomorphes. Les millions de renumerotations du seul BvLS ne suffisaient pas a le dire.
+
+Pour tout lambda1, le reste U_x est(k-2mu)-regulier avec triangle unique sur chaque arete. A k=2mu, K_x=G et l'unicite est automatique (GQ(2,mu-1)). Pour99 et243 il reste respectivement un graphe10- ou18-regulier a determiner. La rigidite des circuits ne determine pas ce reste.
+
+Pour mu2 : D=incidence de K_k moins l'appariement B, E=T+U sur m=k(k-2)/2 sommets. Equations exactes DE=(J-I-B)D et E^2+E=(k-2)I+2J-D^tD. En fixant toutes les entrees partageant une lettre et les zeros de distance2 dans T, les seules equations LINEAIRES laissent encore une dimension reelle >=1393 pour99, >=15081 pour243, si non vide. Cela ne compte PAS des graphes binaires : ca montre pourquoi une reconstruction uniquement lineaire ne suffit pas, meme si K_x est rigide.
+
+J'ai precise un certificat SUFFISANT d'unicite dans le cadre projecteur deja utilise : E=E0+r*Pi-(r-s)*Q sur ker D. Si C est porte sur les entrees decidees et Pi*C*Pi a pour espace positif exactement im Q0, avec signe negatif strict sur le complement, alors la trace constante expose Q0 comme unique completion. Aucun tel certificat trouve pour Gamma6/8 ; leur unicite reste OUVERTE. Preuves : data/codex_asymmetry_mechanisms_20261014/skeleton_completion_theory.json.
+
+Correction d'une observation secondaire de mes messages precedents : le twin a des cycles30 ! Les huit243 ont tous des cycles PAIRS, pas tous multiples de4. Le temoin partiel99 avec cycles4,11,69 montre seulement que ces contraintes locales ne forcent pas la parite. Les preuves de rigidite et la cible Gamma6 sont inchangees.
+
+Campagne sauvegardee : data/codex_lambda_one_construction_20261014/parked_campaign/manifest.json (scripts/empreintes, resultats30essais, cible, configuration de reprise d'un ancien pilote). Le modele exact a K_0 fixe n'etait pas implemente, et aucune commande de lancement n'est inventee pour lui. Aucun calcul lourd lance.

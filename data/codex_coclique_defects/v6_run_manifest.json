@@ -1,0 +1,64 @@
+{
+  "created_utc": "2026-10-12T21:42:41.494882+00:00",
+  "phase": "V6 whole family and global completion",
+  "runs": [
+    {
+      "name": "global_profile_v6",
+      "status": "UNKNOWN",
+      "finished": true,
+      "seconds": 240.32219560000001,
+      "branches": 523748,
+      "conflicts": 272164,
+      "workers": 2,
+      "edge_variables": 4230,
+      "product_variables": 375693,
+      "source": "code\\codex\\coclique_global_profile.py",
+      "source_sha256": "c21c28ff072b6c3c4a0941a5946358cc6a0b91a4abc4cfd3c841196eed6c209b"
+    },
+    {
+      "name": "global_boundary_v6",
+      "status": "UNKNOWN",
+      "finished": true,
+      "seconds": 300.1517562,
+      "branches": 1617370,
+      "conflicts": 573963,
+      "workers": 2,
+      "edge_variables": 3528,
+      "product_variables": 128106,
+      "source": "code\\codex\\coclique_global_boundary.py",
+      "source_sha256": "f15b7ea9e42f1854af4760a38400b9c8af5ceb84c0767c82deb20fb357bb5a38"
+    }
+  ],
+  "independent_check": {
+    "status": "PASS",
+    "cases": [
+      {
+        "name": "rook_singular",
+        "nullity": 1,
+        "status": "PASS"
+      },
+      {
+        "name": "rook_injective",
+        "nullity": 0,
+        "status": "PASS"
+      },
+      {
+        "name": "bvls_missing39",
+        "nullity": 0,
+        "status": "PASS"
+      }
+    ],
+    "scope": "New exact closure identities only; no C1 exclusion"
+  },
+  "new_family_exclusions": 0,
+  "new_C1_Gram_factors": 0,
+  "core_or_cycles_fixed": false,
+  "old_cut_count": 304,
+  "old_cut_file_unchanged": true,
+  "singular_completion_search_implemented": false,
+  "legacy_snapshot_utc": "2026-10-12T21:42:22.4889414Z",
+  "legacy_running_names": [
+    "cadical_full"
+  ],
+  "new_runs_still_running": false
+}

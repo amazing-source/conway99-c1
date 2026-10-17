@@ -1,0 +1,145 @@
+{
+  "status": "BOUNDED_PSD_SWITCH_SEARCH",
+  "processed_states": 200,
+  "maximum_states": 200,
+  "discovered_states": 2136,
+  "pending_states": 1936,
+  "counts": {
+    "rectangle_geometries": 2117000,
+    "binary_legal": 74811,
+    "local_cap_rejections": 53014,
+    "locally_admissible": 21797,
+    "destroys_PSD": 18168,
+    "PSD_but_still_rank31": 3629
+  },
+  "repairs": [],
+  "seed_psd_rank31_moves": [
+    {
+      "rectangle": [
+        3,
+        11,
+        17,
+        20
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        1,
+        11,
+        28,
+        29
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        14,
+        16,
+        27,
+        31
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        15,
+        17,
+        30,
+        32
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        15,
+        21,
+        28,
+        29
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        17,
+        20,
+        24,
+        32
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        17,
+        20,
+        26,
+        32
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        17,
+        21,
+        32,
+        33
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        17,
+        22,
+        28,
+        29
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        18,
+        22,
+        24,
+        25
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        1,
+        11,
+        5,
+        7
+      ],
+      "sign": -1
+    },
+    {
+      "rectangle": [
+        13,
+        14,
+        19,
+        22
+      ],
+      "sign": 1
+    },
+    {
+      "rectangle": [
+        13,
+        23,
+        18,
+        22
+      ],
+      "sign": 1
+    }
+  ],
+  "seed_sha256": "f1cb7efe414a84ff818d9960cdfb3bf6bbcf173467a6b9af143b9883293f1e2d",
+  "elapsed_seconds": 10.635023800001363,
+  "scope": [
+    "Only paths through locally admissible PSD/rank31 rectangle neighbours are explored.",
+    "All states preserve the seed overlap rows and all vertex degrees.",
+    "Intermediate states are not filtered by the upper bound T<=7I; exported rank30 repairs are.",
+    "A bounded search is not an exclusion; component exhaustion only concerns this move family.",
+    "No full SRG is constructed and no automorphism conclusion follows."
+  ],
+  "input": "data/codex_three_star_completion_20261014/lab702_rank31.json"
+}

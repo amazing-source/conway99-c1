@@ -1,0 +1,243 @@
+{
+  "name": "baseline",
+  "status": "UNKNOWN",
+  "seconds": 61.413716900000004,
+  "workers": 8,
+  "scope": "All coclique21 (0,2), partitioned by unordered negative degrees and triangle location",
+  "ignored_subsolvers": [
+    "*max_lp*",
+    "feasibility_pump",
+    "rins/rens"
+  ],
+  "actual_portfolio": [
+    "6 full problem subsolvers: [auto_no_lp, no_lp, portfolio_no_lp, probing_no_lp, quick_alt_no_lp, quick_restart_no_lp]",
+    "2 first solution subsolvers: [fj, fs_random_no_lp]",
+    "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+  ],
+  "search_start_seconds": 42.59,
+  "search_stats": {
+    "auto_no_lp": {
+      "Bools": 241124,
+      "Conflicts": 944,
+      "Branches": 88347,
+      "Restarts": 11,
+      "BacktrackToRoot": 26235,
+      "Backtrack": 37172,
+      "BoolPropag": 26533500,
+      "IntegerPropag": 23120107
+    },
+    "fs_random_no_lp": {
+      "Bools": 241124,
+      "Conflicts": 1327,
+      "Branches": 175879,
+      "Restarts": 8,
+      "BacktrackToRoot": 26173,
+      "Backtrack": 37493,
+      "BoolPropag": 28613804,
+      "IntegerPropag": 23634704
+    },
+    "no_lp": {
+      "Bools": 241124,
+      "Conflicts": 1264,
+      "Branches": 91725,
+      "Restarts": 16,
+      "BacktrackToRoot": 26196,
+      "Backtrack": 37433,
+      "BoolPropag": 28574318,
+      "IntegerPropag": 23927996
+    },
+    "portfolio_no_lp": {
+      "Bools": 241124,
+      "Conflicts": 1468,
+      "Branches": 105151,
+      "Restarts": 5,
+      "BacktrackToRoot": 26171,
+      "Backtrack": 37600,
+      "BoolPropag": 28026939,
+      "IntegerPropag": 24328957
+    },
+    "probing_no_lp": {
+      "Bools": 241369,
+      "Conflicts": 49,
+      "Branches": 59047,
+      "Restarts": 0,
+      "BacktrackToRoot": 59039,
+      "Backtrack": 59039,
+      "BoolPropag": 27661675,
+      "IntegerPropag": 25914049
+    },
+    "quick_alt_no_lp": {
+      "Bools": 241124,
+      "Conflicts": 422,
+      "Branches": 140797,
+      "Restarts": 21,
+      "BacktrackToRoot": 26236,
+      "Backtrack": 36650,
+      "BoolPropag": 25701753,
+      "IntegerPropag": 23052477
+    },
+    "quick_restart_no_lp": {
+      "Bools": 241145,
+      "Conflicts": 536,
+      "Branches": 99371,
+      "Restarts": 34,
+      "BacktrackToRoot": 26185,
+      "Backtrack": 36716,
+      "BoolPropag": 26683602,
+      "IntegerPropag": 23624647
+    }
+  },
+  "clauses_shared": {
+    "auto_no_lp": {
+      "#Exported": 20,
+      "#Imported": 1,
+      "#BinaryRead": 103944,
+      "#BinaryTotal": 104324
+    },
+    "fs_random_no_lp": {
+      "#Exported": 19,
+      "#Imported": 1,
+      "#BinaryRead": 103443,
+      "#BinaryTotal": 104324
+    },
+    "no_lp": {
+      "#Exported": 30,
+      "#Imported": 1,
+      "#BinaryRead": 103929,
+      "#BinaryTotal": 104324
+    },
+    "portfolio_no_lp": {
+      "#Exported": 21,
+      "#Imported": 1,
+      "#BinaryRead": 101968,
+      "#BinaryTotal": 104324
+    },
+    "probing_no_lp": {
+      "#Exported": 76094,
+      "#Imported": 12,
+      "#BinaryRead": 104324,
+      "#BinaryTotal": 104324
+    },
+    "quick_alt_no_lp": {
+      "#Exported": 20,
+      "#Imported": 1,
+      "#BinaryRead": 103855,
+      "#BinaryTotal": 104324
+    },
+    "quick_restart_no_lp": {
+      "#Exported": 28187,
+      "#Imported": 0,
+      "#BinaryRead": 104016,
+      "#BinaryTotal": 104324
+    }
+  },
+  "sat_stats": {
+    "auto_no_lp": {
+      "ClassicMinim": 400,
+      "LitRemoved": 1996,
+      "LitRemovedBinary": 2203,
+      "LitLearned": 22872,
+      "LitForgotten": 0,
+      "Subsumed": 285
+    },
+    "fs_random_no_lp": {
+      "ClassicMinim": 668,
+      "LitRemoved": 3306,
+      "LitRemovedBinary": 5291,
+      "LitLearned": 39056,
+      "LitForgotten": 0,
+      "Subsumed": 288
+    },
+    "no_lp": {
+      "ClassicMinim": 485,
+      "LitRemoved": 1969,
+      "LitRemovedBinary": 1646,
+      "LitLearned": 31213,
+      "LitForgotten": 0,
+      "Subsumed": 274
+    },
+    "portfolio_no_lp": {
+      "ClassicMinim": 787,
+      "LitRemoved": 3655,
+      "LitRemovedBinary": 1408,
+      "LitLearned": 44903,
+      "LitForgotten": 0,
+      "Subsumed": 374
+    },
+    "probing_no_lp": {
+      "ClassicMinim": 0,
+      "LitRemoved": 0,
+      "LitRemovedBinary": 0,
+      "LitLearned": 49,
+      "LitForgotten": 0,
+      "Subsumed": 128
+    },
+    "quick_alt_no_lp": {
+      "ClassicMinim": 96,
+      "LitRemoved": 613,
+      "LitRemovedBinary": 406,
+      "LitLearned": 10036,
+      "LitForgotten": 0,
+      "Subsumed": 141
+    },
+    "quick_restart_no_lp": {
+      "ClassicMinim": 168,
+      "LitRemoved": 825,
+      "LitRemovedBinary": 706,
+      "LitLearned": 8490,
+      "LitForgotten": 0,
+      "Subsumed": 160
+    }
+  },
+  "lp_dimensions": {},
+  "lp_stats": {},
+  "shared_bounds": {
+    "auto_no_lp": {
+      "Num": 1,
+      "Sym": 0
+    },
+    "no_lp": {
+      "Num": 1,
+      "Sym": 0
+    },
+    "probing_no_lp": {
+      "Num": 343,
+      "Sym": 0
+    },
+    "quick_alt_no_lp": {
+      "Num": 163,
+      "Sym": 0
+    },
+    "quick_restart_no_lp": {
+      "Num": 318,
+      "Sym": 0
+    }
+  },
+  "total_worker_conflicts": 6010,
+  "model_update_count": 26,
+  "model_samples_5min": [],
+  "last_model_update": {
+    "seconds": 60.04,
+    "variables_left": 241075,
+    "variables_total": 241899,
+    "constraints_left": 282984,
+    "constraints_total": 284257
+  },
+  "final_resource": {
+    "utc": "2026-10-13T18:26:22.234970+00:00",
+    "pid": 19864,
+    "cpu_seconds": 178.484375,
+    "working_set": 4548345856,
+    "peak_working_set": 4564787200,
+    "average_cpu_cores": 7.484899161339417
+  },
+  "peak_working_set": 4564787200,
+  "persisted_learned_clause_database": false,
+  "cautions": [
+    "UNKNOWN is not a nonexistence certificate",
+    "Counters do not measure the fraction of graphs excluded",
+    "Worker conflicts measure activity, not comparative effectiveness",
+    "Different models and time budgets prevent a controlled speed comparison",
+    "Shared clauses are exchanged within this run, not saved as a reusable database"
+  ]
+}

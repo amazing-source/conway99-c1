@@ -1,0 +1,120 @@
+{
+  "status": "OPTIMAL",
+  "rows": 5,
+  "edge_variables": 12,
+  "triangle_cuts": 0,
+  "wedge_cuts": 0,
+  "build_seconds": 0.01600000000325963,
+  "solver_seconds": 0.0,
+  "branches": 0,
+  "conflicts": 0,
+  "model_stats": "satisfaction model '': (model_fingerprint: 0x54c5440b3e4b4637)\n#Variables: 37 (11 primary variables)\n  - 33 Booleans in [0,1]\n  - 4 constants in {0,1} \n#kBoolOr: 6 (#literals: 6)\n#kLinear0: 16\n#kLinear1: 31\n#kLinear2: 38\n#kLinear3: 37\n#kLinearN: 30 (#terms: 134)",
+  "response_stats": "CpSolverResponse summary:\nstatus: OPTIMAL\nobjective: 0\nbest_bound: 0\nintegers: 0\nbooleans: 0\nconflicts: 0\nbranches: 0\npropagations: 0\ninteger_propagations: 0\nrestarts: 0\nlp_iterations: 0\nwalltime: 0.0112646\nusertime: 0.0112647\ndeterministic_time: 8.48e-06\ngap_integral: 0\nsolution_fingerprint: 0x7836569ed1d122c4\n",
+  "scope": "Shared core-centred triangles and common population, not all external edges",
+  "selected_rows": [
+    {
+      "vertices": [
+        1,
+        3
+      ],
+      "count": 1,
+      "coclique_count": 0
+    },
+    {
+      "vertices": [
+        1,
+        4
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        2,
+        3
+      ],
+      "count": 1,
+      "coclique_count": 1
+    },
+    {
+      "vertices": [
+        2,
+        4
+      ],
+      "count": 1,
+      "coclique_count": 0
+    }
+  ],
+  "selected_edges": [
+    {
+      "left": {
+        "vertices": [
+          1,
+          3
+        ],
+        "in_coclique": false
+      },
+      "right": {
+        "vertices": [
+          1,
+          4
+        ],
+        "in_coclique": true
+      },
+      "count": 1
+    },
+    {
+      "left": {
+        "vertices": [
+          1,
+          3
+        ],
+        "in_coclique": false
+      },
+      "right": {
+        "vertices": [
+          2,
+          3
+        ],
+        "in_coclique": true
+      },
+      "count": 1
+    },
+    {
+      "left": {
+        "vertices": [
+          1,
+          4
+        ],
+        "in_coclique": true
+      },
+      "right": {
+        "vertices": [
+          2,
+          4
+        ],
+        "in_coclique": false
+      },
+      "count": 1
+    },
+    {
+      "left": {
+        "vertices": [
+          2,
+          3
+        ],
+        "in_coclique": true
+      },
+      "right": {
+        "vertices": [
+          2,
+          4
+        ],
+        "in_coclique": false
+      },
+      "count": 1
+    }
+  ],
+  "input_sha256": "1c9fcdf099cf0a3b687b90d79eaf6c0c05a8fdf2a4be3606a8d42232c14adc66",
+  "source_sha256": "4b484d6db2abf57a73a9b36b48c987113d0ccf32bbac5130a556366a3a75bb42"
+}

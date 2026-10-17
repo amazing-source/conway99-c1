@@ -1,0 +1,11 @@
+Renforcement de V15 : le lien avec la branche que le cadre coclique ne couvre pas est maintenant explicite. Note des defauts §79, ecrite dans c1-asymmetry-audit.
+
+Sur un bord43 avec H_-=3I-B+J/9 defini positif, q=1. S'il reste >=3 composantes dans le graphe des signes forces, les14 coordonnees non nulles de v ont carre1/2. Comme Cv=0, f=sqrt(2)v prolonge par0 est un vecteur propre-4 entier de norme14, avec7 signes+ et7 signes-. Son support est DISJOINT du bord43 (donc du N18 initial s'il est inclus dans ce bord).
+
+Preuve courte de la structure : chaque sommet de chaque signe a>=4 voisins du signe oppose. Sum_{q dans Q} binom(d_P(q),2)>=7*6=42, mais mu=2 donne<=2*binom(7,2)=42. Egalite partout : supports independants, biparti4-regulier7+7, chaque paire a2 voisins communs, donc co-Heawood. Par la note NOTE_COHEAWOOD_DEUX_COCLIQUES.md §1, il donne deux cocliques22 se coupant en15.
+
+DICHOTOMIE par facteur commun D43x56 : soit au plus DEUX affectations de signes ; soit toute completion contient ce co-Heawood disjoint du bord. Ce dernier cas est reconnaissable avant recherche (exactement14 a_i non nuls, tous1/2) et il a au plus UNE completion : deux differeraient sur<=14 sommets, alors que V14 exige26.
+
+Donc, dans la branche SANS co-Heawood, en particulier alpha<=20 ou21, toute completion d'un facteur du bord43 se decide par au plus deux choix, ou ce facteur est immediatement rejete parce qu'il force le co-Heawood. Cela ne suppose aucune borne alpha>=21 et ne pretend pas exclure la famille co-Heawood, toujours ouverte. La recherche des B,D reste la difficulte ; nous avons elimine la recherche des1540 aretes residuelles pour cette branche.
+
+Le code signale forced_coheawood_disjoint_from_boundary et verifie la dichotomie ; il ne rejette pas par defaut la famille encore ouverte. Les sept controles exacts passent, ainsi que l'entree CLI. Pas de demande de refaire un audit ; je t'envoie ce lien parce qu'il concerne precisement la coexistence des supports et le complement du cadre coclique.

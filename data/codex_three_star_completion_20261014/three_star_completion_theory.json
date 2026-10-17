@@ -1,0 +1,81 @@
+{
+  "status": "Exact necessary conditions and an implemented column-domain preprocessor; no 49-vertex feasible sample or full Conway graph constructed here",
+  "setup": {
+    "root": "Root x has 14 neighbours paired by c -> c xor 1. Choose a=0, a'=1, b=2, b'=3.",
+    "far_labels": "The 84 far vertices are the nonmatched unordered pairs of star letters.",
+    "S": "L_a union L_a' union L_b, size34. Intersections are p={a,b} and p'={a',b}; L_a and L_a' are disjoint.",
+    "R": "The root, its 14 neighbours, and S:49 vertices. Gamma is the full induced adjacency on S; B is the resulting induced adjacency on R.",
+    "U": "The other50 labels are nonmatched pairs among the11 letters outside {a,a',b}:40 avoid b' and10 contain b'. These labels are fixed by the root, not interchangeable anonymous columns."
+  },
+  "column_domains": {
+    "variables": "For u in U, h is its binary adjacency vector to S. Its entries on the root and 14 star letters are already known.",
+    "three_exact_sums": "sum_La h=2, sum_La' h=2, sum_Lb h=2-delta, where delta=1 if b' belongs to u and0 otherwise.",
+    "reason": "Each of a,a',b is nonadjacent to u and has its entire neighbourhood in R. For b, the star letter b' supplies one common neighbour exactly when delta=1; a and a' have no such star contribution.",
+    "partition": "Write z=h_p and z'=h_p'. The disjoint groups L_a minus p, L_a' minus p', L_b minus {p,p'} have sizes11,11,10, with selected counts2-z,2-z',2-delta-z-z'.",
+    "exact_unfiltered_count": "N_delta=sum_(z,z' in {0,1}) C(11,2-z) C(11,2-z') C(10,2-delta-z-z'), with negative binomial indices giving zero.",
+    "counts": {
+      "delta0_40_columns": 148346,
+      "delta1_10_columns": 31460
+    },
+    "root_caps_enumeration": "Imposing all root-star common-neighbour budgets further leaves94743 profiles for each delta0 label (84582/10044/117 of induced degree6/7/8), and25926 for each delta1 label (0/24776/1150). The matching group on the five other pairs is transitive on each of these two label types, so one representative per type suffices. Exact finite enumeration took0.343 seconds; no Gamma sample was used.",
+    "scope": "These counts impose only the three displayed sums. Common-neighbour caps, boundary capacities, kernel equations and spectral norms can further remove candidates. Their product is still enormous and is not an affordable total-search bound."
+  },
+  "remaining_induced_graph": {
+    "epsilon": "epsilon=Gamma[p,p'] is0 or1.",
+    "degree_formula": "deg_G[U](u)=6+delta+h_p+h_p'. Since h_p+h_p'<=2-delta, every remaining degree is6,7 or8.",
+    "overlap_rows": "The three star sums applied to p and p' give deg_Gamma(p)=deg_Gamma(p')=3-epsilon; hence each has9+epsilon neighbours in U.",
+    "edge_counts": "|E(Gamma)|=68+epsilon; |E(B)|=157+epsilon; |E(R,U)|=372-2epsilon; |E(G[U])|=164+epsilon.",
+    "double": "d=1-epsilon-(Gamma^2)[p,p'] is the number of U vertices adjacent to both p and p'. It belongs to{0,1}; epsilon=1 forces d=0. Such a vertex cannot contain b', because its L_b budget would be1.",
+    "bprime": "j=2-sum Gamma[v,w], over v in{p,p'} and w in{{a,b'},{a',b'}}, counts U vertices containing b' and adjacent to either p or p'. Each of p,p' has exactly one far neighbour labelled with b', and their two outside sets are disjoint, so0<=j<=2.",
+    "degree_histogram": "n8=d+j; n7=28+2epsilon-2n8; n6=22-2epsilon+n8. The boundary therefore fixes the entire degree histogram of the unknown induced graph.",
+    "consequence": "At most THREE of the50 remaining vertices have degree8; at most TWO when epsilon=1. The possible sets of degree8 labels number at most C(40,d) C(10,j)<=1800.",
+    "limit": "This small bound concerns only the positions of degree8 vertices, not their edges, the other degrees' positions, or all completions."
+  },
+  "exact_spectral_filter": {
+    "K": "8 K_yz=3|y intersect z| + number of mate incidences between y and z -2.",
+    "matrix": "M=8T_SS=24I-8Gamma-8K_SS is PSD and has rank<=30 for every actual Conway completion. The full84 by84 residual matrix has diagonal20, rank30 and nonzero eigenvalue56.",
+    "automatic_kernel": "The three star indicator vectors lie in ker(M). At rank30, ker(M) has dimension4: there is at least one additional independent linear relation to impose on every remaining column.",
+    "column": "For u in U, m_u=-8h-8K_Su. Require q dot m_u=0 for every exact null vector q of M. This is a system of linear integer equations in h.",
+    "norm": "Choose a nonsingular principal block H=M[I,I]. For a column in range(M), m_u[I]^t H^-1 m_u[I]<=20. Equality is necessary when rank(M)=30.",
+    "deficit_budget": "If rank(M)=r, put rho_u=20-m_u[I]^t H^-1 m_u[I]. Then sum_U rho_u=56(30-r). Indeed the full residual Gram matrix is56 times a rank30 projector; the known S-vectors span r dimensions, whose total squared projection over all84 frame vectors is56r, with680 contributed by S. Exact min/max bounds from the50 column domains must bracket this sum.",
+    "reconstruction": "At rank30, any choice of all50 valid columns forces every residual entry: M_uv=m_u[I]^t H^-1 m_v[I], and adjacency on U is -(M_uv+8K_uv)/8. These values must be0 or1.",
+    "important_distinction": "Full rank determines the remaining block AFTER the50 columns have been chosen. It does not uniquely determine those columns from B49 alone. No universal full-rank assertion is made."
+  },
+  "global_compatibility": {
+    "boundary_moments": "For the complete cross matrix D, require D*1=14*1-B*1 and D*D^t=12I+2J-B-B^2.",
+    "implemented": "Individual profiles must respect zero capacities and known common-neighbour caps. Once all50 domains are complete, exact lower/upper marginal bounds are tested for every entry of DD^t. Degree-category Hall bounds also enforce the boundary-derived degree histogram.",
+    "remaining_work": "Selection of one profile per label satisfying all simultaneous moments and all induced 0/1 pair compatibilities is not implemented. A complete candidate would still be checked against the SRG equations; no existing peer graph is re-audited.",
+    "count_bound": "When residual rank is30, the product of exact necessary domain sizes is a certified upper bound on labelled SRG completions. It is generally far too large unless domains collapse; an empty exact necessary domain or incompatible marginal proves that supplied boundary cannot extend."
+  },
+  "fractional_relaxation_witness": {
+    "formula": "Gamma0_yz=(2-|y intersect z|-mate_incidence(y,z))/10, with entries0,1/10,1/5.",
+    "spectral_identity": "For full root incidence D, Pi=I-D^t(DD^t)^(-1)D and T0=3I-Gamma0-K=3Pi. Thus0<=T0_SS<=3I<=7I.",
+    "exact_checks": "All three-star equations, all natural off-diagonal boundary caps (B^2)_ij<=2-B_ij, and degrees<=14 hold. The smallest cap slack among far pairs in S is16/100.",
+    "rank": "T0_SS has rank31 and nullity3. It therefore violates the rank<=30 necessary for a true Conway boundary.",
+    "meaning": "The continuous relaxation with these local counts/caps and PSD cuts is feasible. Integrality and the additional kernel relation remain essential; no SRG or binary49-vertex object has been obtained. Other extra constraints can change the relaxation.",
+    "provenance": "An explicit specialization of the previously derived forced operator E0; not a new general spectral-completion theorem.",
+    "artifact": "fractional_psd_witness.json",
+    "script": "code/codex/three_star_fractional_witness.py"
+  },
+  "peer_binary_psd_example": {
+    "provenance": "Claude bridge message697, accepted without an independent recomputation in accordance with Dilan's two-researchers instruction.",
+    "peer_path": "work/stars_rank_2026-10-14/lns3_psd_found.json",
+    "reported_properties": "A binary34-label three-star structure satisfying the peer's local constraints, with68 edges, T_SS PSD, and exact rational rank31.",
+    "consequence": "Local counts/caps plus integrality and PSD still do not imply rank<=30. This particular partial structure cannot extend to a Conway graph, because a principal submatrix cannot have larger rank than the full residual matrix, whose rank must be30.",
+    "scope": "An excluded rank31 partial configuration, not a global exclusion of C1. Later three rank30 inputs were supplied; each was excluded by our complementary Gram or exact column-domain condition."
+  },
+  "implementation": {
+    "path": "code/codex/three_star_column_domains.py",
+    "input": "JSON with labels as34 pairs of integers0..13, and gamma (or adjacency) as a34 by34 binary symmetric matrix. Centres are0,1,2; mates are c xor1. Labels may be in any order and are normalized.",
+    "run": "C:/home/researcher/Desktop/Recherche_Conway/c1-lambda1-env/Scripts/python.exe -I -u -X utf8 code/codex/three_star_column_domains.py --gamma INPUT.json --output REPORT.json --seconds 30",
+    "dependency": "SymPy1.14.0 installed in the existing c1-lambda1-env for exact rational arithmetic.",
+    "bounded_execution": "The enumeration has a time budget; incomplete domains are explicitly marked and never used to claim emptiness or a global count bound. Exact preprocessing runs before enumeration and can exceed that soft time budget.",
+    "checks": "Own primitive tests as recorded. Three producer-certified PSD30 grid seeds were subsequently supplied:700 and704_EX2 fail the ambient upper Gram;704_EX0 passes both Gram conditions but has no norm20 profile for label{3,4}."
+  },
+  "ambient_upper_gram": {
+    "necessary_condition": "7Pi_SS-T_SS is PSD, stronger than T_SS<=7I.",
+    "formula": "15(7Pi_SS-T_SS)=60I+15Gamma-4*intersection+mate_incidence-2J.",
+    "source": "ambient_upper_gram_theory.json",
+    "integration": "Tested before rank/column preparation, with exact integer negative witnesses and rational positive decisions."
+  }
+}

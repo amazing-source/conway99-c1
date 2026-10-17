@@ -1,0 +1,251 @@
+{
+  "name": "r1_5_ZH",
+  "status": "UNKNOWN",
+  "seconds": 180.562014287,
+  "workers": 8,
+  "scope": "All coclique21 (0,2), partitioned by unordered negative degrees and triangle location",
+  "ignored_subsolvers": [
+    "*max_lp*",
+    "feasibility_pump",
+    "rins/rens"
+  ],
+  "actual_portfolio": [
+    "6 full problem subsolvers: [auto_no_lp, no_lp, portfolio_no_lp, probing_no_lp, quick_alt_no_lp, quick_restart_no_lp]",
+    "2 first solution subsolvers: [fj, fs_random_no_lp]",
+    "2 helper subsolvers: [neighborhood_helper, synchronization_agent]"
+  ],
+  "search_start_seconds": 27.53,
+  "search_stats": {
+    "auto_no_lp": {
+      "Bools": 233629,
+      "Conflicts": 99289,
+      "Branches": 317567,
+      "Restarts": 152,
+      "BacktrackToRoot": 28515,
+      "Backtrack": 143940,
+      "BoolPropag": 623300113,
+      "IntegerPropag": 191475444
+    },
+    "fs_random_no_lp": {
+      "Bools": 233629,
+      "Conflicts": 79794,
+      "Branches": 368178,
+      "Restarts": 23,
+      "BacktrackToRoot": 27936,
+      "Backtrack": 126845,
+      "BoolPropag": 532612647,
+      "IntegerPropag": 193102443
+    },
+    "no_lp": {
+      "Bools": 233629,
+      "Conflicts": 107753,
+      "Branches": 408524,
+      "Restarts": 379,
+      "BacktrackToRoot": 31918,
+      "Backtrack": 174031,
+      "BoolPropag": 553765302,
+      "IntegerPropag": 204629263
+    },
+    "portfolio_no_lp": {
+      "Bools": 233629,
+      "Conflicts": 109135,
+      "Branches": 401068,
+      "Restarts": 62,
+      "BacktrackToRoot": 29629,
+      "Backtrack": 163720,
+      "BoolPropag": 644092741,
+      "IntegerPropag": 190309141
+    },
+    "probing_no_lp": {
+      "Bools": 233779,
+      "Conflicts": 607,
+      "Branches": 748716,
+      "Restarts": 0,
+      "BacktrackToRoot": 747382,
+      "Backtrack": 747440,
+      "BoolPropag": 421587085,
+      "IntegerPropag": 364535965
+    },
+    "quick_alt_no_lp": {
+      "Bools": 233629,
+      "Conflicts": 30390,
+      "Branches": 4715711,
+      "Restarts": 2733,
+      "BacktrackToRoot": 33004,
+      "Backtrack": 89908,
+      "BoolPropag": 365571818,
+      "IntegerPropag": 216832220
+    },
+    "quick_restart_no_lp": {
+      "Bools": 233629,
+      "Conflicts": 30249,
+      "Branches": 5211596,
+      "Restarts": 2729,
+      "BacktrackToRoot": 33052,
+      "Backtrack": 91078,
+      "BoolPropag": 368350100,
+      "IntegerPropag": 219561368
+    }
+  },
+  "clauses_shared": {
+    "auto_no_lp": {
+      "#Exported": 6230,
+      "#Imported": 4888,
+      "#BinaryRead": 1290751,
+      "#BinaryTotal": 1294939
+    },
+    "fs_random_no_lp": {
+      "#Exported": 3734,
+      "#Imported": 4650,
+      "#BinaryRead": 1239227,
+      "#BinaryTotal": 1294939
+    },
+    "no_lp": {
+      "#Exported": 7968,
+      "#Imported": 8751,
+      "#BinaryRead": 1294939,
+      "#BinaryTotal": 1294939
+    },
+    "portfolio_no_lp": {
+      "#Exported": 32087,
+      "#Imported": 6196,
+      "#BinaryRead": 1291051,
+      "#BinaryTotal": 1294939
+    },
+    "probing_no_lp": {
+      "#Exported": 1229968,
+      "#Imported": 10947,
+      "#BinaryRead": 1294939,
+      "#BinaryTotal": 1294939
+    },
+    "quick_alt_no_lp": {
+      "#Exported": 29902,
+      "#Imported": 8703,
+      "#BinaryRead": 1294939,
+      "#BinaryTotal": 1294939
+    },
+    "quick_restart_no_lp": {
+      "#Exported": 6342,
+      "#Imported": 8455,
+      "#BinaryRead": 1294939,
+      "#BinaryTotal": 1294939
+    }
+  },
+  "sat_stats": {
+    "auto_no_lp": {
+      "ClassicMinim": 82534,
+      "LitRemoved": 2179446,
+      "LitRemovedBinary": 603605,
+      "LitLearned": 10722380,
+      "LitForgotten": 7633335,
+      "Subsumed": 12116
+    },
+    "fs_random_no_lp": {
+      "ClassicMinim": 61889,
+      "LitRemoved": 2918870,
+      "LitRemovedBinary": 780622,
+      "LitLearned": 12909331,
+      "LitForgotten": 9005475,
+      "Subsumed": 6556
+    },
+    "no_lp": {
+      "ClassicMinim": 90309,
+      "LitRemoved": 1821728,
+      "LitRemovedBinary": 1067918,
+      "LitLearned": 8085355,
+      "LitForgotten": 3106716,
+      "Subsumed": 44329
+    },
+    "portfolio_no_lp": {
+      "ClassicMinim": 85206,
+      "LitRemoved": 1271017,
+      "LitRemovedBinary": 664281,
+      "LitLearned": 6615300,
+      "LitForgotten": 4979458,
+      "Subsumed": 16610
+    },
+    "probing_no_lp": {
+      "ClassicMinim": 0,
+      "LitRemoved": 0,
+      "LitRemovedBinary": 77,
+      "LitLearned": 627,
+      "LitForgotten": 0,
+      "Subsumed": 10
+    },
+    "quick_alt_no_lp": {
+      "ClassicMinim": 17747,
+      "LitRemoved": 146804,
+      "LitRemovedBinary": 117685,
+      "LitLearned": 2520614,
+      "LitForgotten": 962660,
+      "Subsumed": 3177
+    },
+    "quick_restart_no_lp": {
+      "ClassicMinim": 17415,
+      "LitRemoved": 156369,
+      "LitRemovedBinary": 112823,
+      "LitLearned": 2315650,
+      "LitForgotten": 991826,
+      "Subsumed": 3155
+    }
+  },
+  "lp_dimensions": {},
+  "lp_stats": {},
+  "shared_bounds": {
+    "auto_no_lp": {
+      "Num": 192,
+      "Sym": 0
+    },
+    "fs_random_no_lp": {
+      "Num": 90,
+      "Sym": 0
+    },
+    "no_lp": {
+      "Num": 826,
+      "Sym": 0
+    },
+    "portfolio_no_lp": {
+      "Num": 408,
+      "Sym": 0
+    },
+    "probing_no_lp": {
+      "Num": 1265,
+      "Sym": 0
+    },
+    "quick_alt_no_lp": {
+      "Num": 628,
+      "Sym": 0
+    },
+    "quick_restart_no_lp": {
+      "Num": 496,
+      "Sym": 0
+    }
+  },
+  "total_worker_conflicts": 457217,
+  "model_update_count": 147,
+  "model_samples_5min": [],
+  "last_model_update": {
+    "seconds": 170.86,
+    "variables_left": 230512,
+    "variables_total": 234406,
+    "constraints_left": 270677,
+    "constraints_total": 273042
+  },
+  "final_resource": {
+    "utc": "2026-10-13T15:25:02.095429+00:00",
+    "pid": 4239,
+    "cpu_seconds": 1208.787931518,
+    "working_set": 5026533376,
+    "peak_working_set": 5026533376,
+    "average_cpu_cores": 8.014403867027726
+  },
+  "peak_working_set": 5026533376,
+  "persisted_learned_clause_database": false,
+  "cautions": [
+    "UNKNOWN is not a nonexistence certificate",
+    "Counters do not measure the fraction of graphs excluded",
+    "Worker conflicts measure activity, not comparative effectiveness",
+    "Different models and time budgets prevent a controlled speed comparison",
+    "Shared clauses are exchanged within this run, not saved as a reusable database"
+  ]
+}

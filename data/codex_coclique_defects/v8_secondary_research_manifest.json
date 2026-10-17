@@ -1,0 +1,137 @@
+{
+  "created_utc": "2026-10-13T13:31:40.477557+00:00",
+  "base_commit": "46046a400c88855e174e0cdabaee85bd61ff5065",
+  "scope": "Secondary mathematical research; exact convex integer completion and modular combination certificates. No new C1 exclusion or D.",
+  "files": [
+    {
+      "path": "code/codex/coclique_spectral_completion.py",
+      "sha256": "f6dbfa45e113b653a161952fb83acfa59db95737d113e5dfce34edaada80ce91",
+      "bytes": 11775
+    },
+    {
+      "path": "code/codex/coclique_modular_coexistence.py",
+      "sha256": "0dcfc9cac9c65156fe56d2c7c4075791435688daa8fc77f2675d5d626289ef78",
+      "bytes": 5624
+    },
+    {
+      "path": "code/codex/check_coclique_spectral_completion.py",
+      "sha256": "8e976dd9e2fe16c2a3d798a0d5b94271ecd845c3bb56adf1803b8c4999ac8416",
+      "bytes": 8376
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/independent_check.json",
+      "sha256": "3a00a348a658ea3aea3fcbab900f55505a7171775428e83a7dfce439cca40d21",
+      "bytes": 628
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/invalid_regular99_cut.json",
+      "sha256": "05e8d3c162984d3fa2775916a6b9cff1ed1101807d0a2a057da9a9a823e3b75c",
+      "bytes": 2218
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/paley25.json",
+      "sha256": "b344ed2f31dacef5fb52c84215dbe1b88af51e47344ac8366ad9128b2076259a",
+      "bytes": 7051
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/paley49.json",
+      "sha256": "792e28e80a10d6ff0dc8b1539221b1fb2caecf07622d71c62b502ef1737ac1c2",
+      "bytes": 24577
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/petersen.json",
+      "sha256": "951433a80604bcb273a79cb47c8f28c8123758b7bf227a901a98b29c9f1da8db",
+      "bytes": 6405
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/petersen_geometry.json",
+      "sha256": "88b6656bd2574ac033bdc8e954c85bd7793f521de2f438f5bb26dc58b4b305d5",
+      "bytes": 8898
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/petersen_mixed_parity.json",
+      "sha256": "909f3e0537f706350acaff47badc65eb14a3671b9cf45b45edd8d2b5f8f11646",
+      "bytes": 2310
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/petersen_original_parity.json",
+      "sha256": "75c1f91e0b4aff9d8d96b9b6e104067de40c4c9c7dcb8d24078bd2e922b61071",
+      "bytes": 1131
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/rook.json",
+      "sha256": "a11698256288739148abf070ed12e1d1ee3a5e77a73a0ec9e84477f6ebffb102",
+      "bytes": 1429
+    },
+    {
+      "path": "data/codex_coclique_defects/spectral_completion_v8/summary.json",
+      "sha256": "d5cf78c259e85bf6d6ce9ed016dd3d41beb8868789a93d12e83159535d4020f4",
+      "bytes": 821
+    },
+    {
+      "path": "notes/NOTE_COEXISTENCE_DEFAUTS_COCLIQUES_2026_10_12.md",
+      "sha256": "4f5029afbe28157fb758311ab9dfe4db8626291f08084a6820859ecd253dbad2",
+      "bytes": 107562
+    }
+  ],
+  "validation": {
+    "status": "PASS",
+    "new_method_controls": [
+      {
+        "name": "rook",
+        "cuts": 0,
+        "completions": 1
+      },
+      {
+        "name": "petersen",
+        "cuts": 4,
+        "completions": 4
+      },
+      {
+        "name": "paley25",
+        "cuts": 0,
+        "completions": 1
+      },
+      {
+        "name": "paley49",
+        "cuts": 0,
+        "completions": 1
+      }
+    ],
+    "zero_pivot_and_schur_checks": 5,
+    "petersen_global_checks": 8,
+    "fractional_counterexample": true,
+    "combined_parity_proof": true,
+    "actual_C1_spectral_coefficients_negative_control": true,
+    "no_claim_of_C1_exclusion": true
+  },
+  "main_run": {
+    "name": "global_integrated_v7",
+    "process_active": true,
+    "pid": 23356,
+    "last_resource": {
+      "utc": "2026-10-13T13:31:30.873100+00:00",
+      "pid": 23356,
+      "cpu_seconds": 22463.5625,
+      "working_set": 3546238976,
+      "peak_working_set": 5680218112,
+      "average_cpu_cores": 7.914690464292504
+    },
+    "result": null,
+    "unchanged_by_secondary_work": true
+  },
+  "primary_sources": [
+    {
+      "url": "https://proceedings.neurips.cc/paper/2013/file/81e5f81db77c596492e6f1a5a792ed53-Paper.pdf",
+      "use": "Fantope, convex hull of fixed-rank projectors; section2"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1112.6263",
+      "use": "Boolean coefficient matrices and linear combinations; section2.1"
+    },
+    {
+      "url": "https://www.math.univ-paris13.fr/~carlet/chap-fcts-Bool-corr.pdf",
+      "use": "Boolean functions and coding connection; sections2-3"
+    }
+  ]
+}

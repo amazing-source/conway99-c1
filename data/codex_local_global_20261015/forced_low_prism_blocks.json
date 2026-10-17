@@ -1,0 +1,1534 @@
+{
+  "status": "EXACT_NECESSARY_CONSEQUENCE_NOT_A_CONWAY_EXCLUSION",
+  "prism_cap": 852,
+  "total_lines": 231,
+  "total_four_star_flags": 2079,
+  "low_line_definition": "t(line) <= 7",
+  "low_lines_lower": 18,
+  "nongrid_blocks_with_a_low_line_lower": 254,
+  "extremal_scalar_cases": [
+    {
+      "low_lines": 18,
+      "low_prism_sum_upper": 0,
+      "nongrid_low_line_incidences_lower": 324,
+      "low_line_meeting_pairs_upper": 70,
+      "distinct_nongrid_low_line_blocks_lower": 254
+    }
+  ],
+  "missing_sufficient_statement": "No non-grid four-star object with min(t_l,t_m)<=7 passes all necessary Conway block conditions. This statement is OPEN.",
+  "hypotheses": [
+    "Conway SRG parameters (99,14,1,2)",
+    "sum_line t(line)=2P and P<=prism_cap",
+    "A line occurs in 18 four-star flags",
+    "A grid through a line contributes 3 of those flags and 2 distinct prisms",
+    "Each prism belongs to at most one grid",
+    "Line intersection graph has degree18 and largest nontrivial eigenvalue7"
+  ],
+  "proof_formulas": {
+    "deficit": "sum_low(8-t) >= 1848-2P",
+    "incidence_bound_at_852": "I >= max(9m,6m+216)",
+    "spectral_edge_bound": "e(low) <= floor(7m/2+m^2/42)",
+    "block_bound": "N >= max(ceil(I/2), I-e(low))"
+  },
+  "all_cardinalities": [
+    {
+      "low_lines": 18,
+      "low_prism_sum_upper": 0,
+      "nongrid_low_line_incidences_lower": 324,
+      "low_line_meeting_pairs_upper": 70,
+      "distinct_nongrid_low_line_blocks_lower": 254
+    },
+    {
+      "low_lines": 19,
+      "low_prism_sum_upper": 8,
+      "nongrid_low_line_incidences_lower": 330,
+      "low_line_meeting_pairs_upper": 75,
+      "distinct_nongrid_low_line_blocks_lower": 255
+    },
+    {
+      "low_lines": 20,
+      "low_prism_sum_upper": 16,
+      "nongrid_low_line_incidences_lower": 336,
+      "low_line_meeting_pairs_upper": 79,
+      "distinct_nongrid_low_line_blocks_lower": 257
+    },
+    {
+      "low_lines": 21,
+      "low_prism_sum_upper": 24,
+      "nongrid_low_line_incidences_lower": 342,
+      "low_line_meeting_pairs_upper": 84,
+      "distinct_nongrid_low_line_blocks_lower": 258
+    },
+    {
+      "low_lines": 22,
+      "low_prism_sum_upper": 32,
+      "nongrid_low_line_incidences_lower": 348,
+      "low_line_meeting_pairs_upper": 88,
+      "distinct_nongrid_low_line_blocks_lower": 260
+    },
+    {
+      "low_lines": 23,
+      "low_prism_sum_upper": 40,
+      "nongrid_low_line_incidences_lower": 354,
+      "low_line_meeting_pairs_upper": 93,
+      "distinct_nongrid_low_line_blocks_lower": 261
+    },
+    {
+      "low_lines": 24,
+      "low_prism_sum_upper": 48,
+      "nongrid_low_line_incidences_lower": 360,
+      "low_line_meeting_pairs_upper": 97,
+      "distinct_nongrid_low_line_blocks_lower": 263
+    },
+    {
+      "low_lines": 25,
+      "low_prism_sum_upper": 56,
+      "nongrid_low_line_incidences_lower": 366,
+      "low_line_meeting_pairs_upper": 102,
+      "distinct_nongrid_low_line_blocks_lower": 264
+    },
+    {
+      "low_lines": 26,
+      "low_prism_sum_upper": 64,
+      "nongrid_low_line_incidences_lower": 372,
+      "low_line_meeting_pairs_upper": 107,
+      "distinct_nongrid_low_line_blocks_lower": 265
+    },
+    {
+      "low_lines": 27,
+      "low_prism_sum_upper": 72,
+      "nongrid_low_line_incidences_lower": 378,
+      "low_line_meeting_pairs_upper": 111,
+      "distinct_nongrid_low_line_blocks_lower": 267
+    },
+    {
+      "low_lines": 28,
+      "low_prism_sum_upper": 80,
+      "nongrid_low_line_incidences_lower": 384,
+      "low_line_meeting_pairs_upper": 116,
+      "distinct_nongrid_low_line_blocks_lower": 268
+    },
+    {
+      "low_lines": 29,
+      "low_prism_sum_upper": 88,
+      "nongrid_low_line_incidences_lower": 390,
+      "low_line_meeting_pairs_upper": 121,
+      "distinct_nongrid_low_line_blocks_lower": 269
+    },
+    {
+      "low_lines": 30,
+      "low_prism_sum_upper": 96,
+      "nongrid_low_line_incidences_lower": 396,
+      "low_line_meeting_pairs_upper": 126,
+      "distinct_nongrid_low_line_blocks_lower": 270
+    },
+    {
+      "low_lines": 31,
+      "low_prism_sum_upper": 104,
+      "nongrid_low_line_incidences_lower": 402,
+      "low_line_meeting_pairs_upper": 131,
+      "distinct_nongrid_low_line_blocks_lower": 271
+    },
+    {
+      "low_lines": 32,
+      "low_prism_sum_upper": 112,
+      "nongrid_low_line_incidences_lower": 408,
+      "low_line_meeting_pairs_upper": 136,
+      "distinct_nongrid_low_line_blocks_lower": 272
+    },
+    {
+      "low_lines": 33,
+      "low_prism_sum_upper": 120,
+      "nongrid_low_line_incidences_lower": 414,
+      "low_line_meeting_pairs_upper": 141,
+      "distinct_nongrid_low_line_blocks_lower": 273
+    },
+    {
+      "low_lines": 34,
+      "low_prism_sum_upper": 128,
+      "nongrid_low_line_incidences_lower": 420,
+      "low_line_meeting_pairs_upper": 146,
+      "distinct_nongrid_low_line_blocks_lower": 274
+    },
+    {
+      "low_lines": 35,
+      "low_prism_sum_upper": 136,
+      "nongrid_low_line_incidences_lower": 426,
+      "low_line_meeting_pairs_upper": 151,
+      "distinct_nongrid_low_line_blocks_lower": 275
+    },
+    {
+      "low_lines": 36,
+      "low_prism_sum_upper": 144,
+      "nongrid_low_line_incidences_lower": 432,
+      "low_line_meeting_pairs_upper": 156,
+      "distinct_nongrid_low_line_blocks_lower": 276
+    },
+    {
+      "low_lines": 37,
+      "low_prism_sum_upper": 152,
+      "nongrid_low_line_incidences_lower": 438,
+      "low_line_meeting_pairs_upper": 162,
+      "distinct_nongrid_low_line_blocks_lower": 276
+    },
+    {
+      "low_lines": 38,
+      "low_prism_sum_upper": 160,
+      "nongrid_low_line_incidences_lower": 444,
+      "low_line_meeting_pairs_upper": 167,
+      "distinct_nongrid_low_line_blocks_lower": 277
+    },
+    {
+      "low_lines": 39,
+      "low_prism_sum_upper": 168,
+      "nongrid_low_line_incidences_lower": 450,
+      "low_line_meeting_pairs_upper": 172,
+      "distinct_nongrid_low_line_blocks_lower": 278
+    },
+    {
+      "low_lines": 40,
+      "low_prism_sum_upper": 176,
+      "nongrid_low_line_incidences_lower": 456,
+      "low_line_meeting_pairs_upper": 178,
+      "distinct_nongrid_low_line_blocks_lower": 278
+    },
+    {
+      "low_lines": 41,
+      "low_prism_sum_upper": 184,
+      "nongrid_low_line_incidences_lower": 462,
+      "low_line_meeting_pairs_upper": 183,
+      "distinct_nongrid_low_line_blocks_lower": 279
+    },
+    {
+      "low_lines": 42,
+      "low_prism_sum_upper": 192,
+      "nongrid_low_line_incidences_lower": 468,
+      "low_line_meeting_pairs_upper": 189,
+      "distinct_nongrid_low_line_blocks_lower": 279
+    },
+    {
+      "low_lines": 43,
+      "low_prism_sum_upper": 200,
+      "nongrid_low_line_incidences_lower": 474,
+      "low_line_meeting_pairs_upper": 194,
+      "distinct_nongrid_low_line_blocks_lower": 280
+    },
+    {
+      "low_lines": 44,
+      "low_prism_sum_upper": 208,
+      "nongrid_low_line_incidences_lower": 480,
+      "low_line_meeting_pairs_upper": 200,
+      "distinct_nongrid_low_line_blocks_lower": 280
+    },
+    {
+      "low_lines": 45,
+      "low_prism_sum_upper": 216,
+      "nongrid_low_line_incidences_lower": 486,
+      "low_line_meeting_pairs_upper": 205,
+      "distinct_nongrid_low_line_blocks_lower": 281
+    },
+    {
+      "low_lines": 46,
+      "low_prism_sum_upper": 224,
+      "nongrid_low_line_incidences_lower": 492,
+      "low_line_meeting_pairs_upper": 211,
+      "distinct_nongrid_low_line_blocks_lower": 281
+    },
+    {
+      "low_lines": 47,
+      "low_prism_sum_upper": 232,
+      "nongrid_low_line_incidences_lower": 498,
+      "low_line_meeting_pairs_upper": 217,
+      "distinct_nongrid_low_line_blocks_lower": 281
+    },
+    {
+      "low_lines": 48,
+      "low_prism_sum_upper": 240,
+      "nongrid_low_line_incidences_lower": 504,
+      "low_line_meeting_pairs_upper": 222,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 49,
+      "low_prism_sum_upper": 248,
+      "nongrid_low_line_incidences_lower": 510,
+      "low_line_meeting_pairs_upper": 228,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 50,
+      "low_prism_sum_upper": 256,
+      "nongrid_low_line_incidences_lower": 516,
+      "low_line_meeting_pairs_upper": 234,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 51,
+      "low_prism_sum_upper": 264,
+      "nongrid_low_line_incidences_lower": 522,
+      "low_line_meeting_pairs_upper": 240,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 52,
+      "low_prism_sum_upper": 272,
+      "nongrid_low_line_incidences_lower": 528,
+      "low_line_meeting_pairs_upper": 246,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 53,
+      "low_prism_sum_upper": 280,
+      "nongrid_low_line_incidences_lower": 534,
+      "low_line_meeting_pairs_upper": 252,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 54,
+      "low_prism_sum_upper": 288,
+      "nongrid_low_line_incidences_lower": 540,
+      "low_line_meeting_pairs_upper": 258,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 55,
+      "low_prism_sum_upper": 296,
+      "nongrid_low_line_incidences_lower": 546,
+      "low_line_meeting_pairs_upper": 264,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 56,
+      "low_prism_sum_upper": 304,
+      "nongrid_low_line_incidences_lower": 552,
+      "low_line_meeting_pairs_upper": 270,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 57,
+      "low_prism_sum_upper": 312,
+      "nongrid_low_line_incidences_lower": 558,
+      "low_line_meeting_pairs_upper": 276,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 58,
+      "low_prism_sum_upper": 320,
+      "nongrid_low_line_incidences_lower": 564,
+      "low_line_meeting_pairs_upper": 283,
+      "distinct_nongrid_low_line_blocks_lower": 282
+    },
+    {
+      "low_lines": 59,
+      "low_prism_sum_upper": 328,
+      "nongrid_low_line_incidences_lower": 570,
+      "low_line_meeting_pairs_upper": 289,
+      "distinct_nongrid_low_line_blocks_lower": 285
+    },
+    {
+      "low_lines": 60,
+      "low_prism_sum_upper": 336,
+      "nongrid_low_line_incidences_lower": 576,
+      "low_line_meeting_pairs_upper": 295,
+      "distinct_nongrid_low_line_blocks_lower": 288
+    },
+    {
+      "low_lines": 61,
+      "low_prism_sum_upper": 344,
+      "nongrid_low_line_incidences_lower": 582,
+      "low_line_meeting_pairs_upper": 302,
+      "distinct_nongrid_low_line_blocks_lower": 291
+    },
+    {
+      "low_lines": 62,
+      "low_prism_sum_upper": 352,
+      "nongrid_low_line_incidences_lower": 588,
+      "low_line_meeting_pairs_upper": 308,
+      "distinct_nongrid_low_line_blocks_lower": 294
+    },
+    {
+      "low_lines": 63,
+      "low_prism_sum_upper": 360,
+      "nongrid_low_line_incidences_lower": 594,
+      "low_line_meeting_pairs_upper": 315,
+      "distinct_nongrid_low_line_blocks_lower": 297
+    },
+    {
+      "low_lines": 64,
+      "low_prism_sum_upper": 368,
+      "nongrid_low_line_incidences_lower": 600,
+      "low_line_meeting_pairs_upper": 321,
+      "distinct_nongrid_low_line_blocks_lower": 300
+    },
+    {
+      "low_lines": 65,
+      "low_prism_sum_upper": 376,
+      "nongrid_low_line_incidences_lower": 606,
+      "low_line_meeting_pairs_upper": 328,
+      "distinct_nongrid_low_line_blocks_lower": 303
+    },
+    {
+      "low_lines": 66,
+      "low_prism_sum_upper": 384,
+      "nongrid_low_line_incidences_lower": 612,
+      "low_line_meeting_pairs_upper": 334,
+      "distinct_nongrid_low_line_blocks_lower": 306
+    },
+    {
+      "low_lines": 67,
+      "low_prism_sum_upper": 392,
+      "nongrid_low_line_incidences_lower": 618,
+      "low_line_meeting_pairs_upper": 341,
+      "distinct_nongrid_low_line_blocks_lower": 309
+    },
+    {
+      "low_lines": 68,
+      "low_prism_sum_upper": 400,
+      "nongrid_low_line_incidences_lower": 624,
+      "low_line_meeting_pairs_upper": 348,
+      "distinct_nongrid_low_line_blocks_lower": 312
+    },
+    {
+      "low_lines": 69,
+      "low_prism_sum_upper": 408,
+      "nongrid_low_line_incidences_lower": 630,
+      "low_line_meeting_pairs_upper": 354,
+      "distinct_nongrid_low_line_blocks_lower": 315
+    },
+    {
+      "low_lines": 70,
+      "low_prism_sum_upper": 416,
+      "nongrid_low_line_incidences_lower": 636,
+      "low_line_meeting_pairs_upper": 361,
+      "distinct_nongrid_low_line_blocks_lower": 318
+    },
+    {
+      "low_lines": 71,
+      "low_prism_sum_upper": 424,
+      "nongrid_low_line_incidences_lower": 642,
+      "low_line_meeting_pairs_upper": 368,
+      "distinct_nongrid_low_line_blocks_lower": 321
+    },
+    {
+      "low_lines": 72,
+      "low_prism_sum_upper": 432,
+      "nongrid_low_line_incidences_lower": 648,
+      "low_line_meeting_pairs_upper": 375,
+      "distinct_nongrid_low_line_blocks_lower": 324
+    },
+    {
+      "low_lines": 73,
+      "low_prism_sum_upper": 440,
+      "nongrid_low_line_incidences_lower": 657,
+      "low_line_meeting_pairs_upper": 382,
+      "distinct_nongrid_low_line_blocks_lower": 329
+    },
+    {
+      "low_lines": 74,
+      "low_prism_sum_upper": 448,
+      "nongrid_low_line_incidences_lower": 666,
+      "low_line_meeting_pairs_upper": 389,
+      "distinct_nongrid_low_line_blocks_lower": 333
+    },
+    {
+      "low_lines": 75,
+      "low_prism_sum_upper": 456,
+      "nongrid_low_line_incidences_lower": 675,
+      "low_line_meeting_pairs_upper": 396,
+      "distinct_nongrid_low_line_blocks_lower": 338
+    },
+    {
+      "low_lines": 76,
+      "low_prism_sum_upper": 464,
+      "nongrid_low_line_incidences_lower": 684,
+      "low_line_meeting_pairs_upper": 403,
+      "distinct_nongrid_low_line_blocks_lower": 342
+    },
+    {
+      "low_lines": 77,
+      "low_prism_sum_upper": 472,
+      "nongrid_low_line_incidences_lower": 693,
+      "low_line_meeting_pairs_upper": 410,
+      "distinct_nongrid_low_line_blocks_lower": 347
+    },
+    {
+      "low_lines": 78,
+      "low_prism_sum_upper": 480,
+      "nongrid_low_line_incidences_lower": 702,
+      "low_line_meeting_pairs_upper": 417,
+      "distinct_nongrid_low_line_blocks_lower": 351
+    },
+    {
+      "low_lines": 79,
+      "low_prism_sum_upper": 488,
+      "nongrid_low_line_incidences_lower": 711,
+      "low_line_meeting_pairs_upper": 425,
+      "distinct_nongrid_low_line_blocks_lower": 356
+    },
+    {
+      "low_lines": 80,
+      "low_prism_sum_upper": 496,
+      "nongrid_low_line_incidences_lower": 720,
+      "low_line_meeting_pairs_upper": 432,
+      "distinct_nongrid_low_line_blocks_lower": 360
+    },
+    {
+      "low_lines": 81,
+      "low_prism_sum_upper": 504,
+      "nongrid_low_line_incidences_lower": 729,
+      "low_line_meeting_pairs_upper": 439,
+      "distinct_nongrid_low_line_blocks_lower": 365
+    },
+    {
+      "low_lines": 82,
+      "low_prism_sum_upper": 512,
+      "nongrid_low_line_incidences_lower": 738,
+      "low_line_meeting_pairs_upper": 447,
+      "distinct_nongrid_low_line_blocks_lower": 369
+    },
+    {
+      "low_lines": 83,
+      "low_prism_sum_upper": 520,
+      "nongrid_low_line_incidences_lower": 747,
+      "low_line_meeting_pairs_upper": 454,
+      "distinct_nongrid_low_line_blocks_lower": 374
+    },
+    {
+      "low_lines": 84,
+      "low_prism_sum_upper": 528,
+      "nongrid_low_line_incidences_lower": 756,
+      "low_line_meeting_pairs_upper": 462,
+      "distinct_nongrid_low_line_blocks_lower": 378
+    },
+    {
+      "low_lines": 85,
+      "low_prism_sum_upper": 536,
+      "nongrid_low_line_incidences_lower": 765,
+      "low_line_meeting_pairs_upper": 469,
+      "distinct_nongrid_low_line_blocks_lower": 383
+    },
+    {
+      "low_lines": 86,
+      "low_prism_sum_upper": 544,
+      "nongrid_low_line_incidences_lower": 774,
+      "low_line_meeting_pairs_upper": 477,
+      "distinct_nongrid_low_line_blocks_lower": 387
+    },
+    {
+      "low_lines": 87,
+      "low_prism_sum_upper": 552,
+      "nongrid_low_line_incidences_lower": 783,
+      "low_line_meeting_pairs_upper": 484,
+      "distinct_nongrid_low_line_blocks_lower": 392
+    },
+    {
+      "low_lines": 88,
+      "low_prism_sum_upper": 560,
+      "nongrid_low_line_incidences_lower": 792,
+      "low_line_meeting_pairs_upper": 492,
+      "distinct_nongrid_low_line_blocks_lower": 396
+    },
+    {
+      "low_lines": 89,
+      "low_prism_sum_upper": 568,
+      "nongrid_low_line_incidences_lower": 801,
+      "low_line_meeting_pairs_upper": 500,
+      "distinct_nongrid_low_line_blocks_lower": 401
+    },
+    {
+      "low_lines": 90,
+      "low_prism_sum_upper": 576,
+      "nongrid_low_line_incidences_lower": 810,
+      "low_line_meeting_pairs_upper": 507,
+      "distinct_nongrid_low_line_blocks_lower": 405
+    },
+    {
+      "low_lines": 91,
+      "low_prism_sum_upper": 584,
+      "nongrid_low_line_incidences_lower": 819,
+      "low_line_meeting_pairs_upper": 515,
+      "distinct_nongrid_low_line_blocks_lower": 410
+    },
+    {
+      "low_lines": 92,
+      "low_prism_sum_upper": 592,
+      "nongrid_low_line_incidences_lower": 828,
+      "low_line_meeting_pairs_upper": 523,
+      "distinct_nongrid_low_line_blocks_lower": 414
+    },
+    {
+      "low_lines": 93,
+      "low_prism_sum_upper": 600,
+      "nongrid_low_line_incidences_lower": 837,
+      "low_line_meeting_pairs_upper": 531,
+      "distinct_nongrid_low_line_blocks_lower": 419
+    },
+    {
+      "low_lines": 94,
+      "low_prism_sum_upper": 608,
+      "nongrid_low_line_incidences_lower": 846,
+      "low_line_meeting_pairs_upper": 539,
+      "distinct_nongrid_low_line_blocks_lower": 423
+    },
+    {
+      "low_lines": 95,
+      "low_prism_sum_upper": 616,
+      "nongrid_low_line_incidences_lower": 855,
+      "low_line_meeting_pairs_upper": 547,
+      "distinct_nongrid_low_line_blocks_lower": 428
+    },
+    {
+      "low_lines": 96,
+      "low_prism_sum_upper": 624,
+      "nongrid_low_line_incidences_lower": 864,
+      "low_line_meeting_pairs_upper": 555,
+      "distinct_nongrid_low_line_blocks_lower": 432
+    },
+    {
+      "low_lines": 97,
+      "low_prism_sum_upper": 632,
+      "nongrid_low_line_incidences_lower": 873,
+      "low_line_meeting_pairs_upper": 563,
+      "distinct_nongrid_low_line_blocks_lower": 437
+    },
+    {
+      "low_lines": 98,
+      "low_prism_sum_upper": 640,
+      "nongrid_low_line_incidences_lower": 882,
+      "low_line_meeting_pairs_upper": 571,
+      "distinct_nongrid_low_line_blocks_lower": 441
+    },
+    {
+      "low_lines": 99,
+      "low_prism_sum_upper": 648,
+      "nongrid_low_line_incidences_lower": 891,
+      "low_line_meeting_pairs_upper": 579,
+      "distinct_nongrid_low_line_blocks_lower": 446
+    },
+    {
+      "low_lines": 100,
+      "low_prism_sum_upper": 656,
+      "nongrid_low_line_incidences_lower": 900,
+      "low_line_meeting_pairs_upper": 588,
+      "distinct_nongrid_low_line_blocks_lower": 450
+    },
+    {
+      "low_lines": 101,
+      "low_prism_sum_upper": 664,
+      "nongrid_low_line_incidences_lower": 909,
+      "low_line_meeting_pairs_upper": 596,
+      "distinct_nongrid_low_line_blocks_lower": 455
+    },
+    {
+      "low_lines": 102,
+      "low_prism_sum_upper": 672,
+      "nongrid_low_line_incidences_lower": 918,
+      "low_line_meeting_pairs_upper": 604,
+      "distinct_nongrid_low_line_blocks_lower": 459
+    },
+    {
+      "low_lines": 103,
+      "low_prism_sum_upper": 680,
+      "nongrid_low_line_incidences_lower": 927,
+      "low_line_meeting_pairs_upper": 613,
+      "distinct_nongrid_low_line_blocks_lower": 464
+    },
+    {
+      "low_lines": 104,
+      "low_prism_sum_upper": 688,
+      "nongrid_low_line_incidences_lower": 936,
+      "low_line_meeting_pairs_upper": 621,
+      "distinct_nongrid_low_line_blocks_lower": 468
+    },
+    {
+      "low_lines": 105,
+      "low_prism_sum_upper": 696,
+      "nongrid_low_line_incidences_lower": 945,
+      "low_line_meeting_pairs_upper": 630,
+      "distinct_nongrid_low_line_blocks_lower": 473
+    },
+    {
+      "low_lines": 106,
+      "low_prism_sum_upper": 704,
+      "nongrid_low_line_incidences_lower": 954,
+      "low_line_meeting_pairs_upper": 638,
+      "distinct_nongrid_low_line_blocks_lower": 477
+    },
+    {
+      "low_lines": 107,
+      "low_prism_sum_upper": 712,
+      "nongrid_low_line_incidences_lower": 963,
+      "low_line_meeting_pairs_upper": 647,
+      "distinct_nongrid_low_line_blocks_lower": 482
+    },
+    {
+      "low_lines": 108,
+      "low_prism_sum_upper": 720,
+      "nongrid_low_line_incidences_lower": 972,
+      "low_line_meeting_pairs_upper": 655,
+      "distinct_nongrid_low_line_blocks_lower": 486
+    },
+    {
+      "low_lines": 109,
+      "low_prism_sum_upper": 728,
+      "nongrid_low_line_incidences_lower": 981,
+      "low_line_meeting_pairs_upper": 664,
+      "distinct_nongrid_low_line_blocks_lower": 491
+    },
+    {
+      "low_lines": 110,
+      "low_prism_sum_upper": 736,
+      "nongrid_low_line_incidences_lower": 990,
+      "low_line_meeting_pairs_upper": 673,
+      "distinct_nongrid_low_line_blocks_lower": 495
+    },
+    {
+      "low_lines": 111,
+      "low_prism_sum_upper": 744,
+      "nongrid_low_line_incidences_lower": 999,
+      "low_line_meeting_pairs_upper": 681,
+      "distinct_nongrid_low_line_blocks_lower": 500
+    },
+    {
+      "low_lines": 112,
+      "low_prism_sum_upper": 752,
+      "nongrid_low_line_incidences_lower": 1008,
+      "low_line_meeting_pairs_upper": 690,
+      "distinct_nongrid_low_line_blocks_lower": 504
+    },
+    {
+      "low_lines": 113,
+      "low_prism_sum_upper": 760,
+      "nongrid_low_line_incidences_lower": 1017,
+      "low_line_meeting_pairs_upper": 699,
+      "distinct_nongrid_low_line_blocks_lower": 509
+    },
+    {
+      "low_lines": 114,
+      "low_prism_sum_upper": 768,
+      "nongrid_low_line_incidences_lower": 1026,
+      "low_line_meeting_pairs_upper": 708,
+      "distinct_nongrid_low_line_blocks_lower": 513
+    },
+    {
+      "low_lines": 115,
+      "low_prism_sum_upper": 776,
+      "nongrid_low_line_incidences_lower": 1035,
+      "low_line_meeting_pairs_upper": 717,
+      "distinct_nongrid_low_line_blocks_lower": 518
+    },
+    {
+      "low_lines": 116,
+      "low_prism_sum_upper": 784,
+      "nongrid_low_line_incidences_lower": 1044,
+      "low_line_meeting_pairs_upper": 726,
+      "distinct_nongrid_low_line_blocks_lower": 522
+    },
+    {
+      "low_lines": 117,
+      "low_prism_sum_upper": 792,
+      "nongrid_low_line_incidences_lower": 1053,
+      "low_line_meeting_pairs_upper": 735,
+      "distinct_nongrid_low_line_blocks_lower": 527
+    },
+    {
+      "low_lines": 118,
+      "low_prism_sum_upper": 800,
+      "nongrid_low_line_incidences_lower": 1062,
+      "low_line_meeting_pairs_upper": 744,
+      "distinct_nongrid_low_line_blocks_lower": 531
+    },
+    {
+      "low_lines": 119,
+      "low_prism_sum_upper": 808,
+      "nongrid_low_line_incidences_lower": 1071,
+      "low_line_meeting_pairs_upper": 753,
+      "distinct_nongrid_low_line_blocks_lower": 536
+    },
+    {
+      "low_lines": 120,
+      "low_prism_sum_upper": 816,
+      "nongrid_low_line_incidences_lower": 1080,
+      "low_line_meeting_pairs_upper": 762,
+      "distinct_nongrid_low_line_blocks_lower": 540
+    },
+    {
+      "low_lines": 121,
+      "low_prism_sum_upper": 824,
+      "nongrid_low_line_incidences_lower": 1089,
+      "low_line_meeting_pairs_upper": 772,
+      "distinct_nongrid_low_line_blocks_lower": 545
+    },
+    {
+      "low_lines": 122,
+      "low_prism_sum_upper": 832,
+      "nongrid_low_line_incidences_lower": 1098,
+      "low_line_meeting_pairs_upper": 781,
+      "distinct_nongrid_low_line_blocks_lower": 549
+    },
+    {
+      "low_lines": 123,
+      "low_prism_sum_upper": 840,
+      "nongrid_low_line_incidences_lower": 1107,
+      "low_line_meeting_pairs_upper": 790,
+      "distinct_nongrid_low_line_blocks_lower": 554
+    },
+    {
+      "low_lines": 124,
+      "low_prism_sum_upper": 848,
+      "nongrid_low_line_incidences_lower": 1116,
+      "low_line_meeting_pairs_upper": 800,
+      "distinct_nongrid_low_line_blocks_lower": 558
+    },
+    {
+      "low_lines": 125,
+      "low_prism_sum_upper": 856,
+      "nongrid_low_line_incidences_lower": 1125,
+      "low_line_meeting_pairs_upper": 809,
+      "distinct_nongrid_low_line_blocks_lower": 563
+    },
+    {
+      "low_lines": 126,
+      "low_prism_sum_upper": 864,
+      "nongrid_low_line_incidences_lower": 1134,
+      "low_line_meeting_pairs_upper": 819,
+      "distinct_nongrid_low_line_blocks_lower": 567
+    },
+    {
+      "low_lines": 127,
+      "low_prism_sum_upper": 872,
+      "nongrid_low_line_incidences_lower": 1143,
+      "low_line_meeting_pairs_upper": 828,
+      "distinct_nongrid_low_line_blocks_lower": 572
+    },
+    {
+      "low_lines": 128,
+      "low_prism_sum_upper": 880,
+      "nongrid_low_line_incidences_lower": 1152,
+      "low_line_meeting_pairs_upper": 838,
+      "distinct_nongrid_low_line_blocks_lower": 576
+    },
+    {
+      "low_lines": 129,
+      "low_prism_sum_upper": 888,
+      "nongrid_low_line_incidences_lower": 1161,
+      "low_line_meeting_pairs_upper": 847,
+      "distinct_nongrid_low_line_blocks_lower": 581
+    },
+    {
+      "low_lines": 130,
+      "low_prism_sum_upper": 896,
+      "nongrid_low_line_incidences_lower": 1170,
+      "low_line_meeting_pairs_upper": 857,
+      "distinct_nongrid_low_line_blocks_lower": 585
+    },
+    {
+      "low_lines": 131,
+      "low_prism_sum_upper": 904,
+      "nongrid_low_line_incidences_lower": 1179,
+      "low_line_meeting_pairs_upper": 867,
+      "distinct_nongrid_low_line_blocks_lower": 590
+    },
+    {
+      "low_lines": 132,
+      "low_prism_sum_upper": 912,
+      "nongrid_low_line_incidences_lower": 1188,
+      "low_line_meeting_pairs_upper": 876,
+      "distinct_nongrid_low_line_blocks_lower": 594
+    },
+    {
+      "low_lines": 133,
+      "low_prism_sum_upper": 920,
+      "nongrid_low_line_incidences_lower": 1197,
+      "low_line_meeting_pairs_upper": 886,
+      "distinct_nongrid_low_line_blocks_lower": 599
+    },
+    {
+      "low_lines": 134,
+      "low_prism_sum_upper": 928,
+      "nongrid_low_line_incidences_lower": 1206,
+      "low_line_meeting_pairs_upper": 896,
+      "distinct_nongrid_low_line_blocks_lower": 603
+    },
+    {
+      "low_lines": 135,
+      "low_prism_sum_upper": 936,
+      "nongrid_low_line_incidences_lower": 1215,
+      "low_line_meeting_pairs_upper": 906,
+      "distinct_nongrid_low_line_blocks_lower": 608
+    },
+    {
+      "low_lines": 136,
+      "low_prism_sum_upper": 944,
+      "nongrid_low_line_incidences_lower": 1224,
+      "low_line_meeting_pairs_upper": 916,
+      "distinct_nongrid_low_line_blocks_lower": 612
+    },
+    {
+      "low_lines": 137,
+      "low_prism_sum_upper": 952,
+      "nongrid_low_line_incidences_lower": 1233,
+      "low_line_meeting_pairs_upper": 926,
+      "distinct_nongrid_low_line_blocks_lower": 617
+    },
+    {
+      "low_lines": 138,
+      "low_prism_sum_upper": 960,
+      "nongrid_low_line_incidences_lower": 1242,
+      "low_line_meeting_pairs_upper": 936,
+      "distinct_nongrid_low_line_blocks_lower": 621
+    },
+    {
+      "low_lines": 139,
+      "low_prism_sum_upper": 968,
+      "nongrid_low_line_incidences_lower": 1251,
+      "low_line_meeting_pairs_upper": 946,
+      "distinct_nongrid_low_line_blocks_lower": 626
+    },
+    {
+      "low_lines": 140,
+      "low_prism_sum_upper": 976,
+      "nongrid_low_line_incidences_lower": 1260,
+      "low_line_meeting_pairs_upper": 956,
+      "distinct_nongrid_low_line_blocks_lower": 630
+    },
+    {
+      "low_lines": 141,
+      "low_prism_sum_upper": 984,
+      "nongrid_low_line_incidences_lower": 1269,
+      "low_line_meeting_pairs_upper": 966,
+      "distinct_nongrid_low_line_blocks_lower": 635
+    },
+    {
+      "low_lines": 142,
+      "low_prism_sum_upper": 992,
+      "nongrid_low_line_incidences_lower": 1278,
+      "low_line_meeting_pairs_upper": 977,
+      "distinct_nongrid_low_line_blocks_lower": 639
+    },
+    {
+      "low_lines": 143,
+      "low_prism_sum_upper": 1000,
+      "nongrid_low_line_incidences_lower": 1287,
+      "low_line_meeting_pairs_upper": 987,
+      "distinct_nongrid_low_line_blocks_lower": 644
+    },
+    {
+      "low_lines": 144,
+      "low_prism_sum_upper": 1008,
+      "nongrid_low_line_incidences_lower": 1296,
+      "low_line_meeting_pairs_upper": 997,
+      "distinct_nongrid_low_line_blocks_lower": 648
+    },
+    {
+      "low_lines": 145,
+      "low_prism_sum_upper": 1015,
+      "nongrid_low_line_incidences_lower": 1305,
+      "low_line_meeting_pairs_upper": 1008,
+      "distinct_nongrid_low_line_blocks_lower": 653
+    },
+    {
+      "low_lines": 146,
+      "low_prism_sum_upper": 1022,
+      "nongrid_low_line_incidences_lower": 1314,
+      "low_line_meeting_pairs_upper": 1018,
+      "distinct_nongrid_low_line_blocks_lower": 657
+    },
+    {
+      "low_lines": 147,
+      "low_prism_sum_upper": 1029,
+      "nongrid_low_line_incidences_lower": 1323,
+      "low_line_meeting_pairs_upper": 1029,
+      "distinct_nongrid_low_line_blocks_lower": 662
+    },
+    {
+      "low_lines": 148,
+      "low_prism_sum_upper": 1036,
+      "nongrid_low_line_incidences_lower": 1332,
+      "low_line_meeting_pairs_upper": 1039,
+      "distinct_nongrid_low_line_blocks_lower": 666
+    },
+    {
+      "low_lines": 149,
+      "low_prism_sum_upper": 1043,
+      "nongrid_low_line_incidences_lower": 1341,
+      "low_line_meeting_pairs_upper": 1050,
+      "distinct_nongrid_low_line_blocks_lower": 671
+    },
+    {
+      "low_lines": 150,
+      "low_prism_sum_upper": 1050,
+      "nongrid_low_line_incidences_lower": 1350,
+      "low_line_meeting_pairs_upper": 1060,
+      "distinct_nongrid_low_line_blocks_lower": 675
+    },
+    {
+      "low_lines": 151,
+      "low_prism_sum_upper": 1057,
+      "nongrid_low_line_incidences_lower": 1359,
+      "low_line_meeting_pairs_upper": 1071,
+      "distinct_nongrid_low_line_blocks_lower": 680
+    },
+    {
+      "low_lines": 152,
+      "low_prism_sum_upper": 1064,
+      "nongrid_low_line_incidences_lower": 1368,
+      "low_line_meeting_pairs_upper": 1082,
+      "distinct_nongrid_low_line_blocks_lower": 684
+    },
+    {
+      "low_lines": 153,
+      "low_prism_sum_upper": 1071,
+      "nongrid_low_line_incidences_lower": 1377,
+      "low_line_meeting_pairs_upper": 1092,
+      "distinct_nongrid_low_line_blocks_lower": 689
+    },
+    {
+      "low_lines": 154,
+      "low_prism_sum_upper": 1078,
+      "nongrid_low_line_incidences_lower": 1386,
+      "low_line_meeting_pairs_upper": 1103,
+      "distinct_nongrid_low_line_blocks_lower": 693
+    },
+    {
+      "low_lines": 155,
+      "low_prism_sum_upper": 1085,
+      "nongrid_low_line_incidences_lower": 1395,
+      "low_line_meeting_pairs_upper": 1114,
+      "distinct_nongrid_low_line_blocks_lower": 698
+    },
+    {
+      "low_lines": 156,
+      "low_prism_sum_upper": 1092,
+      "nongrid_low_line_incidences_lower": 1404,
+      "low_line_meeting_pairs_upper": 1125,
+      "distinct_nongrid_low_line_blocks_lower": 702
+    },
+    {
+      "low_lines": 157,
+      "low_prism_sum_upper": 1099,
+      "nongrid_low_line_incidences_lower": 1413,
+      "low_line_meeting_pairs_upper": 1136,
+      "distinct_nongrid_low_line_blocks_lower": 707
+    },
+    {
+      "low_lines": 158,
+      "low_prism_sum_upper": 1106,
+      "nongrid_low_line_incidences_lower": 1422,
+      "low_line_meeting_pairs_upper": 1147,
+      "distinct_nongrid_low_line_blocks_lower": 711
+    },
+    {
+      "low_lines": 159,
+      "low_prism_sum_upper": 1113,
+      "nongrid_low_line_incidences_lower": 1431,
+      "low_line_meeting_pairs_upper": 1158,
+      "distinct_nongrid_low_line_blocks_lower": 716
+    },
+    {
+      "low_lines": 160,
+      "low_prism_sum_upper": 1120,
+      "nongrid_low_line_incidences_lower": 1440,
+      "low_line_meeting_pairs_upper": 1169,
+      "distinct_nongrid_low_line_blocks_lower": 720
+    },
+    {
+      "low_lines": 161,
+      "low_prism_sum_upper": 1127,
+      "nongrid_low_line_incidences_lower": 1449,
+      "low_line_meeting_pairs_upper": 1180,
+      "distinct_nongrid_low_line_blocks_lower": 725
+    },
+    {
+      "low_lines": 162,
+      "low_prism_sum_upper": 1134,
+      "nongrid_low_line_incidences_lower": 1458,
+      "low_line_meeting_pairs_upper": 1191,
+      "distinct_nongrid_low_line_blocks_lower": 729
+    },
+    {
+      "low_lines": 163,
+      "low_prism_sum_upper": 1141,
+      "nongrid_low_line_incidences_lower": 1467,
+      "low_line_meeting_pairs_upper": 1203,
+      "distinct_nongrid_low_line_blocks_lower": 734
+    },
+    {
+      "low_lines": 164,
+      "low_prism_sum_upper": 1148,
+      "nongrid_low_line_incidences_lower": 1476,
+      "low_line_meeting_pairs_upper": 1214,
+      "distinct_nongrid_low_line_blocks_lower": 738
+    },
+    {
+      "low_lines": 165,
+      "low_prism_sum_upper": 1155,
+      "nongrid_low_line_incidences_lower": 1485,
+      "low_line_meeting_pairs_upper": 1225,
+      "distinct_nongrid_low_line_blocks_lower": 743
+    },
+    {
+      "low_lines": 166,
+      "low_prism_sum_upper": 1162,
+      "nongrid_low_line_incidences_lower": 1494,
+      "low_line_meeting_pairs_upper": 1237,
+      "distinct_nongrid_low_line_blocks_lower": 747
+    },
+    {
+      "low_lines": 167,
+      "low_prism_sum_upper": 1169,
+      "nongrid_low_line_incidences_lower": 1503,
+      "low_line_meeting_pairs_upper": 1248,
+      "distinct_nongrid_low_line_blocks_lower": 752
+    },
+    {
+      "low_lines": 168,
+      "low_prism_sum_upper": 1176,
+      "nongrid_low_line_incidences_lower": 1512,
+      "low_line_meeting_pairs_upper": 1260,
+      "distinct_nongrid_low_line_blocks_lower": 756
+    },
+    {
+      "low_lines": 169,
+      "low_prism_sum_upper": 1183,
+      "nongrid_low_line_incidences_lower": 1521,
+      "low_line_meeting_pairs_upper": 1271,
+      "distinct_nongrid_low_line_blocks_lower": 761
+    },
+    {
+      "low_lines": 170,
+      "low_prism_sum_upper": 1190,
+      "nongrid_low_line_incidences_lower": 1530,
+      "low_line_meeting_pairs_upper": 1283,
+      "distinct_nongrid_low_line_blocks_lower": 765
+    },
+    {
+      "low_lines": 171,
+      "low_prism_sum_upper": 1197,
+      "nongrid_low_line_incidences_lower": 1539,
+      "low_line_meeting_pairs_upper": 1294,
+      "distinct_nongrid_low_line_blocks_lower": 770
+    },
+    {
+      "low_lines": 172,
+      "low_prism_sum_upper": 1204,
+      "nongrid_low_line_incidences_lower": 1548,
+      "low_line_meeting_pairs_upper": 1306,
+      "distinct_nongrid_low_line_blocks_lower": 774
+    },
+    {
+      "low_lines": 173,
+      "low_prism_sum_upper": 1211,
+      "nongrid_low_line_incidences_lower": 1557,
+      "low_line_meeting_pairs_upper": 1318,
+      "distinct_nongrid_low_line_blocks_lower": 779
+    },
+    {
+      "low_lines": 174,
+      "low_prism_sum_upper": 1218,
+      "nongrid_low_line_incidences_lower": 1566,
+      "low_line_meeting_pairs_upper": 1329,
+      "distinct_nongrid_low_line_blocks_lower": 783
+    },
+    {
+      "low_lines": 175,
+      "low_prism_sum_upper": 1225,
+      "nongrid_low_line_incidences_lower": 1575,
+      "low_line_meeting_pairs_upper": 1341,
+      "distinct_nongrid_low_line_blocks_lower": 788
+    },
+    {
+      "low_lines": 176,
+      "low_prism_sum_upper": 1232,
+      "nongrid_low_line_incidences_lower": 1584,
+      "low_line_meeting_pairs_upper": 1353,
+      "distinct_nongrid_low_line_blocks_lower": 792
+    },
+    {
+      "low_lines": 177,
+      "low_prism_sum_upper": 1239,
+      "nongrid_low_line_incidences_lower": 1593,
+      "low_line_meeting_pairs_upper": 1365,
+      "distinct_nongrid_low_line_blocks_lower": 797
+    },
+    {
+      "low_lines": 178,
+      "low_prism_sum_upper": 1246,
+      "nongrid_low_line_incidences_lower": 1602,
+      "low_line_meeting_pairs_upper": 1377,
+      "distinct_nongrid_low_line_blocks_lower": 801
+    },
+    {
+      "low_lines": 179,
+      "low_prism_sum_upper": 1253,
+      "nongrid_low_line_incidences_lower": 1611,
+      "low_line_meeting_pairs_upper": 1389,
+      "distinct_nongrid_low_line_blocks_lower": 806
+    },
+    {
+      "low_lines": 180,
+      "low_prism_sum_upper": 1260,
+      "nongrid_low_line_incidences_lower": 1620,
+      "low_line_meeting_pairs_upper": 1401,
+      "distinct_nongrid_low_line_blocks_lower": 810
+    },
+    {
+      "low_lines": 181,
+      "low_prism_sum_upper": 1267,
+      "nongrid_low_line_incidences_lower": 1629,
+      "low_line_meeting_pairs_upper": 1413,
+      "distinct_nongrid_low_line_blocks_lower": 815
+    },
+    {
+      "low_lines": 182,
+      "low_prism_sum_upper": 1274,
+      "nongrid_low_line_incidences_lower": 1638,
+      "low_line_meeting_pairs_upper": 1425,
+      "distinct_nongrid_low_line_blocks_lower": 819
+    },
+    {
+      "low_lines": 183,
+      "low_prism_sum_upper": 1281,
+      "nongrid_low_line_incidences_lower": 1647,
+      "low_line_meeting_pairs_upper": 1437,
+      "distinct_nongrid_low_line_blocks_lower": 824
+    },
+    {
+      "low_lines": 184,
+      "low_prism_sum_upper": 1288,
+      "nongrid_low_line_incidences_lower": 1656,
+      "low_line_meeting_pairs_upper": 1450,
+      "distinct_nongrid_low_line_blocks_lower": 828
+    },
+    {
+      "low_lines": 185,
+      "low_prism_sum_upper": 1295,
+      "nongrid_low_line_incidences_lower": 1665,
+      "low_line_meeting_pairs_upper": 1462,
+      "distinct_nongrid_low_line_blocks_lower": 833
+    },
+    {
+      "low_lines": 186,
+      "low_prism_sum_upper": 1302,
+      "nongrid_low_line_incidences_lower": 1674,
+      "low_line_meeting_pairs_upper": 1474,
+      "distinct_nongrid_low_line_blocks_lower": 837
+    },
+    {
+      "low_lines": 187,
+      "low_prism_sum_upper": 1309,
+      "nongrid_low_line_incidences_lower": 1683,
+      "low_line_meeting_pairs_upper": 1487,
+      "distinct_nongrid_low_line_blocks_lower": 842
+    },
+    {
+      "low_lines": 188,
+      "low_prism_sum_upper": 1316,
+      "nongrid_low_line_incidences_lower": 1692,
+      "low_line_meeting_pairs_upper": 1499,
+      "distinct_nongrid_low_line_blocks_lower": 846
+    },
+    {
+      "low_lines": 189,
+      "low_prism_sum_upper": 1323,
+      "nongrid_low_line_incidences_lower": 1701,
+      "low_line_meeting_pairs_upper": 1512,
+      "distinct_nongrid_low_line_blocks_lower": 851
+    },
+    {
+      "low_lines": 190,
+      "low_prism_sum_upper": 1330,
+      "nongrid_low_line_incidences_lower": 1710,
+      "low_line_meeting_pairs_upper": 1524,
+      "distinct_nongrid_low_line_blocks_lower": 855
+    },
+    {
+      "low_lines": 191,
+      "low_prism_sum_upper": 1337,
+      "nongrid_low_line_incidences_lower": 1719,
+      "low_line_meeting_pairs_upper": 1537,
+      "distinct_nongrid_low_line_blocks_lower": 860
+    },
+    {
+      "low_lines": 192,
+      "low_prism_sum_upper": 1344,
+      "nongrid_low_line_incidences_lower": 1728,
+      "low_line_meeting_pairs_upper": 1549,
+      "distinct_nongrid_low_line_blocks_lower": 864
+    },
+    {
+      "low_lines": 193,
+      "low_prism_sum_upper": 1351,
+      "nongrid_low_line_incidences_lower": 1737,
+      "low_line_meeting_pairs_upper": 1562,
+      "distinct_nongrid_low_line_blocks_lower": 869
+    },
+    {
+      "low_lines": 194,
+      "low_prism_sum_upper": 1358,
+      "nongrid_low_line_incidences_lower": 1746,
+      "low_line_meeting_pairs_upper": 1575,
+      "distinct_nongrid_low_line_blocks_lower": 873
+    },
+    {
+      "low_lines": 195,
+      "low_prism_sum_upper": 1365,
+      "nongrid_low_line_incidences_lower": 1755,
+      "low_line_meeting_pairs_upper": 1587,
+      "distinct_nongrid_low_line_blocks_lower": 878
+    },
+    {
+      "low_lines": 196,
+      "low_prism_sum_upper": 1372,
+      "nongrid_low_line_incidences_lower": 1764,
+      "low_line_meeting_pairs_upper": 1600,
+      "distinct_nongrid_low_line_blocks_lower": 882
+    },
+    {
+      "low_lines": 197,
+      "low_prism_sum_upper": 1379,
+      "nongrid_low_line_incidences_lower": 1773,
+      "low_line_meeting_pairs_upper": 1613,
+      "distinct_nongrid_low_line_blocks_lower": 887
+    },
+    {
+      "low_lines": 198,
+      "low_prism_sum_upper": 1386,
+      "nongrid_low_line_incidences_lower": 1782,
+      "low_line_meeting_pairs_upper": 1626,
+      "distinct_nongrid_low_line_blocks_lower": 891
+    },
+    {
+      "low_lines": 199,
+      "low_prism_sum_upper": 1393,
+      "nongrid_low_line_incidences_lower": 1791,
+      "low_line_meeting_pairs_upper": 1639,
+      "distinct_nongrid_low_line_blocks_lower": 896
+    },
+    {
+      "low_lines": 200,
+      "low_prism_sum_upper": 1400,
+      "nongrid_low_line_incidences_lower": 1800,
+      "low_line_meeting_pairs_upper": 1652,
+      "distinct_nongrid_low_line_blocks_lower": 900
+    },
+    {
+      "low_lines": 201,
+      "low_prism_sum_upper": 1407,
+      "nongrid_low_line_incidences_lower": 1809,
+      "low_line_meeting_pairs_upper": 1665,
+      "distinct_nongrid_low_line_blocks_lower": 905
+    },
+    {
+      "low_lines": 202,
+      "low_prism_sum_upper": 1414,
+      "nongrid_low_line_incidences_lower": 1818,
+      "low_line_meeting_pairs_upper": 1678,
+      "distinct_nongrid_low_line_blocks_lower": 909
+    },
+    {
+      "low_lines": 203,
+      "low_prism_sum_upper": 1421,
+      "nongrid_low_line_incidences_lower": 1827,
+      "low_line_meeting_pairs_upper": 1691,
+      "distinct_nongrid_low_line_blocks_lower": 914
+    },
+    {
+      "low_lines": 204,
+      "low_prism_sum_upper": 1428,
+      "nongrid_low_line_incidences_lower": 1836,
+      "low_line_meeting_pairs_upper": 1704,
+      "distinct_nongrid_low_line_blocks_lower": 918
+    },
+    {
+      "low_lines": 205,
+      "low_prism_sum_upper": 1435,
+      "nongrid_low_line_incidences_lower": 1845,
+      "low_line_meeting_pairs_upper": 1718,
+      "distinct_nongrid_low_line_blocks_lower": 923
+    },
+    {
+      "low_lines": 206,
+      "low_prism_sum_upper": 1442,
+      "nongrid_low_line_incidences_lower": 1854,
+      "low_line_meeting_pairs_upper": 1731,
+      "distinct_nongrid_low_line_blocks_lower": 927
+    },
+    {
+      "low_lines": 207,
+      "low_prism_sum_upper": 1449,
+      "nongrid_low_line_incidences_lower": 1863,
+      "low_line_meeting_pairs_upper": 1744,
+      "distinct_nongrid_low_line_blocks_lower": 932
+    },
+    {
+      "low_lines": 208,
+      "low_prism_sum_upper": 1456,
+      "nongrid_low_line_incidences_lower": 1872,
+      "low_line_meeting_pairs_upper": 1758,
+      "distinct_nongrid_low_line_blocks_lower": 936
+    },
+    {
+      "low_lines": 209,
+      "low_prism_sum_upper": 1463,
+      "nongrid_low_line_incidences_lower": 1881,
+      "low_line_meeting_pairs_upper": 1771,
+      "distinct_nongrid_low_line_blocks_lower": 941
+    },
+    {
+      "low_lines": 210,
+      "low_prism_sum_upper": 1470,
+      "nongrid_low_line_incidences_lower": 1890,
+      "low_line_meeting_pairs_upper": 1785,
+      "distinct_nongrid_low_line_blocks_lower": 945
+    },
+    {
+      "low_lines": 211,
+      "low_prism_sum_upper": 1477,
+      "nongrid_low_line_incidences_lower": 1899,
+      "low_line_meeting_pairs_upper": 1798,
+      "distinct_nongrid_low_line_blocks_lower": 950
+    },
+    {
+      "low_lines": 212,
+      "low_prism_sum_upper": 1484,
+      "nongrid_low_line_incidences_lower": 1908,
+      "low_line_meeting_pairs_upper": 1812,
+      "distinct_nongrid_low_line_blocks_lower": 954
+    },
+    {
+      "low_lines": 213,
+      "low_prism_sum_upper": 1491,
+      "nongrid_low_line_incidences_lower": 1917,
+      "low_line_meeting_pairs_upper": 1825,
+      "distinct_nongrid_low_line_blocks_lower": 959
+    },
+    {
+      "low_lines": 214,
+      "low_prism_sum_upper": 1498,
+      "nongrid_low_line_incidences_lower": 1926,
+      "low_line_meeting_pairs_upper": 1839,
+      "distinct_nongrid_low_line_blocks_lower": 963
+    },
+    {
+      "low_lines": 215,
+      "low_prism_sum_upper": 1505,
+      "nongrid_low_line_incidences_lower": 1935,
+      "low_line_meeting_pairs_upper": 1853,
+      "distinct_nongrid_low_line_blocks_lower": 968
+    },
+    {
+      "low_lines": 216,
+      "low_prism_sum_upper": 1512,
+      "nongrid_low_line_incidences_lower": 1944,
+      "low_line_meeting_pairs_upper": 1866,
+      "distinct_nongrid_low_line_blocks_lower": 972
+    },
+    {
+      "low_lines": 217,
+      "low_prism_sum_upper": 1519,
+      "nongrid_low_line_incidences_lower": 1953,
+      "low_line_meeting_pairs_upper": 1880,
+      "distinct_nongrid_low_line_blocks_lower": 977
+    },
+    {
+      "low_lines": 218,
+      "low_prism_sum_upper": 1526,
+      "nongrid_low_line_incidences_lower": 1962,
+      "low_line_meeting_pairs_upper": 1894,
+      "distinct_nongrid_low_line_blocks_lower": 981
+    },
+    {
+      "low_lines": 219,
+      "low_prism_sum_upper": 1533,
+      "nongrid_low_line_incidences_lower": 1971,
+      "low_line_meeting_pairs_upper": 1908,
+      "distinct_nongrid_low_line_blocks_lower": 986
+    },
+    {
+      "low_lines": 220,
+      "low_prism_sum_upper": 1540,
+      "nongrid_low_line_incidences_lower": 1980,
+      "low_line_meeting_pairs_upper": 1922,
+      "distinct_nongrid_low_line_blocks_lower": 990
+    },
+    {
+      "low_lines": 221,
+      "low_prism_sum_upper": 1547,
+      "nongrid_low_line_incidences_lower": 1989,
+      "low_line_meeting_pairs_upper": 1936,
+      "distinct_nongrid_low_line_blocks_lower": 995
+    },
+    {
+      "low_lines": 222,
+      "low_prism_sum_upper": 1554,
+      "nongrid_low_line_incidences_lower": 1998,
+      "low_line_meeting_pairs_upper": 1950,
+      "distinct_nongrid_low_line_blocks_lower": 999
+    },
+    {
+      "low_lines": 223,
+      "low_prism_sum_upper": 1561,
+      "nongrid_low_line_incidences_lower": 2007,
+      "low_line_meeting_pairs_upper": 1964,
+      "distinct_nongrid_low_line_blocks_lower": 1004
+    },
+    {
+      "low_lines": 224,
+      "low_prism_sum_upper": 1568,
+      "nongrid_low_line_incidences_lower": 2016,
+      "low_line_meeting_pairs_upper": 1978,
+      "distinct_nongrid_low_line_blocks_lower": 1008
+    },
+    {
+      "low_lines": 225,
+      "low_prism_sum_upper": 1575,
+      "nongrid_low_line_incidences_lower": 2025,
+      "low_line_meeting_pairs_upper": 1992,
+      "distinct_nongrid_low_line_blocks_lower": 1013
+    },
+    {
+      "low_lines": 226,
+      "low_prism_sum_upper": 1582,
+      "nongrid_low_line_incidences_lower": 2034,
+      "low_line_meeting_pairs_upper": 2007,
+      "distinct_nongrid_low_line_blocks_lower": 1017
+    },
+    {
+      "low_lines": 227,
+      "low_prism_sum_upper": 1589,
+      "nongrid_low_line_incidences_lower": 2043,
+      "low_line_meeting_pairs_upper": 2021,
+      "distinct_nongrid_low_line_blocks_lower": 1022
+    },
+    {
+      "low_lines": 228,
+      "low_prism_sum_upper": 1596,
+      "nongrid_low_line_incidences_lower": 2052,
+      "low_line_meeting_pairs_upper": 2035,
+      "distinct_nongrid_low_line_blocks_lower": 1026
+    },
+    {
+      "low_lines": 229,
+      "low_prism_sum_upper": 1603,
+      "nongrid_low_line_incidences_lower": 2061,
+      "low_line_meeting_pairs_upper": 2050,
+      "distinct_nongrid_low_line_blocks_lower": 1031
+    },
+    {
+      "low_lines": 230,
+      "low_prism_sum_upper": 1610,
+      "nongrid_low_line_incidences_lower": 2070,
+      "low_line_meeting_pairs_upper": 2064,
+      "distinct_nongrid_low_line_blocks_lower": 1035
+    },
+    {
+      "low_lines": 231,
+      "low_prism_sum_upper": 1617,
+      "nongrid_low_line_incidences_lower": 2079,
+      "low_line_meeting_pairs_upper": 2079,
+      "distinct_nongrid_low_line_blocks_lower": 1040
+    }
+  ],
+  "sharpness": "254 is the minimum of these scalar lower bounds; no realizing graph or optimality for actual Conway blocks is asserted."
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-14",
+  "objective": "Construct an actual asymmetric strongly regular graph with lambda=1; verify exact parameters and the full uncolored automorphism group",
+  "objective_achieved": false,
+  "working_environment": "../c1-lambda1-env/Scripts/python.exe",
+  "incremental_constructor": {
+    "description": "Assign complete neighborhoods using fixed-boundary common-neighbor equations, saturation cuts, canonical labels for equal boundary columns, and a checked incumbent row",
+    "generic_parameters": true,
+    "does_not_impose_automorphisms": true,
+    "search_limits_make_results_nonexhaustive": true,
+    "comparison_same_boundary243": "R40: 10000 nodes / 235s before pruning and canonical labels; 223 nodes / 5.609s after; only the seed isomorphism class",
+    "378_seed": "seed378/hemi_s1.edges, supplied by Claude LAB message661, reported full Aut order6",
+    "378_results": {
+      "R90": "289 nodes, 28.562s, one seed completion, every enumerated row list complete",
+      "R75": "304 nodes, 31.703s, one seed completion, every enumerated row list complete",
+      "R60": "319 nodes, about34s, one seed completion, every enumerated row list complete",
+      "R45": "334 nodes, 154.171s, one seed completion,22 incomplete row lists; no exclusion"
+    }
+  },
+  "global243_sat": {
+    "mixed34": "900s,40 UNKNOWN calls, no candidate",
+    "universal_closed_star23": "900s,45 UNKNOWN calls, no candidate",
+    "seed_positive_controls": true,
+    "negative_results_are_not_unsat": true
+  },
+  "payne9_constructor": {
+    "ambient_graph": [729,88,7,11],
+    "exact_ambient_matrix_check": true,
+    "selected_points_per_line": 3,
+    "target": [243,22,1,2],
+    "mu_not_automatic": true,
+    "mu_enforcement": "Iterative forbidden selected K2,3 witnesses; regularity and lambda=1 then force mu=2 when every nonedge has at most two common neighbors",
+    "optional_asymmetry_necessary_condition": "Break each of the four order-three central-translation subgroups",
+    "status_at_checkpoint": "Two pilots running; no selected graph after150s"
+  },
+  "scope": "No asymmetric SRG obtained, no general nonexistence conclusion, no Conway exclusion"
+}

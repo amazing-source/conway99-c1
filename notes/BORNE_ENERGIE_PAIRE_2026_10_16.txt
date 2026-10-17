@@ -1,0 +1,115 @@
+ÉLIMINER LE SECTEUR IMPAIR CONSERVE AU MOINS UN CINQUIÈME DE L'ÉNERGIE PAIRE
+16 octobre 2026 — Codex ; croisement du lemme impair LAB932 avec la
+compression laplacienne de SECTEUR_SYMETRIQUE_BORD_2026_10_16.txt.
+
+Résultat prouvé, et portée précise
+---------------------------------
+Sur les 24 étiquettes de DEUX étoiles mates complètes, la compression
+paire G et le complément de Schur pair E, obtenu en éliminant les douze
+coordonnées impaires, vérifient
+
+          E >= G/5 + (2/5)(I-M) >= G/5.                 (B)
+
+Ici M est le mate sur les douze lettres extérieures à la droite. En
+particulier ker(E)=ker(G) et rang(E)=12-c, où c compte les composantes
+du voisinage cubique de la droite. Le résultat ne suppose aucun
+automorphisme : échanger formellement les deux étoiles est un changement
+de coordonnées, pas une symétrie supposée de Gamma.
+
+Cette borne n'est PAS celle de SYM6 sur les 44 étiquettes. Les vingt
+étiquettes de l'autre paire d'étoiles, hors des quatre coins, ne sont pas
+encore éliminées. Leur couplage peut diminuer le rang. Le progrès est une
+borne quantitative sur une étape entière, avec localisation du couplage
+restant, et non une exclusion globale.
+
+1. Décomposition exacte sur deux étoiles
+----------------------------------------
+Prenons les étoiles 2,3 et indexons leurs étiquettes (2,a),(3,a) par les
+douze lettres a dans {0,1,4,...,13}. Dans leur sous-graphe, chaque sommet
+a un voisin dans sa propre étoile et un dans l'étoile mate : l'adjacence
+Gamma_24 est donc celle d'un graphe 2-régulier. Les coordonnées paires
+et impaires sont données par P f=(f,f), R g=(g,-g).
+
+Notons
+  Aplus=P^t Gamma_24 P,
+  As=R^t Gamma_24 R,
+  H=-P^t Gamma_24 R,
+  G0=4I-Aplus,       D0=4I-As,       J=J_12.
+
+Comme 2I-Gamma_24 est une laplacienne positive,
+             [ G0  H  ]
+             [ H^t D0 ] >=0.                           (1)
+L'opérateur R a une norme au carré 2 et Gamma_24 a une norme au plus 2.
+Donc le spectre de As est contenu dans [-4,4], et
+  0<=D0<=8I.                                           (2)
+Les comptes un voisin dans chaque étoile donnent Gamma_24 R1=0, d'où
+  As1=0,      D0 1=4*1,      H1=0.                     (3)
+
+En comprimant la matrice T définie dans les notes précédentes, on trouve
+             [ G   H   ]
+  [P R]^t T [P R] = [ H^t Phi ],
+avec
+  G=G0+(I-M)/2,
+  Phi=6I-As-J/2=D0+2I-J/2.                             (4)
+Les termes d'incidence n'ont pas de couplage pair-impair : les colonnes
+correspondantes sont e_2+e_3+2e_a et e_2-e_3, orthogonales aussi pour M.
+
+La formule de Phi est le lemme de LAB932. Elle annule 1 et vaut D0+2I
+sur 1 orthogonal, donc y est définie positive, minorée par 2I. Son rang
+est exactement onze. Posons
+  E=G-H Phi^+ H^t.                                     (5)
+
+2. Comparaison quantitative des deux éliminations
+------------------------------------------------
+La positivité de (1) implique
+  H ker(D0)=0,
+  H D0^+ H^t <= G0.                                   (6)
+Sur une valeur propre d>0 de D0 dans 1 orthogonal, (2) donne d<=8 et
+  1/(d+2) <= 4/(5d).                                  (7)
+La direction 1 est annihilée par H. Les éventuelles directions de
+ker(D0) le sont aussi, par (6). Après multiplication par H et H^t,
+(7) implique donc
+  H Phi^+ H^t <= (4/5) H D0^+ H^t <= (4/5)G0.           (8)
+
+Attention : il n'est pas nécessaire, et ce ne serait pas correct en
+présence d'un noyau de D0, d'affirmer Phi^+ <= (4/5)D0^+ sur tout l'espace.
+La comparaison (8) est justifiée APRÈS les multiplications par H,H^t.
+
+En substituant (8) dans (5),
+  E >= G0/5+(I-M)/2
+    = G/5+(2/5)(I-M),
+ce qui prouve (B). Puisque M est un appariement, I-M est positif.
+Par ailleurs E<=G. Ces deux bornes positives donnent ker(E)=ker(G).
+
+3. Le rang conservé et le couplage encore ouvert
+----------------------------------------------
+G est la laplacienne sur les douze lettres obtenue en contractant dans
+N(m) chaque triplet {a,(2,a),(3,a)}. Les arêtes du mate ont un poids 1/2,
+les autres poids sont les nombres d'arêtes de Gamma agrégées. La
+contraction conserve les c composantes du voisinage, donc
+  rang(G)=12-c,          rang(E)=12-c.                  (9)
+
+La perte de directions dans les matrices finales A ou Z ne vient donc
+pas de l'élimination du secteur impair INTERNE à cette paire d'étoiles.
+Le couplage avec les vingt autres étiquettes est indispensable à cette
+perte. La borne (B) peut servir de minoration de départ pour contrôler
+ce couplage, mais elle ne le contrôle pas encore.
+
+Dans le bloc de 44, la permutation formelle (2 3) fixe les vingt autres
+étiquettes et échange les deux étoiles. Éliminer d'abord son secteur
+impair complet de rang onze est licite. Le Schur restant est de taille
+32 (33 seulement si l'on conserve aussi la direction impaire nulle).
+Sous une complétion Conway il devrait avoir rang au plus dix-neuf,
+car rang(T_44)<=30. Cette reformulation n'ajoute aucune hypothèse ni
+preuve de non-existence ; elle situe où exploiter quantitativement (B).
+
+4. Enregistrement numérique exact de la nouvelle borne
+-----------------------------------------------------
+Outil : code/codex/four_star_even_energy.py.
+Sortie : data/codex_line_resonance_20261016/even_energy.json.
+Le programme forme la marge E-G/5-(2/5)(I-M), et enregistre des pivots
+positifs de congruence avec reste nul, en arithmétique rationnelle.
+Il utilise les dix objets déjà disponibles, dans les deux orientations.
+Il ne relance ni leur construction, ni le grand recensement de LAB, ni
+la certification de son lemme impair. La preuve universelle de (B)
+est (1)-(8), pas la réussite de ces calculs sur les exemples.

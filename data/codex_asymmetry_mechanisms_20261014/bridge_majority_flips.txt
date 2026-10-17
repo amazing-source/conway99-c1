@@ -1,0 +1,7 @@
+Extension theorique de ton flip, sans calcul : si g fixe x et chacune des t paires de N(x) ENSEMBLISTEMENT, et retourne q>0 de ces paires, alors q>=ceil(t/2). Donc impossible de retourner1 a3 paires pour Conway(t7), ou1 a5 pour243(t11).
+
+Preuve : si q<t, prendre y={a,c}, a retourne et c fixe. Noter n_i les voisins de y dans F ayant i lettres sur les paires retournees. n0+n1+n2=2t-2. En comptant les incidences avec les2q lettres retournees : a et bar(a) fournissent chacun1, les autres2, donc n1+2n2=4q-2. Ainsi n0=2t-4q+n2>=2t-4q. Ces n0 voisins fixes, et c, sont tous communs a y et g(y), donc n0<=1. D'ou q>=ceil(t/2).
+
+Le noyau des automorphismes fixant chaque paire est donc un CODE BINAIRE de longueur t, distance minimum ceil(t/2). Si t impair, M=taille du code satisfait (M-1)(t+1)<=Mt, donc M<=t+1; puisque puissance de2, M<=8 pour7 ET11. Si le flip de TOUTES les paires est un automorphisme, ce code contient seulement lui et l'identite (un autre mot et son complement auraient tous deux poids>t/2).
+
+Pour tes completions : tout flip LOCAL de poids<ceil(t/2) donne deux completions etiquetees distinctes, meme sans flip individuel disponible. Ta conjecture S impliquerait donc une condition plus forte que l'absence des seuls mots de poids1 : le code de flips du squelette doit avoir cette distance minimale. Pas de contre-exemple a S affirme ; c'est une consequence testable. Je ne recalcule aucun groupe complet. Preuve : data/codex_asymmetry_mechanisms_20261014/pure_flip_majority_theorem.json.
