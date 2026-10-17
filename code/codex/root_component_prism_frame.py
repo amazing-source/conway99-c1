@@ -123,8 +123,48 @@ permutations relabel an arbitrary completion; no automorphism is assumed.
             'scope':'A common row-major minimum under prism and cell relabellings.'}
 
 
-def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangles=False,normalize_prisms=False,template_seven=False):
+def add_prism_cut_partitions(model,h,cells,count):
+    """Apply global c>=4 at the four known triangles in the two frame prisms.
+
+For such a triangle T, the original line and the other triangle of its
+prism form one isolated prism in N(T). The other thirty neighbours are
+exactly the core vertices selecting a vertex of T. Their induced cubic
+graph must therefore have at least three components. Merge these into
+three nonempty balanced bins (sizes18+6+6 or12+12+6), without cross edges.
+    """
+    assert 0<=count<=4
+    records=[]
+    for ci,(prism,bit) in enumerate([(0,0),(0,1),(1,0),(1,1)][:count]):
+        values=[cell[0] if prism==0 else cell[1]-6 for cell in cells]
+        vertices=[x for x,v in enumerate(values) if v%2==bit]
+        colours=[[x for x in vertices if values[x]//2==colour] for colour in range(3)]
+        assert len(vertices)==30 and all(len(row)==10 for row in colours)
+        bins={x:model.new_int_var(1,3,f'prism_cut_{ci}_bin_{x}') for x in vertices}
+        flags={x:[model.new_bool_var(f'prism_cut_{ci}_{x}_{j}') for j in range(3)] for x in vertices}
+        for x in vertices:
+            model.add_map_domain(bins[x],flags[x],offset=1)
+            model.add(sum(h[x][y] for y in vertices)==3)
+        model.add(bins[colours[0][0]]==1);previous=1
+        for i,x in enumerate(colours[0][1:]):
+            model.add(bins[x]<=previous+1)
+            maximum=model.new_int_var(1,3,f'prism_cut_{ci}_max_{i}')
+            model.add_max_equality(maximum,[previous,bins[x]]);previous=maximum
+        for j in range(3):
+            half=model.new_int_var(1,3,f'prism_cut_{ci}_half_{j}')
+            for row in colours:model.add(sum(flags[x][j] for x in row)==2*half)
+        for x,y in combinations(vertices,2):
+            edge=h[x][y]
+            if isinstance(edge,int):
+                if edge:model.add(bins[x]==bins[y])
+            else:model.add(bins[x]==bins[y]).only_enforce_if(edge)
+        records.append({'prism':prism,'triangle_bit':bit,'core_vertices':vertices,
+                        'minimum_components_inside_cut':3,'known_separate_prism_component':True})
+    return {'global_minimum_components':4,'cuts':records,'scope':add_prism_cut_partitions.__doc__}
+
+
+def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangles=False,normalize_prisms=False,template_seven=False,prism_matchings=False,prism_cut_partitions=0,grid_perfect_codes=False):
     assert not template_seven or (stage>=1 and all(len(g)==6 for g in groups))
+    assert not prism_matchings or (stage>=1 and core_triangles and all(len(g)==6 for g in groups))
     cells=[(p,q,copy) for p in range(6) for q in range(6,12)
            for copy in range(2-int(colours[p]==colours[q]))]
     assert len(cells)==60
@@ -179,7 +219,7 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
                 both=m.new_bool_var(f'prefix_{x}_{u}')
                 m.add(both<=prefix);m.add(both<=equal);m.add(both>=prefix+equal-1)
                 prefix=both
-    h=None;dh_count=0;core_count=0;dh_rows=[]
+    h=None;dh_count=0;core_count=0;dh_rows=[];saturated_pairs=0
     prism_normalization=add_prism_normalization(m,d,cells,groups,template_seven=template_seven) if normalize_prisms else None
     if stage:
         h=[[0]*60 for _ in range(60)]
@@ -187,6 +227,13 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
             # Same cell already means two shared neighbours in P union Q.
             h[x][y]=h[y][x]=0 if cells[x][:2]==cells[y][:2] else m.new_bool_var(f'h_{x}_{y}')
         for x in range(60):m.add(sum(h[x])==8)
+        # The two vertices of a double cell already have their two common
+        # neighbours p,q. No further common neighbour is possible in C or H.
+        for x,y in combinations(range(60),2):
+            if cells[x][:2]!=cells[y][:2]:continue
+            saturated_pairs+=1
+            for u in range(12,36):m.add(d[u][x]+d[u][y]<=1)
+            for z in range(60):m.add(h[x][z]+h[y][z]<=1)
         # In template7 colour0 is the original low-prism root. Its complete
         # mixed equations recover C1 at all fourteen original neighbours.
         dh_rows=[u for u in range(36) if stage>=2 or u<12 or (template_seven and colours[u]==0)]
@@ -201,7 +248,7 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
                       +sum(product(d[u][x],d[u][y]) for u in range(36))==2)
                 core_count+=1
     partition_info=None
-    rotation_info=None;triangle_info=None
+    rotation_info=None;triangle_info=None;matching_info=None;cut_info=None
     template_info=None
     if minc_lines or rotated_rectangles or template_seven:
         assert h is not None
@@ -226,8 +273,10 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
                 m.add(sum(es)<=2)
                 budget.extend(es[ei] for ei in (0,1,4,5))
             prescribed.append({'components':[i,j],'grid':same_part})
+            return same_part
         rotation_info=add_fixed_star_rectangles(m,full,stars,rotated_rectangles,
-            required_roots=(0,) if template_seven else (),rectangle_constraints=prescribe if template_seven else None)
+            required_roots=(0,) if template_seven else (),rectangle_constraints=prescribe if template_seven else None,
+            grid_dominance_roots=(0,) if grid_perfect_codes else ())
         if template_seven:
             assert len(prescribed)==15 and sum(not r['grid'] for r in prescribed)==9 and len(budget)==36
             # Six base-line grids and six same-part grids already contribute48.
@@ -239,6 +288,7 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
     if core_triangles:
         assert h is not None
         incident=[[] for _ in range(60)];flags=[];forbidden_triangles=0
+        edge_triangle_flags={pair:[] for pair in combinations(range(60),2)}
         known=[[u for u in range(36) if isinstance(d[u][x],int) and d[u][x]==1] for x in range(60)]
         for tri in combinations(range(60),3):
             es=[h[x][y] for x,y in combinations(tri,2)]
@@ -253,6 +303,7 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
             m.add(flag>=sum(es)-2)
             flags.append(flag)
             for x in tri:incident[x].append(flag)
+            for pair in combinations(tri,2):edge_triangle_flags[pair].append(flag)
         local_triangles=sum(all(c[u][v] for u,v in combinations(tri,2)) for tri in combinations(range(36),3))
         m.add(sum(flags)==32-local_triangles)
         for x in range(60):
@@ -261,6 +312,48 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
             m.add(sum(incident[x])==1+boundary_edges)
         triangle_info={'actual_triangle_indicators':len(flags),'forbidden_by_known_boundary':forbidden_triangles,
                        'total_triangles':32-local_triangles,'per_vertex_balance':'t_H(x)=1+e(C[N_C(x)])'}
+    if prism_matchings:
+        # Each D column selects exactly one of the six vertices in each prism.
+        # A selected row u has (CD)_{u,x}=0, hence (DH)_{u,x}=1. Therefore
+        # its class induces a matching in H, once for each of the six prisms.
+        # lambda=1 makes these six matchings disjoint, with the twenty core
+        # triangles supplying the other two incident edges at every vertex.
+        choices=[]
+        for i,group in enumerate(groups):
+            if i<2:
+                choices.append([p if i==0 else q-6 for p,q,_ in cells]);continue
+            row=[]
+            for x in range(60):
+                value=m.new_int_var(0,5,f'prism_choice_{i}_{x}')
+                m.add_map_domain(value,[d[u][x] for u in group])
+                row.append(value)
+            choices.append(row)
+        degrees=[[[] for _ in range(60)] for _ in groups]
+        shared_flags=0;products_before=len(products)
+        for x,y in combinations(range(60),2):
+            shared=[];matching=[]
+            for i in range(6):
+                if i<2:same=int(choices[i][x]==choices[i][y])
+                else:
+                    same=m.new_bool_var(f'common_prism_{i}_{x}_{y}')
+                    m.add(choices[i][x]==choices[i][y]).only_enforce_if(same)
+                    m.add(choices[i][x]!=choices[i][y]).only_enforce_if(same.Not())
+                    shared_flags+=1
+                shared.append(same)
+                edge=product(h[x][y],same)
+                matching.append(edge);degrees[i][x].append(edge);degrees[i][y].append(edge)
+            m.add(sum(shared)+h[x][y]<=2)
+            m.add(sum(matching)+sum(edge_triangle_flags[x,y])==h[x][y])
+        for row in degrees:
+            for edges in row:m.add(sum(edges)==1)
+        matching_info={'prism_matchings':6,'vertices_per_matching':60,
+            'shared_component_indicators':shared_flags,'matching_edge_products':len(products)-products_before,
+            'common_boundary_inequalities':1770,'triangle_matching_edge_partition_equations':1770,
+            'matching_degree_equations':360,
+            'scope':'H is the disjoint union of twenty triangles and six perfect matchings, one within each prism incidence partition.'}
+    if prism_cut_partitions:
+        assert h is not None
+        cut_info=add_prism_cut_partitions(m,h,cells,prism_cut_partitions)
     return m,d,h,{'stage':stage,'full_SRG_equations':stage==3,'cells':[list(t) for t in cells],
                   'DDt_pair_equations':630,'DH_equations':dh_count,'core_pair_equations':core_count,
                   'DH_rows':dh_rows,
@@ -268,6 +361,9 @@ def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangle
                   'rotated_rectangles':rotation_info,'core_triangles':triangle_info,
                   'prism_normalization':prism_normalization,
                   'template_seven':template_info,
+                  'prism_matchings':matching_info,
+                  'prism_cut_partitions':cut_info,
+                  'saturated_double_cell_pairs':saturated_pairs,
                   'rotated_forbidden_triples':[list(t) for t in forbidden],
                   'variables':len(m.proto.variables),'constraints':len(m.proto.constraints)}
 
@@ -296,6 +392,9 @@ def main():
     p.add_argument('--build-only',action='store_true')
     p.add_argument('--normalize-prisms',action='store_true')
     p.add_argument('--template-seven',action='store_true')
+    p.add_argument('--prism-matchings',action='store_true')
+    p.add_argument('--prism-cut-partitions',type=int,default=0,choices=range(5))
+    p.add_argument('--grid-perfect-codes',action='store_true')
     p.add_argument('--seconds',type=float,default=60)
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
@@ -305,7 +404,7 @@ def main():
     raw=tables_path.read_bytes();library=json.loads(raw);orbits=json.loads(orbit_path.read_bytes())
     assert orbits['source_sha256']==hashlib.sha256(raw).hexdigest()
     c,colours,groups,descriptors=neighbourhood(library,orbits,args.family,args.first,args.second)
-    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines,args.rotated_rectangles,args.core_triangles,args.normalize_prisms,args.template_seven)
+    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines,args.rotated_rectangles,args.core_triangles,args.normalize_prisms,args.template_seven,args.prism_matchings,args.prism_cut_partitions,args.grid_perfect_codes)
     assert not m.validate(),m.validate()
     info.update(status='MODEL_BUILT',scope=__doc__,family=args.family,first=args.first,second=args.second,
                 components=descriptors,resources=resources,build_cpu_seconds=time.process_time()-started,
