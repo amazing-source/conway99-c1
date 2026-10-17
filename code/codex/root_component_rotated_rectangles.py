@@ -38,7 +38,7 @@ def add_grid_rotations(model, graph, count):
     return add_fixed_star_rectangles(model,graph,stars,count)
 
 
-def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=(), rectangle_constraints=None):
+def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=(), rectangle_constraints=None, grid_dominance_roots=()):
     """Rooted stars list (root identifier, known colour class, outside60)."""
     plans=[]
     for root_letter,star,outside in rooted_stars:
@@ -61,7 +61,7 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         if (bits[2] or bits[3]) and any(bits[i] for i in (0,1,4,5)):continue
         edge_patterns.append(bits)
     assert len(edge_patterns)==15
-    products={};corners={};records=[];element_entries=0
+    products={};corners={};records=[];element_entries=0;dominance_records=[]
     def product(a,b):
         if isinstance(a,int):return b if a else 0
         if isinstance(b,int):return a if b else 0
@@ -86,7 +86,7 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         model.add(selector==sum(i*flag for i,flag in enumerate(flags)))
         actual=model.new_int_var(min(choices),max(choices),f'rotated_corner_vertex_{u}_{v}')
         model.add(actual==sum(w*flag for w,flag in zip(choices,flags)))
-        value={'choices':choices,'selector':selector,'actual':actual}
+        value={'choices':choices,'selector':selector,'actual':actual,'flags':dict(zip(choices,flags))}
         corners[pair]=value
         return value
     selected=[plan for i,plan in enumerate(plans) if i<count or plan[1] in required_roots]
@@ -107,10 +107,38 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         model.add(sum(es)!=3)
         model.add(sum(es)<=4)
         model.add_allowed_assignments(es,edge_patterns)
-        if rectangle_constraints is not None:rectangle_constraints(root_letter,first,second,es)
+        prescribed_grid=rectangle_constraints(root_letter,first,second,es) if rectangle_constraints is not None else None
+        if root_letter in grid_dominance_roots and prescribed_grid is not False:
+            # Here root_letter is an actual vertex index in a full graph.
+            # For an induced 3x3 grid G in a Conway graph, every exterior
+            # vertex has one neighbour in G: both sum d and sum d^2 are90.
+            # Thus A*1_G=1+3*1_G. Corners remain selected variables.
+            assert len(fixed)==99
+            tag=f'rotated_grid_dominance_{len(dominance_records)}'
+            active=1 if prescribed_grid is True else model.new_bool_var(tag+'_active')
+            if prescribed_grid is not True:
+                model.add(sum(es)==4).only_enforce_if(active)
+                model.add(sum(es)!=4).only_enforce_if(active.Not())
+            base=[root_letter,*first,*second]
+            for w in range(99):
+                neighbour_terms=[fixed[w][v] for v in base]
+                membership=int(w in base)+sum(c['flags'].get(w,0) for c in cs)
+                for i,c in enumerate(cs):
+                    entries=[fixed[w][v] for v in c['choices']]
+                    if len(entries)==1:value=entries[0]
+                    else:
+                        value=model.new_bool_var(f'{tag}_{w}_{i}')
+                        model.add_element(c['selector'],entries,value)
+                        element_entries+=len(entries)
+                    neighbour_terms.append(value)
+                constraint=model.add(sum(neighbour_terms)==1+3*membership)
+                if prescribed_grid is not True:constraint.only_enforce_if(active)
+            dominance_records.append({'root':root_letter,'lines':[list(first),list(second)],
+                'unconditional':prescribed_grid is True,'equations':99})
         records.append({'root_letter':root_letter,'lines':[list(first),list(second)],
                         'corner_domain_sizes':[len(c['choices']) for c in cs]})
     return {'rectangles':records,'available_fixed_line_pairs':len(plans),
             'allowed_six_edge_patterns':len(edge_patterns),
             'distinct_corner_variables':len(corners),'common_neighbour_products':len(products),
+            'grid_dominance':dominance_records,
             'element_entries':element_entries,'scope':__doc__}
