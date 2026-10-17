@@ -6,7 +6,7 @@ No rank, no solver.  For each block (44 labels) with T_S >= 0 and each orientati
   RL  a vector c in {-1,0,1}^11 on the 11 visible rectangles (roots l and m) with c^t R c = 2 gives h = T P c of norm 14
       (co-Heawood, Codex's lemma) whose visible part breaks a co-Heawood rule (c1_rlattice.py);
   C2b a balanced set C of G_l (|C n X_p| = q even) with exactly 2 boundary edges, both in one group (then the two inner
-      ends share the point p of l, which is off the support of y = (A - 3I)(1_C - (q/12) 1): co-Heawood forbids it),
+      ends share the point p of l, which is off the support of y = (A - 3I)(1_C - (q/12) 1_{G_l})): co-Heawood forbids it),
       or both between the same two groups with inner ends sharing a neighbour off the support (2-cut lemma, line view).
 Output: counts per first killing lemma, and the list of survivors (if any).
 usage: python c1_exact_kill.py <distinct cache.jsonl>"""

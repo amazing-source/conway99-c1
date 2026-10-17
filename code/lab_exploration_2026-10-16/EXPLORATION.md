@@ -721,3 +721,34 @@ L'utilisateur a donné son accord (« stv ») ; le test a été fait sur un seul
   - INDICE, à ce stade seulement : « tout bloc positif à c(l) = 1 a un rectangle à e = 3 en un sommet de Ω » tient sur
     les 1 740 côtés positifs. Ces données viennent de peu de lignées, et aucune structure positive sans lemme n'a jamais
     été atteinte par les marches.
+
+## 18/10 : relecture de la note ChatGPT du 17/10 (session secondaire, écrite à partir du prompt)
+
+- **Source** : `NOTE_CHATGPT_C1_2026-10-17.pdf` (14 pages), sur l'état des dépôts au commit `888d075`. La note conclut
+  elle-même que (Q), (Q′) et l'existence d'une droite à c = 1 restent OUVERTES.
+- **Relu à la main par Claude**, preuves correctes :
+  - Lemme 2.1 : |E(Γ_S)| = 120 + e(O) et 1ᵀN1 = −108 − 2e < 0, avec N = 3I − Γ_S.
+  - Th. 2.2 : pour tout bloc positif avec C1 exact sur les quatre étoiles, ker N ⊆ ker B ∩ ker T_S. Donc m₃ = K₀, et N a
+    exactement une valeur propre négative.
+  - Th. 3.1 : D = B N⁺ Bᵀ − H vérifie D ⪯ 0, et rang T_S = 30 − m₃ + rang D₀. Conway équivaut à rang D₀ ≤ m₃.
+  - Th. 3.2 : 0 ⪯ −D₀ ≺ H₀ = 3I − M − (7/39)J. Points vérifiés : H_UU a pour valeurs propres 36, 36, 50, −26, et
+    1ᵀH_UU⁻¹1 = −2/13.
+  - Th. 4.1 : c'est la borne à deux coordonnées de même signe, la même inégalité que Codex (commit `17b4198`), trouvée
+    indépendamment.
+  - 4.2 : identité ‖y‖² = 7|∂C| pour le vecteur de coupe.
+- **Non relu** : Th. 5.1 (permutations de colonnes ⟹ P² = I), 4.3 et l'annexe A.
+- **Contrôle numérique** : `check_note_chatgpt_1017.py`, en flottant, 20 s, sortie dans `check_note_chatgpt_1017.log`.
+  - Les Th. 2.2, 3.1 et 3.2 tiennent sur les 6 122 blocs positifs du cache et sur les 331 objets de rang 30.
+  - Écarts maximaux : |B ker N| 1,5e-13 ; plus grande valeur propre de D 4,8e-12 ; plus petite valeur propre de
+    H₀ + D₀ 0,074.
+  - Les objets de rang 30 sont au cas limite rang D₀ = m₃ (4 = 4 pour 329 objets, 3 = 3 pour 2).
+  - Attention : le pinv de numpy, avec son seuil par défaut, donnait 12 faux échecs. Le script construit N⁺ avec le
+    même seuil que m₃.
+- **Corrections de mes notes.**
+  - J'expliquais m₃ = K₀ par la symétrie τ. Pour les blocs positifs, c'était faux : la cause est la positivité
+    (Th. 2.2). Le lemme 3-SPEC ne coupe donc aucun bloc positif.
+  - « Conway ⟺ D = 0 » ne vaut que pour m₃ = 0. En général, la condition est rang D₀ ≤ m₃.
+  - Coquille du prompt §2.5, et de la docstring de `c1_exact_kill.py` : la constante du vecteur de coupe est
+    1_{G_l}, pas 1. Le code `c1_balcut.py` était juste.
+- **Observation annexe** : le cache contient 720 blocs positifs de rang T_S = 29 (m₃ = 5, rang D₀ = 4) et un de rang 28
+  (m₃ = 4, rang D₀ = 2). Aucun n'est un côté c = 1 positif : ceux-ci ont ν ∈ {7, …, 10}.
