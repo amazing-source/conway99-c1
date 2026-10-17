@@ -551,3 +551,142 @@ Scripts : `c1_exact_kill.py`, `c1_hard_walk.py`, `c1_negdir.py` (+ `unbiased_wal
   c = 1. Piste de preuve à la Codex : modèle SAT/MILP (axiomes locaux, connexité de G_l, configurations interdites) +
   coupes de positivité LINÉAIRES en Γ (xᵀT_S x = 3‖x‖² − xᵀΓx − xᵀKx ≥ 0 pour x entier fixé), ajoutées paresseusement
   (méthode des coupes exactes de Codex, `psd_exact_cuts.py`) ; infaisabilité = preuve, avec certificat.
+
+## 17/10 après-midi : liste finie des cas c = 1, et pourquoi la positivité seule ne peut pas les fermer
+Scripts : `c1_cases.py`, `c1_cases_data.py`, `c1_cases_avg.py`, `c1_hfix_lp.py`, `c1_hfix_int.py`, `c1_local_probe.py`,
+`c1_rank3.py`, `c1_rank2adic.py`, `c1_sat2adic.py`, `c1_sat2adic_v2.py`. Statuts : `unbiased_walks/cases_avg_status.json`.
+- **Liste** : 63 cas = profil des rectangles de la racine l (e du rectangle partagé avec m, puis les 5 autres triés ;
+  e ∈ {0,1,2} car e = 3 est exclu par Codex et e = 4 force c ≥ 2). Faisabilité combinatoire (étape 0) : cas testés
+  faisables en 10-15 s. Boucle de coupes de positivité (cas 0) : λ_min reste vers −1 après 6 tours, INCONNU.
+- Données : les 137 côtés positifs c = 1 sans E3 en l tombent dans 5 cas seulement, tous avec e = 0 au rectangle
+  partagé (104 ont E3 en m, 31 C2a, 2 C2b).
+- **Lemme de moyenne (prouvé, certificats exacts)** : le groupe G d'ordre 128 engendré par (0 1), (2 3) et les 5
+  retournements de jumeaux extérieurs préserve chaque cas. Si Γ est une structure entière du cas, la moyenne Γ̄ sur G
+  est dans l'enveloppe convexe du cas ; si T(Γ̄), U(Γ̄) ⪰ 0, aucune combinaison de coupes de positivité et d'inégalités
+  linéaires valides (Farkas, LP) ne ferme le cas. Vérifié en rationnels exacts : 59 cas sur 63 ont un tel témoin qui
+  évite aussi RL et C2b (4 cas, 21, 44, 48, 53, encore sans témoin propre). Fermer un cas exige donc un branchement qui
+  casse G, ou une information NON convexe.
+- Diagnostics : même avec les deux graphes de racine fixés, il existe des complétions P×Q fractionnaires positives
+  (8λ jusqu'à +1,16) ; les complétions entières restent vers 8λ ≈ −7 après 50 tours. Les échecs de positivité sont
+  locaux : deux paquets denses disjoints non adjacents d'environ 5 labels (arêtes P–Q surtout), de signes opposés.
+- **Condition de rang 2-adique (nouvelle, validée)** : 8T_S = −K8 + 8(3I − Γ). Forme de Smith locale de K8 en 2 :
+  6 unités, un 2, un 4, six 8·impair, 30 zéros. Après élimination des 8 pivots de petite valuation,
+  rang_Q(T_S) = 8 + rang(N), N mod 2 = D' + U_r(I + Γ)V_r (36 × 36, AFFINE en Γ sur F₂). Donc
+  Conway ⟹ rang_F₂(N) ≤ 22 ⟺ au plus 22 facteurs invariants de 8T_S de valuation exactement 3 (vérifié 60/60 contre
+  des formes de Smith exactes ; les 331 objets de rang 30 de l'archive ont rang_F₂(N) ∈ {18, 22}). Sur 400 blocs
+  positifs c = 1 des données : 22 (5 blocs, rang_Q 34), 24, 26, 28 pour tous les autres. Structures entières typiques
+  d'un cas : 30 ou 32. Forme invariante : radical = {y ∈ W36 : (Γ − F)y ∈ Z8}, F fixe, Z8 = ⟨1, d_p + d_p', …⟩.
+  Rangs mod 3 et mod 5 de 8T_S sur les mêmes données : ≥ 32 et ≥ 33 (Conway ≤ 30).
+- Structure du radical : objets de rang 30 (tous c ≥ 2) → vecteurs de poids minimal = rectangles fermés (composantes
+  de M_0) ; blocs c = 1 de radical 14 → poids minimal 8, sommes de 4 paires-lettres {0x,1x}, {2x,3x} (secteur pair).
+- **SAT (CryptoMiniSat, XOR natifs)** : encodage validé à Γ fixé (SAT/UNSAT exacts en 2 s). Γ libre, cas 0 : v1 →
+  INCONNU dès K = 4 vecteurs exigés au-delà des étoiles ; v2 (espace des labels, K incrémental, Gauss élargi, cassage
+  lex des 7 involutions) atteint K = 3, puis INCONNU à K = 4 alors que le témoin de K = 3 admet déjà K = 4. Conway en
+  demande 10. Lecture : problème de type MinRank (recherche jointe Γ / radical), pas un simple défaut d'encodage.
+  CP-SAT ne sait pas faire l'algèbre mod p (mod 3 : INCONNU même à Γ fixé).
+- Ce qui manque pour fermer des cas « à la Codex » : un FORÇAGE d'une partie du radical (à c ≥ 4 : vecteurs de
+  composantes, d'où des contraintes linéaires). À c = 1, rien n'est forcé ; un lemme du type « le radical contient un
+  vecteur d'une petite famille explicite » rendrait chaque branche linéaire en Γ (CMS tranche en secondes).
+
+## 17/10 fin d'après-midi : modèle global exact, voisinage, ODD9 et fenêtre impaire
+Scripts : `c1_global_list.py`, `c1_vertex_types.py`, `c1_nbhd_tree.py`, `c1_quotient.py`, `c1_quotient_t2.py`,
+`c1_kernel_study.py`, `c1_odd9_walk.py`, `c1_odd9_det.py`, `c1_window2.py` ; données `unbiased_walks/`.
+- Modèle global exact (équations srg de Codex sur les 84 labels, `conway_global_cover.build_global`) + c(l) = 1 +
+  profil + E3 aux 21 rectangles : les cas testés restent INCONNUS en 30 s (avec les réglages de Codex : 135 000 branches).
+- Voisinage (droites voisines à c ≥ 2, égalités forcées T x = 0 sur leurs composantes) : INFAISABLE en < 3 s quand deux
+  voisines ont des blocs liés ou quand les six voisines sont gabaritées (c = 3, 4, 5) ; arbre exhaustif : 2 morts sur
+  24 nœuds, file 389 ; une seule voisine à c ≥ 2 (bloc {Q01, Q12}) : INCONNU en 200 s.
+- Pourquoi ils meurent (quotient de Gram des 21 rectangles, méthode de Codex, `c1_quotient.py`) : (i) un bloc restant
+  d'un seul rectangle est une grille, vecteur nul, transporté sur un Q_0j non grille ; (ii) deux 2-blocs liés donnent
+  v_0j = v_0k pour deux rectangles d'une même droite, R ≤ 0 contredit |v|² > 0 ; (iii) égalité entre rectangles
+  disjoints : R = |v|² ≤ 4 force e ≥ 2. Portée : 2/60 configurations à deux voisines sans profil (rang du quotient
+  jusqu'à 13, contre ≤ 4 chez Codex).
+- Noyau des blocs c = 1 (données, 1 740 côtés positifs) : nullité 7 (8), 8 (106), 9 (1 085), 10 (541). Mécanisme de
+  l'archive (AUDIT_EXCLUSIONS 15/10 03:30, NON nouveau) : nullité = 22 − o − e (o gain impair, e gain pair).
+- FAIT NOUVEAU (exact) : ODD9 est FAUX à c = 1 sans positivité. 5 côtés c = 1 des données ont det A' = 0 (A' mineur
+  31 × 31 entier de PᵗT₈P ; Bareiss exact), gain impair 8 ou 7 ; tous non positifs (nullité 5-6), dont un avec aucune
+  arête interne aux rectangles de l. Fichier `unbiased_walks/odd9_failures_c1_nonpsd.json`. Directions d'échec à
+  motifs de jumeaux (ex. λ = (1,−1,1,−1,−1,1,−1,1,0,0)). Marche E3-libre minimisant l'écart impair : 1,8·10⁻⁴.
+- CONDITION EXACTE NOUVELLE (fenêtre impaire modulo p, sans borne de taille) : à c(l) = 1 (et pour tout c), Conway
+  force dim(ker T_S ∩ W) ≥ 4, W = R^{X_l} ⊕ ⟨1_{2y} − 1_{3y}⟩ (34 dimensions), donc un vecteur hors de
+  ⟨z_0, z_1, z_2 − z_3⟩ ; le réseau ker T_S ∩ Z^W est saturé, sa réduction modulo tout premier p est injective :
+  il existe y ∈ F_p^W hors des connus avec (8T_S mod p) y = 0. Données c = 1 : la condition pour p ∈ {3,5,7,11}
+  simultanément TUE les 1 740 côtés positifs ; 7 côtés NON positifs la satisfont pour 8 premiers (vrais vecteurs
+  impairs du noyau) et n'enfreignent aucun lemme (E3, C2a, RL, C2b). Modulo 2 : trop faible (artefacts 2-adiques).
+- Bilan : la positivité seule ne peut pas fermer un cas sans branchement (lemme de moyenne) ; le rang seul (fenêtre)
+  est satisfiable (7 structures non positives sans aucun lemme violé). Une exclusion COMPLÈTE de c = 1 exige de combiner
+  les deux : c'est le cœur (B') de l'archive. Aucun encodage fini et complet de cette combinaison n'est en main.
+
+## 17/10 soir : où se loge l'obstruction de positivité à c = 1 (après lecture du transcript complet de Codex)
+Script `c1_sv1_fixlayers.py`, log `c1_sv1_fixlayers.log` (certificats LP flottants, HiGHS ; pas encore en rationnels).
+- Lecture du transcript : la réussite de Codex vient de la structure FORCÉE par c ≥ 4 (grilles : 1 420 à 1 636 arêtes
+  fixées sur 3 486 avant calcul, Gram des rectangles de rang ≤ 4, ≤ 16 signatures par sommet), puis d'une chaîne de
+  filtres exacts passés sur toute la liste. À c = 1 rien n'est forcé ; et l'archive a un point entier du census à
+  P = 0 (aucun prisme dans le graphe), donc aucun comptage n'oblige de grille ailleurs.
+- Test « à la Codex » (fixer une partie entière qui casse la symétrie, relâcher le reste en [0,1] avec les axiomes
+  linéaires exacts, coupes de positivité) sur les deux blocs c = 1 les plus durs (sans E3, C2a, RL, C2b ; λ_min −0,32,
+  −0,33) : une seule couche fixée (G_l, OU attaches X_l–Y des 20 labels lointains de m, OU arêtes internes de Y), même
+  avec le Gram des 11 rectangles imposé, laisse une complétion positive ; DEUX couches fixées (attaches + G_l, ou
+  attaches + Y–Y) : plus aucune complétion positive (4/4, 6 à 15 tours). Contrôle : 8 blocs positifs c = 1 jamais
+  déclarés morts. Le certificat dual est étalé sur 32-34 des 44 labels : obstruction NON locale.
+- Lecture : à c = 1 la positivité casse par le COUPLAGE de deux couches fines (le terme BᵀL⁺B de F), sur tout le bloc.
+  Le quotient de Codex (Gram + signatures par rectangle) est trop grossier par construction ; une couverture finie
+  devrait énumérer une couche fine entière (les attaches), ce qui est astronomique. Une exclusion complète de c = 1
+  demande un argument d'un autre type (inégalité sur ce couplage), pas une liste.
+
+## 17/10 nuit : la marge de c = 1 est dans le rang, et modulo 3 elle tient sans positivité (après la remarque de Dilan)
+Scripts `c1_margin56.py`, `c1_hidden.py`, `c1_prank.py`, `c1_symbias.py`, `c1_r3_nonpsd.py`, `c1_rank3_walk.py` ;
+log `c1_rank3.log`.
+- Correction de cap : je visais la positivité (marge ≈ 0,3 en λ_min, bloquée par le lemme de moyenne) ; la grosse
+  marge est dans le rang. Formes exactes (entrelacement, aucune hypothèse) sur la boule Ω à quatre étoiles
+  (59 sommets : l, N(l), les 20 labels lointains de m) : Conway exige mult_3(A_Ω) ≥ 14 ; données c = 1 : 7 à 10.
+  Sur H56 = Ω ∖ l : Conway ≥ 11, données 4 à 7 ; une fois retirés les vecteurs des composantes de m, Conway exige
+  11 − c(m) ≥ 6 vecteurs « cachés », données 2 à 6. Chaque moyeu seul (H46 = N(l) ∪ Y_x) n'a qu'une marge de 1 :
+  la marge vient du COUPLAGE des deux demi-étoiles de m.
+- FORME LA PLUS SIMPLE (nouvelle, exacte) : A_Ω − 3I est une sous-matrice principale de A − 3I, de rang 45 sur Q,
+  donc rang_F₃(A_Ω) ≤ 45 dans Conway — sur la matrice d'adjacence 0/1 elle-même. Données : les 1 884 côtés c = 1
+  (1 740 positifs : 47 à 52 ; 144 non positifs : 50 à 55 ; les 5 échecs exacts d'ODD9 : 52-53). Positivité inutile.
+  Marches adverses minimisant rang_F₃(A_Ω) (sans positivité, ≈ 21 500 mouvements, départs aléatoires et depuis les
+  36 blocs à 47) : jamais sous 47. Énoncé visé, fini et purement arithmétique : « c(l) = 1 ⟹ rang_F₃(A_Ω) ≥ 46 ».
+- Suite (même nuit) : sans E3 (lemme de Codex), le plancher remonte : marches ≥ 52 mod 3 et ν(T_S) = 4 EXACTEMENT
+  (seulement les 4 étoiles) pour les structures c = 1 génériques ; marge générique 10 (Conway 14). Le noyau en plus
+  vient de structures spéciales : composantes de m ; configurations interdites (E3, C2a, C2b : 3 à 6 vecteurs cachés ;
+  le plus court est la différence de deux PRISMES induits, issue d'une 2-coupe équilibrée de G_l, cas C2b) ; symétrie
+  (01)(23) (1 735 des 1 884 côtés de nos données, biais). Sans aucune configuration interdite : au plus 2 vecteurs
+  cachés, purs impairs ou purs pairs, tous sur des blocs non positifs. Découplage observé partout : ν = 4 + δ + ε.
+  Énoncé visé : « c(l) = 1 sans E3, C2a, C2b, RL ⟹ ν(T_S) ≤ 13 » (données : ≤ 3 + c(m) + 2), sans positivité.
+
+## 17/10 nuit (2) : vers « c = 1 sans lemme ⟹ ν ≤ 13 » (demande de Dilan : « ne reviens pas tant que ce n'est pas prouvé »)
+Scripts : `c1_trD.py`, `c1_deltacol.py`, `c1_mate.py`, `k0_look.py`, `limg_look.py`, `case_info.py`, `case_split.py`,
+`c1_rs_test.py`, `c1_fy_look.py`, `c1_mod3n.py`, `c1_newinv.py`, `r30_kernel_look.py`, `walk_kernel_look.py`, `a52_look.py`,
+`delta_exact.py`, `mod3_kernel.py`, `c1_zeroforcing.py` ; journal `c1_rank3.log` (section « night 2 »).
+- **Statut** : PAS de preuve. Vérification de doublon faite en cours de nuit : l'énoncé visé est exactement la conjecture
+  (B') de `stars_rank_2026-10-14/AUDIT_EXCLUSIONS_2026-10-15.md` (O1), OUVERTE depuis le 15/10 ; une seule lignée de
+  recherche y a visité c = 1 (nullité vue ≤ 10) ; (A) « trois étoiles, positivité, c(l) = 1 ⟹ rang 31 » est RÉFUTÉE par
+  52 objets h-symétriques, dont aucun n'a de complétion de rang 30 à quatre étoiles.
+- **Faits PROUVÉS cette nuit** (arguments courts, vérifiés numériquement) :
+  1. Bloc positif, 3 ∉ spec Γ_S : D ⪯ 0 (inertie de Haynsworth : 3I − A_Ω a une seule valeur propre négative). Donc
+     ν = 14 ⟺ tr(D_OO) = 0 ⟺ δ_a := 8/3 − z_aᵀRz_a = 0 pour CHAQUE lettre extérieure a ⟺ chacun des 10 sous-graphes à
+     46 sommets H_a = S ∪ {v, a} a la valeur propre 3. Un seul δ_a > 0 exclut.
+  2. Lemme 3-SPEC : tout vecteur propre n de Γ_S de valeur 3 donne la relation de lettres Bn (M·(0, n) = (0, −Bn, 0)),
+     d'où ν ≤ 14 + 2K_0 − m_3 (m_3 = mult_3 Γ_S, K_0 = dim(E_3(Γ_S) ∩ ker B)). Conway à c(l) = 1 n'a que deux cas :
+     (A) m_3 = 0 et D = 0 ; (B) K_0 ≥ 1 et m_3 ≤ 2K_0. Un vecteur propre τ-impair (τ = (01)(23)) a automatiquement des
+     sommes de lettres nulles.
+  3. Vue l, cas positif : nullité(F_Y) = 2 + a + a' + μ (a, a' = vecteurs cachés aux moyeux 3 et 2, μ = dimension de
+     l'intersection des deux espaces de résidus) ; rang F_Y ≤ 8 force a ≥ 1 ET a' ≥ 1 : Conway exige un vecteur caché
+     aux DEUX moyeux de m.
+  4. Borne d'attaches : B_Y B_Yᵀ ⪯ 7L − L² + 2J − Σ_p 1_{X_p}1_{X_p}ᵀ (identité exacte pour D tout entier) ; et
+     F_D² = 7F_D, rang F_D = 8 découlent des seuls comptages λ/μ : la condition de rang est l'ombre exacte de la
+     complétabilité, sans information locale cachée.
+- **Mesures** : 600 côtés positifs c = 1 (3 ∉ spec) : −tr(D_OO) ∈ [5,14 ; 8,2] et δ_a > 0 pour les 10 lettres dans 599/600
+  (δ_a ≥ 0,35 quand les deux rectangles de la ligne ont e ≤ 2) ; dénominateurs exacts petits (101, 304, 1520), effet de
+  la symétrie des données. Objets de rang 30 : image en lettres = {x_4 − x_5 = x_6 − x_7 = … = x_12 − x_13} (dim 10),
+  K_0 = 4 engendré par des vecteurs ±1 de norme 16 Σ_c s_c(e_0c + e_1c − e_2c − e_3c), Q_01 en grille 329/331, tous les
+  rectangles à e ∈ {2, 4}. Partout dans les données, m_3 = K_0 (le lemme 3-SPEC ne coupe rien : symétrie τ).
+  Structures sans lemme des marches : tous les vecteurs propres sont symétriques sur les lettres de chaque ligne
+  extérieure (MATE) ; la conjecture « noyau ⊆ étoiles + rectangles » (13 dimensions) est FAUSSE (2 vecteurs denses de
+  K_0, τ-impairs, graine 418575). Mod 3 : structures sans E3 aléatoires, nullité exactement 4.
+- Recherche de contre-exemple (familles nouvelles, ≤ 4 min) : les groupes contenant un 3-cycle des lignes extérieures
+  n'admettent aucune structure invariante ; Z5 et les involutions essayées n'atteignent pas c = 1 sans contrainte dédiée.
+- Ce qui manque, honnêtement : un argument qui empêche les deux moyeux de m d'avoir SIMULTANÉMENT un vecteur caché quand
+  G_l est connexe (cas A et B). Les marges sont grandes en trace (−tr D_OO ≥ 5) mais les certificats restent globaux.

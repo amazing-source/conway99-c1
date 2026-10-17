@@ -1,0 +1,78 @@
+# c1_margin56.py / c1_hidden.py / c1_prank.py / c1_symbias.py / c1_r3_nonpsd.py / c1_rank3_walk.py (LAB 17/10/2026, night)
+# Omega = l u N(l) u Y (59 vertices: the four-star ball at v), H56 = Omega minus l. Interlacing in srg(99,14,1,2):
+#   mult_3(A_Omega) >= 14, mult_3(A_H56) >= 11.  Mod p: A_H - 3I is a principal submatrix of A - 3I (rank_Q 45),
+#   so rank_p(A_H - 3I) <= 45 for every prime p; for p = 3 this is rank_F3(A_H) <= 45 (adjacency itself).
+Data, distinct_cache.jsonl, c(l) = 1 sides:
+  1 740 positive (T_S >= 0): nu(T_S) = mult_3(A_Omega) in {7, 8, 9, 10}; mult_3(A_H56) = nu - 3 in {4..7};
+    hidden = mult_3(A_H56) - c(m) in {2..6}, Conway needs >= 11 - c(m) (c(m) <= 5).
+    rank_F3(A_Omega) in {47..52}; rank_F2 sometimes 45 (mod 2 too weak); rank_F5 >= 48.
+    None of them is (01)- or (23)-symmetric.
+  144 non-positive: rank_F3(A_Omega) in {50..55}.  The 5 exact ODD9 failures: 52, 53.
+  => mod 3 kills ALL 1 884 c = 1 sides, positivity not needed.
+Adversarial walks minimising rank_F3(A_Omega) over c(l) = 1 four-star structures (CNF axioms, no positivity):
+  random starts, 120 s each (seed 1 plain, seed 2 with E3 clauses): minimum 52 (9 238 moves);
+  warm starts from 3 of the 36 data blocks at 47 (seeds 11-13, 80 s each): minimum 47 (12 316 moves), never below.
+  => 47 behaves as a floor for c = 1 balls; Conway needs <= 45.  Not a proof.
+--- 17/10 night, continued ---
+E3-free c(l)=1 (no rectangle with exactly 3 internal edges at the 12 visible rectangles):
+  walks (seeds 2, 21-24; symmetric (02)(13) or not): rank_F3(A_Omega) >= 52, nu(T_S) = 4 (only the 4 stars).
+  cache E3-free sides: positive rank_3 48..52, nu 7..9; non-positive rank_3 50..55, nu 4..8.
+No fixed canonical 9-dim subspace V of R^Y keeps F|V uniformly away from singular: best worst-case lambda 0.0047
+  (odd sector: 0.00016).  Margins are in COUNTS, not eigenvalues.
+Sub-blocks X_l u (k m-rectangles): Conway rank F_U <= 8; data rank F_U >= 9 already for k = 3 (36 labels, all 17 400
+  sub-blocks), >= 11 for k = 4, >= 12 for k = 5.  One m-rectangle: rank 3-4; two: 6-8.
+Mod-3 kernel at the floor (rank_3 = 47, nullity 12): x_Y = 0 part = 2 (psi_0, psi_1); x_Y' = 0 part = c(m)+1.
+H46 det(3I - A_H46): v_3 in 4..12 (no rigid 3-adic structure); det = 0 in 3 cases, all non-positive with nu(T_S) = 4.
+Hidden 3-eigenvectors (beyond psi_0..3 and m-components), per first killing lemma (first 133 sides):
+  E3 (positive): 4-6; C2a (positive): 3; C2b: 0 or 3; RL: 0; lemma-FREE (all non-positive): 0 (70), 1 (9), 2 (13).
+  Shortest hidden vectors are localized: e.g. norm 12 = 1_{prism of m} - 1_{prism of l} (prisms
+  {0,1,{0,9},{0,10},{1,9},{1,10}} and {2,3,{2,9},{2,10},{3,9},{3,10}}), coming from a balanced 2-cut of G_l (C2b).
+  Lemma-free hidden vectors are pure odd-window (delta) or pure even-window (eps) vectors.
+Odd/even decoupling: nu(T_S) = 4 + delta + eps EXACTLY on all 1 884 c=1 sides (1 735 of them (01)(23)-symmetric,
+  where F_oe = 0) and on all walk structures.
+--- resolvent identity (exact, new) ---
+8T_S = 24I - 8 Gamma_S - B^T C B with C = 3I + M - J/2 (B = 14x44 letter incidence, M = mates).  If 3 is not an
+eigenvalue of Gamma_S:  nu(T_S) = nullity(D),  D = B (3I - Gamma_S)^{-1} B^T - (3I - M - J/3)  (14 x 14);  D u_r = 0
+automatically for u_r = 4e_r + e_r' - 1 (r = 0..3, exact star counts);  Conway (nu = 14) <=> D = 0.
+Checked mod two large primes on 200 c=1 sides with 3 not in spec(Gamma_S): nu = 14 - rank D every time.
+The 40 rank-30 objects of the archive all have 3 in spec(Gamma_S) (formula not applicable to them).
+Consequence N1: B R 1 = -(4/3) 1 : holds on all 14 letters for 27 of the 200 sides (nu 9, 10) -> not sufficient.
+3-adic: every target entry has the term -1/3, so D = 0 needs the polar part of B R B^T at 3 to be exactly -J/3.
+  Gamma_S is ALWAYS singular mod 3 (z_0 - z_1, z_2 - z_3 are universal mod-3 kernel vectors, with zero letter sums).
+  First 121 c=1 sides: 20 have 3 in spec; of the other 101, D is NOT 3-integral for 92 (excluded by this test alone),
+  D 3-integral for 9.
+Max-nu walks over lemma-free (E3 clauses + C2a test) c=1 structures: random/symmetric starts nu = 4 always (12 427
+  moves); warm starts from the best lemma-free data (nu 6, 7): never above 7 (about 11 200 moves).
+--- 17/10 night 2 (target: c(l)=1 lemma-free => nu <= 13; = archive conjecture (B'), AUDIT_EXCLUSIONS O1, OPEN) ---
+Zero forcing (c1_zeroforcing.py): greedy Z(Omega) = 27..29 on c=1 sides AND on rank-30 objects: pattern-only bound
+  useless (would need <= 13).  Dead.
+PROVED (positive blocks, 3 not in spec Gamma_S): In(3I - A_Omega) = In(3I - Gamma_S) + (1,0,0) + In(-D), and 3I - A_Omega has
+  exactly one negative eigenvalue when T_S >= 0  =>  D <= 0.  Hence nu = 14 <=> D_OO = 0 <=> tr(D_OO) = 0 <=> for EVERY outer
+  letter a, delta_a := 8/3 - z_a^T R z_a = 0 <=> every 46-vertex H_a = S u {v, a} has eigenvalue 3 (det(3I-A_{H_a}) =
+  3 det(3I-Gamma_S) delta_a).  One delta_a > 0 suffices to exclude.
+  Data (c1_trD.py, c1_deltacol.py; 600 positive c=1 sides with 3 not in spec): D_OO <= 0 confirmed; -tr(D_OO) in
+  [5.14, 8.2]; 599/600 sides have delta_a > 0 for ALL 10 outer letters; columns whose two rectangles have e <= 2: delta_a >= 0.35.
+  Exact delta_a have small denominators (101, 304, 1520): symmetry of the data, not a local formula.
+PROVED (any block): nu = dim K_0 + 14 - dim(letter relations), and every 3-eigenvector n of Gamma_S gives the letter
+  relation Bn (M(0,n) = (0,-Bn,0)).  Hence LEMMA 3-SPEC:  nu <= 14 + 2 K_0 - m3,  m3 = mult_3(Gamma_S),
+  K_0 = dim(E_3(Gamma_S) cap ker B).  So Conway at c(l)=1 is case A (m3 = 0, D = 0) or case B (K_0 >= 1, m3 <= 2 K_0).
+  On ALL data (500 c=1 sides), walks and the 331 rank-30 objects m3 = K_0 (no cut).  Reason (PROVED): a tau-odd
+  3-eigenvector (tau = (01)(23)) has zero letter sums automatically; the data are tau-symmetric.
+PROVED (positive, l-view): nullity(F_Y) = 2 + a + a' + mu, a, a' = hidden counts at hubs 3, 2, mu = dim(span r_Y2 cap
+  span r_Y3); rank F_Y <= 8 forces a >= 1 AND a' >= 1 (each hub has a 9-dim zero-sum space): Conway needs BOTH hubs of m.
+Rank-30 objects (331, all c >= 2): letter image of K is EXACTLY {x_4-x_5 = x_6-x_7 = ... = x_12-x_13} (10-dim) and K_0 = 4
+  (3 for the two c55), spanned by +-1 norm-16 vectors sum_c s_c (e_0c + e_1c - e_2c - e_3c) on 4 outer columns; Q_01 is a
+  grid in 329/331; every rectangle has e in {2, 4}.  MATE fails on all 5 lines.
+Lemma-free walk structures (warm, tau-symmetric): every 3-eigenvector has x_a = x_a' on all 5 outer lines (MATE), K_0 <= 2;
+  conjecture (RS) "ker T_S in span(stars, 11 rectangles)" (13-dim, would give nu <= 13) is FALSE: seed418575 has 2 dense
+  K_0 vectors (tau-odd).  Positive data: MATE fails on all lines (nu 9, 10).
+Attachment bound (PROVED necessary): B_Y B_Y^T <= 7L - L^2 + 2J - sum_p 1_Xp 1_Xp^T (= B_D B_D^T, exact count identity).
+  Data: implied by positivity in practice (256/256 positive satisfy it; 107/144 non-positive violate it).
+Global identity (PROVED, pure lambda/mu counts): F_D^2 = 7 F_D and rank F_D = (185 - tr L^+ Lambda(L))/7 = 8, so rank F_Y <= 8
+  is exactly the completability shadow; no extra local information.
+Mod 3: random E3-free c=1 structures (SAT sampler) have nullity_F3(A_Omega) = 4 = nu_Q (stars only).
+Counterexample search in new families: groups containing a 3-cycle (4 6 8)(5 7 9) admit NO invariant admissible structure;
+  Z5, Z5 x <(02)(13)>, outer-mate swaps: no c(l)=1 visit in 400 moves (no gradient toward c=1): a real search needs a
+  dedicated encoding (c=1 as a constraint), longer than the 5-minute rule.
+Archive context (read tonight): (B') = O1 OPEN since 15/10; (A) (three stars, c=1 => rank 31) REFUTED by 52 h-symmetric
+  objects, none of which has a rank-30 four-star completion; only ONE lineage ever visited c=1 (max nullity 10).

@@ -1,0 +1,16 @@
+# c1_sv1_fixlayers.py (LAB 17/10/2026, evening). Python 3.12 + numpy + scipy (HiGHS). Floating-point LP certificates.
+# Fix some parts of the four-star block, relax the others to [0,1] with the exact linear count axioms,
+# Kelley cutting planes on T_S >= 0 and U_S >= 0 (complement of the 4 star vectors). DEAD = t* < 0.
+# Parts: gl = edges inside X_l (the line graph G_l); att = X_l-Y edges (attachments of m's 20 far labels);
+#        yy = edges inside Y. GRAM=1 adds the 11x11 rectangle edge counts as equalities.
+# Structures: hardwalk_best_seed11/12 (c(l)=1, no E3/C2a/RL/C2b, integral lam_min T = -0.322 / -0.330).
+FIX=none        : POSITIVE_POINT (2/2)          FIX=none + GRAM : POSITIVE_POINT (2/2)
+FIX=gl          : POSITIVE_POINT (2/2)          FIX=gl   + GRAM : POSITIVE_POINT (2/2)
+FIX=att         : POSITIVE_POINT (2/2)          FIX=att  + GRAM : POSITIVE_POINT (2/2) (t* 0.137 / 0.052)
+FIX=yy + GRAM   : POSITIVE_POINT (2/2)          FIX=gl+yy       : POSITIVE_POINT (2/2)
+FIX=gl+att      : DEAD (2/2) after 6 rounds, t* = -0.0056 / -0.0221
+FIX=att+yy      : DEAD (2/2) after 6 / 15 rounds, t* = -0.0070 / -0.0004
+Certificate support (FIX=gl+att, CERT=1): 90% of the dual mass on 32 / 34 of the 44 labels (X_l share 0.62 / 0.60),
+  spread over all rectangles (top rectangle <= 0.16): NOT local.
+Control (8 positive c=1 data sides of distinct_cache.jsonl): FIX=gl+att 8 POSITIVE_POINT; FIX=att+yy 5 POSITIVE_POINT,
+  3 OPEN (t* -> 0 from above: the true value is 0, slow convergence); never DEAD.
