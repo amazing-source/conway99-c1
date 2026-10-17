@@ -1,0 +1,6 @@
+# python cle3_templates.py 4 --no-exact   (validation against Codex's root_component_templates.json: 367 labelled, 200 up to root permutation)
+{"c_min": 4, "stats": {"leaves": 997, "survivor_labelled": 367, "P_odd_cycle": 787, "Z_forced_zero_link": 288, "O_cross_block_class": 3850, "S_block_class": 913, "K_rank_below_root_span": 342, "graph_reps": 588}, "kernel_dimension_histogram": {"0": 1, "1": 2, "2": 130, "3": 64, "4": 3}, "survivors_up_to_aut": 200, "elapsed_s": 1.6}
+# python cle3_templates.py 3 --start 0 --end 131   (branch c_min = 3, graphs 0..130 of 588 only; full run > 5 min, not launched)
+{"c_min": 3, "stats": {"S_block_class": 48069, "leaves": 69661, "no_root_at_cmin": 533, "O_cross_block_class": 55952, "Z_forced_zero_link": 18475, "survivor_labelled": 39755, "K_rank_below_root_span": 10898, "P_odd_cycle": 5954, "graph_reps": 588}, "kernel_dimension_histogram": {"3": 4406, "4": 3490, "5": 754, "6": 54, "7": 2}, "survivors_up_to_aut": 8706, "elapsed_s": 10.5}
+# graph 131 alone (degrees 4,4,4,5,5,5,5): 56 s, 164 812 leaves (run before filter K)
+# raw template counts without filters (cle3_template_count.py): c_min = 3: 3.66e8 labelled; c_min = 2: 1.79e11; c_min = 1: 3.28e10

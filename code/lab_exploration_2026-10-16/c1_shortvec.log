@@ -1,0 +1,18 @@
+# python c1_mincut.py distinct_cache.jsonl     (1884 c = 1 sides of 44-label blocks)
+internal edge counts e(Q_0j) (sorted):  {(0, 1, 1, 1, 2, 3): 761, (0, 0, 1, 1, 1, 3): 201, (0, 0, 1, 3, 3, 3): 175, (0, 0, 0, 1, 2, 3): 128, (0, 1, 1, 2, 3, 3): 124, (0, 0, 1, 1, 2, 2): 96, (0, 0, 2, 2, 3, 3): 81, (0, 0, 1, 2, 2, 3): 46, (0, 1, 2, 2, 2, 3): 40, (0, 1, 1, 1, 1, 2): 38, (0, 0, 0, 0, 1, 1): 26, (0, 0, 0, 0, 2, 2): 24}
+(min cut of M_0, number of 2-cuts): count {(2, 1): 450, (2, 2): 864, (2, 3): 395, (4, 0): 109, (6, 0): 45, (8, 0): 21}
+# python c1_cutfilter.py distinct_cache.jsonl
+c = 1 sides: 1884
+killed by (any): 1709 ; survivors: 175
+single filters: {'E3': 1610, 'VIS': 1709, 'LD': 1709}
+combinations: {('E3', 'LD', 'VIS'): 1610, (): 175, ('LD', 'VIS'): 99}
+# python c1_cuttypes.py   (all sides, all c: types of the 2-cuts of the root multigraph; (c, types): count)
+{(1, ('mu0', 'mu0')): 15, (1, ('mu1', 'mu1')): 9, (1, ('sig', 'sig', 'shared')): 3339, (2, ('mu0', 'mu0')): 26, (2, ('mu1', 'mu1')): 38, (2, ('sig', 'sig', 'shared')): 6898, (3, ('mu0', 'mu0')): 80, (3, ('mu1', 'mu1')): 116, (3, ('sig', 'sig', 'shared')): 8052, (4, ('mu0', 'mu0')): 32, (4, ('mu1', 'mu1')): 32, (4, ('sig', 'sig', 'shared')): 2608, (5, ('mu0', 'mu0')): 128, (5, ('mu1', 'mu1')): 128, (5, ('sig', 'sig', 'shared')): 432}
+# python sigcut_local.py s 60    (is a sigma-sigma 2-cut with four distinct letters locally possible? yes)
+s=2 DISTINCT: OPTIMAL   a,d,b,c = 4 7 8 3 ; sigma {2: 4, 3: 5, 4: 7, 5: 2, 6: 10, 7: 9, 8: 3, 9: 13, 10: 11, 11: 12, 12: 6, 13: 8}
+   mu0 [(2, 3), (4, 5), (6, 7), (8, 13), (9, 10), (11, 12)] ; mu1 [(2, 3), (4, 5), (6, 10), (7, 9), (8, 11), (12, 13)]
+s=3 DISTINCT: OPTIMAL   a,d,b,c = 2 9 8 3 ; sigma {2: 9, 3: 4, 4: 6, 5: 2, 6: 5, 7: 7, 8: 3, 9: 8, 10: 11, 11: 10, 12: 13, 13: 12}
+   mu0 [(2, 3), (4, 5), (6, 7), (8, 10), (9, 13), (11, 12)] ; mu1 [(2, 3), (4, 7), (5, 6), (8, 10), (9, 13), (11, 12)]
+# python c1_balcut.py distinct_cache.jsonl 40   (40 of the 175 survivors; min over ALL balanced even sets C of G_l)
+(min balanced even cut, q): count {(2, 10): 5, (2, 6): 1, (4, 10): 9, (4, 2): 7, (4, 4): 2, (4, 6): 3, (4, 8): 5, (6, 10): 2, (6, 2): 5, (6, 8): 1}
+# gg_test.py / gg_assign.py (far design (GG) with the line type fixed, two encodings): UNKNOWN in 30 s / 60 s on all tried sides

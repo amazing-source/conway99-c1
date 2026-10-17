@@ -430,3 +430,57 @@ Log : `c1_bstruct.log`.
   G_l).
 - Bilan : la rigidité de c = 1 (sous ses deux formes a ≤ 1, b ≥ 1) relève du même noyau dur que ODDCONST / H-MATCH ;
   aucune des deux voies ne la contourne.
+
+## 17/10 nuit : A et B après la critique de Dilan (« liste énumérée, cas par cas, solveurs »)
+Scripts : `cle3_templates.py`, `cle3_qspace.py`, `cle3_template_count.py`, `c1_mincut.py`, `c1_cutfilter.py`,
+`c1_cuttypes.py`, `c1_balcut.py`, `sigcut_local.py`, `gg_test.py`, `gg_assign.py`. Logs : `cle3_templates.log`,
+`cle3_qspace.log`, `c1_shortvec.log`.
+
+### B1. Modèles de racine pour min c ≤ 3 (extension du générateur de Codex, son fichier non modifié)
+- `cle3_templates.py` : tous degrés, toutes partitions en blocs ≥ 2, c_i = 6 − deg_i + #blocs ; filtres exacts
+  P (cycle de parité impair), O' (deux liens d'une racine dans deux blocs, même classe), S' (même classe dans un bloc
+  ≥ 3 : +égal contredit ⟨v,v'⟩ = −e ≤ 0, −égal ferme la paire), Z (Codex), et K (NOUVEAU, prouvé) : à la racine i la
+  Gram des v_ij est diagonale par blocs, chaque bloc = laplacien du multigraphe connexe des rectangles de la composante,
+  donc les v_ij engendrent exactement 6 − c_i dimensions et dim ker C ≥ max_i (6 − c_i).
+- Validation : `cle3_templates.py 4 --no-exact` redonne EXACTEMENT la sortie de Codex (367 modèles étiquetés,
+  200 à permutation près).
+- c_min = 3 : 8 706 modèles à symétrie près dans les 131 premiers graphes sur 588 (dim ker C de 3 à 7, run complet
+  > 5 min non lancé) ; les relations d'orthogonalité laissent une famille de Gram de dimension ≥ 2 pour presque tous
+  (`cle3_qspace.log`). Comptes bruts : 3,7·10⁸ (c_min = 3), 1,8·10¹¹ (2), 3,3·10¹⁰ (1).
+  Verdict : le quotient par rectangles ne donne PAS une liste fermable à c ≤ 3 (des blocs de taille ≥ 3 apparaissent).
+
+### B2. c = 1 par vecteurs entiers courts (même mécanisme que les lemmes de Codex)
+À une racine l = {v,0,1} avec c(l) = 1, M_0 = multigraphe des 6 rectangles Q_0j (m_jk = arêtes de Γ entre Q_0j et
+Q_0k), connexe, degrés d_j = 8 − 2e(Q_0j). Pour tout ensemble S de rectangles, h_S = T 1_{Q_0S} est un vecteur propre −4
+ENTIER de norme 7·|coupe_S| (Codex : HᵗH = 7R ; R restreint à la racine = laplacien de M_0).
+- Lemme de Codex (17/10) e(Q) ≠ 3, RE-VÉRIFIÉ : norme 14 ⟹ co-Heawood (±1, 7 + 7, même signe ⟹ non adjacents, disjoints
+  en lettres, sans voisin commun hors du support) ; dans un rectangle une arête diagonale est isolée (chaque label a
+  exactement un voisin par lettre de la racine), donc e = 3 est un chemin le long des côtés, dont les bouts (h = +1)
+  partagent une lettre : contradiction.
+- LEMME DES 2-COUPES (nouveau, prouvé) : si exactement 2 arêtes de Γ quittent Q_0S, alors ce sont deux arêtes σ
+  ({0,a}–{1,σa}, a dans S ; {0,b}–{1,σb}, b hors de S) et σ(b) ≠ a, σ(a) ≠ b (quatre lettres distinctes), et
+  σ(μ_0(a)) ≠ σ(b). Preuve : chaque type d'arête (μ_0, μ_1, σ) traverse la coupe un nombre pair de fois (S est une
+  réunion de droites) ; deux μ_0 mettraient les deux bouts +1 dans L_0 (lettre 0 commune) ; une lettre commune ou un
+  voisin commun d'indice 0 est interdit par co-Heawood. Vaut à toute racine, pour tout c.
+- Version « droite » (prouvée) : pour tout C ⊂ G_l équilibré (|C ∩ X_p| = q pair pour les 3 groupes),
+  y = (A − 3I)(1_C − (q/12)1_{G_l}) est un vecteur propre −4 entier, nul sur l, de norme 7·|∂C| ; une 2-coupe
+  équilibrée est donc co-Heawood (deux arêtes entre les deux mêmes groupes ; bouts intérieurs sans voisin commun).
+- Données (1 884 côtés c = 1) : 1 610 ont un rectangle à 3 arêtes ; 1 709 ont une 2-coupe de M_0, TOUTES de type
+  interdit (μμ, ou σσ à lettre commune ; sur toutes les données, aucune σσ à quatre lettres distinctes) ; 175 survivent,
+  coupe min de M_0 = 4 (109), 6 (45), 8 (21). Sur 40 d'entre eux : 6 ont une 2-coupe équilibrée non alignée, les autres
+  ont une coupe équilibrée minimale de 4 ou 6. Ce sont des données, pas une énumération complète.
+- Le cas σσ à lettres distinctes est localement possible (`sigcut_local.py`, témoin CP-SAT pour s = 2 et 3).
+- Découpage fini pour c = 1 (racine c = 1, coupe min λ de M_0) : I : λ = 2 (σσ distinct, vecteur co-Heawood rigide) ;
+  II : λ = 4 (vecteurs de norme 28) ; III : λ = 6 ; IV : λ = 8 (aucun rectangle n'a d'arête interne). Aucun cas fermé.
+
+### A. Faits exacts à une droite l (prouvés, valables pour tout c ; outils, pas d'exclusion)
+- Tout sommet lointain (à distance 2 de l, 60 sommets D) a exactement |C|/6 voisins dans chaque composante C de G_l :
+  x_C = 1_C − (|C|/36)1_G vérifie que (A − 3I)x_C est porté par D, orthogonal à x_C, donc nul (mesure 11/99·(Σx)² − 7‖Π₋₄x‖²).
+- dim(E₋₄ ∩ R^D) = 7 + c(l) et dim(E₃ ∩ R^D) = 18 (vecteurs de span(1) ⊕ E₃, resp. span(1) ⊕ E₋₄, portés par N[l] :
+  2 + c, resp. 3, calcul explicite).
+- Le graphe lointain A_D (8-régulier, 60 sommets) a un spectre FORCÉ par G_l : {8, 3^18, (−4)^(7+c)} ∪ {λ − 4 :
+  λ valeur propre du laplacien de G_l hors 0^c et des deux 3 des vecteurs de groupe} (entrelacement N A_D = (L − 4I)N + 2J,
+  identité des sommes μ/λ des paires G–D). Traces A_D, A_D², A_D³ vérifiées (t_D + t_G = 32).
+- Structure lointaine : pour chaque point p de l, z ↦ (paire de ses 2 voisins dans X_p) est une bijection de D sur les
+  60 paires non adjacentes de X_p ; comptes croisés exacts. CP-SAT (deux encodages) : UNKNOWN en 30-60 s, pas un filtre
+  rapide. Le noyau dur « chiral » n'est pas attaqué ici.
