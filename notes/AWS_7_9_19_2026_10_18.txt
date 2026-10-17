@@ -1,0 +1,60 @@
+Campagne distante demandee par Dilan via LAB, 18/10 vers01h18.
+
+Manifeste : data/codex_line_resonance_20261016/aws_7_9_19_20261018_v1.jsonl
+Une ligne JSON par tache; argv est la commande exacte a executer depuis
+la racine du depot, output/log sont uniques. Le fichier .metadata.json
+donne le commit du code, les entrees et les empreintes SHA256 apres
+normalisation CRLF->LF. Le fichier .requirements.txt fige les trois
+dependances; Python utilise ici :3.12.10. Le commit des artefacts contient
+les entrees et le commit du code dont il descend.
+
+980 taches independantes :456 Gram7,16 Gram9,508 Gram19. IDs d'origine,
+pas les positions renumerotees du fichier filtre. Les Gram9 ouverts sont
+183,193,196,202,203,205,207,210,213,214,216,219,221,233,234,236.
+183 et193 sont aussi en cours localement; AWS peut commencer par les autres.
+
+Methode : couverture exhaustive des codes de la premiere composante, apres
+normalisation par le stabilisateur du GRAM ENTIER. Chaque code est fixe
+dans un clone du modele commun. La fermeture porte sur le Gram seulement
+lorsque tous les codes ont donne INFEASIBLE. Le modele est une condition
+necessaire pour Conway sous minimum global c>=4 et budget racine<=51.
+Une solution de la relaxation ne constitue pas un Conway.
+
+Budget v1 :1 worker CP-SAT,120 secondes CPU par code,900 secondes CPU de
+solveur cumulees par invocation. Construction du modele et des clones
+separee; aucune borne dure de memoire ou de temps de construction annoncee.
+Les budgets sont souples a la granularite du thread d'interruption.
+Total maximal nominal des budgets de solveur :882000 secondes=245 heures
+CPU, hors construction. Ce n'est PAS une estimation du temps de fermeture
+des trois types. UNKNOWN et couverture incomplete restent ouverts.
+
+Sous Linux, lancer chaque tache avec taskset -c CPU, sur un CPU autorise
+different pour chaque tache simultanee. Le limiteur du script respecte ce
+singleton. Sans cet ancrage, les jobs partageraient les quatre premiers
+CPU disponibles. OPENBLAS_NUM_THREADS=1,OMP_NUM_THREADS=1,MKL_NUM_THREADS=1,
+NUMEXPR_NUM_THREADS=1 des le lancement sont recommandes. Ne pas recopier
+cpu_guard.budget.json, cpu_guard.stop ni les logs du gardien Windows.
+Concurrence a regler par LAB selon les CPU et la RAM effectivement obtenus;
+256 workers n'est pas une instruction de lancer256 copies si la RAM manque.
+
+Verdicts dans records[0].cases[0] :
+- INFEASIBLE + all_component_branches_processed=true + tous les statuts de
+  branches INFEASIBLE : Gram ferme. Si base_model_only=true, le solveur a
+  refute le modele commun sans fixer de composante, ce qui est aussi valide.
+- UNKNOWN, branche FEASIBLE/OPTIMAL, rapport absent ou erreur : Gram ouvert.
+- Tous les champs component_codes, gram_anchor_values, options et les
+  statistiques brutes doivent etre conserves. Aucun filtrage des UNKNOWN.
+
+Suite d'une tache interrompue : meme commande et meme sortie pour reprendre
+les codes non traites. Pour retenter les UNKNOWN, utiliser une NOUVELLE
+sortie et --reuse-proven ANCIEN_FICHIER; seuls les INFEASIBLE sont repris.
+Le script controle l'identite du Gram et de la couverture des codes.
+Un job a tres nombreux codes peut ensuite etre decoupe plus finement;
+avec980 Gram, le premier lot a deja assez de taches pour256 CPU.
+
+Retour : sorties JSON completes + logs + commit exact de lancement sur la
+branche lab/aws-codex-7-9-19. Codex importera les rapports dans le repertoire
+de donnees sous leurs noms uniques, puis executera les deux commandes
+merge_commands du metadata. Le registre ne compte jamais un timeout.
+Cette importation est une agregation de preuves de solveur, sans relancer
+la recherche de LAB ni refaire une verification independante systematique.
