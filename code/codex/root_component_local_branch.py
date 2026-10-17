@@ -26,6 +26,7 @@ def main():
     parser.add_argument('--index',type=int,required=True)
     parser.add_argument('--gram-index',type=int,required=True)
     parser.add_argument('--seconds',type=float,default=20,help='Actual CPU seconds per component branch.')
+    parser.add_argument('--total-cpu-seconds',type=float,help='Maximum summed solver CPU time in this invocation; model construction is separate.')
     parser.add_argument('--limit-new',type=int)
     parser.add_argument('--minc-lines',type=int,default=1)
     parser.add_argument('--minc-balance',action='store_true')
@@ -55,7 +56,12 @@ def main():
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
         stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance)
     assert not model.validate(), model.validate()
-    assert context, 'A component cover is required; solve an empty base domain directly instead.'
+    base_model_only=not context
+    if base_model_only:
+        # An empty signature/component domain can refute the unrestricted
+        # Gram before selectors exist. Keep one unrestricted solver branch,
+        # never regard an empty list of branches as a proof.
+        context={'codes':[[]],'selectors':[],'root':None,'part':[]}
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
@@ -63,6 +69,9 @@ def main():
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
+    if args.total_cpu_seconds is not None:
+        assert args.total_cpu_seconds>0
+        options['total_cpu_seconds']=args.total_cpu_seconds
     branches=[]
     if args.output.exists():
         old=json.loads(args.output.read_text())
@@ -79,7 +88,8 @@ def main():
         branches.extend(dict(r,source=str(args.reuse_proven)) for r in previous['branches'] if r['status']=='INFEASIBLE')
     completed={r['component_index'] for r in branches}
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='RUNNING',
-              component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches)
+              component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches,
+              base_model_only=base_model_only)
     record={'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}
     def checkpoint():
         case['component_branch_counts']=dict(Counter(r['status'] for r in branches))
@@ -87,40 +97,47 @@ def main():
         case['status']='INFEASIBLE' if len(branches)==len(codes) and all(r['status']=='INFEASIBLE' for r in branches) else 'UNKNOWN'
         atomic_json_write(args.output,{'scope':__doc__,'options':options,'resources':resources,'records':[record]})
     checkpoint()
-    case['branch_encoding']='Hard-fixed component selectors in a cloned model; constants available to presolve.'
-    processed=0
+    case['branch_encoding']='Unrestricted base model with no component selectors.' if base_model_only else 'Hard-fixed component selectors in a cloned model; constants available to presolve.'
+    processed=0;solver_cpu_used=0.0
     print(json.dumps({'template':args.index,'gram':args.gram_index,'component_codes':len(codes),'already_done':len(completed)}),flush=True)
     for i,code in enumerate(codes):
         if i in completed:continue
         if args.limit_new is not None and processed>=args.limit_new:break
+        branch_seconds=args.seconds
+        if args.total_cpu_seconds is not None:
+            remaining=args.total_cpu_seconds-solver_cpu_used
+            if remaining<=0:break
+            branch_seconds=min(branch_seconds,remaining)
         branch_model=model.clone()
         for selector,value in zip(context['selectors'],code):branch_model.add(selector==value)
         boundary_info=None
         rotated_info=None
-        if args.boundary_projectors:
+        if args.boundary_projectors and not base_model_only:
             from root_component_boundary_psd import add_profile_cuts
             boundary_info=add_profile_cuts(branch_model,graph,template,tables,context['root'],context['part'],code,complementary=True)
             print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
-        if args.rotated_rectangles:
+        if args.rotated_rectangles and not base_model_only:
             from root_component_rotated_rectangles import add_rotated_rectangles
             rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles)
             print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()
         solver.parameters.num_search_workers=1
-        solver.parameters.max_time_in_seconds=max(600,100*args.seconds)
+        solver.parameters.max_time_in_seconds=max(600,100*branch_seconds)
         solver.parameters.cp_model_probing_level=0
         solver.parameters.symmetry_level=0
         solver.parameters.linearization_level=0
         started=time.process_time();done=threading.Event()
         def interrupt():
             while not done.wait(.05):
-                if time.process_time()-started>=args.seconds:solver.stop_search();return
+                if time.process_time()-started>=branch_seconds:solver.stop_search();return
         timer=threading.Thread(target=interrupt,daemon=True);timer.start()
         try:status=solver.solve(branch_model)
         finally:done.set();timer.join()
         result={'component_index':i,'code':code,'status':solver.status_name(status),
                 'cpu_seconds':time.process_time()-started,'branches':solver.num_branches,'conflicts':solver.num_conflicts}
+        solver_cpu_used+=result['cpu_seconds']
+        case['solver_cpu_seconds_this_invocation']=solver_cpu_used
         if boundary_info is not None:result['boundary_projectors']=boundary_info
         if rotated_info is not None:result['rotated_rectangles']=rotated_info
         branches.append(result);processed+=1;checkpoint()
