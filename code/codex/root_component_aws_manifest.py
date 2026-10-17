@@ -4,6 +4,7 @@ The bounded tasks can close Gram branches, but do not guarantee that all
 will close. Incomplete code covers and every UNKNOWN stay open.
 """
 import argparse
+import ast
 from collections import Counter
 import hashlib
 import importlib.metadata
@@ -57,12 +58,29 @@ def main():
     inputs=[args.filtered,original,directory/'root_component_templates.json',
             directory/'line_component_pattern_tables_rotated.json']
     requirements={name:importlib.metadata.version(name) for name in ('ortools','sympy','numpy')}
+    code_dir=repo/'code/codex'
+    dependencies=set();pending=[code_dir/'root_component_local_branch.py']
+    while pending:
+        path=pending.pop()
+        if path in dependencies:continue
+        dependencies.add(path)
+        tree=ast.parse(path.read_text(encoding='utf-8-sig'))
+        for node in ast.walk(tree):
+            modules=([node.module] if isinstance(node,ast.ImportFrom) and node.module else
+                     [alias.name for alias in node.names] if isinstance(node,ast.Import) else [])
+            for module in modules:
+                candidate=code_dir/(module.split('.')[0]+'.py')
+                if candidate.exists() and candidate not in dependencies:pending.append(candidate)
+    dependency_names=[p.relative_to(repo).as_posix() for p in sorted(dependencies)]
+    assert subprocess.call(['git','diff','--quiet','HEAD','--',*dependency_names],cwd=repo)==0
+    tracked=set(subprocess.check_output(['git','ls-files','--',*dependency_names],cwd=repo,text=True).splitlines())
+    assert set(dependency_names)<=tracked, 'Every runtime source must be in the pinned commit.'
     meta={'scope':__doc__,'task_count':len(tasks),'counts':dict(Counter(t['template_index'] for t in tasks)),
           'code_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),
           'tested_python':sys.version,'tested_packages':requirements,
           'input_sha256':{p.as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs},
           'code_sha256':{p.relative_to(repo).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
-                         for p in sorted((repo/'code/codex').glob('*.py'))},
+                         for p in sorted(dependencies)},
           'solver_cpu_budget_sum_seconds':len(tasks)*args.total_cpu_seconds,
           'completion_time_bound_proved':False,
           'exclusion_rule':'Only case.status=INFEASIBLE with all canonical component branches processed and all branch statuses INFEASIBLE closes a Gram. UNKNOWN, missing or malformed outputs remain open. An unrestricted base-model INFEASIBLE is also valid.',
