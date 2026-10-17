@@ -88,7 +88,7 @@ def add_projector(model, graph, template, anchors):
 
 
 def build(template, cover, layer=2, projector=True, local_tables=None, normalize_component=False,
-          line_profiles=0,profile_triples=False,exact_triangles=False):
+          line_profiles=0,profile_triples=False,exact_triangles=False,minc_lines=0):
     prop = propagate(template)
     assert not prop["conflict"], prop["conflict"]
     fixed = {i: v for i, v, _ in prop["assignments"]}
@@ -138,10 +138,14 @@ def build(template, cover, layer=2, projector=True, local_tables=None, normalize
     if exact_triangles:
         from root_component_exact_triangles import add_exact_triangle_structure
         triangle_info=add_exact_triangle_structure(model,graph,template)
+    minc_info=None
+    if minc_lines:
+        from root_component_minimum_partition import add_minimum_partitions
+        minc_info=add_minimum_partitions(model,graph,minc_lines)
     return model, graph, {"complete_gram_cover": gram_info, "projector": projector_info,
                           "C2_count": c2_count, "C2_products": len(products), "full_C2": layer == 4,
                           "local_component_tables": local_info,"line_profiles":profile_info,
-                          "exact_triangle_structure":triangle_info}
+                          "exact_triangle_structure":triangle_info,"nonroot_minimum_component_partitions":minc_info}
 
 
 def main():
@@ -158,6 +162,8 @@ def main():
     parser.add_argument("--log-search",action="store_true")
     parser.add_argument("--cpu-time",action="store_true")
     parser.add_argument("--signature-domains",action="store_true")
+    parser.add_argument("--coupled-corners",action="store_true")
+    parser.add_argument("--minc-lines",type=int,default=0)
     parser.add_argument("--line-profiles",type=int,default=0)
     parser.add_argument("--profile-triples",action="store_true")
     parser.add_argument("--exact-triangles",action="store_true")
@@ -168,7 +174,20 @@ def main():
     source = args.grams or args.directory / "root_component_gram_orbits20.json"
     cover = next(r for r in json.loads(source.read_text())["records"] if r["template_index"] == args.index)
     started = time.monotonic()
-    if args.signature_domains:
+    if args.coupled_corners:
+        import hashlib
+        from root_component_coupled_cover import prepare
+        from root_component_resources import atomic_json_write
+        cache=args.output.with_suffix('.prepared.json')
+        digest=hashlib.sha256(json.dumps(cover,sort_keys=True).encode()).hexdigest()
+        if cache.exists():
+            prepared=json.loads(cache.read_text())
+            assert prepared['source_sha256']==digest
+            cover=prepared['cover']
+        else:
+            cover=prepare(templates[args.index],cover,lambda i,b:print(json.dumps({'prepared_gram':i,'empty_corner_domain':b}),flush=True))
+            atomic_json_write(cache,{'source_sha256':digest,'cover':cover})
+    elif args.signature_domains:
         from root_component_signature_moments import gram_matrix
         from root_rectangle_domains import signature_domains
         rows={q:[] for q in RECTANGLES}
@@ -182,7 +201,7 @@ def main():
     local_tables = None if args.local_tables is None else json.loads(args.local_tables.read_text())
     model, graph, info = build(templates[args.index], cover, args.layer, local_tables=local_tables,
                               normalize_component=args.normalize_component,line_profiles=args.line_profiles,
-                              profile_triples=args.profile_triples,exact_triangles=args.exact_triangles)
+                              profile_triples=args.profile_triples,exact_triangles=args.exact_triangles,minc_lines=args.minc_lines)
     assert not model.validate(), model.validate()
     info.update(template_index=args.index, status="MODEL_BUILT", build_seconds=time.monotonic()-started,
                 variables=len(model.proto.variables), constraints=len(model.proto.constraints), source=str(source),

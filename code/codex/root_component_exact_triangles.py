@@ -10,6 +10,11 @@ For the 60 vertices outside any root line and its neighbourhood, each
 vertex lies in at least one core triangle, and there are exactly 32-t(l)
 such triangles, where t(l) is the triangle count in the cubic neighbourhood.
 If c(l)=6, those 60 vertices partition into exactly twenty triangles.
+
+More precisely t_H(w)=1+e(C[N_C(w)]). In Gamma coordinates the second
+term is the sum of the four possible shared-label star edges at w and
+the actual triangles at w whose other two vertices are in the two stars.
+These redundant equalities expose the local triangle balance to propagation.
 """
 
 from itertools import combinations
@@ -64,11 +69,15 @@ def add_exact_triangle_structure(model, graph, template):
     for root in range(7):
         outside={w for w,p in enumerate(LABELS) if root not in tuple(a//2 for a in p)}
         local={w:[] for w in outside}
+        two_star={w:[] for w in outside}
         flags=[]
         for vertices,flag in triangles:
             if set(vertices)<=outside:
                 flags.append(flag)
                 for w in vertices:local[w].append(flag)
+            elif len(set(vertices)&outside)==1:
+                w=next(w for w in vertices if w in outside)
+                two_star[w].append(flag)
         prism_triangles=[]
         for a in range(14):
             if a//2!=root:
@@ -78,8 +87,13 @@ def add_exact_triangle_structure(model, graph, template):
         six_prisms=not template['nontrivial_component_groups'][root]
         for fs in local.values():
             model.add(sum(fs)==1) if six_prisms else model.add(sum(fs)>=1)
+        for w in outside:
+            shared_star_edges=[graph[w][lookup[tuple(sorted((2*root+bit,a)))]]
+                               for bit in range(2) for a in LABELS[w]]
+            model.add(sum(local[w])==1+sum(shared_star_edges)+sum(two_star[w]))
         core_info.append({'root_line':root,'vertices':len(outside),'possible_triangles':len(flags),
                           'vertex_triangle_count':1 if six_prisms else 'at least 1',
-                          'triangle_count':'32 minus t(root line)'})
+                          'triangle_count':'32 minus t(root line)',
+                          'per_vertex_boundary_balance_equations':len(outside)})
     info.update(gamma_triangles_per_vertex=5,cores=core_info,scope=__doc__)
     return info

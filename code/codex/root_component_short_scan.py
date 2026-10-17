@@ -38,7 +38,7 @@ def controls():
             "three_edge_rectangle_patterns": len(paths), "all_violate_short_matching": True}
 
 
-def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, upper_corners=False):
+def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, upper_corners=False, maximum_norm=4):
     started = time.process_time()
     diagonal_two = [list(edges[i]) for i in range(matrix.rows) if matrix[i, i] == 2]
     if diagonal_two:
@@ -46,7 +46,7 @@ def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, 
                 'rectangles': diagonal_two, 'total_cpu_seconds': time.process_time()-started}
     if direct_only:
         return {'status': 'UNKNOWN', 'reason': 'no_three_edge_rectangle'}
-    data = short_directions(matrix)
+    data = short_directions(matrix,maximum_norm=maximum_norm)
     domains = {tuple(x["rectangle"]): x for x in signature_domains(edges, matrix.tolist())}
     info = filter_domains(domains, data)
     upper_info=None
@@ -77,6 +77,7 @@ def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, 
     model = cp_model.CpModel()
     terms = []
     matching_terms = {}
+    overlap_terms = []
     anchors = data["anchors"]
     for ri, item in enumerate(domains.values()):
         hs = [tuple(h[i] for i in anchors) for h in item["signatures"]]
@@ -86,6 +87,7 @@ def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, 
             model.add(sum(v * h[ai] for v, h in zip(counts, hs)) == item["target"][a])
         terms.extend(zip(counts, hs))
         for h, count in zip(item['signatures'], counts):
+            overlap_terms.append((h,count))
             for root_id, value in enumerate(evaluations(h, data, roots_only=True)):
                 if value:
                     for root in item['rectangle']:
@@ -94,6 +96,8 @@ def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, 
         for value in (-1, 1):
             for root in range(7):
                 model.add(sum(matching_terms.get((root_id, value, root), [])) == 2)
+    from root_component_short_vectors import add_integer_overlap_counts
+    info.update(add_integer_overlap_counts(model,data,overlap_terms))
     for i, j in combinations_with_replacement(range(len(anchors)), 2):
         model.add(sum(v * h[i] * h[j] for v, h in terms) == 7 * int(matrix[anchors[i], anchors[j]]))
     assert not model.validate(), model.validate()
@@ -129,6 +133,7 @@ def main():
     parser.add_argument("--direct-only", action="store_true")
     parser.add_argument("--upper-projector", action="store_true")
     parser.add_argument("--upper-corners", action="store_true")
+    parser.add_argument("--maximum-norm",type=int,default=4)
     parser.add_argument("--limit-new", type=int)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -141,6 +146,7 @@ def main():
               "direct_only": args.direct_only,
               "upper_projector": args.upper_projector,
               "upper_corners": args.upper_corners,
+              "maximum_norm":args.maximum_norm,
               "source": str(args.grams), "resources": resources, "controls": checks, "records": records}
     if args.output.exists():
         old = json.loads(args.output.read_text())
@@ -148,6 +154,7 @@ def main():
         assert old.get('direct_only', False) == args.direct_only
         assert old.get('upper_projector', False) == args.upper_projector
         assert old.get('upper_corners', False) == args.upper_corners
+        assert old.get('maximum_norm',4)==args.maximum_norm
         records.extend(old["records"])
     def checkpoint():
         atomic_json_write(args.output, output)
@@ -166,7 +173,7 @@ def main():
             if gi in completed:
                 continue
             if args.limit_new is not None and processed>=args.limit_new:return
-            result = scan_case(edges, gram_matrix(cover, values), args.seconds, args.direct_only, args.upper_projector, args.upper_corners)
+            result = scan_case(edges, gram_matrix(cover, values), args.seconds, args.direct_only, args.upper_projector, args.upper_corners,args.maximum_norm)
             result.update(gram_index=gi, gram_anchor_values=values)
             record["cases"].append(result)
             processed+=1

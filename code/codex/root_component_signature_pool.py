@@ -56,6 +56,7 @@ def main():
     parser.add_argument("--linearization",type=int,choices=range(3),default=0)
     parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--upper-projector",action="store_true")
+    parser.add_argument("--rotated-boundary",action="store_true")
     parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
@@ -88,6 +89,8 @@ def main():
         config['normalize_component'] = True
     if args.upper_projector:
         config['upper_projector'] = True
+    if args.rotated_boundary:
+        config['rotated_boundary'] = True
     if args.interleave:
         config["interleave"] = True
     if args.local_tables:
@@ -127,7 +130,8 @@ def main():
                "six_prism_profiles":args.six_prism_profiles,"line_profiles":args.line_profiles,
                "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
                "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization,
-               "normalize_component":args.normalize_component,"upper_projector":args.upper_projector}
+               "normalize_component":args.normalize_component,"upper_projector":args.upper_projector,
+               "rotated_boundary":args.rotated_boundary}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None
@@ -162,11 +166,22 @@ def main():
                             "all_source_grams_processed": complete,
                             "excluded": complete and all(c["status"] == "INFEASIBLE" for c in cases)})
         data = {"scope": __doc__, "options": config,
-                "jobs": args.jobs, "resources": resources, "elapsed_seconds": time.monotonic() - started, "records": records}
+                "jobs": args.jobs, "execution": "sequential" if args.jobs==1 else "process_pool",
+                "resources": resources, "elapsed_seconds": time.monotonic() - started, "records": records}
         atomic_json_write(args.output,data)
 
     checkpoint()
     print(json.dumps({"new_cases": len(tasks), "inherited_exclusions": len(excluded)}), flush=True)
+    if args.jobs==1:
+        # No Windows multiprocessing handles are needed for a single worker.
+        # Running in this process also keeps CPU pause/resume ownership simple.
+        for task in tasks:
+            index,case=run_one(task)
+            completed[index,case['gram_index']]=case
+            print(json.dumps({'template':index,**case}),flush=True)
+            checkpoint()
+        print(json.dumps({'finished':True,'elapsed_seconds':time.monotonic()-started}),flush=True)
+        return
     todo = iter(tasks)
     with ProcessPoolExecutor(max_workers=args.jobs, initializer=limit_research_process, initargs=(4,)) as pool:
         pending = {}

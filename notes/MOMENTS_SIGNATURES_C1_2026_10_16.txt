@@ -609,3 +609,192 @@ and their automorphisms, DOI10.1007/s10469-006-0031-6. Le theoreme1, p605
 et le lemme2.4 fait de meme. Le mot classification dans le resume ne fournit
 donc aucune exclusion nouvelle de nos composantes. Source primaire consultee :
 https://www.mathnet.ru/php/getFT.phtml?jrnid=al&option_lang=eng&paperid=161&what=fullt
+
+23. Couplage des Gram, orbites colorees et bord tourne, 17/10 vers 02h50
+
+9#151 est maintenant INFEASIBLE avec le projecteur complementaire U,
+53.70 secondes CPU. L'ancien essai sans U etait UNKNOWN a60CPU.
+7#1069 avec U et couche2 reste UNKNOWN a120.06CPU. Aucun template nouveau
+ferme; les trois familles 7/9/19 restent ouvertes.
+
+Modele variable couvrant les61 Gram de9 de l'export0220 : 21 tables de
+quatre coins couplees au selecteur de Gram,160341 lignes au total,
+48185variables et115704contraintes. Preparation terminee, recherche en
+cours. root_component_coupled_cover.py conserve les vrais vecteurs h et
+relie explicitement chaque etat des quatre coins au meme Gram.
+
+Pool sequentiel pour jobs=1 : plus de multiprocessing.Queue sous Windows,
+apres une erreur WinError6 de handles. Les checkpoints anterieurs sont
+conserves. Aucun resultat n'est infere de cette erreur technique.
+
+Apprentissage par signatures : master C1+moments+coins+projecteurs; le
+sous-probleme ajoute eigen, C2, triangles, minc et profils. On suppose
+seulement les selecteurs H, JAMAIS les aretes proposees par le master.
+Un noyau UNSAT interdit donc ce champ partiel pour toute completion.
+Premier essai inutilisable pour apprendre : le wrapper OR-Tools retourne
+0 pour domain[-1] sur [0,7]. Corrige en copiant les domaines en listes;
+assertions sur les84 selecteurs et sur l'existence de lignes non constantes.
+La reprise v2 de7#1069 a deja refute un champ de60 lignes par un noyau de25
+lignes, en12.23CPU. Ce noyau ne ferme PAS le Gram. UNKNOWN ne donne aucun
+nogood. Fichier root_component_signature_benders.py.
+
+Nouvelle couverture exacte des composantes colorees, independante du Gram.
+Generateurs explicites : flips des paires de base, permutations des paires;
+puis deux transpositions de couleurs avec renormalisation. Fermeture de
+l'ensemble source et couverture disjointe verifiees pendant l'enumeration.
+Taille12 :110 codes ->32 types a couleurs fixees,14 avec permutations.
+Taille18 :93688 codes ->2215 types a couleurs fixees,516 avec permutations.
+Pour deux composantes, on peut permuter globalement les couleurs sur la
+premiere SEULEMENT; la seconde doit garder ses32 orientations colorees.
+Ces orbites ne permettent pas d'effacer des branches d'un Gram fixe.
+
+Deux prismes P,Q donnent un cadre canonique pour les60 sommets exterieurs
+a une droite L et N(L) : chacun choisit exactement un voisin p dans P et
+q dans Q. Il y a1 sommet par paire(p,q) de meme couleur,2 sinon, car
+(DD^t)_pq=2-[meme couleur]. Total12+48=60. Ce ne sont pas des profils D
+arbitrairement choisis : tout prolongement peut etre ainsi renomme.
+Template7 a une droite a six prismes. Templates9/19 ont une droite avec
+deux composantes12 et deux prismes. Leurs voisinages de droite sont donc
+couverts par1+14*32=449 cas. C'est une couverture FINIE; aucun cout total
+abordable n'est encore prouve. L'outil root_component_prism_frame.py pose
+DD^t=12I-C-C^2+2J-Z, D(H+I)=2J-CD et H^2+H+D^tD=12I+2J par etapes.
+Avec toutes les equations, un SAT est controle sur la matrice99 entiere.
+Avec une partie seulement, SAT reste un temoin de relaxation.
+
+NOUVELLE coupe de bord universelle, pas seulement une enumeration :
+si(a,b,c) est un triangle dans N(L), et(a',b',c') leurs partenaires de
+meme couleur, supposons que l'unique arete des partenaires soit a'b'.
+Aucun sommet exterieur z ne peut etre voisin de a',b',c simultanement.
+Preuve : raciner en a, avec droites(a,L_a,a') et(a,b,c). Leurs quatre
+coins sont L_b,L_c,b',z et induisent le P4 L_c-L_b-b'-z, interdit par le
+lemme universel e(Q)!=3. Le fait a non adjacent z suit deja de lambda=1
+(ils auraient les deux voisins communs a',c). Donc une nouvelle interdiction
+de triple exterieur par triangle dont les partenaires induisent une arete.
+root_component_rotated_boundary.py la relie a TOUS les codes possibles
+par des drapeaux booleens, sans choisir un code temoin. Option
+--rotated-boundary dans joint/pool; active aussi dans le cadre a deux prismes.
+Integration faite, pilotes de cette nouvelle coupe encore a lancer.
+
+Ressources : max2coeurs PARTAGES, pauses a65, reprise sous50. Charge des
+autres applications atteint parfois70-79 alors que nos calculs sont pauses.
+LAB960 lu/ack : son PID6952 termine; plus aucun processus LAB, prochaines
+recherches limitees a1worker et lancement si CPU<=50 et RAM<=75.
+Pont959 envoye02h36 (coordination CPU et nouvelles exclusions); prochaine
+ligne de vie avant03h21. Pas de reponse a960, simple information operationnelle.
+
+24. Reprise au message961, 17/10 vers23h15 locale
+
+Le pool9_upper a fini pendant l'intervalle :217 Gram INFEASIBLE sur240,
+23UNKNOWN. Il a donc ferme38 des61 Gram restants (151 et166 inclus).
+Les23 ouverts sont164,165,167,171,172,174,181,183,193,196,202,203,205,
+207,210,213,214,216,219,221,233,234,236. Tous leurs UNKNOWN sont a60CPU.
+Bilan actuel457 /23 /517 ouverts pour7/9/19; toujours76/79 templates,
+donc12/15 de l'objectif utilisateur. Aucune contradiction globale annoncee.
+
+Le modele couple des61 Gram de9 reste UNKNOWN180.16CPU. Le Benders7#1069
+v2 apprend deux noyaux UNSAT de25 et23 lignesH; puis masterUNKNOWN15CPU.
+Les noyaux sont valides pour les hypotheses du modele; pas d'exclusion du
+Gram entier. Le rapport garde les champs H supposes et les noyaux.
+
+Le nouveau cadre a deux prismes, famille six-prismes, stage1 et une droite
+minc, compile/valide :17962variables,56364contraintes,720equationsDH fixes,
+630pairesDDt. UNKNOWN30.02CPU. Il ne prouve ni existence ni non-existence.
+Les nouvelles coupes de triples ont ete controlees sur530 representants :
+224 temoins effectifs P4 dans le changement de racine, sans erreur.
+
+Nouveau pool9_rotated_boundary : les23UNKNOWN repris avec120CPU, deux
+droites minc et deux profils de droite, plus les triples de bord interdits,
+toujours U, eigen, triangles exacts et couche1. Session34058; un seul worker.
+Le gardien precedent s'etait termine a03h47 faute de processus de recherche.
+Relance cachee23h10, PID9656, max2coeurs partages, memes seuils65/50.
+A23h09, CPU total68% sans nos solveurs : demarrage attendu par le gardien.
+
+LAB961 lu/ack : les branches ont ete poussees et fusionnees dans main888d075
+par LAB a la demande de l'utilisateur; notre arbre n'a pas change. Il demande
+une piste pourc(l)=1. Son nouveau prompt neutre lu, sans reprise des anciennes
+notes. L'objectif prioritaire ici reste les trois templates minc4 restants.
+
+25. Reprise microscopique, 17/10 vers23h40 locale
+
+Le pool9_rotated_boundary a ferme165,167,171,181;164,172,174,183,193,196
+restent UNKNOWN120CPU. Arret volontaire du seul worker3612 avant la fin
+du prochain cas, sans enregistrer ce calcul inacheve, pour prioriser le
+nouveau filtre entier ci-dessous. Export filtered_20261017_2340 :
+457 /19 /517 ouverts pour7/9/19, toujours76/79 templates (12/15 cibles).
+
+Ressources : le gardien9656 a ete remplace proprement a23h16 par11896,
+maximum UN coeur logique partage, BelowNormal, suspension65/reprise50.
+Cette restriction repond aussi au message LAB962 (PC utilisateur en cours
+d'utilisation). Le CPU total observe est generalement23-50%.
+
+Normalisation nouvelle, code root_component_stabilizer.py : ne retenir
+que les permutations des sept racines qui conservent le template ET le
+Gram entier. Celles qui fixent la premiere composante permettent aussi
+de permuter ses paires de base. Pour9#164,18 codes deviennent10.
+Le stabilisateur entier (ordre8) deplace cette composante sur quatre
+racines; on peut imposer que son code normalise soit minimum sur ces
+quatre positions. Pour9#193, stabilisateur24 et35 codes de premiere
+composante. Les images de TOUS les codes filtres sont controlees dans le
+domaine cible. Cela choisit des etiquettes, pas une symetrie du graphe.
+Option --stabilizer-normalize du brancheur; modeles construits et valides.
+
+Renforcement de propagation des triangles : pour chaque x du noyau H60,
+t_H(x)=1+e(C[N_C(x)]). Dans Gamma, e(C[N_C(x)]) est la somme des quatre
+aretes partageant un label entre x et les deux etoiles, plus le nombre
+de triangles de x avec deux sommets dans ces etoiles. Preuve : x a quatre
+voisins Gamma dans les etoiles; si s de ces aretes partagent un label,
+2t_SS+t_SC=4-s, alors que t_H+t_SS+t_SC=5. Soustraction donne l'egalite.
+Ajoute420 equations lineaires sans nouvelle variable au modele triangles.
+
+LAB964 etend la coupe de bord a CHAQUE arete des partenaires. C'est valide :
+si une autre arete des partenaires touche le troisieme, la paire non
+adjacente correspondante a deja trois voisins communs a,c',z. Les types
+connexes12/18 n'ont pas un triangle de partenaires (il isolerait un prisme),
+donc l'extension ne change pas les224 temoins P4 sur530 types. Elle sert
+aussi aux prismes, ou les coupes DD^t nulles l'impliquent deja.
+
+Les coupes de Schur du bloc T24 sont branchees dans le brancheur apres
+fixation du code, avec celles du projecteur complementaire U24. Option
+--boundary-projectors. Sur9#164 premier code[2,3,7], rangs T19/U22,
+14400 profils ->14056,344 rejets parT et aucun rejet supplementaire parU.
+Ce filtre seul n'est pas une exclusion.
+
+NOUVELLE INEGALITE ENTIERE (preuve directe, aucune enumeration supposee).
+Soit h entier, Gamma h=-4h, somme(h)=0, N=||h||^2. Si h_u,h_v ont meme
+signe, de valeurs absolues r,s>0, e=Gamma_uv et c=|labels_u inter labels_v|,
+alors
+  r^2+s^2+7(r+s)+2e(r+s+1)+2c <= N+4.
+Preuve : changer le signe de h pour rendre r,s positifs. Poser S=somme h_+,
+E+=somme_{h>0} h(h-1)/2, E-=somme_{h<0} |h|(|h|-1)/2. N/2=S+E++E-.
+La masse negative voisine de u et v est au moins(4+e)(r+s). Leur union
+pese au plus S; leur intersection a au plus2-c-e sommets. Chaque entier
+t>=1 verifie t-1<=t(t-1)/2, donc la masse de l'intersection est au plus
+2-c-e+E-. Finalement(4+e)(r+s)<=N/2-E++2-c-e et
+E+>=r(r-1)/2+s(s-1)/2, d'ou la formule.
+
+COROLLAIRE N=28 : au plus UN +2, au plus UN -2; un sommet de valeur+2
+n'a aucun voisin de valeur positive (analogue negatif). Deux2 donnent
+36>32 meme sans arete;2 et1 adjacents donnent34>32. Ces restrictions
+n'etaient pas dans notre filtre de norme4 (qui bornait seulement |h|<=2).
+Ajout aux moments entiers, tables de quatre coins, tables de paires et
+contraintes globales de cardinalite du modele joint. Scan leger en cours,
+session96022, norm28_overlap_scan,0.25CPU/cas, premier9 puis7 puis19.
+Les19 cas de9 passent les moments renforces : ce n'est PAS un graphe.
+
+LAB965 lu/ack : son filtre E3 tourne tue ses1740 cotes positifs c=1,
+mais pas les17 structures sans lemme non positives. B' reste ouverte.
+Pas de re-audit ici. Application a nos etoiles fixees a envisager.
+
+Le scan norme28 est TERMINE :8 nouvelles exclusions,7#1710 et19#977,
+1974,2001,2220,3082,3106,3116. Les985 autres passent les moments (OPTIMAL
+signifie seulement faisabilite de cette relaxation). Bilan456/19/510.
+
+Extension prouvee pour les directions de norme entiere jusqu'a56 : si
+deux coordonnees positives sont >=r>=2, le meme argument donne
+E+<=N/2+2-8r. Donc leur nombre est au plus
+max(1,floor((N/2+2-8r)/binom(r,2))). En outre, la presence de deux telles
+coordonnees implique cette borne sur l'exces TOTAL E+, pas seulement
+sur elles. Les amplitudes incompatibles par la formule de paires sont
+interdites simultanement. Ajoute dans add_integer_overlap_counts et dans
+le scan --maximum-norm8 (norme du reseau R; norme de h sept fois plus grande).
+Scan norm56_overlap_scan en cours, session48257, meme plafond un coeur.

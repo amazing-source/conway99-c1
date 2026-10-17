@@ -16,6 +16,16 @@ seven positive (and seven negative) vertices each carry two labels, each
 sign set is a perfect matching on the fourteen root-neighbour labels.
 
 No graph is assumed to exist here. These are necessary conditions only.
+
+Integer overlap bound: let N=||h||^2, and h_u,h_v have the same sign with
+absolute values r,s. Write e for adjacency and c for shared root labels.
+Then r^2+s^2+7(r+s)+2e(r+s+1)+2c <= N+4.
+Indeed the two negative neighbour weights total at least (4+e)(r+s).
+Their union weighs at most S=sum(h_+), and their intersection has at most
+2-c-e vertices. Since t-1 <= t(t-1)/2 for positive integers t, their total
+is at most N/2 - [r(r-1)+s(s-1)]/2 + 2-c-e.
+For N=28, each sign has at most one coordinate of absolute value two,
+and that vertex has no adjacent vertex of the same sign.
 """
 
 from itertools import product
@@ -76,6 +86,63 @@ def evaluations(signature, data, roots_only=False):
         assert numerator % denominator == 0, "Lattice basis evaluation must be integral."
         values.append(numerator // denominator)
     return tuple(values)
+
+
+def norm4_overlap_masks(signature, data):
+    """Bitmasks +2, -2, positive and negative on the norm-four directions."""
+    values=[v for v,d in zip(evaluations(signature,data),data['directions']) if d['norm']==4]
+    return tuple(sum(1<<i for i,v in enumerate(values) if predicate(v)) for predicate in
+                 (lambda v:v==2,lambda v:v==-2,lambda v:v>0,lambda v:v<0))
+
+
+def norm4_pair_admissible(a,b,edge):
+    if a[0]&b[0] or a[1]&b[1]:return False
+    return not edge or not (a[0]&b[2] or b[0]&a[2] or a[1]&b[3] or b[1]&a[3])
+
+
+def add_integer_overlap_counts(model, data, terms):
+    """Aggregate overlap bounds for any enumerated integral directions.
+
+For two positive entries >=r, negative-neighbour overlap also gives
+E_+ <= N/2+2-8r, where E_+=sum h_+(h_+-1)/2 over ALL coordinates.
+Thus the number of entries >=r is at most max(1,floor((N/2+2-8r)/binom(r,2))).
+The same conclusions hold for the negative sign. Terms may be individual
+signature indicators or integer multiplicities, so this works in both models.
+    """
+    buckets=[{} for _ in data['directions']]
+    for signature,variable in terms:
+        for bucket,value in zip(buckets,evaluations(signature,data)):
+            if abs(value)>=2:bucket.setdefault(value,[]).append(variable)
+    constraints=0;directions_used=0
+    for di,(direction,bucket) in enumerate(zip(data['directions'],buckets)):
+        if not bucket:continue
+        directions_used+=1
+        norm=7*direction['norm'];maximum=direction['maximum_coordinate']
+        assert norm%2==0
+        for sign in (-1,1):
+            counts={r:sum(bucket.get(sign*r,[])) for r in range(2,maximum+1)}
+            excess=sum(r*(r-1)//2*count for r,count in counts.items())
+            caps={}
+            for r in counts:
+                if not any(sign*s in bucket for s in range(r,maximum+1)):continue
+                above=sum(counts[s] for s in range(r,maximum+1))
+                upper=norm//2+2-8*r
+                cap=max(1,upper//(r*(r-1)//2));caps[r]=cap
+                model.add(above<=cap);constraints+=1
+                if cap>=2:
+                    repeated=model.new_bool_var(f'integer_overlap_repeat_{di}_{sign}_{r}')
+                    model.add(above>=2).only_enforce_if(repeated)
+                    model.add(above<=1).only_enforce_if(repeated.Not())
+                    model.add(excess<=upper).only_enforce_if(repeated)
+                    constraints+=3
+            for r in range(2,maximum+1):
+                for s in range(r+1,maximum+1):
+                    if sign*r not in bucket or sign*s not in bucket:continue
+                    if r*r+s*s+7*(r+s)>norm+4:
+                        assert caps[s]==1
+                        model.add(counts[r]+84*counts[s]<=84);constraints+=1
+    return {'integer_overlap_directions':directions_used,'integer_overlap_constraints':constraints,
+            'maximum_lattice_norm':data.get('complete_through_norm',4)}
 
 
 def admissible(signature, data):
