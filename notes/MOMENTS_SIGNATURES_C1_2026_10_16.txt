@@ -550,3 +550,62 @@ PAS une nouvelle exclusion. Elle decrit exactement la forme a traiter si
 un futur argument utilise une coordonnee -3 pour un rectangle a une arete.
 Rapport root_component_scalar_support_q1diag.json, sans prefixe signature
 afin de ne pas le confondre avec une branche du recouvrement des Gram.
+
+22. Fermetures de Gram et projecteur complementaire, 17/10 vers 02h20
+
+9#140 est maintenant EXCLU : les huit branches restantes ont toutes fini
+INFEASIBLE avec le code de composante fixe avant presolve et C2 couche 1,
+en 22.5 a 41.3 secondes CPU chacune. Les seize codes canoniques sont couverts.
+Le pilote du modele entier, sans fixation de code, ferme aussi 9#141 en
+12.11 secondes CPU et 19#549 en 45.66 secondes CPU. 7#1069 reste UNKNOWN
+apres 90 secondes CPU. Le premier balayage de 9 ferme encore 9#156 en
+55.11 secondes CPU; 9#151 reste UNKNOWN a 60 secondes CPU.
+Export 0220 apres union : 457 / 61 / 517 Gram ouverts pour 7 / 9 / 19.
+Toujours 76/79 templates, 12/15 fermes : ces nouveaux verdicts sont des
+fermetures de Gram, pas des fermetures de templates.
+
+Nouvelle contrainte exacte : U=7Pi-T est lui aussi positif semi-defini.
+Pi est le projecteur orthogonal sur ker B. Pour les 21 rectangles, P^tP=4I
+et Pi P=P E, ou E(q,r)=delta(q,r)-|q intersection r|/5+1/15. E est un
+projecteur de rang 14. Ainsi S=P^tUP=28E-R et U(w,w)=10/3.
+Pour la signature h d'un sommet du rectangle q, u=7E e_q-h. Il faut
+u dans im S et u^t S^+u <=10/3. Sur les seules coordonnees nongrilles,
+mettre K=28I-R et L=R K^+. Apres orthogonalite a ker K, le calcul exact est
+28 u^t S^+u = 98/3 -14h_q + ||h||^2 + u_N^t L u_N.
+Cela evite une inversion rationnelle 21x21 pour chaque signature.
+Neuf comparaisons exactes avec cette inversion complete passent : fichier
+root_component_upper_projector_controls.json. Aucun calcul flottant.
+
+root_component_upper_signatures.py applique cette borne par sommet puis
+le Schur complementaire sur les quatre coins d'un rectangle. Le modele
+joint ajoute aussi les mineurs conditionnels de taille deux pour U :
+U(u,v)=Gamma(u,v)+(-4*commun+conjugue-2)/15, u!=v.
+Option --upper-projector. Sur les premiers Gram, elle retire des signatures
+(exemple 19#560 : 180 ->156 avant les tables de coins). Les neuf premiers
+tests de moments + coins sur 9 restent SAT : pas de preuve par ces seules
+conditions. Le balayage diagonal seul a ete arrete apres checkpoint pour
+tester les contraintes conjointes plus fortes; ses SAT ne sont pas des graphes.
+
+Deux calculs actifs : 7#1069, U complet, C2 couche2 (paires partageant un
+label), budget120CPU; et pool_9_upper, U complet, couche1,60CPU par Gram.
+Le pool_9_rotated sans U a ete arrete avec tous ses descendants apres
+checkpoint; ses exclusions restent au manifeste. Ne pas le compter actif.
+
+Autre filtre exploratoire : root_component_boundary_psd.py utilise le
+bloc connu 24x24 de T apres fixation d'une composante de 18 sommets et des
+trois prismes. Rang19. Pour les deux premiers codes de 9#141, il retire
+respectivement96/14400 et0/14400 profils exterieurs. Pas encore incorpore
+au solveur, pas d'exclusion attribuee a ce filtre.
+
+Ressources : gouverneur remplace proprement, PID21048, maximum2 coeurs
+logiques PARTAGES, sonde1s. Reduit a60%, suspend a65%, reprend sous50%
+apres15s; BelowNormal. Charge externe variable, nos calculs passent souvent
+par des pauses. Seuls nos arbres Python de recherche sont controles.
+Pont958 envoye a02h05; prochain point substantiel ou ligne de vie avant02h50.
+
+Bibliographie ciblee : Makhnev--Nirova (2006), Slender partial quadrangles
+and their automorphisms, DOI10.1007/s10469-006-0031-6. Le theoreme1, p605
+(page3 du PDF russe), conserve explicitement (99,14,1,2) parmi les cas,
+et le lemme2.4 fait de meme. Le mot classification dans le resume ne fournit
+donc aucune exclusion nouvelle de nos composantes. Source primaire consultee :
+https://www.mathnet.ru/php/getFT.phtml?jrnid=al&option_lang=eng&paperid=161&what=fullt

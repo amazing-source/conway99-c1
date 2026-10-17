@@ -37,16 +37,16 @@ try { while ($true) {
         Where-Object { $_.Name -eq '_Total' } | Select-Object -First 1
     $taskUtility = if ($null -ne $taskCpu) { [double]$taskCpu.PercentProcessorUtility } else { 100.0 }
     $taskPrevious = $taskBudget
-    if ($taskUtility -ge 70) {
+    if ($taskUtility -ge 65) {
         $taskBudget = 1; $taskLastIncrease = $taskNow
         if (-not $taskPaused) { $taskPausedAt = $taskNow; $taskPaused = $true }
     }
-    elseif ($taskUtility -ge 65) { $taskBudget = [Math]::Max(1, $taskBudget - 1); $taskLastIncrease = $taskNow }
-    elseif ($taskUtility -lt 55 -and ($taskNow - $taskLastIncrease).TotalSeconds -ge 30) {
+    elseif ($taskUtility -ge 60) { $taskBudget = [Math]::Max(1, $taskBudget - 1); $taskLastIncrease = $taskNow }
+    elseif ($taskUtility -lt 45 -and ($taskNow - $taskLastIncrease).TotalSeconds -ge 30) {
         $taskBudget = [Math]::Min($MaximumCores, $taskBudget + 1)
         $taskLastIncrease = $taskNow
     }
-    if ($taskPaused -and $taskUtility -lt 55 -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
+    if ($taskPaused -and $taskUtility -lt 50 -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
         Resume-ResearchThreads $taskSuspended
         $taskPaused = $false
         $taskLastIncrease = $taskNow
@@ -101,7 +101,7 @@ try { while ($true) {
         $taskLastLog = $taskNow
     }
     if (($taskNow - $taskLastSeen).TotalSeconds -gt 300 -or (Test-Path -LiteralPath $taskStopFile)) { break }
-    Start-Sleep -Seconds 3
+    Start-Sleep -Seconds 1
 } } finally {
     Resume-ResearchThreads $taskSuspended
     [pscustomobject]@{logical_cores=$MaximumCores; paused=$false; stopped=$true; time=(Get-Date).ToString('o')} |

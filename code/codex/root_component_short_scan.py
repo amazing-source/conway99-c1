@@ -38,7 +38,7 @@ def controls():
             "three_edge_rectangle_patterns": len(paths), "all_violate_short_matching": True}
 
 
-def scan_case(edges, matrix, seconds, direct_only=False):
+def scan_case(edges, matrix, seconds, direct_only=False, upper_projector=False, upper_corners=False):
     started = time.process_time()
     diagonal_two = [list(edges[i]) for i in range(matrix.rows) if matrix[i, i] == 2]
     if diagonal_two:
@@ -49,10 +49,30 @@ def scan_case(edges, matrix, seconds, direct_only=False):
     data = short_directions(matrix)
     domains = {tuple(x["rectangle"]): x for x in signature_domains(edges, matrix.tolist())}
     info = filter_domains(domains, data)
+    upper_info=None
+    if upper_projector:
+        from root_component_upper_signatures import filter_domains as upper_filter
+        upper_info=upper_filter(edges,matrix,domains)
+    if upper_corners:
+        assert upper_projector
+        from root_component_upper_signatures import data_for,corner_filter
+        from root_component_corner_tables import enumerate_corner_rows
+        anchors=data['anchors'];small=matrix.extract(anchors,anchors);det=int(small.det())
+        adj=[[int(x) for x in row] for row in (small.inv()*det).tolist()]
+        tables=enumerate_corner_rows(edges,matrix,domains,anchors,det,adj)
+        upper_data=data_for(edges,matrix)
+        counts=[]
+        for table in tables:
+            counts.append(corner_filter(table,domains,upper_data))
+            used={i for row in table['rows'] for i in row[:4]}
+            item=domains[table['rectangle']]
+            item['signatures']=[h for i,h in enumerate(item['signatures']) if i in used]
+        upper_info['corner_rows_before']=sum(x['before'] for x in counts)
+        upper_info['corner_rows_after']=sum(x['after'] for x in counts)
     bad = [r for r, d in domains.items() if not d["signatures"]]
     if bad:
         return {"status": "INFEASIBLE", "reason": "empty_short_vector_domain", "rectangles": bad,
-                "short_vector_filter": info, "directions": data}
+                "short_vector_filter": info, "upper_projector_filter": upper_info, "directions": data}
     # First moments enforce four rows per rectangle; second moments enforce H^t H=7R.
     model = cp_model.CpModel()
     terms = []
@@ -94,7 +114,7 @@ def scan_case(edges, matrix, seconds, direct_only=False):
     finally:
         done.set()
         timer.join()
-    return {"status": solver.status_name(status), "short_vector_filter": info,
+    return {"status": solver.status_name(status), "short_vector_filter": info, "upper_projector_filter": upper_info,
             "solver_cpu_seconds": time.process_time() - search_start,
             "total_cpu_seconds": time.process_time() - started,
             "reason": "necessary_integral_signature_moments"}
@@ -107,6 +127,9 @@ def main():
     parser.add_argument("--indices", type=int, nargs="+", required=True)
     parser.add_argument("--seconds", type=float, default=1)
     parser.add_argument("--direct-only", action="store_true")
+    parser.add_argument("--upper-projector", action="store_true")
+    parser.add_argument("--upper-corners", action="store_true")
+    parser.add_argument("--limit-new", type=int)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     resources = limit_research_process(4)
@@ -116,14 +139,19 @@ def main():
     records = []
     output = {"scope": "Necessary short integral eigenvector bounds and exact moments; feasible is not a graph.",
               "direct_only": args.direct_only,
+              "upper_projector": args.upper_projector,
+              "upper_corners": args.upper_corners,
               "source": str(args.grams), "resources": resources, "controls": checks, "records": records}
     if args.output.exists():
         old = json.loads(args.output.read_text())
         assert old["source"] == str(args.grams)
         assert old.get('direct_only', False) == args.direct_only
+        assert old.get('upper_projector', False) == args.upper_projector
+        assert old.get('upper_corners', False) == args.upper_corners
         records.extend(old["records"])
     def checkpoint():
         atomic_json_write(args.output, output)
+    processed=0
     for index in args.indices:
         cover = covers[index]
         record = next((r for r in records if r["template_index"] == index), None)
@@ -137,9 +165,11 @@ def main():
         for gi, values in zip(ids, cover["gram_anchor_values"]):
             if gi in completed:
                 continue
-            result = scan_case(edges, gram_matrix(cover, values), args.seconds, args.direct_only)
+            if args.limit_new is not None and processed>=args.limit_new:return
+            result = scan_case(edges, gram_matrix(cover, values), args.seconds, args.direct_only, args.upper_projector, args.upper_corners)
             result.update(gram_index=gi, gram_anchor_values=values)
             record["cases"].append(result)
+            processed+=1
             record["counts"] = dict(Counter(c["status"] for c in record["cases"]))
             record["all_filtered_grams_processed"] = len(record["cases"]) == len(ids)
             checkpoint()

@@ -55,6 +55,7 @@ def main():
     parser.add_argument("--short-vectors",action="store_true")
     parser.add_argument("--linearization",type=int,choices=range(3),default=0)
     parser.add_argument("--normalize-component",action="store_true")
+    parser.add_argument("--upper-projector",action="store_true")
     parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
@@ -85,6 +86,8 @@ def main():
         config['linearization'] = args.linearization
     if args.normalize_component:
         config['normalize_component'] = True
+    if args.upper_projector:
+        config['upper_projector'] = True
     if args.interleave:
         config["interleave"] = True
     if args.local_tables:
@@ -124,7 +127,7 @@ def main():
                "six_prism_profiles":args.six_prism_profiles,"line_profiles":args.line_profiles,
                "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
                "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization,
-               "normalize_component":args.normalize_component}
+               "normalize_component":args.normalize_component,"upper_projector":args.upper_projector}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None
