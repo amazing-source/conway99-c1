@@ -31,6 +31,10 @@ def main():
     parser.add_argument('--line-profiles',type=int,default=1)
     parser.add_argument('--layer',type=int,default=0,choices=range(5))
     parser.add_argument('--local-tables',type=Path,required=True)
+    parser.add_argument('--upper-projector',action='store_true')
+    parser.add_argument('--rotated-boundary',action='store_true')
+    parser.add_argument('--stabilizer-normalize',action='store_true')
+    parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -44,11 +48,16 @@ def main():
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=args.minc_lines,
         line_profiles=args.line_profiles,profile_triples=True,exact_triangles=True,
-        short_vectors=True,normalize_component=True,component_branch_context=context)
+        short_vectors=True,normalize_component=True,component_branch_context=context,
+        upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
+        stabilizer_normalize=args.stabilizer_normalize)
+    assert not model.validate(), model.validate()
     assert context, 'A component cover is required; solve an empty base domain directly instead.'
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors'):
+        if getattr(args,name):options[name]=True
     branches=[]
     if args.output.exists():
         old=json.loads(args.output.read_text())
@@ -81,6 +90,11 @@ def main():
         if args.limit_new is not None and processed>=args.limit_new:break
         branch_model=model.clone()
         for selector,value in zip(context['selectors'],code):branch_model.add(selector==value)
+        boundary_info=None
+        if args.boundary_projectors:
+            from root_component_boundary_psd import add_profile_cuts
+            boundary_info=add_profile_cuts(branch_model,graph,template,tables,context['root'],context['part'],code,complementary=True)
+            print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()
         solver.parameters.num_search_workers=1
@@ -97,6 +111,7 @@ def main():
         finally:done.set();timer.join()
         result={'component_index':i,'code':code,'status':solver.status_name(status),
                 'cpu_seconds':time.process_time()-started,'branches':solver.num_branches,'conflicts':solver.num_conflicts}
+        if boundary_info is not None:result['boundary_projectors']=boundary_info
         branches.append(result);processed+=1;checkpoint()
         print(json.dumps(dict(result,complete_gram_status=case['status'])),flush=True)
 

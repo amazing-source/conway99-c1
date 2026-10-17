@@ -6,28 +6,47 @@ from ortools.sat.python import cp_model
 from root_component_propagation import LABELS, RECTANGLES
 
 
-def canonical_component_codes(record):
+def component_pair_relabel_map(record, pair_permutation):
+    """Conjugation maps for a root-pair permutation, preserving both bits."""
+    permutations = [tuple(p) for p in record['cross_permutations']]
+    matchings = [tuple(tuple(e) for e in m) for m in record['internal_matchings']]
+    pi_index = {p:i for i,p in enumerate(permutations)}
+    mi_index = {m:i for i,m in enumerate(matchings)}
+    n=len(permutations[0])
+    assert sorted(pair_permutation)==list(range(n//2))
+    f=[2*pair_permutation[j//2]+j%2 for j in range(n)]
+    inverse=[f.index(j) for j in range(n)]
+    pp=[pi_index[tuple(f[p[inverse[j]]] for j in range(n))] for p in permutations]
+    mm=[mi_index[tuple(sorted(tuple(sorted((f[a],f[b]))) for a,b in m))] for m in matchings]
+    return pp,mm
+
+
+def canonical_component_codes(record, pair_permutations=None, return_map=False):
     permutations = [tuple(p) for p in record["cross_permutations"]]
     matchings = [tuple(tuple(e) for e in m) for m in record["internal_matchings"]]
     pi_index = {p:i for i,p in enumerate(permutations)}
     mi_index = {m:i for i,m in enumerate(matchings)}
     n = len(permutations[0])
     pmaps, mmaps = [], []
-    for bits in range(1 << (n//2)):
-        f = [j ^ ((bits >> (j//2)) & 1) for j in range(n)]
-        pmaps.append([pi_index[tuple(f[p[f[j]]] for j in range(n))] for p in permutations])
-        mmaps.append([mi_index[tuple(sorted(tuple(sorted((f[a],f[b]))) for a,b in m))] for m in matchings])
+    pair_permutations = pair_permutations or [tuple(range(n//2))]
+    for pair_permutation in pair_permutations:
+        assert sorted(pair_permutation) == list(range(n//2))
+        for bits in range(1 << (n//2)):
+            f = [2*pair_permutation[j//2] + ((j%2) ^ ((bits >> (j//2)) & 1)) for j in range(n)]
+            inverse = [f.index(j) for j in range(n)]
+            pmaps.append([pi_index[tuple(f[p[inverse[j]]] for j in range(n))] for p in permutations])
+            mmaps.append([mi_index[tuple(sorted(tuple(sorted((f[a],f[b]))) for a,b in m))] for m in matchings])
     inverses = [pi_index[tuple(p.index(j) for j in range(n))] for p in permutations]
     valid = {tuple(c) for c in record["component_code_triples"]}
-    representatives = set()
+    representatives = {}
     for p,a,b in valid:
         orbit = set()
         for pp,mm in zip(pmaps,mmaps):
             orbit.add((pp[p],mm[a],mm[b]))
             orbit.add((inverses[pp[p]],mm[b],mm[a]))
         assert orbit.issubset(valid)
-        representatives.add(min(orbit))
-    return sorted(representatives)
+        representatives[p,a,b] = min(orbit)
+    return representatives if return_map else sorted(set(representatives.values()))
 
 
 def compatible_component_codes(record, stars, root, part, corner_patterns):
@@ -140,7 +159,8 @@ def component_signature_rows(record, codes, stars, root, part, edges, domains, c
 
 
 def add_local_component_tables(model, graph, template, data, normalize_first=False, corner_patterns=None,
-                               signature_data=None, branch_context=None, rotated_boundary=False):
+                               signature_data=None, branch_context=None, rotated_boundary=False,
+                               first_component_relabelings=None):
     library = {r["vertices"]//6:r for r in data["records"]}
     index = {p:i for i,p in enumerate(LABELS)}
     table_count, row_count = 0, 0
@@ -149,6 +169,8 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
         chosen = min(((-len(part),root,tuple(part)) for root,parts in enumerate(template["nontrivial_component_groups"]) for part in parts))
         chosen = chosen[1:]
     normalized_info = None
+    normalization_map = None
+    component_records = []
     filtered_info = []
     rotated_info = []
     for root, parts in enumerate(template["nontrivial_component_groups"]):
@@ -194,7 +216,9 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
                 # canonical_component_codes checks that EVERY mate-flip orbit
                 # stays in this filtered code set before selecting a representative.
                 restricted = dict(record, component_code_triples=allowed)
-                codes = canonical_component_codes(restricted)
+                pair_permutations = None if first_component_relabelings is None else first_component_relabelings['part_permutations']
+                normalization_map = canonical_component_codes(restricted, pair_permutations, return_map=True)
+                codes = sorted(set(normalization_map.values()))
                 if signature_rows is not None:
                     canonical = set(codes)
                     signature_rows = [row for row in signature_rows if tuple(row[:3]) in canonical]
@@ -202,6 +226,9 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
                                    "filtered_codes":len(allowed),"canonical_codes":len(codes),
                                    "filtered_set_invariance_checked":True,
                                    "action":"Global independent mate flips only; no graph automorphism assumed."}
+                if first_component_relabelings is not None:
+                    normalized_info['root_stabilizer'] = first_component_relabelings
+                    normalized_info['action'] = 'Global mate flips and root relabelings preserving the complete fixed Gram and component template; no completed-graph automorphism assumed.'
                 if branch_context is not None:
                     branch_context.update(root=root, part=list(part), selectors=list(selectors), codes=list(codes))
             if signature_rows is None:
@@ -220,8 +247,14 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
                 from root_component_rotated_boundary import add_code_cuts
                 boundary_codes=codes if signature_rows is None else [row[:3] for row in signature_rows]
                 rotated_info.append(add_code_cuts(model,graph,record,boundary_codes,selectors,stars,root,part))
+            component_records.append({'root':root,'part':list(part),'selectors':list(selectors),
+                'codes':codes if signature_rows is None else [row[:3] for row in signature_rows],'record':record})
             table_count += 4
             row_count += len(rows)+2*len(record["internal_matchings"])+(len(codes) if signature_rows is None else len(signature_rows))
+    if first_component_relabelings is not None:
+        from root_component_stabilizer import add_root_orbit_minimum
+        normalized_info['root_orbit_minimum'] = add_root_orbit_minimum(
+            model, component_records, first_component_relabelings, normalization_map)
     return {"tables":table_count,"rows":row_count,"first_component_normalization":normalized_info,
             "corner_pattern_filters":filtered_info,"rotated_boundary_triples":rotated_info,
             "scope":"Every true connected line component is covered; no local witness is fixed."}

@@ -1,11 +1,13 @@
 """A rotated no-three-edge rectangle forbids outside rainbow triples.
 
 For a triangle (a,b,c) in the coloured cubic neighbourhood of a line,
-write (a',b',c') for the same-colour mates. If their only edge is a'b',
+write (a',b',c') for the same-colour mates. If a'b' is an edge,
 no outside vertex z can be adjacent to a',b',c simultaneously.
-Indeed, root at a and use its lines (a,L_a,a') and (a,b,c).
-Their four corners are L_b,L_c,b',z, inducing the path L_c-L_b-b'-z.
-This is exactly the universally forbidden three-edge rectangle.
+When a'c' and b'c' are absent, root at a and use its lines (a,L_a,a')
+and (a,b,c). Their four corners are L_b,L_c,b',z, inducing the forbidden
+path L_c-L_b-b'-z. If a'c' is present, the nonadjacent pair a',c already
+has three common neighbours a,c',z; the case b'c' is identical.
+The extension to each partner edge was pointed out by LAB (bridge 964).
 
 The rule is valid for every external boundary. It does not fix a local
 code: Boolean flags are linked to the whole allowed code table.
@@ -33,10 +35,9 @@ def forbidden_triples(record,code):
         if values[0]==values[1]:edge_pairs.append((0,1))
         if values[0]==values[2]:edge_pairs.append((0,2))
         if p[values[1]]==values[2]:edge_pairs.append((1,2))
-        if len(edge_pairs)!=1:continue
-        a,b=edge_pairs[0]
-        triple=[i]*3;triple[a]=values[a];triple[b]=values[b]
-        triples.add(tuple(triple))
+        for a,b in edge_pairs:
+            triple=[i]*3;triple[a]=values[a];triple[b]=values[b]
+            triples.add(tuple(triple))
     return sorted(triples)
 
 
@@ -70,16 +71,16 @@ def fixed_forbidden_triples(c,colours):
         assert len({colours[u] for u in tri})==3
         values=[mates[u] for u in tri]
         edges=[(a,b) for a,b in combinations(range(3),2) if c[values[a]][values[b]]]
-        if len(edges)!=1:continue
-        a,b=edges[0];other=3-a-b
-        triples.add(tuple(sorted((values[a],values[b],tri[other]))))
+        for a,b in edges:
+            other=3-a-b
+            triples.add(tuple(sorted((values[a],values[b],tri[other]))))
     return sorted(triples)
 
 
 def check_rotated_witness(record,code):
-    """Check the actual rooted P4 for every forbidden triple of this code."""
+    """Exhibit a rooted P4 or three common neighbours for every triple."""
     from root_component_prism_frame import component
-    c,colours=component(record,code);n=len(c)//3;checked=0
+    c,colours=component(record,code);n=len(c)//3;checked={'P4':0,'three_common_neighbours':0}
     expected={tuple(sorted((a,n+b,2*n+d))) for a,b,d in forbidden_triples(record,code)}
     assert expected==set(fixed_forbidden_triples(c,colours))
     mates=[next(v for v in range(len(c)) if c[u][v] and colours[u]==colours[v]) for u in range(len(c))]
@@ -87,29 +88,35 @@ def check_rotated_witness(record,code):
         if not all(c[u][v] for u,v in combinations(tri,2)):continue
         vals=[mates[u] for u in tri]
         edges=[(a,b) for a,b in combinations(range(3),2) if c[vals[a]][vals[b]]]
-        if len(edges)!=1:continue
-        a,b=edges[0];third=3-a-b
-        selected={vals[a],vals[b],tri[third]}
-        z=3+len(c);g=[set() for _ in range(z+1)]
-        def edge(u,v):g[u].add(v);g[v].add(u)
-        for u,v in combinations(range(3),2):edge(u,v)
-        for u in range(len(c)):
-            edge(colours[u],3+u)
-            for v in range(u):
-                if c[u][v]:edge(3+u,3+v)
-        for u in selected:edge(z,3+u)
-        root=3+tri[a]
-        first=(colours[tri[a]],3+vals[a]);second=(3+tri[b],3+tri[third])
-        corners=[]
-        for u in first:
-            for v in second:
-                common=(g[u]&g[v])-{root}
-                assert len(common)==1,(code,tri,u,v,common)
-                corners.append(next(iter(common)))
-        assert len(set(corners))==4 and all(v not in g[root] for v in corners)
-        assert sorted(len(g[u]&set(corners)) for u in corners)==[1,1,2,2]
-        assert sum(len(g[u]&set(corners)) for u in corners)==6
-        checked+=1
+        for a,b in edges:
+            third=3-a-b
+            selected={vals[a],vals[b],tri[third]}
+            z=3+len(c);g=[set() for _ in range(z+1)]
+            def edge(u,v):g[u].add(v);g[v].add(u)
+            for u,v in combinations(range(3),2):edge(u,v)
+            for u in range(len(c)):
+                edge(colours[u],3+u)
+                for v in range(u):
+                    if c[u][v]:edge(3+u,3+v)
+            for u in selected:edge(z,3+u)
+            if c[vals[a]][vals[third]] or c[vals[b]][vals[third]]:
+                endpoint=a if c[vals[a]][vals[third]] else b
+                u,v=3+vals[endpoint],3+tri[third]
+                assert v not in g[u] and len(g[u]&g[v])>=3
+                checked['three_common_neighbours']+=1
+                continue
+            root=3+tri[a]
+            first=(colours[tri[a]],3+vals[a]);second=(3+tri[b],3+tri[third])
+            corners=[]
+            for u in first:
+                for v in second:
+                    common=(g[u]&g[v])-{root}
+                    assert len(common)==1,(code,tri,u,v,common)
+                    corners.append(next(iter(common)))
+            assert len(set(corners))==4 and all(v not in g[root] for v in corners)
+            assert sorted(len(g[u]&set(corners)) for u in corners)==[1,1,2,2]
+            assert sum(len(g[u]&set(corners)) for u in corners)==6
+            checked['P4']+=1
     return checked
 
 
@@ -124,12 +131,15 @@ if __name__=='__main__':
     cover=json.loads((args.directory/'line_component_colored_orbits.json').read_text())
     rows=[]
     for record in library['records']:
-        if record['vertices'] not in (12,18):continue
-        orbits=next(r for r in cover['records'] if r['vertices']==record['vertices'] and r['allow_colour_permutations'])
+        if record['vertices'] not in (6,12,18):continue
+        orbits=({'orbits':[{'representative':c} for c in record['component_code_triples']]}
+                if record['vertices']==6 else
+                next(r for r in cover['records'] if r['vertices']==record['vertices'] and r['allow_colour_permutations']))
         for i,orbit in enumerate(orbits['orbits']):
             code=orbit['representative'];count=check_rotated_witness(record,code)
-            rows.append({'vertices':record['vertices'],'orbit':i,'code':code,'rooted_P4_witnesses_checked':count})
+            rows.append({'vertices':record['vertices'],'orbit':i,'code':code,'obstructions_checked':count})
     output={'scope':__doc__,'resources':resources,'component_types_checked':len(rows),
-            'rooted_P4_witnesses_checked':sum(r['rooted_P4_witnesses_checked'] for r in rows),'records':rows}
+            'rooted_P4_witnesses_checked':sum(r['obstructions_checked']['P4'] for r in rows),
+            'three_common_neighbour_witnesses_checked':sum(r['obstructions_checked']['three_common_neighbours'] for r in rows),'records':rows}
     atomic_json_write(args.output,output)
     print({k:v for k,v in output.items() if k not in ('scope','records')},flush=True)
