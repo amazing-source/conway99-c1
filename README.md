@@ -8,6 +8,8 @@ des conséquences obligatoires nouvelles et vérifiées.
 conway-99-research (travail amateur assisté par IA) n'est **pas** une source.
 
 ## Par où commencer
+**Dossiers externes (ChatGPT : Paley 25, BvLS, Hoffman α=22, K7, CODE7) et preuve C3 : `dossiers_externes/INDEX.md`.**
+
 0. **`notes/100_SYNTHESE_DES_LEMMES.md` — les 21 lemmes mis ensemble : tableau, corollaires, et pourquoi ils ne
    peuvent pas se contredire (à lire en premier).** Puis `notes/98_BILAN_NUIT_25_09.md` (bilan de la nuit) et
    **`notes/99_VERROU_BOULES_DE_DROITES.md`** (25/09, 05 h 30 : L21, triplets de droites, état du verrou), et
