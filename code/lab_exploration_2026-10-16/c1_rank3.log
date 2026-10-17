@@ -82,3 +82,11 @@ E3 applied at EVERY vertex of Omega (59), rectangles with all four corners in Om
 1 740 positive c=1 sides: rotated E3 alone kills ALL (75/75 asymmetric, 1 665/1 665 tau-symmetric); 33 have no e=3 at v;
   E3 on m's rectangles Q_1j at v (unused before): 1 338.  Non-positive: 34/144.  Codex's exact configuration: 0 hits
   (t(l) >= 1 on 1 815 sides).  Lemma-free walk structures (17, non-positive, nu <= 7): 0 killed.  No exclusion.
+--- 18/10: ChatGPT note of 17/10 (NOTE_CHATGPT_C1_2026-10-17.pdf) reviewed ---
+Hand-checked proofs: Th 2.2 (positive + C1 exact on stars => ker(3I - Gamma_S) in ker B cap ker T, so m3 = K0),
+  Th 3.1 (D = B N^+ B^T - H <= 0, rank T = 30 - m3 + rank D0; Conway <=> rank D0 <= m3), Th 3.2 (0 <= -D0 < H0 =
+  3I - M - (7/39) J), Th 4.1 (= Codex's pair bound, 17b4198, found independently).  Not reviewed: Th 5.1, 4.3, App. A.
+Float control check_note_chatgpt_1017.py: all 6 122 positive cache blocks and 331 rank-30 objects satisfy 2.2/3.1/3.2
+  (rank-30 objects: rank D0 = m3 exactly).  numpy pinv default cutoff gave 12 false failures (fixed threshold).
+Corrections: m3 = K0 on positive blocks is positivity, not tau-symmetry (3-SPEC cuts no positive block); 'Conway <=> D=0'
+  only for m3 = 0; cut-vector constant is 1_{G_l} (prompt 2.5 and c1_exact_kill.py docstring fixed).
