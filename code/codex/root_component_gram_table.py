@@ -27,11 +27,14 @@ def add_gram_table(model, graph, template, record, matrix=None):
         variables.append(variable)
     signature_tables = record.get("row_signature_tables")
     signature_count = 0
+    corner_table_count,corner_row_count=0,0
     if record["gram_anchor_values"] and signature_tables is not None:
         selector = model.new_int_var(0, record["gram_count"] - 1, "gram_selector")
         model.add_allowed_assignments([selector] + variables,
                                       [[i] + values for i, values in enumerate(record["gram_anchor_values"])])
         assert len(signature_tables) == 21
+        corner_tables={tuple(t['rectangle']):t for t in record.get('corner_signature_tables',[])}
+        corner_selectors={}
         for table in signature_tables:
             rectangle = tuple(table["rectangle"])
             for w in RECTANGLES[rectangle]:
@@ -43,7 +46,17 @@ def add_gram_table(model, graph, template, record, matrix=None):
                     model.add(h == base - sum(graph[w][q] for q in RECTANGLES[target]))
                     signatures.append(h)
                 model.add_allowed_assignments([selector] + signatures, table["rows"])
+                if rectangle in corner_tables:
+                    catalog=corner_tables[rectangle]['catalog']
+                    state=model.new_int_var(0,max(0,len(catalog)-1),f'corner_signature_{w}')
+                    model.add_allowed_assignments([state]+signatures,[[i]+h for i,h in enumerate(catalog)])
+                    corner_selectors[w]=state
                 signature_count += 1
+        for rectangle,table in corner_tables.items():
+            corners=RECTANGLES[rectangle]
+            columns=[selector]+[corner_selectors[w] for w in corners]+[graph[u][v] for u,v in combinations(corners,2)]
+            model.add_allowed_assignments(columns,table['rows'])
+            corner_table_count+=1;corner_row_count+=len(table['rows'])
     elif record["gram_anchor_values"]:
         model.add_allowed_assignments(variables, record["gram_anchor_values"])
     else:
@@ -52,4 +65,5 @@ def add_gram_table(model, graph, template, record, matrix=None):
             "exhaustive": True, "fixed_single_gram": False,
             "normalizes_template_preserving_root_relabelings": record.get("coverage_up_to_template_relabeling", False),
             "individual_vertex_Schur_tables": signature_count,
+            "coupled_corner_tables":corner_table_count,"coupled_corner_rows":corner_row_count,
             "separate_corner_realizations_filtered": record["requires_separate_corner_realization"]}

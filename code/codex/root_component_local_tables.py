@@ -140,7 +140,7 @@ def component_signature_rows(record, codes, stars, root, part, edges, domains, c
 
 
 def add_local_component_tables(model, graph, template, data, normalize_first=False, corner_patterns=None,
-                               signature_data=None, branch_context=None):
+                               signature_data=None, branch_context=None, rotated_boundary=False):
     library = {r["vertices"]//6:r for r in data["records"]}
     index = {p:i for i,p in enumerate(LABELS)}
     table_count, row_count = 0, 0
@@ -150,6 +150,7 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
         chosen = chosen[1:]
     normalized_info = None
     filtered_info = []
+    rotated_info = []
     for root, parts in enumerate(template["nontrivial_component_groups"]):
         for part in parts:
             s = len(part)
@@ -215,8 +216,12 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
                         [[i,item["index"][h]] for i,h in enumerate(item["projected"])])
                     signature_variables.append(variable)
                 model.add_allowed_assignments(selectors + signature_variables, signature_rows)
+            if rotated_boundary:
+                from root_component_rotated_boundary import add_code_cuts
+                boundary_codes=codes if signature_rows is None else [row[:3] for row in signature_rows]
+                rotated_info.append(add_code_cuts(model,graph,record,boundary_codes,selectors,stars,root,part))
             table_count += 4
             row_count += len(rows)+2*len(record["internal_matchings"])+(len(codes) if signature_rows is None else len(signature_rows))
     return {"tables":table_count,"rows":row_count,"first_component_normalization":normalized_info,
-            "corner_pattern_filters":filtered_info,
+            "corner_pattern_filters":filtered_info,"rotated_boundary_triples":rotated_info,
             "scope":"Every true connected line component is covered; no local witness is fixed."}

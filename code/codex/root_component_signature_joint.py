@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False):
     assert not (mate_normalize and normalize_component), 'Use a single ordered normalization hierarchy.'
     assert not normalize_component or local_tables is not None
     edges = [tuple(e) for e in template["nongrid_edges"]]
@@ -144,7 +144,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         local_info = add_local_component_tables(model, graph, template, local_tables,
                                                 normalize_first=normalize_component,
                                                 corner_patterns=corner_patterns,signature_data=signature_data,
-                                                branch_context=component_branch_context)
+                                                branch_context=component_branch_context,rotated_boundary=rotated_boundary)
     for i, j in combinations_with_replacement(range(len(anchors)), 2):
         model.add(sum(flag * h[i] * h[j] for w in range(84) for flag, h in zip(indicators[w], hs[w]))
                   == 7 * int(matrix[anchors[i], anchors[j]]))
@@ -333,9 +333,9 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False, rotated_boundary=False):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector,rotated_boundary=rotated_boundary)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -399,6 +399,7 @@ def main():
     parser.add_argument("--linearization",type=int,choices=range(3),default=0)
     parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--upper-projector",action="store_true")
+    parser.add_argument("--rotated-boundary",action="store_true")
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -436,7 +437,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)
