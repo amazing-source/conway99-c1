@@ -690,3 +690,34 @@ Scripts : `c1_trD.py`, `c1_deltacol.py`, `c1_mate.py`, `k0_look.py`, `limg_look.
   n'admettent aucune structure invariante ; Z5 et les involutions essayées n'atteignent pas c = 1 sans contrainte dédiée.
 - Ce qui manque, honnêtement : un argument qui empêche les deux moyeux de m d'avoir SIMULTANÉMENT un vecteur caché quand
   G_l est connexe (cas A et B). Les marges sont grandes en trace (−tr D_OO ≥ 5) mais les certificats restent globaux.
+
+## 17/10 soir : formes tournées de E3 sur les données c = 1 (après le lemme de bord tourné de Codex)
+
+L'utilisateur a donné son accord (« stv ») ; le test a été fait sur un seul processus, en priorité minimale, en 21 s.
+
+- **Outil** : `c1_rotated_e3.py`. Il applique E3 (Codex, PROUVÉ) à CHAQUE sommet a de Ω (les 59 sommets du bloc à
+  quatre étoiles).
+  - Pour deux droites par a contenues dans Ω, dont les quatre coins sont dans Ω, e(Q) = 3 est interdit.
+  - Un coin trouvé dans Ω est LE coin, par μ = 2.
+  - Le lemme de bord tourné de Codex en est le cas où a ∈ N(l), une droite rencontre l, l'autre est dans N(l), et un
+    coin est dans Y.
+- **Contrôles.**
+  - E3 en v sur les Q_0j coïncide avec `c1_cutfilter.tests` sur les 1 884 côtés (0 désaccord).
+  - Un cas vérifié à la main : bloc `b1xTM_h_bestpsd`, côté 0. Racine : la lettre 2. Droites {2, v, 3} et
+    {2, {2,8}, {2,13}}. Coins : 8, 13, {3,8}, {3,13}. Chemin : 8 – {3,8} – {3,13} – 13.
+- **VÉRIFIÉ sur les données** (cache, 1 884 côtés c = 1) :
+  - 1 740 côtés positifs : les formes tournées les tuent tous à elles seules.
+    - Cela vaut pour les 75 asymétriques comme pour les 1 665 τ-symétriques.
+    - 33 de ces côtés n'ont aucun rectangle à e = 3 en v.
+    - Chaque côté a une racine tueuse qui est une lettre.
+    - E3 sur les rectangles Q_1j de m en v, non utilisé jusqu'ici, en touche 1 338.
+  - 144 côtés non positifs : 34 sont tués (10/74 asymétriques, 24/70 symétriques).
+  - Configuration exacte de Codex : 0 occurrence. Pourtant G_l a des triangles dans 1 815 côtés (t(l) = 4 pour 926,
+    6 pour 763).
+  - 17 structures c = 1 des marches sans lemme en v (non positives, ν ≤ 7) : aucune n'est tuée.
+- **Bilan : pas d'exclusion.**
+  - On dispose d'un second filtre exact, indépendant des quatre lemmes en v, qui tue toutes les données positives.
+  - Il n'enlève rien à la classe sans lemme connue. (Q) et (B′) restent OUVERTES.
+  - INDICE, à ce stade seulement : « tout bloc positif à c(l) = 1 a un rectangle à e = 3 en un sommet de Ω » tient sur
+    les 1 740 côtés positifs. Ces données viennent de peu de lignées, et aucune structure positive sans lemme n'a jamais
+    été atteinte par les marches.
