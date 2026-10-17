@@ -16,3 +16,14 @@ s=3 DISTINCT: OPTIMAL   a,d,b,c = 2 9 8 3 ; sigma {2: 9, 3: 4, 4: 6, 5: 2, 6: 5,
 # python c1_balcut.py distinct_cache.jsonl 40   (40 of the 175 survivors; min over ALL balanced even sets C of G_l)
 (min balanced even cut, q): count {(2, 10): 5, (2, 6): 1, (4, 10): 9, (4, 2): 7, (4, 4): 2, (4, 6): 3, (4, 8): 5, (6, 10): 2, (6, 2): 5, (6, 8): 1}
 # gg_test.py / gg_assign.py (far design (GG) with the line type fixed, two encodings): UNKNOWN in 30 s / 60 s on all tried sides
+# python c1_rlattice.py distinct_cache.jsonl   (the 175 survivors; norm-14 vectors of the R-lattice of the 11 visible rectangles, c in {-1,0,1}^11)
+surviving c = 1 sides examined: 175
+sides killed by a visible co-Heawood violation: 64
+{'sides with a norm-14 vector': 64, 'norm14_vectors': 1474, 'killed:same-sign adjacent/letter': 91, 'killed:value': 1344, 'killed:count': 39}
+# python c1_n28look.py   (the 111 left: no visible norm-14 vector)
+internal-edge profiles of the 11 visible rectangles (top): ((0,0,0,0,0,0,0,1,1,1,1), 16), ((0,...,0,1,1), 16), ((0,...,0,2,2), 12), ((0,0,0,0,0,0,0,2,2,2,2), 12), (all 0, 8), ((0,...,0,1,1,1), 6)
+R-norm-4 vectors (c in {-1,0,1}^11): none on 48 of the 111 sides; elsewhere visible entries +-1, visible norm 8 to 20
+# case I (sigma-sigma 2-cut, four distinct letters), line type FREE, co-Heawood model:
+python case1_coheawood.py 2 200 2           -> OPTIMAL in 13.1 s (a,d,b,c = 2,7,8,4; + far [3,10],[5,6],[7,11],[8,13],[9,12]; - far [2,6],[3,13],[4,9],[5,10],[11,12])
+python case1_coheawood.py 2 220 2 --full    -> UNKNOWN in 220 s (with the exact far design (GG), linked condition on far labels, far degree 8)
+python gg_case1.py 2 150 2 (witness line type fixed, far design + far graph + eigen-equations) -> UNKNOWN in 150 s

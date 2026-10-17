@@ -484,3 +484,18 @@ ENTIER de norme 7·|coupe_S| (Codex : HᵗH = 7R ; R restreint à la racine = la
 - Structure lointaine : pour chaque point p de l, z ↦ (paire de ses 2 voisins dans X_p) est une bijection de D sur les
   60 paires non adjacentes de X_p ; comptes croisés exacts. CP-SAT (deux encodages) : UNKNOWN en 30-60 s, pas un filtre
   rapide. Le noyau dur « chiral » n'est pas attaqué ici.
+- Suite (17/10 vers 02:30-03:30, `c1_rlattice.py`, `c1_n28look.py`, `case1_coheawood.py`, `gg_case1.py`) :
+  - vecteurs de norme 14 du réseau R des 11 rectangles visibles (deux racines l, m ; c ∈ {−1,0,1}^11) : sur les 175
+    survivants, 64 en ont, et les 64 sont tués par une violation co-Heawood visible (valeur ±2, plus de 7 d'un signe,
+    deux labels de même signe adjacents ou partageant une lettre) ; 111 restent, sans vecteur de norme 14 visible
+    (48 sans même un vecteur de norme 28 de ce type). Bilan données : 1 773 / 1 884 côtés c = 1 tués par des
+    arguments entiers exacts ; les 111 restants sont le régime « générique » (rectangles presque sans arête interne).
+  - Fait co-Heawood utile (prouvé) : hors du support, tout sommet a soit aucun voisin dans le support, soit exactement
+    un + et un − (deux sommets de même signe ont leurs 2 voisins communs dans le signe opposé) ; 70 sommets « liés »,
+    15 « libres ».
+  - Cas I (2-coupe σσ à lettres distinctes), type de droite LIBRE : le modèle co-Heawood local (sans plan lointain)
+    est SAT en 13 s ; avec le plan lointain exact (GG), la condition « lié » sur les 60 labels lointains et le degré
+    lointain 8 : UNKNOWN en 220 s. Le plan lointain reste le goulot de CP-SAT. Cas I non fermé.
+  - Remarque : la version « droite » du lemme des 2-coupes vaut aussi À L'INTÉRIEUR d'une composante de 12 ou 18
+    sommets (ensemble équilibré de 6 sommets coupé par 2 arêtes) ; elle pourrait filtrer les tables locales 12/18 de
+    Codex. Non transmis (consigne : laisser Codex seul).
