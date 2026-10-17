@@ -100,6 +100,18 @@ def norm4_pair_admissible(a,b,edge):
     return not edge or not (a[0]&b[2] or b[0]&a[2] or a[1]&b[3] or b[1]&a[3])
 
 
+def integer_pair_margins(a, b, lattice_norms):
+    """Maximum allowed twice-shared-label count for nonedge/edge respectively."""
+    margins=[10**9,10**9]
+    for x,y,norm in zip(a,b,lattice_norms):
+        if x*y<=0:continue
+        r,s=abs(x),abs(y)
+        free=7*norm+4-r*r-s*s-7*(r+s)
+        margins[0]=min(margins[0],free)
+        margins[1]=min(margins[1],free-2*(r+s+1))
+    return tuple(margins)
+
+
 def add_integer_overlap_counts(model, data, terms):
     """Aggregate overlap bounds for any enumerated integral directions.
 

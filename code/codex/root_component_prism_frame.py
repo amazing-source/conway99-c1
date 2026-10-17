@@ -26,7 +26,7 @@ colour orientations would not be sound. No time bound is asserted.
 
 import argparse
 from collections import Counter
-from itertools import combinations
+from itertools import combinations,permutations
 import hashlib
 import json
 from pathlib import Path
@@ -82,7 +82,49 @@ def neighbourhood(library,orbits,family,first,second):
     return c,colours,groups,descriptors
 
 
-def build(c,colours,groups,stage,minc_lines=0):
+def add_prism_normalization(model,d,cells,groups,template_seven=False):
+    """Choose a lexicographically minimal free D block under relabellings.
+
+This is compatible with sorting each two-copy cell: all inequalities hold
+at a minimum of the same row-major D[12:36] word over the finite group.
+Component flips/permutations, frame flips/interchange, and global colour
+permutations relabel an arbitrary completion; no automorphism is assumed.
+    """
+    assert all(len(group)==6 for group in groups)
+    comparisons=0
+    def lex(a,b):
+        nonlocal comparisons
+        tag=f'prism_canonical_{comparisons}';comparisons+=1;prefix=1
+        for i,(u,v) in enumerate(zip(a,b)):
+            model.add(u<=v).only_enforce_if(prefix)
+            equal=model.new_bool_var(f'{tag}_equal_{i}')
+            model.add(u==v).only_enforce_if(equal)
+            model.add(u!=v).only_enforce_if(equal.Not())
+            if isinstance(prefix,int):prefix=equal
+            else:
+                both=model.new_bool_var(f'{tag}_prefix_{i}')
+                model.add(both<=prefix);model.add(both<=equal);model.add(both>=prefix+equal-1)
+                prefix=both
+    for group in groups[2:]:lex(d[group[0]],d[group[1]])
+    interchangeable=groups[3:] if template_seven else groups[2:]
+    for left,right in zip(interchangeable,interchangeable[1:]):lex(d[left[0]],d[right[0]])
+    index={cell:i for i,cell in enumerate(cells)}
+    transforms=[lambda p,q,t:(p^1,q,t),lambda p,q,t:(p,q^1,t),lambda p,q,t:(q-6,p+6,t)]
+    for transform in transforms:
+        image=[index[transform(*cell)] for cell in cells]
+        lex(d[12],[d[12][j] for j in image])
+    for permutation in permutations(range(3)):
+        if permutation==(0,1,2):continue
+        if template_seven and permutation[0]!=0:continue
+        image=[index[(2*permutation[p//2]+p%2,6+2*permutation[(q-6)//2]+q%2,t)] for p,q,t in cells]
+        row=12+2*permutation[0]
+        lex(d[12],[d[row][j] for j in image])
+    return {'lex_comparisons':comparisons,'template_seven_root_and_parts_preserved':template_seven,
+            'scope':'A common row-major minimum under prism and cell relabellings.'}
+
+
+def build(c,colours,groups,stage,minc_lines=0,rotated_rectangles=0,core_triangles=False,normalize_prisms=False,template_seven=False):
+    assert not template_seven or (stage>=1 and all(len(g)==6 for g in groups))
     cells=[(p,q,copy) for p in range(6) for q in range(6,12)
            for copy in range(2-int(colours[p]==colours[q]))]
     assert len(cells)==60
@@ -137,14 +179,18 @@ def build(c,colours,groups,stage,minc_lines=0):
                 both=m.new_bool_var(f'prefix_{x}_{u}')
                 m.add(both<=prefix);m.add(both<=equal);m.add(both>=prefix+equal-1)
                 prefix=both
-    h=None;dh_count=0;core_count=0
+    h=None;dh_count=0;core_count=0;dh_rows=[]
+    prism_normalization=add_prism_normalization(m,d,cells,groups,template_seven=template_seven) if normalize_prisms else None
     if stage:
         h=[[0]*60 for _ in range(60)]
         for x,y in combinations(range(60),2):
             # Same cell already means two shared neighbours in P union Q.
             h[x][y]=h[y][x]=0 if cells[x][:2]==cells[y][:2] else m.new_bool_var(f'h_{x}_{y}')
         for x in range(60):m.add(sum(h[x])==8)
-        for u in range(36 if stage>=2 else 12):
+        # In template7 colour0 is the original low-prism root. Its complete
+        # mixed equations recover C1 at all fourteen original neighbours.
+        dh_rows=[u for u in range(36) if stage>=2 or u<12 or (template_seven and colours[u]==0)]
+        for u in dh_rows:
             for x in range(60):
                 m.add(sum(product(d[u][y],h[y][x]) for y in range(60))
                       +d[u][x]+sum(d[v][x] for v in range(36) if c[u][v])==2)
@@ -155,17 +201,73 @@ def build(c,colours,groups,stage,minc_lines=0):
                       +sum(product(d[u][x],d[u][y]) for u in range(36))==2)
                 core_count+=1
     partition_info=None
-    if minc_lines:
+    rotation_info=None;triangle_info=None
+    template_info=None
+    if minc_lines or rotated_rectangles or template_seven:
         assert h is not None
         full=full_graph(c,colours,d,h)
+    if minc_lines:
         lines=[(colour,3+u,3+v) for colour in range(3)
                for u,v in combinations(range(36),2)
                if colours[u]==colours[v]==colour and c[u][v]][:minc_lines]
         from root_component_minimum_partition import add_partitions_for_lines
         partition_info=add_partitions_for_lines(m,full,lines)
+    if rotated_rectangles or template_seven:
+        from root_component_rotated_rectangles import add_fixed_star_rectangles
+        stars=[(colour,[3+u for u in range(36) if colours[u]==colour],list(range(39,99))) for colour in range(3)]
+        budget=[];prescribed=[]
+        def prescribe(root_colour,first,second,es):
+            if root_colour!=0:return
+            i,j=(first[0]-3)//6,(second[0]-3)//6
+            same_part=(i<3)==(j<3)
+            if same_part:
+                for ei,edge in enumerate(es):m.add(edge==int(ei in (0,1,4,5)))
+            else:
+                m.add(sum(es)<=2)
+                budget.extend(es[ei] for ei in (0,1,4,5))
+            prescribed.append({'components':[i,j],'grid':same_part})
+        rotation_info=add_fixed_star_rectangles(m,full,stars,rotated_rectangles,
+            required_roots=(0,) if template_seven else (),rectangle_constraints=prescribe if template_seven else None)
+        if template_seven:
+            assert len(prescribed)==15 and sum(not r['grid'] for r in prescribed)==9 and len(budget)==36
+            # Six base-line grids and six same-part grids already contribute48.
+            m.add(sum(budget)<=3)
+            template_info={'template_index':7,'original_root_colour':0,
+                'component_parts':[[0,1,2],[3,4,5]],'frame_prisms_chosen_in_same_part':True,
+                'rectangles':prescribed,'fixed_grid_prism_budget':48,'remaining_prism_budget':3,
+                'coverage':'Every template7 completion can choose two reference prisms in one of its three-element parts.'}
+    if core_triangles:
+        assert h is not None
+        incident=[[] for _ in range(60)];flags=[];forbidden_triangles=0
+        known=[[u for u in range(36) if isinstance(d[u][x],int) and d[u][x]==1] for x in range(60)]
+        for tri in combinations(range(60),3):
+            es=[h[x][y] for x,y in combinations(tri,2)]
+            if any(isinstance(e,int) and e==0 for e in es):continue
+            if any(set(known[x])&set(known[y]) for x,y in combinations(tri,2)):
+                # An adjacent pair with a known boundary common neighbour
+                # cannot have a second common neighbour inside H.
+                m.add_bool_or([e.Not() for e in es if not isinstance(e,int)])
+                forbidden_triangles+=1;continue
+            flag=m.new_bool_var('core_actual_triangle_'+'_'.join(map(str,tri)))
+            for edge in es:m.add(flag<=edge)
+            m.add(flag>=sum(es)-2)
+            flags.append(flag)
+            for x in tri:incident[x].append(flag)
+        local_triangles=sum(all(c[u][v] for u,v in combinations(tri,2)) for tri in combinations(range(36),3))
+        m.add(sum(flags)==32-local_triangles)
+        for x in range(60):
+            boundary_edges=sum(product(d[u][x],d[v][x]) for u,v in combinations(range(36),2)
+                               if c[u][v] and targets[u][v]>0)
+            m.add(sum(incident[x])==1+boundary_edges)
+        triangle_info={'actual_triangle_indicators':len(flags),'forbidden_by_known_boundary':forbidden_triangles,
+                       'total_triangles':32-local_triangles,'per_vertex_balance':'t_H(x)=1+e(C[N_C(x)])'}
     return m,d,h,{'stage':stage,'full_SRG_equations':stage==3,'cells':[list(t) for t in cells],
                   'DDt_pair_equations':630,'DH_equations':dh_count,'core_pair_equations':core_count,
+                  'DH_rows':dh_rows,
                   'products':len(products),'minimum_components':partition_info,
+                  'rotated_rectangles':rotation_info,'core_triangles':triangle_info,
+                  'prism_normalization':prism_normalization,
+                  'template_seven':template_info,
                   'rotated_forbidden_triples':[list(t) for t in forbidden],
                   'variables':len(m.proto.variables),'constraints':len(m.proto.constraints)}
 
@@ -189,21 +291,28 @@ def main():
     p.add_argument('--first',type=int,default=0);p.add_argument('--second',type=int,default=0)
     p.add_argument('--stage',type=int,choices=range(4),default=1)
     p.add_argument('--minc-lines',type=int,default=0)
+    p.add_argument('--rotated-rectangles',type=int,default=0)
+    p.add_argument('--core-triangles',action='store_true')
+    p.add_argument('--build-only',action='store_true')
+    p.add_argument('--normalize-prisms',action='store_true')
+    p.add_argument('--template-seven',action='store_true')
     p.add_argument('--seconds',type=float,default=60)
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
+    if args.template_seven and args.family!='six-prisms':p.error('--template-seven requires --family six-prisms')
     tables_path=args.directory/'line_component_pattern_tables_rotated.json'
     orbit_path=args.directory/'line_component_colored_orbits.json'
     raw=tables_path.read_bytes();library=json.loads(raw);orbits=json.loads(orbit_path.read_bytes())
     assert orbits['source_sha256']==hashlib.sha256(raw).hexdigest()
     c,colours,groups,descriptors=neighbourhood(library,orbits,args.family,args.first,args.second)
-    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines)
+    started=time.process_time();m,d,h,info=build(c,colours,groups,args.stage,args.minc_lines,args.rotated_rectangles,args.core_triangles,args.normalize_prisms,args.template_seven)
     assert not m.validate(),m.validate()
     info.update(status='MODEL_BUILT',scope=__doc__,family=args.family,first=args.first,second=args.second,
                 components=descriptors,resources=resources,build_cpu_seconds=time.process_time()-started,
                 source_sha256=hashlib.sha256(raw).hexdigest())
     atomic_json_write(args.output,info)
     print({k:v for k,v in info.items() if k not in ('scope','cells','components')},flush=True)
+    if args.build_only:return
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
     solver.parameters.max_time_in_seconds=max(600,100*args.seconds)
     solver.parameters.symmetry_level=0;solver.parameters.cp_model_probing_level=0
