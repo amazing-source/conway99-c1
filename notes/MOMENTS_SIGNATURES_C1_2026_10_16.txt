@@ -983,3 +983,28 @@ progressent; utiliser les nouvelles coupes pour les prochains Gram/UNKNOWN.
 Six modules syntaxiquement compiles apres ajout minc-balance. Modele complet7
 valide avant solveur. Les coupes de masse attendent encore leur premier
 modele pilote. Total ferme reste12/15 (76/79);17 Gram9restentouverts.
+
+29. 18/10 vers01h10 : couverture de 9#174 achevee.
+
+Les 18 codes exhaustifs de 9#174 sont tous INFEASIBLE; le Gram est ferme.
+Rapport root_component_signature_9_174_layer2_rotated_branches.json.
+Cela laisse 16 Gram du type 9, et toujours les trois types 7,9,19 ouverts
+(12/15 demandes initiales fermees, 76/79 types dans la campagne).
+Le cadre7_full_balanced finit UNKNOWN :121.25 CPU,55935branches/17930conflits.
+Ce n'est pas une exclusion, malgre l'encodage complet des identites SRG.
+
+Pilote 9#183 avec masses de triangles et minc-balance : session20498,
+Python20228. Il attendait un fichier de budget CPU vide apres panne du
+gardien; aucun temps de recherche perdu dans un solveur actif. Le gardien
+est relance PID17752, ecriture du budget par remplacement atomique avec
+reprise sur conflits Windows. Toujours un seul coeur partage et pauses
+a65%, reprise sous50%. Nouveau 9#193 par35codes, couche2/6rotations,
+minc-balance et masses,45CPU/code : session19102. Resultats a relever.
+
+Pont972 envoye01h08 : fermeture174 et contre-exemple structurel pour LAB.
+Pour la branche c>=3 : K7 moins C7 avec tous les quatre voisins non-grilles
+reunis dans une composante a chaque racine donne sept partitions24+6+6.
+C est l'incidence non orientee7x14, rang7, noyau7, aucune coordonnee nulle
+sur tout le noyau. Cela passe le filtre des coordonnees nulles, et contredit
+ker<=5 AVANT faisabilite Gram; ne pretend pas donner un Gram ou un Conway.
+Les sept grilles imposent seulement le cout de base28 dans le budget51.

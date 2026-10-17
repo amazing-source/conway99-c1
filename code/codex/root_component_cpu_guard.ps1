@@ -31,6 +31,26 @@ $taskBudget = 1
 $taskLastIncrease = Get-Date
 $taskLastSeen = Get-Date
 $taskLastLog = [datetime]::MinValue
+function Write-ResearchBudget($value) {
+    # Readers must never see a truncated JSON file. Windows may briefly deny
+    # replacement while a worker reads the current budget; retry that conflict.
+    $taskTemporary = $taskBudgetFile + '.tmp'
+    $taskJson = ($value | ConvertTo-Json -Compress) + [Environment]::NewLine
+    [System.IO.File]::WriteAllText($taskTemporary, $taskJson, [System.Text.UTF8Encoding]::new($false))
+    for ($taskAttempt = 0; $taskAttempt -lt 200; $taskAttempt++) {
+        try {
+            if ([System.IO.File]::Exists($taskBudgetFile)) {
+                [System.IO.File]::Replace($taskTemporary, $taskBudgetFile, $taskBudgetFile + '.previous')
+            } else {
+                [System.IO.File]::Move($taskTemporary, $taskBudgetFile)
+            }
+            return
+        } catch [System.IO.IOException] {
+            if ($taskAttempt -eq 199) { throw }
+            Start-Sleep -Milliseconds 20
+        }
+    }
+}
 try { while ($true) {
     $taskNow = Get-Date
     $taskCpu = Get-CimInstance Win32_PerfFormattedData_Counters_ProcessorInformation |
@@ -92,8 +112,7 @@ try { while ($true) {
         }
     }
     if ($taskIds.Count -gt 0) { $taskLastSeen = $taskNow }
-    [pscustomobject]@{logical_cores=$taskBudget; paused=$taskPaused; time=$taskNow.ToString('o')} |
-        ConvertTo-Json -Compress | Set-Content -LiteralPath $taskBudgetFile -Encoding UTF8
+    Write-ResearchBudget ([pscustomobject]@{logical_cores=$taskBudget; paused=$taskPaused; time=$taskNow.ToString('o')})
     if ($taskBudget -ne $taskPrevious -or ($taskNow - $taskLastLog).TotalSeconds -ge 15) {
         [pscustomobject]@{time=$taskNow.ToString('o'); cpu_utility=$taskUtility;
             shared_logical_cores=$taskBudget; owned_processes=$taskIds.Count; paused=$taskPaused} |
@@ -104,6 +123,5 @@ try { while ($true) {
     Start-Sleep -Seconds 1
 } } finally {
     Resume-ResearchThreads $taskSuspended
-    [pscustomobject]@{logical_cores=$MaximumCores; paused=$false; stopped=$true; time=(Get-Date).ToString('o')} |
-        ConvertTo-Json -Compress | Set-Content -LiteralPath $taskBudgetFile -Encoding UTF8
+    Write-ResearchBudget ([pscustomobject]@{logical_cores=$MaximumCores; paused=$false; stopped=$true; time=(Get-Date).ToString('o')})
 }
