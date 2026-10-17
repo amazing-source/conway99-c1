@@ -78,8 +78,9 @@ def main():
     meta={'scope':__doc__,'task_count':len(tasks),'counts':dict(Counter(t['template_index'] for t in tasks)),
           'code_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),
           'tested_python':sys.version,'tested_packages':requirements,
-          'input_sha256':{p.as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs},
-          'code_sha256':{p.relative_to(repo).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+          'hash_convention':'SHA256 after replacing CRLF by LF; invariant under Windows/Linux checkout conversion.',
+          'input_sha256':{p.as_posix():hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in inputs},
+          'code_sha256':{p.relative_to(repo).as_posix():hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
                          for p in sorted(dependencies)},
           'solver_cpu_budget_sum_seconds':len(tasks)*args.total_cpu_seconds,
           'completion_time_bound_proved':False,
