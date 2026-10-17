@@ -34,7 +34,9 @@ def main():
     parser.add_argument('--upper-projector',action='store_true')
     parser.add_argument('--rotated-boundary',action='store_true')
     parser.add_argument('--stabilizer-normalize',action='store_true')
+    parser.add_argument('--short-norm',type=int,default=4)
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
+    parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -50,7 +52,7 @@ def main():
         line_profiles=args.line_profiles,profile_triples=True,exact_triangles=True,
         short_vectors=True,normalize_component=True,component_branch_context=context,
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
-        stabilizer_normalize=args.stabilizer_normalize)
+        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm)
     assert not model.validate(), model.validate()
     assert context, 'A component cover is required; solve an empty base domain directly instead.'
     codes=[list(c) for c in context['codes']]
@@ -58,6 +60,8 @@ def main():
              'local_tables':str(args.local_tables),'seconds':args.seconds}
     for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors'):
         if getattr(args,name):options[name]=True
+    if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
+    if args.short_norm!=4:options['short_norm']=args.short_norm
     branches=[]
     if args.output.exists():
         old=json.loads(args.output.read_text())
@@ -91,10 +95,15 @@ def main():
         branch_model=model.clone()
         for selector,value in zip(context['selectors'],code):branch_model.add(selector==value)
         boundary_info=None
+        rotated_info=None
         if args.boundary_projectors:
             from root_component_boundary_psd import add_profile_cuts
             boundary_info=add_profile_cuts(branch_model,graph,template,tables,context['root'],context['part'],code,complementary=True)
             print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
+        if args.rotated_rectangles:
+            from root_component_rotated_rectangles import add_rotated_rectangles
+            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles)
+            print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()
         solver.parameters.num_search_workers=1
@@ -112,6 +121,7 @@ def main():
         result={'component_index':i,'code':code,'status':solver.status_name(status),
                 'cpu_seconds':time.process_time()-started,'branches':solver.num_branches,'conflicts':solver.num_conflicts}
         if boundary_info is not None:result['boundary_projectors']=boundary_info
+        if rotated_info is not None:result['rotated_rectangles']=rotated_info
         branches.append(result);processed+=1;checkpoint()
         print(json.dumps(dict(result,complete_gram_status=case['status'])),flush=True)
 

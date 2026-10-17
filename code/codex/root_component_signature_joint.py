@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0):
     assert not (mate_normalize and normalize_component), 'Use a single ordered normalization hierarchy.'
     assert not normalize_component or local_tables is not None
     assert not stabilizer_normalize or normalize_component
@@ -35,8 +35,19 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     short_data, short_info = None, None
     if short_vectors:
         from root_component_short_vectors import short_directions, filter_domains, evaluations
-        short_data = short_directions(matrix)
+        short_data = short_directions(matrix,maximum_norm=short_norm)
         short_info = filter_domains(domains, short_data)
+        from root_component_short_vectors import integer_pair_margins
+        short_evaluation_cache={};integer_pair_cache={}
+        short_norms=tuple(d['norm'] for d in short_data['directions'])
+        def short_values(h):
+            key=tuple(h)
+            if key not in short_evaluation_cache:short_evaluation_cache[key]=evaluations(h,short_data)
+            return short_evaluation_cache[key]
+        def integer_pair_ok(a,b,edge,common):
+            key=tuple(sorted((short_values(a),short_values(b))))
+            if key not in integer_pair_cache:integer_pair_cache[key]=integer_pair_margins(key[0],key[1],short_norms)
+            return integer_pair_cache[key][edge]>=2*common
     upper_data,upper_info=None,None
     if upper_projector:
         from root_component_upper_signatures import data_for,filter_domains as upper_filter,corner_filter
@@ -57,11 +68,10 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             item = domains[table["rectangle"]]
             if short_data is not None:
                 from root_rectangle_domains import RECTANGLE_LABELS
-                from root_component_short_vectors import norm4_overlap_masks, norm4_pair_admissible
                 values = [evaluations(h, short_data, roots_only=True) for h in item["signatures"]]
-                overlap = [norm4_overlap_masks(h,short_data) for h in item['signatures']]
                 table["rows"] = [row for row in table["rows"] if all(
-                    norm4_pair_admissible(overlap[row[i]],overlap[row[j]],edge) and
+                    integer_pair_ok(item['signatures'][row[i]],item['signatures'][row[j]],edge,
+                                    len(set(RECTANGLE_LABELS[i]) & set(RECTANGLE_LABELS[j]))) and
                     (not (edge or set(RECTANGLE_LABELS[i]) & set(RECTANGLE_LABELS[j])) or
                     not any(a == b != 0 for a, b in zip(values[row[i]], values[row[j]])))
                     for edge, (i, j) in zip(row[4:], combinations(range(4), 2)))]
@@ -236,7 +246,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                 ip=(98*scale)//3-14*own*scale+sum(x*x for x in h)*scale+sum(x*y for x,y in zip(v,cv))
                 rows.append((q,h,v,cv,(10*upper_den)//3-ip))
             upper_rows.append(rows)
-    short_masks = None;overlap_masks=None
+    short_masks = None
     if short_data is not None:
         short_masks = [[(
             sum(1 << i for i, x in enumerate(values) if x == 1),
@@ -251,14 +261,9 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                                   for flag, mask in zip(indicators[w], short_masks[w])
                                   if mask[sign] & (1 << root_id)) == 1)
         short_info['root_label_matching_equations'] = 28 * root_count
-        from root_component_short_vectors import norm4_overlap_masks, norm4_pair_admissible
-        overlap_masks=[[norm4_overlap_masks(h,short_data) for h in hfull[w]] for w in range(84)]
-        norm4_count=sum(d['norm']==4 for d in short_data['directions'])
-        for direction in range(norm4_count):
-            for sign in (0,1):
-                model.add(sum(flag for w in range(84) for flag,mask in zip(indicators[w],overlap_masks[w])
-                              if mask[sign] & (1<<direction))<=1)
-        short_info['norm4_double_uniqueness_constraints']=2*norm4_count
+        from root_component_short_vectors import add_integer_overlap_counts
+        short_info.update(add_integer_overlap_counts(model,short_data,
+            [(h,flag) for w in range(84) for h,flag in zip(hfull[w],indicators[w])]))
         short_info['norm4_same_sign_neighbours_of_double_forbidden']=True
     if pair_psd or short_data is not None:
         def inner(a, b):
@@ -285,7 +290,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                             cross=(fu[edge_position[qv]] if qv in edge_position else 0)+(fv[edge_position[qu]] if qu in edge_position else 0)
                             upper_ip=49*euv15*(scale//15)-7*cross*scale+sum(x*y for x,y in zip(fu,fv))*scale+sum(x*y for x,y in zip(vu,cv))
                         for e in possible_edges:
-                            if overlap_masks is not None and not norm4_pair_admissible(overlap_masks[u][a],overlap_masks[v][b],e):
+                            if short_data is not None and not integer_pair_ok(hfull[u][a],hfull[v][b],e,common):
                                 continue
                             if (e or common) and short_masks is not None and (
                                 short_masks[u][a][0] & short_masks[v][b][0] or
@@ -340,6 +345,10 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     if exact_triangles:
         from root_component_exact_triangles import add_exact_triangle_structure
         exact_triangle_info=add_exact_triangle_structure(model,graph,template)
+    grid_rotation_info=None
+    if grid_rotations:
+        from root_component_rotated_rectangles import add_grid_rotations
+        grid_rotation_info=add_grid_rotations(model,graph,grid_rotations)
     info = {"pair_psd_tables": pair_tables, "pair_psd_rows": pair_rows, "c2_equations": c2_count,
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
@@ -349,13 +358,14 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             "four_corner_tables":corner_info, "local_component_tables": local_info,
             "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info,
             "line_profiles":general_profiles,"shared_label_triangle_clauses":triangle_info,
-            "exact_triangle_structure":exact_triangle_info,"short_vector_filter":short_info,"upper_projector_filter":upper_info}
+            "exact_triangle_structure":exact_triangle_info,"short_vector_filter":short_info,"upper_projector_filter":upper_info,
+            "rotated_grid_rectangles":grid_rotation_info}
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False, rotated_boundary=False):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector,rotated_boundary=rotated_boundary)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component,upper_projector=upper_projector,rotated_boundary=rotated_boundary,stabilizer_normalize=stabilizer_normalize,short_norm=short_norm,grid_rotations=grid_rotations)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -420,6 +430,9 @@ def main():
     parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--upper-projector",action="store_true")
     parser.add_argument("--rotated-boundary",action="store_true")
+    parser.add_argument("--stabilizer-normalize",action="store_true")
+    parser.add_argument("--short-norm",type=int,default=4)
+    parser.add_argument("--grid-rotations",type=int,default=0)
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -457,7 +470,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component,upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,grid_rotations=args.grid_rotations)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)

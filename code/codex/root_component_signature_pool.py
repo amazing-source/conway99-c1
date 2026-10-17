@@ -57,6 +57,9 @@ def main():
     parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--upper-projector",action="store_true")
     parser.add_argument("--rotated-boundary",action="store_true")
+    parser.add_argument("--stabilizer-normalize",action="store_true")
+    parser.add_argument("--short-norm",type=int,default=4)
+    parser.add_argument("--grid-rotations",type=int,default=0)
     parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
@@ -91,6 +94,9 @@ def main():
         config['upper_projector'] = True
     if args.rotated_boundary:
         config['rotated_boundary'] = True
+    if args.stabilizer_normalize:config['stabilizer_normalize']=True
+    if args.short_norm!=4:config['short_norm']=args.short_norm
+    if args.grid_rotations:config['grid_rotations']=args.grid_rotations
     if args.interleave:
         config["interleave"] = True
     if args.local_tables:
@@ -131,7 +137,8 @@ def main():
                "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
                "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization,
                "normalize_component":args.normalize_component,"upper_projector":args.upper_projector,
-               "rotated_boundary":args.rotated_boundary}
+               "rotated_boundary":args.rotated_boundary,"stabilizer_normalize":args.stabilizer_normalize,
+               "short_norm":args.short_norm,"grid_rotations":args.grid_rotations}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None

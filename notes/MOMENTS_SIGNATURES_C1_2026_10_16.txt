@@ -798,3 +798,84 @@ sur elles. Les amplitudes incompatibles par la formule de paires sont
 interdites simultanement. Ajoute dans add_integer_overlap_counts et dans
 le scan --maximum-norm8 (norme du reseau R; norme de h sept fois plus grande).
 Scan norm56_overlap_scan en cours, session48257, meme plafond un coeur.
+
+26. Rectangles tournes et modele commun du template7, 18/10 vers00h15
+
+Scan norme56 termine :19#1259 et19#3258 exclus en plus des huit precedents.
+9#236 etait UNKNOWN0.25CPU, reprise5CPU ->OPTIMAL en0.45CPU : il reste ouvert.
+205 Gram7 et11 Gram19 restaient UNKNOWN au budget court; les autres sont
+des temoins de moments seulement. Rapports conserves.
+
+9#164 FERME par couverture complete des10 codes normalises, tous INFEASIBLE,
+en152CPU environ au total. Nouveau brancheur utilise norme28, stabilisateur
+du Gram, Schur T24/U24 et deux rectangles tournes avec coins VARIABLES.
+Les deux rectangles du pilote utilisaient deja des lignes de prismes fixes,
+independantes du code choisi. Generalisation : les ajouter directement au
+modele joint, sans fixer une composante. Avec six rectangles, norme56,
+stabilisateur et minc2/profils2,9#172 est INFEASIBLE en87.06CPU.
+Bilan456/17/508 Gram ouverts pour7/9/19, toujours76/79 templates.
+
+Encodage root_component_rotated_rectangles.py : une paire de droites fixes
+dans une etoile donne quatre coins, chacun l'unique deuxieme voisin commun
+de deux sommets de cette etoile. Les selecteurs de coins sont equivalents
+aux produits d'aretes; aucun voisin exterieur n'est choisi comme temoin.
+Les six aretes entre coins sont lues dans la matrice par contraintes element.
+Coins tous distincts, e(Q)!=3, e(Q)<=4. Plus precisement une diagonale
+interdit les quatre aretes de ligne/colonne (sinon un meme label partenaire
+est rencontre deux fois). Il reste15 motifs :1 vide,6 d'une arete,7 de deux,
+1 grille de quatre. Cette table COMPLETE est ajoutee apres le premier pilote.
+Controle propre d'encodage : grille3x3 SRG(9,4,1,2), son rectangle ->SAT;
+retirer une arete de ce rectangle ->UNSAT, sans changer les coins.
+
+L'ancien pool a6rectangles s'arrete volontairement apres202 :174,183,193,
+196,202 UNKNOWN90CPU;172 reste exclu. Nouvelle passe pilote,30rectangles
+disponibles de9, table15motifs,120CPU, session10303; commence par174.
+Fichier pool_9_all_grid_patterns. Son premier --limit-new1 doit etre retire
+pour la suite apres examen du pilote. Aucun resultat nouveau encore annonce.
+
+Modele commun six-prismes : generic E3 se transporte au cadre a deux prismes.
+Les trois rectangles entre les deux prismes de reference ont leurs quatre
+coins fixes;24 rectangles avec l'un d'eux ont10 choix par coin. Total27,
+14418 entrees element. Ajouter les vrais triangles de H (11216 indicateurs,
+21612 triples interdits car partageant deja un voisin de bord), et les
+egalites par sommet t_H(x)=1+e(C[N_C(x)]). Les six prismes donnent exactement
+20 triangles disjoints couvrant H. Premier stage1/minc3 UNKNOWN90CPU :
+31572variables,136418contraintes. Ce modele couvrait toute droite six-prismes.
+
+Pour cibler TOUT le template7 directement (sans passer par ses456 Gram),
+on peut prescrire son graphe de non-grilles K3,3 a la racine originale.
+Dans le cadre, cette racine est le point de couleur0 de L. Les six prismes
+de N(L) correspondent aux six autres droites par elle, reparties3+3.
+On choisit les deux prismes de reference DANS une meme part : toujours
+possible, ce n'est pas une restriction sur les completions. Parts canoniques
+{0,1,2}/{3,4,5}. Les six rectangles intra-part sont des grilles (quatre
+aretes de ligne/colonne, diagonales nulles), les neuf inter-part ont<=2aretes.
+Les six grilles avec L et les six grilles intra-part consomment deja48 du
+budget<=51; la somme des aretes de ligne/colonne des neuf autres est<=3.
+L'option --template-seven impose tous ces15 rectangles a couleur0, en plus
+des27 plus petits, donc33 rectangles/144018entrees. Elle ajoute aussi les
+equations DH pour TOUS les12 sommets de couleur0, en plus des12 sommets
+des deux prismes de reference :20lignes,1200equationsDH. Cela retrouve
+les equations C1 a la racine originale. Toutes les etapes restent necessaires.
+
+Normalisation --normalize-prisms : minimum lex du bloc D[12:36] sous les
+flips des prismes, permutations de prismes identiques, flips/interversion
+des deux prismes de reference et permutations globales de couleurs. Les
+ordres des deux copies de chaque cellule sont compatibles, car les memes
+inegalites tiennent au minimum global du mot D lu ligne par ligne. Avec
+--template-seven, on ne permute que les trois prismes de l'autre part et
+les couleurs1/2 : la racine couleur0 et les parts restent fixes.
+Pas d'automorphisme de la completion suppose. Modele syntaxiquement valide.
+Pilote template7,stage1,minc6,rotated27,coretriangles,normalisation,120CPU :
+session66819;65759variables,246756contraintes. Charge sur le meme coeur
+partage que le pool9, pas un coeur de plus. RAM libre10Go lors du lancement.
+Ce pilote a charge la version AVANT la table15motifs; garder ce fait en
+tete si sa reprise doit ajouter cette table. Pas encore de verdict a00h15.
+
+Dernier pont :966 envoye23h46,965 lu/ack. Prochaine ligne de vie avant00h31.
+
+A00h19, les deux pilotes sont termines : template7_canonical UNKNOWN120.14CPU
+(468699branches,162206conflits);9#174 avec30rectangles/table15 UNKNOWN120.84CPU.
+Aucune exclusion supplementaire. Le pool9_all_grid_patterns reprend sans
+--limit-new1 sur les16 autres Gram non exclus. Le cadre7 doit encore etre
+renforce sur les intersections des colonnes D et les six couplages du noyau.
