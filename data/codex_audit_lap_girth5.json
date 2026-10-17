@@ -1,0 +1,691 @@
+{
+  "scope": "independent finite ingredients and archived coverage, not full search replay",
+  "upstream_commit": "15a3cfe3f6ccaa68c5e862d745a3a60558f60626",
+  "source_sha256": {
+    "balanced66.py": "623ef7731247ff1c30e5318e618fded20b8c9a3c384213277dd234b7c77945c1",
+    "check_model.py": "430881e0292f279c7c54ee0df9e757be38759eca15028f4320d9e7277cb48e00",
+    "comp66.py": "68c1a8cd17519ea9a86d98404318373c74ce9e083e4ce033b4c74b5ecd363dd0",
+    "comp66_types.json": "fdcbfa30ac44bc86d8a4924f63f123966f2caa0be34f76ff44f6e40a1a713b53",
+    "gen33.py": "b0d57dee7fd21e3028e832ce612ebeb8a72a645c6693c9add15ac2727c01719d",
+    "gen33u.py": "31dcbb620ff53f4e7c6babad0912ac1c077ed1ea3ec1b458592e9146e749f4e0",
+    "gen66.py": "1234b8043c6a96b7fad55904d93c3340199cf03c82095ab9db529c22a4c02b47",
+    "good_after_1.txt": "198dcb19fde62057550bc17f3d88e31234b4564119ad7416d8808aada4a4a41b",
+    "good_u0.txt": "4d898844311aad8055e110505b8653d977cf8f135d030a897efb96dcee6c3511",
+    "NOTE.md": "f73eba3525fbf4d20c90448da62b1a7571ec11a309116493f304cbd62b91dfa9",
+    "run33.py": "57a67fe2c9f29eaa538adf598d08a14c7b3507ec08c1c75aeaf62c936c25760a",
+    "small_comp.py": "dd75224d85ce778e3899fbdf565634ffb7aebbd05d2dd2c7e77d9c4bdcf10ed4",
+    "star66.py": "e04d8dcf962eb58b277dc989b188c1ccb4d4297cea5ea817242b5588fd85d25a",
+    "star66b.py": "70746597cc4913fb5f6b6a1269382b720e2ee380647bdd87534ba7162587f41b",
+    "star66c.py": "6da017b96652a5c6f50c3516561e21f627d6fbbaf3124c5d49de9297cdedd920",
+    "starc.c": "bc03151b42aa3febcec50e0f69d50e1982049a792fa1b0fb96b2f227b27c7ed1",
+    "starg.c": "aca91d20da3f75b807ac675b986bf5d3df0af460088e919ced40efdf126f1038",
+    "sweep66.log": "b4d8b62e41277e2feaa85408000fadd9b6244de73bec24fb96442ec7a6c73c82",
+    "sweep66.py": "92dc1667119c217386ccc4b865e717b4307b8aa60a3fe8e59309d441ed9903bd",
+    "sweep_01u.log": "1773f3eab96eaae54f49177a5b683d87f4d956a8e0f9544cfe6c95d603dcff4d",
+    "sweep_10u.log": "1fff0152806ffc5c6eff26cffc62206b11398c2d1575c1374a1d9c752b642d80",
+    "sweep_11.log": "4fac5704febb62ea93aee23ba60e414a139eaf3bc735d7657645efadb09d107d",
+    "sweep_tors.py": "45edbc06df214778e5dbcab08cf2cb180d36a14ab7e26758a3ec7816aa8262fc",
+    "test_plant.py": "e0e14ac01d13cece676b593f06ace3fcbb2c94a69293e0430d05ca24e776418b",
+    "theta33.c": "f621299be3350bd16bf2030d79d9e90dfbfba1b7a01930456aeded52dc6693bc",
+    "theta33_u0_full.out": "f009791ae5a57fe921c7d490bedbb0a4e1bd662056c34bf53ed90ae083162670",
+    "theta33_u0_slices.out": "8f5b305400bab2d6a67101c283732ac89da1e7f458050e4daded6b3fc8cc7464",
+    "theta33_u1_u6.out": "87718fcde9e2518497ca65501c939700c857b7f73a335427864396e74a7845cc",
+    "theta33b.c": "c8d560e4bff65675620307ca7d7b0c4c665cfba0d5693a5314bc45e04349af8a",
+    "theta33c.c": "6bf753068760d2e91a1ce9a78ad70271dfc445bd34ac64ba79b42fb5562610c1"
+  },
+  "small_components": {
+    "2": 0,
+    "4": 0
+  },
+  "components": [
+    {
+      "torsion": 0,
+      "type": 0,
+      "normal_forms": 24
+    },
+    {
+      "torsion": 0,
+      "type": 1,
+      "normal_forms": 72
+    },
+    {
+      "torsion": 1,
+      "triples": 612,
+      "projective_vectors": 1,
+      "minimum_deficient_pairs": 44,
+      "type": 2,
+      "normal_forms": 72
+    },
+    {
+      "torsion": 1,
+      "triples": 612,
+      "projective_vectors": 1,
+      "minimum_deficient_pairs": 24,
+      "type": 3,
+      "normal_forms": 72
+    },
+    {
+      "torsion": 0,
+      "type": 4,
+      "normal_forms": 8
+    },
+    {
+      "torsion": 3,
+      "triples": 612,
+      "projective_vectors": 57,
+      "minimum_deficient_pairs": 12,
+      "type": 5,
+      "normal_forms": 24,
+      "layer_automorphisms": [
+        {
+          "order": [
+            0,
+            1,
+            2
+          ],
+          "permutation": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ]
+        },
+        {
+          "order": [
+            0,
+            2,
+            1
+          ],
+          "permutation": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            4,
+            12,
+            13,
+            14,
+            15,
+            17,
+            16,
+            6,
+            7,
+            8,
+            9,
+            11,
+            10
+          ]
+        },
+        {
+          "order": [
+            1,
+            0,
+            2
+          ],
+          "permutation": [
+            10,
+            7,
+            11,
+            9,
+            6,
+            8,
+            4,
+            1,
+            5,
+            3,
+            0,
+            2,
+            12,
+            15,
+            14,
+            13,
+            17,
+            16
+          ]
+        },
+        {
+          "order": [
+            1,
+            2,
+            0
+          ],
+          "permutation": [
+            17,
+            13,
+            16,
+            15,
+            12,
+            14,
+            5,
+            1,
+            4,
+            3,
+            0,
+            2,
+            6,
+            9,
+            8,
+            7,
+            10,
+            11
+          ]
+        },
+        {
+          "order": [
+            2,
+            0,
+            1
+          ],
+          "permutation": [
+            11,
+            9,
+            10,
+            7,
+            6,
+            8,
+            14,
+            13,
+            12,
+            15,
+            17,
+            16,
+            5,
+            3,
+            4,
+            1,
+            0,
+            2
+          ]
+        },
+        {
+          "order": [
+            2,
+            1,
+            0
+          ],
+          "permutation": [
+            16,
+            15,
+            17,
+            13,
+            12,
+            14,
+            8,
+            7,
+            6,
+            9,
+            10,
+            11,
+            4,
+            3,
+            5,
+            1,
+            0,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "torsion": 0,
+      "type": 6,
+      "normal_forms": 16
+    }
+  ],
+  "labelled_normal_forms": 288,
+  "archived_star_search_logs": {
+    "00": {
+      "runs": 192,
+      "reported_nodes": 144714378,
+      "max_reported_nodes": 1217880,
+      "complete_parameter_grid": true
+    },
+    "01u": {
+      "runs": 48,
+      "reported_nodes": 79195150,
+      "max_reported_nodes": 2137326,
+      "complete_parameter_grid": true
+    },
+    "10u": {
+      "runs": 48,
+      "reported_nodes": 83525532,
+      "max_reported_nodes": 2028723,
+      "complete_parameter_grid": true
+    },
+    "11": {
+      "runs": 288,
+      "reported_nodes": 216096662,
+      "max_reported_nodes": 1045138,
+      "complete_parameter_grid": true
+    }
+  },
+  "gl3_archived_lists": {
+    "u0": 25588,
+    "u1": 44,
+    "all_listed_matrices_invertible": true,
+    "entire_gl3_search_replayed": false
+  },
+  "gl3_last_step_independent": {
+    "input_candidates": 10584,
+    "outcomes": [
+      {
+        "matrix_code": 1353691,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 2709991,
+        "balanced_candidates": 39,
+        "nodes": 5,
+        "family_found": false
+      },
+      {
+        "matrix_code": 2734477,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 3096705,
+        "balanced_candidates": 33,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 3628846,
+        "balanced_candidates": 33,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 3897960,
+        "balanced_candidates": 39,
+        "nodes": 5,
+        "family_found": false
+      },
+      {
+        "matrix_code": 3991123,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 5371909,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 34559073,
+        "balanced_candidates": 45,
+        "nodes": 16,
+        "family_found": false
+      },
+      {
+        "matrix_code": 36133700,
+        "balanced_candidates": 39,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 36784790,
+        "balanced_candidates": 27,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 40037366,
+        "balanced_candidates": 40,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 40331386,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 6747821,
+        "balanced_candidates": 34,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 7041449,
+        "balanced_candidates": 40,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 10294361,
+        "balanced_candidates": 27,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 10827515,
+        "balanced_candidates": 39,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 12520134,
+        "balanced_candidates": 45,
+        "nodes": 16,
+        "family_found": false
+      },
+      {
+        "matrix_code": 14259680,
+        "balanced_candidates": 42,
+        "nodes": 2,
+        "family_found": false
+      },
+      {
+        "matrix_code": 14649299,
+        "balanced_candidates": 43,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 16492985,
+        "balanced_candidates": 40,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 16979320,
+        "balanced_candidates": 34,
+        "nodes": 5,
+        "family_found": false
+      },
+      {
+        "matrix_code": 16996724,
+        "balanced_candidates": 36,
+        "nodes": 11,
+        "family_found": false
+      },
+      {
+        "matrix_code": 17114800,
+        "balanced_candidates": 41,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 17801805,
+        "balanced_candidates": 38,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 18098033,
+        "balanced_candidates": 41,
+        "nodes": 23,
+        "family_found": false
+      },
+      {
+        "matrix_code": 18462656,
+        "balanced_candidates": 34,
+        "nodes": 2,
+        "family_found": false
+      },
+      {
+        "matrix_code": 21262150,
+        "balanced_candidates": 35,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 22061634,
+        "balanced_candidates": 36,
+        "nodes": 7,
+        "family_found": false
+      },
+      {
+        "matrix_code": 22368071,
+        "balanced_candidates": 31,
+        "nodes": 2,
+        "family_found": false
+      },
+      {
+        "matrix_code": 22494565,
+        "balanced_candidates": 41,
+        "nodes": 9,
+        "family_found": false
+      },
+      {
+        "matrix_code": 23216373,
+        "balanced_candidates": 41,
+        "nodes": 23,
+        "family_found": false
+      },
+      {
+        "matrix_code": 23512594,
+        "balanced_candidates": 38,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 24584642,
+        "balanced_candidates": 41,
+        "nodes": 9,
+        "family_found": false
+      },
+      {
+        "matrix_code": 24593144,
+        "balanced_candidates": 31,
+        "nodes": 2,
+        "family_found": false
+      },
+      {
+        "matrix_code": 25017566,
+        "balanced_candidates": 36,
+        "nodes": 7,
+        "family_found": false
+      },
+      {
+        "matrix_code": 25800243,
+        "balanced_candidates": 35,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 28616551,
+        "balanced_candidates": 34,
+        "nodes": 2,
+        "family_found": false
+      },
+      {
+        "matrix_code": 29762679,
+        "balanced_candidates": 40,
+        "nodes": 3,
+        "family_found": false
+      },
+      {
+        "matrix_code": 29964407,
+        "balanced_candidates": 41,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 30079739,
+        "balanced_candidates": 36,
+        "nodes": 11,
+        "family_found": false
+      },
+      {
+        "matrix_code": 30099887,
+        "balanced_candidates": 34,
+        "nodes": 5,
+        "family_found": false
+      },
+      {
+        "matrix_code": 32429901,
+        "balanced_candidates": 43,
+        "nodes": 1,
+        "family_found": false
+      },
+      {
+        "matrix_code": 32817126,
+        "balanced_candidates": 42,
+        "nodes": 2,
+        "family_found": false
+      }
+    ],
+    "intermediate_step": {
+      "vertex": 1,
+      "input_matrices": 25588,
+      "surviving_matrices": [
+        1353691,
+        2709991,
+        2734477,
+        3096705,
+        3628846,
+        3897960,
+        3991123,
+        5371909,
+        34559073,
+        36133700,
+        36784790,
+        40037366,
+        40331386,
+        6747821,
+        7041449,
+        10294361,
+        10827515,
+        12520134,
+        14259680,
+        14649299,
+        16492985,
+        16979320,
+        16996724,
+        17114800,
+        17801805,
+        18098033,
+        18462656,
+        21262150,
+        22061634,
+        22368071,
+        22494565,
+        23216373,
+        23512594,
+        24584642,
+        24593144,
+        25017566,
+        25800243,
+        28616551,
+        29762679,
+        29964407,
+        30079739,
+        30099887,
+        32429901,
+        32817126
+      ],
+      "total_nodes": 72947,
+      "matches_archived_list_exactly": true
+    },
+    "positive_control": {
+      "vertex": 1,
+      "matrix_code": 1353691,
+      "nodes": 11,
+      "shadows": [
+        [
+          1,
+          4,
+          16,
+          24,
+          25,
+          31
+        ],
+        [
+          1,
+          2,
+          9,
+          26,
+          33,
+          35
+        ],
+        [
+          1,
+          7,
+          14,
+          18,
+          29,
+          31
+        ],
+        [
+          1,
+          14,
+          15,
+          22,
+          26,
+          28
+        ],
+        [
+          1,
+          6,
+          16,
+          19,
+          29,
+          30
+        ],
+        [
+          1,
+          8,
+          12,
+          20,
+          28,
+          30
+        ],
+        [
+          1,
+          5,
+          13,
+          24,
+          27,
+          34
+        ],
+        [
+          1,
+          3,
+          11,
+          25,
+          34,
+          35
+        ],
+        [
+          1,
+          8,
+          11,
+          23,
+          32,
+          33
+        ],
+        [
+          1,
+          10,
+          17,
+          21,
+          27,
+          32
+        ]
+      ]
+    }
+  }
+}
