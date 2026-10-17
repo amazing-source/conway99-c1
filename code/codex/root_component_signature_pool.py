@@ -16,7 +16,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_signature_joint import solve
 from root_component_signature_moments import gram_matrix
-from root_component_resources import limit_research_process
+from root_component_resources import limit_research_process, atomic_json_write
 
 
 @lru_cache(maxsize=None)
@@ -54,6 +54,7 @@ def main():
     parser.add_argument("--exact-triangles",action="store_true")
     parser.add_argument("--short-vectors",action="store_true")
     parser.add_argument("--linearization",type=int,choices=range(3),default=0)
+    parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--interleave",action="store_true",help="Alternate new cases between the selected templates.")
     parser.add_argument("--local-tables", type=Path)
     parser.add_argument("--retry-from", type=Path, help="Only submit completed non-exclusions from this earlier report.")
@@ -82,6 +83,8 @@ def main():
         config["short_vectors"] = True
     if args.linearization:
         config['linearization'] = args.linearization
+    if args.normalize_component:
+        config['normalize_component'] = True
     if args.interleave:
         config["interleave"] = True
     if args.local_tables:
@@ -117,10 +120,11 @@ def main():
         if completed.get(key, {}).get("status") != "INFEASIBLE":
             completed[key] = case
     options = {"seconds": args.seconds, "layer": args.layer, "workers": 1, "eigen": args.eigen,
-               "mate_normalize": True, "corners": True, "cpu_time": args.cpu_time,"minc_lines":args.minc_lines,
+               "mate_normalize": not args.normalize_component, "corners": True, "cpu_time": args.cpu_time,"minc_lines":args.minc_lines,
                "six_prism_profiles":args.six_prism_profiles,"line_profiles":args.line_profiles,
                "profile_triples":args.profile_triples,"triangle_cuts":args.triangle_cuts,
-               "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization}
+               "exact_triangles":args.exact_triangles,"short_vectors":args.short_vectors,"linearization":args.linearization,
+               "normalize_component":args.normalize_component}
     if args.local_tables:
         options["local_table_path"] = str(args.local_tables.resolve())
     retry = None
@@ -156,9 +160,7 @@ def main():
                             "excluded": complete and all(c["status"] == "INFEASIBLE" for c in cases)})
         data = {"scope": __doc__, "options": config,
                 "jobs": args.jobs, "resources": resources, "elapsed_seconds": time.monotonic() - started, "records": records}
-        temporary = args.output.with_suffix(".json.tmp")
-        temporary.write_text(json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8")
-        temporary.replace(args.output)
+        atomic_json_write(args.output,data)
 
     checkpoint()
     print(json.dumps({"new_cases": len(tasks), "inherited_exclusions": len(excluded)}), flush=True)

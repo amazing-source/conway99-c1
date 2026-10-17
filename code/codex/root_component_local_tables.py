@@ -140,7 +140,7 @@ def component_signature_rows(record, codes, stars, root, part, edges, domains, c
 
 
 def add_local_component_tables(model, graph, template, data, normalize_first=False, corner_patterns=None,
-                               signature_data=None):
+                               signature_data=None, branch_context=None):
     library = {r["vertices"]//6:r for r in data["records"]}
     index = {p:i for i,p in enumerate(LABELS)}
     table_count, row_count = 0, 0
@@ -159,7 +159,6 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
             stars = [[index[tuple(sorted((2*root+a,b)))] for b in letters] for a in range(2)]
             codes = record["component_code_triples"]
             if corner_patterns is not None:
-                assert not normalize_first, "Combine normalizations only after proving invariance of the filtered set."
                 codes = compatible_component_codes(record, stars, root, part, corner_patterns)
                 filtered_info.append({"root_line":root,"part":part,"before":len(record["component_code_triples"]),"after":len(codes)})
                 if not codes:
@@ -190,9 +189,20 @@ def add_local_component_tables(model, graph, template, data, normalize_first=Fal
                     for pi,p in enumerate(record["cross_permutations"])]
             model.add_allowed_assignments([selectors[0]]+columns,rows)
             if chosen == (root,tuple(part)):
-                codes = canonical_component_codes(record)
+                allowed = codes if signature_rows is None else [row[:3] for row in signature_rows]
+                # canonical_component_codes checks that EVERY mate-flip orbit
+                # stays in this filtered code set before selecting a representative.
+                restricted = dict(record, component_code_triples=allowed)
+                codes = canonical_component_codes(restricted)
+                if signature_rows is not None:
+                    canonical = set(codes)
+                    signature_rows = [row for row in signature_rows if tuple(row[:3]) in canonical]
                 normalized_info = {"root_line":root,"part":part,"original_codes":len(record["component_code_triples"]),
-                                   "canonical_codes":len(codes),"action":"Global independent mate flips only; no graph automorphism assumed."}
+                                   "filtered_codes":len(allowed),"canonical_codes":len(codes),
+                                   "filtered_set_invariance_checked":True,
+                                   "action":"Global independent mate flips only; no graph automorphism assumed."}
+                if branch_context is not None:
+                    branch_context.update(root=root, part=list(part), selectors=list(selectors), codes=list(codes))
             if signature_rows is None:
                 model.add_allowed_assignments(selectors,codes)
             else:

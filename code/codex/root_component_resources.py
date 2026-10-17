@@ -11,6 +11,22 @@ from pathlib import Path
 import time
 
 
+def atomic_json_write(path, value, indent=None):
+    """Retry Windows sharing conflicts from readers without exposing partial JSON."""
+    path = Path(path)
+    temporary = path.with_suffix(path.suffix + '.tmp')
+    temporary.write_text(json.dumps(value, indent=indent, separators=None if indent else (',', ':')) + '\n',
+                         encoding='utf-8')
+    for attempt in range(200):
+        try:
+            temporary.replace(path)
+            return
+        except PermissionError:
+            if attempt == 199:
+                raise
+            time.sleep(.05)
+
+
 def limit_research_process(cores=4):
     state = Path(__file__).resolve().parents[2] / "data/codex_line_resonance_20261016/cpu_guard.budget.json"
     while state.exists():

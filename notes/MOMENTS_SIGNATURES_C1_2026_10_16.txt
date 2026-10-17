@@ -485,3 +485,68 @@ modele de moments. Pilote6cas interlaces short_lp,2processus60sCPU, profils
 sur2droites, signatures couplees, triangles exacts et relaxationLPniveau2.
 
 Pont957 (selon reponse d'envoi) : preuveP4 et impact communiques a LAB.
+
+20. Rotation de l'obstruction, codes locaux et bilan a 02h00 le 17/10
+
+Le lemme universel e(Q)!=3 s'applique aussi en changeant de sommet racine.
+Dans une composante cubique coloree, un triangle a trois partenaires de
+meme couleur. Ces partenaires ne peuvent induire exactement deux aretes :
+en prenant pour racine le sommet de la droite correspondant au milieu de
+ce chemin, on obtient un rectangle Q interdit a trois aretes.
+Tables filtrees : 1 code sur 1 en taille 6, 110/122 en taille 12,
+93688/102952 en taille 18. root_component_rotate_tables.py construit les
+tables et explicite le temoin local sur neuf sommets pour les controles.
+
+La premiere grande composante est maintenant normalisee par retournements
+globaux des couples de labels. L'invariance du domaine filtre est testee
+avant de prendre les representants canoniques. La normalisation lex des
+signatures ne concerne ensuite que les racines non utilisees par cette
+composante : pas de double normalisation incompatible.
+
+Balayage short_matchings_nop4 TERMINE : sur les 1068 Gram du fichier 0120,
+9 : 64 satisfaisables; 7 : 456 satisfaisables, 1 UNKNOWN;
+19 : 517 satisfaisables, 29 INFEASIBLE, 1 UNKNOWN. Il s'agit des moments
+necessaires et des couplages courts, pas de graphes complets.
+Nouvel export 0200 : 457 / 64 / 518 Gram ouverts pour 7 / 9 / 19.
+Manifeste inchange : 76/79 templates exclus, donc 12 des 15 initiaux fermes.
+Les six pilotes short_lp ont tous fini UNKNOWN a 60 secondes CPU.
+
+Pour 9, Gram 140, la premiere composante de 18 sommets a 16 codes
+canoniques. Le pilote a 20 secondes CPU par branche en ferme huit,
+laisse huit UNKNOWN. Le test de dessin d'incidence exterieur d'une seule
+composante (DD^t=12I-C-C^2+2J-Z, 60 triples dont 24 tricolores) admet les
+16 codes : cette condition seule ne les separe pas.
+Nouvel essai en cours : les huit branches restantes sont fixeess dans des
+copies du modele, permettant la substitution pendant le presolve, avec
+C2 dans chaque rectangle et 60 secondes CPU par branche. Les huit preuves
+precedentes sont conservees, avec leur source. Une fermeture de Gram exige
+toutes les branches, et ne fermerait pas a elle seule le template 9.
+
+Autre essai, root_component_lazy_upper : un modele C1 local produit vite
+des matrices candidates qui violent C2. Chaque exces donne une clause
+necessaire sur au plus six aretes. Apres neuf candidats, 16289 clauses
+enregistrees; tour suivant UNKNOWN a 20 secondes CPU. Aucun Gram exclu.
+L'equivalence des bornes superieures C2 et des egalites utilise le total
+fixe 144 dans chaque ligne, consequence du degre 12. Clauses sauvegardees
+pour reprise, pas de boucle aveugle apres un delai depasse.
+
+Correction operationnelle : atomic_json_write recommence un remplacement
+de fichier momentanement bloque par un lecteur Windows. Le balayage avait
+ete interrompu a 496/547 puis a repris de son checkpoint et s'est termine.
+Pour lire les gros rapports, ReadAllText puis conversion JSON; ne pas
+garder le fichier ouvert pendant la conversion PowerShell.
+
+21. Support fini d'un vecteur de norme 42 : reduction prouvee, pas exclusion
+
+Si Q a une seule arete diagonale et un sommet w adjacent a ses quatre
+coins, h=T1_Q a norme 42 et h(w)=-3. Le raisonnement entier force tout son
+support non nul : w de valeur -3, deux sommets de valeur 2, douze de valeur
+1 et treize de valeur -1. Avec N[o] et deux partenaires de valeur nulle,
+on obtient un modele necessaire de 45 sommets. La preuve et les etiquettes
+completes sont dans root_component_scalar_support.py.
+Ce modele satisfait Ah=-4h et toutes les bornes de voisins communs sur
+ces 45 sommets; il est SAT en 1.59 seconde CPU. Donc cette reduction n'est
+PAS une nouvelle exclusion. Elle decrit exactement la forme a traiter si
+un futur argument utilise une coordonnee -3 pour un rectangle a une arete.
+Rapport root_component_scalar_support_q1diag.json, sans prefixe signature
+afin de ne pas le confondre avec une branche du recouvrement des Gram.

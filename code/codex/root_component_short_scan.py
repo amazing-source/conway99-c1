@@ -10,7 +10,7 @@ import threading
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from root_component_resources import limit_research_process
+from root_component_resources import limit_research_process, atomic_json_write
 from root_component_short_vectors import short_directions, filter_domains, admissible, evaluations
 from root_component_signature_moments import gram_matrix
 from root_rectangle_domains import signature_domains, corner_graphs, RECTANGLE_LABELS
@@ -123,9 +123,7 @@ def main():
         assert old.get('direct_only', False) == args.direct_only
         records.extend(old["records"])
     def checkpoint():
-        temp = args.output.with_suffix(".json.tmp")
-        temp.write_text(json.dumps(output, separators=(",", ":")) + "\n", encoding="utf-8")
-        temp.replace(args.output)
+        atomic_json_write(args.output, output)
     for index in args.indices:
         cover = covers[index]
         record = next((r for r in records if r["template_index"] == index), None)

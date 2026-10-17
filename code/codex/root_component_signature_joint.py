@@ -25,7 +25,9 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None):
+    assert not (mate_normalize and normalize_component), 'Use a single ordered normalization hierarchy.'
+    assert not normalize_component or local_tables is not None
     edges = [tuple(e) for e in template["nongrid_edges"]]
     raw = [[int(x) for x in row] for row in matrix.tolist()]
     domains = {tuple(r["rectangle"]): r for r in signature_domains(edges, raw)}
@@ -132,13 +134,19 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             for t in corner_tables}
         signature_data = None if corner_tables is None else (edges,domains,corner_tables,selectors)
         local_info = add_local_component_tables(model, graph, template, local_tables,
-                                                corner_patterns=corner_patterns,signature_data=signature_data)
+                                                normalize_first=normalize_component,
+                                                corner_patterns=corner_patterns,signature_data=signature_data,
+                                                branch_context=component_branch_context)
     for i, j in combinations_with_replacement(range(len(anchors)), 2):
         model.add(sum(flag * h[i] * h[j] for w in range(84) for flag, h in zip(indicators[w], hs[w]))
                   == 7 * int(matrix[anchors[i], anchors[j]]))
-    if mate_normalize:
+    mate_roots = list(range(7)) if mate_normalize else []
+    if normalize_component and local_info.get('first_component_normalization'):
+        selected = local_info['first_component_normalization']
+        mate_roots = sorted(set(range(7)) - {selected['root_line']} - set(selected['part']))
+    if mate_roots:
         label_index = {p: i for i, p in enumerate(LABELS)}
-        for root in range(7):
+        for root in mate_roots:
             permutation = [label_index[tuple(sorted(a ^ int(a // 2 == root) for a in p))] for p in LABELS]
             prefix = 1
             for u, v in enumerate(permutation):
@@ -286,6 +294,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
             "eigen_equations": eigen, "eigen_products": eigen_products,
             "mate_flip_signature_normalization": mate_normalize,"explicit_four_sums":True,
+            "signature_lex_mate_roots":mate_roots,
             "four_corner_tables":corner_info, "local_component_tables": local_info,
             "nonroot_minimum_component_partitions":minc_info,"six_prism_profiles":profile_info,
             "line_profiles":general_profiles,"shared_label_triangle_clauses":triangle_info,
@@ -293,9 +302,9 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
     return model, graph, info
 
 
-def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0):
+def solve(template, matrix, seconds, layer=0, workers=1, eigen=False, mate_normalize=False, corners=False, local_tables=None, cpu_time=False, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, linearization=0, normalize_component=False):
     started = time.monotonic()
-    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors)
+    model, graph, info = build(template, matrix, layer, eigen=eigen, mate_normalize=mate_normalize,four_corners=corners,local_tables=local_tables,minc_lines=minc_lines,six_prism_profiles=six_prism_profiles,line_profiles=line_profiles,profile_triples=profile_triples,triangle_cuts=triangle_cuts,exact_triangles=exact_triangles,short_vectors=short_vectors,normalize_component=normalize_component)
     assert not model.validate(), model.validate()
     info.update(build_seconds=time.monotonic() - started, variables=len(model.proto.variables), constraints=len(model.proto.constraints))
     solver = cp_model.CpSolver()
@@ -357,6 +366,7 @@ def main():
     parser.add_argument("--exact-triangles",action="store_true")
     parser.add_argument("--short-vectors",action="store_true")
     parser.add_argument("--linearization",type=int,choices=range(3),default=0)
+    parser.add_argument("--normalize-component",action="store_true")
     parser.add_argument("--limit-grams", type=int)
     parser.add_argument("--mate-normalize", action="store_true")
     parser.add_argument("--corners",action="store_true")
@@ -394,7 +404,7 @@ def main():
                 assert prev["gram_anchor_values"] == values
                 result = {"status": "INFEASIBLE", "source": prev.get("inherited_source", str(args.moments))}
             else:
-                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization)
+                result = solve(templates[index], gram_matrix(cover, values), args.seconds, args.layer, args.workers, args.eigen, args.mate_normalize,args.corners,local_tables,cpu_time=args.cpu_time,minc_lines=args.minc_lines,six_prism_profiles=args.six_prism_profiles,line_profiles=args.line_profiles,profile_triples=args.profile_triples,triangle_cuts=args.triangle_cuts,exact_triangles=args.exact_triangles,short_vectors=args.short_vectors,linearization=args.linearization,normalize_component=args.normalize_component)
             result.update(gram_index=gi, gram_anchor_values=values)
             cases.append(result)
             print(json.dumps({"template": index, **{k: v for k, v in result.items() if k != "relaxation_edges"}}), flush=True)

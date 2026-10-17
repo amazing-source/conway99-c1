@@ -1,0 +1,73 @@
+{
+  "scope": "Apply the no-P4 rectangle theorem after rotating the root inside a line.\n\nIn a coloured cubic component of N(L), every colour induces a matching.\nLet (u,v,w) be a triangle using the three colours, and let (u',v',w') be\ntheir same-colour mates. Their induced graph cannot have exactly two\nedges. For example u'~v',u'~w',v'!~w' gives, rooted at u, a forbidden\nP4 rectangle on the two other points of L together with v',w'.\n\nThis is stronger than checking the rectangles at the original root only.\nIt uses no chosen completion and applies to every Conway line component.\n",
+  "source": "data\\codex_line_resonance_20261016\\line_component_pattern_tables.json",
+  "resources": {
+    "logical_cpu_budget": 1,
+    "shared_affinity_mask": 1,
+    "priority": "below_normal"
+  },
+  "records": [
+    {
+      "vertices": 6,
+      "before": 1,
+      "after": 1,
+      "first_exact_obstruction": null
+    },
+    {
+      "vertices": 12,
+      "before": 122,
+      "after": 110,
+      "first_exact_obstruction": {
+        "code": [
+          2,
+          0,
+          0
+        ],
+        "reason": {
+          "triangle_index": 0,
+          "mate_edges": [
+            1,
+            1,
+            0
+          ]
+        },
+        "root": 3,
+        "rectangle": [
+          1,
+          2,
+          8,
+          12
+        ],
+        "shared_endpoint_label": 4
+      }
+    },
+    {
+      "vertices": 18,
+      "before": 102952,
+      "after": 93688,
+      "first_exact_obstruction": {
+        "code": [
+          2,
+          0,
+          3
+        ],
+        "reason": {
+          "triangle_index": 5,
+          "mate_edges": [
+            1,
+            1,
+            0
+          ]
+        },
+        "root": 8,
+        "rectangle": [
+          1,
+          2,
+          13,
+          19
+        ],
+        "shared_endpoint_label": 7
+      }
+    }
+  ]
+}
