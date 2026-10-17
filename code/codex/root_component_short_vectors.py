@@ -292,25 +292,61 @@ Indices in partitions refer to the full99 graph, Gamma has offset15.
 
 
 def add_rotated_signature_cuts(model,rectangles,context):
-    """For each rotated nine-set S, (sum_S h)^2 <= q*(8-2e).
+    """For each rotated nine-set S, 8(sum_S h)^2 <= q*(64-16e-K).
 
 Here h is an integral -4 eigenvector with norm squared7q, and e is the
 number of edges among its four rectangle corners. The full projector is
 E_-4=(3I-A+J/9)/7. The nine-set has14+e edges, so
 1_S^t E_-4 1_S=(8-2e)/7. Cauchy--Schwarz proves the cut.
-For e=4 this forces sum_S h=0. Every rectangle root is one of the original
-fourteen neighbours, where these h vanish; the four base and four corner
-coordinates are in Gamma. Corners remain variable, selected exactly.
+Every rectangle root a is one of the original fourteen neighbours, where
+these h vanish; the four base and four corner coordinates are in Gamma.
+Because h also vanishes on the original whole closed star, use its smaller
+projector T/7. If d_b counts the eight Gamma vertices containing label b,
+d_a=4 and d_{a*}=0. Put t_b=d_b-1 on the other twelve labels and
+K=sum_{mate pairs b,c}(3(t_b^2+t_c^2)+2t_bt_c)>=0.
+Then 1_{S Gamma}^t T 1_{S Gamma}=8-2e-K/8, giving the stronger cut.
+For e=4 both K=0 (every other label used once) and sum_S h=0.
+Corners remain variable, selected exactly; there is no boundary witness.
 """
     from math import isqrt
     from ortools.sat.python import cp_model
+    from root_component_propagation import LABELS
     values=context['values'];bounds=context['bounds'];norms=context['lattice_norms']
     assert all(len(row)==84 for row in values)
-    selected={};tables=0;elements=0;entries=0
+    selected={};tables=0;elements=0;entries=0;label_tables=0;square_tables=0
     for ri,rectangle in enumerate(rectangles):
         assert 0<=rectangle['root']<14
         edge_count=model.new_int_var_from_domain(cp_model.Domain.from_values([0,1,2,4]),f'rotated_signature_edges_{ri}')
         model.add(edge_count==sum(rectangle['edges']))
+        root=rectangle['root'];base=rectangle['base_vertices']
+        assert all(root in LABELS[w] for w in base)
+        assert all(root not in LABELS[w] and (root^1) not in LABELS[w]
+                   for corner in rectangle['corners'] for w in corner['choices'])
+        label_counts={}
+        for b in range(14):
+            if b in (root,root^1):continue
+            fixed_count=sum(b in LABELS[w] for w in base)
+            maximum=fixed_count+sum(any(b in LABELS[w] for w in corner['choices']) for corner in rectangle['corners'])
+            value=model.new_int_var(fixed_count,maximum,f'rotated_label_count_{ri}_{b}')
+            model.add(value==fixed_count+sum(flag for corner in rectangle['corners']
+                                            for w,flag in corner['flags'].items() if b in LABELS[w]))
+            label_counts[b]=(value,fixed_count,maximum)
+        defects=[]
+        for b in range(0,14,2):
+            if b//2==root//2:continue
+            u,ulo,uhi=label_counts[b];v,vlo,vhi=label_counts[b+1]
+            defect=model.new_int_var(0,64,f'rotated_label_defect_{ri}_{b}')
+            rows=[]
+            for x in range(ulo,uhi+1):
+                for y in range(vlo,vhi+1):
+                    k=3*((x-1)**2+(y-1)**2)+2*(x-1)*(y-1)
+                    if k<=64:rows.append((x,y,k))
+            model.add_allowed_assignments([u,v,defect],rows);label_tables+=1
+            defects.append(defect)
+        total_defect=model.new_int_var(0,64,f'rotated_total_label_defect_{ri}')
+        model.add(total_defect==sum(defects))
+        model.add(total_defect+16*edge_count<=64)
+        rectangle['spectral_sums']=[]
         for di,q in enumerate(norms):
             terms=[values[di][w] for w in rectangle['base_vertices']]
             for corner in rectangle['corners']:
@@ -329,11 +365,18 @@ coordinates are in Gamma. Corners remain variable, selected exactly.
             cap=isqrt(8*q)
             total=model.new_int_var(-cap,cap,f'rotated_signature_sum_{ri}_{di}')
             model.add(total==sum(terms))
+            rectangle['spectral_sums'].append(total)
             model.add_allowed_assignments([edge_count,total],
                 [(e,s) for e in (0,1,2,4) for s in range(-isqrt(q*(8-2*e)),isqrt(q*(8-2*e))+1)])
+            square=model.new_int_var(0,cap*cap,f'rotated_signature_square_{ri}_{di}')
+            model.add_allowed_assignments([total,square],[(s,s*s) for s in range(-cap,cap+1)])
+            model.add(8*square+q*total_defect+16*q*edge_count<=64*q)
+            square_tables+=1
             tables+=1
     return {'rectangles':len(rectangles),'directions':len(norms),'tables':tables,
-            'selected_coordinates':elements,'element_entries':entries,'scope':add_rotated_signature_cuts.__doc__}
+            'selected_coordinates':elements,'element_entries':entries,
+            'label_defect_tables':label_tables,'square_tables':square_tables,
+            'scope':add_rotated_signature_cuts.__doc__}
 
 
 def filter_domains(domains, data):

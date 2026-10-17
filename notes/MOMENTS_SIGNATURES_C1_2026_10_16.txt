@@ -1052,3 +1052,64 @@ court sont utilisees (selection rationnelle). Ceci s'ajoute automatiquement
 aux partitions non racines quand short_vectors est actif. Test du produit
 taille*valeur de ligne passe; premier modele reel encore a lancer.
 Ces changements restent separes du code fige du lot AWS.
+
+31. 18/10 vers01h37 : etiquettes et passage d'une racine a sa voisine.
+
+Le pilote193 de30 donne code0 INFEASIBLE54.781CPU,55002branches/11664conflits;
+code1 UNKNOWN60.156CPU. Pas de fermeture du Gram. Nouveau pilote193 reprend
+seulement le code0 prouve, puis traite codes1/2 avec les renforcements
+ci-dessous (90CPU/code,180CPU total), session57000. Pilote7#1069 de30 encore
+actif, session12090; aucune conclusion a ce stade.
+
+Pour les huit sommets Gamma d'un rectangle tourne, d_b compte les sommets
+portant l'etiquette b. La racine tournee est a : d_a=4,d_(a*)=0. Sur les
+12autres lettres, poser t_b=d_b-1; leur somme vaut0. Alors
+ K=sum_{paires mates b,c}(3(t_b^2+t_c^2)+2t_b*t_c)>=0.
+Avec T=3I-Gamma-(3BtB+BtMB-2J)/8, on calcule exactement
+          1_(S Gamma)^t T1_(S Gamma)=8-2e-K/8.
+Les h sont dans l'image de T, de norme7q, d'ou
+                    8*(sum_S h)^2 <= q*(64-16e-K).
+Le modele impose aussi K+16e<=64, consequence de T positif. Les carres,
+comptes d'etiquettes et choix de coins sont tous entiers et exacts.
+Une grille e4 exige K0 : chacun des12autres labels apparait une fois.
+Tests ponctuels passes : mauvaise couverture de labels rejettee pour e4;
+pour e2/q4, somme4 n'est permise qu'avec K0; cas e0 avecK6 et somme4 admis.
+
+Tous les coins selectionnes a une meme racine tournee sont DISTINCTS,
+y compris entre rectangles differents : chaque sommet exterieur a deux
+voisins exactement dans cette etoile. AddAllDifferent est ajoute a cette
+liste complete ou partielle, au lieu de seulement chaque quartet.
+
+Transport du repertoire de composantes : root_component_rotated_templates.py.
+A un sommet voisin a, les sept droites sont L0=(a,o,a*) et les six paires
+fixees dans son etoile Gamma. On utilise les200 gabarits AVANT budget
+(116 graphes non-grilles), jamais les79 du sommet choisi a petit budget.
+Pour L0, les grilles sont exactement les composantes-prismes connues du
+voisinage de l'ancienne droite. On enumere toutes les permutations plaçant
+une racine du bon degre surL0 et ses voisins sur l'incidence prescrite.
+Le tableau des15autres indicateurs non-grille reste complet. Les rectangles
+non construits gardent des booleens libres; aucune fixation de temoin.
+Pour degre non-grille deL0=0,2,3,4, les nombres de graphes etiquetes admis
+sont respectivement4886,4116,5051,5349. Tests de transport de gabarits sous
+deux permutations passes. Le tableau ne pose AUCUN budget de prismes en a.
+
+Compatibilite entre racines : pour les21ensembles de9sommets S_ij d'une
+racine quelconque, et tout vecteur propre-4 h, poser y_ij=sum_(S_ij)h.
+Pour chaque droite i, sum_(j!=i)y_ij=0. En effet la somme des six ensembles
+donne6h_racine+6(h_u+h_v)+sum_(N(racine)\{u,v})h plus les24voisins Gamma
+de u,v. Les equations propres reduisent cela a0. Cette identite ne requiert
+aucune symetrie ni minimum de composantes.
+A la racine tournee, y_0i est la somme de quatre anciennes valeurs Gamma,
+les autres points etant dans l'ancienne boule de rayon1 ou h=0. Les quatre
+points sont connus par le code complet de la premiere composante. Les
+y_ij des rectangles construits sont nos sommes de signatures; les autres
+restent des entiers libres bornes par sqrt(8q), nuls si leur grille est
+imposee. Sept equations par direction courte relient les deux cartes.
+Avec --rotated-templates et --rotated-signatures, ces coupes sont ajoutees
+aux nouvelles branches. Premier modele reel en cours; aucun verdict nouveau.
+
+LAB978 a lance le lot fige315ed4e (runtime5694bb5) : deux m7a.32xlarge,
+empreintes des28entrees/code concordantes,1coeur par job,condition RAM>=4Go.
+Il a choisi une limite externe7200s/job et extinction automatique5h. Ces
+actions sont coteLAB; nous n'avons ni cree ni modifie ses machines.
+Dernierlu/ack978,dernierenvoye979 a01h24m16. Prochaine vie avant02h09.

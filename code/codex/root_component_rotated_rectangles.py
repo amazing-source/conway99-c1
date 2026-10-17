@@ -24,8 +24,26 @@ def add_rotated_rectangles(model, graph, template, tables, root, part, code, cou
     outside=[w for w,p in enumerate(LABELS) if all(a//2!=root for a in p)]
     assert len(outside)==60
     assert all(isinstance(fixed[u][v],int) for star in stars for u in star for v in star)
-    return add_fixed_star_rectangles(model,fixed,[(2*root+bit,star,outside) for bit,star in enumerate(stars)],count,
+    result=add_fixed_star_rectangles(model,fixed,[(2*root+bit,star,outside) for bit,star in enumerate(stars)],count,
                                      rectangle_context=rectangle_context)
+    if rectangle_context is not None:
+        for item in rectangle_context:
+            letter=item['root'];opposite=stars[1-(letter%2)]
+            original=[]
+            for u,v in item['all_lines']:
+                partners=[]
+                for x in (u,v):
+                    candidates=[w for w in opposite if isinstance(fixed[x][w],int) and fixed[x][w]==1]
+                    assert len(candidates)==1
+                    partners.append(candidates[0])
+                p,q=partners
+                b=next(x for x in LABELS[u] if x!=letter)
+                c=next(x for x in LABELS[v] if x!=letter)
+                assert isinstance(fixed[p][q],int)
+                e=int(c==(b^1))+fixed[p][q]+sum(x in LABELS[w] for x in (b,c) for w in (p,q))
+                original.append({'line':(u,v),'gamma_vertices':[u,v,p,q],'edge_count':e})
+            item['old_root_rectangles']=original
+    return result
 
 
 def add_grid_rotations(model, graph, count, rectangle_context=None):
@@ -41,9 +59,10 @@ def add_grid_rotations(model, graph, count, rectangle_context=None):
 
 def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=(), rectangle_constraints=None, grid_dominance_roots=(), rectangle_context=None):
     """Rooted stars list (root identifier, known colour class, outside60)."""
-    plans=[]
+    plans=[];lines_by_root={}
     for root_letter,star,outside in rooted_stars:
         lines=[(u,v) for u,v in combinations(star,2) if isinstance(fixed[u][v],int) and fixed[u][v]==1]
+        lines_by_root[root_letter]=lines
         assert len({w for line in lines for w in line})==2*len(lines)
         for first,second in combinations(lines,2):
             pairs=[tuple(sorted((u,v))) for u in first for v in second]
@@ -62,7 +81,7 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         if (bits[2] or bits[3]) and any(bits[i] for i in (0,1,4,5)):continue
         edge_patterns.append(bits)
     assert len(edge_patterns)==15
-    products={};corners={};records=[];element_entries=0;dominance_records=[]
+    products={};corners={};records=[];element_entries=0;dominance_records=[];root_actuals={}
     def product(a,b):
         if isinstance(a,int):return b if a else 0
         if isinstance(b,int):return a if b else 0
@@ -96,6 +115,7 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         if any(not c['choices'] for c in cs):
             return {'empty_corner_domain':True,'root_letter':root_letter,'lines':[first,second]}
         model.add_all_different([c['actual'] for c in cs])
+        for c in cs:root_actuals.setdefault(root_letter,{})[c['actual'].index]=c['actual']
         es=[]
         for i,j in combinations(range(4),2):
             a,b=cs[i],cs[j]
@@ -110,7 +130,7 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
         model.add_allowed_assignments(es,edge_patterns)
         if rectangle_context is not None:
             rectangle_context.append({'root':root_letter,'base_vertices':[*first,*second],
-                                      'corners':cs,'edges':es})
+                                      'corners':cs,'edges':es,'all_lines':lines_by_root[root_letter]})
         prescribed_grid=rectangle_constraints(root_letter,first,second,es) if rectangle_constraints is not None else None
         if root_letter in grid_dominance_roots and prescribed_grid is not False:
             # Here root_letter is an actual vertex index in a full graph.
@@ -141,8 +161,13 @@ def add_fixed_star_rectangles(model, fixed, rooted_stars, count, required_roots=
                 'unconditional':prescribed_grid is True,'equations':99})
         records.append({'root_letter':root_letter,'lines':[list(first),list(second)],
                         'corner_domain_sizes':[len(c['choices']) for c in cs]})
+    # A vertex outside this root has exactly two neighbours in its star.
+    # Hence it cannot serve as a corner for two different cross pairs.
+    # This holds across different rectangles, not only within each four-set.
+    for actuals in root_actuals.values():model.add_all_different(list(actuals.values()))
     return {'rectangles':records,'available_fixed_line_pairs':len(plans),
             'allowed_six_edge_patterns':len(edge_patterns),
             'distinct_corner_variables':len(corners),'common_neighbour_products':len(products),
             'grid_dominance':dominance_records,
+            'distinct_corners_by_root':{str(root):len(actuals) for root,actuals in root_actuals.items()},
             'element_entries':element_entries,'scope':__doc__}

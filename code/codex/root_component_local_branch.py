@@ -40,6 +40,7 @@ def main():
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
+    parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -47,7 +48,8 @@ def main():
     cover=next(r for r in json.loads((args.directory/'root_component_gram_orbits20.json').read_text())['records'] if r['template_index']==args.index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
     values=cover['gram_anchor_values'][args.gram_index]
-    template=json.loads((args.directory/'root_component_templates.json').read_text())['survivors'][args.index]
+    all_templates=json.loads((args.directory/'root_component_templates.json').read_text())['survivors']
+    template=all_templates[args.index]
     tables=json.loads(args.local_tables.read_text())
     context={};rotation_values={} if args.rotated_signatures else None
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
@@ -67,7 +69,7 @@ def main():
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -125,6 +127,10 @@ def main():
             if args.rotated_signatures:
                 from root_component_short_vectors import add_rotated_signature_cuts
                 rotated_info['short_signature_cuts']=add_rotated_signature_cuts(branch_model,rectangle_context,rotation_values)
+            if args.rotated_templates:
+                from root_component_rotated_templates import add_rotated_template_cover
+                rotated_info['component_template_cover']=add_rotated_template_cover(branch_model,rectangle_context,template,all_templates,
+                    eigen_context=rotation_values if args.rotated_signatures else None)
             print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()
