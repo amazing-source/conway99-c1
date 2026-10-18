@@ -15,6 +15,7 @@ is only a partial graph, not an SRG(99,14,1,2).
 
 import argparse
 from collections import Counter
+from functools import lru_cache
 from itertools import combinations, product
 import hashlib
 import json
@@ -35,6 +36,47 @@ WORDS = tuple(product(range(4), repeat=3))
 WORD_CELLS = tuple(tuple(16*k+4*w[a]+w[b] for k,(a,b) in enumerate(PAIRS)) for w in WORDS)
 OUTSIDE = tuple((2*a+s,2*b+t) for a in range(4) for b in range(4,7)
                 for s,t in product(range(2),repeat=2))
+F = (3,2,1,0)
+
+
+@lru_cache(maxsize=8)
+def boundary_margins(boundary):
+    return margin_test(boundary)
+
+
+@lru_cache(maxsize=8)
+def cached_grid_catalogue(q,boundary,margins):
+    return grid_catalogue(q,boundary,margins)[0]
+
+
+@lru_cache(None)
+def grid_words(ids):
+    return tuple(tuple(PERMS[ids[b]][i] for b in range(3)) for i in range(4))
+
+
+@lru_cache(None)
+def conjugate_oppositions(ids):
+    return tuple(tuple(PERMS[pid].index(F[PERMS[pid][i]]) for i in range(4)) for pid in ids)
+
+
+@lru_cache(None)
+def opposite_profile_images(oppositions,z):
+    """Only 3^3 opposition triples and 4^3 words occur in this table.
+
+An edge to grid corner t requires z_b in {t,F(t),O_b(t)} for every
+Y grid b: otherwise the grid corner and Y neighbour already have
+three common neighbours. The coincidence counts also respect the
+nongrid-to-grid C2 inequalities before the unknown core is added.
+"""
+    count=tuple(z.count(j) for j in range(4))
+    return tuple(t for t in range(4)
+                 if all(z[b] in (t,F[t],oppositions[b][t]) for b in range(3))
+                 and all(count[j]+square(t,j)<=2-int(t==j) for j in range(4)))
+
+
+def profile_images(ids,word):
+    z=tuple(PERMS[ids[b]].index(word[b]) for b in range(3))
+    return opposite_profile_images(conjugate_oppositions(ids),z)
 
 
 def layout(centre):
@@ -65,6 +107,14 @@ def mapped_cores(records, centre):
         assert all(sum(row)==2 for row in k)
         output.append((k,deficit))
     return output
+
+
+@lru_cache(maxsize=4)
+def core_filter_data(edge_records,centre):
+    patterns=mapped_cores([{'edges':e} for e in edge_records],centre)
+    allowed=[[[sum(1<<ki for ki,(_,t) in enumerate(patterns) if n<=t[u][v])
+               for n in range(4)] for v in range(8)] for u in range(8)]
+    return patterns,allowed
 
 
 def base_domains(boundary, margins, vertices):
@@ -178,19 +228,18 @@ class SearchLimit(Exception):
 
 
 def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
-    start=time.process_time();marginal=margin_test(boundary)
+    start=time.process_time();boundary=tuple(boundary);marginal=boundary_margins(boundary)
     out={'centre':centre,'is_complete_graph':False,'uses_E3':True}
     if marginal['status']=='EXCLUDED_BOUNDARY':
         return {**out,'status':'EXCLUDED_BY_INTEGER_MARGINS','cpu_seconds':time.process_time()-start}
-    margins=marginal['margins'];target=sum((sum(m,()) for m in margins),())
+    margins=tuple(marginal['margins']);target=sum((sum(m,()) for m in margins),())
     nongrids,grids,vertices,opposite=layout(centre)
-    cats={q:grid_catalogue(q,boundary,margins)[0] for q in grids}
+    cats={q:cached_grid_catalogue(q,boundary,margins) for q in grids}
     out['grid_catalogue_sizes']=[len(cats[q]) for q in grids]
     domains,core_letter_counts=base_domains(boundary,margins,vertices)
     out['nongrid_row_domain_sizes']=list(map(len,domains))
-    patterns=mapped_cores(records,centre)
-    allowed=[[[sum(1<<ki for ki,(_,t) in enumerate(patterns) if n<=t[u][v])
-               for n in range(4)] for v in range(8)] for u in range(8)]
+    edge_records=tuple(tuple(tuple(e) for e in r['edges']) for r in records)
+    patterns,allowed=core_filter_data(edge_records,centre)
     counts=Counter();witness=None;certificates=[]
 
     def finish(ids,assigned,kmask,options):
@@ -201,7 +250,7 @@ def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
             low=kmask&-kmask;ki=low.bit_length()-1;kmask-=low
             k,_=patterns[ki];match_cats=[]
             for side,q in enumerate(opposite):
-                grid_words=[tuple(PERMS[ids[q][b]][i] for b in range(3)) for i in range(4)]
+                attached_words=grid_words(ids[q])
                 good=[]
                 for p in PERMS:
                     if any(p[i] not in options[4*side+i][assigned[4*side+i]] for i in range(4)):continue
@@ -210,7 +259,7 @@ def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
                     # All nongrid-to-this-grid C2 inequalities.
                     for u in range(8):
                         for j in range(4):
-                            common=sum(a==b for a,b in zip(words[u],grid_words[j]))+k[u][inverse[j]]
+                            common=sum(a==b for a,b in zip(words[u],attached_words[j]))+k[u][inverse[j]]
                             if u//4==side:common+=square(p[u%4],j)
                             adj=int(u//4==side and p[u%4]==j)
                             if common>2-adj-SHARED[vertices[u]][8+4*q+j]:valid=False;break
@@ -225,12 +274,12 @@ def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
                         for b in range(3):
                             for j in range(4):
                                 n=sum(k[u][v] for v in range(8) if words[v][b]==j)
-                                n+=square(words[u][b],j)+int(grid_words[p[i]][b]==j)
+                                n+=square(words[u][b],j)+int(attached_words[p[i]][b]==j)
                                 if n>2-int(words[u][b]==j):valid=False;break
                                 # Grid corner p[i] has its two square neighbours and u.
-                                n=sum(square(p[i],t) for t in range(4) if grid_words[t][b]==j)
-                                n+=square(grid_words[p[i]][b],j)+int(words[u][b]==j)
-                                if n>2-int(grid_words[p[i]][b]==j):valid=False;break
+                                n=sum(square(p[i],t) for t in range(4) if attached_words[t][b]==j)
+                                n+=square(attached_words[p[i]][b],j)+int(words[u][b]==j)
+                                if n>2-int(attached_words[p[i]][b]==j):valid=False;break
                             if not valid:break
                         if not valid:break
                     if valid:good.append(p)
@@ -252,8 +301,7 @@ def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
 
     def grid_pair(ids):
         ga,gb=grids
-        wa=[tuple(PERMS[ids[ga][b]][i] for b in range(3)) for i in range(4)]
-        wb=[tuple(PERMS[ids[gb][b]][i] for b in range(3)) for i in range(4)]
+        wa=grid_words(ids[ga]);wb=grid_words(ids[gb])
         if any(sum(a==b for a,b in zip(wa[i],wb[j]))>2-SHARED[8+4*ga+i][8+4*gb+j]
                for i,j in product(range(4),repeat=2)):return False
         residual=[t-a-b for t,a,b in zip(target,attachment_margins(ids[ga]),attachment_margins(ids[gb]))]
@@ -274,8 +322,7 @@ def solve(core,boundary,centre,records,node_limit=0,use_frontier=False):
                 if any(residual[c]==0 for c in WORD_CELLS[wi]):continue
                 if any(used[4*b+w[b]][l]>=2 for b in range(3) for l in LABELS[v]):continue
                 if any(sum(a==b for a,b in zip(w,other[j]))>2-SHARED[v][8+4*oq+j] for j in range(4)):continue
-                coincidences=[sum(a==b for a,b in zip(w,z)) for z in wq]
-                ts=tuple(t for t in range(4) if all(coincidences[j]+square(t,j)<=2-int(t==j) for j in range(4)))
+                ts=profile_images(ids[q],w)
                 if ts:good.append(wi);match_options[wi]=ts
             if not good:return False
             ds.append(good);options.append(match_options)
@@ -331,20 +378,34 @@ def main():
     p.add_argument('--log-every',type=int,default=25)
     p.add_argument('--frontier',action='store_true')
     p.add_argument('--output',type=Path,required=True)
-    args=p.parse_args();assert not args.output.exists()
+    p.add_argument('--resume',action='store_true')
+    args=p.parse_args();assert args.resume or not args.output.exists()
     resources=limit_research_process(1)
     data=json.loads(args.cover.read_text(encoding='utf8'))
     orbits=data.get('orbit_reduction',data)['orbits']
     records=json.loads(args.pair_cores.read_text(encoding='utf8'))
-    out={'scope':__doc__,'resources':resources,'sources':{
-        str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in (args.cover,args.pair_cores)},
+    sources={str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in (args.cover,args.pair_cores)}
+    out={'scope':__doc__,'resources':resources,'sources':sources,
         'cases':[],'global_Conway_exclusion':False,'whole_family_excluded':False}
+    completed=set()
+    if args.resume:
+        out=json.loads(args.output.read_text(encoding='utf8'))
+        assert out['sources']==sources
+        for rec in out['cases']:
+            key=(rec['orbit'],rec['boundary_index'],rec['result']['centre'])
+            assert key not in completed
+            completed.add(key)
+    out.setdefault('program_versions',[]).append({
+        'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'resumed_after_cases':len(completed),'node_limit':args.node_limit,
+        'frontier_enabled':args.frontier,'uses_27_opposition_profiles':True})
     for oi,orbit in enumerate(orbits):
         if args.orbit is not None and oi not in args.orbit:continue
         for bi,case in enumerate(orbit['boundaries']['cases']):
             if args.boundary_indices is not None and bi not in args.boundary_indices:continue
             for centre in args.centres:
                 assert centre in range(4)
+                if (oi,bi,centre) in completed:continue
                 result=solve(orbit['representative'],case['core_neighbours_of_grid_vertices'],
                              centre,records,args.node_limit,args.frontier)
                 out['cases'].append({'orbit':oi,'boundary_index':bi,'result':result})

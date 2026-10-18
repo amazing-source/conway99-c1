@@ -97,6 +97,59 @@ aux quotas et a toutes les bornes C2. Les egalites C2 sont utilisees
 seulement sur le coeur cubique8, les deux grilles X individuellement,
 et les12 sommets Y : elles NE sont PAS imposees sur K tout entier.
 
+4bis. UNE REGLE LOCALE A SEULEMENT27 SCHEMAS
+
+Soit F=(03)(12) l'opposition dans une grille X, et sigma_b sa
+permutation de raccordement a la b-ieme grille Y. Pour un sommet
+non grille de mot w, posons z_b=sigma_b^{-1}(w_b), et
+O_b=sigma_b^{-1} F sigma_b. Si ce sommet est raccorde au coin t de
+la grille X, on a necessairement
+
+ z_b appartient a {t,F(t),O_b(t)} pour b=0,1,2.
+
+Preuve : pour le sommet Y w_b, les deux contributions deja fixees
+aux voisins communs avec t valent C4(t,z_b) et
+C4(sigma_b(t),sigma_b(z_b)). Le nouveau sommet apporte encore1.
+Si z_b=t, le total est1 et l'arete t--Y autorise1. Sinon, t et Y
+ne sont pas adjacents et autorisent2; les deux contributions ne
+peuvent donc pas etre simultanement1. Il faut z_b=F(t) ou
+z_b=O_b(t). Tous les voisins exterieurs ne font qu'augmenter le
+nombre de voisins communs, donc l'inegalite est necessaire.
+
+Chaque O_b est un des trois couplages parfaits de quatre coins.
+Il n'y a donc que3^3=27 schemas, pour les64 mots z possibles.
+On les combine au premier filtrage ci-dessus, equivalemment
+ nombre de coordonnees z_b=j + C4(t,j) <=2-[t=j].
+Le cache de ce petit catalogue remplace des calculs repetes sur
+les24^3 permutations, sans imposer de symetrie du graphe.
+
+La production a ete arretee apres1823 positions toutes exclues,
+puis reprise au checkpoint avec ce filtrage plus precoce. Le
+prefixe provient de5f60e37d; les positions deja traitees ne sont
+pas recalculees. Le controle positif des12 anciens graphes36
+repasse avec cette regle (touching23_e4_positive_controls.json).
+
+4ter. EXPLICATION MICROSOPIQUE DU BORD517, CENTRE0
+
+Pour ce bord de l'orbite6,54 affectations des huit mots survivent
+aux marges et aux bornes C2 du coeur; elles representent160 couples
+(affectation, coeur2-regulier). Les raccordements aux grilles les
+tuent tous :138 ont deja une obstruction de Hall sur les quatre
+images,22 passent ce filtre mais chacune des24 bijections restantes
+viole une borne de voisins communs.
+
+Fichiers touching23_o6b517_centre0_rows.json et
+touching23_o6b517_centre0_bijection_obstructions.json; explication
+reproductible par root_component_touching_hall.py. Ce diagnostic
+porte sur ces54 affectations, pas sur toute la couverture5312.
+
+Exemple : premier mot, coeur76, sommet (0,2) de Q_01, a raccorder
+a Q_23. Les coins0 et1 de Q_23 sont interdits car ils donnent trois
+voisins portant la lettre4, au lieu de deux. Le coin2 donne trois
+voisins communs a ce coin et au coin0 de Q_46; le coin3 donne trois
+voisins communs a ce coin et au coin2 de Q_45. Ces paires n'ont droit
+qu'a deux voisins communs. Les quatre images sont donc interdites.
+
 5. COUVERTURE ET FRONTIERE
 
 Le bord20 de l'ancien coeur8 a1328 representants complets. Les
@@ -143,10 +196,9 @@ Commande de production (un seul coeur, garde CPU externe) :
 python -I -u -X utf8 code/codex/root_component_touching_grid_join.py
  --cover data/codex_short_columns_20261018/gz5602_boundary20_cover.json
  --pair-cores code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircores8.json
- --frontier --log-every100
+ --frontier --log-every 100
  --output data/codex_short_columns_20261018/touching23_complete.json
 
-Attention : --log-every100 ci-dessus se tape --log-every 100.
 Le fichier de production est ecrit progressivement. Tant qu'il ne
 couvre pas exactement5312 positions avec des verdicts d'exclusion,
 il ne ferme pas la famille. Aucun total partiel ne suffit.
