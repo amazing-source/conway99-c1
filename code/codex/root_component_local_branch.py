@@ -20,6 +20,31 @@ from root_component_signature_moments import gram_matrix
 from ortools.sat.python import cp_model
 
 
+def solve_cpu(model,seconds,presolve_iterations=3,presolve=True):
+    assert seconds>0
+    solver=cp_model.CpSolver()
+    solver.parameters.num_search_workers=1
+    solver.parameters.max_time_in_seconds=max(600,100*seconds)
+    solver.parameters.cp_model_probing_level=0
+    solver.parameters.symmetry_level=0
+    solver.parameters.linearization_level=0
+    solver.parameters.max_presolve_iterations=presolve_iterations
+    solver.parameters.cp_model_presolve=presolve
+    started=time.process_time();done=threading.Event()
+    def interrupt():
+        while not done.wait(.05):
+            if time.process_time()-started>=seconds:solver.stop_search()
+    timer=threading.Thread(target=interrupt,daemon=True);timer.start()
+    try:status=solver.solve(model)
+    finally:done.set();timer.join()
+    response=solver.response_proto
+    return {'status':solver.status_name(status),'cpu_seconds':time.process_time()-started,
+            'branches':solver.num_branches,'conflicts':solver.num_conflicts,
+            'booleans':solver.num_booleans,'deterministic_time':response.deterministic_time,
+            'binary_propagations':response.num_binary_propagations,
+            'integer_propagations':response.num_integer_propagations}
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
@@ -28,6 +53,12 @@ def main():
     parser.add_argument('--seconds',type=float,default=20,help='Actual CPU seconds per component branch.')
     parser.add_argument('--total-cpu-seconds',type=float,help='Maximum summed solver CPU time in this invocation; model construction is separate.')
     parser.add_argument('--limit-new',type=int)
+    parser.add_argument('--component-range',type=int,nargs=2,metavar=('START','STOP'),help='Process this half-open range of current canonical codes; retain the full cover in the report.')
+    parser.add_argument('--expected-code-cover',help='SHA256 of the complete ordered canonical code list, pinned by a task manifest.')
+    parser.add_argument('--prefilter-seconds',type=float,default=0,help='First try the fixed-code base model, then add rotated constraints only if needed; included in the per-code CPU budget.')
+    parser.add_argument('--presolve-iterations',type=int,default=3)
+    parser.add_argument('--no-presolve',action='store_true')
+    parser.add_argument('--propagate-fixed-code',action='store_true',help='Propagate exact binary C1/C2 rules after fixing a code, before building the large rotated tables.')
     parser.add_argument('--minc-lines',type=int,default=1)
     parser.add_argument('--minc-balance',action='store_true')
     parser.add_argument('--line-profiles',type=int,default=1)
@@ -42,9 +73,20 @@ def main():
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
     parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
+    parser.add_argument('--residual-gram',choices=('incident','all'),help='Integer Gram divisibility and signs for complete rotated residual stars.')
+    parser.add_argument('--residual-eigen',type=int,default=0,help='Full Gamma eigen equations for this many rotated residual vectors per new root.')
+    parser.add_argument('--tight-residual-bounds',action='store_true',help='Use the universal [-2,3] residual range and the sign bounds inside/outside the nine-set.')
+    parser.add_argument('--residual-gram-profiles',type=Path,help='Frozen permutation-invariant row profiles of the surviving low-budget Grams.')
+    parser.add_argument('--fixed-cross-triangles',type=int,default=0,help='Apply the global minimum-component bound at newly fixed cross-colour triangles of the first component.')
+    parser.add_argument('--fixed-star-triangles',type=int,default=0,help='Apply that bound also at newly fixed matched pairs within the two stars.')
+    parser.add_argument('--low-budget-cover',type=Path,help='Frozen earlier exclusions, applied at other roots only if their prism budget is <=51.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy excluded codes with the same Gram, frame and matching catalogue; filtered code covers may differ.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
+    assert args.prefilter_seconds>=0
+    assert args.presolve_iterations>=1
+    assert not (args.residual_gram or args.residual_eigen or args.tight_residual_bounds) or args.rotated_residuals
+    if args.component_range:assert 0<=args.component_range[0]<args.component_range[1]
     resources=limit_research_process(4)
     cover=next(r for r in json.loads((args.directory/'root_component_gram_orbits20.json').read_text())['records'] if r['template_index']==args.index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
@@ -52,6 +94,13 @@ def main():
     all_templates=json.loads((args.directory/'root_component_templates.json').read_text())['survivors']
     template=all_templates[args.index]
     tables=json.loads(args.local_tables.read_text())
+    low_snapshot=json.loads(args.low_budget_cover.read_text()) if args.low_budget_cover else None
+    gram_profiles=json.loads(args.residual_gram_profiles.read_text()) if args.residual_gram_profiles else None
+    assert gram_profiles is None or low_snapshot is not None and args.residual_gram=='all'
+    if gram_profiles is not None:
+        from root_component_low_budget_transport import digest
+        assert gram_profiles['template_frontier_sha256_lf']==digest(args.low_budget_cover)
+    assert low_snapshot is None or args.rotated_templates and args.rotated_rectangles>=30
     context={};rotation_values={} if args.rotated_signatures else None
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=args.minc_lines,
@@ -68,12 +117,35 @@ def main():
         # never regard an empty list of branches as a proof.
         context={'codes':[[]],'selectors':[],'root':None,'part':[]}
     codes=[list(c) for c in context['codes']]
+    import hashlib
+    code_cover_hash=hashlib.sha256(json.dumps(codes,separators=(',',':')).encode()).hexdigest()
+    if args.expected_code_cover and not base_model_only:
+        assert code_cover_hash==args.expected_code_cover, 'Canonical cover changed; regenerate the task manifest.'
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
     for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
+    if args.residual_gram:options['residual_gram']=args.residual_gram
+    if args.residual_eigen:options['residual_eigen']=args.residual_eigen
+    if args.tight_residual_bounds:options['tight_residual_bounds']=True
+    if args.residual_gram_profiles:
+        from root_component_low_budget_transport import digest
+        options['residual_gram_profiles']=str(args.residual_gram_profiles)
+        options['residual_gram_profiles_sha256_lf']=digest(args.residual_gram_profiles)
+    if args.prefilter_seconds:options['prefilter_seconds']=args.prefilter_seconds
+    if args.presolve_iterations!=3:options['presolve_iterations']=args.presolve_iterations
+    if args.no_presolve:options['no_presolve']=True
+    if args.propagate_fixed_code:options['propagate_fixed_code']=True
+    if args.fixed_cross_triangles:options['fixed_cross_triangles']=args.fixed_cross_triangles
+    if args.fixed_star_triangles:options['fixed_star_triangles']=args.fixed_star_triangles
+    if args.low_budget_cover:
+        from root_component_low_budget_transport import digest
+        options['low_budget_cover']=str(args.low_budget_cover)
+        options['low_budget_cover_sha256_lf']=digest(args.low_budget_cover)
+    if args.component_range:options['component_range']=args.component_range
+    if args.expected_code_cover:options['expected_code_cover']=args.expected_code_cover
     if args.total_cpu_seconds is not None:
         assert args.total_cpu_seconds>0
         options['total_cpu_seconds']=args.total_cpu_seconds
@@ -112,6 +184,7 @@ def main():
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='RUNNING',
               component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches,
               base_model_only=base_model_only)
+    case['ordered_component_code_cover_sha256']=code_cover_hash
     record={'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}
     def checkpoint():
         case['component_branch_counts']=dict(Counter(r['status'] for r in branches))
@@ -124,6 +197,7 @@ def main():
     print(json.dumps({'template':args.index,'gram':args.gram_index,'component_codes':len(codes),'already_done':len(completed)}),flush=True)
     for i,code in enumerate(codes):
         if i in completed:continue
+        if args.component_range and not args.component_range[0]<=i<args.component_range[1]:continue
         if args.limit_new is not None and processed>=args.limit_new:break
         branch_seconds=args.seconds
         if args.total_cpu_seconds is not None:
@@ -132,51 +206,102 @@ def main():
             branch_seconds=min(branch_seconds,remaining)
         branch_model=model.clone()
         for selector,value in zip(context['selectors'],code):branch_model.add(selector==value)
-        boundary_info=None
+        branch_graph=graph;propagation_info=None
+        if args.propagate_fixed_code and not base_model_only:
+            from root_component_boundary_psd import fixed_line_graph
+            from root_component_propagation import propagate,PAIRS
+            fixed=fixed_line_graph(graph,template,tables,context['root'],context['part'],code)
+            seeds={j:fixed[a][b] for j,(a,b) in enumerate(PAIRS) if isinstance(fixed[a][b],int)}
+            started=time.process_time();propagation_info=propagate(template,extra_initial=seeds)
+            propagation_info['cpu_seconds']=time.process_time()-started
+            propagation_info['input_fixed_edges']=len(seeds)
+            if propagation_info['conflict']:
+                result={'component_index':i,'code':code,'status':'INFEASIBLE','cpu_seconds':0,
+                        'method':'BINARY_C1_C2_PROPAGATION','fixed_code_propagation':propagation_info}
+                branches.append(result);processed+=1;checkpoint()
+                print(json.dumps({k:result[k] for k in ('component_index','code','status','method')}),flush=True)
+                continue
+            branch_graph=[list(row) for row in graph]
+            for j,value,_ in propagation_info.pop('assignments'):
+                a,b=PAIRS[j]
+                if isinstance(graph[a][b],int):assert graph[a][b]==value
+                else:branch_model.add(graph[a][b]==value)
+                branch_graph[a][b]=branch_graph[b][a]=value
+            print(json.dumps({'component_index':i,'phase':'fixed_code_propagation',
+                'input_fixed_edges':len(seeds),'fixed_edges':propagation_info['fixed_edges']}),flush=True)
+        prefilter=solve_cpu(branch_model,min(args.prefilter_seconds,branch_seconds),args.presolve_iterations,not args.no_presolve) if args.prefilter_seconds else None
+        if prefilter is not None and prefilter['status']=='INFEASIBLE':
+            result=dict(prefilter,component_index=i,code=code,method='FIXED_CODE_BASE_MODEL',prefilter=prefilter)
+            if propagation_info is not None:result['fixed_code_propagation']=propagation_info
+            solver_cpu_used+=result['cpu_seconds']
+            case['solver_cpu_seconds_this_invocation']=solver_cpu_used
+            branches.append(result);processed+=1;checkpoint()
+            print(json.dumps(dict(result,complete_gram_status=case['status'])),flush=True)
+            continue
+        remaining=branch_seconds-(prefilter['cpu_seconds'] if prefilter else 0)
+        if remaining<=0:
+            result={'component_index':i,'code':code,'status':'UNKNOWN','cpu_seconds':prefilter['cpu_seconds'],
+                    'prefilter':prefilter,'method':'PREFILTER_BUDGET_EXHAUSTED'}
+            solver_cpu_used+=result['cpu_seconds'];case['solver_cpu_seconds_this_invocation']=solver_cpu_used
+            branches.append(result);processed+=1;checkpoint()
+            print(json.dumps(dict(result,complete_gram_status=case['status'])),flush=True)
+            continue
+        boundary_info=None;cross_triangle_info=None
         rotated_info=None
+        if (args.fixed_cross_triangles or args.fixed_star_triangles) and not base_model_only:
+            from root_component_fixed_triangle_partitions import add_fixed_cross_triangle_partitions
+            from root_component_boundary_psd import fixed_line_graph
+            fixed=fixed_line_graph(branch_graph,template,tables,context['root'],context['part'],code)
+            cross_triangle_info=add_fixed_cross_triangle_partitions(branch_model,graph,fixed,context['root'],args.fixed_cross_triangles,
+                eigen_context=rotation_values if args.rotated_signatures else None,star_count=args.fixed_star_triangles)
         if args.boundary_projectors and not base_model_only:
             from root_component_boundary_psd import add_profile_cuts
-            boundary_info=add_profile_cuts(branch_model,graph,template,tables,context['root'],context['part'],code,complementary=True)
+            boundary_info=add_profile_cuts(branch_model,branch_graph,template,tables,context['root'],context['part'],code,complementary=True)
             print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
         if args.rotated_rectangles and not base_model_only:
             from root_component_rotated_rectangles import add_rotated_rectangles
             rectangle_context=[]
-            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
+            rotated_info=add_rotated_rectangles(branch_model,branch_graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
             if args.rotated_residuals:
                 from root_component_rotated_residual import add_rotated_residual_cuts
                 from root_component_boundary_psd import fixed_line_graph
-                fixed=fixed_line_graph(graph,template,tables,context['root'],context['part'],code)
-                rotated_info['integer_residuals']=add_rotated_residual_cuts(branch_model,fixed,rectangle_context)
+                fixed=fixed_line_graph(branch_graph,template,tables,context['root'],context['part'],code)
+                rotated_info['integer_residuals']=add_rotated_residual_cuts(branch_model,fixed,rectangle_context,tight_bounds=args.tight_residual_bounds)
+                if args.residual_gram:
+                    from root_component_rotated_gram import add_gram_cuts
+                    rotated_info['integer_gram']=add_gram_cuts(branch_model,rectangle_context,args.residual_gram)
+                if args.residual_eigen:
+                    from root_component_rotated_gram import add_eigen_cuts
+                    rotated_info['full_residual_eigen']=add_eigen_cuts(branch_model,fixed,rectangle_context,args.residual_eigen)
             if args.rotated_signatures:
                 from root_component_short_vectors import add_rotated_signature_cuts
                 rotated_info['short_signature_cuts']=add_rotated_signature_cuts(branch_model,rectangle_context,rotation_values)
             if args.rotated_templates:
                 from root_component_rotated_templates import add_rotated_template_cover
                 rotated_info['component_template_cover']=add_rotated_template_cover(branch_model,rectangle_context,template,all_templates,
-                    eigen_context=rotation_values if args.rotated_signatures else None)
-            print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
+                    eigen_context=rotation_values if args.rotated_signatures else None,low_budget_snapshot=low_snapshot)
+                if gram_profiles is not None:
+                    from root_component_rotated_gram_profiles import add_profile_cuts
+                    rotated_info['frozen_gram_profiles']=add_profile_cuts(branch_model,rectangle_context,gram_profiles)
+            print(json.dumps({'component_index':i,'code':code,'phase':'model_ready',
+                'rotated_rectangles':len(rotated_info['rectangles']),
+                'variables':len(branch_model.proto.variables),
+                'constraints':len(branch_model.proto.constraints)}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
-        solver=cp_model.CpSolver()
-        solver.parameters.num_search_workers=1
-        solver.parameters.max_time_in_seconds=max(600,100*branch_seconds)
-        solver.parameters.cp_model_probing_level=0
-        solver.parameters.symmetry_level=0
-        solver.parameters.linearization_level=0
-        started=time.process_time();done=threading.Event()
-        def interrupt():
-            while not done.wait(.05):
-                if time.process_time()-started>=branch_seconds:solver.stop_search();return
-        timer=threading.Thread(target=interrupt,daemon=True);timer.start()
-        try:status=solver.solve(branch_model)
-        finally:done.set();timer.join()
-        result={'component_index':i,'code':code,'status':solver.status_name(status),
-                'cpu_seconds':time.process_time()-started,'branches':solver.num_branches,'conflicts':solver.num_conflicts}
+        result=dict(solve_cpu(branch_model,remaining,args.presolve_iterations,not args.no_presolve),component_index=i,code=code)
+        if prefilter is not None:
+            result['prefilter']=prefilter
+            result['strong_solver_cpu_seconds']=result['cpu_seconds']
+            result['cpu_seconds']+=prefilter['cpu_seconds']
         solver_cpu_used+=result['cpu_seconds']
         case['solver_cpu_seconds_this_invocation']=solver_cpu_used
         if boundary_info is not None:result['boundary_projectors']=boundary_info
+        if propagation_info is not None:result['fixed_code_propagation']=propagation_info
+        if cross_triangle_info is not None:result['fixed_cross_triangle_partitions']=cross_triangle_info
         if rotated_info is not None:result['rotated_rectangles']=rotated_info
         branches.append(result);processed+=1;checkpoint()
-        print(json.dumps(dict(result,complete_gram_status=case['status'])),flush=True)
+        print(json.dumps({k:result[k] for k in ('component_index','code','status','cpu_seconds','branches','conflicts')} |
+                         {'complete_gram_status':case['status'],'counts':case['component_branch_counts']}),flush=True)
 
 
 if __name__=='__main__':main()

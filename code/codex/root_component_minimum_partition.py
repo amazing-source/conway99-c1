@@ -34,7 +34,7 @@ def add_minimum_partitions(model, gamma, count, balance=False, partition_context
     return add_partitions_for_lines(model,graph,lines,balance=balance,partition_context=partition_context)
 
 
-def add_partitions_for_lines(model, graph, lines, balance=False, partition_context=None):
+def add_partitions_for_lines(model, graph, lines, balance=False, partition_context=None, tag_prefix='minc'):
     """Use any fixed triangle whose first colour class is already known."""
     products={};balance_equations=0
     def product(a,b):
@@ -52,7 +52,7 @@ def add_partitions_for_lines(model, graph, lines, balance=False, partition_conte
         known=[w for w in outside if graph[line[0]][w]==1]
         assert len(known)==12
         flags, bins, members = {}, {}, {}
-        tag=f'minc_{line_number}'
+        tag=f'{tag_prefix}_{line_number}'
         for w in outside:
             members[w]=model.new_bool_var(f'{tag}_member_{w}')
             model.add(sum(graph[a][w] for a in line)==members[w])
