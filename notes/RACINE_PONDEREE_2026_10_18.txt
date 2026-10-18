@@ -132,3 +132,48 @@ Premier test sur19, etoile6, couplage0, les429 Gram variables : INFEASIBLE
 en27.484375CPU. Les huit autres couplages sont en cours; aucune fermeture
 du gabarit19 n'est encore conclue. Le test9/Gram193/M4 avec toutes les C2
 et le budget pondere, AVANT ces tables, est UNKNOWN apres240.296875CPU.
+
+7. PREUVES SAT ET REDUCTION DES COUPLAGES, 18/10 VERS 15h05
+Les 19 projections retirees ont maintenant chacune une CNF UNSAT et une
+preuve DRAT VERIFIEE par le binaire natif drat-trim. CaDiCaL natif a utilise
+3.3125 secondes CPU au total (controle des preuves en plus). Le premier
+export via la liaison Python avait echoue au controle; il reste un
+diagnostic et n'entre PAS dans les 19 preuves acceptees. Le paquet produit
+par root_component_projection_proof_bundle.py contient les CNF exactes,
+preuves, correspondances lignes/clauses et journaux. La validation porte
+sur ces CNF; la reduction mathematique et la couverture Gram sont des
+dependances explicites, pas des conclusions de drat-trim.
+
+Dans complete_star, aucun code de composante n'est normalise et les
+renommages independants des deux lettres de chaque droite non racine
+preservent le gabarit. On peut donc choisir un couplage par orbite de
+ces renommages, SANS supposer un automorphisme du graphe recherche.
+Pour une composante de s=1,2,3,4 droites : 1,2,5,17 orbites parmi
+1,3,15,105 couplages. L'option --mate-flip-orbits exporte chaque orbite
+et les masques explicites de renommage. Le flip de la droite racine est
+exclu : il echangerait le couplage fixe M0 avec M1, reste libre.
+Des UNKNOWN differents entre deux renommages a budget fixe sont possibles;
+la reduction concerne l'existence de graphes, pas la vitesse du solveur.
+
+Dans matching_global, la premiere composante est DEJA normalisee : il
+ne faut pas appliquer tous ces flips sans controle. Cependant les flips
+des droites hors de cette composante la fixent POINT PAR POINT. Pour19,
+les droites protegees sont0,3,5,6 et les flips permis1,2,4; pour9,
+elles sont0,4,5,6 et les flips permis1,2,3. Ils preservent aussi le Gram,
+qui somme sur des rectangles entiers, et le choix de racine ponderee.
+Dans les deux etoiles choisies on obtient les quatre orbites :
+  {0}, {1,2}, {3,6}, {4,5,7,8}.
+Le bilan --residual-mate-flips conserve les temoins de transport et refuse
+une autre normalisation. Pour19, les verdicts directs0,1,2,3 ferment donc
+cinq couplages0,1,2,3,6. Une seule orbite essentielle reste ouverte :
+{4,5,7,8}; 4 etait UNKNOWN apres122.125CPU. Aucune fermeture19 annoncee.
+Pour9 a ce point, seul2 est directement exclu, donc1 aussi par renommage.
+
+Deux options complementaires pour complete_star, destinees aux pilotesLAB :
+--all-matchings-variable --no-transport laisse les deux etoiles libres
+dans un seul modele. Test de construction/validation passe sur g1/index0
+(125691 variables); le budget de test1s a donne UNKNOWN, pas une exclusion.
+--minimum-prism-root impose s(y)>=s(x) aux etoiles transportees. Les rapports
+portent root_order=prisms et ne sont pas transportables a toute racine.
+Ne pas fusionner cette couverture avec celle minimisant9s+8g. Une couverture
+globale de racines minimum-s doit aussi traiter les typesc4 encore ouverts.
