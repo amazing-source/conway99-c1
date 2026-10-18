@@ -110,3 +110,16 @@ Catalogue281 lignes,dimension6; le plan agrege est SAT. Modele joint avec
 les6 coordonnees libres et equations sommet/rectangle :26786 variables,
 48207 contraintes, UNKNOWN20.09375CPU. Aucune fermeture du gabarit3.
 Resultats dans gz3_without_gram_row_moments/. Pas de cout global etabli.
+
+9. Fermeture complete du gabarit gz599 (22h06).
+La couverture LAB contient9 Gram. Selon c3hard_targets.json et les
+messages1095/1096/1100, huit sont deja exclues; seule la Gram5 restait
+UNKNOWN. Ce dernier cas est maintenant INFEASIBLE3.375CPU (4.375CPU avec
+construction),3419 branches275 conflits. L'assemblage ferme9/9.
+Les huit verdicts de LAB sont acceptes, sans duplication des campagnes.
+La fermeture garde le statut de resultats CP combines, sans certificat
+portable. Artefacts : cover_00599.json.gz, lab_c3hard_targets.json,
+gz599_last_gram5_eigen.json, gz599_closure.json.
+Quatre grilles : E3 donne au plus50 aretes internes, donc le budget51
+est automatique pour tout le gabarit; la Gram5 impose exactement48.
+Ce gabarit est exclu, pas Conway dans son ensemble.
