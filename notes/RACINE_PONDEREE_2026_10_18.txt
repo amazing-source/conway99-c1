@@ -283,3 +283,20 @@ fournissent aucun verdict supplementaire. La base19 continue, ainsi que
 le couplage4 de la droite6 avec les429 Gram et les coins factorises.
 Consequence sous c>=4 : min_x(9s(x)+8g(x))>=440, car le type19 a g=10,s>=40.
 Donc chaque sommet verifie9s+8g>=440 et3P+4G>=2420, a combiner avec<=2772.
+18/10, 16h30 — Encodage par grille et test des motifs certains
+Voir notes/GRILLE_NEUF_FIBRES_2026_10_18.txt pour la preuve de couverture,
+les huit matchings fixes par renommage, la decomposition K10 moins un
+matching et les trois classes auxiliaires sur30 sommets par droite.
+Le modele est complet pour les graphes contenant une grille et necessaire
+pour toute la branche minimum GLOBAL c>=4. Controle positif : Clebsch16
+construit puis verifie exactement. Pilote99 en cours, pas de verdict encore.
+Le test des12 motifs positifs du certificat sur le squelette19/droite6/M4
+renvoie zero occurrence ENTIEREMENT FIXEE pour chacun, apres enumeration
+exhaustive. Il ne dit pas que les motifs sont absents d'une completion.
+Ce comptage ne resserre donc pas la borne.24 controles (chaque motif sur
+lui-meme puis avec une arete supprimee) passent pour le compteur.
+La borne3P+4G>=2420 combinee a P>=6G donne aussi P>=660 sous global c>=4.
+Ajustement des ressources : le coeur0 etait a115% d'utilite Windows, les
+coeurs14/15 a28/29%. Les recherches partagent maintenant le seul coeur
+logique14, toujours en basse priorite, suspension a72%, reprise sous62%.
+Aucune augmentation du nombre de coeurs ni modification des autres apps.

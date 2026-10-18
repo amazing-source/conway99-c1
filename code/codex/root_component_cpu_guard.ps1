@@ -3,12 +3,14 @@ param(
     [int]$MaximumCores = 4,
     [ValidateRange(1,70)][int]$ResumeBelow = 50,
     [ValidateRange(50,74)][int]$PauseAt = 65,
-    [ValidateRange(1,60)][int]$MinimumPauseSeconds = 15
+    [ValidateRange(1,60)][int]$MinimumPauseSeconds = 15,
+    [ValidateRange(0,62)][int]$CoreOffset = 0
 )
 # All campaign workers share one affinity mask. Only our research Python
 # process trees are changed; other applications are left to their owner.
 $ErrorActionPreference = 'Stop'
 if ($ResumeBelow -ge $PauseAt) { throw 'ResumeBelow must be less than PauseAt.' }
+if ($CoreOffset + $MaximumCores -gt [Environment]::ProcessorCount) { throw 'Affinity range exceeds this processor group.' }
 Add-Type @'
 using System;
 using System.Runtime.InteropServices;
@@ -94,7 +96,7 @@ try { while ($true) {
             }
         }
     }
-    $taskMask = ([int64]1 -shl $taskBudget) - 1
+    $taskMask = (([int64]1 -shl $taskBudget) - 1) -shl $CoreOffset
     foreach ($taskId in $taskIds) {
         try {
             $taskRunning = Get-Process -Id $taskId
@@ -123,7 +125,8 @@ try { while ($true) {
     if ($taskBudget -ne $taskPrevious -or ($taskNow - $taskLastLog).TotalSeconds -ge 15) {
         [pscustomobject]@{time=$taskNow.ToString('o'); cpu_utility=$taskUtility;
             shared_logical_cores=$taskBudget; owned_processes=$taskIds.Count; paused=$taskPaused;
-            pause_at=$PauseAt; resume_below=$ResumeBelow; minimum_pause_seconds=$MinimumPauseSeconds} |
+            pause_at=$PauseAt; resume_below=$ResumeBelow; minimum_pause_seconds=$MinimumPauseSeconds;
+            affinity_mask=$taskMask; core_offset=$CoreOffset} |
             ConvertTo-Json -Compress | Add-Content -LiteralPath $Log
         $taskLastLog = $taskNow
     }

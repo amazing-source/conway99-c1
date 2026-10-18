@@ -1,0 +1,113 @@
+{
+    "parameters":  [
+                       99,
+                       14,
+                       1,
+                       2
+                   ],
+    "grid_order":  3,
+    "fibre_size":  10,
+    "grid_vertex_count":  9,
+    "exterior_vertex_count":  90,
+    "identity_matching_tree":  [
+                                   [
+                                       0,
+                                       1
+                                   ],
+                                   [
+                                       0,
+                                       2
+                                   ],
+                                   [
+                                       0,
+                                       3
+                                   ],
+                                   [
+                                       0,
+                                       6
+                                   ],
+                                   [
+                                       3,
+                                       4
+                                   ],
+                                   [
+                                       3,
+                                       5
+                                   ],
+                                   [
+                                       6,
+                                       7
+                                   ],
+                                   [
+                                       6,
+                                       8
+                                   ]
+                               ],
+    "first_internal_matching_canonical":  true,
+    "graph_automorphism_assumption":  false,
+    "fixed_subgraph":  "3x3 grid",
+    "additional_arbitrary_local_seed":  false,
+    "full_common_neighbour_constraints":  true,
+    "upper_only":  true,
+    "upper_bound_equivalence":  "All pair upper bounds saturate when summed, by the exact block degrees.",
+    "block_degree_equations":  810,
+    "C2_products":  226880,
+    "global_minimum_components":  4,
+    "grid_line_partitions":  {
+                                 "global_minimum_components":  4,
+                                 "lines":  [
+                                               [
+                                                   0,
+                                                   1,
+                                                   2
+                                               ],
+                                               [
+                                                   3,
+                                                   4,
+                                                   5
+                                               ],
+                                               [
+                                                   6,
+                                                   7,
+                                                   8
+                                               ],
+                                               [
+                                                   0,
+                                                   3,
+                                                   6
+                                               ],
+                                               [
+                                                   1,
+                                                   4,
+                                                   7
+                                               ],
+                                               [
+                                                   2,
+                                                   5,
+                                                   8
+                                               ]
+                                           ],
+                                 "auxiliary_bins_per_line":  4,
+                                 "normalization":  "First occurrence in fixed colour class only.",
+                                 "component_degree_balance":  true,
+                                 "component_degree_equations":  4608,
+                                 "component_degree_products":  151680
+                             },
+    "covers_global_minimum_four_branch":  true,
+    "all_Conway_graphs_covered":  false,
+    "scope":  "Exact SRG completion around a dominating square grid, with free fibres.\n\nFor Conway, every induced 3x3 grid D is a (4,1) intriguing set: its 90\nexterior vertices have exactly one neighbour in D. Each of the nine fibres\nhas size10, induces a matching, and has degree1/2 to a fibre whose grid\npoint is adjacent/nonadjacent. Fibre matchings along any spanning tree of\nthe grid may all be renamed to identity; a common residual permutation\nthen makes one internal matching canonical. This assumes no automorphism.\n\nEvery graph with global minimum c(line)\u003e=4 contains such a grid. Adding\nthat minimum on the six grid lines therefore gives a necessary model for\nthe whole global c\u003e=4 branch, without selecting a root template or Gram.\nThe analogous 2x2-grid model reconstructs Clebsch(16,5,0,2) as a control.\n",
+    "status":  "STOPPED_SUPERSEDED",
+    "resources":  {
+                      "logical_cpu_budget":  1,
+                      "shared_affinity_mask":  1,
+                      "priority":  "below_normal"
+                  },
+    "build_cpu_seconds":  9.234375,
+    "variables":  385843,
+    "constraints":  718931,
+    "seconds_budget":  180.0,
+    "linearization":  0,
+    "portable_unsat_proof":  false,
+    "global_conway_exclusion":  false,
+    "stop_reason":  "Separate the known isolated grid component before search; no UNSAT verdict from this run."
+}

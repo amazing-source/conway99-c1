@@ -1,0 +1,80 @@
+18 octobre 2026 — Une formulation complete autour d'une grille
+
+Portee. Le modele couvre tous les srg(99,14,1,2) contenant une grille3x3.
+La branche minimum GLOBAL c(L)>=4 contient necessairement une grille :
+les composantes de N(L) ont tailles6s, somme des s=6 ; au moins quatre
+composantes imposent au moins deux composantes de taille6. Chacune est
+un prisme triangulaire (K3,3 donnerait trois voisins communs), qui forme
+une grille avec L. Le modele ne couvre pas les graphes sans grille.
+
+1. Neuf fibres de dix sommets
+Soit D une grille induite3x3. Un sommet exterieur ne peut avoir deux
+voisins dans D : chaque paire de D possede deja tous ses voisins communs
+autorises dans D. Les90 aretes sortantes de D et les90 sommets exterieurs
+forcent exactement un voisin dans D par sommet exterieur. A chaque i de D
+correspond donc une fibre U_i de dix sommets.
+U_i induit un matching (lambda=1). Entre U_i et U_j, les degres sont1 si
+i,j sont adjacents dans D,2 sinon. La verification s'obtient par le compte
+des voisins communs entre un sommet de U_i et le sommet j de D.
+
+Ce sont les parametres(4,1) d'un ensemble intriguant positif. Le cadre
+general et l'identite A 1_D=1+3 1_D figurent dans Bamberg--De Clerck--Durante,
+Intriguing sets of partial quadrangles, section2, https://arxiv.org/abs/0812.2871.
+La reduction presente et ses comptes sont derives ici ; ce texte ne pretend
+pas etablir leur nouveaute bibliographique.
+
+2. Matrice exacte sur les90 sommets
+Pour Gamma le bloc exterieur et K=I_9 tensor J_10 :
+Gamma^2+Gamma =12I_90+2J_90-K.
+Les degres des blocs, avec cette identite pour toutes les paires, sont
+suffisants pour reconstruire et verifier exactement la matrice99x99.
+Des bornes superieures pour chaque paire sont egalement suffisantes :
+pour une ligne, les deux membres ont exactement la meme somme169.
+Un verdict SAT est toujours suivi du controle entier des99 degres et
+de toutes les paires. Aucun graphe de Conway n'a ete obtenu a ce stade.
+
+3. Normalisation des etiquettes, sans automorphisme suppose
+Les18 blocs entre cases adjacentes sont des matchings parfaits. Choisir
+un arbre couvrant de D, puis etiqueter recursivement chaque fibre par
+son matching avec la fibre parente, fixe huit de ces blocs a l'identite.
+Une permutation simultanee des dix etiquettes dans toutes les fibres
+preserve ces huit identites et rend canonique le matching interne de U_0.
+Tous les autres matchings internes restent libres. Aucun graphe potentiel
+n'est suppose posseder un automorphisme non trivial.
+
+4. Une factorisation forcee a chaque fibre
+Pour les quatre cases j non adjacentes a i, noter M_ij les blocs2-reguliers
+et C_i le matching interne de U_i. Alors
+sum_j (M_ij M_ij^t-2I_10)=J_10-I_10-C_i.
+Les quatre termes sont des graphes2-reguliers simples et disjoints : un
+C4 dans un bloc biparti donnerait trois voisins communs, avec i compris.
+Ils decomposent donc K10 prive de C_i. Les longueurs des cycles dans
+chaque facteur sont10,7+3,6+4,5+5 ou4+3+3.
+Cette identite est une consequence de C2, pas une enumeration de tous
+les assemblages possibles de ces quatre facteurs.
+
+5. Les six droites de la grille sous minimum global c>=4
+Pour L dans D, les six points D\L forment deja une composante isolee de
+N(L). Le reste est constitue des trois fibres de L, soit30 sommets. Il
+doit avoir au moins trois composantes, que l'on peut merger en trois
+classes auxiliaires sans arete entre elles. Chaque classe a2h sommets
+de chaque couleur, h entre1 et3 ; la somme des h est5. La composante
+D\L peut rester seule sans perdre aucun graphe.
+
+Equilibrage. Pour une union S de composantes, |S|=6h, chaque sommet de S
+ayant trois voisins dans S, les60 sommets hors L union N(L) satisfont
+sum d_S=60h et sum d_S^2=60h^2. La seconde identite vient directement
+de A^2=12I-A+2J. Ainsi chacun a exactement h voisins dans S.
+Le code utilise ce fait sur les six droites de D ; il n'affirme pas que
+les autres droites d'un eventuel temoin satisfont deja c>=4.
+
+6. Implementation et etat
+code/codex/root_component_grid_fibres.py, sans fichier de donnees externe.
+Options du pilote : --grid-order 3 --minimum-components 4 --upper-only
+--separate-grid-component.
+Le controle2x2 + quatre fibres de trois reconstruit Clebsch(16,5,0,2),
+verifie sur toutes les paires. Le modele Conway separe contient258433
+variables,317913 contraintes, construction5.109375s CPU. Le premier
+encodage auxiliaire generique en avait385843 et718931 ; il a ete arrete
+sans verdict pour utiliser la composante de grille deja connue.
+Le pilote Conway est en cours. Aucun resultat INFEASIBLE n'est revendique.
