@@ -264,3 +264,22 @@ les orientations restent representes.19 :1138205 ->159822 lignes ;9 :46902
 Le modele19 factorise a ete construit et valide :151451 variables,278629
 contraintes,4.625s CPU de construction. MODEL_BUILT, sans verdict de recherche.
 Le pilote9 avec paires sera aussi execute par LAB dans sa campagne existante.
+18/10, 16h16 — Famille9 exclue a la racine ponderee
+RESULTAT : c4_9_all_variable_base.json est INFEASIBLE,264.984375s CPU,
+660701 branches,140111 conflits. Les12 Gram de selected_weighted_gram_cover.json
+etaient libres dans un seul modele, ainsi que tous les couplages. Options :
+weighted-prism-grid-root, no-transport, all-matchings-variable. Le modele
+utilise C1/C2 exacts, les equations de composante, la couverture Gram, le
+premier composant normalise, deux partitions globales c>=4 equilibrees,
+les triangles exacts et le budget de racine9s+8g<=504. Il n'utilise ni les
+nouvelles tables Schur de coins/paires, ni les contraintes transportees.
+Portee : tout graphe de la branche GLOBALE c>=4 peut choisir une racine
+minimisant9s+8g ; cette racine ne peut plus etre du type9. Avec le rejet
+precedent du type7 a cette racine, seul19 reste. Couverture selectionnee :
+78/79 ; couverture ARBITRAIRE budget51 reste76/79. Aucun theoreme global
+sur Conway. Verdict CP-SAT, sans certificat UNSAT portable de cette famille.
+Les pilotes9 de coins et de paires sont arretes comme redondants ; ils ne
+fournissent aucun verdict supplementaire. La base19 continue, ainsi que
+le couplage4 de la droite6 avec les429 Gram et les coins factorises.
+Consequence sous c>=4 : min_x(9s(x)+8g(x))>=440, car le type19 a g=10,s>=40.
+Donc chaque sommet verifie9s+8g>=440 et3P+4G>=2420, a combiner avec<=2772.
