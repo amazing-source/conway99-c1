@@ -1220,8 +1220,7 @@ sum_j 1_Sij=6*1_Li+1_N(Li)=(A+4I)1_Li, tue par le projecteur -4.
 Si quatre rectangles non-grilles incident en i, c>=4 impose deux composantes
 12 :leurs quatre vecteurs se repartissent en deux paires opposees. Le meme
 choix de paires est impose aux anciennes projections ET aux99coordonnees.
-Les20autres templates prebudget sont tous gardes : aucune borne51 tournee.
-Correction de frappe : on utilise bien les200templates prebudget.
+Les200templates prebudget sont tous gardes : aucune borne51 tournee.
 Pour une etoile incomplete les nouvelles relations vectorielles completes
 ne sont pas imposees. Couches anciennes/projections restent applicables.
 
@@ -1248,3 +1247,104 @@ isolee de7 ou le partage2+2 de9. Les59classes couvrent la famille generale,
 mais il faut garder4choix de ligneisolee pour7/3choix de partage pour9,
 ou quotienter par leurs stabilisateurs. Aucune fixation omise autorisee.
 LAB984 informe, proposition de recherche complementaire surprolongement33.
+
+
+36. AWS v1 complet et diagnostic cible (18/10,02h52).
+Import e441413 : les459sorties restantes sont la,925fichiers ajoutes/modifies.
+Bilan980rapports :7 5INF/451UNKNOWN;9 4INF/12UNKNOWN;19 59INF/449UNKNOWN.
+Les deux nouveauxGram locaux7#1307/#1245 portent les restants a449/12/449,
+soit910. Couverture200/79 et12/15 reste inchangee. Les deuxinstances AWS
+sont arretees selonLAB985. Pas de ressourcesAWS gerees depuiscePC.
+AnalyseLAB7376f1e importee (ANALYSE_AWS_V1_2026-10-18.md,per_gram_features).
+111838codes,30074essayes,26021INF,4053UNKNOWN;73pourcent nonatteints.
+Le filtreE3analytique sur980rapports ajoute1161preuves locales,242rapports
+concernes,0Gram entier deplus. Aucun UNKNOWN ne devient une exclusion
+par simple estimation de cout ou aggregation incomplete.
+
+Lecture des permutations entre couleurs de C18 (indices du catalogue) :
+P0 :sixpointsfixes,6triangles;P1 :4pointsfixes+transposition,4triangles+C6.
+P16 :deuxpointsfixes0,1(mates)+deuxtranspositions,2C3+2C6.
+P17 :deuxpointsfixes0,1(mates)+cycle4,2C3+C12.
+P26 :deuxpointsfixes0,5(nonmates)+deuxtranspositions,2C3+2C6.
+P31 :cycles1,3,2, doncC3+C9+C6.
+P136 :3transpositions,3C6;P137 :cycles2,4,doncC6+C12.
+Ce sont des invariants exacts du sous-graphe entrecouleurs, pas une preuve
+causale de la durete SAT ni une indication d'automorphismes du graphe99.
+
+Pilote cible7#1316 (famille difficile signaleeparLAB) : [16,3,4]INF64CPU,
+[16,3,5]INF72.609375CPU. Cesdeuxcodes etaientUNKNOWN120AWS. Le nouveau
+modele les ferme donc AVANT l'ancien budget. Rapport*_hard_family_residual_pilot.
+Continuation_*_residual_cascade,session4091,1200CPUtotal,150CPU/code,pretest5CPU
+sur le modelebaseavant d'ajouterles30rotations. Lespreuvesheriteessontsauvees.
+A02h48, septcodesINF dont[16,3,7]77.984375,[17,3,4]89.765625,
+[17,3,5]105.984375,[17,3,7]98.859375,[17,3,8]111.140625CPU;
+[16,3,8]UNKNOWN151.171875CPU. LeGram83codes n'est PAS ferme.
+La prefiltration est une relaxation necessaire : seul INFEASIBLE clot
+une branche; un SAT/UNKNOWN du pretest poursuit le modelefort. Son temps
+est inclus dans le budget CPU parcode et dans le total.
+
+Autres pilotes :7#1069 sansfixerC18, autour des deuxetoiles de la ligne0
+sixprismes,UNKNOWN300.34375CPU,137813variables/534666contraintes.
+Couverture59boules :modele de frontiereD24x60 exactC1sur24,DDt etbornes
+communes sur60;famille7 conserve4orientations de la ligneisolee,famille9
+conserve3partages. Sixpilotes0/1/7/15/30/58 restentUNKNOWN5CPU chacun.
+Ce n'est ni une fermeture ni un temoin de prolongement. Aucun nouveau
+calcul de cettepiste ne tourne pendant le pilote1316.
+
+37. Prochaines contraintes et reprise par lots (18/10,02h52).
+Le code[16,3,8] resistant revele deuxtriangles reels (b,(a,b),(a*,b))
+par lesdeuxpointsfixes deP. Cestriangles n'etaient pasfixesdansle modele
+base :sesdeuxpartitionsminc visent d'autresdroites dejaen grille.
+root_component_fixed_triangle_partitions.py applique c>=4,lesbilans
+exterieurs et les sommes propres aux nouveauxtriangles; option
+--fixed-cross-triangles2. Le bincontenant l'ancienroot commenceparle
+composant connu reli?; si ce sous-graphe nepeutpasfermersesdegres3,
+son volume minimum monte au multiple6suivant (souvent au moins12).
+Cettecoupe n'a PAS encore ete utilisee dansunverdict : piloteapres1316.
+
+--component-range START STOP permet de decouper la liste canonique en
+blocs sans supprimer la couverturecomplete du rapport. Un bout de liste
+n'exclutjamaisleGram. root_component_merge_branches.py fusionne seulement
+lesmemesGram/racine/part/catalogueP-M/couvertureexacte. Unepreuve manquante
+resteUNKNOWN; lescouverturesdistinctesnesontpasmelangees. Test de fusion
+surune copie du rapport1245 : deuxmoitiescompletes=>INF, une preuve
+retiree=>UNKNOWN. Aucunfixture ajouteauxfichiersdecampagne.
+Pas demanifestev2lance : pilotesd'abord, decisionAWSavecLAB/utilisateur.
+Dernierlu/ack986;dernierenvoye988a02h41m23. Gardien30104,uncoeurpartage.
+
+38. Les nouveaux triangles ferment un code resistant (18/10, 03h01).
+Le pilote 7#1316 avec --fixed-cross-triangles 2 exclut [16,3,8] en
+77.78125 secondes CPU. Le meme code restait UNKNOWN a 151.171875 CPU
+dans la passe precedente (memes identites residuelles, sans cette option).
+Les deux triangles fixes sont [9,43,53] et [10,44,54] en indices99.
+Dans chacun, six voisins deja connectes autour de l'ancien sommet racine
+ne peuvent pas fermer leurs degres3 sur ces six sommets. Le composant
+contenant ces six sommets doit donc compter au moins12 sommets.
+On impose c>=4, les bilans exterieurs et les sommes propres de composantes.
+Rapport root_component_signature_7_1316_cross_triangle_pilot.json.
+La passe precedente totalisait8 INF et4 UNKNOWN sur83 codes,71 non testes.
+Avec ce nouveau code :9 codes INF; le Gram et le template restent ouverts.
+Le temps CPU par code peut depasser le seuil demande si CP-SAT tarde a
+traiter stop_search : [26,1,9] a utilise251.125CPU pour150 demandes. Les
+rapports enregistrent le temps effectivement utilise, jamais le nominal.
+Pilote suivant19#837 : dernier code [137,3,3], budget180CPU, modele complet
+des residus et relations de composantes, reutilisation des seuls codes INF.
+
+Une formulation distincte de la frontiere des59 boules a quatre grilles
+est preparee dans root_component_grid4_columns.py. Elle efface provisoirement
+les etiquettes exterieures :8 classes de6 colonnes et une classe de12.
+Les colonnes ont3 ou6 entrees1; leur catalogue fini transforme DDt en
+equations lineaires de multiplicites. Les intersections communes imposent
+des contraintes de packing. Aucun verdict de ce nouveau modele a ce stade.
+
+39. Troisieme fermeture locale apres AWS :19#837 (18/10,03h04).
+Le dernier code [137,3,3] est INFEASIBLE en87.1875CPU avec les residus
+complets et leurs relations de composantes. Les15 autres codes INF sont
+repris du rapport AWS; la couverture E3 contient16 codes, tous fermes.
+Rapport root_component_signature_19_837_full_residual_pilot.json.
+Restent449/12/448 Gram des templates7/9/19, soit909.
+Le dernier code appartenait a une des familles difficiles de LAB.
+Pilote9#193 en cours : nouveau modele plus les triangles croises fixes.
+L'option --fixed-star-triangles ajoute aussi les triangles autour des
+couplages internes nouvellement fixes, meme lorsque P n'a aucun point fixe.
+Elle est preparee mais n'a encore produit aucun verdict.
