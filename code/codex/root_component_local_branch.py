@@ -73,6 +73,7 @@ def main():
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
     parser.add_argument('--include-prism-stars',action='store_true',help='Also transport both already fixed stars of every six-prism line.')
     parser.add_argument('--minimum-prism-root',action='store_true',help='Choose a globally minimum prism-incidence root; exclusions cannot enter an arbitrary-root frontier.')
+    parser.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, with score<=504; alternative to minimum s.')
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
     parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
@@ -86,6 +87,8 @@ def main():
     parser.add_argument('--reuse-proven',type=Path,help='Copy excluded codes with the same Gram, frame and matching catalogue; filtered code covers may differ.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
+    assert not (args.minimum_prism_root and args.weighted_prism_grid_root)
+    requested_root_order='prisms' if args.minimum_prism_root else 'weighted_prisms_grids' if args.weighted_prism_grid_root else None
     assert args.prefilter_seconds>=0
     assert args.presolve_iterations>=1
     assert not (args.residual_gram or args.residual_eigen or args.tight_residual_bounds) or args.rotated_residuals
@@ -113,6 +116,9 @@ def main():
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
         stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance,
         rotated_signature_context=rotation_values)
+    if args.weighted_prism_grid_root:
+        from root_component_root_order import add_weighted_root_budget
+        info['root_choice']=add_weighted_root_budget(model,graph,template)
     assert not model.validate(), model.validate()
     base_model_only=not context
     if base_model_only:
@@ -130,7 +136,7 @@ def main():
         assert code_cover_hash==args.expected_code_cover, 'Canonical cover changed; regenerate the task manifest.'
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals','include_prism_stars','minimum_prism_root'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals','include_prism_stars','minimum_prism_root','weighted_prism_grid_root'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -169,9 +175,9 @@ def main():
     elif args.reuse_proven:
         old=json.loads(args.reuse_proven.read_text())
         from root_component_rotated_gram import unsafe_product_reports
-        from root_component_root_order import requires_minimum_root
+        from root_component_root_order import root_choice_requirements
         assert not any(unsafe_product_reports(old)), 'Cannot reuse a withdrawn residual-product report.'
-        assert args.minimum_prism_root or not requires_minimum_root(old), 'Minimum-root proofs cannot be reused at an arbitrary root.'
+        assert root_choice_requirements(old)<=({requested_root_order} if requested_root_order else set()), 'Incompatible root choice in reused proofs.'
         matches=[c for r in old['records'] if r['template_index']==args.index
                  for c in r['cases'] if c['gram_index']==args.gram_index]
         assert len(matches)==1
@@ -292,6 +298,9 @@ def main():
             if args.minimum_prism_root:
                 from root_component_root_order import add_minimum_root_cuts
                 rotated_info['root_choice']=add_minimum_root_cuts(branch_model,branch_graph,rectangle_context)
+            if args.weighted_prism_grid_root:
+                from root_component_root_order import add_weighted_root_comparisons
+                rotated_info['root_choice']=add_weighted_root_comparisons(branch_model,branch_graph,template,rectangle_context)
             if args.rotated_residuals:
                 from root_component_rotated_residual import add_rotated_residual_cuts
                 from root_component_boundary_psd import fixed_line_graph

@@ -59,3 +59,25 @@ Le temoin exact de Gram de rang1 sur un cycle4 reste SAT, ainsi que
 les controles des produits -6,9 et de l'eigenvecteur-4 de K4,4.
 L'essai precedent de lecture negative du conteneur pybind a ete retire
 du test : on ne declenche plus volontairement cette lecture indefinie.
+
+SEUILS GLOBAUX SIMPLES POUR L'AMELIORATION DU PLAFOND
+Une grille incidente a x contribue quatre unites a s(x). Les gabarits
+7,9,19 comportent respectivement12,9,10 grilles incidentes, donc s(x) est
+au moins48,36,40. Si x est choisi globalement minimal, on obtient
+respectivement P>=792, P>=594, P>=660, par6P=somme_y s(y)>=99s(x).
+Ainsi un plafond universel P<=791 exclurait le gabarit7 COMME RACINE
+MINIMALE; P<=659 exclurait19; P<=593 suffirait pour toute la branche
+c>=4 deja reduite a ces trois candidats. Ce sont des seuils, PAS des
+plafonds nouveaux obtenus.
+La borne P>=462 sous c>=4 a meme une preuve combinatoire directe : sur
+chacune des sept droites racine, au moins deux des six parts sont des
+singletons; le graphe des rectangles nongrilles a degre<=4, donc au plus
+14 aretes, et il reste au moins7 grilles a chaque sommet. D'ou s>=28.
+
+Correction13h09 : le chiffre7 est le minimum universel de grilles sous
+c>=4, PAS le compte du gabarit19, qui a10grilles. L'ancien message1017
+et la premiere version de ce paragraphe confondaient les deux.
+Le nouveau certificat weighted_root_certificate.json lit les templates
+et donne les comptes exacts12/9/10. Voir RACINE_PONDEREE_2026_10_18.txt
+pour la meilleure racine, issue de3P+4G<=2772. Ne pas cumuler son choix
+avec la minimalite de s seul : ce sont deux normalisations alternatives.

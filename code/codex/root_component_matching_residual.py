@@ -69,9 +69,11 @@ def main():
     p.add_argument('--log-search',action='store_true')
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--minimum-prism-root',action='store_true',help='Require the chosen root to minimize prism incidence globally; changes the scope of an exclusion.')
+    p.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, with score<=504. Alternative to minimizing s alone.')
     p.add_argument('--no-rotations',action='store_true',help='Study the weaker base model split only by M0; no new star or residual is added.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
+    assert not (args.minimum_prism_root and args.weighted_prism_grid_root)
     assert not args.output.exists(), 'Use a fresh report; never overwrite another proof.'
     from root_component_signature_joint import build
     from root_component_signature_moments import gram_matrix
@@ -98,6 +100,9 @@ def main():
         normalize_component=True,component_branch_context=component,
         upper_projector=True,rotated_boundary=True,stabilizer_normalize=True,
         short_norm=8,minc_balance=True,rotated_signature_context=eigen_context)
+    if args.weighted_prism_grid_root:
+        from root_component_root_order import add_weighted_root_budget
+        info['root_choice']=add_weighted_root_budget(base,graph,template)
     codes=component.get('codes',[])
     matchings=sorted({code[1] for code in codes}) if component else [None]
     selected=args.matching_indices if args.matching_indices is not None else matchings
@@ -111,6 +116,7 @@ def main():
         'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,'no_rotations':args.no_rotations,
         'linearization':args.linearization,'layer':args.layer,
         'minimum_prism_root':args.minimum_prism_root,
+        'weighted_prism_grid_root':args.weighted_prism_grid_root,
         'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
         'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'records':[{'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}]}
@@ -128,6 +134,9 @@ def main():
                 if args.minimum_prism_root:
                     from root_component_root_order import add_minimum_root_cuts
                     rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
+                if args.weighted_prism_grid_root:
+                    from root_component_root_order import add_weighted_root_comparisons
+                    rotation['root_choice']=add_weighted_root_comparisons(model,graph,template,rectangles)
                 rotation['integer_residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
                 boundaries.append(('residuals',len(model.proto.constraints)))
                 rotation['integer_gram']=add_gram_cuts(model,rectangles,'all')

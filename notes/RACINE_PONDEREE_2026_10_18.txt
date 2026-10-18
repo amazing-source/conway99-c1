@@ -1,0 +1,82 @@
+CERTIFICAT EXACT ET NOUVELLE COUVERTURE DE RACINES
+18/10/2026,13h09. Les familles9 et19 restent ouvertes.
+
+1. INEGALITE GLOBALE
+P designe le nombre de prismes triangulaires induits et G le nombre de
+grilles3x3 induites. Douze identites du census d'ordre9 donnent
+  3P+4G <=2772.
+Le certificat est ENTIER, positif, sans verdict CP-SAT :
+  somme_H w_H N_H =9504*(2772-3P-4G).
+Chaque N_H est un nombre de copies induites NON ETIQUETEES. Poids :
+code             poids
+3667157184        1584
+3669387456         341
+3918849232        1584
+3985958096         902
+10984541408       5192
+11387170816         88
+14783272144        212
+28549980288         36
+37739649216        253
+39018983424        110
+40207239904        110
+55140522432       3168
+Les codes suivent la convention du paquet source; le certificat JSON
+contient aussi les masques d'adjacence, pour identifier les graphes sans
+dependre du nom de leur forme canonique. Les58 coefficients affines sont
+verifies exactement en Fraction. Aucune valeur flottante n'est utilisee
+dans cette identite. La derivation du census est un antecedent explicite.
+Source : depotvoisin c1-codex/data/codex_census_validation_99.json,
+SHA256 8f8cdd25ccd15f751e86432557779cc31896d7d2fb2748f7c92a628569a6cf97.
+Une derivation independante LAB du08/10 et son journal de comparaison
+des6533formules ont ete retrouves; cette derivation n'a pas ete relanceeici.
+
+2. CHOIX DE RACINE QUI RETIRE LE GABARIT7
+Pour un sommet x, s(x) est le compte des prismes incidents et g(x) celui
+des grilles incidentes. Alors somme s=6P et somme g=9G. D'ou
+  somme_x(9s(x)+8g(x))=18(3P+4G)<=18*2772=99*504.
+On CHOISIT x minimisant9s+8g. Il satisfait9s(x)+8g(x)<=504.
+Sous l'hypothese globale c>=4, le graphe des nongrilles a degre<=4,
+donc g(x)>=7. Par consequent s(x)<=49, donc la couverture precedente
+de racines de budget<=51 et ses76exclusions restent applicables.
+Les trois gabarits jusque-la ouverts donnent :
+  gabarit7 : g=12,s>=48,score>=528>504. IMPOSSIBLE comme racine choisie.
+  gabarit9 : g=9,36<=s<=48.
+  gabarit19 : g=10,40<=s<=47.
+Le gabarit19 a10grilles et11nongrilles; le chiffre7 diffuse initialement
+etait le minimum universel, pas son compte. Cette correction renforce
+sa borne de budget; elle ne change pas l'exclusion du gabarit7.
+
+Ce changement de racine donne une couverture COMPLETE plus petite de
+la branche c>=4 : il reste9 et19. Il ne prouve PAS leur impossibilite.
+Il ne prouve PAS que le gabarit7 ne peut apparaitre autour d'un sommet
+quelconque. Le front transporte d93/907 conserve donc7,9,19.
+Ne pas cumuler le minimum de9s+8g avec le minimum de s seul.
+Les exclusions utilisant l'un de ces choix ne peuvent etre fusionnees
+que dans une couverture portant EXACTEMENT le meme choix de racine.
+
+3. AUTRES CONSEQUENCES
+Sous c>=4, somme g>=99*7 donne G>=77 et le certificat donne P<=821.
+Un prisme appartient a au plus une grille : les troisiemes sommets de
+ses trois aretes de liaison sont uniques par lambda=1. Une grille a
+six prismes, donc P>=6G. En particulier G<=126 et P>=462.
+Avec le front76 anterieur, on obtient davantage : si s<=51, le gabarit
+est7,9 ou19, donc g>=9 et s>=36. Si s>=52, on garde g>=7.
+Dans tous les cas s+8g>=108 et s>=36. En sommant :
+  P+12G>=1782 et P>=594.
+Combines a3P+4G<=2772, ces faits donnent G>=81 et P<=816.
+Ces derniers chiffres utilisent le front76; l'inegalite3P+4G<=2772
+elle-meme ne l'utilise pas. Aucune conclusion de non-existence globale.
+
+4. ARTEFACTS ET SOLVEUR
+data/codex_domain_recovery_20261018/c4_prism_grid_bound.json : decouverteLP
+et certificat rationnel de P<=2464/3 sousG>=77; GLOP0.015625CPU.
+weighted_root_certificate.json : certificat entier universel et couverture.
+root_component_count_prism.py / root_component_weighted_root_certificate.py.
+Option --weighted-prism-grid-root dans matching_global, matching_residual
+et local_branch : borne originale504 et comparaison du meme score aux
+etoiles transportees. Les autres etoiles ne recoivent PAS la borne504.
+Le bilan distingue root_order=weighted_prisms_grids de root_order=prisms.
+Il refuse leur fusion et leur transport comme exclusions arbitraires.
+La file d'attente du test7 minimal en s seul a ete annulee AVANT lancement;
+le nouveau choix de racine suffit a retirer7 de la couverture globale.

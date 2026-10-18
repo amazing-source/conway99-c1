@@ -30,8 +30,10 @@ def main():
     p.add_argument('--log-search',action='store_true')
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--minimum-prism-root',action='store_true',help='Restrict to roots of globally minimum prism incidence; exclusions have that additional scope.')
+    p.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, score<=504; alternative to minimum s.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
+    assert not (args.minimum_prism_root and args.weighted_prism_grid_root)
     assert not args.output.exists()
     from root_component_global import build
     from root_component_local_tables import add_local_component_tables
@@ -60,6 +62,9 @@ def main():
     start=time.process_time();component={}
     base,graph,info=build(template,gram_record,gram_cover=cover)
     assert base is not None
+    if args.weighted_prism_grid_root:
+        from root_component_root_order import add_weighted_root_budget
+        info['root_choice']=add_weighted_root_budget(base,graph,template)
     info['component_tables']=add_local_component_tables(base,graph,template,tables,
         normalize_first=True,branch_context=component)
     info['nonroot_partitions']=add_minimum_partitions(base,graph,2,balance=True)
@@ -81,6 +86,7 @@ def main():
         'resources':resources,'model':info,'build_cpu_seconds':time.process_time()-start,
         'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
             'linearization':args.linearization,'minimum_prism_root':args.minimum_prism_root,
+            'weighted_prism_grid_root':args.weighted_prism_grid_root,
             'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
             'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'known_six_prism_root':prism_roots[0] if use_prism else None,
@@ -113,6 +119,9 @@ def main():
             if args.minimum_prism_root:
                 from root_component_root_order import add_minimum_root_cuts
                 rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
+            if args.weighted_prism_grid_root:
+                from root_component_root_order import add_weighted_root_comparisons
+                rotation['root_choice']=add_weighted_root_comparisons(model,graph,template,rectangles)
             rotation['residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
             rotation['gram']=add_gram_cuts(model,rectangles,'all')
             rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)
