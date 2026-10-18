@@ -1,0 +1,82 @@
+18/10/2026,21h56. Les cinq Gram prioritaires de gz3 sont exclues par CP-SAT.
+
+Source : couverture LAB8df38b9,1545 Gram. Le gabarit gz3 demeure OUVERT;
+ce rapport ne traite que160,444,11,117,718. Les matrices etaient UNKNOWN
+apres120s dans la passe3 LAB. Aucun verdict GFM retire n'est utilise.
+
+1. Diagnostic progressif.
+- Moments de coins, y compris separation lineaire : les cinq passent.
+- Placement des84 signatures sur leurs lettres reelles, vrais quatre-coins,
+  B H=0, moments, deux projecteurs, bornes integrales de vecteurs courts :
+  Gram444 est SAT2.015625CPU. Son H est sauvegarde et controle exactement.
+  Gram160 reste UNKNOWN8.015625CPU a ce niveau.
+- Realisation par une MEME matrice binaire Gamma + Gamma H=-4H :
+    Gram444 INFEASIBLE6.531250CPU, total8.437500CPU;
+    Gram160 INFEASIBLE11.687500CPU, total14.500000CPU;
+    Gram11  INFEASIBLE5.500000CPU, total7.062500CPU;
+    Gram117 INFEASIBLE6.421875CPU, total7.890625CPU;
+    Gram718 INFEASIBLE9.781250CPU, total12.062500CPU.
+  Aucune equation C2 individuelle n'est encodee (layer0). Les autres
+  ingredients sont coins, deux projecteurs, vecteurs courts, quotas de
+  lettres et normalisation lexicographique des flips des7 droites.
+  Ablation ensuite mesuree : Gram444 SANS equations propres est SAT
+  3.515625CPU, avec une Gamma binaire sauvegardee (3182 variables).
+  Elle viole2220 equations C2 individuelles, donc n'est pas un SRG.
+  L'ajout de Gamma H=-4H seul au meme modele est bien ici decisif.
+  Rapport : gz3_binary_no_eigen_444.json.
+
+2. Reproduction.
+root_component_fixed_gram_probe.py --catalogue
+data/codex_neighbor_moments_20261018/lab_c3_catalogue_1d35230.json.gz
+--index 3 --bundle data/codex_rank6_20261018/cover_00003.json.gz
+--grams 160 444 11 117 718 --eigen --seconds 20 --output CHEMIN_NEUF.json
+Il appelle root_component_signature_joint.solve, dont le rang6 est
+desormais accessible. Ce n'est pas un nouvel encodage des produits.
+Les bornes de chaque produit booleen*entier sont conservees en Python.
+
+Artefacts : gz3_binary_eigen_444.json, gz3_binary_eigen_other_four.json,
+gz3_corner_letters_160_444.json dans data/codex_rank6_20261018.
+Verdicts CP-SAT, pas de certificats portables. La couverture est recue de
+LAB et n'est pas reenumeree. Aucune exclusion globale de Conway.
+
+3. Budget.
+Le constructeur historique impose le budget de prismes51. Il est ici
+redondant : le nombre TOTAL d'aretes internes aux21 rectangles vaut
+84-tr(R)/2. C'est44 pour444 et48 pour160. Plus generalement, E3 donne
+au plus2 aretes par non-grille et4 par grille; si g<=4 grilles, le total
+vaut au plus42+2g<=50. Le gabarit gz3 a exactement3 grilles.
+
+4. Identite locale sans Gram, pour la suite.
+Soit P l'incidence sommets/rectangles, B l'incidence lettres/sommets,
+Z=Gamma P. La relation SRG restreinte donne
+  Gamma^2+Gamma=(k-2)I+2J-B^t B.
+Comme chaque rectangle contient4 sommets et chacun de ses4 labels2 fois,
+  (Gamma Z+Z)_{w,F}=(k-2)[w dans F]+8-2|q(w) intersection F|.
+Pour Conway les seconds membres sont16,6,8 selon que q=F, q rencontre F,
+ou q et F sont disjoints. Pour les controles SRG(v,k,1,2), la valeur propre
+au rectangle est k+2, les deux autres restent6 et8.
+Les moments Z^t Z+P^t Z sont seulement les sommes de ces equations par
+rectangle. Les imposer sommet par sommet renforce donc les comptes.
+
+Pour k14, H=W-Z avec W=3P+J-L^t S (incidences des7 droites) donne
+Gamma H=-4H. En effet Gamma L^t=4J-2L^t et Gamma J=12J;
+Gamma W=3Gamma P+4J+2L^t S, puis l'identite precedente conclut.
+Ces lois sont des consequences des equations SRG, sans hypothese de
+symetrie, de Gram, de budget ni de minimum c. Leur encodage est une
+consequence utile de C2, pas un theoreme de non-existence nouveau.
+
+5. Implementation sans Gram et controles (21h59).
+root_component_row_neighbor_moments.add_row_moments relie les memes
+aretes booleennes aux comptes de leurs voisins. root_component_z_joint
+et root_component_z_pipeline ont maintenant l'option --row-moments.
+On ajoute les coordonnees libres du catalogue; si elles ne sont pas
+specifiees, toutes les21 coordonnees sont utilisees. Cette restriction
+eventuelle est une relaxation necessaire, sans revendiquer ici son
+equivalence aux21 equations.
+
+Controles positifs : SRG9 reconstruit librement; SRG243 fixe, toutes les
+12100 equations sommet/rectangle satisfaites; puis SRG243 fixe via des
+variables booleennes, avec31536 produits booleen*compte reellement encodes
+sur une coordonnee. Les trois sont SAT avec reconstruction SRG exacte.
+Ces controles exercent notre nouvelle couche, pas les calculs de LAB.
+Rapport : row_moment_product_controls.json.

@@ -1,0 +1,48 @@
+18/10,15h35 - Complement a la rechercheLAB, pas une exclusion globale.
+
+LAB1033 rapporte six des23gabarits difficiles fermes en laissant tous les
+couplages libres dans un seul modele (64..521CPU), alors que leur couplage
+difficile resistait600CPU. Cette observation motive la meme variante dans
+matching_global : --all-matchings-variable --no-transport. Les familles9
+et19 sont testees sur leur couverture Gram complete et budget pondere.
+
+Pour renforcer la branche ayant GLOBALEMENT c(L)>=3 : une partition de
+N(L) en trois bins non vides, sans arete entre bins, est necessaire. Les
+composantes ont taille6s avec2s sommets dans chaque couleur; une union de
+composantes reste equilibree. On peut regrouper des composantes jusqu'a
+obtenir exactement3bins. Les demi-tailles de chaque couleur vont de1 a4,
+leur somme vaut6. Reciproquement ces bins separent au moins3composantes.
+Le nom des bins est ordonne par premiere occurrence; ce sont uniquement
+des noms auxiliaires, aucune identification de sommets du graphe.
+
+root_component_minimum_partition.py accepte minimum_components=3ou4.
+Le defaut4 preserve les anciens appels. complete_star :
+  --all-matchings-variable --no-transport
+  --global-min-components 3 --minc-lines 1 [--minc-balance]
+L'equilibre optionnel impose d_S(x)=h aux sommets exterieurs a L unionN(L)
+pour un bin S de taille6h, comme pour la version4. Les droites fixees
+disponibles peuvent venir d'aretes entre rectangles, pas seulement de
+rectangles-grilles. Si aucune droite supplementaire n'est fixee, le
+rapport l'indique et aucune partition imaginaire n'est ajoutee.
+
+Les8controles auxiliaires passes distinguent6,3et1composantes, avec
+resultats positifs et negatifs pour les minima3et4. Les temoins sont des
+graphes d'essai de la partition; ce ne sont PAS des graphes de Conway.
+Le pilote complet g1/index0 construit139049variables et valide le modele;
+UNKNOWN au budget court1.39CPU n'est pas une exclusion.
+
+PORTEE : ces exclusions requierent le minimum GLOBAL indique. Elles ne
+peuvent pas etre attribuees aux seuls sept types de droites de la racine.
+Scinder en c_min global>=3 et c_min global<=2 est possible, mais choisir
+une racine sur une droite de c<=2 ne garantit pas s(racine)<=51. Un
+catalogue local de budget51 pour c<=2 ne couvre donc pas automatiquement
+la seconde branche. Il faut une couverture sans cette borne ou un lemme
+de choix de racine supplementaire. De meme les anciennes exclusionsc4
+qui utilisent globalementc>=4 ne retirent pas les racines localementc4
+de la branche globalec>=3. Point communique a LAB1035.
+
+Ressources : apres la baisse de charge du PC, controleur adaptatif limite
+a trois coeurs partages au maximum (un thread de recherche par solveur),
+priorite basse, pause globale des recherches des65%. Aucun nouveau
+service payant ouvert par Codex. Les rapports de ressources donnent
+l'affinite initiale; cpu_guard_three.log consigne les changements.

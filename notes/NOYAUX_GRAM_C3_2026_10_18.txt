@@ -1,0 +1,57 @@
+18 octobre 2026 — Noyaux propres a un Gram, releves sur les84 sommets
+
+Contexte fourni par LAB1054
+Sept gabarits c3 durs auparavant UNKNOWN600 sont annonces INFEASIBLE
+avec les couvertures Gram completes :3581,4801,4861,5446,4889,1395,7023.
+Le5128 reste ouvert avec seulement cinq Gram. LAB teste la propagation
+agregee CR=0 et poursuit sa campagne. Codex prend l'analyse des signatures
+et coins du5128; le gabarit et ses cinq Gram ont ete demandes par le pont.
+Ces annonces LAB ne sont pas de nouveaux verdicts produits localement.
+
+Lemme utilise
+Soit P la matrice d'incidence des rectangles, T le projecteur multiplie
+par7 de la reduction racine, H=TP et R=P^TTP. Alors T^2=7T donne
+H^T H=7R. Pour tout v dans ker R, ||Hv||^2=7 v^T Rv=0. Donc Hv=0,
+c'est-a-dire une equation exacte pour chacune des84 lignes de H.
+
+Le noyau structurel donne par l'incidence C des composantes est deja
+couvert par les equations du gabarit. Un Gram particulier peut avoir un
+noyau PLUS GRAND. La table finie sur R seule ne transmet pas directement
+ces relations a chaque ligne de H par propagation lineaire du solveur.
+
+Implementation
+root_component_finite_gram_kernel.prepare calcule les noyaux sur Q,
+ajoute seulement une base supplementaire modulo l'espace des lignes de C,
+et transforme les vecteurs en vecteurs entiers primitifs. Pour chaque
+vecteur decouvert, il determine exactement tous les Gram qui l'annulent.
+
+root_component_gram_table.add_gram_table(..., kernel_lifting=True) relie
+un selecteur a la table Gram originale. Une relation de noyau est imposee
+uniquement sur les selecteurs appropries. Si elle vaut pour tous les Gram,
+elle devient inconditionnelle. Le Gram reste variable, sans temoin fixe.
+Chaque equation porte sur les adjacences reelles :
+sum_j v_j sum_{q dans Q_j} Gamma_wq
+ = sum_j v_j (2 si w appartient a Q_j,0 si les rectangles partagent une
+droite racine,1 sinon).
+
+Ce n'est pas CR=0 ajoute au niveau du Gram, piste traitee par LAB. Ce sont
+les noyaux additionnels du Gram releves sur les sommets. Si tous les Gram
+ont exactement le noyau structurel, cette option n'ajoute rien; elle ne
+constitue alors pas une nouvelle restriction ou une avancee d'exclusion.
+
+Controles de l'encodage
+Deux Gram PSD2x2, [[4,4],[4,4]] et [[4,-4],[-4,4]], ont respectivement
+les noyaux (1,-1) et (1,1). Leurs relaxations binaires compilees restent
+SAT lorsqu'on viole le noyau de l'AUTRE Gram, et deviennent UNSAT si l'on
+viole le noyau selectionne. Les quatre controles passent. Ces fixtures
+ne sont pas des graphes SRG. La selection ne force donc pas les deux
+noyaux simultanement, ce qui serait une restriction illegitime.
+Trois Gram de l'ancien19 ont ete utilises seulement pour le controle
+de l'espace structurel : aucun noyau supplementaire dans ces trois cas.
+
+Etat17h25 : donnees5128 recues dans le bundle LAB1d35230. Les cinq Gram
+ont rang5, egal a dim ker C : aucun noyau supplementaire. Cette piste
+n'apporte donc aucune restriction pour5128. En revanche, les cinq Gram
+sont exclus par une obstruction de moments des quatre coins, developpee
+ensuite : voir OBSTRUCTION_MOMENTS_5128_2026_10_18.txt. Ce nouveau resultat
+ne provient pas de la methode des noyaux.

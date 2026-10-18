@@ -1,0 +1,79 @@
+18 octobre 2026, 17h25 - Obstruction d'assemblage du gabarit c3 numero5128.
+
+Resultat
+Les cinq Gram de la couverture complete recue de LAB sont exclus par
+une meme inegalite de moment mixte. Aucun SAT n'intervient dans ce verdict.
+Le gabarit5128 du catalogue c3, sous budget de racine s<=51, est donc exclu
+en utilisant la completude de cette couverture. Ce n'est pas une exclusion
+de tous les gabarits c3, ni une preuve de non-existence de Conway.
+
+Donnees recues
+Commit LAB1d35230, template_05128_bundle.json, copie binaire dans
+data/codex_c3_microscope_20261018/. Le bundle precise le catalogue et la
+portee de la couverture. Nous acceptons son enumeration complete des cinq
+Gram, sans la refaire. Aucun minimum pondere de racine n'est suppose.
+
+Lemme general
+Dans la reduction a84 sommets, T^2=7T, T est symetrique positive, et
+T_ww=5/2. Pour les indicatrices P des rectangles nongrilles, poser
+H=TP et R=P^TTP. Alors H^T H=7R et P^T H=R.
+
+Pour chaque rectangle q, on enumere toutes les signatures entieres des
+quatre coins. Elles sont dans im(R), respectent les bornes d'adjacence,
+h^T R^+ h<=5/2, et leur somme est la colonne de R associee a q (zero si
+q est une grille). On parcourt tous les graphes binaires des quatre coins
+compatibles avec leurs labels et leur nombre d'aretes. On conserve ceux
+dont le complement de Schur sur T est positif. Tous ces calculs utilisent
+des entiers ou des rationnels exacts.
+
+Pour deux coordonnees i,j, definir b_q(i,j) comme le maximum de
+sum_{w dans q} H_wi H_wj parmi ces configurations locales. La partition
+des84 sommets en21 rectangles donne NECESSAIREMENT
+
+                  7 R_ij <= sum_q b_q(i,j).
+
+L'inegalite avec les minima vaut aussi. Les maxima se calculent separement
+sur chaque rectangle : on autorise ainsi PLUS de choix que dans un graphe.
+Si meme cette majoration est trop petite, aucun assemblage global ne tient.
+
+Application aux cinq Gram
+Prendre i=0, j=1 dans l'ordre des nongrilles du bundle, c'est-a-dire
+les rectangles (0,3) et (0,4), indices de droites de0 a6.
+
+  Gram     valeur exigee 7R_01     somme des21 maxima     manque
+    0             -42                     -44               2
+    1             -42                     -45               3
+    2             -35                     -37               2
+    3             -35                     -36               1
+    4             -35                     -39               4
+
+Toutes les tables locales sont non vides, pour chacun des cinq Gram.
+Elles contiennent respectivement1786,1620,1100,1162,784 lignes au total.
+Les echecs proviennent donc ici de l'assemblage des contributions locales.
+Le rapport conserve les21 extrema de chaque certificat, et aussi trois
+obstructions supplementaires sur des moments carres/mixte.
+
+Le filtre n'utilise ni les vecteurs courts, ni le projecteur complementaire,
+ni de nouvelle contrainte de budget de prismes. La couverture en entree
+reste conditionnee par ses propres hypotheses. Rang5 pour les cinq Gram;
+aucun noyau supplementaire au noyau structurel n'etait disponible.
+
+Outil et reproduction
+root_component_corner_moment_bounds.analyze_gram(edges, R) renvoie EXCLUDED
+ou PASSES. PASSES veut seulement dire que ce filtre ne conclut pas.
+L'enumeration de signatures existante accepte maintenant les rangs1 a5
+(3125 choix d'ancres au maximum par rectangle au rang5).
+
+python code/codex/root_component_corner_moment_bounds.py --bundle data/codex_c3_microscope_20261018/template_05128_bundle.json --index 5128 --output NOUVEAU_FICHIER.json
+
+Rapport de reference :
+data/codex_c3_microscope_20261018/template_05128_moment_bounds.json
+Les cinq analyses prennent ensemble0.546875 seconde CPU, un seul coeur.
+Il s'agit d'un certificat d'inegalites avec enumeration finie reproductible,
+pas d'une preuve DRAT ni d'une preuve formalisee par assistant de preuve.
+
+Interet pour la suite
+On dispose d'un filtre entre les Gram abstraits et le solveur d'adjacence :
+il oblige des configurations locales realisables a fournir la bonne somme
+globale de produits. La formule vaut pour toute completion de Conway;
+l'efficacite numerique doit etre mesuree sur les autres couvertures.

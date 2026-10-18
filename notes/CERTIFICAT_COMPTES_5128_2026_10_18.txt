@@ -1,0 +1,132 @@
+18 octobre 2026, 18h23 - Codex
+
+RESULTAT
+
+Le gabarit de composantes 5128 est impossible, sans couverture de Gram,
+sans hypothese de rang, sans budget de prismes et sans choix particulier
+de racine. Le certificat utilise les equations de composantes du gabarit
+et l'exclusion universelle deja etablie des rectangles a trois aretes.
+Il ne constitue pas une exclusion de tous les gabarits ni de Conway.
+
+Les sept droites sont numerotees de 0 a 6. En notant e_ij le nombre
+d'aretes induites par les quatre sommets du rectangle Q_ij, les comptes
+de voisins du gabarit imposent
+
+                  4 e_15 + 21 e_35 + 8 e_45 >= 68.
+
+Or ces trois rectangles sont non-grilles. L'exclusion des rectangles a
+trois aretes donne e_15,e_35,e_45 <= 2, donc le membre gauche est <= 66.
+La contradiction est exacte. L'inegalite ponderee ci-dessus, elle,
+ne suppose pas ces trois majorations : elles interviennent ensuite.
+
+GABARIT ET COMPTES
+
+Les composantes non triviales sur les sept droites sont respectivement
+  0 : {3,4,6}
+  1 : {2,4,5,6}
+  2 : {1,3,5,6}
+  3 : {0,2,5,6}
+  4 : {0,1,5,6}
+  5 : {2,3}, {1,4,6}
+  6 : {1,3}, {2,4}, {0,5}.
+Les indices absents forment des composantes singleton.
+
+Pour w dans Q_q, poser z_f=|N_Gamma(w) inter Q_f|. Les equations de
+composantes donnent, pour une partie S de la partition sur la droite i,
+
+ sum_{j in S} z_{ij}
+   = 3 [q in {(i,j):j in S}] + |S| (1-[i in q]) - |q inter S|.
+
+De plus 0<=z_f<=2 si q et f partagent une droite (y compris q=f),
+et 0<=z_f<=4 sinon. La borne2 vient des comptes par lettre : chaque
+sommet a exactement un voisin contenant chacune des deux lettres
+d'une droite de son propre rectangle.
+
+Le systeme C z=b_q a cinq coordonnees libres. Leur enumeration entiere
+borne toutes les possibilites, sans choisir une matrice d'adjacence.
+Dans l'ordre lexicographique des 21 rectangles, les nombres d'etats sont
+  1,1,28,27,8,9,26,3,12,9,6,17,3,4,6,1,5,6,10,6,4.
+Total : 192 etats. Les quatre sommets de Q_q choisissent quatre etats,
+eventuellement repetes. Leurs multiplicites n_q,s sont non negatives.
+
+IDENTITES UTILISEES
+
+Soit P la matrice d'incidence sommets/rectangles, Z=Gamma P, K=P^t Z.
+La symetrie de Gamma impose K_ij=K_ji. Les equations SRG donnent
+
+ Gamma^2+Gamma+B^t B = 12 I + 2 J,
+ Z^t Z + K = D,
+ D_ii=64, D_ij=24 si i,j partagent une droite, 32 sinon.
+
+Toutes ces relations deviennent LINEAIRES en les multiplicites :
+ sum_s n_q,s=4,
+ K_ij=sum_s n_i,s z_s,j,
+ sum_{q,s} n_q,s z_s,i z_s,j + K_ij = D_ij.
+
+Le certificat reduit n'utilise que les deux moments DIAGONAUX relatifs
+a Q_04 et Q_45, plus des equations de symetrie des blocs et les comptes
+de quatre sommets. Il utilise trois majorations K_qq=2 e_q<=4.
+Il n'utilise ni les moments mixtes, ni la realisation en graphe des
+quatre degres internes, ni les contraintes individuelles de voisins
+communs entre sommets.
+
+LECTURE DU CERTIFICAT
+
+Le fichier template_05128_z_design_certificate_small.json contient
+40 multiplicateurs d'egalites et 3 multiplicateurs de majorations.
+Ceux des deux moments sont +3 et -3 ; leurs constantes64 s'annulent.
+La somme ponderee des constantes des comptes de quatre sommets est -136.
+Les coefficients des trois majorations sont 4,21,8 : leur constante
+vaut 4*(4+21+8)=132. Les equations de symetrie ont constante nulle.
+
+Pour chacun des 192 etats, le coefficient combine est positif ou nul.
+La distribution exacte de ces coefficients est
+  valeur0 :137; 2 :3; 3 :12; 4 :2; 6 :20; 8 :1; 9 :9; 12 :8.
+Ainsi, avec les majorations, une somme non negative doit etre <=-4.
+Sans appliquer les majorations, la meme somme vaut
+  -136 + 4 K_15,15 + 21 K_35,35 + 8 K_45,45,
+ce qui donne l'inegalite affichee en tete apres division par2.
+
+OUTILS ET REPRODUCTION
+
+code/codex/root_component_z_distribution.py : catalogue exact C z=b,
+et filtre par projection sur une seule colonne. Sur5128 cette projection
+separee PASSE : il ne faut pas lui attribuer l'exclusion.
+code/codex/root_component_z_design.py : modele entier des multiplicites.
+Sur5128, sans E3 il admet un temoin agrege (ce n'est PAS un graphe).
+Avec E3, 255 variables et546 contraintes : INFEASIBLE en0.09375s CPU.
+Le controle agrege tout-grille reste realisable.
+
+code/codex/root_component_z_design_certificate.py : propose une combinaison
+par programmation lineaire, puis ne l'accepte qu'en arithmetique entiere.
+--reduce-diagonal produit le petit certificat en0.4375s CPU sur ce poste.
+La reduction flottante sert seulement a trouver les multiplicateurs.
+
+code/codex/root_component_z_design_verify.py : lecteur autonome, bibliotheque
+standard Python uniquement. Aucun solveur, aucun flottant, aucune matrice
+de Gram. Il controle le noyau et l'offset affines en entiers, prouve leur
+dimension par le rang modulo3, reenumere toutes les affectations bornees
+des cinq coordonnees libres, et controle les192 coefficients et la
+constante negative. Rapport : template_05128_z_design_verification.json.
+
+Depuis la racine du depot, avec le Python de l'environnement recherche :
+
+python -I code/codex/root_component_z_design_certificate.py --bundle data/codex_c3_microscope_20261018/template_05128_bundle.json --catalogue data/codex_neighbor_moments_20261018/template_05128_z_distribution.json --reduce-diagonal --output CHEMIN_NOUVEAU.json
+
+python -I code/codex/root_component_z_design_verify.py --certificate data/codex_neighbor_moments_20261018/template_05128_z_design_certificate_small.json --catalogue data/codex_neighbor_moments_20261018/template_05128_z_distribution.json
+
+PROVENANCE ET PORTEE
+
+Le gabarit provient du paquet LAB1d35230 deja archive. Ses cinq Gram et
+son budget51 ne sont PAS utilises ici. L'exclusion precedente par moments
+sur les cinq Gram etait au commit63e87d62 ; ce certificat retire cette
+dependance et elargit la portee a toute occurrence du gabarit.
+E3 est le lemme universel de la campagne, code notamment dans
+root_component_short_scan.py et root_component_e3_colours.py.
+
+La formulation par comptes est une relaxation necessaire. Le catalogue
+actuel limite l'enumeration a six coordonnees libres ; une dimension plus
+grande est declaree UNSUPPORTED_DIMENSION, jamais exclue. Aucune duree
+globale abordable ni couverture de tous les gabarits n'est encore prouvee.
+Les identites ajoutees sont des consequences de C1/C2, pas des axiomes
+nouveaux. Leur regroupement permet ici un certificat tres petit.

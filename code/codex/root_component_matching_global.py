@@ -21,17 +21,25 @@ def main():
     p.add_argument('directory',type=Path);p.add_argument('--index',type=int,required=True)
     p.add_argument('--gram-cover',type=Path,required=True)
     p.add_argument('--seconds',type=float,default=120)
+    p.add_argument('--build-only',action='store_true',help='Validate every selected model without running search.')
     p.add_argument('--matching-indices',type=int,nargs='+')
     p.add_argument('--root-line',type=int,choices=range(7),
                    help='Cover every labelled matching of this complete star, instead of splitting the first component code.')
+    p.add_argument('--no-transport',action='store_true',help='Use only the complete base model, without selected new-root rectangles.')
+    p.add_argument('--all-matchings-variable',action='store_true',help='One base model for the whole template; requires --no-transport.')
     p.add_argument('--low-budget-cover',type=Path,required=True)
     p.add_argument('--residual-gram-profiles',type=Path,required=True)
     p.add_argument('--residual-eigen',type=int,default=2)
     p.add_argument('--log-search',action='store_true')
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--minimum-prism-root',action='store_true',help='Restrict to roots of globally minimum prism incidence; exclusions have that additional scope.')
+    p.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, score<=504; alternative to minimum s.')
+    p.add_argument('--grid-corner-tables',action='store_true',help='Intersect transported grid corner matchings with the fixed root grids.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
+    assert not (args.minimum_prism_root and args.weighted_prism_grid_root)
+    assert not (args.no_transport and args.grid_corner_tables)
+    assert not args.all_matchings_variable or (args.no_transport and args.root_line is None and args.matching_indices is None)
     assert not args.output.exists()
     from root_component_global import build
     from root_component_local_tables import add_local_component_tables
@@ -52,7 +60,11 @@ def main():
     template=templates[args.index]
     records=json.loads((directory/'root_component_gram_budget51.json').read_text())['records']
     gram_record=next(r for r in records if r['template_index']==args.index)
-    cover=next(r for r in json.loads(args.gram_cover.read_text())['records'] if r['template_index']==args.index)
+    cover_data=json.loads(args.gram_cover.read_text())
+    from root_component_root_order import root_choice_requirements
+    root_order='weighted_prisms_grids' if args.weighted_prism_grid_root else 'prisms' if args.minimum_prism_root else None
+    assert root_choice_requirements(cover_data)<=({root_order} if root_order else set()),'The supplied Gram cover requires a different root choice.'
+    cover=next(r for r in cover_data['records'] if r['template_index']==args.index)
     assert cover['gram_count']>0 and cover['exhaustive'] and cover['usable_as_gram_cover']
     tables=json.loads((directory/'line_component_pattern_tables_e3_all_colours.json').read_text())
     frontier=json.loads(args.low_budget_cover.read_text());profiles=json.loads(args.residual_gram_profiles.read_text())
@@ -60,16 +72,21 @@ def main():
     start=time.process_time();component={}
     base,graph,info=build(template,gram_record,gram_cover=cover)
     assert base is not None
+    if args.weighted_prism_grid_root:
+        from root_component_root_order import add_weighted_root_budget
+        info['root_choice']=add_weighted_root_budget(base,graph,template)
     info['component_tables']=add_local_component_tables(base,graph,template,tables,
         normalize_first=True,branch_context=component)
     info['nonroot_partitions']=add_minimum_partitions(base,graph,2,balance=True)
     info['triangle_structure']=add_exact_triangle_structure(base,graph,template)
     prism_roots=[i for i,parts in enumerate(template['nontrivial_component_groups']) if not parts]
-    use_prism=bool(prism_roots) and args.root_line is None
+    use_prism=bool(prism_roots) and args.root_line is None and not args.all_matchings_variable
     full_star_cover=None
     if args.root_line is not None:
         _,star_parts,star_counts,full_star_cover=matching_cover(template,args.root_line)
         matchings=list(range(len(full_star_cover)))
+    elif args.all_matchings_variable:
+        matchings=[None]
     else:
         matchings=[None] if use_prism else sorted({code[1] for code in component['codes']})
     selected=args.matching_indices if args.matching_indices is not None else matchings
@@ -79,8 +96,11 @@ def main():
         'complete_gram_cover':info['complete_gram_cover'],'gram_cover':str(args.gram_cover),
         'gram_cover_sha256_lf':digest(args.gram_cover),'fixed_gram_witness':False,
         'resources':resources,'model':info,'build_cpu_seconds':time.process_time()-start,
-        'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
+        'options':{'seconds_per_matching':args.seconds,'build_only':args.build_only,'residual_eigen':args.residual_eigen,
             'linearization':args.linearization,'minimum_prism_root':args.minimum_prism_root,
+            'weighted_prism_grid_root':args.weighted_prism_grid_root,
+            'grid_corner_tables':args.grid_corner_tables,
+            'no_transport':args.no_transport,'all_matchings_variable':args.all_matchings_variable,
             'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
             'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'known_six_prism_root':prism_roots[0] if use_prism else None,
@@ -103,16 +123,28 @@ def main():
                 u,v=PAIRS[vi]
                 model.add(graph[u][v]==value)
                 fixed[u][v]=fixed[v][u]=value
-            fixed,rectangles,rotation=add_fixed_matching_rotation(model,fixed,template,args.root_line,mi)
+            if not args.no_transport:
+                fixed,rectangles,rotation=add_fixed_matching_rotation(model,fixed,template,args.root_line,mi)
+        elif args.no_transport:
+            fixed=graph
+            if mi is not None:model.add(component['selectors'][1]==mi)
         elif use_prism:
             fixed=graph
             rotation=add_rotated_rectangles(model,graph,template,tables,prism_roots[0],[],[],30,rectangles)
         else:
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
-        if len(rectangles) in (15,30):
+        if args.no_transport:
+            rotation={'transport':False,'all_matchings_variable':args.all_matchings_variable}
+        elif len(rectangles) in (15,30):
+            if args.grid_corner_tables:
+                from root_component_grid_intersections import add_grid_intersection_cuts
+                rotation['grid_intersections']=add_grid_intersection_cuts(model,template,rectangles,True)
             if args.minimum_prism_root:
                 from root_component_root_order import add_minimum_root_cuts
                 rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
+            if args.weighted_prism_grid_root:
+                from root_component_root_order import add_weighted_root_comparisons
+                rotation['root_choice']=add_weighted_root_comparisons(model,graph,template,rectangles)
             rotation['residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
             rotation['gram']=add_gram_cuts(model,rectangles,'all')
             rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)
@@ -125,14 +157,21 @@ def main():
         branch={'matching_index':mi,'rotation':rotation,'variables':len(model.proto.variables),
                 'constraints':len(model.proto.constraints),'build_cpu_seconds':time.process_time()-start}
         print(json.dumps({k:branch[k] for k in ('matching_index','variables','constraints','build_cpu_seconds')}|{'phase':'model_ready'}),flush=True)
-        branch.update(solve(model,args.seconds,args.log_search,args.linearization))
+        if args.build_only:
+            assert not model.validate(),model.validate()
+            branch.update(status='MODEL_BUILT',cpu_seconds=0,branches=0,conflicts=0)
+        else:
+            branch.update(solve(model,args.seconds,args.log_search,args.linearization,solution_graph=graph))
         result['matching_branches'].append(branch)
         result['all_matching_branches_processed']={b['matching_index'] for b in result['matching_branches']}==set(matchings)
         if result['all_matching_branches_processed'] and all(b['status']=='INFEASIBLE' for b in result['matching_branches']):result['status']='INFEASIBLE'
+        if args.build_only and result['all_matching_branches_processed']:result['status']='MODEL_BUILT'
+        if branch.get('exact_all_pair_check'):result['status']='CONWAY_GRAPH_FOUND'
         atomic_json_write(args.output,result)
         print(json.dumps({k:branch[k] for k in ('matching_index','status','cpu_seconds','branches','conflicts')}|
                          {'complete_template_status':result['status']}),flush=True)
         del model;gc.collect()
+        if result['status']=='CONWAY_GRAPH_FOUND':break
 
 
 if __name__=='__main__':main()

@@ -1,0 +1,84 @@
+18 octobre 2026 - Codex, suite microscopique des comptes sans Gram
+
+STATUT :8650 n'est pas exclu. Un temoin de comptes est exclu au stade
+de sa realisation binaire, et un nouveau modele conjoint reste UNKNOWN
+apres10s CPU. Aucun de ces deux verdicts n'est une preuve portable.
+
+Le gabarit8650 avait37709 Gram dans la couverture LAB archivee. Sa
+dimension de noyau est5, et NON6 comme je l'avais suppose dans le
+message1081 avant de lire la partition. Le code row_catalogue accepte
+deja jusqu'a6, mais ce pilote ne mesure donc pas la dimension6.
+
+La partition a ete extraite de l'entree8650 du catalogue LAB1d35230,
+avec chemin et hash de provenance. Ses comptes C z=b ont308 etats de
+lignes seulement. Avec moments et E3, le modele de multiplicites a
+371 variables et546 contraintes. Il produit un temoin OPTIMAL en
+0.28125s CPU. Ce temoin est un tableau de comptes, PAS un graphe.
+
+CE QUI PASSE SUR CE TEMOIN
+
+- Les identites de moments et la symetrie K sont controlees en entiers.
+- Les210 paires de rectangles passent les inequalities de Gale-Ryser
+  pour la realisation bipartie de leurs seules suites de degres.
+- Toutes les coupes de connexite des composantes declarees ont poids>=2.
+- Le R deduit des comptes a rang5, ancres[0,2,3,5,8] dans les13
+  coordonnees non-grilles. Toutes les signatures passent les deux
+  projecteurs; l'energie individuelle maximale est61/70, bien sous5/2.
+- Les21 rectangles ont une realisation de leurs quatre signatures et
+  degres, compatible avec les deux conditions de Schur. Ces realisations
+  sont separees, sans garantie de compatibilite mutuelle.
+
+Les rapports exploratoires correspondants sont
+template_08650_z_witness_obstructions.json et
+template_08650_z_corner_obstructions.json. Les fonctions de projecteur
+et de coins sont celles de root_component_upper_signatures.py et
+root_rectangle_domains.py. Cela localise l'obstacle au recollement,
+au-dela des tests separes sur les blocs examines.
+
+CE QUI ECHOUE
+
+root_component_z_design_lift.py fixe seulement les quatre lignes de
+comptes comme un MULTIENSEMBLE sur chaque rectangle. Toutes leurs
+permutations sont autorisees; aucun ordre arbitraire n'est fige.
+Les arêtes de Gamma sont booleennes et symetriques, de diagonale nulle.
+On impose les comptes par lettre et les equations de composantes.
+Les equations individuelles C2 de voisins communs ne sont pas imposees.
+
+Ce modele a3955 variables et4486 contraintes : INFEASIBLE en0.390625s
+CPU,5271 branches,13 conflits. Ce sont donc les QUOTAS BINAIRES COMMUNS
+qui empechent de realiser ce temoin, avant meme les contraintes C2.
+Portee : le temoin et toutes ses affectations de lignes; le gabarit
+8650 entier reste ouvert. Aucun budget ni couverture de Gram utilise.
+
+REPONSE : UN MODELE CONJOINT
+
+root_component_z_joint.py remet toutes les lignes de comptes en choix
+libre et les relie immediatement a une meme matrice Gamma. Chaque sommet
+choisit un etat z; les sommes d'aretes vers chaque rectangle valent les
+coordonnees choisies. Les moments restent lineaires dans les indicatrices
+des etats. On impose les quotas par lettre, les grilles connues et E3.
+Ainsi la realisation binaire n'est plus repoussee apres les moments.
+
+Ce modele n'enumere aucune matrice de Gram. Sur8650 :4718 variables,
+3400 contraintes, construction0.171875s CPU. Pilote10s CPU : UNKNOWN,
+13375 branches,117 conflits. Aucun gain de temps de resolution globale
+n'est etabli; seule la taille et la construction du modele sont mesurees.
+Les C2 individuelles restent omises : un temoin SAT doit encore etre
+controle. Le script les controle toutes avant de declarer un SRG.
+
+Controles POSITIFS du nouvel encodeur : reconstruction libre du SRG9,
+et SRG243 veritable avec variables d'aretes fixees,55 rectangles et1540
+moments. Tous passent OPTIMAL et le controle exact de toutes les paires.
+Aucun domaine proto n'est lu pour fabriquer les coefficients ou bornes.
+
+REPRODUIRE (sorties nouvelles)
+
+python -I code/codex/root_component_z_design_lift.py --bundle data/codex_neighbor_moments_20261018/template_08650_partition.json --design data/codex_neighbor_moments_20261018/template_08650_z_design_e3.json --seconds 5 --output NOUVELLE_SORTIE_LIFT.json
+
+python -I code/codex/root_component_z_joint.py --bundle data/codex_neighbor_moments_20261018/template_08650_partition.json --catalogue data/codex_neighbor_moments_20261018/template_08650_z_distribution.json --seconds 10 --output NOUVELLE_SORTIE_JOINT.json
+
+python -I code/codex/root_component_z_joint.py --controls --positive-edges data/codex_asymmetry_synthesis_20261014/lab_sources/new243_trade_aut108_b.edges --output NOUVELLE_SORTIE_CONTROLES.json
+
+Ce pilote vise le mecanisme qui manquait aux comptes, pas une nouvelle
+verification de la couverture LAB. Il n'utilise aucun des verdicts
+"sans Gram" retires au message1076. Aucun processus de calcul reste actif.

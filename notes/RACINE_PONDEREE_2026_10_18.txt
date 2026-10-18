@@ -1,0 +1,349 @@
+CERTIFICAT EXACT ET NOUVELLE COUVERTURE DE RACINES
+18/10/2026,13h09. Les familles9 et19 restent ouvertes.
+
+1. INEGALITE GLOBALE
+P designe le nombre de prismes triangulaires induits et G le nombre de
+grilles3x3 induites. Douze identites du census d'ordre9 donnent
+  3P+4G <=2772.
+Le certificat est ENTIER, positif, sans verdict CP-SAT :
+  somme_H w_H N_H =9504*(2772-3P-4G).
+Chaque N_H est un nombre de copies induites NON ETIQUETEES. Poids :
+code             poids
+3667157184        1584
+3669387456         341
+3918849232        1584
+3985958096         902
+10984541408       5192
+11387170816         88
+14783272144        212
+28549980288         36
+37739649216        253
+39018983424        110
+40207239904        110
+55140522432       3168
+Les codes suivent la convention du paquet source; le certificat JSON
+contient aussi les masques d'adjacence, pour identifier les graphes sans
+dependre du nom de leur forme canonique. Les58 coefficients affines sont
+verifies exactement en Fraction. Aucune valeur flottante n'est utilisee
+dans cette identite. La derivation du census est un antecedent explicite.
+Source : depotvoisin c1-codex/data/codex_census_validation_99.json,
+SHA256 8f8cdd25ccd15f751e86432557779cc31896d7d2fb2748f7c92a628569a6cf97.
+Une derivation independante LAB du08/10 et son journal de comparaison
+des6533formules ont ete retrouves; cette derivation n'a pas ete relanceeici.
+
+2. CHOIX DE RACINE QUI RETIRE LE GABARIT7
+Pour un sommet x, s(x) est le compte des prismes incidents et g(x) celui
+des grilles incidentes. Alors somme s=6P et somme g=9G. D'ou
+  somme_x(9s(x)+8g(x))=18(3P+4G)<=18*2772=99*504.
+On CHOISIT x minimisant9s+8g. Il satisfait9s(x)+8g(x)<=504.
+Sous l'hypothese globale c>=4, le graphe des nongrilles a degre<=4,
+donc g(x)>=7. Par consequent s(x)<=49, donc la couverture precedente
+de racines de budget<=51 et ses76exclusions restent applicables.
+Les trois gabarits jusque-la ouverts donnent :
+  gabarit7 : g=12,s>=48,score>=528>504. IMPOSSIBLE comme racine choisie.
+  gabarit9 : g=9,36<=s<=48.
+  gabarit19 : g=10,40<=s<=47.
+Le gabarit19 a10grilles et11nongrilles; le chiffre7 diffuse initialement
+etait le minimum universel, pas son compte. Cette correction renforce
+sa borne de budget; elle ne change pas l'exclusion du gabarit7.
+
+Ce changement de racine donne une couverture COMPLETE plus petite de
+la branche c>=4 : il reste9 et19. Il ne prouve PAS leur impossibilite.
+Il ne prouve PAS que le gabarit7 ne peut apparaitre autour d'un sommet
+quelconque. Le front transporte d93/907 conserve donc7,9,19.
+Ne pas cumuler le minimum de9s+8g avec le minimum de s seul.
+Les exclusions utilisant l'un de ces choix ne peuvent etre fusionnees
+que dans une couverture portant EXACTEMENT le meme choix de racine.
+
+3. AUTRES CONSEQUENCES
+Sous c>=4, somme g>=99*7 donne G>=77 et le certificat donne P<=821.
+Un prisme appartient a au plus une grille : les troisiemes sommets de
+ses trois aretes de liaison sont uniques par lambda=1. Une grille a
+six prismes, donc P>=6G. En particulier G<=126 et P>=462.
+Avec le front76 anterieur, on obtient davantage : si s<=51, le gabarit
+est7,9 ou19, donc g>=9 et s>=36. Si s>=52, on garde g>=7.
+Dans tous les cas s+8g>=108 et s>=36. En sommant :
+  P+12G>=1782 et P>=594.
+Combines a3P+4G<=2772, ces faits donnent G>=81 et P<=816.
+Ces derniers chiffres utilisent le front76; l'inegalite3P+4G<=2772
+elle-meme ne l'utilise pas. Aucune conclusion de non-existence globale.
+
+4. ARTEFACTS ET SOLVEUR
+data/codex_domain_recovery_20261018/c4_prism_grid_bound.json : decouverteLP
+et certificat rationnel de P<=2464/3 sousG>=77; GLOP0.015625CPU.
+weighted_root_certificate.json : certificat entier universel et couverture.
+root_component_count_prism.py / root_component_weighted_root_certificate.py.
+Option --weighted-prism-grid-root dans matching_global, matching_residual
+et local_branch : borne originale504 et comparaison du meme score aux
+etoiles transportees. Les autres etoiles ne recoivent PAS la borne504.
+Le bilan distingue root_order=weighted_prisms_grids de root_order=prisms.
+Il refuse leur fusion et leur transport comme exclusions arbitraires.
+La file d'attente du test7 minimal en s seul a ete annulee AVANT lancement;
+le nouveau choix de racine suffit a retirer7 de la couverture globale.
+
+5. FILTRE COMPLET DES GRAM, 18/10 VERS 13h45
+La relaxation binaire C1 + composantes + Gram prescrit + budget pondere
+conserve les 12 Gram de 9 et 429 des 448 Gram de 19. Les 19 retraits sont :
+650,824,844,906,908,1041,1047,1377,1381,1402,1406,1550,1637,1653,1749,
+1853,1861,2356,2376. Verdict CP-SAT, sans preuve UNSAT portable.
+Le filtre19 a pris 60.03125 puis 18.78125 secondes CPU; le second passage
+a reutilise les 346 projections deja faisables, sans les recalculer.
+Fichiers weighted_projection_19.json, weighted_projection_19_complete.json,
+selected_weighted_gram_cover.json. Cette derniere couverture porte
+explicitement root_order=weighted_prisms_grids et ne peut remplacer907.
+
+La relaxation lineaire continue de ces 19 cas donne des minima numeriques
+43,44 ou46, meme en ajoutant toutes les inegalites d'ensembles impairs des
+couplages internes. Elle n'explique donc PAS leurs exclusions par un simple
+certificat lineaire de minimum48. Les certificats exacts dyadiques produits
+sont des bornes inferieures valides, mais toutes insuffisantes. L'obstruction
+du modele binaire utilise davantage que cette relaxation continue.
+
+6. INTERSECTIONS DE GRILLES ET TABLES DE QUATRE COINS
+Pour une grille D, chaque sommet exterieur a au plus un voisin dans D :
+toute paire de D a deja tous ses voisins communs dans D. Or les neuf
+sommets de D envoient 9*(14-4)=90 aretes vers ses 90 sommets exterieurs.
+Ils sont donc tous domines exactement une fois : A1_D=1+3*1_D.
+
+Deux grilles distinctes s'intersectent en zero sommet, un sommet ou une
+droite. En effet l'intersection est fermee sous les voisins communs des
+paires qu'elle contient. Dans K3 carre K3, une paire adjacente engendre
+sa ligne; une paire non adjacente engendre la grille entiere. Le controle
+exhaustif des 512 sous-ensembles retrouve seulement : vide, neuf points,
+six lignes, grille entiere. Il n'y a pas de quatrieme forme d'intersection.
+
+Une nouvelle grille basee au voisin a de la racine contient a, quatre
+bases Gamma de labels {a,b}, puis quatre coins Gamma. Elle ne contient
+ni la racine originale ni ses treize autres voisins. La domination exacte
+de ces derniers force chaque autre label, sauf a*, a apparaitre une fois
+parmi les huit sommets Gamma. Les quatre bases utilisent quatre labels;
+les quatre coins sont donc un couplage parfait des HUIT labels restants.
+On enumere au plus 7!! * 4! =2520 placements ordonnes, puis on retire les
+placements hors des domaines deja necessaires et ceux qui prennent deux
+coins d'une ancienne grille. Ces deux coins seraient non adjacents, donc
+forceraient l'egalite des grilles, impossible puisque la nouvelle omet
+la racine originale. Les anciennes grilles contenant a n'ajoutent aucun
+nouveau coin a l'intersection, deja determinee par les bases.
+
+Outil root_component_grid_intersections.py; option --grid-corner-tables
+des deux pilotes matching. Les tables ne sont actives QUE si e=4.
+Leur necessite ne depend ni de c>=4, ni d'un choix minimal de racine.
+Premier test sur19, etoile6, couplage0, les429 Gram variables : INFEASIBLE
+en27.484375CPU. Les huit autres couplages sont en cours; aucune fermeture
+du gabarit19 n'est encore conclue. Le test9/Gram193/M4 avec toutes les C2
+et le budget pondere, AVANT ces tables, est UNKNOWN apres240.296875CPU.
+
+7. PREUVES SAT ET REDUCTION DES COUPLAGES, 18/10 VERS 15h05
+Les 19 projections retirees ont maintenant chacune une CNF UNSAT et une
+preuve DRAT VERIFIEE par le binaire natif drat-trim. CaDiCaL natif a utilise
+3.3125 secondes CPU au total (controle des preuves en plus). Le premier
+export via la liaison Python avait echoue au controle; il reste un
+diagnostic et n'entre PAS dans les 19 preuves acceptees. Le paquet produit
+par root_component_projection_proof_bundle.py contient les CNF exactes,
+preuves, correspondances lignes/clauses et journaux. La validation porte
+sur ces CNF; la reduction mathematique et la couverture Gram sont des
+dependances explicites, pas des conclusions de drat-trim.
+
+Dans complete_star, aucun code de composante n'est normalise et les
+renommages independants des deux lettres de chaque droite non racine
+preservent le gabarit. On peut donc choisir un couplage par orbite de
+ces renommages, SANS supposer un automorphisme du graphe recherche.
+Pour une composante de s=1,2,3,4 droites : 1,2,5,17 orbites parmi
+1,3,15,105 couplages. L'option --mate-flip-orbits exporte chaque orbite
+et les masques explicites de renommage. Le flip de la droite racine est
+exclu : il echangerait le couplage fixe M0 avec M1, reste libre.
+Des UNKNOWN differents entre deux renommages a budget fixe sont possibles;
+la reduction concerne l'existence de graphes, pas la vitesse du solveur.
+
+Dans matching_global, la premiere composante est DEJA normalisee : il
+ne faut pas appliquer tous ces flips sans controle. Cependant les flips
+des droites hors de cette composante la fixent POINT PAR POINT. Pour19,
+les droites protegees sont0,3,5,6 et les flips permis1,2,4; pour9,
+elles sont0,4,5,6 et les flips permis1,2,3. Ils preservent aussi le Gram,
+qui somme sur des rectangles entiers, et le choix de racine ponderee.
+Dans les deux etoiles choisies on obtient les quatre orbites :
+  {0}, {1,2}, {3,6}, {4,5,7,8}.
+Le bilan --residual-mate-flips conserve les temoins de transport et refuse
+une autre normalisation. Pour19, les verdicts directs0,1,2,3 ferment donc
+cinq couplages0,1,2,3,6. Une seule orbite essentielle reste ouverte :
+{4,5,7,8}; 4 etait UNKNOWN apres122.125CPU. Aucune fermeture19 annoncee.
+Pour9 a ce point, seul2 est directement exclu, donc1 aussi par renommage.
+
+Deux options complementaires pour complete_star, destinees aux pilotesLAB :
+--all-matchings-variable --no-transport laisse les deux etoiles libres
+dans un seul modele. Test de construction/validation passe sur g1/index0
+(125691 variables); le budget de test1s a donne UNKNOWN, pas une exclusion.
+--minimum-prism-root impose s(y)>=s(x) aux etoiles transportees. Les rapports
+portent root_order=prisms et ne sont pas transportables a toute racine.
+Ne pas fusionner cette couverture avec celle minimisant9s+8g. Une couverture
+globale de racines minimum-s doit aussi traiter les typesc4 encore ouverts.
+
+8. MODELE SAT DIRECT DU DERNIER TYPE19, 18/10 VERS15h15
+Le paquet proof19_checked.tar.gz (21987206 octets) et son manifeste sont
+commites cd22fdaf. Les dix-neuf CNF et preuves controlees y sont incluses.
+Le calcul CP-SAT19 a ete arrete pendant5 pour liberer environ1.7Gio alors
+que la machine n'avait plus que0.5Gio disponible. Ses verdicts0..4 restent
+conserves; cet arret n'exclut ni5, ni7, ni8. Le calcul9 continue, toujours
+sur le meme coeur partage et suspendu lorsque la charge globale monte.
+
+root_component_star_cnf.py encode toutes les equations C1 et C2 et le
+gabarit local, apres fixation d'un couplage COMPLET. Les clauses sont
+ecrites au fil de l'eau, pour ne pas garder une enorme liste en memoire.
+Il ne fixe aucun Gram. Sans options supplementaires, il est plus faible
+que le modele c4 transporte : aucune condition sur c des autres droites.
+Toute solution SAT est reconstruite et verifiee sur toutes les paires.
+Controles : degre4 -> SRG(9,4,1,2) trouve et verifie; degre6 -> UNSAT avec
+DRAT verifie. Ces deux controles passent aussi avec l'encodage upper-only.
+
+L'option --upper-only utilise une identite deja presente dans global_lazy :
+C1 impose degGamma=k-2, et chaque ligne hors diagonale de
+Gamma^2+Gamma+intersection_des_labels somme a2*(|Gamma|-1). Les seules
+bornes superieures<=2 forcent donc toutes les egalites. Un produit booleen
+n'a besoin que de dominer la vraie conjonction. Cela retire des clauses,
+sans relacher les graphes possibles sous C1.
+
+19/etoile6/M4, premiere version : UNKNOWN a10000conflits,19.03125CPU.
+Version upper-only + table de la premiere composante normalisee : UNKNOWN
+a10000conflits,9.140625CPU. 347070 variables et1173159 clauses. Ces deux
+essais ne constituent aucune exclusion nouvelle. La seconde utilise la
+MEME normalisation de composante que matching_global; seuls les flips
+qui la fixent point par point restent disponibles pour la couverture.
+
+Option --transport-grid-degree : sous c>=4, les tailles6s des composantes
+de N(L), avec somme s=6, forcent au moins deux parts singleton. Donc toute
+droite est dans au moins deux grilles. Autour du voisin dont l'etoile est
+fixee, les quinze nouvelles grilles possibles ont des coins selectionnes
+par les produits C2 deja presents. Un drapeau grille implique les quatre
+aretes du cycle des coins; les autres aretes interdites le sont deja par
+C1/C2. Chaque droite doit avoir au moins deux drapeaux vrais, en comptant
+les anciennes grilles connues. Seule l'implication drapeau=>grille est
+necessaire, car ces contraintes sont des bornes inferieures.
+Ce codage expose la contrainte geometrique sans les produits entiers des
+residus. Test du dernier type19 en cours; aucun verdict annonce d'avance.
+
+Suite15h25 : le premier codage grid-degree est UNKNOWN a100000conflits,
+27.4375CPU. Version2 ajoute les equations conditionnelles des huit labels
+des coins, leurs intersections avec les anciennes grilles, et l'option
+--weighted-root-comparison. Les aretes entre coins selectionnes sont
+alors des booleens EXACTS, les drapeaux grilles sont equivalents aux
+quatre aretes du cycle, et la comparaison9s(y)+8g(y)>=9s(x)+8g(x) utilise
+des additionneurs booleens. Controles exhaustifs328/328 sur les poids,
+signes, constantes, doublons et retenues. Modele19/M4 :355420variables,
+1312971clauses; essai1000000conflits en cours. Aucun Gram particulier fixe.
+
+18/10, 15h48 — Tables de quatre coins sans choix de Gram
+La couverture selectionnee conserve 12 Gram pour9 et429 pour19. Le cache
+root_component_projector_9_coupled.prepared.json contient les12 matrices de9
+avec exactement les memes ancres, lift, ordre et budget. Le nouveau script
+root_component_reuse_corner_cover.py remappe le selecteur par les valeurs
+completes de Gram :1680 lignes individuelles,46902 lignes de quatre coins.
+Aucune matrice n'est eliminee par cette reutilisation. Le modele all-in-one
+avec ces tables est en cours. root_component_prepare_corner_cover.py prepare
+les429 matrices de19, avec progression atomique et conservation du choix
+racine weighted_prisms_grids. Les familles9/19 restent ouvertes.
+18/10, 15h54 — Compatibilite des signatures entre rectangles
+root_component_pair_schur_cover.py conserve le selecteur des12 Gram de9.
+Il ajoute28671 interdictions (sur392376 couples/valeurs d'arete examines),
+regroupees en200 tables : Schur inferieur, Schur complementaire, et bornes
+entieres de recouvrement des vecteurs courts. Les12 Gram restent presents.
+Les identites comprimees ont ete comparees aux matrices rationnelles completes :
+3486 paires du projecteur84x84 et81 produits de Schur21x21 sur3 Gram, tous exacts.
+Le modele all-in-one avec ces tables est lance, budget180s CPU. Aucun verdict
+INFEASIBLE de famille n'est annonce a ce stade.
+Le regulateur local est maintenant parametrable ; instance active : pause72%,
+reprise sous62%, pause minimale5s, au plus3 coeurs logiques partages, priorite
+basse. La charge des autres applications demeure hors de notre controle.
+18/10, 16h08 — Factorisation exacte des tables de coins
+Les 429 Gram de19 disposent de 52185 lignes individuelles et 1138205 lignes
+de quatre coins. Aucune table vide. root_component_corner_orbits.py verifie
+la fermeture complete de chaque table sous les 8 orientations du carre,
+puis conserve un representant et une orientation auxiliaire libre par
+rectangle. Il ne normalise aucun sommet du graphe. Tous les Gram et toutes
+les orientations restent representes.19 :1138205 ->159822 lignes ;9 :46902
+->6711 lignes. La couverture9 factorisee conserve les interdictions de paires.
+Le modele19 factorise a ete construit et valide :151451 variables,278629
+contraintes,4.625s CPU de construction. MODEL_BUILT, sans verdict de recherche.
+Le pilote9 avec paires sera aussi execute par LAB dans sa campagne existante.
+18/10, 16h16 — Famille9 exclue a la racine ponderee
+RESULTAT : c4_9_all_variable_base.json est INFEASIBLE,264.984375s CPU,
+660701 branches,140111 conflits. Les12 Gram de selected_weighted_gram_cover.json
+etaient libres dans un seul modele, ainsi que tous les couplages. Options :
+weighted-prism-grid-root, no-transport, all-matchings-variable. Le modele
+utilise C1/C2 exacts, les equations de composante, la couverture Gram, le
+premier composant normalise, deux partitions globales c>=4 equilibrees,
+les triangles exacts et le budget de racine9s+8g<=504. Il n'utilise ni les
+nouvelles tables Schur de coins/paires, ni les contraintes transportees.
+Portee : tout graphe de la branche GLOBALE c>=4 peut choisir une racine
+minimisant9s+8g ; cette racine ne peut plus etre du type9. Avec le rejet
+precedent du type7 a cette racine, seul19 reste. Couverture selectionnee :
+78/79 ; couverture ARBITRAIRE budget51 reste76/79. Aucun theoreme global
+sur Conway. Verdict CP-SAT, sans certificat UNSAT portable de cette famille.
+Les pilotes9 de coins et de paires sont arretes comme redondants ; ils ne
+fournissent aucun verdict supplementaire. La base19 continue, ainsi que
+le couplage4 de la droite6 avec les429 Gram et les coins factorises.
+Consequence sous c>=4 : min_x(9s(x)+8g(x))>=440, car le type19 a g=10,s>=40.
+Donc chaque sommet verifie9s+8g>=440 et3P+4G>=2420, a combiner avec<=2772.
+18/10, 16h30 — Encodage par grille et test des motifs certains
+Voir notes/GRILLE_NEUF_FIBRES_2026_10_18.txt pour la preuve de couverture,
+les huit matchings fixes par renommage, la decomposition K10 moins un
+matching et les trois classes auxiliaires sur30 sommets par droite.
+Le modele est complet pour les graphes contenant une grille et necessaire
+pour toute la branche minimum GLOBAL c>=4. Controle positif : Clebsch16
+construit puis verifie exactement. Pilote99 en cours, pas de verdict encore.
+Le test des12 motifs positifs du certificat sur le squelette19/droite6/M4
+renvoie zero occurrence ENTIEREMENT FIXEE pour chacun, apres enumeration
+exhaustive. Il ne dit pas que les motifs sont absents d'une completion.
+Ce comptage ne resserre donc pas la borne.24 controles (chaque motif sur
+lui-meme puis avec une arete supprimee) passent pour le compteur.
+La borne3P+4G>=2420 combinee a P>=6G donne aussi P>=660 sous global c>=4.
+Ajustement des ressources : le coeur0 etait a115% d'utilite Windows, les
+coeurs14/15 a28/29%. Les recherches partagent maintenant le seul coeur
+logique14, toujours en basse priorite, suspension a72%, reprise sous62%.
+Aucune augmentation du nombre de coeurs ni modification des autres apps.
+
+18/10 16h36 ? FERMETURE DE LA BRANCHE GLOBALE c>=4
+
+Le dernier couplage19/droite6/indice4 est INFEASIBLE en116.71875s CPU,
+134203 branches et17154 conflits. Le modele parcourt les429 Gram restants,
+avec les tables de coins factorisees et le front transportable d93/907
+fige AVANT les nouvelles exclusions. Il ne fixe aucun Gram temoin.
+Rapport : c4_19_star6_m4_factored_corners.json.
+
+L'assemblage c4_19_matching_summary_closed.json utilise les verdicts
+0/1/2/3 anciens et4 nouveau. Les flips des paires1/2/4 fixent point par
+point la premiere composante normalisee (droite0, partie3/5/6) et la
+paire racine6. Les orbites sont {0},{1,2},{3,6},{4,5,7,8}.
+Donc les neuf couplages sont couverts. Ce sont des changements de noms,
+aucun automorphisme du graphe potentiel n'est suppose.
+
+Le fichier Gram enrichi a une empreinte differente du fichier simple.
+Le mergeur ne confond pas les empreintes : il lit les deux fichiers,
+verifie leur empreinte citee, puis compare TOUS les champs du record de
+base (429 valeurs dans le meme ordre, indices, ancres, lift, budgets,
+portee de racine, normalisations). Ils sont exactement identiques.
+Seules les tables necessaires de coins et leur factorisation s'ajoutent.
+
+Chaine finie, c4_selected_root_closed.json :
+- Supposer c(L)>=4 pour chaque droite.
+- Choisir x minimisant9s(x)+8g(x). Le certificat entier donne score<=504.
+- g(x)>=7, donc s(x)<=49<=51 : couverture79 applicable.
+- Les76 exclusions anterieures restent valides, trois types7/9/19 restent.
+-7 : score>=528, impossible a cette racine choisie.
+-9 : modele unique tous Gram/couplages libres INFEASIBLE264.984375CPU.
+-19 : les neuf couplages sont maintenant exclus, tous429 Gram libres.
+D'ou contradiction sous l'hypothese globale c>=4.
+
+CONSEQUENCE : tout srg(99,14,1,2) eventuel a une droite L avec c(L)<=3.
+Il reste a exclure ou construire les cas ou de telles droites existent.
+On ne peut pas attribuer automatiquement s<=51 a une racine de cette
+petite droite. La couverture ARBITRAIRE transportable reste76/79, avec
+7/9/19 ouverts : aucune nouvelle exclusion choisie n'y a ete injectee.
+
+STATUT DE PREUVE : calcul exhaustif CP-SAT et assemblage de couverture;
+pas encore de certificat UNSAT portable pour toute la branche. Les19
+retraits Gram disposent de leurs DRAT, mais cela ne remplace pas les
+certificats manquants des exclusions de familles.
+
+Les calculs base19 et grille/min4 en cours ont ete arretes comme devenus
+redondants. Ils ne fournissent pas de nouvelle exclusion. La formulation
+par grille reste un outil exact pour une branche contenant une grille.

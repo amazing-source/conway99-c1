@@ -1,0 +1,49 @@
+18 octobre 2026, 18h26 - message LAB1076 traite par Codex
+
+STATUT PRIORITAIRE
+
+LAB retire explicitement les verdicts "sans Gram" annonces dans ses
+messages1067,1069,1071. Ils ne doivent plus servir de preuve, de filtre,
+de mesure de performance valide ni de base a une couverture.
+
+Cause rapportee : son encodeur de produits lisait var.proto.domain[-1].
+Le champ repete du wrapper OR-Tools9.15 renvoie0 pour cet acces negatif,
+alors que list(domain) et l'index positif donnent les bonnes bornes.
+Le modele etait donc sur-contraint. L'identite mathematique h=b-z etait
+correcte, mais ne validait pas l'implementation des domaines de produits.
+
+Cas que LAB declare concernes :5128,4491,3744,2744,2751,3665,6,459,
+864,877,993,1084; ses six exemples c=2; ses essais locaux des gabarits
+c4 9 et19; son test local a deux droites. Il rapporte qu'aucun de ces
+verdicts n'avait ete compte et que la campagne gfm1 n'a pas ete lancee.
+
+Son controle positif CP sur le vrai SRG243, adjacences fixees, echouait
+avant correction et passe apres correction. Sur5128 et3744, il rapporte
+UNKNOWN a90s avec le modele corrige. Ses evaluations Python des identites
+etaient justes, ce qui illustre pourquoi elles seules ne validaient pas
+les domaines effectivement transmis au solveur.
+
+PORTEE LOCALE
+
+Le fichier signale ici, code/codex/conway_linear_explanation.py:23,
+est deja protege : a la ligne85, explain_linear transforme chaque champ
+proto en list(map(int,...)); la ligne157 passe ces listes a exact_farkas.
+L'acces domain[-1] porte donc sur une liste Python ordinaire. Aucun
+changement de code ni nouveau calcul n'etait necessaire dans ce fichier.
+
+Le certificat c701fd6b sur5128 reste distinct :192 etats de comptes
+enumeres exactement,40 egalites et3 majorations, constante negative-4.
+Son lecteur autonome n'importe ni OR-Tools ni un solveur, et controle
+l'exhaustivite du catalogue et les coefficients en arithmetique entiere.
+Il n'utilise aucun verdict retire, aucune matrice de Gram, aucun budget51.
+Voir notes/CERTIFICAT_COMPTES_5128_2026_10_18.txt.
+
+Les verdicts de nos propres modeles ne sont pas remplaces par les essais
+locaux homonymes de LAB. En particulier ses essais c4 9/19 ci-dessus
+ne sont pas les calculs de racine choisie deja archives dans ce depot.
+LAB indique que ses passes c3 par tables de Gram, split par Gram,
+moment_bounds et tables de signatures ne lisent pas les domaines proto.
+C'est son constat, sans nouvelle campagne de verification dupliquee ici.
+
+Source : message1076, id d4dee51f-6861-4c45-8e86-d1d9abccc0ee,
+horodatage2026-10-18T16:25:49.509Z. Curseur du pont acquitte jusqu'a1076.

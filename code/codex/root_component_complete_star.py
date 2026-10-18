@@ -78,6 +78,43 @@ def matching_assignments(root, matching):
     return {variable(u, v): int((u, v) in edges) for u, v in combinations(star, 2)}
 
 
+def mate_flip_orbits(root, cover, flipped_lines=None):
+    """Exact orbits under the 64 independent flips of non-root mate pairs.
+
+    These are relabellings of a hypothetical graph, not graph automorphisms.
+    They preserve every rectangle and the entire component template. This
+    reduction is for this unnormalised model, not a driver that already
+    canonicalises a component code. The root mate pair is NOT flipped.
+    """
+    lookup = {label: w for w, label in enumerate(LABELS)}
+    index = {tuple(sorted(tuple(sorted(e)) for e in m)): i for i, m in enumerate(cover)}
+    lines = [j for j in range(7) if j != root] if flipped_lines is None else sorted(flipped_lines)
+    assert len(set(lines)) == len(lines) and set(lines) <= set(range(7)) - {root}
+    maps = []
+    for mask in range(1 << len(lines)):
+        letters = list(range(14))
+        for bit, j in enumerate(lines):
+            if mask & (1 << bit):
+                letters[2*j], letters[2*j+1] = letters[2*j+1], letters[2*j]
+        maps.append([lookup[tuple(sorted((letters[a], letters[b])))] for a, b in LABELS])
+    remaining = set(range(len(cover))); orbits = []
+    while remaining:
+        representative = min(remaining); witnesses = {}
+        for mask, permutation in enumerate(maps):
+            image = tuple(sorted(tuple(sorted((permutation[u], permutation[v])))
+                                 for u, v in cover[representative]))
+            assert image in index, 'Mate flip left the full labelled matching cover.'
+            witnesses.setdefault(index[image], mask)
+        members = set(witnesses)
+        assert members <= remaining and min(members) == representative
+        remaining -= members
+        orbits.append({'representative': representative, 'members': sorted(members),
+                       'flip_mask_by_member': {str(mi): witnesses[mi] for mi in sorted(members)}})
+    return {'action': 'nonroot_mate_flips', 'flipped_lines_in_mask_order': lines,
+            'root_pair_flipped': False, 'group_order': 1 << len(lines), 'orbits': orbits,
+            'labelled_matching_count': len(cover), 'representative_count': len(orbits)}
+
+
 def load_template(path, index):
     raw = path.read_bytes()
     data = json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
@@ -139,21 +176,34 @@ def add_universal_root_cuts(model, graph, template):
     return {'nongrid_E3_bounds': len(nongrid), 'connected_component_cuts': cuts}
 
 
-def build_branch(template, root, matching, residual_eigen=2, transport=True):
+def build_branch(template, root, matching, residual_eigen=2, transport=True, grid_corner_tables=False,
+                 minimum_prism_root=False, global_min_components=None, minc_lines=0, minc_balance=False):
     from root_component_global import build
     from root_component_exact_triangles import add_exact_triangle_structure
     from root_component_matching_rotation import add_fixed_matching_rotation
     from root_component_rotated_residual import add_rotated_residual_cuts
     from root_component_rotated_gram import add_gram_cuts, add_eigen_cuts, complete_stars, add_gram_kernel_cuts
+    assert matching is not None or not transport, 'Transport requires a fixed internal star.'
     model, graph, info = build(template, {'cuts': [], 'root_prism_budget': 51},
-                               extra_initial=matching_assignments(root, matching))
+                               extra_initial=None if matching is None else matching_assignments(root, matching))
     if model is None:
         return model, graph, info
     info['universal_root_cuts'] = add_universal_root_cuts(model, graph, template)
     info['triangles'] = add_exact_triangle_structure(model, graph, template)
+    if minc_lines:
+        assert global_min_components in (3,4)
+        from root_component_minimum_partition import add_minimum_partitions
+        info['nonroot_partitions'] = add_minimum_partitions(model, graph, minc_lines,
+            balance=minc_balance, minimum_components=global_min_components, all_fixed_star_edges=True)
     if transport:
         fixed, rectangles, rotation = add_fixed_matching_rotation(model, graph, template, root)
         if len(rectangles) == 15:
+            if minimum_prism_root:
+                from root_component_root_order import add_minimum_root_cuts
+                rotation['root_choice'] = add_minimum_root_cuts(model, graph, rectangles)
+            if grid_corner_tables:
+                from root_component_grid_intersections import add_grid_intersection_cuts
+                rotation['grid_intersections'] = add_grid_intersection_cuts(model, template, rectangles, True)
             rotation['residuals'] = add_rotated_residual_cuts(model, fixed, rectangles, tight_bounds=True)
             rotation['gram'] = add_gram_cuts(model, rectangles, 'all')
             rotation['gram_kernel'] = add_gram_kernel_cuts(model, rectangles)
@@ -218,45 +268,84 @@ def main():
     parser.add_argument('--index', type=int, required=True)
     parser.add_argument('--root-line', type=int, choices=range(7))
     parser.add_argument('--matching-indices', type=int, nargs='+')
+    parser.add_argument('--mate-flip-orbits', action='store_true',
+                        help='Solve one representative per non-root mate-flip orbit; no other normalisation is present.')
+    parser.add_argument('--all-matchings-variable', action='store_true',
+                        help='One model with both internal stars free; requires --no-transport.')
     parser.add_argument('--seconds', type=float, default=30)
     parser.add_argument('--residual-eigen', type=int, default=2)
     parser.add_argument('--no-transport', action='store_true', help='Weaker model for a measured comparison.')
+    parser.add_argument('--grid-corner-tables', action='store_true', help='Necessary grid intersection and eight-label matching tables; valid for all component counts.')
+    parser.add_argument('--minimum-prism-root', action='store_true',
+                        help='Compare transported prism counts to a globally minimum-s root; scoped exclusions only.')
+    parser.add_argument('--global-min-components', type=int, choices=(3,4),
+                        help='Explicit additional GLOBAL assumption; do not merge with purely local template exclusions.')
+    parser.add_argument('--minc-lines', type=int, default=0,
+                        help='Number of fixed non-root lines on which to expose the global component minimum.')
+    parser.add_argument('--minc-balance', action='store_true',
+                        help='Also impose the necessary degree balance for unions of line components.')
     parser.add_argument('--log-search', action='store_true')
     parser.add_argument('--stop-after-unknown', action='store_true',
                         help='Pilot only: leave remaining matchings unprocessed after a timeout.')
     parser.add_argument('--plan-only', action='store_true')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
+    assert not (args.no_transport and args.grid_corner_tables)
+    assert not args.all_matchings_variable or (args.no_transport and not args.mate_flip_orbits and args.matching_indices is None)
+    assert args.minc_lines >= 0 and (not args.minc_lines or args.global_min_components is not None)
+    assert not args.minc_balance or args.minc_lines
     resources = limit_research_process(1)
     if args.output.exists():
         raise FileExistsError('Use a fresh report, never overwrite a previous verdict.')
     template, source_hash, source_metadata = load_template(args.templates, args.index)
     root, parts, counts, cover = matching_cover(template, args.root_line)
-    selected = list(range(len(cover))) if args.matching_indices is None else args.matching_indices
-    assert len(set(selected)) == len(selected) and set(selected) <= set(range(len(cover)))
+    orbit_cover = mate_flip_orbits(root, cover) if args.mate_flip_orbits else None
+    covered = {i: [i] for i in range(len(cover))}
+    if orbit_cover:
+        covered = {o['representative']: o['members'] for o in orbit_cover['orbits']}
+    if args.all_matchings_variable:
+        covered = {None: list(range(len(cover)))}
+    selected = list(covered) if args.matching_indices is None else args.matching_indices
+    assert len(set(selected)) == len(selected) and set(selected) <= set(covered)
     assert args.seconds > 0 and args.residual_eigen >= 0
     result = {'scope': __doc__, 'source_file': args.templates.as_posix(),
               'source_sha256': source_hash, 'source_metadata': source_metadata, 'template_index': args.index,
               'template': template, 'root_line': root, 'component_parts': parts,
               'matching_count_by_line': counts, 'matching_cover': cover,
+              'mate_flip_orbit_cover': orbit_cover,
+              'matching_partition': 'all_in_one' if args.all_matchings_variable else 'mate_flip_orbits' if orbit_cover else 'labelled',
+              'root_order': 'prisms' if args.minimum_prism_root else None,
+              'usable_in_arbitrary_low_budget_root_frontier': not args.minimum_prism_root and args.global_min_components is None,
+              'global_minimum_components': args.global_min_components,
+              'usable_under_local_component_assumption_only': args.global_min_components is None,
               'matching_branches': [], 'all_matching_branches_processed': False,
               'status': 'NOT_RUN', 'resources': resources, 'root_prism_budget': 51,
               'options': {'seconds_per_matching': args.seconds, 'residual_eigen': args.residual_eigen,
-                          'transport': not args.no_transport, 'stop_after_unknown': args.stop_after_unknown},
+                          'transport': not args.no_transport, 'stop_after_unknown': args.stop_after_unknown,
+                          'grid_corner_tables': args.grid_corner_tables,
+                          'all_matchings_variable': args.all_matchings_variable,
+                          'minimum_prism_root': args.minimum_prism_root,
+                          'global_min_components': args.global_min_components,
+                          'minc_lines': args.minc_lines, 'minc_balance': args.minc_balance,
+                          'mate_flip_orbits': args.mate_flip_orbits},
               'fixed_gram_witness': False, 'uses_minimum_four_tables': False,
               'fixed_opposite_matching': False, 'fixed_cross_permutation': False,
               'portable_unsat_proof': False, 'global_conway_exclusion': False}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     atomic_json_write(args.output, result)
     print(json.dumps({'phase': 'cover_ready', 'template_index': args.index, 'root_line': root,
-                      'part_sizes': list(map(len, parts)), 'matching_count': len(cover)}), flush=True)
+                      'part_sizes': list(map(len, parts)), 'matching_count': len(cover),
+                      'selected_branch_count': len(selected), 'matching_partition': result['matching_partition']}), flush=True)
     if args.plan_only:
         return
     for mi in selected:
         start_cpu = time.process_time(); start_wall = time.monotonic()
-        model, graph, info = build_branch(template, root, cover[mi], args.residual_eigen, not args.no_transport)
+        model, graph, info = build_branch(template, root, None if mi is None else cover[mi], args.residual_eigen,
+                                         not args.no_transport, args.grid_corner_tables, args.minimum_prism_root,
+                                         args.global_min_components, args.minc_lines, args.minc_balance)
         branch = {'matching_index': mi, 'model': info, 'build_cpu_seconds': time.process_time()-start_cpu,
-                  'build_wall_seconds': time.monotonic()-start_wall}
+                  'build_wall_seconds': time.monotonic()-start_wall,
+                  'covered_matching_indices': covered[mi]}
         print(json.dumps({'phase': 'model_ready', 'matching_index': mi,
                           'build_cpu_seconds': branch['build_cpu_seconds'],
                           'variables': info.get('model_variables', 0),
@@ -271,7 +360,7 @@ def main():
         result['matching_branches'].append(branch)
         result['process_peak_rss_bytes'] = branch['process_peak_rss_bytes']
         result['memory_scope'] = 'OS process high-water RSS, cumulative across this template, includes building and solving.'
-        processed = {b['matching_index'] for b in result['matching_branches']}
+        processed = {i for b in result['matching_branches'] for i in b['covered_matching_indices']}
         result['all_matching_branches_processed'] = processed == set(range(len(cover)))
         result['status'] = 'UNKNOWN'
         if result['all_matching_branches_processed'] and all(b['status']=='INFEASIBLE' for b in result['matching_branches']):

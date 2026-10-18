@@ -15,10 +15,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_low_budget_transport import digest
 from root_component_resources import atomic_json_write
 from root_component_rotated_gram import unsafe_product_reports
+from root_component_root_order import root_choice_requirements
 
 
-def merge(gram_cover, template_index, reports, minimal_root=False):
-    cover = next(r for r in json.loads(gram_cover.read_text())['records']
+def merge(gram_cover, template_index, reports, minimal_root=False, root_order=None):
+    if minimal_root:
+        assert root_order in (None,'prisms')
+        root_order='prisms'
+    assert root_order in (None,'prisms','weighted_prisms_grids')
+    cover_data = json.loads(gram_cover.read_text())
+    assert root_choice_requirements(cover_data)<=({root_order} if root_order else set()), 'Gram cover requires a different root choice.'
+    cover = next(r for r in cover_data['records']
                  if r['template_index'] == template_index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
     remaining = dict(zip(cover['source_gram_indices'], cover['gram_anchor_values']))
@@ -27,8 +34,8 @@ def merge(gram_cover, template_index, reports, minimal_root=False):
         report = json.loads(path.read_text(encoding='utf-8-sig'))
         assert not list(unsafe_product_reports(report)), f'Withdrawn product encoding: {path}'
         options = report.get('options', {})
-        assert minimal_root or not options.get('minimum_prism_root',False), (
-            f'Minimum-root exclusion cannot enter an arbitrary-root ledger: {path}')
+        assert root_choice_requirements(report)<=({root_order} if root_order else set()), (
+            f'Incompatible root choice in exclusion ledger: {path}')
         for record in report.get('records', []):
             if record['template_index'] != template_index:
                 continue
@@ -82,8 +89,8 @@ def merge(gram_cover, template_index, reports, minimal_root=False):
             'solver_attempt_counts': dict(merged['attempts'])})
     return {'scope': __doc__, 'template_index': template_index,
         'global_minimum_components': 4, 'chosen_root_prism_budget': 51,
-        'requires_globally_minimal_root': minimal_root,
-        'usable_in_arbitrary_low_budget_root_frontier': not minimal_root,
+        'requires_globally_minimal_root': root_order is not None,'root_order':root_order,
+        'usable_in_arbitrary_low_budget_root_frontier': root_order is None,
         'gram_cover': str(gram_cover), 'gram_cover_sha256_lf': digest(gram_cover),
         'required_gram_count': len(remaining), 'records': records,
         'counts': dict(Counter(r['status'] for r in records)),
@@ -98,11 +105,12 @@ def main():
     p.add_argument('--index', type=int, required=True)
     p.add_argument('--reports', type=Path, nargs='+', required=True)
     p.add_argument('--minimal-root', action='store_true')
+    p.add_argument('--root-order',choices=('prisms','weighted_prisms_grids'))
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
-    result = merge(args.gram_cover, args.index, args.reports, args.minimal_root)
+    result = merge(args.gram_cover, args.index, args.reports, args.minimal_root, args.root_order)
     atomic_json_write(args.output, result)
     print(json.dumps({'counts': result['counts'], 'template_excluded': result['template_excluded'],
         'code_counts': [(r['gram_index'], r.get('excluded_code_count'), r.get('code_count'))
