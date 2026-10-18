@@ -1,0 +1,63 @@
+18 octobre 2026,18h49 - interface demandee par LAB1082
+
+Lanceur : code/codex/root_component_z_pipeline.py.
+Il prend un catalogue .json ou .json.gz, un index et un repertoire de
+sortie neuf. Il ne lit que les partitions : les Gram et budgets du
+catalogue source ne sont pas utilises dans les modeles.
+
+Exemple depuis la racine du depot LAB :
+
+python -I code/codex/root_component_z_pipeline.py code/lab_exploration_2026-10-16/c3_root_cover/c3_open_templates_k3_12.json.gz --index 8650 --design-seconds 5 --joint-seconds 10 --output-directory CHEMIN_NEUF/8650
+
+Pour le scan des80 gabarits de c3_deferred_huge_covers.tsv, remplacer
+uniquement l'index et le repertoire. Le scan distant appartient a LAB;
+aucune machine distante ni depense n'a ete lancee par Codex ici.
+Chaque processus est limite a un coeur parmi ceux autorises par son
+affinite. Un ordonnanceur parallele doit donc repartir les affinites
+avant de lancer ses processus, sinon ils partagent le meme premier coeur.
+
+ETAPES ET STATUTS
+
+1. Catalogue exhaustif C z=b, au plus6 coordonnees libres.
+   Une dimension plus grande reste UNSUPPORTED_DIMENSION.
+2. Recherche d'un certificat entier avec les bornes E3 et les
+   histogrammes de degres. Sans --reduce-certificate, le grand systeme
+   est utilise directement; la reduction n'est pas utile au premier scan.
+   Un certificat trouve est relu automatiquement avec le lecteur entier
+   autonome, incluant l'exhaustivite des etats de lignes.
+3. Si aucun certificat n'est trouve, modele entier des multiplicites,
+   pendant --design-seconds CPU. La valeur0 desactive cette etape.
+4. Si aucun verdict d'exclusion n'est obtenu et --joint-seconds>0,
+   modele conjoint avec la matrice Gamma binaire et les quotas C1.
+
+EXCLUDED_BY_INTEGER_CERTIFICATE signifie certificat entier relu.
+DESIGN_CP_INFEASIBLE et JOINT_CP_INFEASIBLE sont des verdicts CP sur ce
+gabarit, sans certificat portable. AGGREGATE_DESIGN_ONLY n'est pas un
+graphe; UNKNOWN ne fournit aucune exclusion. Les cas de catalogue vide
+ou d'equations de composantes inconsistantes sont nommes separement et
+ne sont pas promus au statut de certificat Farkas portable.
+
+Chaque repertoire contient partition.json, catalogue.json et result.json,
+puis les fichiers de chaque etape atteinte : certificate.json,
+verification.json, design.json, joint.json. Le resultat est sauvegarde
+apres chaque etape. Le lanceur refuse un repertoire non vide.
+
+PILOTES DU LANCEUR
+
+- Index0 : VRAIE dimension6,269 etats. Catalogue+LP+design en0.96875s
+  CPU mesurees dans le lanceur (hors imports Python). Design OPTIMAL,
+  donc AGGREGATE_DESIGN_ONLY; aucun essai conjoint sur ce pilote.
+- Index5128 : branche de certificat entier du lanceur exercee avec
+  --reduce-certificate --design-seconds0. Meme contradiction de
+  constante-4, lecteur entier passe,0.984375s CPU mesurees.
+
+Sorties dans data/codex_neighbor_moments_20261018/
+  pilot_dimension6_index0/
+  pilot_pipeline_5128/.
+Le catalogue source exact1d35230 est archive dans le meme repertoire
+sous lab_c3_catalogue_1d35230.json.gz (hash de source dans les partitions).
+
+Ces temps de pilotes ne bornent pas le cout des80 gabarits, ni celui de
+toute la recherche Conway. Le nouveau modele conjoint a ses controles
+positifs SRG9 et243 et un premier UNKNOWN10s sur8650. Voir les notes
+CERTIFICAT_COMPTES_4192 et COMPTES_ET_REALISATION_8650 du meme jour.
