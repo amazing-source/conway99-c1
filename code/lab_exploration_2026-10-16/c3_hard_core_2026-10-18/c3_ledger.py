@@ -86,7 +86,7 @@ for f in glob.glob(os.path.join("collect_c3hard1", "files", "out", "hd_*.json"))
     if r and r.get("grams") and r["grams"][0].get("status") == "INFEASIBLE":
         rerun_inf[(tag, int(t))].add(int(g[1:]))
         rerun_kind[(tag, int(t))].add("H")
-for f in glob.glob(os.path.join("collect_c3eig1", "files", "out", "eg_*.json")):
+for f in glob.glob(os.path.join("collect_c3eig1", "files", "out", "eg_*.json")) + glob.glob(os.path.join("collect_c3eig2", "files", "out", "l1_*.json")):
     r = load(f)
     _, tag, t, c = os.path.basename(f)[:-5].split("_")
     for case in (r or {}).get("cases", []):
@@ -128,6 +128,26 @@ for f in glob.glob(os.path.join("collect_c3p4e", "files", "out", "pe_*.json")) +
 for key, gs in p4.items():
     if key in gram_count and len(gs) == gram_count[key] and gs == set(range(gram_count[key])):
         methods[key].add("P4E")
+# orbit reduction (aut_orbits.py, closure checked): a template is excluded when every orbit representative of its
+# complete cover is INFEASIBLE under the probe (P4O); Gram-free whole-template model of Codex (jhat_zjoint.py, ZJ).
+for of in glob.glob("orbits_*.json"):
+    o = json.load(open(of))
+    key = ("gz", int(o["index"]))
+    inf = set()
+    for f in glob.glob(os.path.join("collect_c3eig2", "files", "out", "or_gz_%05d_*.json" % o["index"])):
+        for case in (load(f) or {}).get("cases", []):
+            if case.get("status") == "INFEASIBLE":
+                inf.add(int(case["gram_selector"]))
+    if set(o["representatives"]) <= inf:
+        methods[key].add("P4O")
+for f in glob.glob(os.path.join("collect_c3eig2", "files", "out", "zj_*.jsonl")):
+    for line in open(f):
+        try:
+            r = json.loads(line)
+        except Exception:
+            continue
+        if r.get("status") == "INFEASIBLE":
+            methods[("gz", int(r["index"]))].add("ZJ")
 for t in (5128, 4192):
     methods[("gz", t)].add("MOM")
 for f in glob.glob(os.path.join("collect_gfm1", "files", "out", "gfm_*.json")):

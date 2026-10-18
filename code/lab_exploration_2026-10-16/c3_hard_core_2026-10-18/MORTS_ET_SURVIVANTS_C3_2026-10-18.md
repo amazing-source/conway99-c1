@@ -65,6 +65,39 @@ lui-même, et une ligne est une pondération entière de J à somme nulle en cha
 Le gabarit 10009, de dimension 3, est le seul mort de cette famille.
 
 **Cible de lemme.** Il faut décrire les composantes de G_{l_a} formées de 3 ou 4 unités : graphes cubiques à 18 ou 24
-sommets, avec λ = 1, μ = 2 et la structure de lettres. Les identités signées d^K (Gram 8(6pδ − pp′), vecteurs propres −1 de
-D_a) y sont très contraignantes, puisque chaque racine n'a qu'une composante non triviale et des prismes. C'est l'objet
-transmis à Codex pour son front sans Gram.
+sommets, avec λ = 1, μ = 2 et la structure de lettres. Correction (§ 4) : ici, les identités signées d^K se réduisent à la
+structure des grilles, puisque chaque racine n'a qu'une composante non triviale et des prismes. Ce qui reste à exploiter,
+ce sont les C2 individuelles avec les grilles.
+
+## 4. Pourquoi les paires tuent et pourquoi les gros blocs survivent (23 h, LAB et Codex)
+
+**Mécanisme des paires (démontré).** Une paire {b, c} à la racine a est un sommet de degré 2 du graphe des blocs Ĵ, donc
+H_ab = −H_ac, colonne contre colonne, pour les 84 étiquettes.
+- Une chaîne de paires lie toutes ses colonnes au signe près.
+- Une composante de Ĵ formée uniquement de paires est un cycle. Si elle est impaire, H = 0 sur ses arêtes, ce qui force des
+  grilles : contradiction immédiate.
+- Si elle est paire, toutes ses colonnes valent ±u. Codex en tire une preuve à la main pour le gabarit c12 n° 364 (« carré
+  de quatre colonnes opposées »), fondée sur les bornes Z ≥ 0, E3, la norme 56 − 14e et Γu = −4u.
+
+**Couverture mesurée** d'une composante de Ĵ formée uniquement de paires :
+- c3 : 62 des 1 373 ouverts, et 1 754 des 10 027 gabarits, presque tous déjà morts ;
+- échantillon c ≤ 2 : 2 sur 419.
+
+**Pourquoi les gros blocs survivent.**
+- Chaque composante K de G_{l_r} donne un vecteur propre −4 de plus (y_K, avec d^K sur D_r). Une racine à c_r composantes
+  en donne donc c_r − 1 indépendants, et une droite c = 1 n'en donne aucun.
+- Avec une seule composante non triviale par racine, l'identité signée de la grosse composante est la somme de celles des
+  prismes, lesquelles découlent de la structure des grilles (point suivant).
+- Les gabarits à gros blocs sont donc les moins contraints, et c = 1 avec k = 1 est le cas extrême.
+
+**Nouvelle contrainte vérifiée : une grille est un dominant parfait** (démontré à la main avec λ = 1, μ = 2).
+- Tout sommet hors d'une grille K3□K3 est adjacent à exactement un de ses 9 sommets.
+- Il en résulte une partition équitable en 18 cellules, de quotient [[A_H, 10I], [I, 2J − I − A_H]] et de valeurs propres
+  14, 3, −4.
+- Deux grilles disjointes sont reliées par un couplage parfait.
+- Les C2 individuelles entre étiquettes et sommets de grille qui en découlent ne sont imposées par aucun modèle de
+  couche 0. Proposition transmise à Codex : une couche « grid-c2 ».
+
+**Limite honnête.** Les gros blocs existent dans un vrai srg(243,22,1,2) : une racine contrôlée y montre 4 prismes et un
+bloc de 6. Les gros blocs ne sont donc pas impossibles en général pour λ = 1, μ = 2. Une contradiction doit utiliser les
+nombres propres à Conway (k = 14, dim U = 30 sur 84 étiquettes, budget P ≤ 852). Elle n'est pas trouvée à ce jour.
