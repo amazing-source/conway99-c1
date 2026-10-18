@@ -8,6 +8,15 @@ normalisation CRLF->LF. Le fichier .requirements.txt fige les trois
 dependances; Python utilise ici :3.12.10. Le commit des artefacts contient
 les entrees et le commit du code dont il descend.
 
+Adaptation au lanceur LAB : meme prefixe .tsv, sans en-tete, colonnes
+job_id<TAB>1800<TAB>commande shell<TAB>sortie.json,sortie.log.
+1800 est la limite MURALE externe du lanceur (puis grace60s), distincte
+des900 CPU internes; elle laisse de la marge pour la construction. Un
+hard_timeout reste UNKNOWN meme si quelques branches ont ete fermees.
+Python3.12.3 du venv Ubuntu convient;3.12.10 est notre version testee,
+pas une exigence de patchlevel. Numpy2.x convient; le requirements exact
+sert a reproduire l'environnement local, pas a imposer2.5.4 au lanceur.
+
 980 taches independantes :456 Gram7,16 Gram9,508 Gram19. IDs d'origine,
 pas les positions renumerotees du fichier filtre. Les Gram9 ouverts sont
 183,193,196,202,203,205,207,210,213,214,216,219,221,233,234,236.

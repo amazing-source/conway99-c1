@@ -1008,3 +1008,193 @@ C est l'incidence non orientee7x14, rang7, noyau7, aucune coordonnee nulle
 sur tout le noyau. Cela passe le filtre des coordonnees nulles, et contredit
 ker<=5 AVANT faisabilite Gram; ne pretend pas donner un Gram ou un Conway.
 Les sept grilles imposent seulement le cout de base28 dans le budget51.
+
+30. 18/10 vers01h23 : calcul distant prepare, nouvelles contraintes spectrales.
+
+LAB973/975 transmet la demande de Dilan de concentrer les deux chercheurs
+sur7,9,19 et de lancer le lot sur deux machines AWS, sous son controle.
+Manifestes JSONL/TSV980taches fournis, commitd5be688 pousse; runtime fige
+5694bb5. Par Gram :1worker,120CPU/code,900CPUsolveur cumulees, limite murale
+externe1800s. Le manifeste porte456/16/508. Details notes/AWS_7_9_19_2026_10_18.txt.
+Le total nominal245hCPU de budgets ne prouve aucun temps de fermeture.
+LAB retourne les rapports bruts sur sa branche; aucun nouvel UNKNOWN ne
+sera transforme en exclusion. Pont976/977; dernier lu/ack975.
+
+Arret des deux anciens essais locaux pour reserver le PC aux nouvelles
+contraintes :183 arrete apres82.83CPU de processus, sans verdict final;
+193 garde un premier code UNKNOWN45.078CPU, reste non traite. Le lot AWS
+peut traiter ces deux Gram. Nouveau pilote193 session8028,2codes60CPU,
+rotated_spectral_pilot : modele construit,144tables spectrales nouvelles.
+Il a charge la version AVANT les identites de bins ci-dessous.
+
+Grilles et rectangles tournes : soit S l'ensemble de9 sommets forme d'une
+racine, de deux de ses droites et des quatre autres voisins communs des
+paires croisees. Si le rectangle a e aretes, S a14+e aretes. Le projecteur
+orthogonal complet sur l'espace propre-4 est
+                     E=(3I-A+J/9)/7.
+Donc 1_S^t E1_S=(8-2e)/7. Pour h entier, Ah=-4h, ||h||^2=7q,
+                     (sum_S h)^2 <= q*(8-2e).
+La racine tournee appartient aux14anciens voisins ou h=0; les huit autres
+valeurs sont selectionnees exactement dans Gamma. Une table(e,sum_S h)
+utilise floor(sqrt(q*(8-2e))) calcule par isqrt, sans flottants.
+Pour e=4 on retrouve sum_S h=0, meme lorsque les coins sont variables.
+Implementation --rotated-signatures danslocal_branch; automatique pour
+grid_rotations+short_vectors dansjoint. Les contraintes de choix de coin
+ont passe un petit test de bord : somme nulle imposee pour e4, limite4
+pour e2/q4, la valeur adjacente interdite est rejetee dans les deux cas.
+
+Bins variables de composantes : si S est une union de composantes de N(L)
+de taille6s, on a A(1_S+s1_L)=3(1_S+s1_L)+s1. Par orthogonalite,
+                       sum_S h+s*sum_L h=0.
+Les appartenances aux bins et les valeurs h restent inconnues; les produits
+sont exacts. Seules des directions lineairement independantes du reseau
+court sont utilisees (selection rationnelle). Ceci s'ajoute automatiquement
+aux partitions non racines quand short_vectors est actif. Test du produit
+taille*valeur de ligne passe; premier modele reel encore a lancer.
+Ces changements restent separes du code fige du lot AWS.
+
+31. 18/10 vers01h37 : etiquettes et passage d'une racine a sa voisine.
+
+Le pilote193 de30 donne code0 INFEASIBLE54.781CPU,55002branches/11664conflits;
+code1 UNKNOWN60.156CPU. Pas de fermeture du Gram. Nouveau pilote193 reprend
+seulement le code0 prouve, puis traite codes1/2 avec les renforcements
+ci-dessous (90CPU/code,180CPU total), session57000. Pilote7#1069 de30 encore
+actif, session12090; aucune conclusion a ce stade.
+
+Pour les huit sommets Gamma d'un rectangle tourne, d_b compte les sommets
+portant l'etiquette b. La racine tournee est a : d_a=4,d_(a*)=0. Sur les
+12autres lettres, poser t_b=d_b-1; leur somme vaut0. Alors
+ K=sum_{paires mates b,c}(3(t_b^2+t_c^2)+2t_b*t_c)>=0.
+Avec T=3I-Gamma-(3BtB+BtMB-2J)/8, on calcule exactement
+          1_(S Gamma)^t T1_(S Gamma)=8-2e-K/8.
+Les h sont dans l'image de T, de norme7q, d'ou
+                    8*(sum_S h)^2 <= q*(64-16e-K).
+Le modele impose aussi K+16e<=64, consequence de T positif. Les carres,
+comptes d'etiquettes et choix de coins sont tous entiers et exacts.
+Une grille e4 exige K0 : chacun des12autres labels apparait une fois.
+Tests ponctuels passes : mauvaise couverture de labels rejettee pour e4;
+pour e2/q4, somme4 n'est permise qu'avec K0; cas e0 avecK6 et somme4 admis.
+
+Tous les coins selectionnes a une meme racine tournee sont DISTINCTS,
+y compris entre rectangles differents : chaque sommet exterieur a deux
+voisins exactement dans cette etoile. AddAllDifferent est ajoute a cette
+liste complete ou partielle, au lieu de seulement chaque quartet.
+
+Transport du repertoire de composantes : root_component_rotated_templates.py.
+A un sommet voisin a, les sept droites sont L0=(a,o,a*) et les six paires
+fixees dans son etoile Gamma. On utilise les200 gabarits AVANT budget
+(116 graphes non-grilles), jamais les79 du sommet choisi a petit budget.
+Pour L0, les grilles sont exactement les composantes-prismes connues du
+voisinage de l'ancienne droite. On enumere toutes les permutations plaçant
+une racine du bon degre surL0 et ses voisins sur l'incidence prescrite.
+Le tableau des15autres indicateurs non-grille reste complet. Les rectangles
+non construits gardent des booleens libres; aucune fixation de temoin.
+Pour degre non-grille deL0=0,2,3,4, les nombres de graphes etiquetes admis
+sont respectivement4886,4116,5051,5349. Tests de transport de gabarits sous
+deux permutations passes. Le tableau ne pose AUCUN budget de prismes en a.
+
+Compatibilite entre racines : pour les21ensembles de9sommets S_ij d'une
+racine quelconque, et tout vecteur propre-4 h, poser y_ij=sum_(S_ij)h.
+Pour chaque droite i, sum_(j!=i)y_ij=0. En effet la somme des six ensembles
+donne6h_racine+6(h_u+h_v)+sum_(N(racine)\{u,v})h plus les24voisins Gamma
+de u,v. Les equations propres reduisent cela a0. Cette identite ne requiert
+aucune symetrie ni minimum de composantes.
+A la racine tournee, y_0i est la somme de quatre anciennes valeurs Gamma,
+les autres points etant dans l'ancienne boule de rayon1 ou h=0. Les quatre
+points sont connus par le code complet de la premiere composante. Les
+y_ij des rectangles construits sont nos sommes de signatures; les autres
+restent des entiers libres bornes par sqrt(8q), nuls si leur grille est
+imposee. Sept equations par direction courte relient les deux cartes.
+Avec --rotated-templates et --rotated-signatures, ces coupes sont ajoutees
+aux nouvelles branches. Premier modele reel en cours; aucun verdict nouveau.
+
+LAB978 a lance le lot fige315ed4e (runtime5694bb5) : deux m7a.32xlarge,
+empreintes des28entrees/code concordantes,1coeur par job,condition RAM>=4Go.
+Il a choisi une limite externe7200s/job et extinction automatique5h. Ces
+actions sont coteLAB; nous n'avons ni cree ni modifie ses machines.
+Dernierlu/ack978,dernierenvoye979 a01h24m16. Prochaine vie avant02h09.
+
+32. 18/10 vers01h50 : norme disponible et obstruction locale identifiee.
+
+Dans une nouvelle etoile a (h_a=0), N(a) est un couplage M sur14sommets.
+Le Gram E_-4 surN(a) vaut (3I-M+J/9)/7. Sur les valeurs dont la somme est0,
+son inverse vaut7(3I+M)/8. Poser L=3*sum_N(a) h^2+h_N(a)^t M h_N(a).
+La projection de h sur l'espace propre-4 nul sur cette nouvelle etoile a
+norme carree7q-7L/8. Les21rectangles sont des quatre-ensembles disjoints,
+et leurs sommes y_ij s'y calculent apres projection. Donc
+                         2*sum_(i<j)y_ij^2+7L <=56q.
+Pour chaque droite i, son Gram de rectangles est une matrice laplacienne,
+diagonale<=8, donc rayon spectral<=16 : sum_(j!=i)y_ij^2<=16q.
+Tout est encode par tables de carres et de couts sur les six paires connues
+de l'etoile Gamma. Les deux voisins restants, o et a*, ont valeur0.
+Si le degre non-grille d'une droite vaut4, ses deux composantes12 imposent
+deux paires de vecteurs opposes. Une meme paire est choisie pour toutes les
+directions h; les equations reifiees y_ij+y_ik=0 sont imposees ensemble.
+
+Pilote193 cross_chart :code1 [0,4,5] INFEASIBLE0.891CPU sans recherche;
+code2 [0,4,8] UNKNOWN90.172CPU. L'exclusion rapide du code1 n'est PAS une
+preuve que les bornes de norme nouvelles sont decisives : diagnostic exact,
+ses rectangles impliquant l'ancienne droite ont e=[4,4,4,3,2,2]. C'est E3
+qui le refute directement. Pour code0 [0,4,4] :[4,4,4,3,3,3]; pour code2 :
+[4,4,4,2,2,2]. Parmi les35codes de193, les indices0,1,4,5 ont ce defaut.
+
+Nouveau filtre de composantes, root_component_e3_colours.py. Pour chaque
+arete de couplage u-v dans CHACUNE des3couleurs, les quatre voisins dans
+les deux autres couleurs forment un rectangle a un point de L. Interdire
+e3 sur ces rectangles est totalement local et independant du Gram/budget.
+La table anterieure 'rotated' testait un AUTRE motif (mates d'un triangle),
+mais pas tous ces rectangles. Nouvelle table e3_all_colours :
+taille6 :1->1;taille12 :110->104;taille18 :93688->89488.
+4206codes retires avec un temoin local individuel (couleur,arete,quatrecoins)
+dans line_component_e3_all_colours_certificate.json. Les index de permutations
+et couplages restent identiques. Une nouvelle couverture canonique est
+necessaire : les anciens index de branches ne se transportent pas tels quels.
+L'ancienne table et le lot AWS restent intacts.
+
+Pilote7#1069 TERMINE UNKNOWN120.25CPU,102549branches/18531conflits,
+114853variables/491810contraintes;32identites de bins sur4directions ont
+bien ete construites. Pas d'exclusion7. Ressources : la RAM libre est
+descendue a1.8Go; le demarrage du second modele a ete differe. Apres fin7,
+4Go libres. Garder un seul modele lourd local tant que le PC est utilise.
+
+
+33. Import AWS partiel, couverture reindexee et residus entiers (18/10,02h10).
+Import brut du commit LAB647abb3, branchelab/aws-codex-7-9-19 :521rapports,
+aucune relance de verification. Verdicts INFEASIBLE :5/456pour7,3/14pour9,
+33/51pour19. Les autres UNKNOWN restent ouverts;459rapports attendus.
+Apres import :451/13/475Gram ouverts pour7/9/19, soit939; toujours76/79
+gabarits exclus et12/15de la liste demandee. Pas de contradiction globale.
+Les1050fichiers incluent les enregistrements d'execution, lancement et bilan
+LAB. Le clone est partiel : charger les1050OID de blobs en UN git fetch
+--stdin binaire evite1050requ?tes reseau; git cat-file --batch pour l'import.
+
+root_component_augment_e3_proofs.py conserve chaque code de la couverture
+originale et ajoute son rectangle e3 explicite quand il existe. Sur521
+rapports :572branches fermees de plus,106rapports modifies, aucun Gram
+entier supplementaire. Les codes non traites restent UNKNOWN explicites.
+La couverture7 contient60560codes, dont12333traites env1. Le budget900CPU
+parGram laisse donc surtout des branches jamais essayees, en plus des
+UNKNOWN chronometres. Repartir du catalogue deja calcule, pas du code0.
+--reuse-proven transporte maintenant les codes prouv?s par leur triple,
+avec controle du meme Gram, meme racine/part et des catalogues exacts des
+permutations/couplages. Les index de branches sont recalcules : jamais de
+copie d'un index ancien apres filtrage. Les UNKNOWN ne sont pas copies.
+
+Pilote9#193 deux etoiles completes/E3 :premiercode[0,4,8] UNKNOWN150.297CPU,
+99690branches28468conflits. Ce resultat n'exclut rien.
+Nouveau renforcement :pour S de9sommets (racine,4bases,4coins), x=1_S,
+delta=(A-3I)x-1. A^2=12I-A+2J et A1=14*1 donnent A delta=-4delta,
+sum delta=0 et ||delta||^2=56-14e, puisque S a14+e aretes. Les99coordonnees
+sont toutes entieres. e4 impose le code parfait A1_S=1+3*1_S sur TOUS les
+sommets. Pour e0/1/2, budget quadratique exact, pas seulement projections
+sur les anciennes directions courtes. Ancien root delta0;14anciens voisins
+ont les defauts de comptes d'etiquettes;84Gamma ont les sommes d'adjacence.
+Les15equations propres sur l'ancienne etoile sont lineaires. Sur ses sept
+triangles,12|sum_L delta|<=||delta||^2 par la masse positive entiere.
+Encode dansroot_component_rotated_residual.py, option--rotated-residuals.
+
+Pilote7#1307 lance02h09, session82413, deuxcodes restants[31,1,7]/[31,1,8],
+180CPU/code360total,30rectangles+normes exactes+signatures+gabarits tournes.
+77codes apres E3,75exclusions AWS heritees. Rien ne permet encore de le
+compter ferme. Un seul gros modele. Nouveau gardien30104,uncoeur partage,
+BelowNormal,pauses65/resume50. Dernierlu/ack982, dernierenvoye98302h06m35.

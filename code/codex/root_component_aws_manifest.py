@@ -93,6 +93,9 @@ def main():
           'retry_rule':'Use a NEW output filename and --reuse-proven OLD_FILE. This carries only proved INFEASIBLE component codes; UNKNOWN codes are tried again. Do not overwrite the first report.'}
     args.prefix.parent.mkdir(parents=True,exist_ok=True)
     args.prefix.with_suffix('.jsonl').write_text(''.join(json.dumps(t,separators=(',',':'))+'\n' for t in tasks),encoding='utf-8')
+    args.prefix.with_suffix('.tsv').write_text(''.join(
+        '\t'.join([t['task_id'],'1800',t['command']+' > '+shlex.quote(t['log'])+' 2>&1',t['output']+','+t['log']])+'\n'
+        for t in tasks),encoding='utf-8')
     args.prefix.with_suffix('.metadata.json').write_text(json.dumps(meta,indent=2)+'\n',encoding='utf-8')
     args.prefix.with_suffix('.requirements.txt').write_text(''.join(f'{k}=={v}\n' for k,v in requirements.items()),encoding='utf-8')
     print(json.dumps({k:meta[k] for k in ('task_count','counts','code_commit','solver_cpu_budget_sum_seconds')}))

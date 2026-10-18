@@ -39,22 +39,27 @@ def main():
     parser.add_argument('--short-norm',type=int,default=4)
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
-    parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
+    parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
+    parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
+    parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
+    parser.add_argument('--reuse-proven',type=Path,help='Copy excluded codes with the same Gram, frame and matching catalogue; filtered code covers may differ.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     resources=limit_research_process(4)
     cover=next(r for r in json.loads((args.directory/'root_component_gram_orbits20.json').read_text())['records'] if r['template_index']==args.index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
     values=cover['gram_anchor_values'][args.gram_index]
-    template=json.loads((args.directory/'root_component_templates.json').read_text())['survivors'][args.index]
+    all_templates=json.loads((args.directory/'root_component_templates.json').read_text())['survivors']
+    template=all_templates[args.index]
     tables=json.loads(args.local_tables.read_text())
-    context={}
+    context={};rotation_values={} if args.rotated_signatures else None
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=args.minc_lines,
         line_profiles=args.line_profiles,profile_triples=True,exact_triangles=True,
         short_vectors=True,normalize_component=True,component_branch_context=context,
         upper_projector=args.upper_projector,rotated_boundary=args.rotated_boundary,
-        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance)
+        stabilizer_normalize=args.stabilizer_normalize,short_norm=args.short_norm,minc_balance=args.minc_balance,
+        rotated_signature_context=rotation_values)
     assert not model.validate(), model.validate()
     base_model_only=not context
     if base_model_only:
@@ -65,7 +70,7 @@ def main():
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -81,11 +86,28 @@ def main():
         branches.extend(previous['branches'])
     elif args.reuse_proven:
         old=json.loads(args.reuse_proven.read_text())
-        assert old['records'][0]['template_index']==args.index
-        previous=old['records'][0]['cases'][0]
-        assert previous['gram_index']==args.gram_index
-        assert previous['gram_anchor_values']==values and previous['component_codes']==codes
-        branches.extend(dict(r,source=str(args.reuse_proven)) for r in previous['branches'] if r['status']=='INFEASIBLE')
+        matches=[c for r in old['records'] if r['template_index']==args.index
+                 for c in r['cases'] if c['gram_index']==args.gram_index]
+        assert len(matches)==1
+        previous=matches[0]
+        assert previous['gram_anchor_values']==values
+        if not base_model_only:
+            assert previous['component_root']==context['root'] and previous['component_part']==context['part']
+            prior_table_path=old.get('options',{}).get('local_tables') or old.get('local_E3_augmentation',{}).get('tables')
+            assert prior_table_path, 'Code numbers need the original matching catalogue.'
+            previous_tables=json.loads(Path(prior_table_path).read_text())
+            size=6*len(context['part'])
+            before=next(r for r in previous_tables['records'] if r['vertices']==size)
+            after=next(r for r in tables['records'] if r['vertices']==size)
+            for field in ('cross_permutations','internal_matchings'):assert before[field]==after[field]
+            positions={tuple(code):i for i,code in enumerate(codes)}
+            for r in previous['branches']:
+                if r['status']!='INFEASIBLE' or tuple(r['code']) not in positions:continue
+                assert previous['component_codes'][r['component_index']]==r['code']
+                branches.append(dict(r,component_index=positions[tuple(r['code'])],
+                    source_component_index=r['component_index'],source=str(args.reuse_proven)))
+        elif previous.get('base_model_only') and previous['status']=='INFEASIBLE':
+            branches.extend(dict(r,source=str(args.reuse_proven)) for r in previous['branches'] if r['status']=='INFEASIBLE')
     completed={r['component_index'] for r in branches}
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='RUNNING',
               component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches,
@@ -118,7 +140,20 @@ def main():
             print(json.dumps({'component_index':i,'boundary_projectors':{k:v for k,v in boundary_info.items() if k!='per_vertex'}}),flush=True)
         if args.rotated_rectangles and not base_model_only:
             from root_component_rotated_rectangles import add_rotated_rectangles
-            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles)
+            rectangle_context=[]
+            rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
+            if args.rotated_residuals:
+                from root_component_rotated_residual import add_rotated_residual_cuts
+                from root_component_boundary_psd import fixed_line_graph
+                fixed=fixed_line_graph(graph,template,tables,context['root'],context['part'],code)
+                rotated_info['integer_residuals']=add_rotated_residual_cuts(branch_model,fixed,rectangle_context)
+            if args.rotated_signatures:
+                from root_component_short_vectors import add_rotated_signature_cuts
+                rotated_info['short_signature_cuts']=add_rotated_signature_cuts(branch_model,rectangle_context,rotation_values)
+            if args.rotated_templates:
+                from root_component_rotated_templates import add_rotated_template_cover
+                rotated_info['component_template_cover']=add_rotated_template_cover(branch_model,rectangle_context,template,all_templates,
+                    eigen_context=rotation_values if args.rotated_signatures else None)
             print(json.dumps({'component_index':i,'rotated_rectangles':{k:v for k,v in rotated_info.items() if k!='scope'}}),flush=True)
         assert not branch_model.validate(),branch_model.validate()
         solver=cp_model.CpSolver()

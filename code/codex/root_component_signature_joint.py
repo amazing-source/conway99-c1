@@ -25,7 +25,7 @@ from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
 
 
-def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0, minc_balance=False):
+def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0, minc_balance=False, rotated_signature_context=None):
     assert not (mate_normalize and normalize_component), 'Use a single ordered normalization hierarchy.'
     assert not normalize_component or local_tables is not None
     assert not stabilizer_normalize or normalize_component
@@ -328,10 +328,10 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             model.add(graph[u][v] + sum(product(graph[u][z], graph[v][z]) for z in range(84))
                       == 2 - len(set(LABELS[u]) & set(LABELS[v])))
             c2_count += 1
-    minc_info=None
+    minc_info=None;partition_context=[]
     if minc_lines:
         from root_component_minimum_partition import add_minimum_partitions
-        minc_info=add_minimum_partitions(model,graph,minc_lines,balance=minc_balance)
+        minc_info=add_minimum_partitions(model,graph,minc_lines,balance=minc_balance,partition_context=partition_context)
     profile_info=None
     if six_prism_profiles:
         from root_component_six_prism_profiles import add_six_prism_profiles
@@ -350,9 +350,20 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
             from root_component_short_vectors import add_short_triangle_cuts
             short_info['triangle_sign_cuts']=add_short_triangle_cuts(model,triangle_context,short_data,hfull,indicators)
     grid_rotation_info=None
+    rotation_values=None
+    if short_data is not None and (grid_rotations or rotated_signature_context is not None or minc_lines):
+        from root_component_short_vectors import make_rotated_signature_values, add_rotated_signature_cuts
+        rotation_values=make_rotated_signature_values(model,short_data,hfull,indicators)
+        if rotated_signature_context is not None:rotated_signature_context.update(rotation_values)
+        if partition_context:
+            from root_component_short_vectors import add_component_signature_cuts
+            minc_info['component_signature_cuts']=add_component_signature_cuts(model,partition_context,rotation_values)
     if grid_rotations:
         from root_component_rotated_rectangles import add_grid_rotations
-        grid_rotation_info=add_grid_rotations(model,graph,grid_rotations)
+        rectangle_context=[]
+        grid_rotation_info=add_grid_rotations(model,graph,grid_rotations,rectangle_context)
+        if rotation_values is not None:
+            grid_rotation_info['short_signature_cuts']=add_rotated_signature_cuts(model,rectangle_context,rotation_values)
     info = {"pair_psd_tables": pair_tables, "pair_psd_rows": pair_rows, "c2_equations": c2_count,
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
