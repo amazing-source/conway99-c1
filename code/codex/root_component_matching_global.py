@@ -22,10 +22,13 @@ def main():
     p.add_argument('--gram-cover',type=Path,required=True)
     p.add_argument('--seconds',type=float,default=120)
     p.add_argument('--matching-indices',type=int,nargs='+')
+    p.add_argument('--root-line',type=int,choices=range(7),
+                   help='Cover every labelled matching of this complete star, instead of splitting the first component code.')
     p.add_argument('--low-budget-cover',type=Path,required=True)
     p.add_argument('--residual-gram-profiles',type=Path,required=True)
     p.add_argument('--residual-eigen',type=int,default=2)
     p.add_argument('--log-search',action='store_true')
+    p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
     assert not args.output.exists()
@@ -33,7 +36,9 @@ def main():
     from root_component_local_tables import add_local_component_tables
     from root_component_minimum_partition import add_minimum_partitions
     from root_component_exact_triangles import add_exact_triangle_structure
-    from root_component_matching_rotation import add_matching_rotation
+    from root_component_matching_rotation import add_matching_rotation,add_fixed_matching_rotation
+    from root_component_complete_star import matching_cover,matching_assignments
+    from root_component_propagation import PAIRS
     from root_component_rotated_rectangles import add_rotated_rectangles
     from root_component_rotated_residual import add_rotated_residual_cuts
     from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts,add_gram_kernel_cuts
@@ -59,8 +64,13 @@ def main():
     info['nonroot_partitions']=add_minimum_partitions(base,graph,2,balance=True)
     info['triangle_structure']=add_exact_triangle_structure(base,graph,template)
     prism_roots=[i for i,parts in enumerate(template['nontrivial_component_groups']) if not parts]
-    use_prism=bool(prism_roots)
-    matchings=[None] if use_prism else sorted({code[1] for code in component['codes']})
+    use_prism=bool(prism_roots) and args.root_line is None
+    full_star_cover=None
+    if args.root_line is not None:
+        _,star_parts,star_counts,full_star_cover=matching_cover(template,args.root_line)
+        matchings=list(range(len(full_star_cover)))
+    else:
+        matchings=[None] if use_prism else sorted({code[1] for code in component['codes']})
     selected=args.matching_indices if args.matching_indices is not None else matchings
     assert set(selected)<=set(matchings)
     result={'scope':__doc__,'template_index':args.index,'status':'UNKNOWN',
@@ -69,9 +79,12 @@ def main():
         'gram_cover_sha256_lf':digest(args.gram_cover),'fixed_gram_witness':False,
         'resources':resources,'model':info,'build_cpu_seconds':time.process_time()-start,
         'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
+            'linearization':args.linearization,
             'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
             'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'known_six_prism_root':prism_roots[0] if use_prism else None,
+        'complete_matching_root':args.root_line,
+        'complete_star_matching_cover':full_star_cover,
         'component_codes':component.get('codes',[]),'matching_cover':matchings,
         'matching_branches':[],'all_matching_branches_processed':False,
         'portable_unsat_proof':False,'global_conway_exclusion':False}
@@ -80,7 +93,17 @@ def main():
                       'matching_cover':matchings,'build_cpu_seconds':result['build_cpu_seconds']}),flush=True)
     for mi in selected:
         model=base.clone();rectangles=[];start=time.process_time()
-        if use_prism:
+        if full_star_cover is not None:
+            # This is the FULL labelled matching cover, not another symmetry
+            # quotient. The existing first-component mate-flip normalization
+            # preserves its union, since every transformed matching is included.
+            fixed=[list(row) for row in graph]
+            for vi,value in matching_assignments(args.root_line,full_star_cover[mi]).items():
+                u,v=PAIRS[vi]
+                model.add(graph[u][v]==value)
+                fixed[u][v]=fixed[v][u]=value
+            fixed,rectangles,rotation=add_fixed_matching_rotation(model,fixed,template,args.root_line,mi)
+        elif use_prism:
             fixed=graph
             rotation=add_rotated_rectangles(model,graph,template,tables,prism_roots[0],[],[],30,rectangles)
         else:
@@ -98,7 +121,7 @@ def main():
         branch={'matching_index':mi,'rotation':rotation,'variables':len(model.proto.variables),
                 'constraints':len(model.proto.constraints),'build_cpu_seconds':time.process_time()-start}
         print(json.dumps({k:branch[k] for k in ('matching_index','variables','constraints','build_cpu_seconds')}|{'phase':'model_ready'}),flush=True)
-        branch.update(solve(model,args.seconds,args.log_search))
+        branch.update(solve(model,args.seconds,args.log_search,args.linearization))
         result['matching_branches'].append(branch)
         result['all_matching_branches_processed']={b['matching_index'] for b in result['matching_branches']}==set(matchings)
         if result['all_matching_branches_processed'] and all(b['status']=='INFEASIBLE' for b in result['matching_branches']):result['status']='INFEASIBLE'

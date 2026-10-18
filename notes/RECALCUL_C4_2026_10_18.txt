@@ -1,0 +1,69 @@
+RECALCUL C4 APRES CORRECTION DES DOMAINES OR-TOOLS
+18/10/2026, point de travail vers 12h27.
+
+Etat actif : 76 familles non touchees par le bug identifie, 3 familles
+REOUVERTES (7,9,19). Aucun retour a une exclusion de toute la branche c4.
+Les anciens verdicts utilisant les produits fautifs restent retires.
+Correctif ac8921c3; nouveaux noyau/mineurs/energie Gram dans 8ce2e720.
+
+Couverture a utiliser : root_component_gram_filtered_20261018_0306.json,
+7=449,9=12,19=448 Gram. Le filtre0421 est invalide pour7 et9.
+Les coupes transportees utilisent uniquement le front fige d93c1b0 et
+les907 profils distincts de ces909 Gram. Budget51 CONDITIONNEL aux
+nouvelles racines; aucune hypothese de budget universel par racine.
+
+DIAGNOSTICS
+Famille7, Gram1069, deux etoiles de la droite a six prismes : UNKNOWN120CPU.
+Famille19, autre droite complete (droite6, neuf couplages etiquetes) :
+couplages0/4/8 UNKNOWN60CPU chacun; les six autres non testes ici.
+Cette couverture etiquetee n'ajoute aucun quotient de symetrie.
+
+Famille9 : balayage des12 Gram avec premier couplage M0 fixe, P et M1
+libres. Les groupes de couplages ET leurs tailles varient selon le Gram :
+ne pas reutiliser numeriquement un groupe d'un autre Gram.
+Le modele matching_residual utilisait layer2, une relaxation des equations
+de voisins communs. Ses INFEASIBLE sont utiles; ses UNKNOWN ne decident rien.
+L'option --layer4 ajoute maintenant toutes les equations C2.
+
+Exemple precis Gram193, code0=[0,4,8] :
+  couche2, coupes Gram/noyau/energie et deux etoiles : UNKNOWN60CPU;
+  +projecteurs de bord et deux triangles croises/deux triangles d'etoile :
+     UNKNOWN90.53125CPU;
+  memes renforcements ET couche4 : INFEASIBLE92.171875CPU,
+     19116 branches,6857 conflits,329045 variables,1149657 contraintes.
+Il s'agit d'un verdict CP-SAT; pas de certificat UNSAT portable.
+Ce code n'est qu'un des31 codes canoniques du Gram193.
+
+Le bilan c4_9_summary_1227.json combine seulement des rapports corriges
+et termines. Il exige la meme couverture ordonnee de codes, la meme
+racine, le meme composant et les memes valeurs de Gram pour fusionner.
+Les produits sans marqueur python_list_endpoints_v2 sont refuses.
+Couverture exclue sur couverture totale :
+193 16/31;196 4/31;202 15/31;203 8/58;205 4/31;207 22/32;210 0/32.
+213/214/216/219/221 n'etaient pas encore integres a ce point.
+AUCUN des12 Gram n'est encore entierement exclu dans ce bilan.
+
+PISTE TESTEE SANS GAIN
+Propagation de composantes connues sur chaque triangle connu : sous
+minimumGLOBALc>=4, une composante a au plus18 sommets et6 par couleur.
+Les composantes saturees imposent des absences d'aretes. Sur les31 codes
+du Gram193, aucune nouvelle absence ni contradiction n'est obtenue.
+Outil root_component_connectivity_propagation.py; ce test n'utilise pas
+les valeurs du Gram. Garder ce resultat negatif, ne pas le compter comme
+une exclusion ou comme une contrainte suffisante.
+
+RESSOURCES
+Deux calculs au plus, un worker CP-SAT chacun, affinite COMMUNE plafonnee
+a deux processeurs logiques sur16. Garde partage : reduction/pauses selon
+la charge globale, seuil65%. Une pointe globale86% a ete enregistree a
+12h24; le garde a suspendu nos calculs puis repris a44%. Il ne peut pas
+garantir le plafond de charge des autres applications.
+
+OUTILS AJOUTES
+matching_global --root-line : couverture complete etiquetee d'une etoile
+choisie, au lieu du premier groupe de composant.
+matching_residual --layer et --linearization : C2 complet ou relaxation,
+option du solveur conservee dans le rapport.
+local_branch --include-prism-stars : ajoute les etoiles de toutes les
+droites a six prismes connues; contexte de coordonnees distinct par appel.
+Cette derniere option n'a pas encore servi a un verdict dans ce bilan.

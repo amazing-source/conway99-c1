@@ -70,6 +70,7 @@ def main():
     parser.add_argument('--short-norm',type=int,default=4)
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
+    parser.add_argument('--include-prism-stars',action='store_true',help='Also transport both already fixed stars of every six-prism line.')
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
     parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
@@ -87,7 +88,7 @@ def main():
     assert args.presolve_iterations>=1
     assert not (args.residual_gram or args.residual_eigen or args.tight_residual_bounds) or args.rotated_residuals
     if args.component_range:assert 0<=args.component_range[0]<args.component_range[1]
-    resources=limit_research_process(4)
+    resources=limit_research_process(1)
     cover=next(r for r in json.loads((args.directory/'root_component_gram_orbits20.json').read_text())['records'] if r['template_index']==args.index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
     values=cover['gram_anchor_values'][args.gram_index]
@@ -123,7 +124,7 @@ def main():
         assert code_cover_hash==args.expected_code_cover, 'Canonical cover changed; regenerate the task manifest.'
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals','include_prism_stars'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -152,12 +153,16 @@ def main():
     branches=[]
     if args.output.exists():
         old=json.loads(args.output.read_text())
+        from root_component_rotated_gram import unsafe_product_reports
+        assert not any(unsafe_product_reports(old)), 'Cannot resume a withdrawn residual-product report.'
         assert old['options']==options
         previous=old['records'][0]['cases'][0]
         assert previous['gram_anchor_values']==values and previous['component_codes']==codes
         branches.extend(previous['branches'])
     elif args.reuse_proven:
         old=json.loads(args.reuse_proven.read_text())
+        from root_component_rotated_gram import unsafe_product_reports
+        assert not any(unsafe_product_reports(old)), 'Cannot reuse a withdrawn residual-product report.'
         matches=[c for r in old['records'] if r['template_index']==args.index
                  for c in r['cases'] if c['gram_index']==args.gram_index]
         assert len(matches)==1
@@ -262,14 +267,28 @@ def main():
             from root_component_rotated_rectangles import add_rotated_rectangles
             rectangle_context=[]
             rotated_info=add_rotated_rectangles(branch_model,branch_graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
+            if args.include_prism_stars:
+                from root_component_boundary_psd import fixed_line_graph
+                fixed=fixed_line_graph(branch_graph,template,tables,context['root'],context['part'],code)
+                extra_info=[]
+                for root,parts in enumerate(template['nontrivial_component_groups']):
+                    if parts or root==context['root']:continue
+                    extra=[]
+                    # Each call gets its own context: its old-line rectangles
+                    # must be computed in that call's own coordinate chart.
+                    added=add_rotated_rectangles(branch_model,fixed,template,tables,root,[],[],30,extra)
+                    rectangle_context.extend(extra);extra_info.append(added)
+                rotated_info['additional_prism_stars']=extra_info
             if args.rotated_residuals:
                 from root_component_rotated_residual import add_rotated_residual_cuts
                 from root_component_boundary_psd import fixed_line_graph
                 fixed=fixed_line_graph(branch_graph,template,tables,context['root'],context['part'],code)
                 rotated_info['integer_residuals']=add_rotated_residual_cuts(branch_model,fixed,rectangle_context,tight_bounds=args.tight_residual_bounds)
                 if args.residual_gram:
-                    from root_component_rotated_gram import add_gram_cuts
+                    from root_component_rotated_gram import add_gram_cuts,add_gram_kernel_cuts
                     rotated_info['integer_gram']=add_gram_cuts(branch_model,rectangle_context,args.residual_gram)
+                    if args.residual_gram=='all':
+                        rotated_info['gram_kernel']=add_gram_kernel_cuts(branch_model,rectangle_context)
                 if args.residual_eigen:
                     from root_component_rotated_gram import add_eigen_cuts
                     rotated_info['full_residual_eigen']=add_eigen_cuts(branch_model,fixed,rectangle_context,args.residual_eigen)
