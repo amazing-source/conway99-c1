@@ -80,3 +80,46 @@ variables booleennes, avec31536 produits booleen*compte reellement encodes
 sur une coordonnee. Les trois sont SAT avec reconstruction SRG exacte.
 Ces controles exercent notre nouvelle couche, pas les calculs de LAB.
 Rapport : row_moment_product_controls.json.
+
+6. Controle du meme encodeur SIGNE que le modele a Gram fixe (22h04).
+La boucle historique est extraite sans changement de formules dans
+root_component_eigen_equations.add_eigen_equations. signature_joint
+appelle desormais cette fonction. Le vrai SRG243 ne possede PAS la valeur
+propre-4 : on ne lui impose donc pas a tort l'equation homogene de Conway.
+Pour ses comptes H=W-Z, on a Gamma H=-4H+8(J-P). La difference Y=H_F-H_G,
+F=(0,1),G=(0,2), satisfait Gamma Y=-4Y+8(P_G-P_F), et contient des valeurs
+strictement positives et negatives. Cette identite est controlee sur les
+aretes reelles, puis encodee par EXACTEMENT la meme fonction.
+220 equations,48180 produits booleen*entier signe,72490 variables : SAT
+0.34375CPU, avec reconstruction SRG exacte. Domaines issus de listes Python.
+Rapport : signed_eigen_encoder_positive243.json.
+Cela controle l'encodeur signe nouveau, sans pretendre tester les autres
+coupes specifiques a Conway sur un graphe qui a d'autres parametres.
+
+7. Niveau microscopique de l'ablation444.
+Le temoin SAT sans equations propres viole1029 sommes sommet/rectangle.
+Pour w etiquete(0,2), rectangle F=(0,4), le nombre
+sum_{v voisin w} z_vF + z_wF vaut5 au lieu de6.
+Pour le meme w et F=(0,5), il vaut7 au lieu de6. L'erreur est donc cachee
+par certaines sommes globales. Rapport gz3_444_ablation_row_defects.json.
+Ceci explique le temoin; l'exclusion de TOUTES les realisations de444
+reste le verdict CP-SAT indique plus haut, sans certificat portable.
+
+8. Pilote sans Gram sur le gabarit3 entier.
+Catalogue281 lignes,dimension6; le plan agrege est SAT. Modele joint avec
+les6 coordonnees libres et equations sommet/rectangle :26786 variables,
+48207 contraintes, UNKNOWN20.09375CPU. Aucune fermeture du gabarit3.
+Resultats dans gz3_without_gram_row_moments/. Pas de cout global etabli.
+
+9. Fermeture complete du gabarit gz599 (22h06).
+La couverture LAB contient9 Gram. Selon c3hard_targets.json et les
+messages1095/1096/1100, huit sont deja exclues; seule la Gram5 restait
+UNKNOWN. Ce dernier cas est maintenant INFEASIBLE3.375CPU (4.375CPU avec
+construction),3419 branches275 conflits. L'assemblage ferme9/9.
+Les huit verdicts de LAB sont acceptes, sans duplication des campagnes.
+La fermeture garde le statut de resultats CP combines, sans certificat
+portable. Artefacts : cover_00599.json.gz, lab_c3hard_targets.json,
+gz599_last_gram5_eigen.json, gz599_closure.json.
+Quatre grilles : E3 donne au plus50 aretes internes, donc le budget51
+est automatique pour tout le gabarit; la Gram5 impose exactement48.
+Ce gabarit est exclu, pas Conway dans son ensemble.
