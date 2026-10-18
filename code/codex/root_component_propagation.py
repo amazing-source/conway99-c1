@@ -56,7 +56,7 @@ def constraints(template):
     return [(items,target,reason) for items,(target,reason) in equations.items()], bounds, initial
 
 
-def propagate(template, use_c2=True):
+def propagate(template, use_c2=True, extra_initial=None):
     equations, bounds, initial = constraints(template)
     values = [-1]*len(PAIRS)
     steps = []
@@ -70,6 +70,9 @@ def propagate(template, use_c2=True):
             steps.append([index,value,reason])
     for index,value in initial.items():
         assign(index,value,["grid_rectangle"])
+    for index,value in (extra_initial or {}).items():
+        assert 0<=index<len(PAIRS) and value in (0,1)
+        assign(index,value,["fixed_component_input"])
     rounds = 0
     while conflict is None:
         rounds += 1

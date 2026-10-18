@@ -1396,3 +1396,53 @@ le manifeste; chaque autre travailleur fera ce controle sur son proprecas.
 Nominal maximal alloue aux solveurs :4231.85CPUh si chaque code epuisait
 180s. Ce n'est ni une estimation mesuree ni une borne de temps de preuve.
 Prochain travail local reserve :t9_g193_r2_10, apres le pilote7#1069.
+
+42. Premier lotv2 et diagnostic avant recherche (18/10,03h54).
+Archive partagee6a969e4 : aws_v2_runtime_10c2e82.zip,3.46MiB,964 fichiers.
+Le premier lot t9_g193_r2_10 est termine : cinq nouveaux INF, trois UNKNOWN.
+Codes INF :[1,4,7]80.09375CPU,[1,4,8]104.25,[1,4,10]110.65625,
+[1,4,13]123.796875,[2,3,11]157.953125.
+UNKNOWN :[2,3,14]189.96875,[7,4,4]303.125,[7,4,5]392.140625CPU,
+tous avec0 branches et0 conflits. Les180s nominaux ne limitent donc pas
+strictement certaines phases de preparation/presolve. Pic memoire observe
+5.5GiB surWindows; signal991 a LAB : ne pas reprendre128 travailleurs
+sur512GiB sans mesure,64 avec marge est un debut prudent.
+9#193 compte maintenant7 codesINF sur31. Le Gram reste ouvert.
+L'essai7#1069 sans fixerC18 et avec transport conditionnel resteUNKNOWN
+300.421875CPU (424207 branches,68327 conflits).
+
+NOUVELLES COUPES, preparees mais aucun verdict a ce stade :
+(a) Pour chaque rectangleQ, le residu d=(A-3I)1_S-1 est dans[-2,3].
+SurS, d est dans[-2,0]; horsS, d>=-1. Pour un sommet hors de l'etoile
+fermee de la nouvelle racine, soit t le nombre de voisins parmi les4
+voisins de racine du bloc, m son indicatrice d'appartenance aQ. Alors
+t-1-3m<=d<=3-t-m. En effet t=2 force m=1; si t=1, C1 limite a2 les
+voisins dansQ; si t=0, Q ne contient que4 sommets. C'est la preuve de
+--tight-residual-bounds, pas une observation sur des temoins.
+(b) d_ij=-T1_Qij etT^2=7T donnent, pour des rectangles distincts,
+d_ij.d_ik=-7e(Qij,Qik), et d_ij.d_kl=7(4-e(Qij,Qkl)) si axes disjoints.
+Les produits sont multiples de7, >=-56, <=0 pour une ligne commune,
+<=28 sinon. Les paires opposees et la nonpositivite imposent aussi
+l'orthogonalite des composantes distinctes de taille12. Option
+--residual-gram incident/all, helper root_component_rotated_gram.py.
+(c) --residual-eigen N impose les84 equationsGamma deAd=-4d pourN
+residus par nouvelle racine; les15 autres equations etaient deja imposees.
+(d) Les909 Gram restants ont907 profils distincts de lignes : trier
+les21 valeurs2048*R_ii+sum_j R_ij^2, avec zeros pour les grilles.
+Ce profil est invariant sous permutation des droites. La table figee
+root_component_low_budget_row_profiles_0306_d93c1b0.json ne s'applique
+qu'a une nouvelle racine de budget<=51, et est liee par hash au front
+d93c1b0. Aucune identification des sommets par automorphisme n'est faite.
+Les fichiers exploratoires sans suffixe_d93c1b0 ne sont pas utilises.
+
+Propagation avant les grosses tables : propagate accepte maintenant les
+aretes fixees par le code comme donnees initiales. Pour les trois codes
+UNKNOWN de9#193, cela fixe respectivement104/92/92 aretes supplementaires
+en0.03125CPU chacun, sans contradiction directe. --propagate-fixed-code
+injecte ces consequences dans le modele et les domaines des coins.
+Le solveur expose aussi --presolve-iterations et --no-presolve; il conserve
+maintenant les statistiques de propagation et repete stop_search apres
+epuisement du budget, plutot que d'envoyer un signal unique.
+ACTIF :9#193_propagated_tight_retry,session73140,180CPU,limit-new1,
+presolve1,propagation prealable,bornes serrees, sans produitsGram nouveaux.
+Les calculs utilisent toujours un coeur; aucune nouvelle instance AWS.
