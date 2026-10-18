@@ -230,3 +230,14 @@ quatre aretes du cycle, et la comparaison9s(y)+8g(y)>=9s(x)+8g(x) utilise
 des additionneurs booleens. Controles exhaustifs328/328 sur les poids,
 signes, constantes, doublons et retenues. Modele19/M4 :355420variables,
 1312971clauses; essai1000000conflits en cours. Aucun Gram particulier fixe.
+
+18/10, 15h48 — Tables de quatre coins sans choix de Gram
+La couverture selectionnee conserve 12 Gram pour9 et429 pour19. Le cache
+root_component_projector_9_coupled.prepared.json contient les12 matrices de9
+avec exactement les memes ancres, lift, ordre et budget. Le nouveau script
+root_component_reuse_corner_cover.py remappe le selecteur par les valeurs
+completes de Gram :1680 lignes individuelles,46902 lignes de quatre coins.
+Aucune matrice n'est eliminee par cette reutilisation. Le modele all-in-one
+avec ces tables est en cours. root_component_prepare_corner_cover.py prepare
+les429 matrices de19, avec progression atomique et conservation du choix
+racine weighted_prisms_grids. Les familles9/19 restent ouvertes.
