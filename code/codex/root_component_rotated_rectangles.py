@@ -41,7 +41,8 @@ def add_rotated_rectangles(model, graph, template, tables, root, part, code, cou
                 c=next(x for x in LABELS[v] if x!=letter)
                 assert isinstance(fixed[p][q],int)
                 e=int(c==(b^1))+fixed[p][q]+sum(x in LABELS[w] for x in (b,c) for w in (p,q))
-                original.append({'line':(u,v),'gamma_vertices':[u,v,p,q],'edge_count':e})
+                original.append({'line':(u,v),'gamma_vertices':[u,v,p,q],'edge_count':e,
+                                 'old_neighbours':[letter,letter^1,b,c]})
             item['old_root_rectangles']=original
     return result
 

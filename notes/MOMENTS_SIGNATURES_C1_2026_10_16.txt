@@ -1198,3 +1198,53 @@ Pilote7#1307 lance02h09, session82413, deuxcodes restants[31,1,7]/[31,1,8],
 77codes apres E3,75exclusions AWS heritees. Rien ne permet encore de le
 compter ferme. Un seul gros modele. Nouveau gardien30104,uncoeur partage,
 BelowNormal,pauses65/resume50. Dernierlu/ack982, dernierenvoye98302h06m35.
+
+
+34. Deux nouveaux Gram7 fermes; relations vectorielles tournees (18/10,02h27).
+7#1307 : couverture E3complete77codes,75preuves heriteesAWS et deuxnouveaux
+verdicts INFEASIBLE [31,1,7]130.59375CPU /[31,1,8]111.5625CPU, soit242.15625
+CPU nouveaux. Rapportroot_component_signature_7_1307_residual_pilot.json.
+7#1245 : couverture10codes,7preuves heriteesAWS, les troisderniersINF :
+[136,3,3]71.359375CPU,[137,3,3]107.140625CPU,[137,3,6]80.984375CPU;
+total259.484375CPU nouveaux. Rapport7_1245_full_residual_pilot.json.
+Ces deuxGram sont fermes. Aucun gabarit entier supplementaire : restent
+449/13/475Gram pour7/9/19 sur le lot partiel;76/79et12/15 inchanges.
+Les budgets180et150/code depassent les120AWS : pas d'attribution exclusive
+du gain a une seule nouvelle coupe. Les deux pilotes ferment reellement.
+
+Renforcement utilise dans1245, pas1307 : les six rectangles utilisant
+l'ancienne droite ont aussi leur residu delta99 entier explicite, en plus
+des quinze rectangles variables. Au nouveau root delta_ij=-T'1_Qij.
+Pour toute droite i,sum_(j!=i)delta_ij=0 coordonnee par coordonnee :
+sum_j 1_Sij=6*1_Li+1_N(Li)=(A+4I)1_Li, tue par le projecteur -4.
+Si quatre rectangles non-grilles incident en i, c>=4 impose deux composantes
+12 :leurs quatre vecteurs se repartissent en deux paires opposees. Le meme
+choix de paires est impose aux anciennes projections ET aux99coordonnees.
+Les20autres templates prebudget sont tous gardes : aucune borne51 tournee.
+Correction de frappe : on utilise bien les200templates prebudget.
+Pour une etoile incomplete les nouvelles relations vectorielles completes
+ne sont pas imposees. Couches anciennes/projections restent applicables.
+
+Une six-prism line existe en7 sans fixer de code de composante : ligne0.
+Nouveau wrapperroot_component_prism_residual.py : impose les30rectangles
+aux deux points de cette droite, mais laisse TOUS les codes C18 variables.
+Pilote7#1069 lance02h27,session31294,300CPU. But : fermer un Gram d'un coup
+sans enumerer sa grande couverture. Aucune exclusion avant verdict.
+
+35. Couverture finie commune par quatre droites en grille (18/10,02h27).
+Si4droites au root sont deuxadeuxen grille, boule induite33 = root+8voisins
++6Qij a4sommets. Chaque Qij est C4. Les deux grillesSij,Sik partagentLi;
+tout sommet deQik a deja son unique voisin dansSij surLi, donc Qij-Qik
+sansaretes. Pouraxesdisjoints, chaque sommetQij a exactementunvoisinQkl :
+un couplage parfait. Le seul choix est donc3permutations de4points.
+13824boules etiquetees,59orbites sousS4 semidirect C2^4. Enumeration exacte
+par7generateurs etparcours disjoint de toutes les orbites, en0.078CPU.
+root_component_grid4_cover.py;root_grid4_ball_cover.json.
+Aucun des59blocs n'est exclu par le premier test NUMERIQUE PSD deT/U sur
+ses24sommetsGamma; cela n'est ni un certificat positif ni une exclusion.
+7et9 contiennenttousdeux un telK4degrilles. Pour travailler avec leur
+etiquetage de template FIXE, attention : leS4complet peut bouger la ligne
+isolee de7 ou le partage2+2 de9. Les59classes couvrent la famille generale,
+mais il faut garder4choix de ligneisolee pour7/3choix de partage pour9,
+ou quotienter par leurs stabilisateurs. Aucune fixation omise autorisee.
+LAB984 informe, proposition de recherche complementaire surprolongement33.

@@ -17,12 +17,12 @@ from root_component_propagation import LABELS
 
 def add_rotated_residual_cuts(model, graph, rectangles):
     assert len(graph)==84
-    records=[];elements=0;square_tables=0;linear_eigen=0
-    for ri,item in enumerate(rectangles):
-        root=item['root'];base=item['base_vertices'];corners=item['corners']
-        assert 0<=root<14 and len(base)==4 and len(corners)==4
-        assert all(root in LABELS[w] for w in base)
-        tag=f'rotated_residual_{ri}'
+    records=[];elements=0;square_tables=0;linear_eigen=0;original_cache={}
+    def nine_set(root,base,corners,old_labels,contains_old_root,edge_count,tag):
+        nonlocal elements,square_tables,linear_eigen
+        assert len(base)+len(corners)+len(old_labels)+int(contains_old_root)==9
+        assert len(set(old_labels))==len(old_labels)
+        assert len(old_labels)-1-3*int(contains_old_root)==0 # residual at old root
         squares=[];old=[];gamma=[]
         def coordinate(name, expression, zero=False):
             nonlocal square_tables
@@ -40,7 +40,7 @@ def add_rotated_residual_cuts(model, graph, rectangles):
         for b in range(14):
             count=sum(b in LABELS[w] for w in base)
             count+=sum(flag for corner in corners for w,flag in corner['flags'].items() if b in LABELS[w])
-            expression=int(b==(root^1))+count-1-3*int(b==root)
+            expression=int(contains_old_root)+int((b^1) in old_labels)+count-1-3*int(b in old_labels)
             old.append(coordinate(f'{tag}_old_{b}',expression,zero=b//2==root//2))
         for w in range(84):
             terms=[graph[w][v] for v in base]
@@ -54,9 +54,9 @@ def add_rotated_residual_cuts(model, graph, rectangles):
                     elements+=len(values)
                 terms.append(value)
             membership=int(w in base)+sum(corner['flags'].get(w,0) for corner in corners)
-            expression=int(root in LABELS[w])+sum(terms)-1-3*membership
+            expression=sum(b in old_labels for b in LABELS[w])+sum(terms)-1-3*membership
             gamma.append(coordinate(f'{tag}_gamma_{w}',expression,zero=root in LABELS[w]))
-        norm=56-14*sum(item['edges'])
+        norm=56-14*edge_count
         model.add(sum(squares)==norm)
         model.add(sum(old)+sum(gamma)==0)
         model.add(sum(old)==0) # eigen-equation at the original root
@@ -68,8 +68,20 @@ def add_rotated_residual_cuts(model, graph, rectangles):
             # total sum zero give positive/negative mass<=||d||^2/2.
             model.add(12*(old[b]+old[b+1])<=norm)
             model.add(-12*(old[b]+old[b+1])<=norm)
+        return old+gamma
+    for ri,item in enumerate(rectangles):
+        root=item['root'];base=item['base_vertices'];corners=item['corners']
+        assert 0<=root<14 and len(base)==4 and len(corners)==4
+        assert all(root in LABELS[w] for w in base)
+        item['integer_residual_coordinates']=nine_set(root,base,corners,[root],False,sum(item['edges']),f'rotated_residual_{ri}')
+        for original in item['old_root_rectangles']:
+            key=(root,tuple(original['line']))
+            if key not in original_cache:
+                original_cache[key]=nine_set(root,original['gamma_vertices'],[],original['old_neighbours'],True,
+                    original['edge_count'],f'rotated_old_residual_{root}_{key[1][0]}')
+            original['integer_residual_coordinates']=original_cache[key]
         records.append({'root_letter':root,'base_vertices':base,'coordinates':99,
                         'exact_squared_norm':'56-14e','old_star_eigen_equations':15})
-    return {'rectangles':len(records),'records':records,'element_entries':elements,
+    return {'rectangles':len(records),'old_line_rectangles':len(original_cache),'records':records,'element_entries':elements,
             'square_tables':square_tables,'linear_neighbour_eigen_equations':linear_eigen,
             'scope':__doc__}

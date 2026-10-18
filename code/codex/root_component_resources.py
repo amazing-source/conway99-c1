@@ -32,7 +32,7 @@ def limit_research_process(cores=4):
     while state.exists():
         try:
             budget = json.loads(state.read_text(encoding="utf-8-sig"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, PermissionError):
             time.sleep(.1)
             continue
         if budget.get("paused"):

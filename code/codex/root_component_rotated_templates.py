@@ -38,6 +38,59 @@ def allowed_rows(masks,incidence):
     return tuple(tuple((mask>>i)&1 for i in range(15)) for mask in sorted(tail_masks)),relabelings
 
 
+def add_residual_component_identities(model,root,lines,items,incidence,nongrid,pair_index,pairing_maps):
+    """Transport component relations as FULL vectors, including the old line.
+
+At the new root delta_ij=-T'1_Qij. For each incident line i,
+sum_j delta_ij=0. Four nongrid rectangles must split into two opposite
+pairs, since c>=4 forces two size12 components. The same pairing flags
+are used for known short-vector projections and all residual coordinates.
+Only a complete set of fifteen variable rectangles is used here.
+    """
+    if len(items)!=15 or not all('integer_residual_coordinates' in item for item in items):
+        return {'complete_stars':0,'zero_sum_equations':0,'pairing_equations':0}
+    vectors={}
+    for item in items:
+        a,b=sorted((lines.index(tuple(item['base_vertices'][:2])),lines.index(tuple(item['base_vertices'][2:]))))
+        assert (a+1,b+1) not in vectors
+        vectors[a+1,b+1]=item['integer_residual_coordinates']
+    for original in items[0]['old_root_rectangles']:
+        j=lines.index(tuple(original['line']))+1
+        vectors[0,j]=original['integer_residual_coordinates']
+    assert set(vectors)==set(combinations(range(7),2))
+    assert all(len(row)==98 for row in vectors.values()) # old-root coordinate is identically zero
+    zero_sum=0;paired=0
+    for a in range(7):
+        incident_vectors={b:vectors[tuple(sorted((a,b)))] for b in range(7) if b!=a}
+        for w in range(98):
+            values=[row[w] for row in incident_vectors.values()]
+            if all(isinstance(v,int) and v==0 for v in values):continue
+            model.add(sum(values)==0);zero_sum+=1
+        if a not in pairing_maps:
+            neighbours=list(incident_vectors)
+            incident={b:incidence[max(a,b)-1] if min(a,b)==0 else
+                nongrid[pair_index[min(a,b)-1,max(a,b)-1]] for b in neighbours}
+            four=model.new_bool_var(f'residual_four_nongrids_{root}_{a}')
+            model.add(sum(incident.values())==4).only_enforce_if(four)
+            model.add(sum(incident.values())!=4).only_enforce_if(four.Not())
+            pairing={}
+            for b,c in combinations(neighbours,2):
+                if any(isinstance(incident[x],int) and incident[x]==0 for x in (b,c)):continue
+                flag=model.new_bool_var(f'residual_component_pair_{root}_{a}_{b}_{c}')
+                model.add(flag<=four)
+                for x in (b,c):model.add(flag<=incident[x])
+                pairing[b,c]=flag
+            for b in neighbours:
+                model.add(sum(flag for pair,flag in pairing.items() if b in pair)==incident[b]).only_enforce_if(four)
+            pairing_maps[a]=pairing
+        for (b,c),flag in pairing_maps[a].items():
+            for u,v in zip(incident_vectors[b],incident_vectors[c]):
+                if isinstance(u,int) and isinstance(v,int) and u==v==0:continue
+                model.add(u+v==0).only_enforce_if(flag);paired+=1
+    return {'complete_stars':1,'residual_vectors':21,'coordinates_per_vector':99,
+            'zero_sum_equations':zero_sum,'pairing_equations':paired,'scope':add_residual_component_identities.__doc__}
+
+
 def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_context=None):
     assert len(all_templates)==200, 'Use the complete pre-budget component cover.'
     masks=tuple(sorted({t['graph_mask'] for t in all_templates}))
@@ -70,7 +123,7 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
         rows,relabelings=allowed_rows(masks,tuple(incidence))
         model.add_allowed_assignments(nongrid,rows)
         flow_equations=0;flow_variables=0;old_rectangle_bounds=0
-        spectral_energy_cuts=0;energy_tables=0;pairing_equations=0
+        spectral_energy_cuts=0;energy_tables=0;pairing_equations=0;pairing_maps={}
         if eigen_context is not None:
             # The21 rectangle vectors at any root have zero sum at each of
             # its seven incident lines. Pair them with the OLD eigenvectors
@@ -153,8 +206,10 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
                         pairing_equations+=1
                 for b in neighbours:
                     model.add(sum(flag for pair,flag in pairing.items() if b in pair)==incident[b]).only_enforce_if(four)
+                pairing_maps[a]=pairing
                 # Four nongrid neighbours force the 12+12+6+6 pattern. Its
                 # two size12 components pair opposite rectangle vectors.
+        residual_info=add_residual_component_identities(model,root,lines,items,incidence,nongrid,pair_index,pairing_maps)
         info.append({'root_letter':root,'old_line_nongrid_incidence':incidence,
                      'fixed_matched_lines':[list(line) for line in lines],
                      'realized_rectangles':len(items),'allowed_nongrid_graphs':len(rows),
@@ -164,6 +219,7 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
                      'old_root_rectangle_projection_bounds':old_rectangle_bounds,
                      'spectral_energy_inequalities':spectral_energy_cuts,
                      'spectral_energy_tables':energy_tables,
-                     'degree_four_component_pairing_equations':pairing_equations})
+                     'degree_four_component_pairing_equations':pairing_equations,
+                     'full_residual_component_identities':residual_info})
     return {'all_prebudget_component_templates':200,'all_prebudget_nongrid_graphs':116,
             'roots':info,'new_root_prism_budget':None,'scope':__doc__}

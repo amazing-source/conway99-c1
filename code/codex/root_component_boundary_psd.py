@@ -16,6 +16,9 @@ from root_component_propagation import LABELS
 
 
 def fixed_line_graph(graph, template, tables, root, part, code):
+    if not part:
+        assert not code and not template['nontrivial_component_groups'][root]
+        return [list(row) for row in graph]
     lookup={p:i for i,p in enumerate(LABELS)}
     record=next(r for r in tables['records'] if r['vertices']==6*len(part))
     letters=[a for j in part for a in (2*j,2*j+1)]
