@@ -1,0 +1,70 @@
+18 octobre 2026 - Codex
+
+Le gabarit4192 est exclu directement par ses comptes de voisins, sans
+budget de prismes ni enumeration de Gram. Cela elargit l'exclusion
+precedente des79 Gram sous budget51 (80556dc3, ccc08b32). La portee
+est ce gabarit de composantes, pas une exclusion globale de Conway.
+
+Le principe et les equations C z=b et Z^t Z+K=D sont ceux de
+CERTIFICAT_COMPTES_5128_2026_10_18.txt. La partition4192 provient de
+l'entree4192 de c3_open_templates_k3_12.json.gz au commit LAB1d35230.
+L'entree extraite conserve seulement la partition et sa provenance :
+data/codex_neighbor_moments_20261018/template_04192_partition.json.
+
+Le catalogue exhaustif a cinq coordonnees libres, les rectangles
+Q_24,Q_26,Q_45,Q_46,Q_56. Il comprend167 etats de lignes, repartis en
+  3,3,24,1,9,7,11,1,8,8,14,23,9,1,4,11,10,1,7,6,6
+dans l'ordre lexicographique des21 rectangles. La projection separee
+sur Q_03 passe et ne donne pas l'exclusion.
+
+Le modele entier des multiplicites, avec les tableaux de degres internes
+et l'exclusion universelle E3, donne INFEASIBLE :230 variables,
+546 contraintes,502 branches,5 conflits,0.109375s CPU. Ce verdict seul
+n'est pas le certificat portable. Le premier essai de separation,
+avec seulement K_qq<=4 dans les rectangles non-grilles, ne trouve pas
+de certificat lineaire. Un fichier de proposition en garde la trace ;
+ce resultat negatif n'est pas une preuve de realisabilite.
+
+LA RELATION DE DEGRES QUI MANQUAIT
+
+Pour un rectangle non-grille, E3 impose au plus deux aretes internes.
+Si n_d compte ses sommets de degre interne d, les seuls histogrammes
+possibles (n_0,n_1,n_2) sont
+  (4,0,0), (2,2,0), (0,4,0), (1,2,1).
+Ils satisfont tous 2 n_2 <= n_1. Cette relation est lineaire dans les
+multiplicites des etats de lignes, puisque le degre interne du sommet w
+de Q_q est exactement z_wq. Elle exprime la realisation locale d'un
+graphe simple avec au plus deux aretes, pas une nouvelle hypothese SRG.
+
+Avec cette relation, le LP propose un certificat qui est ensuite
+controle en arithmetique entiere. Reduction et extraction :2.171875s CPU.
+Il utilise19 comptes de quatre sommets,41 symetries de blocs,
+12 moments sur les cinq coordonnees libres, et5 majorations locales.
+
+LECTURE COMPACTE
+
+Poser h_q = 2 n_2(Q_q) - n_1(Q_q). Dans chaque rectangle non-grille,
+h_q<=0. Le certificat force
+
+ 72 h_03 + 35 h_06 + 35 h_26 + 320 K_24,24 + 9846 K_45,45 >= 40672.
+
+Les trois premiers termes sont <=0 ; les deux derniers sont au plus
+4*(320+9846)=40664, puisque K_qq=2 e_q<=4. Contradiction de marge8.
+
+Pour chacun des167 etats, le coefficient final du certificat est
+positif ou nul.92 valent0 ;75 sont strictement positifs. La combinaison
+des egalites et des cinq majorations a constante-8. Le fichier complet
+est template_04192_z_design_certificate_degrees.json ; le lecteur
+Python standard a valide l'exhaustivite du catalogue et tous les entiers
+dans template_04192_z_design_verification.json. Aucun verdict du modele
+LAB retire au message1076 n'intervient dans ce raisonnement.
+
+REPRODUCTION
+
+python -I code/codex/root_component_z_design_certificate.py --bundle data/codex_neighbor_moments_20261018/template_04192_partition.json --catalogue data/codex_neighbor_moments_20261018/template_04192_z_distribution.json --degree-histograms --reduce-full --output CHEMIN_NOUVEAU.json
+
+python -I code/codex/root_component_z_design_verify.py --certificate data/codex_neighbor_moments_20261018/template_04192_z_design_certificate_degrees.json --catalogue data/codex_neighbor_moments_20261018/template_04192_z_distribution.json
+
+Les nouvelles options --degree-histograms et --reduce-full sont
+generiques. Elles ne donnent aucun verdict sur les gabarits non traites,
+et la limite de six coordonnees libres du catalogue reste explicite.

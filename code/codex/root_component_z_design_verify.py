@@ -123,6 +123,11 @@ def verify(certificate_path, catalogue_path):
                 i, = indices
                 require(RECTANGLES[i] in nongrid, 'E3 bound used on a grid rectangle.')
                 coefficients, target = [z[i] if q == i else 0 for q, s, z in columns], 4
+            elif kind == 'degree_histogram' and len(indices) == 1 and is_bound:
+                i, = indices
+                require(RECTANGLES[i] in nongrid, 'Degree histogram bound used on a grid rectangle.')
+                coefficients = [(2 * int(z[i] == 2) - int(z[i] == 1)) if q == i else 0 for q, s, z in columns]
+                target = 0
             else:
                 raise ValueError('Unknown certificate term.')
             require(term['upper' if is_bound else 'target'] == target, 'Wrong right-hand side.')

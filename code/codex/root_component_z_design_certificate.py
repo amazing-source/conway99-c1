@@ -24,7 +24,7 @@ from root_component_z_distribution import RECTANGLES
 from root_component_resources import atomic_json_write, limit_research_process
 
 
-def linear_system(template, catalogue):
+def linear_system(template, catalogue, degree_histograms=False):
     columns = [(qi, si, state) for qi, item in enumerate(catalogue['row_types'])
                for si, state in enumerate(item['states'])]
     equations, bounds = [], []
@@ -39,6 +39,14 @@ def linear_system(template, catalogue):
         if RECTANGLES[i] in nongrid:
             bounds.append({'coefficients': [z[i] if qi == i else 0 for qi, si, z in columns],
                            'upper': 4, 'kind': 'no_three_edge_rectangle', 'indices': [i]})
+            if degree_histograms:
+                # With at most two internal edges the only degree histograms
+                # are (4,0,0), (2,2,0), (0,4,0), (1,2,1).
+                # In particular, twice the number of degree-two vertices is
+                # at most the number of degree-one vertices.
+                bounds.append({'coefficients': [(2 * int(z[i] == 2) - int(z[i] == 1))
+                                                if qi == i else 0 for qi, si, z in columns],
+                               'upper': 0, 'kind': 'degree_histogram', 'indices': [i]})
     for i, j in combinations(range(21), 2):
         equation([int(qi == i) * z[j] - int(qi == j) * z[i] for qi, si, z in columns],
                  0, 'block_symmetry', [i, j])
@@ -67,7 +75,7 @@ def certificate(columns, equations, bounds, y, mu):
             'conclusion': 'A sum of nonnegative multiples of nonnegative row multiplicities is <= a negative integer.'}
 
 
-def reduce_diagonal_system(columns, equations, bounds):
+def reduce_diagonal_system(columns, equations, bounds, fallback_full=False):
     """Find a small candidate core. Only the final integer certificate proves it."""
     def infeasible(es, bs):
         lp = pywraplp.Solver.CreateSolver('GLOP')
@@ -84,7 +92,9 @@ def reduce_diagonal_system(columns, equations, bounds):
           or r['indices'][0] == r['indices'][1]]
     bs = list(bounds)
     if not infeasible(es, bs):
-        return equations, bounds
+        if not fallback_full or not infeasible(equations, bounds):
+            return equations, bounds
+        es = list(equations)
     for group in ('neighbor_moment', 'bound', 'block_symmetry', 'four_rows'):
         rows = list(bs) if group == 'bound' else [r for r in es if r['kind'] == group]
         for row in rows:
@@ -159,6 +169,10 @@ def main():
     p.add_argument('--catalogue', type=Path, required=True)
     p.add_argument('--reduce-diagonal', action='store_true',
                    help='Reduce to a candidate core using diagonal moments before exact certification.')
+    p.add_argument('--reduce-full', action='store_true',
+                   help='Also reduce the full moment system if diagonal moments alone are feasible.')
+    p.add_argument('--degree-histograms', action='store_true',
+                   help='Use 2 n_degree2 <= n_degree1 in each nongrid rectangle, a consequence of E3.')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
@@ -167,9 +181,9 @@ def main():
     catalogue = json.loads(a.catalogue.read_text(encoding='utf-8-sig'))['catalogue']
     assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
     start = time.process_time()
-    columns, equations, bounds = linear_system(template, catalogue)
-    if a.reduce_diagonal:
-        equations, bounds = reduce_diagonal_system(columns, equations, bounds)
+    columns, equations, bounds = linear_system(template, catalogue, a.degree_histograms)
+    if a.reduce_diagonal or a.reduce_full:
+        equations, bounds = reduce_diagonal_system(columns, equations, bounds, a.reduce_full)
     result = find_certificate(columns, equations, bounds)
     result.update(scope=__doc__, resources=resources, source_bundle=str(a.bundle),
                   source_catalogue=str(a.catalogue), source_catalogue_sha256=hashlib.sha256(a.catalogue.read_bytes()).hexdigest(),
@@ -177,6 +191,7 @@ def main():
                   variables=len(columns), equalities=len(equations), inequalities=len(bounds),
                   column_order=[{'rectangle': list(RECTANGLES[qi]), 'state_index': si} for qi, si, z in columns],
                   uses_Gram_cover=False, uses_prism_budget=False, uses_universal_E3_exclusion=True,
+                  uses_degree_histogram_bounds=a.degree_histograms,
                   global_conway_exclusion=False, cpu_seconds=time.process_time() - start)
     atomic_json_write(a.output, result)
     print(json.dumps({k: v for k, v in result.items() if k not in
