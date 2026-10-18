@@ -153,6 +153,30 @@ On note M_Q = Σ_{w∈Q} h_w h_wᵀ le moment de la réalisation.
 - La méthode à retenir : la somme des maxima locaux (par rectangle) est plus petite que le moment global exigé 7R.
 - Les 21 tables sont toutes non vides sur 5128 : c'est l'assemblage global qui échoue, pas un rectangle seul.
 
+## 3ᵉ passe (gc3b puis c3gs) : de quoi meurent les Gram (premiers 2 857 Gram tranchés, 41 tranches)
+
+Pour chaque Gram, l'ordre est le suivant :
+1. bornes de moments LAB, puis design exact ;
+2. bornes de moments de Codex (63e87d62) ;
+3. filtre des coins ;
+4. SAT exact à R fixé, avec tables de signatures et CR = 0.
+
+| Raison | Gram | Part |
+|---|---:|---:|
+| bornes de moments (paires disjointes 697, diagonales 647, à droite commune 515) | 1 859 | 65,1 % |
+| aucune réalisation des coins pour un rectangle | 540 | 18,9 % |
+| SAT exact à R fixé, INFEASIBLE (médiane 11 s, max 117 s) | 310 | 10,9 % |
+| design de moments exact (aucun choix cohérent des 21 rectangles) | 13 | 0,5 % |
+| SAT à R fixé, UNKNOWN à 120 s | 135 | 4,7 % |
+
+**Désaccords LAB / Codex sur les moments : 207, tous du même côté** (LAB exclut, Codex laisse passer) :
+- 13 par le design exact, que la version 63e87d62 de Codex ne fait pas ;
+- 194 par des bornes de paires : toutes utilisent une paire hors des paires d'ancres, alors que Codex ne teste que
+  les ancres (141 vérifiées sur gc3b, 53 sur c3gs : 194/194) ;
+- aucun désaccord sur la réalisation des coins : les deux codes y concordent.
+
+L'identité HᵀH = 7R vaut pour toutes les paires (e, f), donc tester toutes les paires est valide.
+
 ## RÉTRACTATION (18/10, ~20 h) : les verdicts du modèle sans Gram étaient un artefact
 
 **Tous les verdicts INFEASIBLE de `gram_free_moment.py` et de `local_moment_test.py` produits avant la correction
