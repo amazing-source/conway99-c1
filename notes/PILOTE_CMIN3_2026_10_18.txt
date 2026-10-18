@@ -1,0 +1,76 @@
+Pilote c_min >= 3 : couplage complet d'une etoile
+18 octobre 2026, Codex. Travail en cours ; aucun verdict global annonce.
+
+Cadre et couverture
+------------------
+On utilise les gabarits LAB de la racine de budget <=51, au commit main
+360e66f1. Les fichiers sources et leurs SHA256 sont dans
+data/codex_c3_pilot_20261018/inputs/provenance.json. Ce sont les 3 gabarits
+a une grille et les 22 a deux grilles. Aucun Gram temoin n'est fixe.
+La couverture globale de LAB n'est pas recalculee ici.
+
+Pour une droite racine l={o,a,a*}, chacune de ses composantes de taille
+6s fournit 2s sommets dans l'etoile Gamma(a). Cette etoile induit un
+couplage parfait. Les aretes ne traversent pas les composantes.
+Tous les (2s-1)!! couplages internes sont enumeres, puis on prend leur
+produit cartesien. Il n'y a aucune normalisation par automorphisme.
+La droite choisie minimise ce produit parmi les 7 droites de la racine.
+On peut donc choisir une droite a c=4 meme si le minimum de la racine
+vaut3 : cela NE suppose PAS c>=4 ailleurs dans le graphe.
+
+Pour les trois partitions de six en exactement trois parts, les nombres
+sont (4,1,1):105, (3,2,1):45, (2,2,2):27. Une droite a quatre composantes
+peut donner9 ou15, voire moins pour davantage de composantes.
+Le controle du generateur a porte sur tous les couplages des 7 droites
+des 25 gabarits importes : cardinal attendu, pas de doublon, six aretes
+disjointes couvrant exactement les12 sommets. Egalement controle des
+comptes generiques1,3,15,105,945,10395 sur2,4,...,12 sommets.
+
+Modele et transfert
+------------------
+Outil : code/codex/root_component_complete_star.py.
+Le couplage fixe seulement les66 cases internes d'une etoile. La
+propagation exacte C1/C2 et les equations des composantes sont appliquees
+avant la construction du modele global sur les84 sommets Gamma.
+Le Gram R, l'etoile opposee et le couplage transversal restent variables.
+Pas de table907, de frontiere d93, de catalogue P/M1, de partition minimum4
+transporte, ni de Gram choisi. Les fonctions communes anciennes sont
+reutilisees seulement pour leurs contraintes universelles.
+
+Ajouts : E3 aux21 rectangles originaux ; connexite des composantes
+(toute coupe propre entre rectangles porte au moins deux aretes) ;
+triangles lambda1 exacts et leurs bilans ;15 rectangles au nouveau centre,
+avec leurs coins variables, et les6 rectangles passant par l'ancienne
+racine. Pour chacun, delta=(A-3I)1_S-1, A delta=-4delta,
+||delta||^2=56-14e, bornes entieres[-2,3] et bornes suivant l'appartenance.
+Gram entier des21 residus : produits scalaires multiples de7 et signes
+incidents. Equations propres Gamma sur2 residus. Somme des6 residus
+incidents a chacune des7 nouvelles droites egale a0, coordonnee par
+coordonnee. Aucune contrainte speciale C12+C12 n'est imposee.
+
+La derniere identite vient de T B^t=0 dans les nouvelles coordonnees :
+delta_ij=-T 1_Qij et la somme des six indicatrices Qij incidentes a i
+est l'indicatrice des etiquettes portant l'une des deux lettres de i.
+Les coordonnees du nouveau voisinage ferme sont nulles. On conserve les
+98 coordonnees hors ancienne racine (dont le residu est aussi nul).
+
+Protocole pilote
+---------------
+Un coeur logique, un solveur a la fois, priorite BelowNormal. Garde CPU
+avec mise en pause a65% de charge globale pour garder une marge sous80%.
+Budget30 secondes CPU par couplage ; si UNKNOWN, arret de ce gabarit
+pour ce pilote, sans appeler les autres couplages exclus. La commande
+sans --stop-after-unknown traite toute la couverture.
+Pic memoire : maximum RSS fourni par l'OS, cumulatif dans le processus
+du gabarit, incluant construction et resolution. Temps construction et
+resolution sont distincts. Le cout d'une campagne sera estime apres
+ces mesures ; aucun lancement AWS par Codex.
+
+Pilote initial : g1 index0, couplage0, INFEASIBLE en1.875CPU apres
+3.203125CPU de construction ; pic RSS586338304 octets. Cela n'exclut
+pas encore le gabarit :26 couplages restaient a traiter dans ce rapport.
+
+L'exclusion d'un gabarit exige tous ses couplages INFEASIBLE. Les verdicts
+CP-SAT ne sont pas encore des certificats UNSAT portables. Une solution
+positive serait reconstruite en99 sommets et controlee sur toutes les
+paires. Ces huit pilotes ne constituent pas la couverture10052 complete.

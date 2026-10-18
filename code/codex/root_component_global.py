@@ -19,8 +19,9 @@ from conway_global_cover import build_global, reconstruct_and_check
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
 
 
-def build(template, gram_record,rank7_bound=None,gram_cover=None,normalize_grid_matchings=False):
-    propagation = propagate(template)
+def build(template, gram_record,rank7_bound=None,gram_cover=None,normalize_grid_matchings=False,
+          extra_initial=None):
+    propagation = propagate(template, extra_initial=extra_initial)
     if propagation["status"] == "PROPAGATION_CONTRADICTION":
         return None, None, {"status":propagation["status"],"propagation":propagation}
     fixed = {PAIRS[i]:v for i,v,_ in propagation["assignments"]}
@@ -81,10 +82,12 @@ def build(template, gram_record,rank7_bound=None,gram_cover=None,normalize_grid_
         from modular_rank_factor import add_four_star_rank7
         rank7=add_four_star_rank7(model,labels,graph,edges[0],rank7_bound)
     info.update(status="MODEL_BUILT",covers_all_graphs=False,
-                coverage_scope="One component template in the exhaustive minimum-c=4 cover.",
+                coverage_scope="One root component template; global coverage requires the source template cover.",
+                root_minimum_components=min(template["component_count_by_root_line"]),
                 fixed_local_seed=False,fixed_gram_witness=False,
                 independent_matching_normalization=False,
                 template_forced_edges=len(fixed),root_component_equations=len(equations),
+                explicit_initial_edges=len(extra_initial or {}),
                 quotient_psd_or_realization_cuts=len(gram_record["cuts"]),
                 root_prism_budget=root_prism_budget,
                 modular_rank_constraint=rank7,
