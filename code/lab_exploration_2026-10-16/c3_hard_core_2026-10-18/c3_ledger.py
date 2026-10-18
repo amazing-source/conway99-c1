@@ -119,7 +119,7 @@ for d in ("collect_c3ga", "collect_c3gb", "collect_c3ga2"):
             _, tag, ti = os.path.basename(f)[:-5].split("_")
             gram_count[(tag, int(ti))] = r["gram_count"]
 p4 = defaultdict(set)
-for f in glob.glob(os.path.join("collect_c3p4e", "files", "out", "pe_*.json")):
+for f in glob.glob(os.path.join("collect_c3p4e", "files", "out", "pe_*.json")) + glob.glob(os.path.join("collect_c3p4eb", "files", "out", "pe_*.json")):
     r = load(f)
     _, tag, t, c = os.path.basename(f)[:-5].split("_")
     for case in (r or {}).get("cases", []):
