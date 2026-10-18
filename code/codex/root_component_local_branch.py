@@ -41,7 +41,8 @@ def main():
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
-    parser.add_argument('--reuse-proven',type=Path,help='Copy only excluded branches from an identical code cover.')
+    parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
+    parser.add_argument('--reuse-proven',type=Path,help='Copy excluded codes with the same Gram, frame and matching catalogue; filtered code covers may differ.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     resources=limit_research_process(4)
@@ -69,7 +70,7 @@ def main():
     codes=[list(c) for c in context['codes']]
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -85,11 +86,28 @@ def main():
         branches.extend(previous['branches'])
     elif args.reuse_proven:
         old=json.loads(args.reuse_proven.read_text())
-        assert old['records'][0]['template_index']==args.index
-        previous=old['records'][0]['cases'][0]
-        assert previous['gram_index']==args.gram_index
-        assert previous['gram_anchor_values']==values and previous['component_codes']==codes
-        branches.extend(dict(r,source=str(args.reuse_proven)) for r in previous['branches'] if r['status']=='INFEASIBLE')
+        matches=[c for r in old['records'] if r['template_index']==args.index
+                 for c in r['cases'] if c['gram_index']==args.gram_index]
+        assert len(matches)==1
+        previous=matches[0]
+        assert previous['gram_anchor_values']==values
+        if not base_model_only:
+            assert previous['component_root']==context['root'] and previous['component_part']==context['part']
+            prior_table_path=old.get('options',{}).get('local_tables') or old.get('local_E3_augmentation',{}).get('tables')
+            assert prior_table_path, 'Code numbers need the original matching catalogue.'
+            previous_tables=json.loads(Path(prior_table_path).read_text())
+            size=6*len(context['part'])
+            before=next(r for r in previous_tables['records'] if r['vertices']==size)
+            after=next(r for r in tables['records'] if r['vertices']==size)
+            for field in ('cross_permutations','internal_matchings'):assert before[field]==after[field]
+            positions={tuple(code):i for i,code in enumerate(codes)}
+            for r in previous['branches']:
+                if r['status']!='INFEASIBLE' or tuple(r['code']) not in positions:continue
+                assert previous['component_codes'][r['component_index']]==r['code']
+                branches.append(dict(r,component_index=positions[tuple(r['code'])],
+                    source_component_index=r['component_index'],source=str(args.reuse_proven)))
+        elif previous.get('base_model_only') and previous['status']=='INFEASIBLE':
+            branches.extend(dict(r,source=str(args.reuse_proven)) for r in previous['branches'] if r['status']=='INFEASIBLE')
     completed={r['component_index'] for r in branches}
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='RUNNING',
               component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches,
@@ -124,6 +142,11 @@ def main():
             from root_component_rotated_rectangles import add_rotated_rectangles
             rectangle_context=[]
             rotated_info=add_rotated_rectangles(branch_model,graph,template,tables,context['root'],context['part'],code,args.rotated_rectangles,rectangle_context)
+            if args.rotated_residuals:
+                from root_component_rotated_residual import add_rotated_residual_cuts
+                from root_component_boundary_psd import fixed_line_graph
+                fixed=fixed_line_graph(graph,template,tables,context['root'],context['part'],code)
+                rotated_info['integer_residuals']=add_rotated_residual_cuts(branch_model,fixed,rectangle_context)
             if args.rotated_signatures:
                 from root_component_short_vectors import add_rotated_signature_cuts
                 rotated_info['short_signature_cuts']=add_rotated_signature_cuts(branch_model,rectangle_context,rotation_values)
