@@ -13,6 +13,8 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from root_component_root_order import arbitrary_root_rejection
 
 
 TERMINAL = {"INFEASIBLE", "OPTIMAL", "FEASIBLE", "PROPAGATION_CONTRADICTION"}
@@ -75,6 +77,7 @@ def main():
         for path in sorted(directory.glob("root_component_signature_*.json")):
             if tracked is not None and path.resolve() not in tracked:continue
             data = json.loads(path.read_text(encoding="utf-8"))
+            if arbitrary_root_rejection(data):continue
             used = False
             for record in data.get("records", []):
                 if "cases" not in record:
@@ -100,6 +103,7 @@ def main():
     for path in sorted(directory.glob("root_component_projector_*.json")):
         if tracked is not None and path.resolve() not in tracked:continue
         result = json.loads(path.read_text(encoding="utf-8"))
+        if arbitrary_root_rejection(result):continue
         if result.get("status") == "INFEASIBLE":
             assert result["complete_gram_cover"]["exhaustive"]
             assert not result["complete_gram_cover"]["fixed_single_gram"]
@@ -123,6 +127,7 @@ def main():
             if not path.exists():
                 path = directory / f"root_component_global_{item['template_index']}_budget51.json"
             result = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+            if arbitrary_root_rejection(result):result={}
             status = result.get("status", "NOT_RUN")
             item["global_solver_status"] = status
             if result:

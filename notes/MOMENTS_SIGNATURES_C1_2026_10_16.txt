@@ -1556,3 +1556,56 @@ ce qui explique que le commit311152b titre14/15 contienne deja le compteur
 79/79. Le rapport19 et le bilan final sont ajoutes au commit suivant;
 --committed-only s'applique desormais aussi aux rapports de projecteur.
 Aucun calculAWS lance pour cette fermeture; locaux uncoeur+gardien26292.
+
+48. Relais LAB vers c<=3 (18/10,04h32;997 lu/ack,998 envoye).
+LAB annonce fusion dans main360e66f et10052 gabarits c3 apres ses filtres.
+Il demande la portabilite de l'outil. Reponse : PAS utilisable tel quel.
+Retirer partitions c>=4, table907 et frontd93. Ceux-ci exigent un minimum
+GLOBAL4; sept droites localement c>=4 dans un graphe c_min3 ne suffisent pas.
+Quatre nongrilles peuvent maintenant former C24, pas seulement C12+C12.
+Restent universels : residus, normes, bornes, Gram, sommes par droite, E3.
+Une adaptation peut fixer le matching COMPLET d'une etoile, sans P/M1 ni
+catalogue de composantes24/30/36. Bornes brutes des couvertures internes :
+c3 (4,1,1):105; (3,2,1):45; (2,2,2):27. c2 (5,1):945; (4,2):315;
+(3,3):225. c1 (6):10395. Choisir une droite minimisant ce produit.
+Ce sont des comptes finis, PAS des couts mesures. Aucun pilote c3 lance.
+
+49. Pilote c_min>=3 (18/10,09h28; LAB1000 lu/ack, envois1001/1002).
+Suite de la recherche globale : root_component_complete_star.py,
+commit3ff47a06. Couverture de TOUS les couplages internes d'une etoile,
+composante par composante, choix de la droite de produitminimal. Gram,
+P etM1 variables; aucune table907/frontd93/minimum4 transporte.
+SourcesLAB main360e66f1, g1/g2 dans c3_root_cover/. Les trois g1 sont
+INFEASIBLE chacun27/27 couplages, soit81/81, tous avant recherche.
+Cinq pilotesg2 indices0,3,5,11,15 encore en cours, budget30CPU/couplage,
+uncoeur BelowNormal, gardeCPU29740. Session23236.
+Manifestage sans solveur des10052templatesLAB :106852couplages.
+Histogramme compte:templates =1:214,3:2586,9:4689,15:1775,27:307,
+45:479,105:2. Ce compte ne garantit pas un temps de preuve abordable.
+Notes/PILOTE_CMIN3_2026_10_18.txt et data/codex_c3_pilot_20261018/.
+AucunAWS lance. VerdictsCP-SAT, pascertificatsUNSATportables; c<=2ouvert.
+
+50. Fin du pilote c3,18/10 vers09h34. Huit gabarits EXCLUS : les3g1
+etg2 indices0,3,5,11,15.162/162 couplages INF au presolve,0UNKNOWN,
+0branche. Construction487.71875CPU, solve105.8125CPU,total593.53125CPU.
+Pic586899456octets(559.71Mio);CPUglobal observe<=20%, uncoeur.
+Session23236terminee, garde29740 arrete par fichierstop. AucunAWS.
+Bilan et reproduction notes/PILOTE_CMIN3_2026_10_18.txt, donnees
+data/codex_c3_pilot_20261018/pilot8_summary.json. Manifeste10052->106852.
+Ilreste10044templates; ces8preuvesnefermentpas c3entier.
+Le chargeur gzip ignore open[].gram, ne garde que open[].template.
+Pour Linux concurrent, taskset avec un coeur DISTINCT par travailleur.
+Extrapolation de debit sur128coeurs ~51.0min IDEALES, non garantie.
+
+51. LAB1004 lu et acquitte,18/10. Claude annonce la passe AWS lancee
+avec accord direct de Dilan dans sa session. Code archive2c7bdd0b8,
+10044 gabarits restants,106690 couplages, une tache par gabarit,
+30secondes/couplage, pas de --stop-after-unknown. Deux m7a.32xlarge
+Spot eu-north-1c,128travailleurs chacune, affinite distincte par taskset.
+Limites annoncees :180min pour machines,5400s par tache. PrefixesS3
+runs/c3star-v1a et runs/c3star-v1b. Sorties attendues sur lab/aws-c3star.
+NE PAS relancer ces gabarits localement. Aucun resultat global annonce.
+Nouveau point de mesure fourni par LAB : gzip index10026, un couplage,
+INF12.4s apres3.1s de construction, pic1.07Go. Le cout et la RAM ne sont
+pas uniformes : les560Mio/temps des8pilotes ne bornent pas tout le corpus.
+Le lancement, les couts et la collecte AWS restent geres par LAB.

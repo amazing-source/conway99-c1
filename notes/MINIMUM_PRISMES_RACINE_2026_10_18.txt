@@ -1,0 +1,61 @@
+CHOIX D'UNE RACINE DE COMPTE DE PRISMES MINIMAL
+18/10/2026. Nouvelle restriction de choix de racine; performance non mesuree.
+
+On note t(L) le nombre de prismes contenant la droite L et
+  s(x) = somme_{L contient x} t(L).
+Chaque prisme possede six sommets, d'ou somme_x s(x)=6P.
+Sous la borne utilisee P<=852, il existe x avec s(x)<=floor(5112/99)=51.
+On peut plus precisement CHOISIR x minimisant s parmi les99 sommets.
+Alors s(y)>=s(x) pour tout sommet y. Aucun automorphisme n'intervient.
+
+Calcul dans nos coordonnees : s(x) est la somme des aretes de chaque
+rectangle Q_ij qui joignent deux etiquettes partageant une lettre.
+Pour une etoile complete transportee a y, les six rectangles contenant
+l'ancienne droite donnent leurs shared_label_edges deja encodes.
+Les quinze autres rectangles donnent les quatre positions0,1,4,5 de
+leurs six aretes, dans l'ordre00,01,10,11. C'est exactement le compte
+utilise par la condition de budget transportee; on ajoute ici
+  somme des21 contributions en y >= somme des21 contributions en x.
+Les deux membres restent des expressions des aretes variables.
+
+Il suffit d'imposer ces comparaisons pour les etoiles disponibles :
+c'est une relaxation des99 comparaisons, donc necessaire pour un vrai
+graphe dont la racine a ete choisie minimale. Une solution du modele
+ne certifie pas, a elle seule, cette minimalite globale.
+
+PORTEE LOGIQUE A PRESERVER
+Une exclusion obtenue ainsi exclut un gabarit COMME RACINE MINIMALE.
+Elle n'exclut pas ce gabarit autour d'une racine quelconque de compte<=51.
+Elle ne doit donc JAMAIS reduire le front transporte d93c1b0 ou la table907
+utilisee conditionnellement sur d'autres racines.
+La fermeture de la couverture COMPLETE des racines minimales suffirait
+en revanche a fermer la branche globale minimum des composantes>=4.
+Les76 exclusions anterieures, plus fortes car sans ce choix minimal,
+restent utilisables dans cette couverture restreinte.
+
+IMPLEMENTATION
+root_component_root_order.py fournit les comparaisons et un marqueur
+requires_globally_minimal_root. Option --minimum-prism-root dans
+matching_global, matching_residual et local_branch. Le bilan de reprise
+refuse ces rapports sans --minimal-root. La reutilisation de branches,
+le filtre de Gram, le bilan de campagne et le gel du front refusent
+egalement de les importer comme exclusions de racines quelconques.
+Ces memes importeurs rejettent maintenant les anciens produits fautifs.
+Pas encore de nouveau verdict provenant de cette restriction.
+
+IDENTITES LINEAIRES UNIVERSELLES, AUTRE MODIFICATION
+Pour les neuf-ensembles S_ij a une racine, soit L_i sa i-eme droite.
+La somme des six indicatrices 1_Sij, j!=i, vaut (A+4I)1_Li.
+En effet, avec e la racine, n=Ae, s_i les deux autres points de L_i et
+q_i la somme des six rectangles incidents, A s_i=2e+s_i+q_i.
+La somme demandee est6e+5s_i+n+q_i=(A+4I)(e+s_i).
+Comme (A-3I)(A+4I)=2J et |L_i|=3, les residus
+delta_ij=(A-3I)1_Sij-1 verifient somme_j delta_ij=0.
+Cette annulation coordonnee par coordonnee etait DEJA imposee dans les
+modeles c4 via rotated_templates. Elle est maintenant partagee dans
+add_gram_kernel_cuts, donc disponible aussi aux modeles c1/c2/c3, sans
+aucune hypothese de minimum4. On evite sa duplication dans c4.
+Le temoin exact de Gram de rang1 sur un cycle4 reste SAT, ainsi que
+les controles des produits -6,9 et de l'eigenvecteur-4 de K4,4.
+L'essai precedent de lecture negative du conteneur pybind a ete retire
+du test : on ne declenche plus volontairement cette lecture indefinie.

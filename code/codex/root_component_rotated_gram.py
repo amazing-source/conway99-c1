@@ -17,6 +17,8 @@ model. All cuts are necessary; no adjacency or automorphism is assumed.
 from itertools import combinations
 from root_component_propagation import LABELS
 
+PRODUCT_DOMAIN_ENCODING = 'python_list_endpoints_v2'
+
 
 def complete_stars(rectangles):
     groups={}
@@ -46,7 +48,10 @@ def add_gram_cuts(model,rectangles,mode='incident'):
         if isinstance(b,int):return b*a
         key=tuple(sorted((a.index,b.index)))
         if key not in products:
-            da=model.proto.variables[a.index].domain;db=model.proto.variables[b.index].domain
+            # OR-Tools 9.15's pybind repeated-field wrapper does not implement
+            # Python negative indexing reliably: domain[-1] can return 0.
+            # Copy to actual Python lists before reading interval endpoints.
+            da=list(model.proto.variables[a.index].domain);db=list(model.proto.variables[b.index].domain)
             bounds=[x*y for x in (da[0],da[-1]) for y in (db[0],db[-1])]
             value=model.new_int_var(min(bounds),max(bounds),f'rotated_residual_dot_product_{len(products)}')
             model.add_multiplication_equality(value,[a,b]);products[key]=value
@@ -62,7 +67,8 @@ def add_gram_cuts(model,rectangles,mode='incident'):
             count+=1;incident_count+=int(incident)
         records.append({'root':root,'gram_entries':count,'incident_nonpositive_entries':incident_count})
         next(item for item in rectangles if item['root']==root)['residual_gram_entries']=entries
-    return {'mode':mode,'integer_products':len(products),'roots':records,'scope':__doc__}
+    return {'mode':mode,'integer_products':len(products),'roots':records,'scope':__doc__,
+            'product_domain_encoding':PRODUCT_DOMAIN_ENCODING}
 
 
 def add_eigen_cuts(model,graph,rectangles,count_per_root):
@@ -73,7 +79,7 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
         if isinstance(value,int):return value*edge
         key=(edge.index,value.index)
         if key not in products:
-            domain=model.proto.variables[value.index].domain
+            domain=list(model.proto.variables[value.index].domain)
             p=model.new_int_var(min(0,domain[0]),max(0,domain[-1]),f'rotated_residual_eigen_product_{len(products)}')
             model.add(p==value).only_enforce_if(edge)
             model.add(p==0).only_enforce_if(edge.Not());products[key]=p
@@ -92,4 +98,83 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
                 equations+=1
         records.append({'root':root,'selected_rectangles':[list(p) for p in selected]})
     return {'count_per_root':count_per_root,'new_gamma_eigen_equations':equations,
-            'edge_integer_products':len(products),'roots':records,'scope':__doc__}
+            'edge_integer_products':len(products),'roots':records,'scope':__doc__,
+            'product_domain_encoding':PRODUCT_DOMAIN_ENCODING}
+
+
+def add_gram_kernel_cuts(model, rectangles):
+    """Expose necessary Gram relations already implied by full residual vectors.
+
+    R_pq = dot(delta_p,delta_q)/7, R_pp = 8-2e_p. For every
+    root line i, sum_{q incident i} delta_q=0, hence R times its
+    incidence column is zero. Every two-by-two principal minor is PSD.
+    The vector identity itself is imposed coordinate by coordinate. If
+    S_ij is the nine-set and L_i a root triangle, then
+      sum_{j!=i} 1_Sij = (A+4I) 1_Li,
+    so (A-3I)(A+4I)=2J gives sum_{j!=i} delta_ij=0.
+    Since the rectangle incidence columns have squared norm four and
+    T is seven times a projector, 0<=R<=28I and sum_q R_pq^2<=28R_pp.
+    No component minimum, fixed Gram, or new-root prism budget is used.
+    """
+    from ortools.sat.python import cp_model
+    records = []
+    for root,vectors,old_edges in complete_stars(rectangles):
+        items = [item for item in rectangles if item['root']==root]
+        first = items[0]
+        entries = first['residual_gram_entries']
+        assert len(entries)==210
+        # Expose the linear cancellations directly. Inferring them from
+        # the squared norm of each zero Gram sum is much harder for SAT.
+        for line in range(7):
+            incident = [vector for pair,vector in vectors.items() if line in pair]
+            assert len(incident)==6
+            for coordinate in range(98):
+                model.add(sum(vector[coordinate] for vector in incident)==0)
+        first['coordinate_kernel_added']=True
+        lines = sorted(tuple(line) for line in first['all_lines'])
+        edge_counts = dict(old_edges)
+        for item in items:
+            a,b = sorted((lines.index(tuple(item['base_vertices'][:2])),
+                          lines.index(tuple(item['base_vertices'][2:]))))
+            edge_counts[a+1,b+1] = sum(item['edges'])
+        diagonals = {}
+        for pair in sorted(vectors):
+            d = model.new_int_var_from_domain(cp_model.Domain.from_values([0,4,6,8]),
+                                             f'rotated_gram_diagonal_{root}_{pair}')
+            model.add(d==8-2*edge_counts[pair]); diagonals[pair]=d
+        for pair in sorted(vectors):
+            for line in range(7):
+                terms = [diagonals[pair] if other==pair else entries[tuple(sorted((pair,other)))]
+                         for other in vectors if line in other]
+                model.add(sum(terms)==0)
+        allowed = [(a,b,q) for a in (0,4,6,8) for b in (0,4,6,8)
+                   for q in range(-8,5) if q*q<=a*b]
+        for (a,b),value in entries.items():
+            model.add_allowed_assignments([diagonals[a],diagonals[b],value],allowed)
+        squares = {}
+        for (a,b),value in entries.items():
+            square = model.new_int_var(0,64,f'rotated_gram_energy_square_{root}_{a}_{b}')
+            model.add_allowed_assignments([value,square],[(v,v*v) for v in range(-8,5)])
+            squares[a,b] = square
+        for pair,d in diagonals.items():
+            square = model.new_int_var(0,64,f'rotated_gram_energy_diagonal_{root}_{pair}')
+            model.add_allowed_assignments([d,square],[(v,v*v) for v in (0,4,6,8)])
+            model.add(square+sum(s for (a,b),s in squares.items() if pair in (a,b))<=28*d)
+        records.append({'root':root,'kernel_equations':147,'coordinate_kernel_equations':686,
+                        'principal_minor_tables':210,
+                        'spectral_row_energy_bounds':21})
+    return {'roots':records,'scope':add_gram_kernel_cuts.__doc__}
+
+
+def unsafe_product_reports(value):
+    """Find historical product metadata lacking the corrected encoding stamp."""
+    if isinstance(value, dict):
+        uses_products = (value.get('edge_integer_products',0)>0 or
+            (value.get('integer_products',0)>0 and 'Necessary integer Gram' in value.get('scope','')))
+        if uses_products and value.get('product_domain_encoding') != PRODUCT_DOMAIN_ENCODING:
+            yield value
+        for child in value.values():
+            yield from unsafe_product_reports(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from unsafe_product_reports(child)

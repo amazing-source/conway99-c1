@@ -17,12 +17,13 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from root_component_resources import atomic_json_write,limit_research_process
 
 
-def solve(model,seconds,log_search=False):
+def solve(model,seconds,log_search=False,linearization=0):
     from ortools.sat.python import cp_model
     assert not model.validate(),model.validate()
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
     solver.parameters.cp_model_probing_level=0;solver.parameters.symmetry_level=0
-    solver.parameters.linearization_level=0;solver.parameters.max_presolve_iterations=1
+    assert linearization in (0,1,2)
+    solver.parameters.linearization_level=linearization;solver.parameters.max_presolve_iterations=1
     solver.parameters.log_search_progress=log_search
     conflict_indices=[]
     if log_search:
@@ -60,10 +61,14 @@ def main():
     p.add_argument('directory',type=Path);p.add_argument('--index',type=int,required=True)
     p.add_argument('--gram-index',type=int,required=True);p.add_argument('--seconds',type=float,default=180)
     p.add_argument('--matching-indices',type=int,nargs='+')
+    p.add_argument('--layer',type=int,choices=(1,2,3,4),default=2,
+                   help='C2 pair layers; 4 imposes every common-neighbour equation.')
     p.add_argument('--low-budget-cover',type=Path,required=True)
     p.add_argument('--residual-gram-profiles',type=Path,required=True)
     p.add_argument('--residual-eigen',type=int,default=2)
     p.add_argument('--log-search',action='store_true')
+    p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
+    p.add_argument('--minimum-prism-root',action='store_true',help='Require the chosen root to minimize prism incidence globally; changes the scope of an exclusion.')
     p.add_argument('--no-rotations',action='store_true',help='Study the weaker base model split only by M0; no new star or residual is added.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
@@ -73,7 +78,7 @@ def main():
     from root_component_low_budget_transport import digest
     from root_component_matching_rotation import add_matching_rotation
     from root_component_rotated_residual import add_rotated_residual_cuts
-    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts
+    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts,add_gram_kernel_cuts
     from root_component_rotated_templates import add_rotated_template_cover
     from root_component_rotated_gram_profiles import add_profile_cuts
     from root_component_short_vectors import add_rotated_signature_cuts
@@ -87,7 +92,7 @@ def main():
     frontier=json.loads(args.low_budget_cover.read_text());profiles=json.loads(args.residual_gram_profiles.read_text())
     assert profiles['template_frontier_sha256_lf']==digest(args.low_budget_cover)
     component={};eigen_context={};started=time.process_time()
-    base,graph,info=build(template,gram_matrix(cover,values),layer=2,eigen=True,
+    base,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=2,line_profiles=2,
         profile_triples=True,exact_triangles=True,short_vectors=True,
         normalize_component=True,component_branch_context=component,
@@ -104,6 +109,8 @@ def main():
           'all_matching_branches_processed':False}
     result={'scope':__doc__,'resources':resources,'options':{
         'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,'no_rotations':args.no_rotations,
+        'linearization':args.linearization,'layer':args.layer,
+        'minimum_prism_root':args.minimum_prism_root,
         'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
         'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'records':[{'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}]}
@@ -118,9 +125,13 @@ def main():
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
             boundaries.append(('matching_rotation',len(model.proto.constraints)))
             if len(rectangles)==15:
+                if args.minimum_prism_root:
+                    from root_component_root_order import add_minimum_root_cuts
+                    rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
                 rotation['integer_residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
                 boundaries.append(('residuals',len(model.proto.constraints)))
                 rotation['integer_gram']=add_gram_cuts(model,rectangles,'all')
+                rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)
                 boundaries.append(('gram',len(model.proto.constraints)))
                 if args.residual_eigen:rotation['full_eigen']=add_eigen_cuts(model,fixed,rectangles,args.residual_eigen)
                 boundaries.append(('eigen',len(model.proto.constraints)))
@@ -137,7 +148,7 @@ def main():
                 'constraint_stage_endpoints':boundaries,
                 'build_cpu_seconds':time.process_time()-start}
         print(json.dumps(dict(branch,phase='model_ready')),flush=True)
-        branch.update(solve(model,args.seconds,args.log_search))
+        branch.update(solve(model,args.seconds,args.log_search,args.linearization))
         if rotation is not None:branch['rotation']=rotation
         case['matching_branches'].append(branch)
         processed={r['matching_index'] for r in case['matching_branches']}

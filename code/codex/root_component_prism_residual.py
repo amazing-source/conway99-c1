@@ -31,6 +31,7 @@ def main():
     parser.add_argument('--residual-gram-profiles',type=Path)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args();resources=limit_research_process(1)
+    if args.output.exists():raise FileExistsError('Use a fresh report; previous verdicts are immutable.')
     from ortools.sat.python import cp_model
     from root_component_signature_joint import build
     from root_component_signature_moments import gram_matrix
@@ -68,8 +69,10 @@ def main():
             rotation=add_rotated_rectangles(model,graph,template,tables,root,[],[],30,context)
             rotation['integer_residuals']=add_rotated_residual_cuts(model,graph,context,tight_bounds=args.tight_residual_bounds)
             if args.residual_gram:
-                from root_component_rotated_gram import add_gram_cuts
+                from root_component_rotated_gram import add_gram_cuts,add_gram_kernel_cuts
                 rotation['integer_gram']=add_gram_cuts(model,context,args.residual_gram)
+                if args.residual_gram=='all':
+                    rotation['gram_kernel']=add_gram_kernel_cuts(model,context)
             if args.residual_eigen:
                 from root_component_rotated_gram import add_eigen_cuts
                 rotation['full_residual_eigen']=add_eigen_cuts(model,graph,context,args.residual_eigen)

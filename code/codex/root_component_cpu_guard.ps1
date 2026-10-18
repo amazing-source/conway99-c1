@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$Log,
-    [int]$MaximumCores = 4
+    [int]$MaximumCores = 4,
+    [ValidateRange(1,60)][int]$ResumeBelow = 50
 )
 # All campaign workers share one affinity mask. Only our research Python
 # process trees are changed; other applications are left to their owner.
@@ -66,7 +67,7 @@ try { while ($true) {
         $taskBudget = [Math]::Min($MaximumCores, $taskBudget + 1)
         $taskLastIncrease = $taskNow
     }
-    if ($taskPaused -and $taskUtility -lt 50 -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
+    if ($taskPaused -and $taskUtility -lt $ResumeBelow -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
         Resume-ResearchThreads $taskSuspended
         $taskPaused = $false
         $taskLastIncrease = $taskNow

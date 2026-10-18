@@ -64,10 +64,11 @@ Only a complete set of fifteen variable rectangles is used here.
     zero_sum=0;paired=0
     for a in range(7):
         incident_vectors={b:vectors[tuple(sorted((a,b)))] for b in range(7) if b!=a}
-        for w in range(98):
-            values=[row[w] for row in incident_vectors.values()]
-            if all(isinstance(v,int) and v==0 for v in values):continue
-            model.add(sum(values)==0);zero_sum+=1
+        if not items[0].get('coordinate_kernel_added',False):
+            for w in range(98):
+                values=[row[w] for row in incident_vectors.values()]
+                if all(isinstance(v,int) and v==0 for v in values):continue
+                model.add(sum(values)==0);zero_sum+=1
         if a not in pairing_maps:
             neighbours=list(incident_vectors)
             incident={b:incidence[max(a,b)-1] if min(a,b)==0 else

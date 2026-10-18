@@ -24,6 +24,16 @@ def add_matching_rotation(model,graph,template,tables,context,matching_index):
         value=int((i,j) in present);u,v=vertices[i],vertices[j]
         model.add(graph[u][v]==value)
         fixed[u][v]=fixed[v][u]=value
+    return add_fixed_matching_rotation(model,fixed,template,root,matching_index)
+
+
+def add_fixed_matching_rotation(model,fixed,template,root,matching_index=None):
+    """Transport a fully fixed star, with any number and sizes of components.
+
+    Its six pairs are already fixed by the caller's exhaustive matching
+    branch. Neither a component catalogue nor the opposite matching is used.
+    """
+    letter=2*root
     star=[w for w,pair in enumerate(LABELS) if letter in pair]
     opposite=[w for w,pair in enumerate(LABELS) if letter^1 in pair]
     outside=[w for w,pair in enumerate(LABELS) if all(a//2!=root for a in pair)]
@@ -34,7 +44,7 @@ def add_matching_rotation(model,graph,template,tables,context,matching_index):
     if len(rectangles)!=15:
         assert info.get('empty_corner_domain')
         model.add(False)
-        return fixed,rectangles,dict(info,scope=__doc__)
+        return fixed,rectangles,dict(info,scope=add_fixed_matching_rotation.__doc__)
     partners={}
     for u in star:
         choices=[w for w in opposite if not isinstance(fixed[u][w],int) or fixed[u][w]]
@@ -68,6 +78,6 @@ def add_matching_rotation(model,graph,template,tables,context,matching_index):
                          'edge_count':4 if grid else total,'shared_label_edges':shared,
                          'old_neighbours':[letter,letter^1,b,c]})
     for item in rectangles:item['old_root_rectangles']=original
-    info.update(scope=__doc__,matching_index=matching_index,opposite_partner_domains=[len(p['choices']) for p in partners.values()],
+    info.update(scope=add_fixed_matching_rotation.__doc__,matching_index=matching_index,opposite_partner_domains=[len(p['choices']) for p in partners.values()],
                 fixed_cross_permutation=False,fixed_opposite_matching=False)
     return fixed,rectangles,info
