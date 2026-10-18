@@ -14,6 +14,42 @@ No OR-Tools proto-domain indexing is used.
 from itertools import combinations
 
 
+def coordinates_for_catalogue(catalogue, template):
+    """Recover the independent H coordinates even for a LAB DFS catalogue.
+
+The component incidence matrix C gives C h_w=0 for every row of H.
+Its nonpivot coordinates determine h_w. Since Gamma acts on vertices,
+the same relations hold on Gamma H+4H. Checking its nonpivot columns
+therefore checks all columns. This uses C1 and k=14, not a fixed Gram.
+"""
+    if 'free_coordinates' in catalogue:
+        return catalogue['free_coordinates']
+    import sympy as sp
+    rectangles=list(combinations(range(7),2))
+    rows=[]
+    assert len(template['nontrivial_component_groups'])==7
+    for a,groups in enumerate(template['nontrivial_component_groups']):
+        assert groups is not None
+        used={j for part in groups for j in part}
+        parts=list(groups)+[[j] for j in range(7) if j!=a and j not in used]
+        for part in parts:
+            support={tuple(sorted((a,j))) for j in part}
+            rows.append([int(q in support) for q in rectangles])
+    _,pivots=sp.Matrix(rows).rref()
+    free=[i for i in range(21) if i not in pivots]
+    assert len(free)==catalogue['free_dimension']
+    # Validate exactly the relation used by this compression on the supplied
+    # states; this is not a re-enumeration or completeness audit of LAB's DFS.
+    supports=[[i for i,c in enumerate(row) if c] for row in rows]
+    for q,item in zip(rectangles,catalogue['row_types']):
+        assert item['rectangle']==list(q)
+        base=[3*int(q==f)+1-len(set(q)&set(f)) for f in rectangles]
+        for z in item['states']:
+            h=[w-v for w,v in zip(base,z)]
+            assert all(sum(h[i] for i in support)==0 for support in supports)
+    return free
+
+
 def add_row_moments(model, graph, labels, row_types, coordinates, fixed=None):
     k = max(max(label) for label in labels)+1
     rectangles = list(combinations(range(k//2), 2))

@@ -1,0 +1,67 @@
+18/10/2026. Suite sans Gram, Codex, sur main.
+
+1. Couplage signe de LAB, implemente sans reauditer ses campagnes.
+root_component_signed_components.py construit d=Gamma f_K surD_a,
+avec Gamma f_K=0 surQ_a, normes et produits scalaires fixes,
+sommes sur les lettres nulles, puis Gamma[D_a]d=-d et/ou les sommes
+de bord. Les aretes sont celles du MEME modele Gamma de z_joint.
+La derniere composante est omise puisque la somme des d est nulle.
+Modes norm, eigen, boundary. --signed-lines 0 1 2 3 4 5 6 applique
+la couche a toutes les racines ; un sous-ensemble est aussi valide.
+Les domaines de parite propres aConway viennent du total p-|q inter P|
+et des deux quotas de lettre, sans lecture de bornes dans des protos.
+
+Attention de notation : Gamma f_K est ZERO surQ_a. Les valeurs
+sigma*(6-p)/2 ou -sigma*p/2 appartiennent a y=(3I-Gamma)x_K.
+L'encodeur ne confond pas les deux vecteurs.
+
+Controle du nouvel encodeur sur le vraiSRG243 : une droite avec4
+composantes,3 vecteurs independants ;660equations,118260produits signes
+effectifs,540produits deGram. SAT0.71875CPU, reconstructionSRG exacte.
+Le controle emploie les bonnes constantes k=22 et N=8p(10-p), et
+N'emploie PAS les domaines uniformes de composantes propres aConway.
+
+gz3 sansGram avec cette couche a toutes les droites :UNKNOWN30.15625CPU,
+63431variables. c12_001 :UNKNOWN30.09375CPU,41156variables. Ces verdicts
+ne ferment aucun gabarit. La couche plus forte est disponible.
+
+2. Les six paires de coins.
+root_component_corner_c2.py garde les C2 individuelles des6paires de
+chaque rectangle :126equations pourConway,10332produits booleens.
+C'est la couche1 de l'ancien modele, portee au modele sansGram.
+--corner-c2 sur z_joint et z_pipeline. Elle distingue des repartitions
+de voisins communs que le moment somme sur un rectangle confond.
+Controles :rook9 a aretes libres reconstruit, et SRG243 a aretes
+booleennes fixees :330equations,71940produits, SAT0.234375CPU.
+
+3. Compression exacte des catalogues DFS deLAB.
+Les catalogues sans champ free_coordinates utilisaient auparavant les
+21colonnes pour --row-moments. coordinates_for_catalogue reconstruit C
+depuis les partitions et prend les colonnes libres de son RREF rationnel.
+Il controle C h=0 sur les etats fournis, sans refaire leur enumeration.
+L'operateur agit sur les sommets, donc C(Gamma H+4H)_w=0 egalement.
+Annuler les coordonnees libres suffit donc a annuler toutes les colonnes.
+Pour c12_001/005,7colonnes au lieu de21 ; pour364,4 au lieu de21.
+Cela ne depend pas d'une borne de rang deGram et ne supprime pas de
+solution. --mate-normalize choisit en outre un representant sous les
+sept echanges de lettres, sans supposer d'automorphisme du graphe.
+
+4. Combinaisons entieres de colonnes a norme variable.
+root_component_variable_norm_cuts/probe transportent les bornes
+N>=M^2+7M et N>=2E+8(r+s)-4 a H d, d entier. Le temoin ne sert qu'a
+choisir d ; sa norme N reste VARIABLE dans le modele suivant.
+N=14 implique deux sommets de chaque signe par droite-racine.
+Controles synthetiques :29histogrammes conserves,3 de bonne norme
+rejetes ; deux fixturesN14 distinguent la couverture des droites.
+Recherche jusqu'a3colonnes, signes+/-1, norme au temoin<=56 : aucun
+separateur sur les temoins gz3,gz8650,c12_001,c12_005. Ce n'est ni
+une preuve de realisabilite, ni une recherche exhaustive dans le reseau.
+
+5. Garde-fous de portee.
+Tous les nouveaux modules agissent sans enumerer uneGram ni imposer
+un budget de prismes. Les graphes SAT sont toujours soumis au controle
+exact SRG ; un simple temoin de comptes n'est jamais un graphe.
+Les certificats9748 sont independants des couches signees et des coins :
+ils utilisent uniquement les quatre coupes de colonne deja prouvees.
+Les essais locaux restent sur un coeur partage, pause a72% et reprise
+sous62% ; les campagnes distantes sont gerees parLAB.

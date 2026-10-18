@@ -3,7 +3,8 @@
 The row catalogue supplies necessary component equations. Each vertex
 chooses one complete count row; those counts are realized by the SAME
 binary Gamma with the exact letter quotas. All rectangle moments are
-linear in the state indicators. Individual C2 equations are not imposed.
+linear in the state indicators. Optional signed component identities and
+the intrarectangle C2 layer add couplings without choosing a Gram.
 An infeasible model excludes the component template; a feasible model
 still requires the full SRG check.
 """
@@ -23,7 +24,8 @@ from root_component_resources import atomic_json_write, limit_research_process
 
 
 def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinates=None,
-                diagnostics=None, short_columns=False):
+                diagnostics=None, short_columns=False, signed_template=None,
+                signed_lines=None, signed_mode='boundary', mate_normalize=False, corner_c2=False):
     labels = [p for p in combinations(range(k), 2) if p[1] != (p[0] ^ 1)]
     rectangles = list(combinations(range(k // 2), 2))
     members = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
@@ -53,16 +55,43 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
                     model.add(graph[u][v] == int(bool(set(labels[u]) & set(labels[v]))))
     aggregate = []
     row_terms = []
+    selectors = [None]*n
     for qi, (group, item) in enumerate(zip(members, row_types)):
         states = item['states']
         choices = [[model.new_bool_var(f'row_{w}_{s}') for s in range(len(states))] for w in group]
         for w, selected in zip(group, choices):
             model.add_exactly_one(selected)
+            if mate_normalize:
+                selectors[w] = model.new_int_var(0,len(states)-1,f'row_selector_{w}')
+                model.add(selectors[w] == sum(i*x for i,x in enumerate(selected)))
             for j, target in enumerate(members):
                 model.add(sum(graph[w][v] for v in target)
                           == sum(x * state[j] for x, state in zip(selected, states)))
         aggregate += [(sum(row[s] for row in choices), state) for s, state in enumerate(states)]
         row_terms += [(qi, state, sum(row[s] for row in choices)) for s, state in enumerate(states)]
+    if mate_normalize:
+        # Root-line component data is unchanged by swapping its two letters.
+        # A lexicographically least full state sequence satisfies all these
+        # generator comparisons; no symmetry of the sought graph is assumed.
+        label_index = {label:i for i,label in enumerate(labels)}
+        for root in range(k//2):
+            permutation = [label_index[tuple(sorted(a ^ int(a//2 == root) for a in pair))] for pair in labels]
+            prefix = 1
+            for u,v in enumerate(permutation):
+                if u >= v:
+                    continue
+                model.add(selectors[u] <= selectors[v]).only_enforce_if(prefix)
+                equal = model.new_bool_var(f'row_mate_eq_{root}_{u}')
+                model.add(selectors[u] == selectors[v]).only_enforce_if(equal)
+                model.add(selectors[u] != selectors[v]).only_enforce_if(equal.Not())
+                if isinstance(prefix,int):
+                    prefix = equal
+                else:
+                    both = model.new_bool_var(f'row_mate_prefix_{root}_{u}')
+                    model.add(both <= prefix); model.add(both <= equal)
+                    model.add(both >= prefix+equal-1); prefix = both
+        if diagnostics is not None:
+            diagnostics['mate_flip_state_normalization'] = True
     for i, j in combinations_with_replacement(range(m), 2):
         target = 4 * k + 8 if i == j else 24 if set(rectangles[i]) & set(rectangles[j]) else 32
         block = sum(graph[u][v] for u in members[i] for v in members[j])
@@ -79,6 +108,17 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
         row_info = add_row_moments(model, graph, labels, row_types, row_moment_coordinates, fixed=fixed)
         if diagnostics is not None:
             diagnostics['row_neighbor_moments'] = row_info
+    if signed_lines is not None:
+        from root_component_signed_components import add_signed_components
+        assert signed_template is not None
+        info = add_signed_components(model, graph, labels, signed_template, signed_lines, signed_mode)
+        if diagnostics is not None:
+            diagnostics['signed_components'] = info
+    if corner_c2:
+        from root_component_corner_c2 import add_corner_c2
+        info = add_corner_c2(model,graph,labels)
+        if diagnostics is not None:
+            diagnostics['corner_C2'] = info
     assert not model.validate(), model.validate()
     return model, labels, graph
 
@@ -179,6 +219,10 @@ def main():
     p.add_argument('--seconds', type=float, default=5)
     p.add_argument('--row-moments', action='store_true', help='Vertexwise C2 sums on catalogue free coordinates.')
     p.add_argument('--short-columns', action='store_true', help='Add Gram-free integral eigenvector histogram tables.')
+    p.add_argument('--signed-lines', type=int, nargs='+', help='Root lines for LAB signed component identities.')
+    p.add_argument('--signed-mode', choices=('norm','eigen','boundary'), default='boundary')
+    p.add_argument('--mate-normalize', action='store_true', help='Choose a representative under the independent root-mate swaps.')
+    p.add_argument('--corner-c2', action='store_true', help='Add the six individual C2 equations in every rectangle.')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
@@ -191,14 +235,17 @@ def main():
         assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
         start = time.process_time()
         diagnostic = {}
-        coordinates = catalogue.get('free_coordinates', range(21)) if a.row_moments else None
+        from root_component_row_neighbor_moments import coordinates_for_catalogue
+        coordinates = coordinates_for_catalogue(catalogue,template) if a.row_moments else None
         model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
                                           row_moment_coordinates=coordinates, diagnostics=diagnostic,
-                                          short_columns=a.short_columns)
+                                          short_columns=a.short_columns, signed_template=template,
+                                          signed_lines=a.signed_lines, signed_mode=a.signed_mode,
+                                          mate_normalize=a.mate_normalize,corner_c2=a.corner_c2)
         build_seconds = time.process_time() - start
         result = solve_joint(model, labels, graph, 14, a.seconds)
         result.update(build_cpu_seconds=build_seconds, source_bundle=str(a.bundle), source_catalogue=str(a.catalogue),
-                      scope=__doc__, uses_Gram_cover=False, uses_prism_budget=False, individual_C2_encoded=False,
+                      scope=__doc__, uses_Gram_cover=False, uses_prism_budget=False, individual_C2_encoded=a.corner_c2,
                       global_conway_exclusion=False, **diagnostic)
     result['resources'] = resources
     atomic_json_write(a.output, result)

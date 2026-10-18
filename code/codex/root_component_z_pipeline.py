@@ -23,7 +23,7 @@ from root_component_z_joint import build_joint, solve_joint
 
 
 def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, row_moments=False,
-        short_columns=False):
+        short_columns=False, corner_c2=False, mate_normalize=False, max_free=6):
     output.mkdir(parents=True, exist_ok=True)
     assert not any(output.iterdir()), 'A new or empty output directory is required.'
     resources = limit_research_process(1)
@@ -36,7 +36,7 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
     partition_path, catalogue_path = output / 'partition.json', output / 'catalogue.json'
     atomic_json_write(partition_path, {'template_index': index, 'template': template,
                                       'source_path': str(source), 'source_sha256': hashlib.sha256(raw).hexdigest()})
-    catalogue = row_catalogue(template)
+    catalogue = row_catalogue(template,max_free=max_free)
     atomic_json_write(catalogue_path, {'catalogue': catalogue, 'source_bundle': str(partition_path)})
     result = {'template_index': index, 'resources': resources, 'source_path': str(source),
               'catalogue_status': catalogue['status'], 'free_dimension': catalogue.get('free_dimension'),
@@ -91,10 +91,12 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
         checkpoint('AGGREGATE_DESIGN_ONLY' if design['status'] in ('FEASIBLE', 'OPTIMAL') else 'UNKNOWN')
         return result
     diagnostics = {}
-    coordinates = catalogue.get('free_coordinates', range(21)) if row_moments else None
+    from root_component_row_neighbor_moments import coordinates_for_catalogue
+    coordinates = coordinates_for_catalogue(catalogue,template) if row_moments else None
     model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
                                       row_moment_coordinates=coordinates, diagnostics=diagnostics,
-                                      short_columns=short_columns)
+                                      short_columns=short_columns, corner_c2=corner_c2,
+                                      mate_normalize=mate_normalize)
     joint = solve_joint(model, labels, graph, 14, joint_seconds)
     joint.update(diagnostics)
     atomic_json_write(output / 'joint.json', joint)
@@ -120,9 +122,13 @@ def main():
     p.add_argument('--reduce-certificate', action='store_true')
     p.add_argument('--row-moments', action='store_true', help='Add vertexwise rectangle C2 sums to the joint stage.')
     p.add_argument('--short-columns', action='store_true', help='Use Gram-free integral eigenvector histograms.')
+    p.add_argument('--corner-c2', action='store_true', help='Keep individual common-neighbour counts for each corner pair.')
+    p.add_argument('--mate-normalize', action='store_true')
+    p.add_argument('--max-free',type=int,choices=range(9),default=6,
+                   help='Explicit bound for this row-catalogue enumerator; independent of fixed-Gram rank support.')
     a = p.parse_args()
     run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate,
-        a.row_moments, a.short_columns)
+        a.row_moments, a.short_columns, a.corner_c2, a.mate_normalize, a.max_free)
 
 
 if __name__ == '__main__':

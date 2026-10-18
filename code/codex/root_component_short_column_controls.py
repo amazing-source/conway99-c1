@@ -51,6 +51,7 @@ def run():
     allowed = histogram_rows()
     forbidden = [(2,0,0,2), (1,2,1,1), (0,4,2,1)]
     records = []
+    variable_norm_records = []
     for record, expected in [(r, True) for r in allowed] + [(r, False) for r in forbidden]:
         rectangles, rows = fixture(record)
         model = cp_model.CpModel()
@@ -77,10 +78,46 @@ def run():
             if expected:
                 assert sum(bound['coefficients']) <= bound['upper']
         records.append({'histogram': list(record), 'expected_admissible': expected, 'status': solver.status_name(status)})
+        from root_component_variable_norm_cuts import add_scalar_cuts
+        from root_component_short_column_histograms import h_value
+        vm = cp_model.CpModel()
+        vt = []
+        for qi,item in enumerate(rows):
+            for si,z in enumerate(item['states']):
+                x = vm.new_int_var(0,1,f'v_{qi}_{si}')
+                vm.add(x == 1)
+                vt.append((qi,h_value(rectangles[qi],rectangles[0],z[0]),x))
+        add_scalar_cuts(vm,vt,rectangles,'control')
+        vs = cp_model.CpSolver(); vs.parameters.num_search_workers = 1
+        vst = vs.solve(vm)
+        assert vst == (cp_model.OPTIMAL if expected else cp_model.INFEASIBLE)
+        variable_norm_records.append({'histogram':list(record),'status':vs.status_name(vst)})
+    # These fixtures test the norm-14 root-line condition, not a graph.
+    root_records = []
+    rectangles = list(combinations(range(7),2))
+    for good in (True,False):
+        vals = [0]*84
+        if good:
+            for i in range(7):
+                qi = rectangles.index(tuple(sorted((i,(i+1)%7))))
+                vals[4*qi], vals[4*qi+1] = 1,-1
+        else:
+            vals[:7] = [1]*7; vals[8:15] = [-1]*7
+        assert sum(vals)==0 and sum(v*v for v in vals)==14
+        vm = cp_model.CpModel(); vt = []
+        for w,v in enumerate(vals):
+            x = vm.new_int_var(0,1,f'root_{w}'); vm.add(x==1)
+            vt.append((w//4,v,x))
+        add_scalar_cuts(vm,vt,rectangles,'root_control')
+        vs = cp_model.CpSolver(); vs.parameters.num_search_workers=1
+        vst = vs.solve(vm)
+        assert vst == (cp_model.OPTIMAL if good else cp_model.INFEASIBLE)
+        root_records.append({'balanced_root_lines':good,'status':vs.status_name(vst)})
     facets = histogram_facets()
     assert facets == ((1,1,0,2), (2,2,1,8), (5,5,1,11), (11,12,2,24))
     return {'status': 'HISTOGRAM_ENCODER_CONTROLS_PASSED', 'allowed_histograms': len(allowed),
             'rejected_norm_correct_histograms': len(forbidden), 'facets': facets, 'records': records,
+            'variable_norm_controls':variable_norm_records,'norm14_root_line_controls':root_records,
             'scope': 'Synthetic bounded count rows test the encoder; none is claimed to be a Conway graph.'}
 
 

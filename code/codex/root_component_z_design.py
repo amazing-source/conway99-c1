@@ -21,7 +21,8 @@ from root_rectangle_domains import corner_graphs
 from root_component_resources import atomic_json_write, limit_research_process
 
 
-def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, short_columns=False):
+def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, short_columns=False,
+                 eigen_directions=None):
     assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
     model = cp_model.CpModel()
     states = [item['states'] for item in catalogue['row_types']]
@@ -54,6 +55,11 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
         from root_component_short_column_histograms import add_histogram_tables
         terms = [(qi, row, n) for qi, (rows, ns) in enumerate(zip(states, counts)) for row, n in zip(rows, ns)]
         histogram_info = add_histogram_tables(model, RECTANGLES, nongrid, terms)
+    direction_info = None
+    if eigen_directions:
+        from root_component_variable_norm_cuts import add_direction_cuts
+        terms = [(qi, row, n) for qi, (rows, ns) in enumerate(zip(states, counts)) for row, n in zip(rows, ns)]
+        direction_info = add_direction_cuts(model, RECTANGLES, terms, eigen_directions)
     assert not model.validate(), model.validate()
     solver = cp_model.CpSolver()
     solver.parameters.num_search_workers = 1
@@ -79,6 +85,8 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
               'portable_unsat_proof': False}
     if histogram_info is not None:
         result['short_column_histograms'] = histogram_info
+    if direction_info is not None:
+        result['variable_norm_cuts'] = direction_info
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         selected = [[(row, solver.value(n)) for row, n in zip(rows, ns) if solver.value(n)]
                     for rows, ns in zip(states, counts)]
@@ -96,6 +104,15 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
         if short_columns:
             from root_component_short_column_histograms import check_witness
             result['short_column_witness_checked_exactly'] = check_witness(result['row_multisets'], nongrid)
+        if eigen_directions:
+            from root_component_short_column_histograms import h_value
+            from root_component_variable_norm_cuts import scalar_violations
+            row_rectangles = [q for q in RECTANGLES for _ in range(4)]
+            for d in eigen_directions:
+                values = [sum(c*h_value(q, RECTANGLES[j], row[j]) for j, c in d)
+                          for q, group in zip(RECTANGLES, result['row_multisets']) for row in group['states']]
+                assert not scalar_violations(values, row_rectangles)
+            result['variable_norm_witness_checked_exactly'] = True
     return result
 
 
