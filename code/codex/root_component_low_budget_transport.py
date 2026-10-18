@@ -62,7 +62,8 @@ def add_conditional_cover(model,root,items,nongrid,low_rows,snapshot):
     if low_rows:model.add_allowed_assignments(nongrid,low_rows).only_enforce_if(low)
     else:model.add(low==0)
     items[0]['low_budget_flag']=low
-    return {'old_line_prism_contribution':old_cost,'budget_threshold':51,
+    return {'old_line_prism_contribution':old_cost if isinstance(old_cost,int) else 'variable',
+            'budget_threshold':51,
             'unconditional_new_root_budget':None,'allowed_low_budget_nongrid_rows':len(low_rows),
             'frozen_survivors':snapshot['allowed_template_indices'],
             'frozen_source_commit':snapshot['source_commit']}

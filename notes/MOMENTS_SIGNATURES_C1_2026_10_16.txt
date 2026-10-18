@@ -1466,3 +1466,49 @@ Aucun calcul AWS lance ici. L'ancien paquet10c2e82 reste un etat distinct.
 ACTIF :7#1069_gram_profiles_pilot,session37983,180CPU,presolve1,sansfixerC18.
 Teste bornes serrees +tousproduitsGram +907profilsfiges +2eigenvecteurs
 complets parnouvelle racine. Aucun verdict au moment de cette ecriture.
+
+44. Transport de Gram : sept cas7 fermes, rotation par un seul couplage (18/10,04h16).
+Sept Gram entiers du template7 sont INF sans fixer C18 :
+1069 29.921875CPU,1080 27.859375,1101 30.515625,1103 29.421875,
+1125 29.0625,1126 30.953125,1316 28.875. Les deux etoiles d'une
+ droite6prismes portent tous les residus, produitsGram,907profils et
+2equations propres completes, avec bornes[-2,3] et presolve1.
+
+Les templates9/19 n'ont pas de droite6prismes. Nouvelle decomposition :
+fixer uniquement M0 du premier composant, laisser P et M1 variables.
+La couverture des codes canoniques se partitionne exactement par M0.
+A la racine a, les six paires internes sont fixes. Pour une paire u,v
+portant les autres lettres b,c, p et q sont les voisins variables de u,v
+dans l'etoile opposee. Le neuf-ensemble est {o,a,a*,b,c,u,v,p,q}.
+Ses quatre coins sont {b,c,p,q}; e=[c=b*]+A_pq+[b in p]+[b in q]
++[c in p]+[c in q]. Le cout orthogonal est [c=b*]+A_pq+[b in p]+[c in q].
+Les selecteurs p,q sont definis par les vraies aretes; aucune valeur P/M1
+n'est fixee. Le helper des residus accepte maintenant deux coins variables
+pour ces neuf-ensembles anciens. Les coupes de projection scalaire qui
+supposaient des coins anciens fixes sont omises, pas approximees.
+Les relations de composantes, Gram et profils figes restent necessaires.
+
+9#193 : M0=0/1/3/4 couvre11/2/2/16codes, INF3.14/1.97/1.88/2.14CPU.
+Donc le Gram entier est ferme. 9#196/202/203/205 sont aussi entierement
+fermes, avec tous groupes INF au presolve. Les autres cas9 sont en cours.
+Ce sont des verdicts CP-SAT exacts, pas des certificats UNSAT portables.
+Le journal de presolve est collecte pour localiser la contradiction;
+les indices de contraintes du presolve ne sont que des pistes diagnostics.
+
+Les nouvelles preuves reposent sur le front fige d93c1b0, puis sur le
+profil907 fige AVANT ces essais : pas de mise a jour circulaire de la table.
+LAB993 informe du paquetv2.1 pilote;994 demande de suspendre son lancement,
+car le balayage par matching pourrait le rendre inutile. Aucun AWS lance ici.
+Gardien relance26292; un seul calcul, un coeur, CPU observe14..18%.
+
+45. Famille9 fermee (18/10,04h19).
+Les12Gram ouverts193,196,202,203,205,207,210,213,214,216,219,221 ont
+TOUS leurs groupesM0 INFEASIBLE. Couverture31..codes par4groupes chacun,
+les ensemblesM0 pouvant varier avec le Gram. Cela ferme le template9
+avec les exclusions anciennes du reste de son couvrement exhaustif.
+13/15 templates initiaux et77/79 du couvrement budget51 sont maintenant
+exclus; restent7 et19. Dans le snapshot909, septcas7 et douzecas9 fermes
+laissent442+448=890 Gram. Scope :c(line)>=4 global, racine<=51.
+Ne pas confondre cette branche avec une exclusion globale de Conway.
+Pilote19#560 en cours, versionplusfaible SANS rotations,30CPU/M0,
+pour comprendre si la seule separation parmatching suffit; pas de verdict.

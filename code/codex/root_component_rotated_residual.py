@@ -92,7 +92,8 @@ def add_rotated_residual_cuts(model, graph, rectangles, tight_bounds=False):
         for original in item['old_root_rectangles']:
             key=(root,tuple(original['line']))
             if key not in original_cache:
-                original_cache[key]=nine_set(root,original['gamma_vertices'],[],original['old_neighbours'],True,
+                original_cache[key]=nine_set(root,original.get('gamma_base',original.get('gamma_vertices')),
+                    original.get('gamma_corners',[]),original['old_neighbours'],True,
                     original['edge_count'],f'rotated_old_residual_{root}_{key[1][0]}')
             original['integer_residual_coordinates']=original_cache[key]
         records.append({'root_letter':root,'base_vertices':base,'coordinates':99,

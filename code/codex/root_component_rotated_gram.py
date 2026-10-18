@@ -81,7 +81,8 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
     for root,vectors,old_edges in complete_stars(rectangles):
         # The known old-line nongrids are tried first. In a size18 component
         # any two of its three nonzero rectangle vectors are independent.
-        old=[pair for pair in sorted(old_edges) if old_edges[pair]<4]
+        old=[pair for pair in sorted(old_edges)
+             if not isinstance(old_edges[pair],int) or old_edges[pair]<4]
         candidates=old+[pair for pair in sorted(vectors) if pair not in old_edges]
         selected=candidates[:count_per_root]
         for pair in selected:
