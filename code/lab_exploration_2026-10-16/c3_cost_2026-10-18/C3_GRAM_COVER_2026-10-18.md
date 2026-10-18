@@ -87,6 +87,84 @@ pourquoi quelque chose se passe pour adapter les prochaines passes ».
   d'ancres. CR = 0 n'est pas propagé sous forme agrégée. La variante `crzero` de `gram_cover_ablation.py` teste ce
   point seul, sans table.
 
+## Pourquoi ça meurt : run gc2a (ablations et découpage Gram par Gram)
+
+**Ablations** (`gram_cover_ablation.py`). Chaque variante est un sous-modèle, donc une mort y vaut pour le modèle
+complet.
+
+| Gabarit | all | nobudget | nouniv | notri | core | crzero (sans table) |
+|---|---|---|---|---|---|---|
+| 3581 | 21 s | 20 s | 20 s | 12 s | **12 s** | en cours |
+| 4378 | 117 s | 67 s | 47 s | 95 s | **70 s** | en cours |
+| 4801 | 46 s | 45 s | 105 s | 41 s | **48 s** | en cours |
+| 4861 | 87 s | 83 s | 32 s | 22 s | en cours | **57 s, SANS table** |
+
+Toutes les cellules chiffrées sont INFEASIBLE.
+
+- **Lemme de fait 1.** Le budget, les coupes universelles et les triangles ne sont pas nécessaires. Le cœur exact
+  (C1/C2 + équations de composantes + définitions de R) et la liste des Gram positifs suffisent : aucune structure à
+  84 étiquettes ne réalise un Gram permis.
+- **Lemme de fait 2.** Pour 4861, les seules identités linéaires CR = 0, écrites sur les arêtes, suffisent sans
+  table. Le modèle de base restait UNKNOWN à 600 s. Ce sont des conséquences prouvées (Tσ = 0, audit §3 point 5) que
+  le solveur ne déduisait pas de lui-même : elles sont maintenant ajoutées au découpage par Gram
+  (`gram_cover_split.py`).
+
+**Gram par Gram** : une table d'une seule ligne, toutes les entrées r_ij fixées, 300 s.
+
+- 4192 (79 Gram) : 69 INFEASIBLE sur 75 faits (médiane 23 s), 6 UNKNOWN (Gram 7, 17, 34, 35, 38, 46). La table des
+  79 réunis restait UNKNOWN à 600 s : branchement par Gram ≫ table unique.
+- 4491 (92 Gram) : les 4 premiers sont INFEASIBLE (19 à 68 s).
+- 5128 (5 Gram) : Gram 4 INFEASIBLE (206 s) ; Gram 0 à 3 UNKNOWN à 300 s.
+- Les Gram durs (5128 : 0 à 3 ; 4192 : 7, 17, 34, 35, 38, 46) sont tous de rang maximal 5 = dim ker C. Le relèvement
+  de noyau de Codex (Rv = 0 ⟹ Hv = 0, car HᵀH = 7R) n'y ajoute donc rien.
+- Piste pour eux : l'identité exacte Σ_w h_w h_wᵀ = 7R sur les 84 étiquettes (H = TP, T² = 7T), avec les tables de
+  signatures par sommet. Codex la prend en charge sur 5128 (bundle `gram_covers/template_05128_bundle.json`).
+
+## La vraie raison de mort des Gram durs : l'identité de moments HᵀH = 7R (18/10, soirée)
+
+**Énoncé.** On pose H = TP. C'est une matrice 84 × m, dont la ligne h_w est la signature de l'étiquette w :
+h_{w,f} = base − |N(w) ∩ Q_f|, avec base = 2, 0 ou 1. Comme T² = 7T :
+
+  Σ_{w parmi les 84 étiquettes} h_w h_wᵀ = 7R   (exact).
+
+**Ce que chaque rectangle Q impose à ses 4 coins.** Une réalisation de Q est un graphe de coins et 4 signatures.
+Elle est permise si :
+- les signatures sont entières et dans les bornes [0,2], [−2,0], [−3,1] (λ = 1 et μ = 2 aux lettres) ;
+- chaque signature vérifie h ∈ im R et hᵀR⁺h ≤ T_ww = 5/2 ;
+- les 4 signatures ont pour somme la colonne R e_Q, ou 0 si Q est une grille ;
+- le complément de Schur T_QQ − H_Q R⁺ H_Qᵀ est ⪰ 0 ;
+- chaque coin est voisin d'au plus un coin portant une lettre mate donnée.
+
+On note M_Q = Σ_{w∈Q} h_w h_wᵀ le moment de la réalisation.
+
+**Les tests.** Il faut Σ_Q M_Q = 7R. Les bornes sont faites en entiers :
+- bornes par paire : Σ_Q min ≤ 7R_ef ≤ Σ_Q max ;
+- design exact : choisir une réalisation par rectangle avec Σ_Q M_Q = 7R pour toutes les paires (petit CP-SAT) ;
+- côté Codex, des combinaisons linéaires de moments (LP), recalculées en entiers.
+
+**Résultats sur les gabarits durs** :
+
+| Gabarit | Codex (`root_component_corner_moment_bounds`, 63e87d62 / 80556dc3) | LAB (`moment_bounds.py`, réécrit de zéro) |
+|---|---|---|
+| 5128 (5 Gram) | 5/5 exclus, une seule paire ((0,3),(0,4)) : max −44, −45, −37, −36, −39 contre des cibles −42, −42, −35, −35, −35 | 5/5 exclus : mêmes nombres sur cette paire (Gram 0, 2, 3, 4), Gram 1 par ((0,3),(0,3)) avec 56 < 58 |
+| 4192 (79 Gram) | 79/79 : 58 sans coins, 16 moments simples, 5 combinaisons (18, 25, 35, 38, 39) | mêmes 74 par les bornes, mêmes 5 survivants, puis 5/5 par le design exact (≈ 2 s chacun) |
+
+- Les deux méthodes et les deux codes sont indépendants, et leurs conclusions concordent Gram par Gram.
+- La méthode à retenir : la somme des maxima locaux (par rectangle) est plus petite que le moment global exigé 7R.
+- Les 21 tables sont toutes non vides sur 5128 : c'est l'assemblage global qui échoue, pas un rectangle seul.
+
+## 1ʳᵉ passe c3 : bilan final (c3oa + c3ob)
+
+- 10 052 gabarits ouverts après le Gram : **3 574 exclus** par l'étoile complète à 60 s par représentant d'orbite ;
+  6 478 ouverts.
+
+## 2ᵉ passe c3 (c3ga) : premiers résultats
+
+- 118 premiers gabarits finis : **118 INFEASIBLE**. Pour les 118, le contrôle croisé par `enumerate_grams` de
+  Codex donne LAB_COVER_CONFIRMED.
+- Médiane de 46 s CPU pour le modèle avec table.
+- Les premiers finis sont les plus faciles : le taux final sera plus bas.
+
 ## Suite lancée
 
 - **c3ga** : 2ᵉ passe sur les 5 988 gabarits ouverts après la 1ʳᵉ passe. Pour chacun : énumération (≤ 900 s), modèle
