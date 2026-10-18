@@ -28,6 +28,7 @@ def add_gram_table(model, graph, template, record, matrix=None):
     signature_tables = record.get("row_signature_tables")
     signature_count = 0
     corner_table_count,corner_row_count=0,0
+    pair_table_count,pair_row_count=0,0
     if record["gram_anchor_values"] and signature_tables is not None:
         selector = model.new_int_var(0, record["gram_count"] - 1, "gram_selector")
         model.add_allowed_assignments([selector] + variables,
@@ -57,6 +58,23 @@ def add_gram_table(model, graph, template, record, matrix=None):
             columns=[selector]+[corner_selectors[w] for w in corners]+[graph[u][v] for u,v in combinations(corners,2)]
             model.add_allowed_assignments(columns,table['rows'])
             corner_table_count+=1;corner_row_count+=len(table['rows'])
+        if record.get('pair_signature_forbidden_tables'):
+            from root_component_pair_schur_cover import pair_types
+            pairs=pair_types()
+            for table in record['pair_signature_forbidden_tables']:
+                q,r=map(tuple,table['rectangles'])
+                key=(q,r,table['common_labels'],table['mate_common_labels'])
+                for u,v in pairs[key]:
+                    edge=graph[u][v]
+                    if isinstance(edge,int):
+                        rows=[row[:3] for row in table['rows'] if row[3]==edge]
+                        columns=[selector,corner_selectors[u],corner_selectors[v]]
+                    else:
+                        rows=table['rows']
+                        columns=[selector,corner_selectors[u],corner_selectors[v],edge]
+                    if rows:
+                        model.add_forbidden_assignments(columns,rows)
+                        pair_table_count+=1;pair_row_count+=len(rows)
     elif record["gram_anchor_values"]:
         model.add_allowed_assignments(variables, record["gram_anchor_values"])
     else:
@@ -66,4 +84,5 @@ def add_gram_table(model, graph, template, record, matrix=None):
             "normalizes_template_preserving_root_relabelings": record.get("coverage_up_to_template_relabeling", False),
             "individual_vertex_Schur_tables": signature_count,
             "coupled_corner_tables":corner_table_count,"coupled_corner_rows":corner_row_count,
+            "pair_signature_tables":pair_table_count,"pair_signature_forbidden_rows":pair_row_count,
             "separate_corner_realizations_filtered": record["requires_separate_corner_realization"]}

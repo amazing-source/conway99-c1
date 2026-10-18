@@ -1,11 +1,14 @@
 param(
     [Parameter(Mandatory=$true)][string]$Log,
     [int]$MaximumCores = 4,
-    [ValidateRange(1,60)][int]$ResumeBelow = 50
+    [ValidateRange(1,70)][int]$ResumeBelow = 50,
+    [ValidateRange(50,74)][int]$PauseAt = 65,
+    [ValidateRange(1,60)][int]$MinimumPauseSeconds = 15
 )
 # All campaign workers share one affinity mask. Only our research Python
 # process trees are changed; other applications are left to their owner.
 $ErrorActionPreference = 'Stop'
+if ($ResumeBelow -ge $PauseAt) { throw 'ResumeBelow must be less than PauseAt.' }
 Add-Type @'
 using System;
 using System.Runtime.InteropServices;
@@ -17,6 +20,7 @@ public static class C1CpuThreads {
 }
 '@
 $taskSuspended = @{}
+$taskFailedResourceUpdates = [System.Collections.Generic.HashSet[int]]::new()
 function Resume-ResearchThreads($handles) {
     foreach ($handle in $handles.Values) {
         [void][C1CpuThreads]::ResumeThread($handle)
@@ -58,7 +62,7 @@ try { while ($true) {
         Where-Object { $_.Name -eq '_Total' } | Select-Object -First 1
     $taskUtility = if ($null -ne $taskCpu) { [double]$taskCpu.PercentProcessorUtility } else { 100.0 }
     $taskPrevious = $taskBudget
-    if ($taskUtility -ge 65) {
+    if ($taskUtility -ge $PauseAt) {
         $taskBudget = 1; $taskLastIncrease = $taskNow
         if (-not $taskPaused) { $taskPausedAt = $taskNow; $taskPaused = $true }
     }
@@ -67,7 +71,7 @@ try { while ($true) {
         $taskBudget = [Math]::Min($MaximumCores, $taskBudget + 1)
         $taskLastIncrease = $taskNow
     }
-    if ($taskPaused -and $taskUtility -lt $ResumeBelow -and ($taskNow - $taskPausedAt).TotalSeconds -ge 15) {
+    if ($taskPaused -and $taskUtility -lt $ResumeBelow -and ($taskNow - $taskPausedAt).TotalSeconds -ge $MinimumPauseSeconds) {
         Resume-ResearchThreads $taskSuspended
         $taskPaused = $false
         $taskLastIncrease = $taskNow
@@ -109,7 +113,7 @@ try { while ($true) {
             }
         } catch {
             # The worker can finish between the inventory and this update.
-            if (Get-Process -Id $taskId -ErrorAction SilentlyContinue) {
+            if ((Get-Process -Id $taskId -ErrorAction SilentlyContinue) -and $taskFailedResourceUpdates.Add($taskId)) {
                 Add-Content -LiteralPath $Log -Value "resource_update_failed pid=$taskId error=$($_.Exception.Message)"
             }
         }
@@ -118,7 +122,8 @@ try { while ($true) {
     Write-ResearchBudget ([pscustomobject]@{logical_cores=$taskBudget; paused=$taskPaused; time=$taskNow.ToString('o')})
     if ($taskBudget -ne $taskPrevious -or ($taskNow - $taskLastLog).TotalSeconds -ge 15) {
         [pscustomobject]@{time=$taskNow.ToString('o'); cpu_utility=$taskUtility;
-            shared_logical_cores=$taskBudget; owned_processes=$taskIds.Count; paused=$taskPaused} |
+            shared_logical_cores=$taskBudget; owned_processes=$taskIds.Count; paused=$taskPaused;
+            pause_at=$PauseAt; resume_below=$ResumeBelow; minimum_pause_seconds=$MinimumPauseSeconds} |
             ConvertTo-Json -Compress | Add-Content -LiteralPath $Log
         $taskLastLog = $taskNow
     }

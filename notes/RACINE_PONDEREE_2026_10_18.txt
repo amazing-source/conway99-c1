@@ -241,3 +241,15 @@ Aucune matrice n'est eliminee par cette reutilisation. Le modele all-in-one
 avec ces tables est en cours. root_component_prepare_corner_cover.py prepare
 les429 matrices de19, avec progression atomique et conservation du choix
 racine weighted_prisms_grids. Les familles9/19 restent ouvertes.
+18/10, 15h54 — Compatibilite des signatures entre rectangles
+root_component_pair_schur_cover.py conserve le selecteur des12 Gram de9.
+Il ajoute28671 interdictions (sur392376 couples/valeurs d'arete examines),
+regroupees en200 tables : Schur inferieur, Schur complementaire, et bornes
+entieres de recouvrement des vecteurs courts. Les12 Gram restent presents.
+Les identites comprimees ont ete comparees aux matrices rationnelles completes :
+3486 paires du projecteur84x84 et81 produits de Schur21x21 sur3 Gram, tous exacts.
+Le modele all-in-one avec ces tables est lance, budget180s CPU. Aucun verdict
+INFEASIBLE de famille n'est annonce a ce stade.
+Le regulateur local est maintenant parametrable ; instance active : pause72%,
+reprise sous62%, pause minimale5s, au plus3 coeurs logiques partages, priorite
+basse. La charge des autres applications demeure hors de notre controle.
