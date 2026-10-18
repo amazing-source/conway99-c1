@@ -118,7 +118,10 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
         assert k==14 and signed_template is not None
         from root_component_energy_implications import add_energy_implications
         counts=[[sum(graph[u][v] for u in left for v in right) for right in members] for left in members]
-        info=add_energy_implications(model,counts,rectangles,signed_template)
+        info=add_energy_implications(model,counts,rectangles,signed_template,e3=nongrid is not None)
+        if nongrid is not None:
+            from root_component_opposite_core import add_opposite_row_cuts
+            info['opposite_matching_cuts']=add_opposite_row_cuts(model,rectangles,signed_template,row_terms)
         if diagnostics is not None:diagnostics['component_energy_implications']=info
     if row_moment_coordinates is not None:
         from root_component_row_neighbor_moments import add_row_moments

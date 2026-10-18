@@ -1,0 +1,97 @@
+19 octobre 2026. Codex. Cible commune 5602, a la demande de Dilan.
+
+RESULTAT SANS GRAM FIXE.
+Deux rectangles nongrilles disjoints A,B tels que H_A=-H_B ont exactement
+deux aretes internes chacun (en utilisant l'exclusion E3 deja etablie).
+Donc R_AA=R_BB=4 et R_AB=-4. Leur union induit un graphe cubique sur huit
+sommets. Dans5602, A=03 et B=12 satisfont cette identite.
+
+Dans le gabarit5602, les nongrilles sont les douze aretes entre
+X={0,1,2,3} et Y={4,5,6}, plus03 et12. Les quatre autres aretes de X et
+les trois aretes de Y sont des grilles. La somme des equations de
+composantes aux quatre racines X, moins celle aux trois racines Y, donne
+2(H03+H12)=0. Les douze colonnes croisees forment ainsi un tableau4x3,
+de sommes de colonnes0 et de sommes de lignes -u,u,u,-u, u=H03.
+Sa dimension libre est6+1=7. Aucune symetrie du graphe n'est supposee.
+
+PREUVE DU LEMME DES COLONNES OPPOSEES.
+H_A=-H_B donne Gamma(P_A+P_B)=W_A+W_B, egal a3 sur Q_A union Q_B.
+Le sous-graphe induit K est donc cubique. L'egalite des normes des deux
+colonnes impose e_A=e_B=e. E3 donne e<=2 car ce sont des nongrilles.
+
+Si e=0, chaque sommet de Q_A a trois voisins dans Q_B. Deux coins
+partageant une lettre racine ont donc au moins deux voisins communs
+dans Q_B, plus leur voisin commun de la premiere sphere : plus que mu=2.
+
+Si e=1 et l'arete interne xy de Q_A joint des coins partageant une
+lettre, les deux autres coins z,t partagent aussi une lettre et ont
+chacun trois voisins dans Q_B : meme contradiction.
+Si xy joint les coins opposes, les deux autres coins z,t sont opposes.
+Leurs voisinages dans Q_B sont des triplets distincts (sinon ils auraient
+trois voisins communs). Ecrivons leurs uniques omissions a et b, a!=b.
+Chacun de x,y partage une lettre avec z et t. Son voisinage de taille2
+dans Q_B doit rencontrer chacun des deux triplets en au plus un point;
+il est donc exactement {a,b}. Mais x et y sont adjacents et ont alors
+deux voisins communs, contrairement a lambda=1. Donc e=2.
+Cette preuve n'utilise ni catalogue, ni Gram choisie, ni solveur.
+
+REDUCTION FINIE DU COEUR.
+root_component_opposite_core.py enumere les graphes cubiques sur ces
+huit sommets, avec e=0,1,2, les quotas de lettres et les bornes C2.
+Comptes etiquetes :0 pour e0,0 pour e1,304 pour e2. Les reetiquetages
+des deux paires de racines et les quatre flips de lettres forment un
+groupe d'ordre128 qui preserve5602. Ses sept orbites ont les tailles
+128,8,32,32,64,32,8. Ce sont des changements de coordonnees autorises,
+pas des automorphismes imposes au graphe recherche.
+
+RACCORDEMENT AUX TROIS GRILLES SUR Y.
+Noter L la matrice d'incidence des huit sommets vers leurs huit lettres
+racines de X. Chaque sommet du coeur a exactement un voisin dans chacun
+des rectangles Q45,Q46,Q56 (H_grille=0). Chaque sommet de ces grilles a
+exactement deux voisins dans le coeur (H03+H12=0). Chaque grille definit
+donc un couplage parfait sur les huit sommets.
+Tous les autres sommets de la deuxieme sphere ont au plus un voisin
+dans le coeur : zero pour les quatre grilles de X, un pour les douze
+rectangles croises. Ainsi les trois couplages doivent sommer a
+  T = 2J+3I-K-K^2-L L^t.
+Les entrees hors diagonale de T sont exactement les nombres de voisins
+communs restant a fournir; sa diagonale est nulle. C'est un multigraphe
+cubique et sa decomposition en trois couplages est necessaire.
+
+Pour un couplage M realise par une grille, deux de ses aretes e,f qui
+verifient : un sommet de e est adjacent dans K aux deux extremites de f,
+doivent occuper des COINS OPPOSES de cette grille. Sinon ce sommet et le
+coin f auraient deja trois voisins communs (deux dans K et un dans la
+grille). Les oppositions forment un couplage sur les quatre aretes de M.
+Cette condition pourra supprimer des coeurs avant toute autre extension.
+
+EXECUTION EXACTE ET COUPES SUPPLEMENTAIRES.
+Les nombres de decompositions en trois couplages pour les sept orbites
+sont1,3,3,1,1,2,4, soit15. Dans les orbites0,3,4, l'unique decomposition
+contient un couplage dont une arete devrait etre opposee a deux aretes
+distinctes : contradiction. Masques canoniques exclus14308580,51206482,
+51222858. Le fichier opposite_core_three_grids.json donne les sommets
+temoins de chaque opposition forcee, sans solveur ni calcul flottant.
+Les quatre orbites1,2,5,6 restent ouvertes (80 etiquetages au total).
+Le cas de deux aretes incidentes dans un rectangle appartient a l'orbite0;
+les deux rectangles speciaux doivent donc chacun etre un couplage.
+
+Consequence : u=H03=-H12 prend ses valeurs dans {-1,0,1}. Sur les deux
+rectangles speciaux, il vaut respectivement1 et-1. Ailleurs, les bornes
+individuelles des deux colonnes opposees imposent |u|<=1. Sa norme carree
+vaut7R03,03=28 et sa somme0 : il a exactement quatorze1 et quatorze-1.
+Ces conclusions portent sur TOUTES les Gram de5602.
+Le corollaire de couplage est aussi valable pour toute autre paire de
+colonnes opposees disjointes lorsque les trois paires des racines restantes
+sont des grilles. L'encodeur ne l'applique qu'apres ce test explicite.
+Les etats de lignes ayant un degre propre different de1 dans l'un de ces
+deux rectangles sont interdits dans --component-energy, sous E3.
+
+ENCODAGE.
+--component-energy utilise desormais aussi le lemme des colonnes
+opposees si E3 est active. La detection des paires se fait par noyau
+rationnel exact des equations de composantes, jamais par ressemblance.
+root_component_5602_grid_core.py prepare l'extension simultanee aux sept
+grilles :36 sommets, sans choisir aucune Gram. Tout temoin reste partiel;
+les48 autres sommets de la deuxieme sphere et les15 de l'etoile racine
+restent a construire. Aucun verdict global n'est annonce dans cette note.

@@ -58,7 +58,7 @@ def violations(R, records):
     return result
 
 
-def add_energy_implications(model, counts, rectangles, template):
+def add_energy_implications(model, counts, rectangles, template, *, e3=False):
     standard,records=patterns(template)
     assert [tuple(q) for q in rectangles]==standard
     def R(i,j):
@@ -78,6 +78,10 @@ def add_energy_implications(model, counts, rectangles, template):
             model.add(R(a,c)+R(b,c)>=0).only_enforce_if(flag.Not());negative[key]=flag
         norm=sum(x*y*R(i,j) for i,x in r['direction'] for j,y in r['direction'])
         model.add(norm>=104).only_enforce_if([empty[c],negative[key]])
-    return {'component_identities':len({tuple(r['relation']) for r in records}),
+    result = {'component_identities':len({tuple(r['relation']) for r in records}),
             'energy_implications':len(records),'flags':len(empty)+len(negative),
             'fixed_Gram_required':False,'principle':__doc__}
+    if e3:
+        from root_component_opposite_core import add_opposite_count_cuts
+        result['opposite_column_cuts'] = add_opposite_count_cuts(model,counts,rectangles,template)
+    return result

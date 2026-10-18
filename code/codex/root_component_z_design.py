@@ -54,7 +54,11 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
     energy_info=None
     if component_energy:
         from root_component_energy_implications import add_energy_implications
-        energy_info=add_energy_implications(model,k,RECTANGLES,template)
+        energy_info=add_energy_implications(model,k,RECTANGLES,template,e3=exclude_three_edges)
+        if exclude_three_edges:
+            from root_component_opposite_core import add_opposite_row_cuts
+            terms=[(qi,row,n) for qi,(rows,ns) in enumerate(zip(states,counts)) for row,n in zip(rows,ns)]
+            energy_info['opposite_matching_cuts']=add_opposite_row_cuts(model,RECTANGLES,template,terms)
     for i, j in combinations_with_replacement(range(21), 2):
         target = 64 if i == j else 24 if set(RECTANGLES[i]) & set(RECTANGLES[j]) else 32
         quadratic_sum = sum(n * row[i] * row[j]
