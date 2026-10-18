@@ -1569,3 +1569,18 @@ catalogue de composantes24/30/36. Bornes brutes des couvertures internes :
 c3 (4,1,1):105; (3,2,1):45; (2,2,2):27. c2 (5,1):945; (4,2):315;
 (3,3):225. c1 (6):10395. Choisir une droite minimisant ce produit.
 Ce sont des comptes finis, PAS des couts mesures. Aucun pilote c3 lance.
+
+49. Pilote c_min>=3 (18/10,09h28; LAB1000 lu/ack, envois1001/1002).
+Suite de la recherche globale : root_component_complete_star.py,
+commit3ff47a06. Couverture de TOUS les couplages internes d'une etoile,
+composante par composante, choix de la droite de produitminimal. Gram,
+P etM1 variables; aucune table907/frontd93/minimum4 transporte.
+SourcesLAB main360e66f1, g1/g2 dans c3_root_cover/. Les trois g1 sont
+INFEASIBLE chacun27/27 couplages, soit81/81, tous avant recherche.
+Cinq pilotesg2 indices0,3,5,11,15 encore en cours, budget30CPU/couplage,
+uncoeur BelowNormal, gardeCPU29740. Session23236.
+Manifestage sans solveur des10052templatesLAB :106852couplages.
+Histogramme compte:templates =1:214,3:2586,9:4689,15:1775,27:307,
+45:479,105:2. Ce compte ne garantit pas un temps de preuve abordable.
+Notes/PILOTE_CMIN3_2026_10_18.txt et data/codex_c3_pilot_20261018/.
+AucunAWS lance. VerdictsCP-SAT, pascertificatsUNSATportables; c<=2ouvert.
