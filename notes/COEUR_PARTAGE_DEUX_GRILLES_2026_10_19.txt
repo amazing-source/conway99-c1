@@ -1,0 +1,152 @@
+19 octobre 2026 — Suite mathematique de la fermeture de gz5602
+
+OBJET ET PORTEE
+
+On travaille dans la seconde sphere Gamma d'un hypothetique
+srg(99,14,1,2), avec ses 21 rectangles Q_ij de quatre sommets.
+On garde H_03 = -H_12 != 0 et les trois grilles Q_45,Q_46,Q_56.
+Parmi Q_01,Q_02,Q_13,Q_23, exactement deux sont des grilles et les deux
+autres se rencontrent en une droite a. Le LAB recense 24 gabarits c3
+ouverts ayant cette structure (message1178), en dimensions4 ou5.
+Aucune Gram particuliere ni automorphisme du graphe n'est impose.
+E3, l'exclusion des rectangles non grilles a trois aretes, est utilise.
+
+Cette note decrit une enumeration finie. A son premier commit, le
+pilote passe mais le parcours integral de5312 positions est EN COURS.
+Il ne faut pas confondre ces exclusions locales avec celle de Conway.
+
+1. LE BLOC DE SEIZE EST CUBIQUE
+
+Les identites universelles sum_{j != i} H_ij = 0 donnent, en sommant
+sur X={0,1,2,3} puis en retranchant la somme sur Y={4,5,6},
+sum_{ij dans X} H_ij = sum_{ij dans Y} H_ij = 0.
+Comme H_03+H_12=0, les quatre autres colonnes X ont une somme nulle.
+Leur union S de16 sommets induit donc un graphe cubique : pour un
+sommet de l'un de ces rectangles, la somme des quatre W vaut3.
+Il n'y a aucune arete entre S et le coeur cubique Q_03+Q_12.
+
+Les deux colonnes non grilles restantes, C et D, sont opposees,
+puisque les deux autres colonnes sont nulles. Elles partagent a.
+Sur Q_C+Q_D la somme W_C+W_D vaut2 : leur union K est2-reguliere.
+Chaque rectangle non grille est raccorde par une bijection a sa seule
+grille X disjointe. Les deux grilles X restantes sont disjointes en
+tant qu'ensembles de sommets, partagent une droite racine, et n'ont
+aucune arete entre elles. Ces faits determinent toute la forme de S.
+
+2. C8 OU DEUX C4 : PREUVE SANS ENUMERATION
+
+Tous les huit sommets de K portent une lettre de a. Chacun a deux
+voisins dans K, alors que ses quotas sur les deux lettres de a valent
+un et un. Les deux quotas sont donc atteints a l'interieur de K.
+
+Ainsi chaque sommet a une arete dans son propre demi-ensemble a+/a-
+et une arete vers l'autre demi-ensemble. Les aretes de chaque sorte
+forment un couplage. Un cycle alterne les deux sortes d'aretes. Son
+nombre d'aretes traversantes doit etre pair, donc sa longueur est un
+multiple de4. Sur8 sommets, K est C8 ou C4+C4.
+
+Le catalogue LAB paircores8.json donne114 etiquetages satisfaisant les
+quotas, les bornes de voisins communs et E3/non-grille :10 avec e=0,
+68 avec e=1,36 avec e=2 dans chaque rectangle. Le present code utilise
+ce catalogue comme entree. Il ne relance pas son enumeration.
+
+3. TROIS COORDONNEES PAR SOMMET
+
+Chaque sommet de X choisit exactement un voisin dans chacune des
+trois grilles Y. On le represente par un mot (j0,j1,j2) sur{0,1,2,3}.
+Dans chaque grille X, chacune des trois applications est une
+permutation. Les huit sommets de K ont des mots quelconques, sous
+les contraintes ci-dessous.
+
+Pour deux grilles Y distinctes, le nombre total de voisins communs
+dans les24 sommets X est exactement2 moins le nombre de lettres
+communes. Un sommet exterieur X x Y ne peut pas voir deux grilles Y.
+Le coeur cubique8 et ses douze voisins Y forment donc un bord20 qui
+fixe trois matrices de marges D (4x4, sommes de lignes et colonnes4)
+pour les seize mots de S. Ces memes marges etaient utilisees en5602.
+
+Apres avoir choisi les huit mots des deux grilles X, il reste trois
+marges R de sommes2 par ligne/colonne. Les huit mots etiquetes de K
+doivent les remplir EXACTEMENT. Les quotas de lettres aux sommets Y,
+et les bornes de voisins communs avec le coeur cubique8, sont imposes
+des la selection d'un mot.
+
+Pour un coeur K du catalogue, deux de ses sommets u,v ne peuvent
+coincider sur plus de
+ T_uv = 2 - K_uv - (K^2)_uv - |lettres(u) inter lettres(v)|
+coordonnees Y. On porte simultanement tous les coeurs compatibles par
+un masque de114 bits; chaque nouveau mot retire les coeurs violant
+cette inegalite. Il n'y a ici ni arrondi ni choix de Gram.
+
+4. LES BIJECTIONS AUX DEUX GRILLES
+
+Apres huit mots, les bijections de chaque rectangle non grille a sa
+grille disjointe sont enumerees parmi les24 permutations. Les tests
+de voisins communs et de quotas sont evalues avec le coeur choisi.
+Les deux catalogues de bijections se construisent separement : une
+paire de sommets non grilles ne peut pas avoir un voisin commun dans
+ces deux grilles, puisque les raccordements sont des bijections vers
+des grilles differentes.
+
+Un premier filtrage d'une image t dans une grille utilise
+ c_j + C4(t,j) <= 2 - [t=j] pour tout j,
+ou c_j est le nombre de coordonnees Y communes avec son sommet j.
+Le test final rajoute le voisin commun eventuel dans K, et controle
+les paires K/Y et grille/Y. Le graphe36 materialise est ensuite soumis
+aux quotas et a toutes les bornes C2. Les egalites C2 sont utilisees
+seulement sur le coeur cubique8, les deux grilles X individuellement,
+et les12 sommets Y : elles NE sont PAS imposees sur K tout entier.
+
+5. COUVERTURE ET FRONTIERE
+
+Le bord20 de l'ancien coeur8 a1328 representants complets. Les
+relabelages utilises dans cette couverture ne preservent pas
+necessairement la droite a des deux nouveaux rectangles non grilles.
+On traite donc LES QUATRE VALEURS a=0,1,2,3 pour chaque representant.
+Cette couverture de5312 positions peut etre redondante, mais couvre
+tous les graphes de cette configuration.
+
+Pour chaque graphe36 survivant, chaque sommet manquant a exactement
+quatre voisins connus : un dans le coeur8, un dans l'unique grille Y
+disjointe, et deux dans S. Si sa racine X est a : un voisin dans chaque
+grille X, aucun dans K (512 profils). Si elle est le partenaire de a
+dans03 ou12 : deux voisins dans K, aucun dans les grilles X (896).
+Dans les deux autres cas : un dans K, un dans la grille X disjointe
+(1024). Les domaines utilisent les memes quotas et deficits C2 que
+la frontiere5602, avec ces profils corriges.
+
+Une limite de noeuds donne UNKNOWN_NODE_LIMIT, jamais une exclusion.
+Sans limite, toutes les boucles sont finies et parcourues entierement
+avant EXCLUDED_BY_EXHAUSTIVE_JOIN. FEASIBLE_PARTIAL_36 ne signifie pas
+qu'un graphe99 existe, ni meme que ce bloc peut etre complete.
+
+6. IMPLEMENTATION ET PREMIERS RESULTATS
+
+code/codex/root_component_touching_grid_join.py
+Entrees : gz5602_boundary20_cover.json et le catalogue LAB
+code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircores8.json.
+
+Pilotes : touching23_pilot_o1b0.json (4 cas) et
+touching23_pilot_mixed.json (60 cas) :64 exclusions exactes,
+aucune limite atteinte. Les cas517,562,603 de l'orbite6 sont inclus,
+chacun dans les quatre positions a.
+
+Controle positif de l'extension : remplacer les114 coeurs non grilles
+par les deux carres C4 des anciennes grilles (e=4, donc hors de la
+famille exclue). Le nouveau code retrouve un graphe36 pour chacun des
+trois bords517,562,603 et chacune des quatre positions a :12/12.
+Ce controle teste que la nouvelle recherche peut effectivement
+retrouver les configurations admissibles quand l'hypothese non-grille
+est retiree. Il ne constitue pas une seconde enumeration du LAB.
+
+Commande de production (un seul coeur, garde CPU externe) :
+python -I -u -X utf8 code/codex/root_component_touching_grid_join.py
+ --cover data/codex_short_columns_20261018/gz5602_boundary20_cover.json
+ --pair-cores code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircores8.json
+ --frontier --log-every100
+ --output data/codex_short_columns_20261018/touching23_complete.json
+
+Attention : --log-every100 ci-dessus se tape --log-every 100.
+Le fichier de production est ecrit progressivement. Tant qu'il ne
+couvre pas exactement5312 positions avec des verdicts d'exclusion,
+il ne ferme pas la famille. Aucun total partiel ne suffit.
