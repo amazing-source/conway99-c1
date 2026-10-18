@@ -1,0 +1,95 @@
+Arbre partiel de partitions autour d'une racine — 18 octobre 2026
+
+OBJET
+Reponse a la proposition LAB1005 : tester un prefixe de la couverture,
+avant d'enumerer toutes les partitions des sept droites de la racine.
+Le grapheGamma84 et toutes les equations C1/C2 restent presents.
+Une impossibilite correctement obtenue sur un prefixe exclut toutes
+ses completions. UNKNOWN ne permet aucune exclusion.
+
+ENTREE
+root_component_partial_star.py accepte known_partitions, tableau de sept
+entrees. null signifie inconnu. Une entree connue est la partition COMPLETE
+des six autres droites, singletons inclus. [] est interdit. Un singleton
+impose une grille; un bloc de taille>=2 impose des paires sans grille.
+Si deux partitions connues imposent des statuts incompatibles a une paire,
+le prefixe est contradictoire. Les autres paires restent variables.
+Seul le couplage interne de l'etoile choisie est fixe. La permutation
+vers l'etoile opposee et le second couplage restent variables.
+
+REDUCTION INITIALE EXACTE
+Avant toute autre partition fixee, on peut permuter les six autres
+droites et echanger les deux lettres de chacune. Dans un bloc de taille s,
+le couplage naturel P et le couplage choisi M0 forment des cycles alternes;
+leurs demi-longueurs forment une partition entiere de s. Cela classe les
+couplages sous les permutations de paires et les echanges internes.
+Deux blocs de meme taille peuvent aussi etre permutes.
+
+Nombre de composantes  Tailles      Representants   Couplages etiquetes
+2                      1+5         7               945
+2                      2+4         10              315
+2                      3+3         6               225
+1                      6           11              10395
+Total                              34              11880
+
+Le nombre etiquete d'un type m_l est
+ s! * 2^(s-sum_l m_l) / produit_l(l^m_l * m_l!).
+Les types dans des blocs de meme taille recoivent le facteur multinomial
+correspondant. Les 11880 couplages ont ete classes exhaustivement une
+fois et les poids compares exactement aux34 representants.
+Cette normalisation n'est appliquee QU'AU DEPART, quand une seule
+partition est connue. Elle n'est pas reutilisee apres fixation d'autres
+partitions : des permutations pourraient alors detruire le prefixe.
+
+PORTEE
+Le fichier initial fixe explicitement le budget de prismes a51 a la
+racine choisie. La couverture porte sur les racines satisfaisant cette
+hypothese et possedant une droite avec une ou deux composantes.
+Elle ne suppose pas que toutes les racines satisfont le budget51.
+Le champ minimum_root_components_for_refinement donne l'hypothese de
+minimum a cette racine (1 ou2). Le modele SAT peut la relacher sur les
+partitions inconnues, ce qui est sans danger pour une exclusion.
+Le raffinement conserve ce champ et toutes les donnees du parent.
+
+RAFFINEMENT
+Une nouvelle droite inconnue est partagee selon ses203 partitions
+etiquetees (Bell(6)). Seules sont supprimees les partitions sous le
+minimum explicitement declare ou celles en conflit avec un statut de
+grille deja fixe. Aucun ancien Gram temoin et aucune table c>=4 ne sont
+utilises. Un enfant n'est jamais omis parce qu'un autre est UNKNOWN.
+
+MODELE
+Gram variable21x21, diagonales0/4/6/8, mineursPSD d'ordre2 et sommes
+nulles sur les six rectangles incidents a chaque droite. Les equations
+de composantes ne portent que sur les partitions connues. Les triangles
+et le transport des residus du couplage fixe sont exactement ceux de
+l'outil complete_star, avec les bornes de produits CORRIGEES.
+Les options --no-transport et --transport-level permettent de localiser
+un blocage en ajoutant successivement coins, residus, Gram, equations
+propres et sommes nulles incidentes.
+
+RENFORCEMENT DU GRAM TRANSPORTE
+Pour les21 residus, R_pq=<delta_p,delta_q>/7 et R_pp=8-2e_p.
+Les sommes incidentes de residus sont nulles : pour chaque paire p et
+chaque droite i, sum_{q incidente a i} R_pq=0 (147 equations).
+On explicite aussi R_pq^2<=R_pp R_qq (210 petites tables).
+Enfin R=Q^t T Q, T^2=7T et Q^tQ=4I donnent0<=R<=28I, donc
+sum_q R_pq^2<=28R_pp (21 inegalites d'energie).
+Ces contraintes s'appliquent aussi aux modeles c3 et c4 corriges;
+elles ne supposent ni budget51 a la nouvelle racine ni minimumc4.
+Un exemple construit R=4uu^t, u alterne sur un cycle4 deK7, satisfait
+ces contraintes dans le test de regression. Son spectre non nul est16.
+
+ETAT DES MESURES
+Les cinq premiers INFEASIBLE etaient affectes par le bug domain[-1].
+Ils sont RETIRES; voir CORRECTION_DOMAIN_ORTOOLS_2026_10_18.txt.
+Le prefixe33 corrige est UNKNOWN a30CPU; aucune exclusion c<=2 nouvelle.
+L'ablation a permis de trouver l'erreur et de corriger aussi l'outilc3/c4.
+Le cout complet de cet arbre n'est pas etabli.
+
+COMMANDES (Python du venv c1-lambda1-env, mode-I)
+ code/codex/root_component_partial_star.py --make-initial --output FICHIER_NEUF.json
+ code/codex/root_component_partial_star.py FICHIER.json --index 33 --seconds 30 --output RAPPORT_NEUF.json
+ code/codex/root_component_partial_star.py FICHIER.json --index 33 --expand-line 1 --output ENFANTS_NEUFS.json
+Aucun fichier de resultat n'est ecrase.
+Un seul coeur logique, priorite basse, garde locale du processeur.

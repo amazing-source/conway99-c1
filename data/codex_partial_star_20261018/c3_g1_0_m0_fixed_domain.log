@@ -1,0 +1,301 @@
+{"phase": "cover_ready", "template_index": 0, "root_line": 2, "part_sizes": [2, 2, 2], "matching_count": 27}
+{"phase": "model_ready", "matching_index": 0, "build_cpu_seconds": 3.328125, "variables": 154629, "process_peak_rss_bytes": 275472384}
+
+Starting CP-SAT solver v9.15.6755
+Parameters: max_time_in_seconds: 6000 log_search_progress: true linearization_level: 0 num_search_workers: 1 cp_model_probing_level: 0 max_presolve_iterations: 1 symmetry_level: 0
+
+Initial satisfaction model '': (model_fingerprint: 0x4fb4f34f7d2b91dc)
+#Variables: 154'629 (27'046 primary variables)
+  - 125'466 Booleans in [0,1]
+  - 200 in [-8,0]
+  - 200 in [-8,4]
+  - 17'640 in [-6,9]
+  - 9'092 in [-2,3]
+  - 12 in [0,2]
+  - 6 in [0,4]
+  - 6 in [0,8]
+  - 1'764 in [0,9]
+  - 12 in [0,25]
+  - 32 in [0,27]
+  - 12 in [0,29]
+  - 4 in [0,31]
+  - 4 in [0,70]
+  - 4 in [0,71]
+  - 2 in [0,75]
+  - 4 in [0,77]
+  - 6 in [0,79]
+  - 4 in [0,83]
+  - 18 in [0,675]
+  - 48 in [0,783]
+  - 18 in [0,899]
+  - 6 in [0,1023]
+  - 20 in [2][4][6][8]
+  - 1 in [3,25]
+  - 2 in [3,35]
+  - 4 in [4,77]
+  - 4 in [4,79]
+  - 4 in [4,83]
+  - 2 in [6,77]
+  - 2 in [6,79]
+  - 8 in [6,83]
+  - 2 in [10,83]
+  - 1 in [15,35]
+  - 2 in [18,77]
+  - 2 in [18,79]
+  - 4 in [18,83]
+  - 2 in [22,83]
+  - 1 in [52,54]
+  - 2 in [52,55]
+  - 1 in [53,55]
+  - 1 in [56,58]
+  - 2 in [56,59]
+  - 1 in [57,59]
+  - 1 constants in {1} 
+#kAllDiff: 17
+#kBoolOr: 10'885 (#literals: 29'457)
+#kElement: 5'904
+#kIntProd: 121'624
+#kLinear1: 11'026 (#enforced: 7'328)
+#kLinear2: 46'356 (#enforced: 7'328)
+#kLinear3: 3'924
+#kLinearN: 26'786 (#terms: 467'192) (#complex_domain: 15)
+#kTable: 1'779
+
+Starting presolve at 0.87s
+  7.17e-02s  0.00e+00d  [DetectDominanceRelations] 
+  1.80e+00s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] #num_loops=3 #num_dual_strengthening=1 
+  1.89e-02s  0.00e+00d  [operations_research::sat::CpModelPresolver::ExtractEncodingFromLinear] #potential_supersets=4'159 #potential_subsets=1'724 #amo_encodings=6 #exo_encodings=144 #unique_terms=3'464 #multiple_terms=6 #literals=3'385 
+[SAT presolve] num removable Booleans: 0 / 211'524
+[SAT presolve] num trivial clauses: 0
+[SAT presolve] [0s] clauses:474'338 literals:1'244'868 vars:167'484 one_side_vars:47772 simple_definition:105'505 singleton_clauses:0
+[SAT presolve] [0.0639949s] clauses:474'290 literals:1'141'040 vars:167'484 one_side_vars:47796 simple_definition:105'481 singleton_clauses:24
+[SAT presolve] [0.0764714s] clauses:474'290 literals:1'141'040 vars:167'484 one_side_vars:47796 simple_definition:105'481 singleton_clauses:24
+[MaxClique] Merged 348318 with 698082 literals) into 321324(665236 literals) at_most_ones.
+  3.62e-01s  0.00e+00d  [operations_research::sat::CpModelPresolver::ProcessAtMostOneAndLinear] #num_changes=1'014 
+  9.55e-02s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraints] #duplicates=1'392 
+  9.10e-02s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDuplicateConstraintsWithDifferentEnforcements] #without_enforcements=13'374 
+  3.33e-02s  1.12e-03d  [operations_research::sat::CpModelPresolver::DetectDominatedLinearConstraints] #relevant_constraints=10'390 #num_inclusions=4'385 #num_redundant=872 
+  3.50e-02s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectDifferentVariables] 
+  2.12e-01s  1.28e-02d  [operations_research::sat::CpModelPresolver::ProcessSetPPC] #relevant_constraints=461'959 #num_inclusions=253'771 
+  1.37e-01s  3.24e-02d  [operations_research::sat::CpModelPresolver::TransformClausesToExactlyOne] #num_amos=289'630 #num_clauses=126'950 #num_checked=126'950 
+  4.36e-01s  0.00e+00d  [operations_research::sat::CpModelPresolver::DetectEncodedComplexDomains] 
+  2.34e-02s  2.73e-04d  [operations_research::sat::CpModelPresolver::FindAlmostIdenticalLinearConstraints] #num_tested_pairs=4'740 
+  1.22e+00s  8.36e-01d  [operations_research::sat::CpModelPresolver::FindBigAtMostOneAndLinearOverlap] 
+  9.40e-01s  5.24e-01d  [operations_research::sat::CpModelPresolver::FindBigVerticalLinearOverlap] #blocks=29 #saved_nz=982 
+  1.34e+00s  1.00e+00d *[operations_research::sat::CpModelPresolver::FindBigHorizontalLinearOverlap] #blocks=31 #saved_nz=4'128 #linears=8'423 
+  9.09e-02s  2.23e-03d  [operations_research::sat::CpModelPresolver::MergeClauses] #num_collisions=9'086 #num_merges=9'086 #num_saved_literals=18'172 
+  1.35e-01s  0.00e+00d  [DetectDominanceRelations] 
+  1.88e+00s  0.00e+00d  [operations_research::sat::CpModelPresolver::PresolveToFixPoint] #num_loops=4 #num_dual_strengthening=2 
+  1.58e-02s  0.00e+00d  [MergeNoOverlap] 
+  1.73e-02s  0.00e+00d  [MergeNoOverlap2D] 
+
+Presolve summary:
+  - 5005 affine relations were detected.
+  - rule 'TODO dual: only one blocking constraint?' was applied 1'624 times.
+  - rule 'TODO linear inclusion: superset is equality' was applied 503 times.
+  - rule 'TODO linear2: convert ax + by != cte to clauses for large domains' was applied 792 times.
+  - rule 'TODO linear2: convert implied ax + by == cte to clauses for large domains' was applied 2'016 times.
+  - rule 'affine: new relation' was applied 5'005 times.
+  - rule 'all_diff: expanded' was applied 15 times.
+  - rule 'all_diff: permutation expanded' was applied 2 times.
+  - rule 'at_most_one: transformed into max clique' was applied 1 time.
+  - rule 'bool_and: fixed literals' was applied 10 times.
+  - rule 'bool_or: always true' was applied 1'393 times.
+  - rule 'bool_or: implications' was applied 39'164 times.
+  - rule 'bool_or: only one literal' was applied 24 times.
+  - rule 'bool_or: removed enforcement literal' was applied 430'426 times.
+  - rule 'deductions: 297914 stored' was applied 1 time.
+  - rule 'diophantine: reformulated equality' was applied 1 time.
+  - rule 'dual: fix variable' was applied 12 times.
+  - rule 'dual: make encoding equiv' was applied 144'740 times.
+  - rule 'duplicate: merged rhs of linear constraint' was applied 12 times.
+  - rule 'duplicate: removed constraint' was applied 1'392 times.
+  - rule 'element: expanded' was applied 5'904 times.
+  - rule 'encoding: extracted from linear' was applied 150 times.
+  - rule 'encoding: reduced target domain' was applied 69 times.
+  - rule 'enforcement: false literal' was applied 254 times.
+  - rule 'enforcement: true literal' was applied 516 times.
+  - rule 'exactly_one: removed literals' was applied 24 times.
+  - rule 'exactly_one: size two' was applied 632 times.
+  - rule 'int_prod: boolean affine term' was applied 104'948 times.
+  - rule 'int_prod: constant product' was applied 2'372 times.
+  - rule 'int_prod: reduced target domain' was applied 13'560 times.
+  - rule 'int_prod: removed constant expressions' was applied 2'560 times.
+  - rule 'linear + amo: extracted enforcement literal' was applied 3'946 times.
+  - rule 'linear + amo: fixed literal implied by enforcement' was applied 3'649 times.
+  - rule 'linear + amo: trivial linear constraint' was applied 351 times.
+  - rule 'linear inclusion: redundant included constraint' was applied 664 times.
+  - rule 'linear inclusion: sparsify superset' was applied 194 times.
+  - rule 'linear inclusion: subset + singleton is equality' was applied 14 times.
+  - rule 'linear matrix: common horizontal rectangle' was applied 31 times.
+  - rule 'linear matrix: common vertical rectangle' was applied 29 times.
+  - rule 'linear1: always true' was applied 253 times.
+  - rule 'linear1: transformed to implication' was applied 276 times.
+  - rule 'linear1: x in domain' was applied 1'458 times.
+  - rule 'linear2: contains a boolean' was applied 36 times.
+  - rule 'linear2: convert ax + by != cte to clauses' was applied 38'766 times.
+  - rule 'linear2: convert implied ax + by == cte to clauses' was applied 215'102 times.
+  - rule 'linear2: implied ax + by = cte has only one solution' was applied 26 times.
+  - rule 'linear: advanced coefficient strenghtening' was applied 5 times.
+  - rule 'linear: always true' was applied 2'632 times.
+  - rule 'linear: divide by GCD' was applied 293 times.
+  - rule 'linear: empty' was applied 2'900 times.
+  - rule 'linear: enforcement literal in expression' was applied 72 times.
+  - rule 'linear: expanded complex rhs' was applied 14 times.
+  - rule 'linear: extracted at most one (max)' was applied 500 times.
+  - rule 'linear: extracted enforcement literal' was applied 24 times.
+  - rule 'linear: fixed or dup variables' was applied 109'339 times.
+  - rule 'linear: negative clause' was applied 13'478 times.
+  - rule 'linear: negative equal one' was applied 1'860 times.
+  - rule 'linear: positive at most one' was applied 6 times.
+  - rule 'linear: positive clause' was applied 420 times.
+  - rule 'linear: positive equal one' was applied 2'369 times.
+  - rule 'linear: reduced variable domains' was applied 626 times.
+  - rule 'linear: reduced variable domains in derived constraint' was applied 278 times.
+  - rule 'linear: remapped using affine relations' was applied 1'243 times.
+  - rule 'linear: simplified rhs' was applied 6'210 times.
+  - rule 'linear: simplify using approximate gcd' was applied 4 times.
+  - rule 'linear: singleton column' was applied 118 times.
+  - rule 'new_bool: complex linear expansion' was applied 14 times.
+  - rule 'new_bool: integer encoding' was applied 86'724 times.
+  - rule 'new_bool: table expansion' was applied 120 times.
+  - rule 'new_bool: var with 2 values' was applied 6 times.
+  - rule 'new_bool: with clause' was applied 620 times.
+  - rule 'presolve: 5370 unused variables removed.' was applied 1 time.
+  - rule 'presolve: iteration' was applied 1 time.
+  - rule 'setppc: bool_or in at_most_one' was applied 54 times.
+  - rule 'setppc: exactly_one included in linear' was applied 1'125 times.
+  - rule 'setppc: reduced linear coefficients' was applied 835 times.
+  - rule 'setppc: removed dominated constraints' was applied 35'352 times.
+  - rule 'setppc: removed trivial linear constraint' was applied 290 times.
+  - rule 'table: compress tuples' was applied 15 times.
+  - rule 'table: expanded positive constraint' was applied 15 times.
+  - rule 'table: expanded positive constraint with two variables' was applied 1'636 times.
+  - rule 'table: only one column!' was applied 128 times.
+  - rule 'table: reduce variable domain' was applied 1'904 times.
+  - rule 'table: remove expressions' was applied 128 times.
+  - rule 'table: remove tuples' was applied 1'448 times.
+  - rule 'table: reused literals' was applied 15 times.
+  - rule 'variables with 2 values: create encoding literal' was applied 6 times.
+  - rule 'variables with 2 values: new affine relation' was applied 12 times.
+  - rule 'variables with 2 values: register other encoding' was applied 6 times.
+  - rule 'variables: add encoding constraint' was applied 90'182 times.
+  - rule 'variables: both boolean and its negation fix the same variable' was applied 12 times.
+  - rule 'variables: both boolean and its negation imply same equality' was applied 1'120 times.
+  - rule 'variables: canonicalize affine domain' was applied 25 times.
+  - rule 'variables: detect fully reified value encoding' was applied 9 times.
+  - rule 'variables: detect half reified value encoding' was applied 9'262 times.
+  - rule 'variables: detected encoding of a complex domain with multiple linear1' was applied 620 times.
+  - rule 'variables: detected fully encoded domain' was applied 144 times.
+  - rule 'variables: linear1 with domain not included in variable domain' was applied 264 times.
+  - rule 'variables: only used in value and order encodings' was applied 72 times.
+
+Presolved satisfaction model '': (model_fingerprint: 0x30178a6997b5be1)
+#Variables: 230'646 (206'772 primary variables)
+  - 205'738 Booleans in [0,1]
+  - 105 in [-8,0]
+  - 105 in [-8,4]
+  - 168 in [-6,3]
+  - 5'292 in [-6,9]
+  - 12 in [-4][-1,0]
+  - 12 in [-4,2]
+  - 2'464 in [-4,6]
+  - 120 in [-3,1]
+  - 1'944 in [-3,6]
+  - 3'120 in [-3,9]
+  - 52 in [-2,0]
+  - 6 in [-2,1]
+  - 6'696 in [-2,3]
+  - 628 in [-2,4]
+  - 616 in [-2,6]
+  - 246 in [-1,2]
+  - 1'340 in [-1,3]
+  - 340 in [0,1][4]
+  - 1'220 in [0,1][4][9]
+  - 140 in [0,2]
+  - 1 in [0,2][4]
+  - 32 in [0,3]
+  - 43 in [0,4]
+  - 32 in [0,6]
+  - 6 in [0,8]
+  - 12 in [0,25]
+  - 32 in [0,27]
+  - 13 in [0,29]
+  - 6 in [0,31]
+  - 18 in [0,675]
+  - 48 in [0,783]
+  - 18 in [0,899]
+  - 6 in [0,1023]
+  - 14 in [1,3]
+  - 1 in [1,19]
+#kAtMostOne: 13'787 (#literals: 50'062)
+#kBoolAnd: 7'961 (#enforced: 7'961) (#literals: 283'780)
+#kBoolAndClauses: 9'138 (#enforced: 9'138 #multi: 9'138) (#literals: 36'656)
+#kBoolOr: 331'629 (#literals: 1'060'467)
+#kExactlyOne: 5'393 (#literals: 81'785)
+#kIntProd: 14'304
+#kLinear1: 182'108 (#enforced: 182'108 #multi: 500)
+#kLinear2: 6'968 (#enforced: 6'968)
+#kLinear3: 709
+#kLinearN: 8'698 (#enforced: 516 #multi: 488) (#terms: 242'530)
+
+Preloading model.
+
+Starting search at 12.27s with 1 workers.
+1 full problem subsolver: [main]
+
+[Encoding] 6140 literals associated to VAR >= value, and 12 half-associations.
+[Encoding] 86694 literals associated to VAR == value, and 6968 half-associations.
+[Encoding] num_fully_encoded_variables:2760
+[Encoding] num_partially_encoded_variables:7588
+[Precedences] num_relations=7248 num_clauses=438160
+[Precedences] Added 29520 GreaterThanAtLeastOneOf() constraints.
+[Encoding] num_element_encoding: 144
+Initial num_bool: 298708
+
+Starting subsolver 'main' hint search at 13.39s
+Starting subsolver 'main' search at 13.39s
+#Done   18.13s main
+
+Task timing           n [     min,      max]      avg      dev     time         n [     min,      max]      avg      dev    dtime
+      'main':         1 [   5.86s,    5.86s]    5.86s   0.00ns    5.86s         1 [   6.16s,    6.16s]    6.16s   0.00ns    6.16s
+
+Search stats      Bools  Conflicts  Branches  Restarts  BacktrackToRoot  Backtrack  BoolPropag  IntegerPropag
+       'main':  298'708      2'419     8'922        20            1'508      6'675  29'391'489      8'338'611
+
+SAT formula     Fixed  Equiv    Total  VarLeft  BinaryClauses  PermanentClauses  TemporaryClauses
+      'main':  40'788    494  298'708  257'426      1'207'598           381'022               688
+
+SAT stats    ClassicMinim  LitRemoved  LitRemovedBinary  LitLearned  LitForgotten  Subsumed
+    'main':         1'388       5'122             5'111      20'838             0       542
+
+Vivification    Clauses  Decisions  LitTrue  Subsumed  LitRemoved  DecisionReused  Conflicts
+       'main':      872      1'663        0       109         332               0          0
+
+Clause deletion    at_true  l_and_not(l)  to_binary  sub_conflict  sub_extra  sub_decisions  sub_eager  sub_vivify  sub_probing  sub_inpro  blocked  eliminated  forgotten  promoted  conflicts
+          'main':   38'045         4'340      5'098           503         18             35         39         109        4'841      2'179        0           0          0     3'089      2'419
+
+Solution repositories    Added  Queried  Synchro
+    'alternative_path':      0        0        0
+      'best_solutions':      0        0        0
+   'fj solution hints':      0        0        0
+
+LRAT_status: NA
+CpSolverResponse summary:
+status: INFEASIBLE
+objective: NA
+best_bound: NA
+integers: 120653
+booleans: 298708
+conflicts: 2419
+branches: 8922
+propagations: 29391489
+integer_propagations: 8338611
+restarts: 20
+lp_iterations: 0
+walltime: 18.1923
+usertime: 18.1923
+deterministic_time: 8.57208
+gap_integral: 0
+
+{"phase": "verdict", "matching_index": 0, "status": "INFEASIBLE", "cpu_seconds": 17.28125, "build_cpu_seconds": 3.328125, "peak_rss_bytes": 1216376832, "template_status": "UNKNOWN"}

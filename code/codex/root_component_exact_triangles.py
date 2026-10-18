@@ -85,7 +85,8 @@ def add_exact_triangle_structure(model, graph, template, triangle_context=None):
                 u=lookup[tuple(sorted((2*root,a)))];v=lookup[tuple(sorted((2*root+1,a)))]
                 prism_triangles.append(graph[u][v])
         model.add(sum(flags)+sum(prism_triangles)==32)
-        six_prisms=not template['nontrivial_component_groups'][root]
+        parts=template['nontrivial_component_groups'][root]
+        six_prisms=parts is not None and not parts
         for fs in local.values():
             model.add(sum(fs)==1) if six_prisms else model.add(sum(fs)>=1)
         for w in outside:

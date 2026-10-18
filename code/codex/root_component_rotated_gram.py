@@ -102,6 +102,57 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
             'product_domain_encoding':PRODUCT_DOMAIN_ENCODING}
 
 
+def add_gram_kernel_cuts(model, rectangles):
+    """Expose necessary Gram relations already implied by full residual vectors.
+
+    R_pq = dot(delta_p,delta_q)/7, R_pp = 8-2e_p. For every
+    root line i, sum_{q incident i} delta_q=0, hence R times its
+    incidence column is zero. Every two-by-two principal minor is PSD.
+    Since the rectangle incidence columns have squared norm four and
+    T is seven times a projector, 0<=R<=28I and sum_q R_pq^2<=28R_pp.
+    No component minimum, fixed Gram, or new-root prism budget is used.
+    """
+    from ortools.sat.python import cp_model
+    records = []
+    for root,vectors,old_edges in complete_stars(rectangles):
+        items = [item for item in rectangles if item['root']==root]
+        first = items[0]
+        entries = first['residual_gram_entries']
+        assert len(entries)==210
+        lines = sorted(tuple(line) for line in first['all_lines'])
+        edge_counts = dict(old_edges)
+        for item in items:
+            a,b = sorted((lines.index(tuple(item['base_vertices'][:2])),
+                          lines.index(tuple(item['base_vertices'][2:]))))
+            edge_counts[a+1,b+1] = sum(item['edges'])
+        diagonals = {}
+        for pair in sorted(vectors):
+            d = model.new_int_var_from_domain(cp_model.Domain.from_values([0,4,6,8]),
+                                             f'rotated_gram_diagonal_{root}_{pair}')
+            model.add(d==8-2*edge_counts[pair]); diagonals[pair]=d
+        for pair in sorted(vectors):
+            for line in range(7):
+                terms = [diagonals[pair] if other==pair else entries[tuple(sorted((pair,other)))]
+                         for other in vectors if line in other]
+                model.add(sum(terms)==0)
+        allowed = [(a,b,q) for a in (0,4,6,8) for b in (0,4,6,8)
+                   for q in range(-8,5) if q*q<=a*b]
+        for (a,b),value in entries.items():
+            model.add_allowed_assignments([diagonals[a],diagonals[b],value],allowed)
+        squares = {}
+        for (a,b),value in entries.items():
+            square = model.new_int_var(0,64,f'rotated_gram_energy_square_{root}_{a}_{b}')
+            model.add_allowed_assignments([value,square],[(v,v*v) for v in range(-8,5)])
+            squares[a,b] = square
+        for pair,d in diagonals.items():
+            square = model.new_int_var(0,64,f'rotated_gram_energy_diagonal_{root}_{pair}')
+            model.add_allowed_assignments([d,square],[(v,v*v) for v in (0,4,6,8)])
+            model.add(square+sum(s for (a,b),s in squares.items() if pair in (a,b))<=28*d)
+        records.append({'root':root,'kernel_equations':147,'principal_minor_tables':210,
+                        'spectral_row_energy_bounds':21})
+    return {'roots':records,'scope':add_gram_kernel_cuts.__doc__}
+
+
 def unsafe_product_reports(value):
     """Find historical product metadata lacking the corrected encoding stamp."""
     if isinstance(value, dict):

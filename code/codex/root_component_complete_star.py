@@ -124,7 +124,7 @@ def add_universal_root_cuts(model, graph, template):
         model.add(sum(graph[u][v] for u, v in combinations(RECTANGLES[edge], 2)) <= 2)
     cuts = 0
     for root in range(7):
-        for part in template['nontrivial_component_groups'][root]:
+        for part in template['nontrivial_component_groups'][root] or []:
             # For a proper cut of a connected component the Gram cut weight
             # is negative and even. Its absolute value counts Gamma edges
             # between the corresponding unions of four-vertex rectangles.
@@ -144,7 +144,7 @@ def build_branch(template, root, matching, residual_eigen=2, transport=True):
     from root_component_exact_triangles import add_exact_triangle_structure
     from root_component_matching_rotation import add_fixed_matching_rotation
     from root_component_rotated_residual import add_rotated_residual_cuts
-    from root_component_rotated_gram import add_gram_cuts, add_eigen_cuts, complete_stars
+    from root_component_rotated_gram import add_gram_cuts, add_eigen_cuts, complete_stars, add_gram_kernel_cuts
     model, graph, info = build(template, {'cuts': [], 'root_prism_budget': 51},
                                extra_initial=matching_assignments(root, matching))
     if model is None:
@@ -156,6 +156,7 @@ def build_branch(template, root, matching, residual_eigen=2, transport=True):
         if len(rectangles) == 15:
             rotation['residuals'] = add_rotated_residual_cuts(model, fixed, rectangles, tight_bounds=True)
             rotation['gram'] = add_gram_cuts(model, rectangles, 'all')
+            rotation['gram_kernel'] = add_gram_kernel_cuts(model, rectangles)
             if residual_eigen:
                 rotation['eigen'] = add_eigen_cuts(model, fixed, rectangles, residual_eigen)
             zero_sums = 0

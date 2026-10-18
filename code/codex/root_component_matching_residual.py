@@ -73,7 +73,7 @@ def main():
     from root_component_low_budget_transport import digest
     from root_component_matching_rotation import add_matching_rotation
     from root_component_rotated_residual import add_rotated_residual_cuts
-    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts
+    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts,add_gram_kernel_cuts
     from root_component_rotated_templates import add_rotated_template_cover
     from root_component_rotated_gram_profiles import add_profile_cuts
     from root_component_short_vectors import add_rotated_signature_cuts
@@ -121,6 +121,7 @@ def main():
                 rotation['integer_residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
                 boundaries.append(('residuals',len(model.proto.constraints)))
                 rotation['integer_gram']=add_gram_cuts(model,rectangles,'all')
+                rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)
                 boundaries.append(('gram',len(model.proto.constraints)))
                 if args.residual_eigen:rotation['full_eigen']=add_eigen_cuts(model,fixed,rectangles,args.residual_eigen)
                 boundaries.append(('eigen',len(model.proto.constraints)))

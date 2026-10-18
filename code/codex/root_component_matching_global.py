@@ -36,7 +36,7 @@ def main():
     from root_component_matching_rotation import add_matching_rotation
     from root_component_rotated_rectangles import add_rotated_rectangles
     from root_component_rotated_residual import add_rotated_residual_cuts
-    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts
+    from root_component_rotated_gram import add_gram_cuts,add_eigen_cuts,add_gram_kernel_cuts
     from root_component_rotated_templates import add_rotated_template_cover
     from root_component_rotated_gram_profiles import add_profile_cuts
     from root_component_low_budget_transport import digest
@@ -88,6 +88,7 @@ def main():
         if len(rectangles) in (15,30):
             rotation['residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
             rotation['gram']=add_gram_cuts(model,rectangles,'all')
+            rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)
             if args.residual_eigen:rotation['eigen']=add_eigen_cuts(model,fixed,rectangles,args.residual_eigen)
             rotation['templates']=add_rotated_template_cover(model,rectangles,template,templates,low_budget_snapshot=frontier)
             rotation['profiles']=add_profile_cuts(model,rectangles,profiles)

@@ -11,7 +11,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from ortools.sat.python import cp_model
 from root_component_resources import limit_research_process
-from root_component_rotated_gram import add_gram_cuts, add_eigen_cuts
+from root_component_rotated_gram import add_gram_cuts, add_eigen_cuts, add_gram_kernel_cuts
 
 
 def contexts(vectors):
@@ -68,6 +68,23 @@ def run():
     model.add(edge == 1); model.add(positive == 1); model.add(negative == -1)
     results['bipartite_minus_four_eigenvector'] = {'status': solve(model),
         'product_domain': [-2,3], 'product_count': info['edge_integer_products']}
+    # Rank-one Gram R=4uu^t, u alternating on a four-cycle of K7.
+    # Its eigenvalue is16, its incidence kernel is exact, and 7R is the
+    # Gram of the explicit residual vectors below (norm28 at nonzero rows).
+    model = cp_model.CpModel()
+    cycle = {(0,1):1,(1,2):-1,(2,3):1,(0,3):-1}
+    rects = contexts({p:[2*sign]*7+[0]*91 for p,sign in cycle.items()})
+    lines = rects[0]['all_lines']
+    for item in rects:
+        a,b = sorted((lines.index(tuple(item['base_vertices'][:2])),
+                      lines.index(tuple(item['base_vertices'][2:]))))
+        e = 2 if (a+1,b+1) in cycle else 4
+        item['edges'] = [1]*e+[0]*(6-e)
+    for i,item in enumerate(rects[0]['old_root_rectangles']):
+        item['edge_count'] = 2 if (0,i+1) in cycle else 4
+    add_gram_cuts(model,rects,'all')
+    info = add_gram_kernel_cuts(model,rects)
+    results['four_cycle_gram_kernel_and_energy'] = {'status':solve(model),'cuts':info['roots']}
     return results
 
 

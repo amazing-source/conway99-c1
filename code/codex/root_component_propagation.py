@@ -36,8 +36,15 @@ def constraints(template):
             equation([variable(w,q) for q,label in enumerate(LABELS) if q!=w and a in label],
                      2-int(a in p)-int((a^1) in p),["root_count",w,a])
     nongrid = {tuple(e) for e in template["nongrid_edges"]}
+    partial = template.get("partial", False)
+    grids = {tuple(e) for e in template["known_grid_edges"]} if partial else set(RECTANGLES)-nongrid
+    assert not grids & nongrid
     for root in range(7):
-        parts = [tuple(p) for p in template["nontrivial_component_groups"][root]]
+        raw_parts = template["nontrivial_component_groups"][root]
+        if raw_parts is None:
+            assert partial, "An unknown line requires the explicit partial schema."
+            continue
+        parts = [tuple(p) for p in raw_parts]
         grouped = {j for part in parts for j in part}
         parts += [(j,) for j in range(7) if j!=root and j not in grouped]
         for part in parts:
@@ -50,7 +57,7 @@ def constraints(template):
         internal = [variable(w,q) for w,q in combinations(corners,2)]
         if pair in nongrid:
             bounds.append((tuple(internal),3,["nongrid",pair]))
-        else:
+        elif pair in grids:
             for w,q in combinations(corners,2):
                 initial[variable(w,q)] = int(bool(set(LABELS[w]) & set(LABELS[q])))
     return [(items,target,reason) for items,(target,reason) in equations.items()], bounds, initial

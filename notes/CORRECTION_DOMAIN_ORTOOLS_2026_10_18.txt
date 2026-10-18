@@ -53,3 +53,27 @@ a32.80s CPU (budget30s, arret du presolve non instantane). Pic2.41GiB.
 Cela ne prouve pas sa faisabilite, mais retire la contradiction immediate.
 Les recalculs c3/c4 sont en cours et doivent rester explicites et bornes.
 Le processeur reste limite a un coeur, priorite basse et garde65%.
+
+MISE A JOUR vers11h55
+Correctif ac8921c3 pousse; LAB averti1009. Premier couplage c3g1[0],
+M0=0, reste INFEASIBLE17.28125CPU avec les domaines corriges. Son log
+montre les domaines [-6,9] et [-2,3]; le processus avait importe le
+correctif AVANT l'ajout du marqueur de version. Rapport diagnostique,
+non agrege automatiquement avec les nouveaux rapports marques.
+Famille c4-7 corrigee UNKNOWN180CPU, puis UNKNOWN120CPU avec noyau
+et mineurs Gram explicites. Aucun retour a une fermeture de famille.
+Pilote c4-19 M0=0 en cours. Les nouvelles coupes spectrales de Gram
+sont decrites dans ARBRE_PARTIEL_C1_C2_2026_10_18.txt.
+
+DEPENDANCE INDIRECTE RECTIFIEE
+Le fichier gram_filtered_0421 avait aussi retire7 Gram de la famille7
+et12 de9 sur la base des produits fautifs. Ses records7/9 portent
+maintenant usable_as_gram_cover=false. Les tableaux numeriques restent
+conserves; seules leurs metadonnees de validite sont corrigees.
+Le snapshot0306 fournit le front valide:7=449 Gram,9=12,19=448, total909.
+Ses87 fichiers sources d'exclusions ne contiennent aucune utilisation
+identifiee des produits fautifs. Le tableau907 est le nombre de profils
+DISTINCTS des909 Gram. Les deux essais corriges de7 a442Gram etaient donc
+sur un sous-ensemble; UNKNOWN dans les deux cas, aucune exclusion ajoutee.
+Tous les futurs modeles7 utilisent0306. Le pilote19 utilise448Gram et
+reste UNKNOWN120CPU sur son premier couplage. Pilote9,Gram193,en cours.
