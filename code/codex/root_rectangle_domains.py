@@ -1,6 +1,6 @@
 """Finite integral column signatures in a root rectangle Gram quotient.
 
-For rank r<=4, every individual vertex has an integer signature h in im(R),
+For rank r<=5, every individual vertex has an integer signature h in im(R),
 with h^t R^+ h<=5/2. At most 5^r anchor assignments need testing per root
 rectangle. Four such signatures must add to the corresponding column of R.
 This is a necessary realization test, not a binary adjacency completion.
@@ -120,7 +120,7 @@ def signature_domains(edges, raw):
     anchors = list(matrix.rref()[1])
     small = matrix.extract(anchors, anchors)
     denominator = int(small.det())
-    assert denominator > 0 and len(anchors) <= 4
+    assert denominator > 0 and len(anchors) <= 5
     inverse_scaled = (small.inv(method="DM") * denominator).applyfunc(int)
     lift = matrix[:, anchors] * inverse_scaled
     inverse_scaled = [[int(x) for x in row] for row in inverse_scaled.tolist()]
