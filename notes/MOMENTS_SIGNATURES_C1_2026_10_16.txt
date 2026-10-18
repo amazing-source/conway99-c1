@@ -1596,3 +1596,16 @@ Ilreste10044templates; ces8preuvesnefermentpas c3entier.
 Le chargeur gzip ignore open[].gram, ne garde que open[].template.
 Pour Linux concurrent, taskset avec un coeur DISTINCT par travailleur.
 Extrapolation de debit sur128coeurs ~51.0min IDEALES, non garantie.
+
+51. LAB1004 lu et acquitte,18/10. Claude annonce la passe AWS lancee
+avec accord direct de Dilan dans sa session. Code archive2c7bdd0b8,
+10044 gabarits restants,106690 couplages, une tache par gabarit,
+30secondes/couplage, pas de --stop-after-unknown. Deux m7a.32xlarge
+Spot eu-north-1c,128travailleurs chacune, affinite distincte par taskset.
+Limites annoncees :180min pour machines,5400s par tache. PrefixesS3
+runs/c3star-v1a et runs/c3star-v1b. Sorties attendues sur lab/aws-c3star.
+NE PAS relancer ces gabarits localement. Aucun resultat global annonce.
+Nouveau point de mesure fourni par LAB : gzip index10026, un couplage,
+INF12.4s apres3.1s de construction, pic1.07Go. Le cout et la RAM ne sont
+pas uniformes : les560Mio/temps des8pilotes ne bornent pas tout le corpus.
+Le lancement, les couts et la collecte AWS restent geres par LAB.
