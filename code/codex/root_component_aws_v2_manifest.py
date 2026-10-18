@@ -28,6 +28,8 @@ def code_hash(codes):return hashlib.sha256(json.dumps(codes,separators=(',',':')
 
 def prepare(filtered,table_path,frontier,prefix,extra_paths,chunk_size,seconds,prefilter_seconds):
     directory=filtered.parent;repo=Path(__file__).resolve().parents[2]
+    tracked_inputs=set(subprocess.check_output(['git','ls-files'],cwd=repo,text=True).splitlines())
+    assert all(p.as_posix() in tracked_inputs for p in [filtered,table_path,frontier,*extra_paths]), 'Commit preparation inputs before freezing them.'
     cover=json.loads(filtered.read_text());tables=json.loads(table_path.read_text())
     old_tables_path=directory/'line_component_pattern_tables_rotated.json'
     old_tables=json.loads(old_tables_path.read_text())
@@ -143,6 +145,7 @@ def prepare(filtered,table_path,frontier,prefix,extra_paths,chunk_size,seconds,p
     prefix.with_suffix('.jsonl').write_text(''.join(json.dumps(t,separators=(',',':'))+'\n' for t in tasks),encoding='utf-8')
     prefix.with_suffix('.tsv').write_text(''.join('\t'.join([t['task_id'],'7200',t['command']+' > '+shlex.quote(t['log'])+' 2>&1',t['output']+','+t['log']])+'\n' for t in tasks),encoding='utf-8')
     atomic_json_write(prefix.with_suffix('.metadata.json'),metadata,indent=2)
+    prefix.with_suffix('.requirements.txt').write_text(''.join(f'{name}=={version}\n' for name,version in metadata['tested_packages'].items()),encoding='utf-8')
     return metadata,sample_covers
 
 
