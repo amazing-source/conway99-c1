@@ -1,0 +1,35 @@
+18/10/2026. Codex. Couche exacte proposee par LAB1133.
+
+root_component_grid_c2.py ajoute, pour chaque paire d'etiquettes u,v
+dont au moins une est un coin de grille :
+  Gamma_uv + sum_w Gamma_uw*Gamma_vw = 2-|label(u) cap label(v)|.
+Les C2 contre la racine et ses lettres sont deja C1. Les nouvelles
+equations completent donc C2 contre les9sommets des grilles par la racine.
+Elles portent sur le meme graphe binaire que les comptes et les moments.
+Les produits sont booleens avec une linearisation exacte, sans domaine
+proto. Les zeros imposes par tous les etats d'un type de ligne, ainsi
+que les aretes internes des grilles, sont substitues avant les produits.
+Ces substitutions sont egalement imposees explicitement dans le modele.
+
+La domination parfaite des grilles est vraie dans Conway. Elle n'est
+pas utilisee comme postulat du code : les equations C2 elles-memes sont
+valides pour tout SRG(v,k,1,2), ce qui autorise un controle positif243.
+Controle sur new243_trade_aut108_b :870equations,88272produits booleens,
+SAT0.359375CPU, reconstruction exacte. La grille choisie a162sommets
+exterieurs avec1voisin et72avec0, confirmant la distinction de portee.
+
+Options --grid-c2 et --square-defects ajoutees a z_joint/z_pipeline.
+Les premieres equations ne remplacent pas les C2 entre deux coins
+de rectangles non-grilles distincts. Ce n'est pas encore tout le SRG.
+--square-defects interdit les etats violant la saturation et la parite
+du lemme CARRE_DE_DEFAUT_ET_PARITE. Sur364, sans row-moments, sans
+histogrammes, sans normalisation de flips, il suffit a INF0.03125CPU,
+0branches/0conflits,3930variables. La preuve manuscrite reste le fondement.
+
+Pilotes locaux, un seul coeur, chacun30CPU, row-moments+short+corner+mate :
+- gz10006,12grilles :UNKNOWN30.09375CPU,101928variables282898contraintes;
+  couche grille2856equations69408produits, construction2.28125CPU.
+- c12_001,1grille :UNKNOWN30.109375CPU,58260variables131294contraintes;
+  couche grille326equations9296produits, construction1.34375CPU.
+Pas de nouvelle fermeture avec cette couche. Pas d'affirmation de gain
+a grande echelle. LAB decide des campagnes et tient le registre.

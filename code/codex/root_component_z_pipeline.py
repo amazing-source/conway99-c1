@@ -23,7 +23,8 @@ from root_component_z_joint import build_joint, solve_joint
 
 
 def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, row_moments=False,
-        short_columns=False, corner_c2=False, mate_normalize=False, max_free=6):
+        short_columns=False, corner_c2=False, mate_normalize=False, max_free=6,
+        grid_c2=False, square_defects=False):
     output.mkdir(parents=True, exist_ok=True)
     assert not any(output.iterdir()), 'A new or empty output directory is required.'
     resources = limit_research_process(1)
@@ -96,7 +97,8 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
     model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
                                       row_moment_coordinates=coordinates, diagnostics=diagnostics,
                                       short_columns=short_columns, corner_c2=corner_c2,
-                                      mate_normalize=mate_normalize)
+                                      mate_normalize=mate_normalize, signed_template=template,
+                                      grid_c2=grid_c2,square_defects=square_defects)
     joint = solve_joint(model, labels, graph, 14, joint_seconds)
     joint.update(diagnostics)
     atomic_json_write(output / 'joint.json', joint)
@@ -124,11 +126,14 @@ def main():
     p.add_argument('--short-columns', action='store_true', help='Use Gram-free integral eigenvector histograms.')
     p.add_argument('--corner-c2', action='store_true', help='Keep individual common-neighbour counts for each corner pair.')
     p.add_argument('--mate-normalize', action='store_true')
+    p.add_argument('--grid-c2',action='store_true')
+    p.add_argument('--square-defects',action='store_true')
     p.add_argument('--max-free',type=int,choices=range(9),default=6,
                    help='Explicit bound for this row-catalogue enumerator; independent of fixed-Gram rank support.')
     a = p.parse_args()
     run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate,
-        a.row_moments, a.short_columns, a.corner_c2, a.mate_normalize, a.max_free)
+        a.row_moments, a.short_columns, a.corner_c2, a.mate_normalize, a.max_free,
+        a.grid_c2,a.square_defects)
 
 
 if __name__ == '__main__':

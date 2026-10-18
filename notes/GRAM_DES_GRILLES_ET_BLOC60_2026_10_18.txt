@@ -1,0 +1,100 @@
+18/10/2026,23h18. Codex, a partir des cellules equitables de LAB1138.
+Objet : demontrer les rangs des releves, puis obtenir un spectre sans
+hypothese de rang. Aucun calcul de solveur n'intervient.
+
+Cadre.
+L est un triangle de Conway. D est l'ensemble des60sommets sans voisin
+dans L ; G est l'ensemble des36autres sommets. B=A[D] est8-regulier.
+Toute grille9 contenant L domine parfaitement les90sommets exterieurs :
+un sommet exterieur a au plus un voisin dans la grille (lambda1,mu2),
+et9*(14-4)=90 impose exactement un. Ce dernier comptage est SPECIFIQUE
+a Conway. SurSRG243, une grille9 a162voisins exterieurs et72non-voisins.
+
+Une grille Gi par L s'ecrit L union Pi, avec Pi un prisme triangulaire
+de6sommets. Indexer ses sommets par(p,s), p dans L, s dans{+,-}; p est
+le voisin du sommet dans L. Pour v dans Pi, sa cellule Cv=N(v) cap D
+a10elements. Les6cellules partitionnent D. Le quotient de B est
+Qi=2J6-I6-A_prisme. Ses valeurs propres sont :
+  8 sur les constantes ;
+ -2 sur le signe s, constant en p (dimension1) ;
+ -1 sur les fonctions de p de somme nulle, constantes en s (dimension2) ;
+  1 sur leurs produits par s (dimension2).
+Ce sont les cellules equitables de LAB ; le calcul suivant prouve leurs rangs.
+
+GRAM ENTRE DEUX GRILLES.
+Les prismes Pi,Pj de grilles distinctes par L sont disjoints. Sinon un
+sommet hors L adjacent a une arete de L violerait lambda1, ou les memes
+composantes seraient deux fois comptees. Plus directement, les deux
+grilles donnent deux composantes-prismes distinctes de G.
+Il n'y a aucune arete de Pi vers G\Pi : tout sommet de G\Pi possede deja
+son unique voisin dans la grille Gi, a savoir son voisin dans L.
+Pour v dans Pi et w dans Pj, ils sont donc non adjacents. Leurs deux
+voisins communs sont dans D, sauf leur voisin dans L s'il est le meme.
+Ainsi |Cv cap Cw|=2-delta[p(v)=p(w)]. Dans l'ordre(p,s), la Gram des
+indicateurs de cellules est donc10I6 pour une grille et
+  K=(2J3-I3) tensor J2
+entre deux grilles distinctes. Aucune entree de cette Gram n'est inconnue.
+
+RANGS POUR m GRILLES.
+K tue toutes les fonctions antisymetriques en s. Les releves de l'espace
+-2 de chaque grille sont donc orthogonaux entre grilles, de norme non nulle :
+rang m. Meme argument pour l'espace1 : rang2m.
+Sur les fonctions de p de somme nulle, constantes en s, K agit par-2.
+Avec des fonctions orthonormales sur les6positions, la Gram des releves
+de l'espace-1 est (12I_m-2J_m) tensor I2.
+Elle a rang2m si m<6, et rang10 si m=6. Les seules relations pour6grilles
+sont les sommes des6releves, une par direction de position.
+En particulier les rangs6,10,12 proposes par LAB pour6grilles sont forces.
+
+BUDGET SPECTRAL ET SATURATION POUR SIX GRILLES.
+Sur1 perpendiculaire, les valeurs propres de B sont dans[-4,3]. On a
+sum lambda=-8 et sum lambda^2=480-64=416. Donc
+  sum (lambda+4)(3-lambda)=59*12+8-416=300.
+Les6valeurs-2,10valeurs-1 et12valeurs1 apportent deja
+  6*10+10*12+12*10=300.
+Toutes les autres valeurs doivent annuler ce polynome positif, donc etre
+3 ou-4. Le nombre de valeurs et la trace donnent exactement
+  Spec B = {8^1, 3^18, (-2)^6, (-1)^10, 1^12, (-4)^13}.
+Ce resultat ne suppose pas de rang generique ou observe experimentalement.
+Tout vecteur propre-4 de B se prolonge par0 en vecteur propre-4 de A :
+A+4I est positif semi-defini, et le vecteur prolonge a forme quadratique0.
+Il y a donc13directions independantes propres-4 portees par D.
+
+RENFORCEMENT POUR TOUTE DROITE, MEME NON TOUT-GRILLE.
+E_-=(3I-A+J/9)/7 est le projecteur de rang44. Sa sousmatrice sur D a
+rang<=44 et nullite>=16. Sur1_D elle vaut5/21, strictement positif.
+Son noyau est donc exactement l'espace propre3 de B : m_B(3)>=16.
+De meme E_+=(A+4I-2J/11)/7 a rang54. Sa restriction a1_D vaut12/77>0,
+d'ou m_B(-4)>=6. La premiere borne ameliore l'entrelacement brut15.
+
+VINGT TRIANGLES DISJOINTS DANS LE BLOC TOUT-GRILLE.
+Pour w dans D, ses6voisins dans G appartiennent un par un aux6prismes.
+Ils sont deux a deux non adjacents. Le voisinage total de w est un
+couplage de7aretes (lambda1). Les6voisins de G sont donc apparies a6des
+8voisins de D. Les2voisins restants dans D sont apparies entre eux.
+Chaque w appartient exactement a un triangle de B. Ces20triangles sont
+disjoints et couvrent D. Les180autres aretes de B sont reparties en6
+couplages parfaits, un par prisme : dans chacune de ses6cellules, le
+voisinage interne de B est de degre1 par le quotient equitable.
+
+MATRICE D'INCIDENCE ET COINCIDENCES, AUTRES CONSEQUENCES EXACTES.
+Soit N,60x36, l'incidence des60sommets avec les36cellules des6prismes.
+Chaque ligne contient6uns, chaque colonne10. La Gram N^tN ci-dessus
+donne Spec(NN^t)={60^1,12^10,10^18,0^31}, donc rang29.
+Les6relations de positions de somme nulle imposent que chaque sommet
+choisit deux fois chacun des3sommets p de L parmi ses6cellules.
+Posons R=NN^t. Pour w!=z, R_wz compte leurs voisins communs dans G,
+donc R_wz est0,1 ou2. Pour chaque w, sum_{z!=w}R_wz=54. La Gram des
+cellules donne (R^2)_ww=6*10+6*1+24*2=114, donc
+sum_{z!=w}R_wz^2=114-36=78. En consequence, chaque sommet a parmi
+les59autres exactement17coincidences0,30coincidences1 et12coincidences2.
+Ses2voisins dans son triangle ont coincidence0; ses6autres voisins deB
+ont coincidence1. Les paires de coincidence2 ne sont jamais des aretes.
+
+Application et limite.
+Le gabarit c3 gz10006 possede une droite tout-grille : ces conclusions
+s'y appliquent. Le spectre force est coherent, ce n'est pas encore une
+contradiction. Il ne faut pas compter ce resultat comme une fermeture.
+Les13vecteurs propres-4 du bloc60 vont au-dela des4colonnes independantes
+de H dans ce gabarit ; leurs supports et l'incidenceN sont une piste pour
+contraindre les prolongements sans parcourir44292Grams.

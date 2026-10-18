@@ -25,7 +25,8 @@ from root_component_resources import atomic_json_write, limit_research_process
 
 def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinates=None,
                 diagnostics=None, short_columns=False, signed_template=None,
-                signed_lines=None, signed_mode='boundary', mate_normalize=False, corner_c2=False):
+                signed_lines=None, signed_mode='boundary', mate_normalize=False, corner_c2=False,
+                grid_c2=False, square_defects=False):
     labels = [p for p in combinations(range(k), 2) if p[1] != (p[0] ^ 1)]
     rectangles = list(combinations(range(k // 2), 2))
     members = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
@@ -33,6 +34,13 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
     assert [item['rectangle'] for item in row_types] == [list(q) for q in rectangles]
     n, m = len(labels), len(rectangles)
     model = cp_model.CpModel()
+    forbidden = set()
+    if square_defects:
+        assert k == 14 and signed_template is not None
+        from root_component_square_defect import forbidden_states
+        forbidden, squares = forbidden_states(signed_template, row_types)
+        if diagnostics is not None:
+            diagnostics['square_defect_cuts'] = {'squares':squares,'forbidden_row_states':len(forbidden)}
     graph = [[0] * n for _ in range(n)]
     for u, v in combinations(range(n), 2):
         graph[u][v] = graph[v][u] = model.new_bool_var(f'e_{u}_{v}')
@@ -61,6 +69,9 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
         choices = [[model.new_bool_var(f'row_{w}_{s}') for s in range(len(states))] for w in group]
         for w, selected in zip(group, choices):
             model.add_exactly_one(selected)
+            for si, choice in enumerate(selected):
+                if (qi,si) in forbidden:
+                    model.add(choice == 0)
             if mate_normalize:
                 selectors[w] = model.new_int_var(0,len(states)-1,f'row_selector_{w}')
                 model.add(selectors[w] == sum(i*x for i,x in enumerate(selected)))
@@ -119,6 +130,12 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
         info = add_corner_c2(model,graph,labels)
         if diagnostics is not None:
             diagnostics['corner_C2'] = info
+    if grid_c2:
+        assert nongrid is not None
+        from root_component_grid_c2 import add_grid_c2
+        info = add_grid_c2(model, graph, labels, [q for q in rectangles if q not in nongrid], row_types)
+        if diagnostics is not None:
+            diagnostics['grid_C2'] = info
     assert not model.validate(), model.validate()
     return model, labels, graph
 
@@ -225,6 +242,8 @@ def main():
     p.add_argument('--signed-mode', choices=('norm','eigen','boundary'), default='boundary')
     p.add_argument('--mate-normalize', action='store_true', help='Choose a representative under the independent root-mate swaps.')
     p.add_argument('--corner-c2', action='store_true', help='Add the six individual C2 equations in every rectangle.')
+    p.add_argument('--grid-c2', action='store_true', help='Add individual C2 against every grid corner.')
+    p.add_argument('--square-defects', action='store_true', help='Use the saturation and parity lemma for defect squares.')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
@@ -243,7 +262,8 @@ def main():
                                           row_moment_coordinates=coordinates, diagnostics=diagnostic,
                                           short_columns=a.short_columns, signed_template=template,
                                           signed_lines=a.signed_lines, signed_mode=a.signed_mode,
-                                          mate_normalize=a.mate_normalize,corner_c2=a.corner_c2)
+                                          mate_normalize=a.mate_normalize,corner_c2=a.corner_c2,
+                                          grid_c2=a.grid_c2,square_defects=a.square_defects)
         build_seconds = time.process_time() - start
         result = solve_joint(model, labels, graph, 14, a.seconds)
         result.update(build_cpu_seconds=build_seconds, source_bundle=str(a.bundle), source_catalogue=str(a.catalogue),
