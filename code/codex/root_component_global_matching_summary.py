@@ -17,13 +17,51 @@ from root_component_root_order import root_choice_requirements
 from root_component_rotated_gram import unsafe_product_reports
 
 
-def merge(paths, residual_mate_flips=False):
+def compare_base_gram_covers(reports, base_path):
+    """Allow additional necessary tables only when every base field agrees.
+
+    In particular, the ordered Gram values, source indices, anchors, lift,
+    budget and root-choice scope are compared exactly, not just the count.
+    The original report hashes must still match the actual cover files.
+    """
+    base=json.loads(base_path.read_text(encoding='utf-8-sig'))
+    index=reports[0]['template_index']
+    base_record=next(r for r in base['records'] if r['template_index']==index)
+    assert base_record['exhaustive'] and base_record['usable_as_gram_cover']
+    allowed_extra={'corner_orientation_factorization','corner_signature_tables',
+                   'coupled_corner_eliminated_indices','coupled_corner_scope',
+                   'row_signature_tables'}
+    compared=[]
+    for report in reports:
+        path=Path(report['gram_cover'])
+        assert digest(path)==report['gram_cover_sha256_lf'],f'Cover changed: {path}'
+        cover=json.loads(path.read_text(encoding='utf-8-sig'))
+        record=next(r for r in cover['records'] if r['template_index']==index)
+        for key,value in base_record.items():
+            assert record.get(key)==value,f'Different base Gram field {key}: {path}'
+        for key,value in base.items():
+            if key!='records':assert cover.get(key)==value,f'Different cover scope {key}: {path}'
+        extra=set(record)-set(base_record)
+        assert extra<=allowed_extra,f'Unrecognised additional cover fields: {extra-allowed_extra}'
+        assert not record.get('coupled_corner_eliminated_indices'), 'Gram selection changed.'
+        compared.append({'path':str(path),'sha256_lf':digest(path),
+                         'additional_fields':sorted(extra)})
+    return {'base_cover':str(base_path),'base_cover_sha256_lf':digest(base_path),
+            'template_index':index,'gram_count':base_record['gram_count'],
+            'all_base_fields_identical':True,'source_covers':compared,
+            'scope':compare_base_gram_covers.__doc__}
+
+
+def merge(paths, residual_mate_flips=False, same_base_gram_cover=None):
     texts=[p.read_text(encoding='utf-8-sig') for p in paths]
     reports=[json.loads(t) for t in texts]
     first=reports[0];order=root_choice_requirements(first)
     assert len(order)<=1
-    keys=('template_index','gram_cover_sha256_lf','global_minimum_components',
+    keys=('template_index','global_minimum_components',
           'complete_matching_root','complete_star_matching_cover','matching_cover','component_codes')
+    equivalence=None
+    if same_base_gram_cover is None:keys+=('gram_cover_sha256_lf',)
+    else:equivalence=compare_base_gram_covers(reports,same_base_gram_cover)
     required=set(first['matching_cover']);closed={};attempts=[]
     for path,report in zip(paths,reports):
         assert not list(unsafe_product_reports(report)),f'Withdrawn product encoding: {path}'
@@ -72,6 +110,7 @@ def merge(paths, residual_mate_flips=False):
             'usable_in_arbitrary_low_budget_root_frontier':not order,
             'complete_matching_root':first['complete_matching_root'],
             'gram_cover':first['gram_cover'],'gram_cover_sha256_lf':first['gram_cover_sha256_lf'],
+            'gram_cover_equivalence':equivalence,
             'matching_cover':first['matching_cover'],'excluded_matching_sources':closed,
             'residual_mate_flip_cover':orbit_cover,'relabelled_exclusions':relabelled,
             'open_matching_indices':sorted(required-set(closed)),
@@ -87,9 +126,11 @@ def main():
     p.add_argument('--reports',type=Path,nargs='+',required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--residual-mate-flips',action='store_true',
                    help='Use only mate flips fixing the already normalised component pointwise.')
+    p.add_argument('--same-base-gram-cover',type=Path,
+                   help='Require exact equality with every field of this base cover, allowing only added corner tables.')
     a=p.parse_args()
     if a.output.exists():raise FileExistsError(a.output)
-    result=merge(a.reports,a.residual_mate_flips);atomic_json_write(a.output,result)
+    result=merge(a.reports,a.residual_mate_flips,a.same_base_gram_cover);atomic_json_write(a.output,result)
     print(json.dumps({k:result[k] for k in ('template_index','root_order','open_matching_indices','template_excluded')}))
 
 

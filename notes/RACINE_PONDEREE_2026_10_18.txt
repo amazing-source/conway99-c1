@@ -300,3 +300,50 @@ Ajustement des ressources : le coeur0 etait a115% d'utilite Windows, les
 coeurs14/15 a28/29%. Les recherches partagent maintenant le seul coeur
 logique14, toujours en basse priorite, suspension a72%, reprise sous62%.
 Aucune augmentation du nombre de coeurs ni modification des autres apps.
+
+18/10 16h36 ? FERMETURE DE LA BRANCHE GLOBALE c>=4
+
+Le dernier couplage19/droite6/indice4 est INFEASIBLE en116.71875s CPU,
+134203 branches et17154 conflits. Le modele parcourt les429 Gram restants,
+avec les tables de coins factorisees et le front transportable d93/907
+fige AVANT les nouvelles exclusions. Il ne fixe aucun Gram temoin.
+Rapport : c4_19_star6_m4_factored_corners.json.
+
+L'assemblage c4_19_matching_summary_closed.json utilise les verdicts
+0/1/2/3 anciens et4 nouveau. Les flips des paires1/2/4 fixent point par
+point la premiere composante normalisee (droite0, partie3/5/6) et la
+paire racine6. Les orbites sont {0},{1,2},{3,6},{4,5,7,8}.
+Donc les neuf couplages sont couverts. Ce sont des changements de noms,
+aucun automorphisme du graphe potentiel n'est suppose.
+
+Le fichier Gram enrichi a une empreinte differente du fichier simple.
+Le mergeur ne confond pas les empreintes : il lit les deux fichiers,
+verifie leur empreinte citee, puis compare TOUS les champs du record de
+base (429 valeurs dans le meme ordre, indices, ancres, lift, budgets,
+portee de racine, normalisations). Ils sont exactement identiques.
+Seules les tables necessaires de coins et leur factorisation s'ajoutent.
+
+Chaine finie, c4_selected_root_closed.json :
+- Supposer c(L)>=4 pour chaque droite.
+- Choisir x minimisant9s(x)+8g(x). Le certificat entier donne score<=504.
+- g(x)>=7, donc s(x)<=49<=51 : couverture79 applicable.
+- Les76 exclusions anterieures restent valides, trois types7/9/19 restent.
+-7 : score>=528, impossible a cette racine choisie.
+-9 : modele unique tous Gram/couplages libres INFEASIBLE264.984375CPU.
+-19 : les neuf couplages sont maintenant exclus, tous429 Gram libres.
+D'ou contradiction sous l'hypothese globale c>=4.
+
+CONSEQUENCE : tout srg(99,14,1,2) eventuel a une droite L avec c(L)<=3.
+Il reste a exclure ou construire les cas ou de telles droites existent.
+On ne peut pas attribuer automatiquement s<=51 a une racine de cette
+petite droite. La couverture ARBITRAIRE transportable reste76/79, avec
+7/9/19 ouverts : aucune nouvelle exclusion choisie n'y a ete injectee.
+
+STATUT DE PREUVE : calcul exhaustif CP-SAT et assemblage de couverture;
+pas encore de certificat UNSAT portable pour toute la branche. Les19
+retraits Gram disposent de leurs DRAT, mais cela ne remplace pas les
+certificats manquants des exclusions de familles.
+
+Les calculs base19 et grille/min4 en cours ont ete arretes comme devenus
+redondants. Ils ne fournissent pas de nouvelle exclusion. La formulation
+par grille reste un outil exact pour une branche contenant une grille.
