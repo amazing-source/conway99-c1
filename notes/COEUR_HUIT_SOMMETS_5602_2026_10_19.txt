@@ -95,3 +95,72 @@ root_component_5602_grid_core.py prepare l'extension simultanee aux sept
 grilles :36 sommets, sans choisir aucune Gram. Tout temoin reste partiel;
 les48 autres sommets de la deuxieme sphere et les15 de l'etoile racine
 restent a construire. Aucun verdict global n'est annonce dans cette note.
+
+COUVERTURE COMPLETE A VINGT SOMMETS.
+On affecte les quatre aretes de chaque couplage aux quatre coins de sa
+grille Y, en respectant les oppositions forcees. Les trois couplages
+etaient non ordonnes : les six permutations des trois racines Y induisent
+toutes les permutations de leurs trois paires, ce qui couvre les ordres.
+On impose ensuite C2 entre les coins de deux grilles Y. Le stabilisateur
+du coeur et les48 reetiquetages de Y reduisent l'ensemble des affectations.
+Une orbite complete peut sortir de l'ensemble a ordre de couplages fixe;
+on retire exactement son intersection avec cet ensemble, qui est couvert.
+Les comptes par orbite du coeur1,2,5,6 sont respectivement :
+  affectations avant quotient :41472,4608,6144,55296;
+  representants du bord20 :360,152,212,604, total1328.
+Le fichier gz5602_boundary20_cover.json porte cette couverture, generee
+sans solveur en4.21875s CPU. Elle laisse toutes les autres aretes libres.
+
+POURQUOI CERTAINS COMPTES SONT DEJA EXACTS A36 SOMMETS.
+Les36 sommets sont le coeur8 et les sept grilles. Les48 autres sommets
+de Gamma sont dans les rectangles Q_ab avec a dans X,b dans Y. Un tel
+sommet a un voisin dans le coeur et dans une seule grille Y. Il ne peut
+donc contribuer a un voisin commun de deux sommets du coeur, ni de deux
+grilles Y distinctes. Il a au plus un voisin dans toute grille. Enfin,
+pour deux grilles X opposees (01,23 ou02,13), il partage une racine avec
+l'une d'elles : il ne peut etre voisin dans les deux. Les comptes C2 de
+ces paires sont donc deja des EGALITES dans les36 sommets. Les autres
+paires conservent des bornes superieures, sans imposer une completion.
+
+MARGES ENTIERES SANS SOLVEUR.
+Chaque sommet des quatre grilles X choisit un coin dans chacune des trois
+grilles Y. Pour deux coins y,z de grilles Y distinctes, le nombre commun
+a fournir par les16 sommets X est exactement
+  D_yz = 2 - |lettres(y) intersection lettres(z)|
+             - |N_coeur(y) intersection N_coeur(z)|.
+Les trois matrices4x4 D sont ainsi les marges d'un tableau entier4x4x4.
+root_component_5602_grid_marginals.py enumere ses quatre couches4x4 de
+sommes de lignes/colonnes prescrites et joint les sommes de deux couches.
+L'absence d'une somme commune est une contradiction entiere finie. Une
+table existante n'est qu'une relaxation : ses16 points doivent encore
+etre repartis entre les quatre grilles X etiquetees et leurs coins.
+
+REDUCTION DES DEUX GRILLES OPPOSEES A456 SCHEMAS.
+Noter C=J-I-F la matrice C4, F le couplage des coins opposes, M le couplage
+entre deux grilles X opposees, L_b et R_b leurs bijections vers Y_b.
+Leur compte C2 exact donne
+  C M + M C + somme_b L_b R_b^t = 2J - M,
+donc
+  somme_b L_b R_b^t = M + F M + M F.
+Pour chacun des24 M, on enumere les deux premieres permutations de cette
+decomposition; le reste determine la troisieme. Il y a456 schemas ordonnes
+en tout (9 pour8 M,24 pour16 M). Aucun schema n'est choisi par symetrie.
+
+Pour chaque grille X, ses trois bijections vers Y forment au depart24^3
+possibilites. On les filtre seulement par les bornes C2 avec le coeur,
+les marges D nulles et les quotas de lettres deja consommes par le coeur.
+Une affectation de la premiere grille et un des456 schemas determinent
+la seconde grille. On teste les bornes C2 entre chaque coin X et Y,
+puis les marges de la paire ne doivent pas depasser D. On catalogue ainsi
+les deux paires (01,23) et(02,13), par leurs trois marges4x4. Pour pouvoir
+coexister leurs marges doivent sommer exactement a D. Toute jointure
+restante construit explicitement la matrice36x36 et est testee par C2,
+les egalites closes et les quotas de lettres. Le programme
+root_component_5602_grid_join.py donne donc un verdict fini sans UNKNOWN;
+un temoin est un graphe PARTIEL36, jamais un graphe de Conway.
+
+Premier pilote : orbite1,bord0 et orbite1,bord3 impossibles. Le second
+etait UNKNOWN au solveur. Ses catalogues simples ont102,117,106,110
+elements, chaque paire opposee a4 realisations et une seule marge; les
+deux marges ne se completent pas a D. Calcul entier0.140625s CPU.
+La campagne exhaustive des1328 bords est en cours au19/10 vers01h10.
