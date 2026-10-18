@@ -1,0 +1,91 @@
+19/10/2026. Codex. Front complementaire aux campagnes de LAB.
+
+PORTEE.
+Le rang 7 n'etait pas pris en charge par signature_domains et corner_data.
+Le plafond est maintenant commun et vaut 7. L'enumeration reste exacte :
+choix d'un mineur principal inversible, au plus 5^7 affectations entieres
+par rectangle, relevement rationnel exact et borne h^t R^+ h <= 5/2.
+Il n'y a pas de nouvelle hypothese spectrale ou combinatoire.
+
+Les quatre gabarits gz de dimension de noyau 7 sont 897,5602,5628,6848.
+Ce sont des indices du catalogue gz de 10027 objets. La conjecture qu'il
+en manquait deux dans les fichiers g1/g2 etait fausse.
+
+PILOTES SUR LES GRAMS INITIALES DU CATALOGUE.
+Leur provenance est la source gz, son SHA256 et l'indice du gabarit.
+Il ne s'agit PAS des couvertures completes ni necessairement des Grams
+encore UNKNOWN dans le registre de LAB. Aucun gabarit n'est ferme ici.
+
+  indice  trace(R) rang  filtre coins/moments   CPU
+     897      64     7   PASSES                 3.00000 s
+    5602      68     7   EXCLUDED               1.21875 s
+    5628      70     7   EXCLUDED               1.06250 s
+    6848      74     7   EXCLUDED               1.765625 s
+
+Les trois exclusions sont deja expliquees par des sommes de quatre
+signatures impossibles. Aucun solveur d'adjacence n'est necessaire.
+La Gram initiale 897 passe aussi la separation de moments. Le couplage
+Gamma H=-4H + coins + vecteurs courts + projecteur superieur, couche0,
+reste UNKNOWN avec un budget demande de30 secondes CPU (32.609375
+mesurees, le callback d'arret peut depasser le budget). 25070 variables,
+52658 contraintes. Zero branche : pas de conclusion apres le presolve.
+
+La tentative SANS Gram pour 5602, en comptes agreges E3 + histogrammes,
+reste UNKNOWN apres8 puis60 secondes CPU. Aucun temoin agrege obtenu.
+
+PROPAGATION ELEMENTAIRE DES SOMMES.
+Soit D l'ensemble fini de signatures admissibles d'un sommet d'un
+rectangle q. Les quatre signatures h1,...,h4 doivent sommer a R[:,q].
+Si une coordonnee appartient a [l,u] dans D, sa somme appartient a
+[4l,4u]. Une somme imposee egale a4l (resp.4u) force les quatre valeurs
+a l (resp.u). On peut alors restreindre D et recommencer. Une somme
+hors de l'intervalle donne une contradiction entiere.
+
+Cette propagation n'est pas un nouveau theoreme spectral : c'est un
+moyen exact d'expliquer et de faire plus tot une partie du test des
+quatre signatures. Elle est maintenant dans signature_domains, avant
+les sommes de paires. Le parametre saturate_sums=False permet l'ablation.
+Le module root_component_signature_saturation.py expose les etapes.
+
+EXEMPLE LISIBLE : GRAM INITIALE 5602, RECTANGLE q=06.
+L'enumeration entiere fournit exactement14 signatures admissibles.
+On ecrit h_F pour la coordonnee correspondant au rectangle F.
+Trois sommes suffisent :
+  - h_05 >= -1 et somme_{w dans Q06} h_05(w) = R_05,06 = -4.
+    Les quatre h_05 valent donc -1 ; il reste4 signatures.
+  - Sur celles-ci, h_14 <= 1 et somme h_14 = R_14,06 = 4.
+    Les quatre h_14 valent1 ; il reste2 signatures.
+  - Sur celles-ci, h_25 <= 1 et somme h_25 = R_25,06 = 4.
+    Les quatre h_25 valent1 ; il reste une seule signature.
+Cette derniere a h_26=0. La somme de ses quatre copies vaut0, alors que
+R_26,06=-2. Contradiction.
+
+La trace automatique garde aussi deux etapes de saturation redondantes.
+Le fichier gz5602_signature_saturation_certificate.json contient la
+Gram, les14 signatures, la somme requise et cette trace en entiers.
+L'exhaustivite des14 signatures vient du petit calcul rationnel exact,
+pas d'une affirmation que ces signatures sont toutes realisables.
+
+EFFET MESURE ET LIMITE.
+Sur les quatre Grams initiales, les domaines cumules deviennent :
+  5602 : 283 ->139 ; 897 : 623 ->437 ; 5628 : 117 ->62 ; 6848 : 670 ->344.
+La saturation seule detecte une contradiction dans les trois deja
+exclues. Pour897, les anciens temoins de somme sont tous preserves.
+Le modele couple final a exactement les memes nombres de variables,
+contraintes et lignes de tables qu'avant : ces reductions etaient deja
+obtenues plus tard par les coins. Aucun gain de temps du solveur n'est
+demontre ; la construction mesuree vaut9.546875 secondes CPU.
+
+LA QUESTION DE RANG RESTE OUVERTE.
+Avec P l'incidence des84 sommets aux21 rectangles et E=P^t Gamma P,
+on a R=12I-E sur le noyau de l'incidence non orientee de K7. La borne
+connue 0<=R<=28I donne seulement rang(R)>=ceil(trace(R)/28), ici3.
+Elle ne contredit pas les rangs6 ou7. Aucune borne plus forte permettant
+de supprimer ces dimensions n'est etablie dans ce travail.
+
+Reproduction :
+  root_component_rank7_pilot.py DIRECTORY --saved-gram --output NEW.json
+  Ajouter --joint-seconds30 pour le couplage (budget CPU, un worker).
+  Omettre --saved-gram pour rechercher d'abord un temoin de comptes.
+Donnees : data/codex_short_columns_20261018/rank7_saved et fichiers
+gz5602_rank7_*.json, rank7_saturation_pilot.json.

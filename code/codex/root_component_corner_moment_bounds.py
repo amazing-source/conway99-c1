@@ -27,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_corner_tables import enumerate_corner_rows
 from root_component_gram_enumeration import integer_psd
 from root_component_resources import atomic_json_write, limit_research_process
-from root_rectangle_domains import signature_domains
+from root_rectangle_domains import signature_domains, MAX_SIGNATURE_RANK
 
 
 def corner_data(edges, raw):
@@ -39,8 +39,8 @@ def corner_data(edges, raw):
     assert matrix == matrix.T and all(x.q == 1 for x in matrix)
     assert integer_psd(matrix.tolist())
     anchors = list(matrix.rref()[1])
-    if not 1 <= len(anchors) <= 6:
-        raise ValueError('This finite enumerator supports ranks 1 through 6.')
+    if not 1 <= len(anchors) <= MAX_SIGNATURE_RANK:
+        raise ValueError(f'This finite enumerator supports ranks 1 through {MAX_SIGNATURE_RANK}.')
     domains = {tuple(d['rectangle']): d for d in signature_domains(edges, raw)}
     small = matrix.extract(anchors, anchors)
     det = int(small.det())

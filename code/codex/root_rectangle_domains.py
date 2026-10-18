@@ -1,6 +1,6 @@
 """Finite integral column signatures in a root rectangle Gram quotient.
 
-For rank r<=6, every individual vertex has an integer signature h in im(R),
+For rank r<=7, every individual vertex has an integer signature h in im(R),
 with h^t R^+ h<=5/2. At most 5^r anchor assignments need testing per root
 rectangle. Four such signatures must add to the corresponding column of R.
 This is a necessary realization test, not a binary adjacency completion.
@@ -18,10 +18,12 @@ import sympy as sp
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_quotient import EDGES
+from root_component_signature_saturation import saturate
 from three_star_ambient_upper import psd_or_witness
 
 
 RECTANGLE_LABELS = ((0, 2), (0, 3), (1, 2), (1, 3))
+MAX_SIGNATURE_RANK = 7
 
 
 def corner_graphs(edge_count):
@@ -112,7 +114,7 @@ def bounds(rectangle, coordinate):
     return (-2, 0) if set(rectangle).intersection(coordinate) else (-3, 1)
 
 
-def signature_domains(edges, raw):
+def signature_domains(edges, raw, *, saturate_sums=True):
     matrix = sp.Matrix(raw)
     m = len(edges)
     if not m:
@@ -121,8 +123,8 @@ def signature_domains(edges, raw):
     small = matrix.extract(anchors, anchors)
     denominator = int(small.det())
     assert denominator > 0
-    if len(anchors) > 6:
-        raise ValueError('This finite enumerator supports ranks 1 through 6.')
+    if len(anchors) > MAX_SIGNATURE_RANK:
+        raise ValueError(f'This finite enumerator supports ranks 1 through {MAX_SIGNATURE_RANK}.')
     inverse_scaled = (small.inv(method="DM") * denominator).applyfunc(int)
     lift = matrix[:, anchors] * inverse_scaled
     inverse_scaled = [[int(x) for x in row] for row in inverse_scaled.tolist()]
@@ -143,6 +145,10 @@ def signature_domains(edges, raw):
             if all(lo <= x <= hi for x, (lo, hi) in zip(h, intervals)):
                 domains.append(h)
         target = tuple(int(matrix[i, edges.index(rectangle)]) for i in range(m)) if rectangle in edges else (0,) * m
+        original_size = len(domains)
+        saturation = saturate(domains, target) if saturate_sums else None
+        if saturation is not None:
+            domains = saturation['signatures']
         pairs = {}
         for i, j in combinations_with_replacement(range(len(domains)), 2):
             key = tuple(a+b for a,b in zip(domains[i], domains[j]))
@@ -154,7 +160,11 @@ def signature_domains(edges, raw):
                 witness = list(first+second)
                 break
         results.append({"rectangle": rectangle, "signatures": domains,
-                        "four_sum": witness, "target": target})
+                        "four_sum": witness, "target": target,
+                        "sum_saturation": None if saturation is None else {
+                            "before": original_size, "after": len(domains),
+                            "steps": saturation['steps'],
+                            "contradiction": saturation['contradiction']}})
     return results
 
 
