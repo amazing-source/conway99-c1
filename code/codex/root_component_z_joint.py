@@ -1,0 +1,171 @@
+"""Joint binary adjacency and row-state moments, without enumerating Grams.
+
+The row catalogue supplies necessary component equations. Each vertex
+chooses one complete count row; those counts are realized by the SAME
+binary Gamma with the exact letter quotas. All rectangle moments are
+linear in the state indicators. Individual C2 equations are not imposed.
+An infeasible model excludes the component template; a feasible model
+still requires the full SRG check.
+"""
+
+import argparse
+from itertools import combinations, combinations_with_replacement
+import json
+from pathlib import Path
+import sys
+import threading
+import time
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ortools.sat.python import cp_model
+from conway_global_cover import reconstruct_and_check
+from root_component_resources import atomic_json_write, limit_research_process
+
+
+def build_joint(k, row_types, nongrid=None, fixed=None):
+    labels = [p for p in combinations(range(k), 2) if p[1] != (p[0] ^ 1)]
+    rectangles = list(combinations(range(k // 2), 2))
+    members = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
+    assert all(len(group) == 4 for group in members)
+    assert [item['rectangle'] for item in row_types] == [list(q) for q in rectangles]
+    n, m = len(labels), len(rectangles)
+    model = cp_model.CpModel()
+    graph = [[0] * n for _ in range(n)]
+    for u, v in combinations(range(n), 2):
+        graph[u][v] = graph[v][u] = model.new_bool_var(f'e_{u}_{v}')
+        if fixed is not None:
+            model.add(graph[u][v] == fixed[u][v])
+    for w, label in enumerate(labels):
+        model.add(sum(graph[w]) == k - 2)
+        for a in range(k):
+            model.add(sum(graph[w][v] for v, other in enumerate(labels) if a in other)
+                      == 2 - int(a in label) - int((a ^ 1) in label))
+    if nongrid is not None:
+        # The no-three-edge theorem here is Conway-specific.
+        assert k == 14
+        nongrid = {tuple(q) for q in nongrid}
+        for q, group in zip(rectangles, members):
+            if q in nongrid:
+                model.add(sum(graph[u][v] for u, v in combinations(group, 2)) <= 2)
+            else:
+                for u, v in combinations(group, 2):
+                    model.add(graph[u][v] == int(bool(set(labels[u]) & set(labels[v]))))
+    aggregate = []
+    for qi, (group, item) in enumerate(zip(members, row_types)):
+        states = item['states']
+        choices = [[model.new_bool_var(f'row_{w}_{s}') for s in range(len(states))] for w in group]
+        for w, selected in zip(group, choices):
+            model.add_exactly_one(selected)
+            for j, target in enumerate(members):
+                model.add(sum(graph[w][v] for v in target)
+                          == sum(x * state[j] for x, state in zip(selected, states)))
+        aggregate += [(sum(row[s] for row in choices), state) for s, state in enumerate(states)]
+    for i, j in combinations_with_replacement(range(m), 2):
+        target = 4 * k + 8 if i == j else 24 if set(rectangles[i]) & set(rectangles[j]) else 32
+        block = sum(graph[u][v] for u in members[i] for v in members[j])
+        model.add(sum(count * state[i] * state[j] for count, state in aggregate
+                      if state[i] and state[j]) + block == target)
+    assert not model.validate(), model.validate()
+    return model, labels, graph
+
+
+def solve_joint(model, labels, graph, k, seconds):
+    solver = cp_model.CpSolver()
+    solver.parameters.num_search_workers = 1
+    solver.parameters.cp_model_probing_level = 0
+    solver.parameters.max_time_in_seconds = max(30, seconds * 100)
+    started = time.process_time()
+    done = threading.Event()
+    def stop():
+        while not done.wait(.05):
+            if time.process_time() - started >= seconds:
+                solver.stop_search()
+    timer = threading.Thread(target=stop, daemon=True)
+    timer.start()
+    try:
+        status = solver.solve(model)
+    finally:
+        done.set()
+        timer.join()
+    result = {'status': solver.status_name(status), 'cpu_seconds': time.process_time() - started,
+              'model_variables': len(model.proto.variables), 'model_constraints': len(model.proto.constraints),
+              'branches': solver.num_branches, 'conflicts': solver.num_conflicts, 'portable_unsat_proof': False}
+    if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        adjacency = [[solver.value(x) for x in row] for row in graph]
+        violations = []
+        for u, v in combinations(range(len(labels)), 2):
+            actual = sum(a * b for a, b in zip(adjacency[u], adjacency[v])) + adjacency[u][v]
+            required = 2 - len(set(labels[u]) & set(labels[v]))
+            if actual != required:
+                violations.append([u, v, actual, required])
+        result.update(Gamma=adjacency, exact_C2_violations=len(violations), C2_violations=violations)
+        if not violations:
+            result['srg'] = reconstruct_and_check(k, labels, adjacency)
+            result['exact_srg_verified'] = True
+    return result
+
+
+def controls(positive_edges):
+    records = []
+    rook_rows = [{'rectangle': [0, 1], 'states': [[2]]}]
+    model, labels, graph = build_joint(4, rook_rows)
+    result = solve_joint(model, labels, graph, 4, 5)
+    assert result.get('exact_srg_verified')
+    records.append({'graph': 'rook9', 'free_adjacency': True, 'status': result['status'],
+                    'exact_C2_violations': 0, 'cpu_seconds': result['cpu_seconds']})
+    if positive_edges:
+        from root_component_neighbor_moment_controls import extract_root
+        import numpy as np
+        edges = [tuple(map(int, row.split())) for row in positive_edges.read_text().splitlines() if row.strip()]
+        size = max(max(e) for e in edges) + 1
+        matrix = np.zeros((size, size), dtype=np.int64)
+        for u, v in edges:
+            matrix[u, v] = matrix[v, u] = 1
+        assert size == 243 and np.all(matrix.sum(axis=1) == 22)
+        assert np.array_equal(matrix @ matrix + matrix, 20 * np.eye(size, dtype=np.int64) + 2 * np.ones_like(matrix))
+        labels, adjacency = extract_root(matrix.tolist(), 0)
+        rectangles = list(combinations(range(11), 2))
+        groups = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
+        row_types = [{'rectangle': list(q), 'states': [list(row) for row in sorted({tuple(sum(adjacency[w][v] for v in target)
+                      for target in groups) for w in group})]} for q, group in zip(rectangles, groups)]
+        model, labels2, graph = build_joint(22, row_types, fixed=adjacency)
+        assert labels == labels2
+        result = solve_joint(model, labels, graph, 22, 5)
+        assert result.get('exact_srg_verified')
+        records.append({'graph': str(positive_edges), 'fixed_boolean_adjacency': True, 'status': result['status'],
+                        'rectangles': 55, 'moment_equations': 1540, 'cpu_seconds': result['cpu_seconds'],
+                        'exact_C2_violations': 0})
+    return {'status': 'POSITIVE_CONTROLS_PASSED', 'controls': records}
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--bundle', type=Path)
+    p.add_argument('--catalogue', type=Path)
+    p.add_argument('--controls', action='store_true')
+    p.add_argument('--positive-edges', type=Path)
+    p.add_argument('--seconds', type=float, default=5)
+    p.add_argument('--output', type=Path, required=True)
+    a = p.parse_args()
+    assert not a.output.exists()
+    resources = limit_research_process(1)
+    if a.controls:
+        result = controls(a.positive_edges)
+    else:
+        template = json.loads(a.bundle.read_text(encoding='utf-8-sig'))['template']
+        catalogue = json.loads(a.catalogue.read_text(encoding='utf-8-sig'))['catalogue']
+        assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
+        start = time.process_time()
+        model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'])
+        build_seconds = time.process_time() - start
+        result = solve_joint(model, labels, graph, 14, a.seconds)
+        result.update(build_cpu_seconds=build_seconds, source_bundle=str(a.bundle), source_catalogue=str(a.catalogue),
+                      scope=__doc__, uses_Gram_cover=False, uses_prism_budget=False, individual_C2_encoded=False,
+                      global_conway_exclusion=False)
+    result['resources'] = resources
+    atomic_json_write(a.output, result)
+    print(json.dumps({k: v for k, v in result.items() if k not in ('scope', 'resources', 'Gamma', 'C2_violations', 'srg')}))
+
+
+if __name__ == '__main__':
+    main()
