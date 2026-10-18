@@ -17,7 +17,7 @@ from root_component_resources import atomic_json_write
 from root_component_rotated_gram import unsafe_product_reports
 
 
-def merge(gram_cover, template_index, reports):
+def merge(gram_cover, template_index, reports, minimal_root=False):
     cover = next(r for r in json.loads(gram_cover.read_text())['records']
                  if r['template_index'] == template_index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
@@ -27,6 +27,8 @@ def merge(gram_cover, template_index, reports):
         report = json.loads(path.read_text(encoding='utf-8-sig'))
         assert not list(unsafe_product_reports(report)), f'Withdrawn product encoding: {path}'
         options = report.get('options', {})
+        assert minimal_root or not options.get('minimum_prism_root',False), (
+            f'Minimum-root exclusion cannot enter an arbitrary-root ledger: {path}')
         for record in report.get('records', []):
             if record['template_index'] != template_index:
                 continue
@@ -80,6 +82,8 @@ def merge(gram_cover, template_index, reports):
             'solver_attempt_counts': dict(merged['attempts'])})
     return {'scope': __doc__, 'template_index': template_index,
         'global_minimum_components': 4, 'chosen_root_prism_budget': 51,
+        'requires_globally_minimal_root': minimal_root,
+        'usable_in_arbitrary_low_budget_root_frontier': not minimal_root,
         'gram_cover': str(gram_cover), 'gram_cover_sha256_lf': digest(gram_cover),
         'required_gram_count': len(remaining), 'records': records,
         'counts': dict(Counter(r['status'] for r in records)),
@@ -93,11 +97,12 @@ def main():
     p.add_argument('--gram-cover', type=Path, required=True)
     p.add_argument('--index', type=int, required=True)
     p.add_argument('--reports', type=Path, nargs='+', required=True)
+    p.add_argument('--minimal-root', action='store_true')
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
-    result = merge(args.gram_cover, args.index, args.reports)
+    result = merge(args.gram_cover, args.index, args.reports, args.minimal_root)
     atomic_json_write(args.output, result)
     print(json.dumps({'counts': result['counts'], 'template_excluded': result['template_excluded'],
         'code_counts': [(r['gram_index'], r.get('excluded_code_count'), r.get('code_count'))

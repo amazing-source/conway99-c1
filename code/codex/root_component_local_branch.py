@@ -54,6 +54,7 @@ def main():
     parser.add_argument('--total-cpu-seconds',type=float,help='Maximum summed solver CPU time in this invocation; model construction is separate.')
     parser.add_argument('--limit-new',type=int)
     parser.add_argument('--component-range',type=int,nargs=2,metavar=('START','STOP'),help='Process this half-open range of current canonical codes; retain the full cover in the report.')
+    parser.add_argument('--component-indices',type=int,nargs='+',help='Process exactly these code indices; the report retains the entire cover.')
     parser.add_argument('--expected-code-cover',help='SHA256 of the complete ordered canonical code list, pinned by a task manifest.')
     parser.add_argument('--prefilter-seconds',type=float,default=0,help='First try the fixed-code base model, then add rotated constraints only if needed; included in the per-code CPU budget.')
     parser.add_argument('--presolve-iterations',type=int,default=3)
@@ -71,6 +72,7 @@ def main():
     parser.add_argument('--boundary-projectors',action='store_true',help='Exact T and U Schur cuts after fixing the whole first line neighbourhood.')
     parser.add_argument('--rotated-rectangles',type=int,default=0,help='Number of additional E3 rectangles in the two fixed stars; corners remain variable.')
     parser.add_argument('--include-prism-stars',action='store_true',help='Also transport both already fixed stars of every six-prism line.')
+    parser.add_argument('--minimum-prism-root',action='store_true',help='Choose a globally minimum prism-incidence root; exclusions cannot enter an arbitrary-root frontier.')
     parser.add_argument('--rotated-signatures',action='store_true',help='Project short integer eigenvectors onto each variable rotated rectangle.')
     parser.add_argument('--rotated-templates',action='store_true',help='Transport all pre-budget component graph templates to each complete neighbouring star.')
     parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
@@ -88,6 +90,7 @@ def main():
     assert args.presolve_iterations>=1
     assert not (args.residual_gram or args.residual_eigen or args.tight_residual_bounds) or args.rotated_residuals
     if args.component_range:assert 0<=args.component_range[0]<args.component_range[1]
+    assert not (args.component_range and args.component_indices), 'Choose a range or explicit indices, not both.'
     resources=limit_research_process(1)
     cover=next(r for r in json.loads((args.directory/'root_component_gram_orbits20.json').read_text())['records'] if r['template_index']==args.index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
@@ -118,13 +121,16 @@ def main():
         # never regard an empty list of branches as a proof.
         context={'codes':[[]],'selectors':[],'root':None,'part':[]}
     codes=[list(c) for c in context['codes']]
+    if args.component_indices is not None:
+        assert args.component_indices and len(set(args.component_indices))==len(args.component_indices)
+        assert set(args.component_indices)<=set(range(len(codes)))
     import hashlib
     code_cover_hash=hashlib.sha256(json.dumps(codes,separators=(',',':')).encode()).hexdigest()
     if args.expected_code_cover and not base_model_only:
         assert code_cover_hash==args.expected_code_cover, 'Canonical cover changed; regenerate the task manifest.'
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
-    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals','include_prism_stars'):
+    for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals','include_prism_stars','minimum_prism_root'):
         if getattr(args,name):options[name]=True
     if args.rotated_rectangles:options['rotated_rectangles']=args.rotated_rectangles
     if args.short_norm!=4:options['short_norm']=args.short_norm
@@ -146,6 +152,7 @@ def main():
         options['low_budget_cover']=str(args.low_budget_cover)
         options['low_budget_cover_sha256_lf']=digest(args.low_budget_cover)
     if args.component_range:options['component_range']=args.component_range
+    if args.component_indices is not None:options['component_indices']=args.component_indices
     if args.expected_code_cover:options['expected_code_cover']=args.expected_code_cover
     if args.total_cpu_seconds is not None:
         assert args.total_cpu_seconds>0
@@ -162,7 +169,9 @@ def main():
     elif args.reuse_proven:
         old=json.loads(args.reuse_proven.read_text())
         from root_component_rotated_gram import unsafe_product_reports
+        from root_component_root_order import requires_minimum_root
         assert not any(unsafe_product_reports(old)), 'Cannot reuse a withdrawn residual-product report.'
+        assert args.minimum_prism_root or not requires_minimum_root(old), 'Minimum-root proofs cannot be reused at an arbitrary root.'
         matches=[c for r in old['records'] if r['template_index']==args.index
                  for c in r['cases'] if c['gram_index']==args.gram_index]
         assert len(matches)==1
@@ -203,6 +212,7 @@ def main():
     for i,code in enumerate(codes):
         if i in completed:continue
         if args.component_range and not args.component_range[0]<=i<args.component_range[1]:continue
+        if args.component_indices is not None and i not in args.component_indices:continue
         if args.limit_new is not None and processed>=args.limit_new:break
         branch_seconds=args.seconds
         if args.total_cpu_seconds is not None:
@@ -279,6 +289,9 @@ def main():
                     added=add_rotated_rectangles(branch_model,fixed,template,tables,root,[],[],30,extra)
                     rectangle_context.extend(extra);extra_info.append(added)
                 rotated_info['additional_prism_stars']=extra_info
+            if args.minimum_prism_root:
+                from root_component_root_order import add_minimum_root_cuts
+                rotated_info['root_choice']=add_minimum_root_cuts(branch_model,branch_graph,rectangle_context)
             if args.rotated_residuals:
                 from root_component_rotated_residual import add_rotated_residual_cuts
                 from root_component_boundary_psd import fixed_line_graph

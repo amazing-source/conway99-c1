@@ -29,6 +29,7 @@ def main():
     p.add_argument('--residual-eigen',type=int,default=2)
     p.add_argument('--log-search',action='store_true')
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
+    p.add_argument('--minimum-prism-root',action='store_true',help='Restrict to roots of globally minimum prism incidence; exclusions have that additional scope.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
     assert not args.output.exists()
@@ -79,7 +80,7 @@ def main():
         'gram_cover_sha256_lf':digest(args.gram_cover),'fixed_gram_witness':False,
         'resources':resources,'model':info,'build_cpu_seconds':time.process_time()-start,
         'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
-            'linearization':args.linearization,
+            'linearization':args.linearization,'minimum_prism_root':args.minimum_prism_root,
             'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
             'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'known_six_prism_root':prism_roots[0] if use_prism else None,
@@ -109,6 +110,9 @@ def main():
         else:
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
         if len(rectangles) in (15,30):
+            if args.minimum_prism_root:
+                from root_component_root_order import add_minimum_root_cuts
+                rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
             rotation['residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
             rotation['gram']=add_gram_cuts(model,rectangles,'all')
             rotation['gram_kernel']=add_gram_kernel_cuts(model,rectangles)

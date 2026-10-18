@@ -68,6 +68,7 @@ def main():
     p.add_argument('--residual-eigen',type=int,default=2)
     p.add_argument('--log-search',action='store_true')
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
+    p.add_argument('--minimum-prism-root',action='store_true',help='Require the chosen root to minimize prism incidence globally; changes the scope of an exclusion.')
     p.add_argument('--no-rotations',action='store_true',help='Study the weaker base model split only by M0; no new star or residual is added.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
@@ -109,6 +110,7 @@ def main():
     result={'scope':__doc__,'resources':resources,'options':{
         'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,'no_rotations':args.no_rotations,
         'linearization':args.linearization,'layer':args.layer,
+        'minimum_prism_root':args.minimum_prism_root,
         'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
         'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'records':[{'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}]}
@@ -123,6 +125,9 @@ def main():
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
             boundaries.append(('matching_rotation',len(model.proto.constraints)))
             if len(rectangles)==15:
+                if args.minimum_prism_root:
+                    from root_component_root_order import add_minimum_root_cuts
+                    rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)
                 rotation['integer_residuals']=add_rotated_residual_cuts(model,fixed,rectangles,tight_bounds=True)
                 boundaries.append(('residuals',len(model.proto.constraints)))
                 rotation['integer_gram']=add_gram_cuts(model,rectangles,'all')

@@ -6,6 +6,9 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from root_component_root_order import arbitrary_root_rejection
 
 
 def main():
@@ -17,7 +20,7 @@ def main():
     source=args.directory/"root_component_gram_orbits20.json"
     data=json.loads(source.read_text())
     covers={r["template_index"]:r for r in data["records"]}
-    rejected={}
+    rejected={};ignored_reports={}
     tracked=None
     if args.committed_only:
         repo=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())
@@ -27,6 +30,10 @@ def main():
         if tracked is not None and path.resolve() not in tracked:continue
         raw=path.read_bytes()
         report=json.loads(raw)
+        reason=arbitrary_root_rejection(report)
+        if reason:
+            ignored_reports[path.name]=reason
+            continue
         used=False
         for record in report.get("records",[]):
             if "cases" not in record:continue
@@ -52,7 +59,7 @@ def main():
             record["orbit_size_histogram"]=dict(Counter(record["gram_orbit_sizes"]))
         print(index,len(keep),flush=True)
     data.update(scope="Complete necessary Gram cover after recorded INFEASIBLE signature branches; solver verdicts, no portable proof.",
-                input_sha256=hashes)
+                input_sha256=hashes,ignored_report_sources=ignored_reports)
     args.output.write_text(json.dumps(data,separators=(",",":"))+"\n",encoding="utf-8")
 
 

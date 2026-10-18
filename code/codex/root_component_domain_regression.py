@@ -40,8 +40,9 @@ def run():
     results = {}
     probe = cp_model.CpModel(); x = probe.new_int_var(-2,3,'probe')
     raw = probe.proto.variables[x.index].domain
-    results['upstream_wrapper'] = {'list': list(raw), 'negative_last': raw[-1],
-                                   'positive_last': raw[len(raw)-1]}
+    results['upstream_wrapper'] = {'list': list(raw),
+                                   'positive_last': raw[len(raw)-1],
+                                   'unsafe_negative_index_not_read': True}
     for name, second, vx, vy, constants in (
             ('negative_dot_product', (1,3), 3, -2, False),
             ('positive_product_nine', (3,4), 3, 3, True)):

@@ -36,6 +36,8 @@ def freeze(directory,output):
         for name in paths:
             path=directory/name
             data=json.loads(path.read_text())
+            from root_component_root_order import arbitrary_root_rejection
+            assert not arbitrary_root_rejection(data), 'Invalid or minimum-root proof cannot enter an arbitrary-root frontier.'
             assert not data.get('options',{}).get('low_budget_cover'), 'Do not create a circular frontier.'
             sources[name]=digest(path)
     for name in ('root_component_gram_budget51.json','root_component_gram_realization.json'):

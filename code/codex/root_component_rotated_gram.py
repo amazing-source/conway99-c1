@@ -108,6 +108,10 @@ def add_gram_kernel_cuts(model, rectangles):
     R_pq = dot(delta_p,delta_q)/7, R_pp = 8-2e_p. For every
     root line i, sum_{q incident i} delta_q=0, hence R times its
     incidence column is zero. Every two-by-two principal minor is PSD.
+    The vector identity itself is imposed coordinate by coordinate. If
+    S_ij is the nine-set and L_i a root triangle, then
+      sum_{j!=i} 1_Sij = (A+4I) 1_Li,
+    so (A-3I)(A+4I)=2J gives sum_{j!=i} delta_ij=0.
     Since the rectangle incidence columns have squared norm four and
     T is seven times a projector, 0<=R<=28I and sum_q R_pq^2<=28R_pp.
     No component minimum, fixed Gram, or new-root prism budget is used.
@@ -119,6 +123,14 @@ def add_gram_kernel_cuts(model, rectangles):
         first = items[0]
         entries = first['residual_gram_entries']
         assert len(entries)==210
+        # Expose the linear cancellations directly. Inferring them from
+        # the squared norm of each zero Gram sum is much harder for SAT.
+        for line in range(7):
+            incident = [vector for pair,vector in vectors.items() if line in pair]
+            assert len(incident)==6
+            for coordinate in range(98):
+                model.add(sum(vector[coordinate] for vector in incident)==0)
+        first['coordinate_kernel_added']=True
         lines = sorted(tuple(line) for line in first['all_lines'])
         edge_counts = dict(old_edges)
         for item in items:
@@ -148,7 +160,8 @@ def add_gram_kernel_cuts(model, rectangles):
             square = model.new_int_var(0,64,f'rotated_gram_energy_diagonal_{root}_{pair}')
             model.add_allowed_assignments([d,square],[(v,v*v) for v in (0,4,6,8)])
             model.add(square+sum(s for (a,b),s in squares.items() if pair in (a,b))<=28*d)
-        records.append({'root':root,'kernel_equations':147,'principal_minor_tables':210,
+        records.append({'root':root,'kernel_equations':147,'coordinate_kernel_equations':686,
+                        'principal_minor_tables':210,
                         'spectral_row_energy_bounds':21})
     return {'roots':records,'scope':add_gram_kernel_cuts.__doc__}
 
