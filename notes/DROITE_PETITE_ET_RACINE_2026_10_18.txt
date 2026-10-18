@@ -1,0 +1,82 @@
+18 octobre 2026 — Une droite c<=3, sans confondre les choix de racine
+
+Point de depart
+Le bilan c4_selected_root_closed.json exclut par CP-SAT l'hypothese
+c(L)>=4 pour toutes les droites. Il impose donc l'existence d'une droite
+L telle que c(L)<=3 dans tout Conway eventuel. Ce resultat ne fournit
+aucun budget de prismes a un sommet particulier de L.
+
+On peut cependant choisir SEPAREMENT une racine o avec s(o)<=51, par
+P<=852 et somme_x s(x)=6P. Ensuite on situe L relativement a o. Aucune
+raison ne permet de supposer que L contient o. Le budget reste a o.
+La borne852 est celle du certificat rationnel deja etabli dans
+../c1-codex/data/codex_order9_prism_cap.json (P<=11088/13, puis entier).
+
+Huit positions, avec preuve de couverture
+Les14 voisins de o forment sept paires. Les84 autres sommets portent
+les labels {a,b}, ou a et b appartiennent a deux paires differentes.
+L'action de changement de noms est S2 wr S7 sur les voisins, et son
+action induite sur tous les labels. Ce n'est pas un automorphisme suppose.
+
+1. L contient o : un seul type, o et une paire de voisins.
+2. L ne contient pas o, mais contient un voisin a de o : ses deux autres
+   sommets sont {a,b} et {a,c}. Deux types, selon que b et c sont mates
+   ou appartiennent a deux paires differentes.
+3. L est entierement dans les84 labels : ses trois labels sont disjoints.
+   Sinon une arete aurait a la fois un voisin commun dans N(o) et le
+   troisieme sommet de L, contrairement a lambda=1.
+   Sur les six lettres, les paires de mates forment un matching partiel,
+   sans arete a l'interieur d'un des trois labels. Il y a51 matchings
+   partiels etiquetes. Les48 permutations des trois labels et inversions
+   de leurs extremites donnent cinq orbites, de tailles1,12,6,24,8.
+   Zero mate : trois aretes disjointes; un mate : un chemin et une arete;
+   deux mates : cycle4 + arete ou chemin6; trois mates : cycle6.
+Il y a donc1+2+5=8 positions relatives en tout.
+
+L'enumerateur root_component_triangle_orbits.py produit les representants
+dans weak_line_eight_positions.json. Il couvre les51 matchings partiels
+par orbites disjointes de l'action exacte de taille48. Les permutations
+des paires utilisees et les flips de leurs lettres s'etendent toujours
+aux14 voisins, puis aux84 labels.
+
+ATTENTION : cette reduction utilise toute l'action S2 wr S7. On ne peut
+pas ajouter ces huit representants directement a un gabarit racine deja
+normalise. Il faut aussi transporter ce gabarit, ou employer son seul
+stabilisateur. Le nouvel outil laisse donc le gabarit entierement libre.
+
+Encodage exact de c(L)<=3
+Pour chaque sommet w hors L, b_w indique s'il est voisin de L :
+b_w=sum_{a dans L} A_aw. Cette somme vaut0 ou1 pour un SRG lambda=1.
+Sur les sommets b_w=1, on choisit une foret orientee avec au plus trois
+racines. Chaque membre a exactement un parent ou est une racine; une
+arete parentale exige l'arete reelle et deux sommets membres; une hauteur
+entiere augmente strictement du parent vers l'enfant.
+Toute composante doit contenir une racine, car un chemin de parents ne
+peut boucler. Ainsi c(L)<=3. Reciproquement, une foret couvrante avec une
+racine par composante fournit les variables auxiliaires. L'encodage est
+donc equivalent, sans fixer une taille ou un type de composante.
+
+Outil global
+root_component_weak_line_global.py conserve les equations C1/C2 exactes
+sur Gamma84, sans Gram temoin, sans couplage fixe et sans gabarit de
+composantes. L'option --case choisit l'une des huit positions, puis y
+impose c(L)<=3. --root-prism-budget51 utilise uniquement s(o)<=51.
+Les huit cas reunis couvrent tous les graphes de Conway eventuels, en
+utilisant la fermeture de c>=4. Un seul cas INFEASIBLE ne suffirait pas.
+Les options maximum-components1/2 ajoutent une hypothese supplementaire
+non etablie; elles ne constituent pas une couverture globale actuelle.
+
+Controles de cet encodage neuf
+Douze petits cas de connexite ont passe, dont quatre composantes reliees
+par un sommet HORS du voisinage : celui-ci ne doit pas servir de pont.
+Le modele complet pour srg(9,4,1,2) avec une seule composante reconstruit
+une grille9, controlee sur chaque degre et chaque paire de sommets.
+Pour Conway/cas7 :296472variables,318467contraintes, construction4.140625CPU.
+Le pilote court est separe du bilan de fermeture c4.
+
+Limite pratique
+Huit positions ne signifient pas huit petits problemes. Toute la matrice
+inconnue reste libre dans chaque cas. Cette reduction est finie et exacte;
+aucun cout abordable de resolution complete n'est demontre. Elle fournit
+un point d'entree global et une contrainte nouvelle au solveur, pas une
+annonce de non-existence globale.
