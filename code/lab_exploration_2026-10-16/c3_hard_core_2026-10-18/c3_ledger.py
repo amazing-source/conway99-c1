@@ -35,7 +35,7 @@ def load(path):
         return None
 
 
-for d in ("collect_c3ga", "collect_c3gb"):
+for d in ("collect_c3ga", "collect_c3gb", "collect_c3ga2"):
     for f in glob.glob(os.path.join(d, "files", "out", "s2_*.json")):
         n = os.path.basename(f)[:-5]
         r = load(f)
@@ -76,6 +76,58 @@ for t, sl in slices.items():
     n = next(iter(sl.values()))[0]
     if len(sl) == n and all(s == "SLICE_ALL_INFEASIBLE" for _, s in sl.values()):
         methods[("gz", t)].add("P3")
+# third pass completed Gram by Gram: c3gs slices (all Grams processed) plus per-Gram reruns of its UNKNOWN Grams,
+# c3hard1 (same exact model, 3600 s) and c3eig1 (Codex's fixed_gram_probe --eigen, ce1c814f, rank <= 6).
+rerun_inf = defaultdict(set)
+rerun_kind = defaultdict(set)
+for f in glob.glob(os.path.join("collect_c3hard1", "files", "out", "hd_*.json")):
+    r = load(f)
+    _, tag, t, g = os.path.basename(f)[:-5].split("_")
+    if r and r.get("grams") and r["grams"][0].get("status") == "INFEASIBLE":
+        rerun_inf[(tag, int(t))].add(int(g[1:]))
+        rerun_kind[(tag, int(t))].add("H")
+for f in glob.glob(os.path.join("collect_c3eig1", "files", "out", "eg_*.json")):
+    r = load(f)
+    _, tag, t, c = os.path.basename(f)[:-5].split("_")
+    for case in (r or {}).get("cases", []):
+        if case.get("status") == "INFEASIBLE":
+            rerun_inf[(tag, int(t))].add(int(case["gram_selector"]))
+            rerun_kind[(tag, int(t))].add("E")
+slice_info = defaultdict(dict)
+for f in glob.glob(os.path.join("collect_c3gs", "files", "out", "sp_*.json")):
+    _, tag, t, i, n = os.path.basename(f)[:-5].split("_")
+    r = load(f)
+    if not r:
+        continue
+    gs = r.get("grams") or []
+    slice_info[(tag, int(t))][int(i)] = (int(n), len(gs) == len(r.get("slice_grams") or []),
+                                        {x["gram"] for x in gs if x["status"] != "INFEASIBLE"})
+for key, sl in slice_info.items():
+    n = next(iter(sl.values()))[0]
+    if len(sl) != n or not all(c for _, c, _ in sl.values()):
+        continue
+    hard = set().union(*(u for _, _, u in sl.values()))
+    if hard and hard <= rerun_inf[key]:
+        methods[key].add("P3" + "".join(sorted(rerun_kind[key])))
+# fourth pass: Codex's fixed_gram_probe --eigen (ce1c814f, rank <= 6) on EVERY Gram of the complete cover (c3p4e);
+# the template is excluded when the INFEASIBLE Grams cover all gram_count Grams of its 2nd-pass cover.
+gram_count = {}
+for d in ("collect_c3ga", "collect_c3gb", "collect_c3ga2"):
+    for f in glob.glob(os.path.join(d, "files", "out", "s2_*.json")):
+        r = load(f)
+        if r and r.get("gram_count"):
+            _, tag, ti = os.path.basename(f)[:-5].split("_")
+            gram_count[(tag, int(ti))] = r["gram_count"]
+p4 = defaultdict(set)
+for f in glob.glob(os.path.join("collect_c3p4e", "files", "out", "pe_*.json")):
+    r = load(f)
+    _, tag, t, c = os.path.basename(f)[:-5].split("_")
+    for case in (r or {}).get("cases", []):
+        if case.get("status") == "INFEASIBLE":
+            p4[(tag, int(t))].add(int(case["gram_selector"]))
+for key, gs in p4.items():
+    if key in gram_count and len(gs) == gram_count[key] and gs == set(range(gram_count[key])):
+        methods[key].add("P4E")
 for t in (5128, 4192):
     methods[("gz", t)].add("MOM")
 for f in glob.glob(os.path.join("collect_gfm1", "files", "out", "gfm_*.json")):
