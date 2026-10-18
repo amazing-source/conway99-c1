@@ -5,6 +5,8 @@ No prism budget is imposed at the new root. Use all200 component templates
 The new seven lines are the old-root line and the six fixed matched pairs
 in its Gamma star. Only nongrid status is transported here; missing rotated
 rectangles remain free Booleans in the necessary graph-cover table.
+An optional frozen exclusion frontier is applied conditionally when the
+new root itself has prism sum<=51; larger sums retain the full cover.
 """
 from functools import lru_cache
 from itertools import combinations,permutations
@@ -91,7 +93,7 @@ Only a complete set of fifteen variable rectangles is used here.
             'zero_sum_equations':zero_sum,'pairing_equations':paired,'scope':add_residual_component_identities.__doc__}
 
 
-def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_context=None):
+def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_context=None,low_budget_snapshot=None):
     assert len(all_templates)==200, 'Use the complete pre-budget component cover.'
     masks=tuple(sorted({t['graph_mask'] for t in all_templates}))
     assert len(masks)==116
@@ -122,6 +124,13 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
             model.add(sum(item['edges'])==4).only_enforce_if(flag.Not())
         rows,relabelings=allowed_rows(masks,tuple(incidence))
         model.add_allowed_assignments(nongrid,rows)
+        low_info=None
+        if low_budget_snapshot is not None and len(items)==15:
+            from root_component_low_budget_transport import add_conditional_cover
+            low_masks=tuple(sorted({all_templates[i]['graph_mask'] for i in low_budget_snapshot['allowed_template_indices']}))
+            assert list(low_masks)==low_budget_snapshot['allowed_nongrid_masks']
+            low_rows,_=allowed_rows(low_masks,tuple(incidence))
+            low_info=add_conditional_cover(model,root,items,nongrid,low_rows,low_budget_snapshot)
         flow_equations=0;flow_variables=0;old_rectangle_bounds=0
         spectral_energy_cuts=0;energy_tables=0;pairing_equations=0;pairing_maps={}
         if eigen_context is not None:
@@ -221,5 +230,6 @@ def add_rotated_template_cover(model,rectangles,template,all_templates,eigen_con
                      'spectral_energy_tables':energy_tables,
                      'degree_four_component_pairing_equations':pairing_equations,
                      'full_residual_component_identities':residual_info})
+        if low_info is not None:info[-1]['conditional_low_budget_cover']=low_info
     return {'all_prebudget_component_templates':200,'all_prebudget_nongrid_graphs':116,
             'roots':info,'new_root_prism_budget':None,'scope':__doc__}

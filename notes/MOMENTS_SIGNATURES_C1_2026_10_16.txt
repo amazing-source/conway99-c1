@@ -1348,3 +1348,39 @@ Pilote9#193 en cours : nouveau modele plus les triangles croises fixes.
 L'option --fixed-star-triangles ajoute aussi les triangles autour des
 couplages internes nouvellement fixes, meme lorsque P n'a aucun point fixe.
 Elle est preparee mais n'a encore produit aucun verdict.
+
+40. Transport conditionnel des exclusions et trois codes de plus (18/10,03h19).
+Le front d'exclusions est fige dans root_component_low_budget_frontier_d93c1b0.json :
+76 des79 templates exclus,7/9/19 encore ouverts,21 fichiers sources haches.
+A une autre racine, les exclusions s'appliquent SI son propre budget de
+prismes est <=51. Sinon les200 templates pre-budget restent disponibles.
+Aucun budget51 n'est impose inconditionnellement a une nouvelle racine.
+Le cout est la somme des quatre aretes de lignes/colonnes dans chacun
+des21 rectangles. Pour les6 rectangles de l'ancienne ligne, ce cout est
+connu exactement; pour les15 autres il reste variable.
+Le front est immuable et anterieur a ces calculs : aucune circularite
+consistant a utiliser une exclusion pour se prouver elle-meme.
+
+Pilote7#1316, nouvelle combinaison : residus complets, deux triangles
+croises, deux triangles de couplage des etoiles et transport conditionnel.
+[26,1,8]INF65.765625CPU (ancien UNKNOWN154.234375);
+[26,1,9]INF64.359375CPU (ancien UNKNOWN251.125);
+[26,1,10]INF85.0625CPU (ancien UNKNOWN18.203125, budget total epuise).
+Il reste71 codes non fermes sur83;12 sont exclus. On n'attribue pas le
+gain a une seule coupe, car plusieurs contraintes sont ajoutees ensemble.
+Pour ces deux nouvelles racines, les formes nongrilles passent de5051
+a58 lorsque le budget est <=51; au-dessus,5051 restent autorisees.
+
+Pilote9#193 : [0,4,13]INF119.640625CPU avec les triangles croises et les
+residus complets (avant transport conditionnel). [0,4,8] etait DEJA INF
+94.05655CPU dans le rapportAWS final : il n'a pas ete rejoue.2/31 codesINF.
+Le resume de reprise qui le presentait encore comme ouvert etait perime.
+
+Frontiere K4 par colonnes :6 pilotes0/1/7/15/30/58 UNKNOWN5CPU. Le modele
+lineaire a1025 a1665 variables sur ces cas; aucune exclusion de boule.
+Pilote7#1069 sans fixer de code relance avec transport conditionnel,300CPU.
+Preparation AWSv2 : graines conservant les preuves, plages de8 codes non
+fermes, controle du hash de la couverture COMPLETE par chaque travailleur.
+Pas de limite CPU cumulee900 qui empeche d'atteindre les codes suivants;
+chaque code recoit son budget180, et le lanceur doit conserver une limite
+exterieure7200s. Aucun engagement de cloture des UNKNOWN ni lancement AWS.

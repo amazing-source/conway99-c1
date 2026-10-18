@@ -23,6 +23,7 @@ def main():
     parser.add_argument('--gram-index',type=int,required=True)
     parser.add_argument('--seconds',type=float,default=300)
     parser.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
+    parser.add_argument('--low-budget-cover',type=Path)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args();resources=limit_research_process(1)
     from ortools.sat.python import cp_model
@@ -42,6 +43,7 @@ def main():
     roots=[i for i,parts in enumerate(template['nontrivial_component_groups']) if not parts]
     assert roots, 'There must be a known six-prism line.'
     tables=json.loads((directory/'line_component_pattern_tables_e3_all_colours.json').read_text())
+    low_snapshot=json.loads(args.low_budget_cover.read_text()) if args.low_budget_cover else None
     eigen_context={};component_context={};started=time.process_time()
     model,graph,info=build(template,gram_matrix(cover,values),layer=2,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=2,line_profiles=2,
@@ -56,7 +58,7 @@ def main():
             rotation=add_rotated_rectangles(model,graph,template,tables,root,[],[],30,context)
             rotation['integer_residuals']=add_rotated_residual_cuts(model,graph,context)
             rotation['short_signature_cuts']=add_rotated_signature_cuts(model,context,eigen_context)
-            rotation['component_template_cover']=add_rotated_template_cover(model,context,template,templates,eigen_context=eigen_context)
+            rotation['component_template_cover']=add_rotated_template_cover(model,context,template,templates,eigen_context=eigen_context,low_budget_snapshot=low_snapshot)
             rotations.append(rotation)
     assert not model.validate(),model.validate()
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='UNKNOWN',
@@ -65,6 +67,9 @@ def main():
         variables=len(model.proto.variables),constraints=len(model.proto.constraints))
     record={'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}
     result={'scope':__doc__,'resources':resources,'options':{'seconds':args.seconds,'linearization':args.linearization},'records':[record]}
+    if args.low_budget_cover:
+        from root_component_low_budget_transport import digest
+        result['options'].update(low_budget_cover=str(args.low_budget_cover),low_budget_cover_sha256_lf=digest(args.low_budget_cover))
     atomic_json_write(args.output,result)
     print(json.dumps({k:case[k] for k in ('gram_index','component_code_count','build_cpu_seconds','variables','constraints')}),flush=True)
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1

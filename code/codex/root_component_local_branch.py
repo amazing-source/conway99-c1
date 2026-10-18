@@ -48,6 +48,7 @@ def main():
     parser.add_argument('--total-cpu-seconds',type=float,help='Maximum summed solver CPU time in this invocation; model construction is separate.')
     parser.add_argument('--limit-new',type=int)
     parser.add_argument('--component-range',type=int,nargs=2,metavar=('START','STOP'),help='Process this half-open range of current canonical codes; retain the full cover in the report.')
+    parser.add_argument('--expected-code-cover',help='SHA256 of the complete ordered canonical code list, pinned by a task manifest.')
     parser.add_argument('--prefilter-seconds',type=float,default=0,help='First try the fixed-code base model, then add rotated constraints only if needed; included in the per-code CPU budget.')
     parser.add_argument('--minc-lines',type=int,default=1)
     parser.add_argument('--minc-balance',action='store_true')
@@ -65,6 +66,7 @@ def main():
     parser.add_argument('--rotated-residuals',action='store_true',help='Exact99-coordinate integer residual norm and old-star eigen-equations for each rotated nine-set.')
     parser.add_argument('--fixed-cross-triangles',type=int,default=0,help='Apply the global minimum-component bound at newly fixed cross-colour triangles of the first component.')
     parser.add_argument('--fixed-star-triangles',type=int,default=0,help='Apply that bound also at newly fixed matched pairs within the two stars.')
+    parser.add_argument('--low-budget-cover',type=Path,help='Frozen earlier exclusions, applied at other roots only if their prism budget is <=51.')
     parser.add_argument('--reuse-proven',type=Path,help='Copy excluded codes with the same Gram, frame and matching catalogue; filtered code covers may differ.')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
@@ -77,6 +79,8 @@ def main():
     all_templates=json.loads((args.directory/'root_component_templates.json').read_text())['survivors']
     template=all_templates[args.index]
     tables=json.loads(args.local_tables.read_text())
+    low_snapshot=json.loads(args.low_budget_cover.read_text()) if args.low_budget_cover else None
+    assert low_snapshot is None or args.rotated_templates and args.rotated_rectangles>=30
     context={};rotation_values={} if args.rotated_signatures else None
     model,graph,info=build(template,gram_matrix(cover,values),layer=args.layer,eigen=True,
         four_corners=True,local_tables=tables,minc_lines=args.minc_lines,
@@ -93,6 +97,10 @@ def main():
         # never regard an empty list of branches as a proof.
         context={'codes':[[]],'selectors':[],'root':None,'part':[]}
     codes=[list(c) for c in context['codes']]
+    import hashlib
+    code_cover_hash=hashlib.sha256(json.dumps(codes,separators=(',',':')).encode()).hexdigest()
+    if args.expected_code_cover and not base_model_only:
+        assert code_cover_hash==args.expected_code_cover, 'Canonical cover changed; regenerate the task manifest.'
     options={'layer':args.layer,'minc_lines':args.minc_lines,'line_profiles':args.line_profiles,
              'local_tables':str(args.local_tables),'seconds':args.seconds}
     for name in ('upper_projector','rotated_boundary','stabilizer_normalize','boundary_projectors','minc_balance','rotated_signatures','rotated_templates','rotated_residuals'):
@@ -102,7 +110,12 @@ def main():
     if args.prefilter_seconds:options['prefilter_seconds']=args.prefilter_seconds
     if args.fixed_cross_triangles:options['fixed_cross_triangles']=args.fixed_cross_triangles
     if args.fixed_star_triangles:options['fixed_star_triangles']=args.fixed_star_triangles
+    if args.low_budget_cover:
+        from root_component_low_budget_transport import digest
+        options['low_budget_cover']=str(args.low_budget_cover)
+        options['low_budget_cover_sha256_lf']=digest(args.low_budget_cover)
     if args.component_range:options['component_range']=args.component_range
+    if args.expected_code_cover:options['expected_code_cover']=args.expected_code_cover
     if args.total_cpu_seconds is not None:
         assert args.total_cpu_seconds>0
         options['total_cpu_seconds']=args.total_cpu_seconds
@@ -141,6 +154,7 @@ def main():
     case=dict(info,gram_index=args.gram_index,gram_anchor_values=values,status='RUNNING',
               component_codes=codes,component_root=context['root'],component_part=context['part'],branches=branches,
               base_model_only=base_model_only)
+    case['ordered_component_code_cover_sha256']=code_cover_hash
     record={'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}
     def checkpoint():
         case['component_branch_counts']=dict(Counter(r['status'] for r in branches))
@@ -205,8 +219,8 @@ def main():
             if args.rotated_templates:
                 from root_component_rotated_templates import add_rotated_template_cover
                 rotated_info['component_template_cover']=add_rotated_template_cover(branch_model,rectangle_context,template,all_templates,
-                    eigen_context=rotation_values if args.rotated_signatures else None)
-            print(json.dumps({'component_index':i,'phase':'model_ready',
+                    eigen_context=rotation_values if args.rotated_signatures else None,low_budget_snapshot=low_snapshot)
+            print(json.dumps({'component_index':i,'code':code,'phase':'model_ready',
                 'rotated_rectangles':len(rotated_info['rectangles']),
                 'variables':len(branch_model.proto.variables),
                 'constraints':len(branch_model.proto.constraints)}),flush=True)
