@@ -5,19 +5,26 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory",type=Path)
     parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--committed-only",action="store_true",help="Ignore untracked signature reports when freezing a reproducible cover.")
     args=parser.parse_args()
     source=args.directory/"root_component_gram_orbits20.json"
     data=json.loads(source.read_text())
     covers={r["template_index"]:r for r in data["records"]}
     rejected={}
+    tracked=None
+    if args.committed_only:
+        repo=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())
+        tracked={(repo/name).resolve() for name in subprocess.check_output(['git','ls-files'],text=True).splitlines()}
     hashes={source.name:hashlib.sha256(source.read_bytes()).hexdigest()}
     for path in sorted(args.directory.glob("root_component_signature_*.json")):
+        if tracked is not None and path.resolve() not in tracked:continue
         raw=path.read_bytes()
         report=json.loads(raw)
         used=False

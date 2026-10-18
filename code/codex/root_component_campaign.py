@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--retry-unknown", action="store_true")
     parser.add_argument("--refresh-only", action="store_true")
     parser.add_argument("--gram-cover", type=Path)
+    parser.add_argument("--committed-only",action="store_true",help="Ignore untracked signature reports in the exclusion ledger.")
     args = parser.parse_args()
     directory = args.directory.resolve()
     cover_path = directory / "root_component_cover79.json"
@@ -41,6 +42,10 @@ def main():
         for p in (templates_path, grams_path, Path(__file__).with_name("root_component_global.py"))
     }
     exclusions = {}
+    tracked=None
+    if args.committed_only:
+        repo=Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())
+        tracked={(repo/name).resolve() for name in subprocess.check_output(['git','ls-files'],text=True).splitlines()}
     for name in ("root_component_linear_obstructions.json", "root_component_rectangle_probe.json",
                  "root_component_rectangle_obstructions.json", "root_component_letter_obstructions.json",
                  "root_component_gram_layer1_obstructions.json"):
@@ -68,6 +73,7 @@ def main():
         complete_grams = {r["template_index"]: r for r in json.loads(complete_grams_path.read_text(encoding="utf-8"))["records"]}
         gram_exclusions = {}
         for path in sorted(directory.glob("root_component_signature_*.json")):
+            if tracked is not None and path.resolve() not in tracked:continue
             data = json.loads(path.read_text(encoding="utf-8"))
             used = False
             for record in data.get("records", []):
