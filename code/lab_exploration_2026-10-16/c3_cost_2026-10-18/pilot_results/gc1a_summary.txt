@@ -1,0 +1,43 @@
+template  grams  anchors(status,cpu)  full(status,cpu)
+1395 36 ('INFEASIBLE', 320) ('UNKNOWN', 600) 
+3581 2 ('INFEASIBLE', 389) ('INFEASIBLE', 17) 
+4192 79 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+4378 8 ('INFEASIBLE', 218) ('INFEASIBLE', 98) 
+4491 92 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+4801 3 ('UNKNOWN', 600) ('INFEASIBLE', 29) 
+4861 51 ('UNKNOWN', 600) ('INFEASIBLE', 25) 
+4889 40 ('UNKNOWN', 600) ('INFEASIBLE', 228) 
+5128 5 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+5446 21 ('UNKNOWN', 600) ('INFEASIBLE', 222) 
+6947 899 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+7023 6100 ('UNKNOWN', 600) ('INFEASIBLE', 512) 
+7320 751 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+7377 2778 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+7470 1616 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+7520 926 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+8650 37709 ('UNKNOWN', 600) ('UNKNOWN', 600) 
+INFEASIBLE: anchors 3 full 7 either 8 of 17
+
+Cross-checks against Codex's enumerate_grams (unchanged), run gc1a:
+xc_01395 {'codex_status': 'OPTIMAL', 'codex_gram_count': 870, 'codex_after_E3': 36, 'lab_gram_count': 36, 'only_codex': 0, 'only_lab': 0}
+xc_03581 {'codex_status': 'OPTIMAL', 'codex_gram_count': 157, 'codex_after_E3': 2, 'lab_gram_count': 2, 'only_codex': 0, 'only_lab': 0}
+xc_04192 {'codex_status': 'OPTIMAL', 'codex_gram_count': 1167, 'codex_after_E3': 81, 'lab_gram_count': 79, 'only_codex': 2, 'only_lab': 0}
+xc_04378 {'codex_status': 'OPTIMAL', 'codex_gram_count': 250, 'codex_after_E3': 8, 'lab_gram_count': 8, 'only_codex': 0, 'only_lab': 0}
+xc_04491 {'codex_status': 'OPTIMAL', 'codex_gram_count': 2423, 'codex_after_E3': 103, 'lab_gram_count': 92, 'only_codex': 11, 'only_lab': 0}
+xc_04801 {'codex_status': 'OPTIMAL', 'codex_gram_count': 134, 'codex_after_E3': 3, 'lab_gram_count': 3, 'only_codex': 0, 'only_lab': 0}
+xc_04861 {'codex_status': 'OPTIMAL', 'codex_gram_count': 1644, 'codex_after_E3': 55, 'lab_gram_count': 51, 'only_codex': 4, 'only_lab': 0}
+xc_04889 {'codex_status': 'OPTIMAL', 'codex_gram_count': 1179, 'codex_after_E3': 40, 'lab_gram_count': 40, 'only_codex': 0, 'only_lab': 0}
+xc_05128 {'codex_status': 'OPTIMAL', 'codex_gram_count': 810, 'codex_after_E3': 5, 'lab_gram_count': 5, 'only_codex': 0, 'only_lab': 0}
+xc_05446 {'codex_status': 'OPTIMAL', 'codex_gram_count': 1714, 'codex_after_E3': 22, 'lab_gram_count': 21, 'only_codex': 1, 'only_lab': 0}
+xc_06947 {'codex_status': 'OPTIMAL', 'codex_gram_count': 7688, 'codex_after_E3': 907, 'lab_gram_count': 899, 'only_codex': 8, 'only_lab': 0}
+xc_07023 {'codex_status': 'OPTIMAL', 'codex_gram_count': 47564, 'codex_after_E3': 6116, 'lab_gram_count': 6100, 'only_codex': 16, 'only_lab': 0}
+xc_07320 {'codex_status': 'OPTIMAL', 'codex_gram_count': 9318, 'codex_after_E3': 768, 'lab_gram_count': 751, 'only_codex': 17, 'only_lab': 0}
+xc_07377 {'codex_status': 'OPTIMAL', 'codex_gram_count': 21966, 'codex_after_E3': 2812, 'lab_gram_count': 2778, 'only_codex': 34, 'only_lab': 0}
+xc_07470 {'codex_status': 'OPTIMAL', 'codex_gram_count': 15625, 'codex_after_E3': 1630, 'lab_gram_count': 1616, 'only_codex': 14, 'only_lab': 0}
+xc_07520 {'codex_status': 'OPTIMAL', 'codex_gram_count': 8612, 'codex_after_E3': 971, 'lab_gram_count': 926, 'only_codex': 45, 'only_lab': 0}
+
+Local explanation of every Codex-only Gram (gram_cover_diff.py):
+{"template_index": 6947, "codex_only_after_E3_by_failed_constraints": {"connectivity": 8}, "unexplained": 0}
+{"template_index": 7320, "codex_only_after_E3_by_failed_constraints": {"connectivity": 17}, "unexplained": 0}
+{"template_index": 7470, "codex_only_after_E3_by_failed_constraints": {"connectivity": 14}, "unexplained": 0}
+{"template_index": 7520, "codex_only_after_E3_by_failed_constraints": {"connectivity": 45}, "unexplained": 0}
