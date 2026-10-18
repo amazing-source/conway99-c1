@@ -22,8 +22,11 @@ from root_component_resources import atomic_json_write, limit_research_process
 
 
 def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, short_columns=False,
-                 eigen_directions=None):
-    assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
+                 eigen_directions=None, partial_gram=None, component_energy=False):
+    assert catalogue['status'] in ('ROW_CATALOGUE_COMPLETE','CONDITIONAL_ROW_CATALOGUE_COMPLETE')
+    if catalogue['status']=='CONDITIONAL_ROW_CATALOGUE_COMPLETE':
+        from root_component_partial_gram import canonical_block
+        assert partial_gram is not None and catalogue['partial_gram']==canonical_block(partial_gram)
     model = cp_model.CpModel()
     states = [item['states'] for item in catalogue['row_types']]
     counts = [[model.new_int_var(0, 4, f'n_{qi}_{si}') for si in range(len(rows))]
@@ -44,6 +47,14 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
         model.add_allowed_assignments(degree_counts, sorted(permitted))
     for i, j in combinations(range(21), 2):
         model.add(k[i][j] == k[j][i])
+    partial_info=None
+    if partial_gram is not None:
+        from root_component_partial_gram import add_count_block
+        partial_info=add_count_block(model,k,RECTANGLES,partial_gram)
+    energy_info=None
+    if component_energy:
+        from root_component_energy_implications import add_energy_implications
+        energy_info=add_energy_implications(model,k,RECTANGLES,template)
     for i, j in combinations_with_replacement(range(21), 2):
         target = 64 if i == j else 24 if set(RECTANGLES[i]) & set(RECTANGLES[j]) else 32
         quadratic_sum = sum(n * row[i] * row[j]
@@ -85,6 +96,11 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, shor
               'portable_unsat_proof': False}
     if histogram_info is not None:
         result['short_column_histograms'] = histogram_info
+    if partial_info is not None:
+        result['partial_gram'] = partial_info
+        result['whole_template_excluded'] = False
+    if energy_info is not None:
+        result['component_energy_implications']=energy_info
     if direction_info is not None:
         result['variable_norm_cuts'] = direction_info
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
@@ -122,6 +138,8 @@ def main():
     p.add_argument('--all-grid-control', action='store_true')
     p.add_argument('--e3', action='store_true', help='Use the established universal exclusion of three-edge rectangles.')
     p.add_argument('--short-columns', action='store_true', help='Add Gram-free integral eigenvector histogram tables.')
+    p.add_argument('--component-energy',action='store_true',help='Add conditional energy cuts from component identities.')
+    p.add_argument('--max-free',type=int,choices=range(9),default=6)
     p.add_argument('--seconds', type=float, default=5)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
@@ -129,13 +147,14 @@ def main():
     resources = limit_research_process(1)
     template = {'nongrid_edges': [], 'nontrivial_component_groups': [[] for _ in range(7)]} if a.all_grid_control else json.loads(a.bundle.read_text(encoding='utf-8-sig'))['template']
     start = time.process_time()
-    catalogue = row_catalogue(template)
+    catalogue = row_catalogue(template,max_free=a.max_free)
     result = {'scope': __doc__, 'resources': resources, 'source_bundle': str(a.bundle),
               'all_grid_control': a.all_grid_control, 'free_dimension': catalogue.get('free_dimension'),
               'row_state_counts': [r['state_count'] for r in catalogue.get('row_types', [])],
               'catalogue_cpu_seconds': time.process_time() - start, 'global_conway_exclusion': False}
     if catalogue['status'] == 'ROW_CATALOGUE_COMPLETE':
-        result['design'] = solve_design(template, catalogue, a.seconds, a.e3, a.short_columns)
+        result['design'] = solve_design(template, catalogue, a.seconds, a.e3, a.short_columns,
+                                        component_energy=a.component_energy)
     else:
         result['catalogue_status'] = catalogue['status']
     atomic_json_write(a.output, result)

@@ -1,0 +1,455 @@
+{
+  "scope": "Find an obstructed principal Gram block, without fixing the full Gram.\n\nFor any principal block S of R, a genuine signature restricted to S lies\nin im(S) and has h^t S^+ h <= 5/2. Four signatures in rectangle q must\nsum to S[:,q] when q is among the selected coordinates. All other Gram\nentries remain free. Complete component row catalogues are accepted as\ninput, not regenerated; the finite filtering uses exact integers only.\n",
+  "source_gram": "data\\codex_short_columns_20261018\\gz5602_rank7_saved_gram.json",
+  "source_catalogue": "data\\codex_short_columns_20261018\\no_pair_scan\\gz05602\\catalogue.json",
+  "rectangle": [
+    0,
+    6
+  ],
+  "nongrid_edges": [
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      3,
+      6
+    ]
+  ],
+  "full_gram_rank": 7,
+  "block_has_smaller_rank": true,
+  "best_block": {
+    "columns": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      13
+    ],
+    "principal_block": [
+      [
+        4,
+        0,
+        -1,
+        -3,
+        0,
+        2
+      ],
+      [
+        0,
+        4,
+        4,
+        -2,
+        4,
+        0
+      ],
+      [
+        -1,
+        4,
+        6,
+        -2,
+        4,
+        -1
+      ],
+      [
+        -3,
+        -2,
+        -2,
+        4,
+        -1,
+        -2
+      ],
+      [
+        0,
+        4,
+        4,
+        -1,
+        8,
+        -1
+      ],
+      [
+        2,
+        0,
+        -1,
+        -2,
+        -1,
+        4
+      ]
+    ],
+    "rank": 6,
+    "original_row_count": 142,
+    "projected_domain": [
+      [
+        -1,
+        1,
+        1,
+        0,
+        0,
+        -1
+      ],
+      [
+        -1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        -1,
+        1,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        -1,
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        -1,
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        -1
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        1,
+        -1
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        1,
+        -1
+      ]
+    ],
+    "target": [
+      0,
+      4,
+      4,
+      -2,
+      4,
+      0
+    ],
+    "saturation": {
+      "signatures": [],
+      "retained_indices": [],
+      "steps": [
+        {
+          "coordinate": 0,
+          "required_sum": 0,
+          "minimum": -1,
+          "maximum": 0,
+          "forced_value": 0,
+          "before": 15,
+          "after": 11
+        },
+        {
+          "coordinate": 1,
+          "required_sum": 4,
+          "minimum": 0,
+          "maximum": 1,
+          "forced_value": 1,
+          "before": 11,
+          "after": 6
+        },
+        {
+          "coordinate": 2,
+          "required_sum": 4,
+          "minimum": 0,
+          "maximum": 1,
+          "forced_value": 1,
+          "before": 6,
+          "after": 2
+        },
+        {
+          "coordinate": 4,
+          "required_sum": 4,
+          "minimum": 0,
+          "maximum": 1,
+          "forced_value": 1,
+          "before": 2,
+          "after": 1
+        }
+      ],
+      "contradiction": {
+        "coordinate": 5,
+        "required_sum": 0,
+        "lower_sum": -4,
+        "upper_sum": -4,
+        "remaining_indices": [
+          14
+        ]
+      }
+    },
+    "four_sum": null,
+    "status": "EXCLUDED_PARTIAL_BLOCK",
+    "coordinate_rectangles": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ]
+  },
+  "tested_blocks": 143,
+  "greedy_minima": [
+    [
+      3,
+      6,
+      9,
+      10,
+      11,
+      12
+    ],
+    [
+      1,
+      3,
+      7,
+      9,
+      12,
+      13
+    ],
+    [
+      1,
+      3,
+      5,
+      7,
+      9,
+      13
+    ],
+    [
+      1,
+      3,
+      5,
+      7,
+      9,
+      13
+    ],
+    [
+      1,
+      3,
+      4,
+      6,
+      10,
+      12,
+      13
+    ],
+    [
+      1,
+      3,
+      5,
+      6,
+      10,
+      11,
+      13
+    ],
+    [
+      1,
+      2,
+      3,
+      6,
+      7,
+      12,
+      13
+    ],
+    [
+      3,
+      6,
+      9,
+      10,
+      11,
+      12
+    ],
+    [
+      2,
+      3,
+      6,
+      7,
+      8,
+      12,
+      13
+    ],
+    [
+      1,
+      3,
+      4,
+      5,
+      6,
+      10,
+      12
+    ],
+    [
+      2,
+      3,
+      4,
+      7,
+      9,
+      11,
+      13
+    ],
+    [
+      0,
+      3,
+      6,
+      9,
+      10,
+      11,
+      13
+    ]
+  ],
+  "globally_minimum_block_proved": false,
+  "cpu_seconds": 0.578125,
+  "whole_template_excluded": false,
+  "global_conway_exclusion": false,
+  "resources": {
+    "logical_cpu_budget": 1,
+    "shared_affinity_mask": 16384,
+    "priority": "below_normal"
+  }
+}

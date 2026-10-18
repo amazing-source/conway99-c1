@@ -1,0 +1,113 @@
+19/10/2026. Codex. Suite mathematique aux Grams de rang7 et a LAB1148.
+
+RESULTAT ET PORTEE.
+La contradiction d'une Gram initiale de5602 se releve a un bloc principal
+de rang4, puis a une implication lineaire conditionnelle sur une Gram
+VARIABLE. Aucune couverture de Gram n'est utilisee pour cette implication.
+Cela interdit une famille de prolongements, pas le gabarit5602 entier.
+
+LEMME DES BLOCS PARTIELS.
+H est la matrice des colonnes propres entieres, R=P^t H et H^t H=7R.
+La borne de Schur deja utilisee par le projet donne
+  h_w^t R^+ h_w <= 5/2.
+Pour tout bloc principal S=R[I,I], on a necessairement h_w[I] dans im(S)
+et h_w[I]^t S^+ h_w[I] <=5/2. C'est la projection sur un sous-espace,
+dont la norme ne peut qu'etre inferieure a la projection complete.
+Si le rectangle q appartient a I, les quatre signatures de ses sommets
+doivent sommer a S[:,q]. Aucune entree de R en dehors de S n'est requise.
+
+Deux blocs interdits extraits de la Gram initiale5602 :
+1. I=(04,06,14,16,25,36), q=06, rang6,
+ S=[[4,0,-1,-3,0,2],[0,4,4,-2,4,0],[-1,4,6,-2,4,-1],
+    [-3,-2,-2,4,-1,-2],[0,4,4,-1,8,-1],[2,0,-1,-2,-1,4]].
+ Ce bloc est interdit MEME SANS les equations de composantes : les2025
+ choix dans les seules bornes individuelles sont filtres exactement,
+ et aucune somme de quatre survivants ne donne S[:,06]. Le certificat
+ est donc valable dans n'importe quel Conway avec ces labels et ce bloc.
+2. I=(04,16,25,35), q=25, rang4,
+ S0=[[4,-3,0,0],[-3,4,-1,-2],[0,-1,8,-1],[0,-2,-1,4]].
+ Ce bloc utilise les equations de composantes de5602. Il est interdit
+ pour TOUS les prolongements de ces dix entrees, les autres etant libres.
+ Sans ces equations, ce petit bloc passe : le controle correspondant est
+ archive. Ne pas le transporter sans ses hypotheses a d'autres gabarits.
+
+Le filtre de comptes avec le seul bloc4 impose est INFEASIBLE en3.125
+secondes CPU (1142 variables,626 contraintes). La preuve analytique
+ci-dessous ne depend pas de ce verdict CP ni de l'enumeration des lignes.
+
+PREUVE ANALYTIQUE, PUIS COUPE SANS GRAM FIXE.
+Dans5602 les sept droites racines ont chacune une composante non triviale
+sur quatre autres droites. Noter C_i la somme des H_ij sur cette composante.
+Chacune vaut0. Leurs coefficients (1,1,-1,-1,1,-1,1) donnent
+  2(H04+H16+H06+H14-H25-H35)=0.
+
+Supposons R25,25=8. Le rectangle Q25 est sans arete, et h25(w)=2 pour
+chacun de ses quatre sommets. Les rectangles06 et14 etant disjoints du
+label25, on a h06,h14<=1. L'identite precedente donne alors
+  h35 = h04+h16+h06+h14-2 <= h04+h16.
+Si R04,25+R16,25<=-1, la somme des quatre valeurs h04+h16 est negative.
+Il existe donc un sommet w deQ25 avec s=h04(w)+h16(w)<=-1.
+
+Posons v=11(e04+e16)+e25+7e35. A ce sommet,
+  (Hv)_w=11s+2+7h35(w) <=18s+2 <=-16.
+Par Cauchy dans la Gram et la borne de Schur5/2,
+  (Hv)_w^2 <= (5/2) v^t R v.
+On obtient v^t R v >=512/5. R est entiere avec diagonale paire
+(R_FF=8-2e_F), donc v^t R v est pair. Finalement :
+
+  [R25,25=8 ET R04,25+R16,25<=-1] => v^t R v>=104.
+
+Pour S0 ci-dessus, v=(11,11,1,7) donne v^t S0 v=102. Contradiction.
+Mais l'implication ne suppose AUCUNE des dix valeurs de S0 : ce sont ses
+deux antecedents et une borne de norme, tous lineaires en la Gram variable.
+Elle s'applique donc au gabarit entier comme coupe conditionnelle.
+
+GENERALISATION RECONNUE PAR LE CODE.
+Toute identite de composantes de la forme
+  H_A+H_B+H_X+H_Y-H_C-H_D=0,
+avec X,Y disjoints du rectangle C, donne exactement la meme implication :
+  [R_CC=8 ET R_AC+R_BC<=-1]
+       => (11e_A+11e_B+e_C+7e_D)^t R (11e_A+11e_B+e_C+7e_D)>=104.
+Le detecteur cherche une famille finie de ces identites, puis teste leur
+appartenance EXACTE a l'espace des equations de composantes. Il n'en
+presume aucune a partir d'une ressemblance de gabarits ou d'une symetrie.
+Dans5602 :12 identites,48 implications. Une viole la Gram initiale.
+
+IMPLEMENTATION.
+root_component_partial_gram.test_block(template,I,S,catalogue=...) est
+l'API demandee par LAB. I contient des paires de droites, S des entiers.
+Elle n'exige pas R complete. Fournir le catalogue en cache pour plusieurs
+blocs d'un meme gabarit ; sinon le catalogue est genere jusqu'a dimension7.
+Un resultat PASSES ne donne pas de prolongement. Une exclusion ne porte
+que sur le bloc, sous les composantes specifiees.
+
+Pour les solveurs de comptes et d'aretes, un bloc se fixe par
+  R_FG = 4(3 delta_FG+1-|F inter G|) - somme_{w dans Q_F} z_wG,
+ou par la meme somme directement sur Gamma. Les catalogues filtres sous
+un bloc portent un statut CONDITIONNEL et sont refuses sans les memes
+hypotheses de bloc. root_component_partial_gram_probe.py expose ce mode.
+
+--component-energy branche les implications sans fixer de Gram dans
+root_component_z_design, root_component_z_joint et root_component_z_pipeline.
+Le pilote de comptes5602 avec E3, histogrammes et48implications est
+UNKNOWN a30.015625 secondes CPU :2066variables,784contraintes. Aucune
+fermeture du gabarit n'est annoncee. Le pilote couple avec moments par
+sommet, histogrammes, coins C2 et normalisation des paires reste UNKNOWN
+a30.328125 secondes CPU (61712variables,115514contraintes,zero branche).
+Sa construction a pris2.390625 secondes CPU. Aucune prediction de temps
+de fermeture n'est tiree de ces budgets courts.
+
+CONTROLES ET LIMITES.
+partial_energy_controls.json : petit bloc propre accepte ; bloc4 interdit ;
+catalogue conditionnel refuse sans ses hypotheses ; implication fausse
+rejetee et deux temoins logiques acceptes. Ces temoins de Gram synthetiques
+ne sont PAS presentes comme des graphes. Le vraiSRG243 controle l'encodeur
+de la relation AFFINE de comptes seulement, pas la constante Conway5/2.
+Les calculs de reduction precedents choisissent de petits blocs par
+suppression gloutonne. Leur minimalite globale n'est pas demontree.
+
+Donnees dans data/codex_short_columns_20261018 :
+ gz5602_partial_gram_q06.json / q25.json ;
+ partial_gram_q06_universal_bounds.json / q25_universal_bounds.json ;
+ gz5602_partial4_design.json ; partial_energy_controls.json ;
+ gz5602_energy_design30.json ; gz5602_energy_joint30.json.

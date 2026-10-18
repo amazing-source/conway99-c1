@@ -26,7 +26,7 @@ from root_component_resources import atomic_json_write, limit_research_process
 def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinates=None,
                 diagnostics=None, short_columns=False, signed_template=None,
                 signed_lines=None, signed_mode='boundary', mate_normalize=False, corner_c2=False,
-                grid_c2=False, square_defects=False):
+                grid_c2=False, square_defects=False, component_energy=False):
     labels = [p for p in combinations(range(k), 2) if p[1] != (p[0] ^ 1)]
     rectangles = list(combinations(range(k // 2), 2))
     members = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
@@ -114,6 +114,12 @@ def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinate
         info = add_histogram_tables(model, rectangles, nongrid, row_terms)
         if diagnostics is not None:
             diagnostics['short_column_histograms'] = info
+    if component_energy:
+        assert k==14 and signed_template is not None
+        from root_component_energy_implications import add_energy_implications
+        counts=[[sum(graph[u][v] for u in left for v in right) for right in members] for left in members]
+        info=add_energy_implications(model,counts,rectangles,signed_template)
+        if diagnostics is not None:diagnostics['component_energy_implications']=info
     if row_moment_coordinates is not None:
         from root_component_row_neighbor_moments import add_row_moments
         row_info = add_row_moments(model, graph, labels, row_types, row_moment_coordinates, fixed=fixed)
@@ -244,6 +250,7 @@ def main():
     p.add_argument('--corner-c2', action='store_true', help='Add the six individual C2 equations in every rectangle.')
     p.add_argument('--grid-c2', action='store_true', help='Add individual C2 against every grid corner.')
     p.add_argument('--square-defects', action='store_true', help='Use the saturation and parity lemma for defect squares.')
+    p.add_argument('--component-energy',action='store_true')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
@@ -263,7 +270,8 @@ def main():
                                           short_columns=a.short_columns, signed_template=template,
                                           signed_lines=a.signed_lines, signed_mode=a.signed_mode,
                                           mate_normalize=a.mate_normalize,corner_c2=a.corner_c2,
-                                          grid_c2=a.grid_c2,square_defects=a.square_defects)
+                                          grid_c2=a.grid_c2,square_defects=a.square_defects,
+                                          component_energy=a.component_energy)
         build_seconds = time.process_time() - start
         result = solve_joint(model, labels, graph, 14, a.seconds)
         result.update(build_cpu_seconds=build_seconds, source_bundle=str(a.bundle), source_catalogue=str(a.catalogue),
