@@ -70,6 +70,8 @@ def main():
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--minimum-prism-root',action='store_true',help='Require the chosen root to minimize prism incidence globally; changes the scope of an exclusion.')
     p.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, with score<=504. Alternative to minimizing s alone.')
+    p.add_argument('--grid-intersections',action='store_true',help='Expose exact intersections of transported grids with fixed root grids.')
+    p.add_argument('--grid-corner-tables',action='store_true',help='Enumerate all perfect matchings on the eight remaining labels when a transported rectangle is a grid.')
     p.add_argument('--no-rotations',action='store_true',help='Study the weaker base model split only by M0; no new star or residual is added.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
@@ -117,6 +119,8 @@ def main():
         'linearization':args.linearization,'layer':args.layer,
         'minimum_prism_root':args.minimum_prism_root,
         'weighted_prism_grid_root':args.weighted_prism_grid_root,
+        'grid_intersections':args.grid_intersections,
+        'grid_corner_tables':args.grid_corner_tables,
         'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
         'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'records':[{'template_index':args.index,'complete_source_gram_count':cover['gram_count'],'cases':[case]}]}
@@ -131,6 +135,9 @@ def main():
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
             boundaries.append(('matching_rotation',len(model.proto.constraints)))
             if len(rectangles)==15:
+                if args.grid_intersections or args.grid_corner_tables:
+                    from root_component_grid_intersections import add_grid_intersection_cuts
+                    rotation['grid_intersections']=add_grid_intersection_cuts(model,template,rectangles,args.grid_corner_tables)
                 if args.minimum_prism_root:
                     from root_component_root_order import add_minimum_root_cuts
                     rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)

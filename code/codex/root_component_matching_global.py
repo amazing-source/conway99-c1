@@ -31,6 +31,7 @@ def main():
     p.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
     p.add_argument('--minimum-prism-root',action='store_true',help='Restrict to roots of globally minimum prism incidence; exclusions have that additional scope.')
     p.add_argument('--weighted-prism-grid-root',action='store_true',help='Choose a global minimum of9s+8g, score<=504; alternative to minimum s.')
+    p.add_argument('--grid-corner-tables',action='store_true',help='Intersect transported grid corner matchings with the fixed root grids.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();resources=limit_research_process(1)
     assert not (args.minimum_prism_root and args.weighted_prism_grid_root)
@@ -54,7 +55,11 @@ def main():
     template=templates[args.index]
     records=json.loads((directory/'root_component_gram_budget51.json').read_text())['records']
     gram_record=next(r for r in records if r['template_index']==args.index)
-    cover=next(r for r in json.loads(args.gram_cover.read_text())['records'] if r['template_index']==args.index)
+    cover_data=json.loads(args.gram_cover.read_text())
+    from root_component_root_order import root_choice_requirements
+    root_order='weighted_prisms_grids' if args.weighted_prism_grid_root else 'prisms' if args.minimum_prism_root else None
+    assert root_choice_requirements(cover_data)<=({root_order} if root_order else set()),'The supplied Gram cover requires a different root choice.'
+    cover=next(r for r in cover_data['records'] if r['template_index']==args.index)
     assert cover['gram_count']>0 and cover['exhaustive'] and cover['usable_as_gram_cover']
     tables=json.loads((directory/'line_component_pattern_tables_e3_all_colours.json').read_text())
     frontier=json.loads(args.low_budget_cover.read_text());profiles=json.loads(args.residual_gram_profiles.read_text())
@@ -87,6 +92,7 @@ def main():
         'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
             'linearization':args.linearization,'minimum_prism_root':args.minimum_prism_root,
             'weighted_prism_grid_root':args.weighted_prism_grid_root,
+            'grid_corner_tables':args.grid_corner_tables,
             'low_budget_cover':str(args.low_budget_cover),'low_budget_cover_sha256_lf':digest(args.low_budget_cover),
             'residual_gram_profiles':str(args.residual_gram_profiles),'residual_gram_profiles_sha256_lf':digest(args.residual_gram_profiles)},
         'known_six_prism_root':prism_roots[0] if use_prism else None,
@@ -116,6 +122,9 @@ def main():
         else:
             fixed,rectangles,rotation=add_matching_rotation(model,graph,template,tables,component,mi)
         if len(rectangles) in (15,30):
+            if args.grid_corner_tables:
+                from root_component_grid_intersections import add_grid_intersection_cuts
+                rotation['grid_intersections']=add_grid_intersection_cuts(model,template,rectangles,True)
             if args.minimum_prism_root:
                 from root_component_root_order import add_minimum_root_cuts
                 rotation['root_choice']=add_minimum_root_cuts(model,graph,rectangles)

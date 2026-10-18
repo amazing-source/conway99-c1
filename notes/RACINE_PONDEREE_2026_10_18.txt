@@ -80,3 +80,55 @@ Le bilan distingue root_order=weighted_prisms_grids de root_order=prisms.
 Il refuse leur fusion et leur transport comme exclusions arbitraires.
 La file d'attente du test7 minimal en s seul a ete annulee AVANT lancement;
 le nouveau choix de racine suffit a retirer7 de la couverture globale.
+
+5. FILTRE COMPLET DES GRAM, 18/10 VERS 13h45
+La relaxation binaire C1 + composantes + Gram prescrit + budget pondere
+conserve les 12 Gram de 9 et 429 des 448 Gram de 19. Les 19 retraits sont :
+650,824,844,906,908,1041,1047,1377,1381,1402,1406,1550,1637,1653,1749,
+1853,1861,2356,2376. Verdict CP-SAT, sans preuve UNSAT portable.
+Le filtre19 a pris 60.03125 puis 18.78125 secondes CPU; le second passage
+a reutilise les 346 projections deja faisables, sans les recalculer.
+Fichiers weighted_projection_19.json, weighted_projection_19_complete.json,
+selected_weighted_gram_cover.json. Cette derniere couverture porte
+explicitement root_order=weighted_prisms_grids et ne peut remplacer907.
+
+La relaxation lineaire continue de ces 19 cas donne des minima numeriques
+43,44 ou46, meme en ajoutant toutes les inegalites d'ensembles impairs des
+couplages internes. Elle n'explique donc PAS leurs exclusions par un simple
+certificat lineaire de minimum48. Les certificats exacts dyadiques produits
+sont des bornes inferieures valides, mais toutes insuffisantes. L'obstruction
+du modele binaire utilise davantage que cette relaxation continue.
+
+6. INTERSECTIONS DE GRILLES ET TABLES DE QUATRE COINS
+Pour une grille D, chaque sommet exterieur a au plus un voisin dans D :
+toute paire de D a deja tous ses voisins communs dans D. Or les neuf
+sommets de D envoient 9*(14-4)=90 aretes vers ses 90 sommets exterieurs.
+Ils sont donc tous domines exactement une fois : A1_D=1+3*1_D.
+
+Deux grilles distinctes s'intersectent en zero sommet, un sommet ou une
+droite. En effet l'intersection est fermee sous les voisins communs des
+paires qu'elle contient. Dans K3 carre K3, une paire adjacente engendre
+sa ligne; une paire non adjacente engendre la grille entiere. Le controle
+exhaustif des 512 sous-ensembles retrouve seulement : vide, neuf points,
+six lignes, grille entiere. Il n'y a pas de quatrieme forme d'intersection.
+
+Une nouvelle grille basee au voisin a de la racine contient a, quatre
+bases Gamma de labels {a,b}, puis quatre coins Gamma. Elle ne contient
+ni la racine originale ni ses treize autres voisins. La domination exacte
+de ces derniers force chaque autre label, sauf a*, a apparaitre une fois
+parmi les huit sommets Gamma. Les quatre bases utilisent quatre labels;
+les quatre coins sont donc un couplage parfait des HUIT labels restants.
+On enumere au plus 7!! * 4! =2520 placements ordonnes, puis on retire les
+placements hors des domaines deja necessaires et ceux qui prennent deux
+coins d'une ancienne grille. Ces deux coins seraient non adjacents, donc
+forceraient l'egalite des grilles, impossible puisque la nouvelle omet
+la racine originale. Les anciennes grilles contenant a n'ajoutent aucun
+nouveau coin a l'intersection, deja determinee par les bases.
+
+Outil root_component_grid_intersections.py; option --grid-corner-tables
+des deux pilotes matching. Les tables ne sont actives QUE si e=4.
+Leur necessite ne depend ni de c>=4, ni d'un choix minimal de racine.
+Premier test sur19, etoile6, couplage0, les429 Gram variables : INFEASIBLE
+en27.484375CPU. Les huit autres couplages sont en cours; aucune fermeture
+du gabarit19 n'est encore conclue. Le test9/Gram193/M4 avec toutes les C2
+et le budget pondere, AVANT ces tables, est UNKNOWN apres240.296875CPU.

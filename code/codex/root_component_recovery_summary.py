@@ -23,7 +23,9 @@ def merge(gram_cover, template_index, reports, minimal_root=False, root_order=No
         assert root_order in (None,'prisms')
         root_order='prisms'
     assert root_order in (None,'prisms','weighted_prisms_grids')
-    cover = next(r for r in json.loads(gram_cover.read_text())['records']
+    cover_data = json.loads(gram_cover.read_text())
+    assert root_choice_requirements(cover_data)<=({root_order} if root_order else set()), 'Gram cover requires a different root choice.'
+    cover = next(r for r in cover_data['records']
                  if r['template_index'] == template_index)
     assert cover['exhaustive'] and cover['usable_as_gram_cover']
     remaining = dict(zip(cover['source_gram_indices'], cover['gram_anchor_values']))

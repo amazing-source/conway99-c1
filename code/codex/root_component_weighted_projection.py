@@ -58,7 +58,7 @@ def build(template,cover):
     return model,selector,choice
 
 
-def run(directory,index,cover_path,seconds,output):
+def run(directory,index,cover_path,seconds,output,resume=None):
     from ortools.sat.python import cp_model
     resources=limit_research_process(1)
     template=json.loads((directory/'root_component_templates.json').read_text())['survivors'][index]
@@ -71,7 +71,21 @@ def run(directory,index,cover_path,seconds,output):
         'build_cpu_seconds':time.process_time()-started,'feasible_gram_indices':[],
         'excluded_gram_indices':[],'unprocessed_gram_indices':list(cover['source_gram_indices']),
         'status':'RUNNING','exhaustive':False,'portable_unsat_proof':False}
-    atomic_json_write(output,result);start=time.process_time();found=set();step=0
+    found=set()
+    if resume is not None:
+        old=json.loads(resume.read_text(encoding='utf-8-sig'))
+        assert old['template_index']==index and old['root_order']=='weighted_prisms_grids'
+        assert old['source_gram_cover_sha256_lf']==digest(cover_path)
+        # Skipping these previously feasible selectors is conservative: no
+        # exclusion is inferred for them, even if an old witness was lost.
+        previous=set(old['feasible_gram_indices'])
+        assert previous<=set(cover['source_gram_indices'])
+        found={i for i,gi in enumerate(cover['source_gram_indices']) if gi in previous}
+        for i in found:model.add(selector!=i)
+        result['reused_feasible_projections_from']=str(resume)
+        result['feasible_gram_indices']=sorted(previous)
+        result['unprocessed_gram_indices']=[gi for gi in cover['source_gram_indices'] if gi not in previous]
+    atomic_json_write(output,result);start=time.process_time();step=0
     while time.process_time()-start<seconds:
         remaining=seconds-(time.process_time()-start)
         solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
@@ -115,9 +129,10 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('directory',type=Path);p.add_argument('--index',type=int,required=True)
     p.add_argument('--gram-cover',type=Path,required=True);p.add_argument('--seconds',type=float,default=60)
+    p.add_argument('--resume',type=Path,help='Skip selectors with a previous relaxation witness from this exact cover.')
     p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     if a.output.exists():raise FileExistsError(a.output)
-    r=run(a.directory,a.index,a.gram_cover,a.seconds,a.output)
+    r=run(a.directory,a.index,a.gram_cover,a.seconds,a.output,a.resume)
     print(json.dumps({'template':a.index,'status':r['status'],'exhaustive':r['exhaustive'],
         'feasible':len(r['feasible_gram_indices']),'excluded':len(r['excluded_gram_indices']),
         'unprocessed':len(r['unprocessed_gram_indices'])}))
