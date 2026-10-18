@@ -12,6 +12,11 @@ import hashlib
 from itertools import combinations, product
 import json
 from pathlib import Path
+import sys
+
+# Also support isolated Python (-I) when the optional integer histogram
+# proof helper is needed. That helper imports only the standard library.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 
 RECTANGLES = list(combinations(range(7), 2))

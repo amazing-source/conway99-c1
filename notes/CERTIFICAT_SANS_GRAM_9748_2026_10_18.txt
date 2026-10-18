@@ -1,0 +1,54 @@
+18/10/2026, 22h43. Gabarit c3 gz9748 EXCLU SANS GRAM NI BUDGET.
+
+Cible suggeree par LAB1120 : aucun bloc composant de taille2 ; dimension4,
+560 Gram dans l'ancienne couverture, ouverte a la deuxieme passe LAB.
+Cette preuve n'utilise pas cette couverture : elle porte sur le gabarit
+de composantes lui-meme, avec les146 etats possibles de ses lignes Z.
+
+Le nouveau lemme donne S_F=11e_F+12a_F+2b_F<=24, ou e compte les aretes
+internes, a les valeurs H_F=-3, b les valeurs H_F=-2 (tous les84 sommets).
+Preuve dans HISTOGRAMMES_PROPRES_SANS_GRAM_2026_10_18.txt.
+
+Les egalites de comptes du gabarit imposent exactement
+  9 S_(0,1) + 9 S_(2,3) + 2 S_(4,5) >= 484.
+Les trois bornes S_F<=24 imposent <=(9+9+2)*24=480. Contradiction.
+
+Certificat reduit :50 egalites de comptes/symetrie/moments, trois bornes
+short_column_histogram de normale(11,12,2), poids9,9,2. Dans la convention
+du fichier (deux fois S), la combinaison est <=-8, avec coefficients de
+variables tous nonnegatifs :127 zeros,4 coefficients8,8 coefficients22,
+1 coefficient44 et6 coefficients77. Ce sont des entiers petits.
+
+Le lecteur Python standard a controle l'exhaustivite du catalogue,
+regenere les plans d'appui entiers et verifie la combinaison exacte.
+Ancien systeme avec E3 et histdegres, sans les nouvelles bornes : aucun
+certificat. Avec elles : certificat trouve et reduit en0.55CPU environ.
+Le premier certificat non reduit utilisait deux nouvelles bornes et un
+histdegre ; le certificat REDUIT utilise TROIS nouvelles bornes uniquement.
+
+Artefacts dans data/codex_short_columns_20261018 :
+- gz9748_corner_c2/partition.json et catalogue.json (nom du dossier issu
+  du pilote prevu ; le calcul s'est arrete AU LP, aucune C2 ajoutee).
+- gz9748_short_reduced_certificate.json
+- gz9748_short_reduced_verification.json
+- gz9748_without_short_bounds.json
+
+Commande : python -I code/codex/root_component_z_design_verify.py
+ --certificate data/codex_short_columns_20261018/gz9748_short_reduced_certificate.json
+ --catalogue data/codex_short_columns_20261018/gz9748_corner_c2/catalogue.json
+
+Correction d'engineering : le lecteur en modeCLI -I doit ajouter son
+dossier au chemin Python pour importer l'aide purement entiere des
+histogrammes. Corrige avant la verification du certificat reduit.
+
+Limites : ce gabarit est ferme, pas tout c3 ni Conway. Aucun budget de
+prismes, aucune racine choisie, aucune hypothese d'automorphisme, aucune
+decision flottante d'infaisabilite et aucun verdict SAT ne fondent la
+contradiction. Le theoreme universel E3 intervient dans le lemme.
+Les cibles9744,9954,9966 n'ont pas donne de certificat avec les memes
+quatre coupes. Elles restent ouvertes dans ce diagnostic local.
+
+Diagnostic e=0 : nos quatre coupes sont alors redondantes meme au LP.
+Le moment sum binom(z_F,2)=8 implique b+6a<=8, plus fort que ces quatre
+specialisations. Sur le regime e=0 il faut coupler les six paires de coins,
+et non ajouter seulement des histogrammes de la meme colonne.
