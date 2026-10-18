@@ -177,3 +177,56 @@ dans un seul modele. Test de construction/validation passe sur g1/index0
 portent root_order=prisms et ne sont pas transportables a toute racine.
 Ne pas fusionner cette couverture avec celle minimisant9s+8g. Une couverture
 globale de racines minimum-s doit aussi traiter les typesc4 encore ouverts.
+
+8. MODELE SAT DIRECT DU DERNIER TYPE19, 18/10 VERS15h15
+Le paquet proof19_checked.tar.gz (21987206 octets) et son manifeste sont
+commites cd22fdaf. Les dix-neuf CNF et preuves controlees y sont incluses.
+Le calcul CP-SAT19 a ete arrete pendant5 pour liberer environ1.7Gio alors
+que la machine n'avait plus que0.5Gio disponible. Ses verdicts0..4 restent
+conserves; cet arret n'exclut ni5, ni7, ni8. Le calcul9 continue, toujours
+sur le meme coeur partage et suspendu lorsque la charge globale monte.
+
+root_component_star_cnf.py encode toutes les equations C1 et C2 et le
+gabarit local, apres fixation d'un couplage COMPLET. Les clauses sont
+ecrites au fil de l'eau, pour ne pas garder une enorme liste en memoire.
+Il ne fixe aucun Gram. Sans options supplementaires, il est plus faible
+que le modele c4 transporte : aucune condition sur c des autres droites.
+Toute solution SAT est reconstruite et verifiee sur toutes les paires.
+Controles : degre4 -> SRG(9,4,1,2) trouve et verifie; degre6 -> UNSAT avec
+DRAT verifie. Ces deux controles passent aussi avec l'encodage upper-only.
+
+L'option --upper-only utilise une identite deja presente dans global_lazy :
+C1 impose degGamma=k-2, et chaque ligne hors diagonale de
+Gamma^2+Gamma+intersection_des_labels somme a2*(|Gamma|-1). Les seules
+bornes superieures<=2 forcent donc toutes les egalites. Un produit booleen
+n'a besoin que de dominer la vraie conjonction. Cela retire des clauses,
+sans relacher les graphes possibles sous C1.
+
+19/etoile6/M4, premiere version : UNKNOWN a10000conflits,19.03125CPU.
+Version upper-only + table de la premiere composante normalisee : UNKNOWN
+a10000conflits,9.140625CPU. 347070 variables et1173159 clauses. Ces deux
+essais ne constituent aucune exclusion nouvelle. La seconde utilise la
+MEME normalisation de composante que matching_global; seuls les flips
+qui la fixent point par point restent disponibles pour la couverture.
+
+Option --transport-grid-degree : sous c>=4, les tailles6s des composantes
+de N(L), avec somme s=6, forcent au moins deux parts singleton. Donc toute
+droite est dans au moins deux grilles. Autour du voisin dont l'etoile est
+fixee, les quinze nouvelles grilles possibles ont des coins selectionnes
+par les produits C2 deja presents. Un drapeau grille implique les quatre
+aretes du cycle des coins; les autres aretes interdites le sont deja par
+C1/C2. Chaque droite doit avoir au moins deux drapeaux vrais, en comptant
+les anciennes grilles connues. Seule l'implication drapeau=>grille est
+necessaire, car ces contraintes sont des bornes inferieures.
+Ce codage expose la contrainte geometrique sans les produits entiers des
+residus. Test du dernier type19 en cours; aucun verdict annonce d'avance.
+
+Suite15h25 : le premier codage grid-degree est UNKNOWN a100000conflits,
+27.4375CPU. Version2 ajoute les equations conditionnelles des huit labels
+des coins, leurs intersections avec les anciennes grilles, et l'option
+--weighted-root-comparison. Les aretes entre coins selectionnes sont
+alors des booleens EXACTS, les drapeaux grilles sont equivalents aux
+quatre aretes du cycle, et la comparaison9s(y)+8g(y)>=9s(x)+8g(x) utilise
+des additionneurs booleens. Controles exhaustifs328/328 sur les poids,
+signes, constantes, doublons et retenues. Modele19/M4 :355420variables,
+1312971clauses; essai1000000conflits en cours. Aucun Gram particulier fixe.

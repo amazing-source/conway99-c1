@@ -58,10 +58,20 @@ def sha256(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def solve_checked(cnf,prefix,conflicts,checker,native_solver):
-    cnf_file=prefix.with_suffix('.cnf');proof_file=prefix.with_suffix('.drat')
+    cnf_file=prefix.with_suffix('.cnf')
+    assert not cnf_file.exists()
+    cnf.to_file(str(cnf_file))
+    return solve_file_checked(cnf_file,prefix,conflicts,checker,native_solver)
+
+
+def solve_file_checked(cnf_file,prefix,conflicts,checker,native_solver):
+    """Run/check a DIMACS already written, without loading its clauses in Python."""
+    proof_file=prefix.with_suffix('.drat')
     check_file=prefix.with_suffix('.check.log')
-    assert not any(p.exists() for p in (cnf_file,proof_file,check_file))
-    cnf.to_file(str(cnf_file));started=time.monotonic()
+    assert cnf_file.exists() and not any(p.exists() for p in (proof_file,check_file))
+    with cnf_file.open(encoding='ascii') as stream:
+        header=next(line for line in stream if line.startswith('p cnf ')).split()
+    variables,clauses=map(int,header[2:]);started=time.monotonic()
     solver_log=prefix.with_suffix('.solver.log')
     command=[str(native_solver.resolve()),'-q','--binary=false','-c',str(conflicts),str(cnf_file),str(proof_file)]
     with solver_log.open('w',encoding='utf-8') as stream:
@@ -78,7 +88,7 @@ def solve_checked(cnf,prefix,conflicts,checker,native_solver):
     result={'status':'UNSAT' if code==20 else 'SAT_RELAXATION' if code==10 else 'UNKNOWN',
             'solver_cpu_seconds':cpu_seconds,'solver_wall_seconds':time.monotonic()-started,
             'solver_exit_code':code,'solver':str(native_solver),'solver_sha256':sha256(native_solver),
-            'solver_log':str(solver_log),'variables':cnf.nv,'clauses':len(cnf.clauses),
+            'solver_log':str(solver_log),'variables':variables,'clauses':clauses,
             'cnf':str(cnf_file),'cnf_sha256':sha256(cnf_file),'checked_drat':False}
     if code==20:
         assert 's UNSATISFIABLE' in solver_log.read_text()
