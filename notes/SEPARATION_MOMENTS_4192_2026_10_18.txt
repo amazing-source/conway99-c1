@@ -60,3 +60,24 @@ Il contient les cinq combinaisons, leurs21 minima, les bornes simples et
 les rectangles vides des autres cas. Aucun filtre de vecteurs courts ou
 de projecteur complementaire n'est necessaire pour ces79 exclusions.
 Pas de graphe genere, pas de preuve formalisee par assistant de preuve.
+
+17h33 - Un seul polynome pour les21 Gram ayant des tables non vides
+Une recherche commune, plutot qu'un separateur par Gram, trouve :
+
+F(h)=-h_0^2-2h_0h_1+h_0h_3+h_0h_10-2h_1^2-h_1h_3+2h_1h_4+h_1h_10.
+
+Pour CHACUN des21 Gram, la somme des minima locaux de ce meme F depasse
+sa valeur globale exigee. Les ecarts sont entre1 et9, tous entiers.
+Le rapport template_04192_common_moment.json conserve les21 certificats.
+La recherche commune prend2.640625s CPU et se trouve dans
+root_component_common_moment_search.py. Les58 autres Gram restent exclus
+par un rectangle vide. La preuve de la famille se ramene donc a ces tests
+locaux et a UNE forme quadratique commune, sans21 polynomes distincts.
+
+Le Gram doit rester coherent entre rectangles : remplacer chaque table
+par l'union de ses etats sur tous les Gram perd cette obstruction (minimum
+ainsi obtenu -45, alors que les cibles possibles sont -42,-28,-14).
+Ce qui echoue est l'assemblage impose par un meme Gram, pas la possibilite
+de choisir des quatre-coins separement. La formule de separation est
+universelle; la marge strictement positive est etablie ici sur cette
+couverture finie, pas sur tous les Gram possibles de Conway.
