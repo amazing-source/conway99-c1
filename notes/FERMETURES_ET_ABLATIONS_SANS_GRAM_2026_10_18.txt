@@ -1,0 +1,47 @@
+18/10/2026,23h07. Codex. Bilan du cycle sans Gram apres73eca8a3.
+
+Nouveaux resultats.
+- c3 gz9748 : certificat entier deja pousse84373a67, gap4,
+  9S01+9S23+2S45>=484 contre<=480. La preuve reduite utilise TROIS
+  bornes d'histogramme de colonnes. Lecture entiere et catalogue controles.
+- c3 gz9744 : gabarit entier INFEASIBLE25.15625CPU, modele row-moments,
+  short-columns, corner-c2, mate-normalize. Pas de certificat portable.
+- c2 e2s_k08, echantillon364 : d'abord INFEASIBLE3.15625CPU dans le meme
+  modele. Sans corner-c2 :2.375CPU, presolve. Sans corner-c2 ni histogrammes :
+  2.8125CPU,24892branches/923conflits. Les equations de voisinage suffisent.
+  Reductions successives : [17,19,20], [19,20], puis [19] seule INFEASIBLE
+  0.796875CPU. [20] UNKNOWN12CPU ; ne pas le declarer realisable.
+  La premiere tentative avec hypotheses garde-presolve etait UNKNOWN8CPU ;
+  les modeles reconstruits non gardes ont permis l'extraction.
+  SURTOUT, la coordonnee19 a conduit a une preuve manuscrite par norme et
+  parite, sans catalogue et sans solveur. Voir CARRE_DE_DEFAUT_ET_PARITE.
+
+Couverture du nouveau lemme du carre.
+Le detecteur sur le fichier10027gabarits c3 trouve1469gabarits avec un carre
+direct de blocs-paires, dont240 satisfont le corollaire d'exclusion.
+Temps3.40625CPU, aucun solveur. Ce ne sont PAS240nouvelles fermetures du
+registre : Claude doit croiser avec les exclusions deja acquises.
+Le certificat364 controle une combinaison entiere de composantes. Aucun
+des7autres catalogues c1/c2 durs de l'echantillon n'a de carre direct.
+
+Filtres qui n'ont pas donne d'autre exclusion.
+- Les27gabarits c3 sans bloc-paire : seule9748 est fermee par les nouvelles
+  bornes d'histogramme. Les26autres donnent NO_CERTIFICATE_FOUND. Cela ne
+  remet pas en cause leurs exclusions par d'autres methodes.
+  Temps38.484375CPU, catalogues dim7 de5602/5628 enumeres avec max-free7.
+  Le plafond du probe a Gram fixee reste6 : ne pas confondre les deux.
+- Les8catalogues c1/c2 durs deLAB passent ces bornesLP ; on accepte leur
+  enumeration DFS, sans audit systematique de leur completude.
+- c12_001, equations propres comprimees a7coordonnees, coins, histogrammes,
+  normalisation des flips : UNKNOWN30.171875CPU,48964variables102066contraintes.
+  La couche signee complete etait deja UNKNOWN30CPU. Aucun gain suffisant
+  observe pour la lancer indistinctement sur tous les ouverts.
+
+Statuts et ressources.
+Les fermetures CP9744 et les diagnostics364 ne sont pas des preuves
+portables. La preuve manuscrite364 et le certificat9748 sont distincts.
+Tous ces resultats sont sans couverture Gram et sans budget de prismes.
+La borne universelle E3 reste une hypothese acquise utilisee par ces outils.
+Aucun SRG99 construit et aucune exclusion globale de Conway annoncee.
+Calculs locaux sur un coeur partage, priorite basse, regulateur pause72,
+reprise62 pour garder une marge sous la limite utilisateur80pourcent.

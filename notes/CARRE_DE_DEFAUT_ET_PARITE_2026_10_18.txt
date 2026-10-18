@@ -1,0 +1,77 @@
+18 octobre 2026. Codex. Preuve du blocage de c12_364, puis lemme uniforme.
+
+Notations et hypotheses deja etablies.
+Autour d'une racine d'un SRG(99,14,1,2), Q_ij est le rectangle de quatre
+sommets associe aux deux droites i,j, et Gamma le graphe sur les84 sommets.
+Z_w,F compte les voisins de w dans Q_F ; W_w,F=3[q(w)=F]+1-|q(w) cap F|.
+H=W-Z. Chaque colonne de H, prolongee par15 zeros, est propre pour -4 ;
+||H_F||^2=56-14e_F. Une grille a H_F=0. Pour un rectangle non-grille,
+E3 donne e_F<=2. Pour chaque composante B d'une droite a, sum_{b in B}H_ab=0.
+La preuve ci-dessous utilise E3, mais aucune Gram, aucun budget de prismes,
+aucun catalogue de lignes et aucune hypothese d'automorphisme.
+
+LEMME DU CARRE.
+Soient quatre droites distinctes a,b,c,d, et quatre rectangles non-grilles
+tels que H_ab=H_cd=u=-H_ac=-H_bd. Soit T l'ensemble des trois autres droites,
+et U l'union des trois rectangles Q_xy, x,y dans T.
+Alors u vaut +1 sur Q_ab,Q_cd, -1 sur Q_ac,Q_bd, +/-1 sur U et zero ailleurs.
+En outre Gamma[U] u_U=0. En particulier chaque sommet de Gamma[U] a degre pair.
+
+Preuve.
+Z>=0 donne H_w,F<=W_w,F. Les quatre inegalites pour u et -u imposent :
+  0<=u<=1 sur Q_ab,Q_cd ; -1<=u<=0 sur Q_ac,Q_bd ;
+  -1<=u<=1 sur les trois rectangles de T ; u=0 ailleurs.
+Pour les deux diagonales Q_ad,Q_bc, les bornes opposees valent toutes0.
+Pour un rectangle rencontrant le carre en exactement une droite, elles
+valent0 de chaque signe. Ces cas couvrent les21 rectangles.
+Donc ||u||^2<=28. Mais ||u||^2=56-14e_ab>=28 par E3. Egalite partout :
+les28 entrees possibles sont non nulles, toutes de module1, et e_ab=2.
+
+Pour w dans U, les quatre rectangles du carre sont disjoints de q(w),
+donc leurs comptes sont 1-u,1-u,1+u,1+u. Leur contribution a (Gamma u)_w
+est 2(1-u)-2(1+u)=-4u_w. Tous les autres sommets hors U ont u=0.
+L'equation Gamma u=-4u donne donc Gamma[U]u_U=0. Comme u_U ne prend que
+les valeurs +/-1, chaque voisinage dans U a autant de signes+ que de-.
+
+COROLLAIRE D'EXCLUSION.
+Si deux des trois rectangles de T sont des grilles, le troisieme Q_F
+est non-grille, et H_F=H_D pour un rectangle D disjoint de F, le gabarit
+est impossible.
+En effet les grilles ont H=0, et pour w dans Q_F leur W est0 : w n'a
+aucun voisin dans ces deux grilles. Son degre dans U est donc son degre
+interne dans Q_F, necessairement pair. H_F(w)=2-deg_F(w)=H_D(w)<=1,
+donc deg_F(w)>=1, puis >=2 par parite. Les quatre sommets donnent
+2e_F>=8, en contradiction avec 2e_F<=4. On peut aussi constater que
+E3 et deg_F>=1 imposent un couplage parfait, dont chaque voisin apporte
+un signe non nul a l'equation Gamma[U]u_U=0.
+
+APPLICATION AU CAS c12_364 (famille e2s_k08).
+Le carre est (a,b,c,d)=(0,5,6,4) :
+  H05=H46=u=-H06=-H45.
+Cela vient des blocs-paires 0:{5,6}, 4:{5,6}, 5:{0,4}, 6:{0,4}.
+Le complement est T={1,2,3}. Q12 et Q13 sont des grilles. Enfin H23=H56.
+Cette derniere egalite suit des six equations de composantes :
+  L2 = H23+H25+H26=0,
+  L3 = H23+H34+H35+H36=0,
+  L5 = H25+H35+H56=0,
+  L6 = H16+H26+H36+H56=0,
+  L4 = H14+H34=0,
+  L1 = H14+H16=0.
+On a exactement 2(H23-H56)=L2+L3-L5-L6-L4+L1=0.
+Le corollaire exclut donc ce gabarit, sans solveur et sans enumeration111etats.
+
+Consequence pour le solveur.
+Pour tout carre, chaque etat de ligne doit respecter les valeurs saturees
+de u. Sur les trois rectangles complementaires, la somme des trois comptes
+de voisins est paire. On peut interdire directement les etats qui violent
+ces conditions, avant les produits booleen*compte et avant toute Gram.
+La fonction forbidden_states calcule ces interdictions. Le detecteur
+find_obstruction fournit un certificat entier de l'egalite H_F=H_D ; le
+lecteur verify_certificate controle les hypotheses du corollaire par
+sommes entieres d'equations de composantes, independamment du solveur.
+
+Le diagnostic CP a conduit a cette preuve : la seule coordonnee19,
+c'est-a-dire H46, suffit deja a INFEASIBLE en0.796875CPU. Ce diagnostic
+n'est plus le fondement de l'exclusion. Il reste archive pour la recherche.
+Les gabarits sans carre de blocs-paires ne sont pas couverts par ce lemme.
+Il ne s'agit pas d'une exclusion globale du graphe de Conway.

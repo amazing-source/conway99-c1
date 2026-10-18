@@ -144,6 +144,8 @@ def solve_joint(model, labels, graph, k, seconds):
     result = {'status': solver.status_name(status), 'cpu_seconds': time.process_time() - started,
               'model_variables': len(model.proto.variables), 'model_constraints': len(model.proto.constraints),
               'branches': solver.num_branches, 'conflicts': solver.num_conflicts, 'portable_unsat_proof': False}
+    if status == cp_model.INFEASIBLE and len(model.proto.assumptions):
+        result['sufficient_assumptions'] = list(solver.sufficient_assumptions_for_infeasibility())
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         adjacency = [[solver.value(x) for x in row] for row in graph]
         violations = []

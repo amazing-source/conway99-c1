@@ -50,7 +50,7 @@ therefore checks all columns. This uses C1 and k=14, not a fixed Gram.
     return free
 
 
-def add_row_moments(model, graph, labels, row_types, coordinates, fixed=None):
+def add_row_moments(model, graph, labels, row_types, coordinates, fixed=None, guards=None):
     k = max(max(label) for label in labels)+1
     rectangles = list(combinations(range(k//2), 2))
     assert [item['rectangle'] for item in row_types] == [list(q) for q in rectangles]
@@ -97,7 +97,9 @@ def add_row_moments(model, graph, labels, row_types, coordinates, fixed=None):
                     terms.append(term)
                     products += 1
             target = (k-2)*int(q_of[w] == rectangles[j])+8-2*len(set(q_of[w]) & set(rectangles[j]))
-            model.add(sum(terms) == target)
+            equation = model.add(sum(terms) == target)
+            if guards is not None:
+                equation.only_enforce_if(guards[j])
             equations += 1
     return {'coordinates': coordinates, 'rectangles': [list(rectangles[j]) for j in coordinates],
             'equations': equations, 'boolean_integer_products': products,
