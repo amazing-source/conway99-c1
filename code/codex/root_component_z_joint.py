@@ -22,7 +22,7 @@ from conway_global_cover import reconstruct_and_check
 from root_component_resources import atomic_json_write, limit_research_process
 
 
-def build_joint(k, row_types, nongrid=None, fixed=None):
+def build_joint(k, row_types, nongrid=None, fixed=None, *, row_moment_coordinates=None, diagnostics=None):
     labels = [p for p in combinations(range(k), 2) if p[1] != (p[0] ^ 1)]
     rectangles = list(combinations(range(k // 2), 2))
     members = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
@@ -65,6 +65,11 @@ def build_joint(k, row_types, nongrid=None, fixed=None):
         block = sum(graph[u][v] for u in members[i] for v in members[j])
         model.add(sum(count * state[i] * state[j] for count, state in aggregate
                       if state[i] and state[j]) + block == target)
+    if row_moment_coordinates is not None:
+        from root_component_row_neighbor_moments import add_row_moments
+        row_info = add_row_moments(model, graph, labels, row_types, row_moment_coordinates, fixed=fixed)
+        if diagnostics is not None:
+            diagnostics['row_neighbor_moments'] = row_info
     assert not model.validate(), model.validate()
     return model, labels, graph
 
@@ -105,14 +110,16 @@ def solve_joint(model, labels, graph, k, seconds):
     return result
 
 
-def controls(positive_edges):
+def controls(positive_edges, row_moments=False):
     records = []
     rook_rows = [{'rectangle': [0, 1], 'states': [[2]]}]
-    model, labels, graph = build_joint(4, rook_rows)
+    diagnostic = {}
+    model, labels, graph = build_joint(4, rook_rows, row_moment_coordinates=[0] if row_moments else None,
+                                     diagnostics=diagnostic)
     result = solve_joint(model, labels, graph, 4, 5)
     assert result.get('exact_srg_verified')
     records.append({'graph': 'rook9', 'free_adjacency': True, 'status': result['status'],
-                    'exact_C2_violations': 0, 'cpu_seconds': result['cpu_seconds']})
+                    'exact_C2_violations': 0, 'cpu_seconds': result['cpu_seconds'], **diagnostic})
     if positive_edges:
         from root_component_neighbor_moment_controls import extract_root
         import numpy as np
@@ -128,13 +135,29 @@ def controls(positive_edges):
         groups = [[w for w, label in enumerate(labels) if tuple(a // 2 for a in label) == q] for q in rectangles]
         row_types = [{'rectangle': list(q), 'states': [list(row) for row in sorted({tuple(sum(adjacency[w][v] for v in target)
                       for target in groups) for w in group})]} for q, group in zip(rectangles, groups)]
-        model, labels2, graph = build_joint(22, row_types, fixed=adjacency)
+        diagnostic = {}
+        model, labels2, graph = build_joint(22, row_types, fixed=adjacency,
+                                          row_moment_coordinates=range(55) if row_moments else None,
+                                          diagnostics=diagnostic)
         assert labels == labels2
         result = solve_joint(model, labels, graph, 22, 5)
         assert result.get('exact_srg_verified')
         records.append({'graph': str(positive_edges), 'fixed_boolean_adjacency': True, 'status': result['status'],
                         'rectangles': 55, 'moment_equations': 1540, 'cpu_seconds': result['cpu_seconds'],
-                        'exact_C2_violations': 0})
+                        'exact_C2_violations': 0, **diagnostic})
+        if row_moments:
+            # Exercise nonconstant Boolean-times-count products too: the graph
+            # variables are fixed by constraints, but not replaced by constants
+            # inside the new row-moment encoder.
+            from root_component_row_neighbor_moments import add_row_moments
+            model, labels2, graph = build_joint(22, row_types, fixed=adjacency)
+            product_info = add_row_moments(model, graph, labels2, row_types, [0])
+            assert product_info['boolean_integer_products'] > 0
+            result = solve_joint(model, labels2, graph, 22, 5)
+            assert result.get('exact_srg_verified')
+            records.append({'graph': str(positive_edges), 'fixed_adjacency_as_boolean_variables': True,
+                            'status': result['status'], 'cpu_seconds': result['cpu_seconds'],
+                            'exact_C2_violations': 0, 'row_neighbor_moments': product_info})
     return {'status': 'POSITIVE_CONTROLS_PASSED', 'controls': records}
 
 
@@ -145,23 +168,27 @@ def main():
     p.add_argument('--controls', action='store_true')
     p.add_argument('--positive-edges', type=Path)
     p.add_argument('--seconds', type=float, default=5)
+    p.add_argument('--row-moments', action='store_true', help='Vertexwise C2 sums on catalogue free coordinates.')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
     resources = limit_research_process(1)
     if a.controls:
-        result = controls(a.positive_edges)
+        result = controls(a.positive_edges, row_moments=a.row_moments)
     else:
         template = json.loads(a.bundle.read_text(encoding='utf-8-sig'))['template']
         catalogue = json.loads(a.catalogue.read_text(encoding='utf-8-sig'))['catalogue']
         assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
         start = time.process_time()
-        model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'])
+        diagnostic = {}
+        coordinates = catalogue.get('free_coordinates', range(21)) if a.row_moments else None
+        model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
+                                          row_moment_coordinates=coordinates, diagnostics=diagnostic)
         build_seconds = time.process_time() - start
         result = solve_joint(model, labels, graph, 14, a.seconds)
         result.update(build_cpu_seconds=build_seconds, source_bundle=str(a.bundle), source_catalogue=str(a.catalogue),
                       scope=__doc__, uses_Gram_cover=False, uses_prism_budget=False, individual_C2_encoded=False,
-                      global_conway_exclusion=False)
+                      global_conway_exclusion=False, **diagnostic)
     result['resources'] = resources
     atomic_json_write(a.output, result)
     print(json.dumps({k: v for k, v in result.items() if k not in ('scope', 'resources', 'Gamma', 'C2_violations', 'srg')}))

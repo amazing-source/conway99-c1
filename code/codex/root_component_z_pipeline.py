@@ -22,7 +22,7 @@ from root_component_z_design import solve_design
 from root_component_z_joint import build_joint, solve_joint
 
 
-def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False):
+def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, row_moments=False):
     output.mkdir(parents=True, exist_ok=True)
     assert not any(output.iterdir()), 'A new or empty output directory is required.'
     resources = limit_research_process(1)
@@ -86,8 +86,12 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False):
     if joint_seconds <= 0:
         checkpoint('AGGREGATE_DESIGN_ONLY' if design['status'] in ('FEASIBLE', 'OPTIMAL') else 'UNKNOWN')
         return result
-    model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'])
+    diagnostics = {}
+    coordinates = catalogue.get('free_coordinates', range(21)) if row_moments else None
+    model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
+                                      row_moment_coordinates=coordinates, diagnostics=diagnostics)
     joint = solve_joint(model, labels, graph, 14, joint_seconds)
+    joint.update(diagnostics)
     atomic_json_write(output / 'joint.json', joint)
     result.update(joint_status=joint['status'], joint_cpu_seconds=joint['cpu_seconds'],
                   joint_variables=joint['model_variables'], joint_constraints=joint['model_constraints'])
@@ -109,8 +113,9 @@ def main():
     p.add_argument('--design-seconds', type=float, default=5)
     p.add_argument('--joint-seconds', type=float, default=0)
     p.add_argument('--reduce-certificate', action='store_true')
+    p.add_argument('--row-moments', action='store_true', help='Add vertexwise rectangle C2 sums to the joint stage.')
     a = p.parse_args()
-    run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate)
+    run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate, a.row_moments)
 
 
 if __name__ == '__main__':

@@ -19,15 +19,17 @@ apres120s dans la passe3 LAB. Aucun verdict GFM retire n'est utilise.
   Aucune equation C2 individuelle n'est encodee (layer0). Les autres
   ingredients sont coins, deux projecteurs, vecteurs courts, quotas de
   lettres et normalisation lexicographique des flips des7 droites.
-  L'ablation sans equations propres n'est pas encore mesuree : ne pas
-  attribuer a cette seule couche tout le gain avant ce test.
+  Ablation ensuite mesuree : Gram444 SANS equations propres est SAT
+  3.515625CPU, avec une Gamma binaire sauvegardee (3182 variables).
+  Elle viole2220 equations C2 individuelles, donc n'est pas un SRG.
+  L'ajout de Gamma H=-4H seul au meme modele est bien ici decisif.
+  Rapport : gz3_binary_no_eigen_444.json.
 
 2. Reproduction.
 root_component_fixed_gram_probe.py --catalogue
 data/codex_neighbor_moments_20261018/lab_c3_catalogue_1d35230.json.gz
---index3 --bundle data/codex_rank6_20261018/cover_00003.json.gz
---grams160 444 11 117 718 --eigen --seconds20 --output CHEMIN_NEUF.json
-(Inserer une espace entre chaque nom d'option et sa valeur.)
+--index 3 --bundle data/codex_rank6_20261018/cover_00003.json.gz
+--grams 160 444 11 117 718 --eigen --seconds 20 --output CHEMIN_NEUF.json
 Il appelle root_component_signature_joint.solve, dont le rang6 est
 desormais accessible. Ce n'est pas un nouvel encodage des produits.
 Les bornes de chaque produit booleen*entier sont conservees en Python.
@@ -62,3 +64,19 @@ Gamma W=3Gamma P+4J+2L^t S, puis l'identite precedente conclut.
 Ces lois sont des consequences des equations SRG, sans hypothese de
 symetrie, de Gram, de budget ni de minimum c. Leur encodage est une
 consequence utile de C2, pas un theoreme de non-existence nouveau.
+
+5. Implementation sans Gram et controles (21h59).
+root_component_row_neighbor_moments.add_row_moments relie les memes
+aretes booleennes aux comptes de leurs voisins. root_component_z_joint
+et root_component_z_pipeline ont maintenant l'option --row-moments.
+On ajoute les coordonnees libres du catalogue; si elles ne sont pas
+specifiees, toutes les21 coordonnees sont utilisees. Cette restriction
+eventuelle est une relaxation necessaire, sans revendiquer ici son
+equivalence aux21 equations.
+
+Controles positifs : SRG9 reconstruit librement; SRG243 fixe, toutes les
+12100 equations sommet/rectangle satisfaites; puis SRG243 fixe via des
+variables booleennes, avec31536 produits booleen*compte reellement encodes
+sur une coordonnee. Les trois sont SAT avec reconstruction SRG exacte.
+Ces controles exercent notre nouvelle couche, pas les calculs de LAB.
+Rapport : row_moment_product_controls.json.
