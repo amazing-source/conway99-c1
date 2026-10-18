@@ -25,6 +25,15 @@ parser.add_argument("--core", action="store_true",
 parser.add_argument("--pairs", type=str, default=None, help="only these pairs, e.g. 0-3,0-4 (indices of non-grid edges)")
 parser.add_argument("--no-bounds", action="store_true", help="debug: h domains [-12, 12] instead of the proved bounds")
 parser.add_argument("--debug-solver", type=str, default=None, help="debug: 'nopresolve' or 'log' (plain CP-SAT solve)")
+parser.add_argument("--ablate", type=str, default="", help="comma list among budget,univ,tri: parts of the base model to drop")
+parser.add_argument("--codex-moments", type=Path, default=None,
+                    help="second encoding: Codex's root_component_neighbor_moments.add_neighbor_moments (52d7d465) on the "
+                         "21 rectangles, instead of the LAB products")
+parser.add_argument("--mixed", action="store_true", help="with --codex-moments: also the mixed identities")
+parser.add_argument("--combine", type=str, default=None,
+                    help="with --codex-moments: also add, for these non-grid edge indices f (e.g. 0), the LINEAR combination "
+                         "sum_w [base^2 + (1 - 2 base) z_w + 2 binom(z_w,2)] = 7 r_ff of Codex's own variables "
+                         "(a linear consequence of his three identities; it adds no logical content)")
 parser.add_argument("--output", type=Path, required=True)
 args = parser.parse_args()
 sys.path.insert(0, str(args.codex.resolve()))
@@ -43,15 +52,19 @@ template, source_hash, _ = CS.load_template(args.templates, args.index)
 edges = [tuple(e) for e in template["nongrid_edges"]]
 m = len(edges)
 t0 = time.process_time()
-model, graph, info = build(template, {"cuts": [], "root_prism_budget": 51})
+ablate = set(x for x in args.ablate.split(",") if x)
+model, graph, info = build(template, {"cuts": []} if "budget" in ablate else {"cuts": [], "root_prism_budget": 51})
 result = {"scope": __doc__, "template_index": args.index, "source_sha256": source_hash, "m": m,
           "kernel_dimension": template["kernel_dimension"], "crzero": not args.no_crzero,
           "diagonal_only": args.diagonal_only, "seconds": args.seconds, "resources": resources, "status": "NOT_RUN"}
 if model is None:
     result.update(status="INFEASIBLE", method="exact_binary_propagation")
 else:
-    CS.add_universal_root_cuts(model, graph, template)
-    add_exact_triangle_structure(model, graph, template)
+    if "univ" not in ablate:
+        CS.add_universal_root_cuts(model, graph, template)
+    if "tri" not in ablate:
+        add_exact_triangle_structure(model, graph, template)
+    result["ablate"] = sorted(ablate)
 
     def rexpr(i, j):
         e, f = edges[i], edges[j]
@@ -65,7 +78,43 @@ else:
             inc = [i for i, ends in enumerate(links) if node in ends]
             for j in range(m):
                 model.add(sum(rexpr(i, j) for i in inc) == 0)
-    h = {}
+    if args.codex_moments is not None:
+        sys.path.append(str(args.codex_moments.resolve()))
+        from root_component_neighbor_moments import add_neighbor_moments
+        from root_component_propagation import LABELS
+        nm = add_neighbor_moments(model, LABELS, graph, mixed=args.mixed)
+        result["codex_moments"] = nm["info"]
+        if args.combine:
+            for f in (int(x) for x in args.combine.split(",")):
+                q = edges[f]
+                zs, cs = nm["columns"][q], nm["costs"][q]
+                expr = []
+                for w, lab in enumerate(LABELS):
+                    rect = tuple(sorted(a // 2 for a in lab))
+                    base = 2 if rect == q else (0 if set(rect) & set(q) else 1)
+                    expr.append(base * base + (1 - 2 * base) * zs[w] + 2 * cs[w])
+                model.add(sum(expr) == 7 * rexpr(f, f))
+            result["combined"] = args.combine
+        result["products"] = 0
+        result["build_cpu_seconds"] = time.process_time() - t0
+        if args.debug_solver == "lp":
+            from ortools.sat.python import cp_model
+            solver = cp_model.CpSolver()
+            solver.parameters.num_search_workers = 1
+            solver.parameters.max_time_in_seconds = args.seconds
+            solver.parameters.linearization_level = 2
+            st = solver.solve(model)
+            r = {"status": solver.status_name(st), "branches": solver.num_branches, "conflicts": solver.num_conflicts,
+                 "cpu_seconds": solver.user_time}
+        else:
+            r = CS.solve_branch(model, graph, args.seconds)
+        result.update(r)
+        result["process_peak_rss_bytes"] = CS.peak_memory_bytes()
+        atomic_json_write(args.output, result)
+        print(json.dumps({k: result.get(k) for k in ("template_index", "kernel_dimension", "status", "cpu_seconds",
+                                                     "branches", "conflicts", "build_cpu_seconds")} | {"encoding": "codex"}))
+        sys.exit(0)
+    h, hdom = {}, {}
     for rect, corners in RECTANGLES.items():
         for w in corners:
             for f in range(m):
@@ -81,6 +130,7 @@ else:
                 v = model.new_int_var(lo, hi, "h_%d_%d" % (w, f))
                 model.add(v == base - sum(graph[w][q] for q in RECTANGLES[target]))
                 h[w, f] = v
+                hdom[w, f] = (lo, hi)        # 18/10 fix: bounds kept in Python, never read back from the CP proto (unreliable in OR-Tools 9.15)
     labels = sorted({w for corners in RECTANGLES.values() for w in corners})
     assert len(labels) == 84
     products = 0
@@ -95,8 +145,9 @@ else:
             terms = []
             for w in labels:
                 a, b = h[w, e], h[w, f]
-                lo = min(x * y for x in (a.proto.domain[0], a.proto.domain[-1]) for y in (b.proto.domain[0], b.proto.domain[-1]))
-                hi = max(x * y for x in (a.proto.domain[0], a.proto.domain[-1]) for y in (b.proto.domain[0], b.proto.domain[-1]))
+                (alo, ahi), (blo, bhi) = hdom[w, e], hdom[w, f]
+                lo = min(x * y for x in (alo, ahi) for y in (blo, bhi))
+                hi = max(x * y for x in (alo, ahi) for y in (blo, bhi))
                 p = model.new_int_var(lo, hi, "p")
                 model.add_multiplication_equality(p, [a, b])
                 terms.append(p)
