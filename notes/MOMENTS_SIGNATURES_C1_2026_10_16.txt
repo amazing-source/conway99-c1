@@ -1512,3 +1512,47 @@ laissent442+448=890 Gram. Scope :c(line)>=4 global, racine<=51.
 Ne pas confondre cette branche avec une exclusion globale de Conway.
 Pilote19#560 en cours, versionplusfaible SANS rotations,30CPU/M0,
 pour comprendre si la seule separation parmatching suffit; pas de verdict.
+
+46. Famille7 fermee SANS choisir un Gram (18/10,04h25).
+root_component_matching_global.py utilise le modeleglobal99 exact
+(toutesC1/C2) avec Gram variable parmi les442possibilites du snapshot0421.
+Les tables de composantesE3 sont appliquees, avec SEULE normalisation
+par retournements globaux de mates (Gram inchange), deux partitions
+c>=4 hors racine, trianglesexacts, puis deux etoiles autour de la droite
+6prismes. Les30residus, Gram complets,2eigen/residu et907profils anciens
+sont imposes. Pas de directioncourte issue d'un Gramtemoin, pas deP/M fixe.
+Verdict INFEASIBLE22.5CPU,5069branches753conflits. Cela ferme tout7
+avec les exclusions du complement du couvrement. 14/15 initiaux fermes.
+
+Six cas19 :560/604/606/607/618/620 fermes via2groupesM0 chacun, typiquement
+2CPU par groupe. Le premier pilote faible sur560 donnait M0=1INF25.328
+et M0=3UNKNOWN30.078; la rotation donne INF2.125 et2.140625. Le transport
+apporte donc plus que la seule separation parM0 sur ce nouveau cas.
+ACTIF : modeleglobal19 a Gramvariable, couvrement448 du snapshot0421;
+root_component_projector_19_matching_global_pilot.json,session11603.
+La famille19 reste ouverte jusqu'a tous ses groupesM0 INF.
+
+47. Les quinze familles initiales sont TOUTES fermees (18/10,04h28).
+Le modeleGLOBAL19 conserve448Gramvariables et les15matchingsM0=0..14.
+Tous sont INF au presolve; CPUtotal34.09375, construction15.65625.
+Aucun P ni M1 n'est fixe; chaque code canonique appartient a un groupeM0.
+Verdict root_component_projector_19_matching_global_pilot.json.
+Avec famille7(INF22.5CPU) et famille9(12Gram tousgroupesM0INF), le registre
+79 est79EXCLUDED,0OPEN. Les15 initiaux sont4/6/7/9/11/19/26/86/98/102/
+103/106/110/148/197. Leurs15 exclusions sont toutes enregistrees.
+
+PORTEE EXACTE du registre : couverture necessaire exhaustive de la branche
+minimumGLOBAL c=4, racine de sommeprismes<=51. Les graphes ayant une droite
+c<=3 ne sont PAS couverts. Aucun resultat de non-existence totale de Conway.
+Les calculs sont des verdicts CP-SAT, pas des certificats UNSAT portables;
+les regles ajoutees sont necessaires, avec derivations dans les modules.
+Les normalisations sont des relabellages globaux, pas des automorphismes
+supposes. Le transport de frontiere et des907profils est CONDITIONNEL au
+budget de chaque nouvelle racine, jamais impose a toutes les racines.
+Les tables figees d93/0306 precedent les nouveaux resultats : pasdecircularite.
+
+Le registre a ete rafraichi au moment ou le dernier pilote venait de finir,
+ce qui explique que le commit311152b titre14/15 contienne deja le compteur
+79/79. Le rapport19 et le bilan final sont ajoutes au commit suivant;
+--committed-only s'applique desormais aussi aux rapports de projecteur.
+Aucun calculAWS lance pour cette fermeture; locaux uncoeur+gardien26292.

@@ -26,7 +26,7 @@ def main():
     parser.add_argument("--retry-unknown", action="store_true")
     parser.add_argument("--refresh-only", action="store_true")
     parser.add_argument("--gram-cover", type=Path)
-    parser.add_argument("--committed-only",action="store_true",help="Ignore untracked signature reports in the exclusion ledger.")
+    parser.add_argument("--committed-only",action="store_true",help="Ignore untracked signature and projector reports in the exclusion ledger.")
     args = parser.parse_args()
     directory = args.directory.resolve()
     cover_path = directory / "root_component_cover79.json"
@@ -98,6 +98,7 @@ def main():
                                      "exclusion_source": sorted(set(cases.values())),
                                      "excluded_gram_orbits": len(cases)}
     for path in sorted(directory.glob("root_component_projector_*.json")):
+        if tracked is not None and path.resolve() not in tracked:continue
         result = json.loads(path.read_text(encoding="utf-8"))
         if result.get("status") == "INFEASIBLE":
             assert result["complete_gram_cover"]["exhaustive"]

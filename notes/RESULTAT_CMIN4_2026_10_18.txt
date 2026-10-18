@@ -1,0 +1,67 @@
+Fermeture des quinze familles restantes ? 18 octobre 2026
+
+RESULTAT
+Les quinze templates demandes par Dilan sont tous EXCLUDED :
+4,6,7,9,11,19,26,86,98,102,103,106,110,148,197.
+Le registre root_component_cover79.json contient79EXCLUDED et0OPEN.
+Il couvre la branche de minimum global c=4, avec une racine dont la somme
+des prismes est<=51. Il ne couvre pas les graphes ayant une droite c<=3.
+Il ne conclut donc pas a la non-existence de tout graphe de Conway.
+
+DERNIERES FERMETURES
+9 : les12Gram restants sont tous exclus. Leurs31..codes canoniques sont
+partitionnes par la seule premiere involution M0; P et M1 restent libres.
+Les quatre groupes parGram sont INFEASIBLE au presolve.
+Rapports root_component_signature_9_*_matching_profiles_*.json.
+7 : un seul modele conserve442Gramvariables, sans fixer de codeC18.
+INFEASIBLE22.5secondesCPU,5069branches753conflits.
+Rapport root_component_projector_7_matching_global_pilot.json.
+19 : un modele conserve448Gramvariables, partitionnes par M0=0..14.
+Les quinze groupes sont tous INFEASIBLE,34.09375secondesCPU au total.
+Rapport root_component_projector_19_matching_global_pilot.json.
+Tous les temps de solveur excluent la construction des modeles.
+
+MECANISME
+Une etoile complete permet de construire21neuf-ensembles S, un par paire
+de droites. Le residu entier d=(A-3I)1_S-1 satisfait Ad=-4d et
+||d||^2=56-14e, ou S possede14+e aretes. Ses coordonnees sont dans[-2,3].
+Pour les quatre voisins de la racine appartenant a S, si un sommet exterieur a l'etoile fermee de la nouvelle racine
+a t voisins parmi ces quatre et appartient a S avec indicatrice m, alors
+ t-1-3m <= d <= 3-t-m.
+En effet t=1 implique au plus deux voisins dans le rectangle Q, par les
+deux equations de voisins communs associees a une paire de mates.
+Les deux produitsGram de residus associes a des rectangles distincts sont
+ -7 e(Q_ij,Q_ik) si une droite est commune;
+ 7(4-e(Q_ij,Q_kl)) si les quatre droites sont distinctes.
+On impose ces identites entieres, les sommes nulles par droite et les
+paires opposees correspondant aux composantes de taille12.
+
+Au nouveau sommet, si sa somme de prismes<=51, les exclusions ANTERIEURES
+s'appliquent. Les907profils deGram figes avant ces calculs sont une condition
+necessaire. Au-dela de51, la couverture complete reste autorisee.
+Aucune symetrie du graphe et aucun budget universel<=51 ne sont supposes.
+
+Pour9/19, il suffit de fixer le matching d'une etoile. Pour sa paire u,v,
+les voisins p,q dans l'etoile opposee sont selectionnes par les vraies
+aretes; le neuf-ensemble {o,a,a*,b,c,u,v,p,q} reste donc variable.
+Il est inutile de fixer la permutation P et le second matching M1.
+Cette economie, avec le transport des contraintes, ferme les dernieres
+familles tout en laissant le Gram entier variable.
+
+REPRODUCTION ET STATUT
+Code principal : code/codex/root_component_matching_global.py.
+Arguments pour les rapports7/19 :
+ data/codex_line_resonance_20261016 --index 7 (ou 19)
+ --gram-cover data/codex_line_resonance_20261016/root_component_gram_filtered_20261018_0421.json
+ --low-budget-cover data/codex_line_resonance_20261016/root_component_low_budget_frontier_d93c1b0.json
+ --residual-gram-profiles data/codex_line_resonance_20261016/root_component_low_budget_row_profiles_0306_d93c1b0.json
+ --seconds 180 --log-search --output NOUVEAU_FICHIER.json
+Python isole(-I), OR-Tools9.15.6755, un travailleur. Les fichiers de sortie
+existants sont refuses. Les hashs des entrees figure dans chaque rapport.
+Le front d93 puis la table907 puis les nouveaux calculs forment un ordre
+acyclique. Aucun resultat nouveau n'est reutilise dans sa propre hypothese.
+Il s'agit de verdicts CP-SAT exacts sur des modeles necessaires. Aucun
+certificat UNSAT portable n'est encore extrait. Les traces de presolve
+servent a expliquer le blocage; elles ne remplacent pas un tel certificat.
+Les anciennes exclusions et leurs sources figurent dans le registre79 et
+le journal MOMENTS_SIGNATURES_C1_2026_10_16.txt, sections 44 a 47 pour cette reprise.
