@@ -163,4 +163,78 @@ Premier pilote : orbite1,bord0 et orbite1,bord3 impossibles. Le second
 etait UNKNOWN au solveur. Ses catalogues simples ont102,117,106,110
 elements, chaque paire opposee a4 realisations et une seule marge; les
 deux marges ne se completent pas a D. Calcul entier0.140625s CPU.
-La campagne exhaustive des1328 bords est en cours au19/10 vers01h10.
+La campagne exhaustive des1328 bords a ensuite abouti (voir ci-dessous).
+
+VERDICT FINAL DU19/10, VERS01h20 :5602 EXCLU, TOUTES GRAM.
+Le balayage entier des1328 bords donne437 exclusions par marges entieres,
+888 exclusions par jointure, et trois bords admettant des graphes36 :
+orbite6, indices517,562,603. La campagne de production de LAB, executant
+le code36e48a62 sur AWS, fournit ces comptes en87.7s CPU au total.
+Les trois bords ont respectivement6,4,48 realisations36 etiquetees. Les
+58 sont exclues par le raccordement necessaire aux48 sommets manquants.
+La fermeture ne repose sur aucune reponse UNKNOWN/timeout ni solveur SAT.
+
+OBSTRUCTION AU SOMMET MANQUANT.
+Un sommet q dans Q_ab, a dans X,b dans Y, a exactement un voisin dans
+le coeur (H03+H12=0). Il a un voisin dans chacune des deux grilles X
+disjointes de a, et un voisin dans l'unique grille Y disjointe de b.
+Il n'a aucun voisin dans les autres grilles. Son voisinage dans les36
+sommets est donc l'un des8*4*4*4=512 ensembles de quatre sommets.
+
+Pour le graphe connu G36, les deficits de voisins communs sont
+  D_uv=2-G_uv-|lettres(u) intersection lettres(v)|-(G36^2)_uv, u!=v;
+  D_uu=12-deg_G36(u).
+Si B est l'incidence des36 connus vers les48 inconnus, B B^t=D est
+necessaire. Chaque colonne de B est un des512 profils de son etiquette.
+On elimine un profil si :
+  - il touche deux sommets connus dont D_uv=0;
+  - il depasse un quota de lettre d'un sommet connu;
+  - ses voisins deja connus donnent trop de voisins communs entre q et
+    un sommet connu (y compris la contribution de la premiere sphere);
+  - il depasse un quota de lettre de q.
+Ce sont exclusivement des contraintes necessaires, a coefficients entiers.
+
+56 des58 graphes36 ont deja une etiquette q dont les512 profils sont
+tous elimines. Exemple bord517, premier temoin : q=(0,12),506 profils
+interdits par D_uv=0 et les6 restants par un quota de lettre connu.
+Dans les2 autres graphes (bord562), tous les domaines individuels existent
+mais D_(0,8)=1, respectivement D_(0,13)=1, alors qu'AUCUN profil d'AUCUN
+des48 sommets ne contient la paire demandee. Le maximum est0 : contradiction.
+Pour ces indices, les etiquettes connues sont :
+  sommet0=(0,6), sommet8=(0,2), sommet13=(0,5).
+Leurs indices sont ceux du code et ne designent pas des racines.
+
+root_component_5602_grid_join.py --frontier enumere toutes les jointures
+et applique root_component_5602_frontier.py a chaque vrai graphe36.
+Les certificats comprennent les trois bijections de chaque grille, les
+deux couplages opposes, puis le domaine vide ou la paire de capacite0.
+gz5602_frontier_exhaustive_js.json enregistre le calcul entier execute
+hors du PC lorsque la garde de charge suspendait le calcul local.
+Precision : le titre du commit aa3e8a9e dit 'empty missing-vertex domains';
+le bilan exact est56 domaines vides PLUS2 defauts de capacite, pas58 vides.
+
+REGLE UNIVERSELLE EXTRAITE : C4 DISJOINT C3 FORCE K4 DISJOINT C3.
+Dans tout graphe de Conway, le graphe des grilles sur les sept racines
+ne peut contenir un cycle C4 sur X et un triangle C3 sur Y sans contenir
+aussi les deux diagonales de ce C4. Il n'y a aucune hypothese sur les
+douze rectangles entre X et Y, ni sur un rang, ni sur un automorphisme.
+
+Preuve de la generalisation. Pour chaque racine a,
+  somme_{b!=a} H_ab=0
+est universelle, independamment des composantes. En effet, la somme des
+W_ab sur une etiquette q vaut2 si a appartient aux racines de q et4
+sinon. Les quotas des deux lettres de a donnent exactement les memes
+sommes pour Gamma somme P_ab. Leur difference est nulle.
+Sommer sur X et soustraire la somme sur Y annule les douze colonnes
+croisees. Les sept grilles valent0 et il reste2(H03+H12)=0.
+Si une diagonale est une grille, l'autre l'est aussi. Sinon les deux
+sont des nongrilles opposees et toute la preuve8->20->36->frontiere
+s'applique. Aucun de ses filtres n'exige que les rectangles croises
+soient nongrilles. La contradiction ferme ce dernier cas, sous E3.
+Donc les deux diagonales sont forcees grilles.
+
+root_component_grid_closure.grid_closure_violations(template) detecte
+exactement les violations de cette regle dans un gabarit a statuts fixes.
+--component-energy l'utilise sous E3 dans les encodeurs de comptes/joint.
+La fermeture de5602 et cette regle ne sont PAS une exclusion globale
+de Conway : les configurations sans ce motif restent a traiter.
