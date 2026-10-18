@@ -33,13 +33,18 @@ def full_matrix(k,labels,gamma):
     return graph
 
 
-def build(case,maximum_components=3,k=14,prism_budget=False):
+def build(case,maximum_components=3,k=14,prism_budget=False,rectangle_moments=None):
     assert k in (4,14) and (k==14 or case==0)
     model,labels,gamma,selectors,info=build_global(k=k,normalize_star=False)
     assert not selectors and not info['star_matching_normalization']
     graph=full_matrix(k,labels,gamma)
     record=cover()['records'][case] if k==14 else {'index':0,'kind':'through_root','line':[0,1,2]}
     line_info=add_small_line(model,graph,record['line'],maximum_components)
+    moment_info=None
+    if rectangle_moments:
+        assert rectangle_moments in ('diagonal','full')
+        from root_component_neighbor_moments import add_neighbor_moments
+        moment_info=add_neighbor_moments(model,labels,gamma,mixed=rectangle_moments=='full')['info']
     if prism_budget:
         assert k==14
         rectangles={pair:[i for i,label in enumerate(labels) if tuple(a//2 for a in label)==pair]
@@ -52,6 +57,7 @@ def build(case,maximum_components=3,k=14,prism_budget=False):
                 root_template_fixed=False,relative_line_position=record,
                 small_line=line_info,root_prism_budget=51 if prism_budget else None,
                 budget_at_selected_line=False,all_eight_required_for_global_exclusion=k==14,
+                rectangle_neighbor_moments=moment_info,
                 small_line_existence_dependency='c4_selected_root_closed.json' if k==14 and maximum_components==3 else None,
                 all_eight_cover_every_Conway_graph=k==14 and maximum_components==3,
                 additional_unproved_small_line_hypothesis=k==14 and maximum_components<3,
@@ -66,13 +72,15 @@ def main():
     p.add_argument('--maximum-components',type=int,choices=(1,2,3),default=3)
     p.add_argument('--control-rook9',action='store_true')
     p.add_argument('--root-prism-budget51',action='store_true')
+    p.add_argument('--rectangle-moments',choices=('diagonal','full'))
+    p.add_argument('--probing-level',type=int,choices=range(4),default=0)
     p.add_argument('--build-only',action='store_true')
     p.add_argument('--seconds',type=float,default=30)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();assert not a.output.exists()
     resources=limit_research_process(1);start=time.process_time()
     k=4 if a.control_rook9 else 14
-    model,labels,gamma,info=build(a.case,a.maximum_components,k,a.root_prism_budget51)
+    model,labels,gamma,info=build(a.case,a.maximum_components,k,a.root_prism_budget51,a.rectangle_moments)
     assert not model.validate(),model.validate()
     info.update(status='MODEL_BUILT',resources=resources,build_cpu_seconds=time.process_time()-start,
                 variables=len(model.proto.variables),constraints=len(model.proto.constraints),
@@ -81,7 +89,7 @@ def main():
     print(json.dumps({key:info[key] for key in ('status','parameters','variables','constraints','build_cpu_seconds')}),flush=True)
     if a.build_only:return
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
-    solver.parameters.cp_model_probing_level=0;solver.parameters.symmetry_level=0
+    solver.parameters.cp_model_probing_level=a.probing_level;solver.parameters.symmetry_level=0
     solver.parameters.max_presolve_iterations=1;solver.parameters.linearization_level=0
     solver.parameters.max_time_in_seconds=max(600,100*a.seconds)
     start=time.process_time();done=threading.Event()

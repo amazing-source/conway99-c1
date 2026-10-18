@@ -1,0 +1,93 @@
+18 octobre 2026 - Des moments spectraux aux comptes de voisins positifs.
+
+Resultat et portee
+Les moments d'un rectangle se traduisent en identites entieres de nombres
+de voisins. Ces identites s'appliquent a toute reduction racine d'un
+SRG(v,k,1,2), sans couverture de Gram, sans hypothese de rang, sans c>=3
+ou c>=4, et sans automorphisme. Les rendre explicites peut changer la
+propagation du solveur; elles decoulent des equations deja necessaires.
+Aucune nouvelle exclusion globale n'est annoncee par cette note.
+
+Une equation elementaire pour chaque rectangle
+Soit Q l'ensemble des quatre etiquettes (a,b),(a,b*),(a*,b),(a*,b*).
+Poser z_w=|N_Gamma(w) inter Q| et e=e(Q). Pour deux coins distincts u,v,
+CN_Gamma(u,v)=2-Gamma_uv-|label(u) inter label(v)|. En sommant sur les
+six paires, le terme d'intersection des etiquettes vaut4. Donc
+
+              sum_w binom(z_w,2) + e = 8,
+              n2 + 3 n3 + 6 n4 + e = 8.
+
+Les nt comptent TOUS les sommets w de Gamma ayant z_w=t, y compris les
+quatre coins eux-memes. Les quotas de lettres donnent z<=2 dans Q et
+dans les rectangles partageant une droite racine avec Q; z<=4 ailleurs.
+Deux autres sommes sont imposees par les degres et les quotas :
+ sum_w z_w=4(k-2);
+ sum_{w dont le rectangle partage EXACTEMENT une droite avec Q} z_w=16-4e.
+
+Pour Conway, h_w=base-z_w avec base2 dans Q,0 dans les40 etiquettes
+partageant exactement une droite,1 dans les40 restantes. Alors
+ sum h_w^2=56+sum z_w^2-4 sum_{w dans Q}z_w-2 sum_{w disjoints}z_w.
+Or sum z_w^2=64-2e, sum_Q z=2e et sum_disjoints z=32+2e. On obtient
+ sum h_w^2=56-14e=7(8-2e), soit exactement la diagonale de H^T H=7R.
+
+Exemple : si Q est une grille, e=4 et ses quatre coins ont chacun z=2.
+Ils consomment deja tout le budget8. Tous les autres sommets ont donc
+z<=1. Avec les quotas, les rectangles partageant une droite ont z=0
+et les rectangles disjoints ont z=1. Ce fait explique la forte rigidite
+des grilles sans recourir a une table finie de Gram.
+
+Moments entre deux rectangles distincts
+Si Q et F partagent une droite racine, la somme des intersections de
+leurs seize paires d'etiquettes vaut8; elle vaut0 sinon. D'ou
+
+ sum_w z_Q(w) z_F(w) + e(Q,F) = 24 (une droite commune), 32 (sinon).
+
+Forme matricielle : B est l'incidence lettres/etiquettes, P l'incidence
+etiquettes/rectangles, Z=Gamma P et K=P^T Gamma P. Les equations exactes
+ Gamma^2+Gamma+B^T B=(k-2)I+2J
+donnent
+ Z^T Z+K=4(k-2)I+32J-(BP)^T(BP).
+Pour k=14, les termes diagonaux du membre droit valent64; les autres
+valent24 ou32. Cette formulation conserve le lien Z=Gamma P.
+
+Implementation
+root_component_neighbor_moments.add_neighbor_moments(model,labels,graph,
+ mixed=True) ajoute les21 equations diagonales et les210 equations mixtes
+pour Conway, avec les sommes de degres/quotas. Toutes les non-linearites
+passent par des tables completes : (z,binom(z,2)) ou (z1,z2,z1*z2).
+Aucun endpoint de domaine OR-Tools n'est lu, aucun Gram n'est choisi.
+Les bornes sont derivees des lettres, pas d'un temoin particulier.
+
+root_component_weak_line_global accepte --rectangle-moments diagonal/full
+et --probing-level. Le graphe reste variable sur les84 etiquettes.
+Essai case7, budget51 a la racine, huit positions de la droite c<=3 :
+317640 variables,339908 contraintes,3.703125s CPU de construction;
+UNKNOWN apres30.3125s CPU,20932 branches,161 conflits.
+Le resultat reste ouvert; cet essai ne mesure pas un gain comparatif,
+car le niveau de probing differe aussi du precedent pilote.
+
+Controles de nos nouvelles tables
+- SRG(9,4,1,2) reconstruit avec adjacences libres et nouveaux moments;
+- SRG(243,22,1,2) du fichier new243_trade_aut108_b.edges : toutes les55
+  diagonales et1485 paires mixtes satisfaites; trois rectangles sont aussi
+  testes avec de vraies variables booleennes fixees, pour exercer les tables;
+- integration a weak_line_global : le controle rook9 reste realisable.
+Rapports dans data/codex_neighbor_moments_20261018/.
+Les calculs utilisent un seul coeur logique et le regulateur72/62.
+
+Pourquoi ne pas conserver seulement une matrice de comptes Z ?
+Un temoin agrege entier existe pour les moments et marges seuls : z_Q(w)
+vaut2 si w appartient a Q,0 si son rectangle partage une droite avec Q,
+1 sinon. Il satisfait Z^T Z+K et toutes les marges, avec R=0 et21 grilles.
+Le script root_component_aggregate_grid_witness.py le construit exactement.
+Ce n'est PAS un graphe; l'etoile complete des21 grilles a deja ete exclue.
+Ce temoin ne satisfait pas le budget de prismes51 : son role est seulement
+de montrer la perte d'information si l'on garde les identites de moments
+seules. Il faut encore realiser les comptes par des adjacences coherentes,
+ou ajouter des obstructions qui encodent cette obligation.
+
+Coordination
+LAB1067 explore les moments H directement dans les gabarits, sans couvrir
+leurs Gram. Ici, la contribution est la derivation de comptes positifs,
+leur encodage par tables et un essai sur le modele global a huit positions.
+Les campagnes de gabarits de LAB n'ont pas ete relancees localement.
