@@ -1,0 +1,55 @@
+18/10/2026, Codex. Coupes sans Gram, racine arbitraire.
+
+Soit F un rectangle non-grille et e son nombre d'aretes internes.
+Le theoreme E3 donne e dans {0,1,2}. Avec P l'incidence des rectangles,
+W_wF=3*1[q(w)=F]+1-|q(w) intersection F| et H=W-Gamma P, la colonne
+h=H[:,F], prolongee par quinze zeros, est un vecteur propre entier -4.
+Sa somme est nulle, sa norme carree est N=56-14e.
+
+Ses valeurs sont dans {-3,-2,-1,0,1,2}. Les +2 sont exactement les
+coins isoles de F. Les possibilites (e,n_+2) sont donc
+(0,4),(1,2),(2,0),(2,1). Ce fait ne fixe aucune Gram.
+
+Preuve de la coupe de chevauchement.
+Posons S=sum h_+=sum h_-, et E_+,E_- les sommes de binom(|h_w|,2)
+sur chaque signe. Alors N/2=S+E_++E_-.
+Pour deux coordonnees de meme signe, de modules r,s, les poids des
+voisins de signe oppose totalisent au moins 4(r+s), par A h=-4h.
+Leur union pese au plus S. Leur intersection contient au plus deux
+sommets et pese au plus 2+E_oppose, car a-1<=binom(a,2).
+Ainsi E_signe<=N/2+2-4(r+s). Il suffit de prendre les deux plus grands
+modules du signe. En outre une coordonnee m impose N>=m^2+7|m| :
+les voisins somment a -4m et les autres coordonnees a 3m.
+
+Enumeration exacte.
+Ecrivons t=n_+2, a=n_-3, b=n_-2. Les equations de somme et norme donnent
+n_+1=N/2-3t-b-3a ; n_-1=N/2-t-3b-6a ; n_0=84-somme des autres.
+On enumere 0<=a<=floor(N/9), 0<=b<=floor(N/4), les quatre couples
+(e,t), puis on impose positivite, borne individuelle et chevauchement.
+Cela donne 29 quadruplets necessaires (pas 29 graphes realisables).
+La projection (e,a,b) a les quatre plans d'appui a normales positives :
+  e+a<=2
+  2e+2a+b<=8
+  5e+5a+b<=11
+  11e+12a+2b<=24.
+Le module regenere ces plans par produits vectoriels et verifie chaque
+point en entiers. Aucune decision numerique de hull n'est utilisee.
+
+Implementation.
+root_component_short_column_histograms.py fournit les coupes LP et les
+tables CP. --short-columns est disponible sur z_design_certificate,
+z_design (avec --e3), z_joint et z_pipeline. Le lecteur entier sait
+regenerer les termes short_column_histogram d'un certificat.
+Tables : quatre variables par rectangle, aucun produit booleen*entier.
+Les controles sont SYNTHETIQUES et exercent le mapping de l'encodeur :
+29 histogrammes admis, 3 histogrammes de bonne norme rejetes. Ils ne
+sont pas presentes comme des exemples de Conway.
+
+Premiers essais, data/codex_short_columns_20261018 :
+- gz3 et gz8650 : pas de certificat LP avec ces quatre coupes.
+- gz3, design entier avec tables : SAT0.203125CPU, temoin de comptes
+  relu en entiers, aucun graphe construit.
+- gz3, Gamma commun + row-moments + tables : UNKNOWN30.078125CPU.
+Donc aucune nouvelle fermeture de gabarit avec cette couche seule.
+La suite transporte les memes bornes aux combinaisons entieres de
+colonnes, en conservant leur norme comme variable, sans figer R.

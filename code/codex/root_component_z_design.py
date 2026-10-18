@@ -21,7 +21,7 @@ from root_rectangle_domains import corner_graphs
 from root_component_resources import atomic_json_write, limit_research_process
 
 
-def solve_design(template, catalogue, seconds=5, exclude_three_edges=False):
+def solve_design(template, catalogue, seconds=5, exclude_three_edges=False, short_columns=False):
     assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
     model = cp_model.CpModel()
     states = [item['states'] for item in catalogue['row_types']]
@@ -48,6 +48,12 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False):
         quadratic_sum = sum(n * row[i] * row[j]
                             for rows, ns in zip(states, counts) for row, n in zip(rows, ns))
         model.add(quadratic_sum + k[i][j] == target)
+    histogram_info = None
+    if short_columns:
+        assert exclude_three_edges, 'The short-column tables use the universal E3 exclusion.'
+        from root_component_short_column_histograms import add_histogram_tables
+        terms = [(qi, row, n) for qi, (rows, ns) in enumerate(zip(states, counts)) for row, n in zip(rows, ns)]
+        histogram_info = add_histogram_tables(model, RECTANGLES, nongrid, terms)
     assert not model.validate(), model.validate()
     solver = cp_model.CpSolver()
     solver.parameters.num_search_workers = 1
@@ -71,6 +77,8 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False):
               'is_adjacency_graph': False, 'uses_gram_cover': False, 'uses_prism_budget': False,
               'uses_universal_E3_exclusion': exclude_three_edges,
               'portable_unsat_proof': False}
+    if histogram_info is not None:
+        result['short_column_histograms'] = histogram_info
     if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         selected = [[(row, solver.value(n)) for row, n in zip(rows, ns) if solver.value(n)]
                     for rows, ns in zip(states, counts)]
@@ -85,6 +93,9 @@ def solve_design(template, catalogue, seconds=5, exclude_three_edges=False):
             assert kk[i][j] == kk[j][i]
             assert sum(row[i] * row[j] for row in z) + kk[i][j] == target
         result['aggregate_witness_checked_exactly'] = True
+        if short_columns:
+            from root_component_short_column_histograms import check_witness
+            result['short_column_witness_checked_exactly'] = check_witness(result['row_multisets'], nongrid)
     return result
 
 
@@ -93,6 +104,7 @@ def main():
     p.add_argument('--bundle', type=Path)
     p.add_argument('--all-grid-control', action='store_true')
     p.add_argument('--e3', action='store_true', help='Use the established universal exclusion of three-edge rectangles.')
+    p.add_argument('--short-columns', action='store_true', help='Add Gram-free integral eigenvector histogram tables.')
     p.add_argument('--seconds', type=float, default=5)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
@@ -106,7 +118,7 @@ def main():
               'row_state_counts': [r['state_count'] for r in catalogue.get('row_types', [])],
               'catalogue_cpu_seconds': time.process_time() - start, 'global_conway_exclusion': False}
     if catalogue['status'] == 'ROW_CATALOGUE_COMPLETE':
-        result['design'] = solve_design(template, catalogue, a.seconds, a.e3)
+        result['design'] = solve_design(template, catalogue, a.seconds, a.e3, a.short_columns)
     else:
         result['catalogue_status'] = catalogue['status']
     atomic_json_write(a.output, result)

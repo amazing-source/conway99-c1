@@ -24,7 +24,7 @@ from root_component_z_distribution import RECTANGLES
 from root_component_resources import atomic_json_write, limit_research_process
 
 
-def linear_system(template, catalogue, degree_histograms=False):
+def linear_system(template, catalogue, degree_histograms=False, short_columns=False):
     columns = [(qi, si, state) for qi, item in enumerate(catalogue['row_types'])
                for si, state in enumerate(item['states'])]
     equations, bounds = [], []
@@ -54,6 +54,9 @@ def linear_system(template, catalogue, degree_histograms=False):
         target = 64 if i == j else 24 if set(RECTANGLES[i]) & set(RECTANGLES[j]) else 32
         equation([z[i] * z[j] + int(qi == i) * z[j] for qi, si, z in columns],
                  target, 'neighbor_moment', [i, j])
+    if short_columns:
+        from root_component_short_column_histograms import linear_bounds
+        bounds.extend(linear_bounds(columns, RECTANGLES, template['nongrid_edges']))
     return columns, equations, bounds
 
 
@@ -173,6 +176,7 @@ def main():
                    help='Also reduce the full moment system if diagonal moments alone are feasible.')
     p.add_argument('--degree-histograms', action='store_true',
                    help='Use 2 n_degree2 <= n_degree1 in each nongrid rectangle, a consequence of E3.')
+    p.add_argument('--short-columns', action='store_true', help='Use Gram-free integral eigenvector histogram bounds.')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     assert not a.output.exists()
@@ -181,7 +185,7 @@ def main():
     catalogue = json.loads(a.catalogue.read_text(encoding='utf-8-sig'))['catalogue']
     assert catalogue['status'] == 'ROW_CATALOGUE_COMPLETE'
     start = time.process_time()
-    columns, equations, bounds = linear_system(template, catalogue, a.degree_histograms)
+    columns, equations, bounds = linear_system(template, catalogue, a.degree_histograms, a.short_columns)
     if a.reduce_diagonal or a.reduce_full:
         equations, bounds = reduce_diagonal_system(columns, equations, bounds, a.reduce_full)
     result = find_certificate(columns, equations, bounds)
@@ -192,6 +196,7 @@ def main():
                   column_order=[{'rectangle': list(RECTANGLES[qi]), 'state_index': si} for qi, si, z in columns],
                   uses_Gram_cover=False, uses_prism_budget=False, uses_universal_E3_exclusion=True,
                   uses_degree_histogram_bounds=a.degree_histograms,
+                  uses_short_column_histograms=a.short_columns,
                   global_conway_exclusion=False, cpu_seconds=time.process_time() - start)
     atomic_json_write(a.output, result)
     print(json.dumps({k: v for k, v in result.items() if k not in

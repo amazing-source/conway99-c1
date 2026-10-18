@@ -22,7 +22,8 @@ from root_component_z_design import solve_design
 from root_component_z_joint import build_joint, solve_joint
 
 
-def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, row_moments=False):
+def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, row_moments=False,
+        short_columns=False):
     output.mkdir(parents=True, exist_ok=True)
     assert not any(output.iterdir()), 'A new or empty output directory is required.'
     resources = limit_research_process(1)
@@ -53,7 +54,8 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
         checkpoint('EMPTY_ROW_CATALOGUE')
         return result
     checkpoint('ROW_CATALOGUE_COMPLETE')
-    columns, equations, bounds = linear_system(template, catalogue, degree_histograms=True)
+    columns, equations, bounds = linear_system(template, catalogue, degree_histograms=True,
+                                               short_columns=short_columns)
     if reduce:
         equations, bounds = reduce_diagonal_system(columns, equations, bounds, fallback_full=True)
     certificate = find_certificate(columns, equations, bounds)
@@ -63,6 +65,7 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
                        column_order=[{'rectangle': list(RECTANGLES[q]), 'state_index': s} for q, s, z in columns],
                        uses_Gram_cover=False, uses_prism_budget=False, uses_universal_E3_exclusion=True,
                        uses_degree_histogram_bounds=True, global_conway_exclusion=False)
+    certificate['uses_short_column_histograms'] = short_columns
     certificate_path = output / 'certificate.json'
     atomic_json_write(certificate_path, certificate)
     result['separator_status'] = certificate['status']
@@ -75,7 +78,8 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
     if design_seconds <= 0:
         checkpoint('NO_CERTIFICATE_FOUND')
         return result
-    design = solve_design(template, catalogue, seconds=design_seconds, exclude_three_edges=True)
+    design = solve_design(template, catalogue, seconds=design_seconds, exclude_three_edges=True,
+                          short_columns=short_columns)
     atomic_json_write(output / 'design.json', {'design': design})
     result['design_status'] = design['status']
     result['design_cpu_seconds'] = design['cpu_seconds']
@@ -89,7 +93,8 @@ def run(source, index, output, design_seconds=5, joint_seconds=0, reduce=False, 
     diagnostics = {}
     coordinates = catalogue.get('free_coordinates', range(21)) if row_moments else None
     model, labels, graph = build_joint(14, catalogue['row_types'], template['nongrid_edges'],
-                                      row_moment_coordinates=coordinates, diagnostics=diagnostics)
+                                      row_moment_coordinates=coordinates, diagnostics=diagnostics,
+                                      short_columns=short_columns)
     joint = solve_joint(model, labels, graph, 14, joint_seconds)
     joint.update(diagnostics)
     atomic_json_write(output / 'joint.json', joint)
@@ -114,8 +119,10 @@ def main():
     p.add_argument('--joint-seconds', type=float, default=0)
     p.add_argument('--reduce-certificate', action='store_true')
     p.add_argument('--row-moments', action='store_true', help='Add vertexwise rectangle C2 sums to the joint stage.')
+    p.add_argument('--short-columns', action='store_true', help='Use Gram-free integral eigenvector histograms.')
     a = p.parse_args()
-    run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate, a.row_moments)
+    run(a.source, a.index, a.output_directory, a.design_seconds, a.joint_seconds, a.reduce_certificate,
+        a.row_moments, a.short_columns)
 
 
 if __name__ == '__main__':

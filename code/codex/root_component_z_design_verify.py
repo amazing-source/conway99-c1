@@ -105,7 +105,7 @@ def verify(certificate_path, catalogue_path):
             kind, indices, weight = term['kind'], term['indices'], term['multiplier']
             require(type(weight) is int and (not is_bound or weight >= 0), 'Invalid multiplier.')
             require(all(type(i) is int and 0 <= i < 21 for i in indices), 'Invalid rectangle index.')
-            key = kind, tuple(indices)
+            key = kind, tuple(indices), tuple(term.get('normal', []))
             require(key not in seen, 'Duplicate certificate term.')
             seen.add(key)
             if kind == 'four_rows' and len(indices) == 1 and not is_bound:
@@ -128,6 +128,20 @@ def verify(certificate_path, catalogue_path):
                 require(RECTANGLES[i] in nongrid, 'Degree histogram bound used on a grid rectangle.')
                 coefficients = [(2 * int(z[i] == 2) - int(z[i] == 1)) if q == i else 0 for q, s, z in columns]
                 target = 0
+            elif kind == 'short_column_histogram' and len(indices) == 1 and is_bound:
+                # This module uses Python integers only. The admissible planes
+                # are regenerated from the finite necessary histogram table.
+                from root_component_short_column_histograms import histogram_facets, h_value
+                i, = indices
+                require(RECTANGLES[i] in nongrid, 'Short-column bound used on a grid rectangle.')
+                plane = tuple(term.get('normal', [])) + (term.get('half_upper'),)
+                require(plane in histogram_facets(), 'Unproved short-column supporting plane.')
+                a, b, c, d = plane
+                coefficients = [a*z[i]*int(q == i)
+                                + 2*b*int(h_value(RECTANGLES[q], RECTANGLES[i], z[i]) == -3)
+                                + 2*c*int(h_value(RECTANGLES[q], RECTANGLES[i], z[i]) == -2)
+                                for q, s, z in columns]
+                target = 2*d
             else:
                 raise ValueError('Unknown certificate term.')
             require(term['upper' if is_bound else 'target'] == target, 'Wrong right-hand side.')
