@@ -1,0 +1,55 @@
+CORRECTION PRIORITAIRE, 18 octobre 2026 vers 11h40 Paris
+
+Les exclusions fondees sur les produits de residus du code anterieur a
+cette correction sont RETIREES. Une impossibilite du modele errone ne
+constitue pas une impossibilite du graphe.
+
+ERREUR REPRODUITE
+OR-Tools 9.15.6755, Python 3.12.10, Windows :
+  x = model.new_int_var(-2,3,'x')
+  d = model.proto.variables[x.index].domain
+  list(d) == [-2,3], d[-1] == 0, d[len(d)-1] == 3.
+Le conteneur pybind ne se comporte pas comme une liste Python pour
+l'indice negatif. root_component_rotated_gram.py lisait directement
+da[-1], db[-1] et domain[-1]. Il imposait aux produits des domaines
+[0,4] au lieu de [-6,9], et [-2,0] au lieu de [-2,3]. Ces contraintes
+supplementaires sont fausses. La correction convertit les domaines
+en listes Python avant toute lecture de leur derniere borne.
+
+PORTEE CONSTATEE
+- Les 162 anciens verdicts des huit pilotes c3 sont retires.
+- Les cinq premiers verdicts du nouveau modele PARTIEL sont retires.
+- Dans les sources directes du registre c4, les familles 7,9,19
+  utilisent les fonctions fautives. Le registre revient a76 fermetures
+  non touchees par ce bug et3 reouvertures. La fermeture79/79 est retiree.
+- Les autres12 familles de l'ancienne liste15 n'utilisent pas ces fonctions
+  dans leurs sources de fermeture. Il ne s'agit pas d'une nouvelle
+  verification independante de ces calculs.
+- Les tables frontier d93 et907 profils precedent ce module fautif;
+  aucune modification de leur contenu n'est justifiee par ce seul bug.
+- Aucun resultat de la campagne AWS c3star fondee sur2c7bdd0b ne doit
+  etre compte sans correction et nouveau calcul. LAB averti par1008.
+- Recherche des lectures .domain dans code/codex : les autres lectures
+  de derniere borne concernaient deja des listes Python, ou utilisaient
+  explicitement l'indice positif1. Aucun autre cas trouve dans ce dossier.
+
+REGRESSION MATHEMATIQUE
+root_component_domain_regression.py exerce les vraies fonctions :
+1) un produit scalaire negatif, avec produit3*(-2)=-6;
+2) un produit3*3=9, dans un produit scalaire total admissible;
+3) le vecteur propre de valeur-4 du graphe biparti complet K4,4,
+   qui exige aussi des produits booleen*entier strictement positifs.
+Les trois petits modeles sont satisfaisables avec la correction.
+Ils ne sont pas des graphes de Conway ni une preuve d'existence.
+Les nouvelles metadonnees portent python_list_endpoints_v2.
+L'agregateur refuse les rapports historiques qui en sont depourvus
+et utilisent ces produits. Les rapports historiques bruts restent
+conserves; leurs verdicts ne doivent plus alimenter un bilan d'exclusion.
+
+PREMIER RECALCUL
+Prefixe partiel33, une partition c=1 et un couplage cyclique de taille6,
+six autres partitions inconnues : ancien INFEASIBLE3.1s, nouveau UNKNOWN
+a32.80s CPU (budget30s, arret du presolve non instantane). Pic2.41GiB.
+Cela ne prouve pas sa faisabilite, mais retire la contradiction immediate.
+Les recalculs c3/c4 sont en cours et doivent rester explicites et bornes.
+Le processeur reste limite a un coeur, priorite basse et garde65%.

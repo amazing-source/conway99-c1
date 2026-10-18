@@ -103,11 +103,13 @@
       "unfixed_binary_edges_after_propagation": 2022,
       "global_solver_status": "UNKNOWN",
       "portable_unsat_proof": false,
-      "exclusion_status": "EXCLUDED",
+      "exclusion_status": "REOPENED_DOMAIN_ENCODING_BUG",
       "global_solver_result": "root_component_global_7_budget51_gramcover.json",
       "global_solver_seconds": 15.0241059,
       "exclusion_method": "VARIABLE_GRAM_PROJECTOR",
-      "exclusion_source": "root_component_projector_7_matching_global_pilot.json"
+      "exclusion_source": "root_component_projector_7_matching_global_pilot.json",
+      "historical_exclusion_status": "EXCLUDED",
+      "reopened_reason": "OR-Tools9.15 repeated-domain negative indexing imposed invalid residual-product bounds; see notes/CORRECTION_DOMAIN_ORTOOLS_2026_10_18.txt."
     },
     {
       "template_index": 8,
@@ -146,7 +148,7 @@
       "unfixed_binary_edges_after_propagation": 2040,
       "global_solver_status": "UNKNOWN",
       "portable_unsat_proof": false,
-      "exclusion_status": "EXCLUDED",
+      "exclusion_status": "REOPENED_DOMAIN_ENCODING_BUG",
       "global_solver_result": "root_component_global_9_budget51_gramcover.json",
       "global_solver_seconds": 15.023384600000002,
       "exclusion_method": "COMPLETE_GRAM_SIGNATURE_COVER",
@@ -175,7 +177,9 @@
         "root_component_signature_no_path4.json",
         "root_component_signature_pool_9_all_grid_patterns.json"
       ],
-      "excluded_gram_orbits": 240
+      "excluded_gram_orbits": 240,
+      "historical_exclusion_status": "EXCLUDED",
+      "reopened_reason": "OR-Tools9.15 repeated-domain negative indexing imposed invalid residual-product bounds; see notes/CORRECTION_DOMAIN_ORTOOLS_2026_10_18.txt."
     },
     {
       "template_index": 11,
@@ -368,11 +372,13 @@
       "unfixed_binary_edges_after_propagation": 2066,
       "global_solver_status": "UNKNOWN",
       "portable_unsat_proof": false,
-      "exclusion_status": "EXCLUDED",
+      "exclusion_status": "REOPENED_DOMAIN_ENCODING_BUG",
       "global_solver_result": "root_component_global_19_budget51_gramcover.json",
       "global_solver_seconds": 15.0267478,
       "exclusion_method": "VARIABLE_GRAM_PROJECTOR",
-      "exclusion_source": "root_component_projector_19_matching_global_pilot.json"
+      "exclusion_source": "root_component_projector_19_matching_global_pilot.json",
+      "historical_exclusion_status": "EXCLUDED",
+      "reopened_reason": "OR-Tools9.15 repeated-domain negative indexing imposed invalid residual-product bounds; see notes/CORRECTION_DOMAIN_ORTOOLS_2026_10_18.txt."
     },
     {
       "template_index": 24,
@@ -1803,7 +1809,13 @@
     }
   ],
   "exclusion_counts": {
-    "EXCLUDED": 79
+    "EXCLUDED": 76,
+    "REOPENED_DOMAIN_ENCODING_BUG": 3
   },
-  "open_template_indices": []
+  "open_template_indices": [
+    7,
+    9,
+    19
+  ],
+  "priority_correction": "2026-10-18: earlier79/79 withdrawn;76 unaffected by identified encoding bug,3 reopened."
 }

@@ -9,6 +9,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_resources import atomic_json_write
+from root_component_rotated_gram import unsafe_product_reports
 
 
 def main():
@@ -21,6 +22,8 @@ def main():
     rows = []; timings = []; builds = []; identities = set()
     for path in args.reports:
         raw = path.read_bytes(); report = json.loads(raw)
+        if any(unsafe_product_reports(report)):
+            raise ValueError(f'{path}: withdrawn product-domain encoding; recompute before aggregation.')
         identity = report['source_sha256'], report['template_index']
         assert identity not in identities, 'Supply one complete/current report per template.'
         identities.add(identity)

@@ -17,6 +17,8 @@ model. All cuts are necessary; no adjacency or automorphism is assumed.
 from itertools import combinations
 from root_component_propagation import LABELS
 
+PRODUCT_DOMAIN_ENCODING = 'python_list_endpoints_v2'
+
 
 def complete_stars(rectangles):
     groups={}
@@ -46,7 +48,10 @@ def add_gram_cuts(model,rectangles,mode='incident'):
         if isinstance(b,int):return b*a
         key=tuple(sorted((a.index,b.index)))
         if key not in products:
-            da=model.proto.variables[a.index].domain;db=model.proto.variables[b.index].domain
+            # OR-Tools 9.15's pybind repeated-field wrapper does not implement
+            # Python negative indexing reliably: domain[-1] can return 0.
+            # Copy to actual Python lists before reading interval endpoints.
+            da=list(model.proto.variables[a.index].domain);db=list(model.proto.variables[b.index].domain)
             bounds=[x*y for x in (da[0],da[-1]) for y in (db[0],db[-1])]
             value=model.new_int_var(min(bounds),max(bounds),f'rotated_residual_dot_product_{len(products)}')
             model.add_multiplication_equality(value,[a,b]);products[key]=value
@@ -62,7 +67,8 @@ def add_gram_cuts(model,rectangles,mode='incident'):
             count+=1;incident_count+=int(incident)
         records.append({'root':root,'gram_entries':count,'incident_nonpositive_entries':incident_count})
         next(item for item in rectangles if item['root']==root)['residual_gram_entries']=entries
-    return {'mode':mode,'integer_products':len(products),'roots':records,'scope':__doc__}
+    return {'mode':mode,'integer_products':len(products),'roots':records,'scope':__doc__,
+            'product_domain_encoding':PRODUCT_DOMAIN_ENCODING}
 
 
 def add_eigen_cuts(model,graph,rectangles,count_per_root):
@@ -73,7 +79,7 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
         if isinstance(value,int):return value*edge
         key=(edge.index,value.index)
         if key not in products:
-            domain=model.proto.variables[value.index].domain
+            domain=list(model.proto.variables[value.index].domain)
             p=model.new_int_var(min(0,domain[0]),max(0,domain[-1]),f'rotated_residual_eigen_product_{len(products)}')
             model.add(p==value).only_enforce_if(edge)
             model.add(p==0).only_enforce_if(edge.Not());products[key]=p
@@ -92,4 +98,19 @@ def add_eigen_cuts(model,graph,rectangles,count_per_root):
                 equations+=1
         records.append({'root':root,'selected_rectangles':[list(p) for p in selected]})
     return {'count_per_root':count_per_root,'new_gamma_eigen_equations':equations,
-            'edge_integer_products':len(products),'roots':records,'scope':__doc__}
+            'edge_integer_products':len(products),'roots':records,'scope':__doc__,
+            'product_domain_encoding':PRODUCT_DOMAIN_ENCODING}
+
+
+def unsafe_product_reports(value):
+    """Find historical product metadata lacking the corrected encoding stamp."""
+    if isinstance(value, dict):
+        uses_products = (value.get('edge_integer_products',0)>0 or
+            (value.get('integer_products',0)>0 and 'Necessary integer Gram' in value.get('scope','')))
+        if uses_products and value.get('product_domain_encoding') != PRODUCT_DOMAIN_ENCODING:
+            yield value
+        for child in value.values():
+            yield from unsafe_product_reports(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from unsafe_product_reports(child)
