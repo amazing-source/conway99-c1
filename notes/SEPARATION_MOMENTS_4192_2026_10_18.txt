@@ -1,0 +1,62 @@
+18 octobre2026, 17h29 - Assemblage des moments : fermeture complete de4192.
+
+Les79 Gram de la couverture LAB1d35230 de4192 sont exclus en9.328125s CPU,
+un seul coeur, sans modele complet d'adjacence :
+ -58 ont un rectangle sans etat de coins admissible;
+ -16 violent une borne de moment simple;
+ -5 violent une combinaison de moments (indices18,25,35,38,39).
+Couverture entree : cover_04192.json.gz, COMPLETE, budget racine s<=51.
+La completude de l'enumeration LAB est acceptee sans etre refaite.
+Ce resultat concerne ce gabarit dans cette couverture, pas tout Conway.
+
+Principe qui depasse les bornes separees
+Pour chaque rectangle q, un etat local donne le vecteur m_q des quinze
+moments h_i h_j sur les cinq coordonnees d'ancrage. L'identite globale
+impose sum_q m_q = (7R_ij)_{i<=j}. Pour tout vecteur ENTIER de coefficients
+c_ij, une condition necessaire est donc
+
+ sum_{i<=j} c_ij 7R_ij >= sum_q min_{etat de q} sum_{i<=j} c_ij (m_q)_ij.
+
+Meme si chaque coordonnee separee passe, une combinaison peut echouer.
+Geometriquement, la cible doit appartenir a la somme des enveloppes
+convexes des etats locaux. Une separation de cette enveloppe donne une
+obstruction explicite avant toute recherche de graphe.
+
+Le programme GLOP propose des coefficients en minimisant leur norme L1.
+Ils sont convertis en rationnels puis en entiers primitifs. La decision
+EXCLUDED est prise UNIQUEMENT apres recalcul entier de tous les minima,
+sur toutes les lignes des tables locales. Les statuts et erreurs flottants
+du LP ne peuvent donc, seuls, produire une exclusion. NOT_FOUND reste
+inconclusif. Aucune optimalite flottante n'est utilisee dans la preuve.
+
+Exemple microscopique : Gram35
+Dans l'ordre des15 nongrilles de4192, prendre
+                  F(h)=h_0 h_3+h_3 h_4.
+Ici R_03=R_34=0, donc sum_w F(h_w)=0 exactement.
+Les seuls minima locaux non nuls sont :
+ rectangle(0,3):-1; (1,6):4; (3,4):-2; (3,5):-1; (5,6):1.
+Tous les autres minima sont zero. Leur somme vaut1 : contradiction0>=1.
+Les indices de droites vont de0 a6; les indices de coordonnees sont dans
+cover_04192.json.gz, et non dans l'ordre du gabarit5128.
+
+Gram38
+F(h)=-h_0^2-2h_0h_1+2h_0h_3+h_0h_10-2h_1^2+2h_1h_4+h_1h_10.
+Le moment global exige -28; la somme des minima vaut -26 : contradiction.
+Les deux Gram35 et38 passaient meme les bornes individuelles de TOUTES
+les120 paires de coordonnees completes. La combinaison apporte donc
+une restriction effective, pas un simple changement de paire.
+
+Outils
+root_component_corner_moment_bounds.analyze_gram(edges,R,
+ separate_moments=True) applique le filtre simple puis la separation.
+Le CLI ajoute --separate et accepte --grams pour une selection partielle.
+Une selection partielle ne peut pas etre annoncee comme couverture fermee.
+
+python code/codex/root_component_corner_moment_bounds.py --bundle data/codex_c3_microscope_20261018/cover_04192.json.gz --index 4192 --separate --output NOUVEAU_FICHIER.json
+
+Rapport complet :
+data/codex_c3_microscope_20261018/template_04192_separated_moment_bounds.json
+Il contient les cinq combinaisons, leurs21 minima, les bornes simples et
+les rectangles vides des autres cas. Aucun filtre de vecteurs courts ou
+de projecteur complementaire n'est necessaire pour ces79 exclusions.
+Pas de graphe genere, pas de preuve formalisee par assistant de preuve.

@@ -72,7 +72,7 @@ def moment_ranges(matrix, anchors, domains, tables):
     return reports
 
 
-def analyze_gram(edges, raw):
+def analyze_gram(edges, raw, *, separate_moments=False, separation_seconds=5):
     """Public filter API. EXCLUDED is sound; PASSES is only inconclusive."""
     started = time.process_time()
     matrix, anchors, domains, tables = corner_data(edges, raw)
@@ -92,6 +92,14 @@ def analyze_gram(edges, raw):
               'solver_used': False}
     for report in contradictions:
         report['coordinate_rectangles'] = [list(edges[i]) for i in report['coordinates']]
+    if separate_moments and result['status'] == 'PASSES':
+        from root_component_corner_moment_separation import separate
+        separation = separate(matrix, anchors, domains, tables, seconds=separation_seconds)
+        result['moment_separation'] = separation
+        result['solver_used'] = 'GLOP proposes; integer extrema certify.'
+        if separation['status'] == 'EXCLUDED':
+            result['status'] = 'EXCLUDED'
+        result['cpu_seconds'] = time.process_time() - started
     return result
 
 
@@ -99,6 +107,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--bundle', type=Path, required=True)
     parser.add_argument('--index', type=int, required=True)
+    parser.add_argument('--grams', type=int, nargs='+', help='Optional subset of Gram indices.')
+    parser.add_argument('--separate', action='store_true', help='Try exact combinations after individual bounds.')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     assert not args.output.exists()
@@ -112,14 +122,18 @@ def main():
     if 'template_index' in bundle:
         assert bundle['template_index'] == args.index
     edges = [tuple(e) for e in bundle.get('edge_order', bundle.get('edges'))]
+    selected = sorted(set(args.grams)) if args.grams is not None else list(range(bundle['gram_count']))
+    assert selected and all(0 <= gi < bundle['gram_count'] for gi in selected)
     result = {'scope': __doc__, 'template_index': args.index,
               'source_bundle': str(args.bundle),
               'source_sha256': hashlib.sha256(args.bundle.read_bytes()).hexdigest(),
               'received_cover_scope': bundle.get('scope', 'LAB complete Gram cover, c3 root budget <=51.'),
               'cover_completeness': 'Accepted LAB result; not re-enumerated here.',
-              'resources': resources, 'cases': [], 'global_conway_exclusion': False}
-    for gi, raw in enumerate(bundle['grams']):
-        case = analyze_gram(edges, raw)
+              'resources': resources, 'cases': [], 'global_conway_exclusion': False,
+              'selected_gram_indices': selected, 'source_gram_count': bundle['gram_count']}
+    for gi in selected:
+        raw = bundle['grams'][gi]
+        case = analyze_gram(edges, raw, separate_moments=args.separate)
         case['gram_selector'] = gi
         result['cases'].append(case)
         atomic_json_write(args.output, result)
@@ -131,7 +145,9 @@ def main():
                                                 'lower_bound', 'upper_bound', 'gap')}
                               for r in case['moment_contradictions']]}), flush=True)
     result['counts'] = dict(Counter(c['status'] for c in result['cases']))
-    result['all_received_grams_excluded'] = all(c['status'] == 'EXCLUDED' for c in result['cases'])
+    result['all_tested_grams_excluded'] = all(c['status'] == 'EXCLUDED' for c in result['cases'])
+    result['all_received_grams_tested'] = len(selected) == bundle['gram_count']
+    result['all_received_grams_excluded'] = result['all_received_grams_tested'] and result['all_tested_grams_excluded']
     result['cpu_seconds_total'] = sum(c['cpu_seconds'] for c in result['cases'])
     atomic_json_write(args.output, result)
 
