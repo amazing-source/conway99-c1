@@ -25,7 +25,7 @@ MECANISME
 Une etoile complete permet de construire21neuf-ensembles S, un par paire
 de droites. Le residu entier d=(A-3I)1_S-1 satisfait Ad=-4d et
 ||d||^2=56-14e, ou S possede14+e aretes. Ses coordonnees sont dans[-2,3].
-Pour les quatre voisins de la racine appartenant a S, si un sommet exterieur
+Pour les quatre voisins de la racine appartenant a S, si un sommet exterieur a l'etoile fermee de la nouvelle racine
 a t voisins parmi ces quatre et appartient a S avec indicatrice m, alors
  t-1-3m <= d <= 3-t-m.
 En effet t=1 implique au plus deux voisins dans le rectangle Q, par les
@@ -51,12 +51,11 @@ familles tout en laissant le Gram entier variable.
 REPRODUCTION ET STATUT
 Code principal : code/codex/root_component_matching_global.py.
 Arguments pour les rapports7/19 :
- data/codex_line_resonance_20261016 --index7 (ou19)
+ data/codex_line_resonance_20261016 --index 7 (ou 19)
  --gram-cover data/codex_line_resonance_20261016/root_component_gram_filtered_20261018_0421.json
  --low-budget-cover data/codex_line_resonance_20261016/root_component_low_budget_frontier_d93c1b0.json
  --residual-gram-profiles data/codex_line_resonance_20261016/root_component_low_budget_row_profiles_0306_d93c1b0.json
- --seconds180 --log-search --output NOUVEAU_FICHIER.json
-Ajouter les espaces entre les noms des options et leurs valeurs numeriques.
+ --seconds 180 --log-search --output NOUVEAU_FICHIER.json
 Python isole(-I), OR-Tools9.15.6755, un travailleur. Les fichiers de sortie
 existants sont refuses. Les hashs des entrees figure dans chaque rapport.
 Le front d93 puis la table907 puis les nouveaux calculs forment un ordre
@@ -65,4 +64,4 @@ Il s'agit de verdicts CP-SAT exacts sur des modeles necessaires. Aucun
 certificat UNSAT portable n'est encore extrait. Les traces de presolve
 servent a expliquer le blocage; elles ne remplacent pas un tel certificat.
 Les anciennes exclusions et leurs sources figurent dans le registre79 et
-le journal MOMENTS_SIGNATURES_C1_2026_10_16.txt, sections44a47 pour cette reprise.
+le journal MOMENTS_SIGNATURES_C1_2026_10_16.txt, sections 44 a 47 pour cette reprise.
