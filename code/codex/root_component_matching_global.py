@@ -21,6 +21,7 @@ def main():
     p.add_argument('directory',type=Path);p.add_argument('--index',type=int,required=True)
     p.add_argument('--gram-cover',type=Path,required=True)
     p.add_argument('--seconds',type=float,default=120)
+    p.add_argument('--build-only',action='store_true',help='Validate every selected model without running search.')
     p.add_argument('--matching-indices',type=int,nargs='+')
     p.add_argument('--root-line',type=int,choices=range(7),
                    help='Cover every labelled matching of this complete star, instead of splitting the first component code.')
@@ -95,7 +96,7 @@ def main():
         'complete_gram_cover':info['complete_gram_cover'],'gram_cover':str(args.gram_cover),
         'gram_cover_sha256_lf':digest(args.gram_cover),'fixed_gram_witness':False,
         'resources':resources,'model':info,'build_cpu_seconds':time.process_time()-start,
-        'options':{'seconds_per_matching':args.seconds,'residual_eigen':args.residual_eigen,
+        'options':{'seconds_per_matching':args.seconds,'build_only':args.build_only,'residual_eigen':args.residual_eigen,
             'linearization':args.linearization,'minimum_prism_root':args.minimum_prism_root,
             'weighted_prism_grid_root':args.weighted_prism_grid_root,
             'grid_corner_tables':args.grid_corner_tables,
@@ -156,10 +157,15 @@ def main():
         branch={'matching_index':mi,'rotation':rotation,'variables':len(model.proto.variables),
                 'constraints':len(model.proto.constraints),'build_cpu_seconds':time.process_time()-start}
         print(json.dumps({k:branch[k] for k in ('matching_index','variables','constraints','build_cpu_seconds')}|{'phase':'model_ready'}),flush=True)
-        branch.update(solve(model,args.seconds,args.log_search,args.linearization,solution_graph=graph))
+        if args.build_only:
+            assert not model.validate(),model.validate()
+            branch.update(status='MODEL_BUILT',cpu_seconds=0,branches=0,conflicts=0)
+        else:
+            branch.update(solve(model,args.seconds,args.log_search,args.linearization,solution_graph=graph))
         result['matching_branches'].append(branch)
         result['all_matching_branches_processed']={b['matching_index'] for b in result['matching_branches']}==set(matchings)
         if result['all_matching_branches_processed'] and all(b['status']=='INFEASIBLE' for b in result['matching_branches']):result['status']='INFEASIBLE'
+        if args.build_only and result['all_matching_branches_processed']:result['status']='MODEL_BUILT'
         if branch.get('exact_all_pair_check'):result['status']='CONWAY_GRAPH_FOUND'
         atomic_json_write(args.output,result)
         print(json.dumps({k:branch[k] for k in ('matching_index','status','cpu_seconds','branches','conflicts')}|

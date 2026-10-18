@@ -253,3 +253,14 @@ INFEASIBLE de famille n'est annonce a ce stade.
 Le regulateur local est maintenant parametrable ; instance active : pause72%,
 reprise sous62%, pause minimale5s, au plus3 coeurs logiques partages, priorite
 basse. La charge des autres applications demeure hors de notre controle.
+18/10, 16h08 — Factorisation exacte des tables de coins
+Les 429 Gram de19 disposent de 52185 lignes individuelles et 1138205 lignes
+de quatre coins. Aucune table vide. root_component_corner_orbits.py verifie
+la fermeture complete de chaque table sous les 8 orientations du carre,
+puis conserve un representant et une orientation auxiliaire libre par
+rectangle. Il ne normalise aucun sommet du graphe. Tous les Gram et toutes
+les orientations restent representes.19 :1138205 ->159822 lignes ;9 :46902
+->6711 lignes. La couverture9 factorisee conserve les interdictions de paires.
+Le modele19 factorise a ete construit et valide :151451 variables,278629
+contraintes,4.625s CPU de construction. MODEL_BUILT, sans verdict de recherche.
+Le pilote9 avec paires sera aussi execute par LAB dans sa campagne existante.

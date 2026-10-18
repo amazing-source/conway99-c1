@@ -55,8 +55,13 @@ def add_gram_table(model, graph, template, record, matrix=None):
                 signature_count += 1
         for rectangle,table in corner_tables.items():
             corners=RECTANGLES[rectangle]
-            columns=[selector]+[corner_selectors[w] for w in corners]+[graph[u][v] for u,v in combinations(corners,2)]
-            model.add_allowed_assignments(columns,table['rows'])
+            if table.get('encoding')=='existential_square_orientations_v1':
+                from root_component_corner_orbits import add_factored_table
+                add_factored_table(model,selector,corner_selectors,corners,graph,table)
+            else:
+                assert 'encoding' not in table
+                columns=[selector]+[corner_selectors[w] for w in corners]+[graph[u][v] for u,v in combinations(corners,2)]
+                model.add_allowed_assignments(columns,table['rows'])
             corner_table_count+=1;corner_row_count+=len(table['rows'])
         if record.get('pair_signature_forbidden_tables'):
             from root_component_pair_schur_cover import pair_types
