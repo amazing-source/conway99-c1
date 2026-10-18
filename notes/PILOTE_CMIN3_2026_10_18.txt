@@ -1,5 +1,6 @@
 Pilote c_min >= 3 : couplage complet d'une etoile
-18 octobre 2026, Codex. Travail en cours ; aucun verdict global annonce.
+18 octobre 2026, Codex. Pilote termine : 8/8 gabarits exclus, 162/162 couplages.
+Aucune exclusion globale de la branche c_min=3 n'est annoncee.
 
 Cadre et couverture
 ------------------
@@ -78,3 +79,67 @@ L'exclusion d'un gabarit exige tous ses couplages INFEASIBLE. Les verdicts
 CP-SAT ne sont pas encore des certificats UNSAT portables. Une solution
 positive serait reconstruite en99 sommets et controlee sur toutes les
 paires. Ces huit pilotes ne constituent pas la couverture10052 complete.
+
+Entree complete et execution Linux
+---------------------------------
+Le manifeste complete_star_manifest10052.json contient10052 enregistrements
+avec source_file, template_index, root_line et matching_count. Le total
+est106852 couplages. Histogramme nombre de couplages:nombre de gabarits :
+1:214 ;3:2586 ;9:4689 ;15:1775 ;27:307 ;45:479 ;105:2.
+Le fichier gzip source contient10027 gabarits (3..12 grilles) sous
+open[].template. Les champs open[].gram sont seulement des temoins LAB :
+le chargeur les ignore et libere aussi les autres gabarits avant le modele.
+Les3+22 autres gabarits sont dans les deux petits fichiers sources JSON.
+
+Commande generique (les arguments symboliques sont a remplacer) :
+python -I -u code/codex/root_component_complete_star.py SOURCE --index INDEX
+  --seconds 30 --output RAPPORT.json
+Ajouter --matching-indices M pour traiter un seul couplage ; l'absence
+de cet argument couvre tous les couplages du gabarit. --plan-only calcule
+la couverture sans construire ni resoudre un modele. --stop-after-unknown
+sert au pilote, pas a une passe qui doit enregistrer tous les verdicts.
+Un fichier de sortie existant est refuse pour ne pas ecraser un resultat.
+
+Sur Linux, chaque travailleur concurrent doit recevoir une affinite
+distincte, par exemple taskset -c CPU avant python. Le limiteur conserve
+ce coeur deja assigne ; sans cette repartition tous choisiraient le
+premier coeur autorise. Ne pas embarquer les fichiers locaux cpu_guard.
+Environnement mesure : Python3.12.10, OR-Tools9.15.6755, numpy2.5.4,
+sympy1.14.0. Aucun prix ni lancement cloud decide par ces scripts.
+
+Resultats finaux du pilote (18/10/2026)
+--------------------------------------
+8/8 gabarits INFEASIBLE ;162/162 couplages INFEASIBLE ;0 UNKNOWN.
+Tous les verdicts sont obtenus au presolve, avec0 branche de recherche.
+Rapport agregateur : data/codex_c3_pilot_20261018/pilot8_summary.json.
+Les empreintes des rapports sont calculees apres normalisation CRLF->LF.
+
+grilles index couplages construction_CPU resolution_CPU total_CPU pic_Mio
+      1     0        27        82.859375      18.750000 101.609375  559.44
+      1     1        27        82.125000      17.015625 99.140625  559.71
+      1     2        27        81.203125      17.156250 98.359375  559.09
+      2     0        27        78.906250      16.078125 94.984375  547.53
+      2     3         9        26.921875       6.546875 33.468750  554.96
+      2     5         9        27.203125       6.562500 33.765625  555.31
+      2    11        27        81.875000      17.265625 99.140625  557.53
+      2    15         9        26.625000       6.437500 33.062500  545.14
+
+Construction totale 487.71875CPU ; resolution 105.8125CPU ; total 593.53125CPU.
+Resolution par couplage min/mediane/max : [0.484375, 0.578125, 2.09375] secondes CPU.
+Construction par couplage min/mediane/max : [2.796875, 3.0, 3.375] secondes CPU.
+Pic RSS maximum 586899456 octets (559.71Mio).
+Charge processeur globale observee au maximum a20% sur52 echantillons ; aucune pause.
+
+Consequence : les TROIS gabarits ouverts a une grille sont tous exclus
+pour la racine choisie de budget<=51, sous la couverture LAB c>=3.
+A deux grilles,5 des22 gabarits sont exclus dans ce pilote,17 restent.
+Sur la couverture10052,10044 gabarits restent a traiter. Cela ne prouve
+pas la non-existence de Conway ni l'exclusion complete de c_min=3.
+
+Scenario de debit constant sur106852 couplages : 108.74 heures CPU,
+soit 51.0 minutes IDEALES sur128 coeurs. Ce n'est pas une
+prediction garantie : seuls les cas a1/2 grilles sont mesures, pas les
+cas a3..12 grilles, ni les effets de machine/RAM/concurrence. Une passe
+a budget fixe peut laisser UNKNOWN et ne serait alors pas une preuve.
+Le manifeste fournit une couverture explicite, pas une borne prouvee
+de complexite. Aucun prix cloud estime ici et aucun AWS lance.

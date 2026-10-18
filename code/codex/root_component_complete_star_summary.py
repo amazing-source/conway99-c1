@@ -33,7 +33,7 @@ def main():
         assert (report['status'] == 'INFEASIBLE') == closed
         timing = sum(b['cpu_seconds'] for b in branches)
         build = sum(b['build_cpu_seconds'] for b in branches)
-        row = {'report': path.as_posix(), 'sha256': hashlib.sha256(raw).hexdigest(),
+        row = {'report': path.as_posix(), 'sha256_lf': hashlib.sha256(raw.replace(b'\r\n', b'\n')).hexdigest(),
                'source_file': report['source_file'], 'template_index': report['template_index'],
                'grids': 21-len(report['template']['nongrid_edges']), 'root_line': report['root_line'],
                'matching_count': len(cover), 'processed': len(processed), 'unprocessed': len(cover-processed),

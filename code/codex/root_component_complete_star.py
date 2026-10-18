@@ -78,6 +78,23 @@ def matching_assignments(root, matching):
     return {variable(u, v): int((u, v) in edges) for u, v in combinations(star, 2)}
 
 
+def load_template(path, index):
+    raw = path.read_bytes()
+    data = json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+    if 'templates' in data:
+        template = data['templates'][index]
+        metadata = {'schema': 'templates', 'grids': data.get('grids'),
+                    'gram_witness_discarded': False}
+    else:
+        record = data['open'][index]
+        template = record['template']
+        metadata = {'schema': 'open[].template', 'grids': record.get('grids'),
+                    'graph': record.get('graph'), 'gram_witness_discarded': 'gram' in record}
+    # Return only one template: release the other templates and Gram witnesses
+    # before building a model, including for the 10027-record compressed file.
+    return template, hashlib.sha256(raw).hexdigest(), metadata
+
+
 def peak_memory_bytes():
     """OS high-water resident memory for this process, not an estimate."""
     if sys.platform == 'win32':
@@ -212,16 +229,13 @@ def main():
     resources = limit_research_process(1)
     if args.output.exists():
         raise FileExistsError('Use a fresh report, never overwrite a previous verdict.')
-    raw = args.templates.read_bytes()
-    data = json.loads(gzip.decompress(raw) if args.templates.suffix == '.gz' else raw)
-    templates = data['templates']
-    template = templates[args.index]
+    template, source_hash, source_metadata = load_template(args.templates, args.index)
     root, parts, counts, cover = matching_cover(template, args.root_line)
     selected = list(range(len(cover))) if args.matching_indices is None else args.matching_indices
     assert len(set(selected)) == len(selected) and set(selected) <= set(range(len(cover)))
     assert args.seconds > 0 and args.residual_eigen >= 0
-    result = {'scope': __doc__, 'source_file': str(args.templates),
-              'source_sha256': hashlib.sha256(raw).hexdigest(), 'template_index': args.index,
+    result = {'scope': __doc__, 'source_file': args.templates.as_posix(),
+              'source_sha256': source_hash, 'source_metadata': source_metadata, 'template_index': args.index,
               'template': template, 'root_line': root, 'component_parts': parts,
               'matching_count_by_line': counts, 'matching_cover': cover,
               'matching_branches': [], 'all_matching_branches_processed': False,
