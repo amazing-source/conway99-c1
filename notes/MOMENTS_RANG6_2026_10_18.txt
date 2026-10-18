@@ -1,0 +1,23 @@
+18/10/2026, reprise apres le message LAB1086.
+
+Le plafond de rang5 dans root_rectangle_domains.signature_domains et
+root_component_corner_moment_bounds.corner_data est leve jusqu'au rang6.
+La parametrisation rationnelle par une sous-matrice principale inversible,
+la boite entiere, le test de Schur et les moments ne dependent pas de ce
+plafond. Seul le nombre maximal d'assignations passe de5^5 a5^6 par rectangle.
+
+Source recue de LAB8df38b9 : couverture gz3,1545 Gram, conservee sans
+reenumeration dans data/codex_rank6_20261018/cover_00003.json.gz. Les matrices
+11,117,160,444,718 etaient UNKNOWN dans sa passe3. Test local maintenant
+effectue : toutes PASSES, y compris la separation de combinaisons de moments.
+Rangs6, tempsCPU0.765625,0.859375,1.21875,0.71875,1.015625 respectivement.
+Il n'y a aucune exclusion nouvelle, ni au niveau du gabarit ni de Conway.
+Rapport : gz3_five_corner_moments.json. Les sorties contiennent les nombres
+de signatures et de realisations de coins :6171 a21781 lignes par Gram.
+
+La couverture et sa portee sont acceptees de LAB; cette modification n'en
+demontre pas la completude. La suite vise les orientations de coins et les
+compatibilites de lettres/adja­cence, au-dela des comptes non ordonnes.
+
+Calculs locaux : un coeur partage, regulateur pause72/reprise62, aucune
+campagne distante lancee. Les verdicts GFM retires le18/10 ne sont pas utilises.

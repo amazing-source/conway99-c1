@@ -39,8 +39,8 @@ def corner_data(edges, raw):
     assert matrix == matrix.T and all(x.q == 1 for x in matrix)
     assert integer_psd(matrix.tolist())
     anchors = list(matrix.rref()[1])
-    if not 1 <= len(anchors) <= 5:
-        raise ValueError('This finite enumerator supports ranks 1 through 5.')
+    if not 1 <= len(anchors) <= 6:
+        raise ValueError('This finite enumerator supports ranks 1 through 6.')
     domains = {tuple(d['rectangle']): d for d in signature_domains(edges, raw)}
     small = matrix.extract(anchors, anchors)
     det = int(small.det())
