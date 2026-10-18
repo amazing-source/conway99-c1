@@ -23,6 +23,7 @@ from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, p
 from root_component_signature_moments import gram_matrix
 from root_rectangle_domains import signature_domains
 from root_component_obstruction_layers import pair_layer
+from root_component_c2_layers import add_c2_layers
 
 
 def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=False, four_corners=False, local_tables=None, minc_lines=0, six_prism_profiles=False, line_profiles=0, profile_triples=False, triangle_cuts=False, exact_triangles=False, short_vectors=False, normalize_component=False, component_branch_context=None, upper_projector=False, rotated_boundary=False, stabilizer_normalize=False, short_norm=4, grid_rotations=0, minc_balance=False, rotated_signature_context=None):
@@ -291,26 +292,8 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                 model.add_allowed_assignments(columns, allowed)
                 pair_tables += 1
                 pair_rows += len(allowed)
-    products = {}
-    def product(a, b):
-        if isinstance(a, int):
-            return b if a else 0
-        if isinstance(b, int):
-            return a if b else 0
-        key = tuple(sorted((a.index, b.index)))
-        if key not in products:
-            p = model.new_bool_var(f"p{len(products)}")
-            model.add(p <= a)
-            model.add(p <= b)
-            model.add(p >= a + b - 1)
-            products[key] = p
-        return products[key]
-    c2_count = 0
-    for u, v in PAIRS:
-        if pair_layer(u, v) <= layer:
-            model.add(graph[u][v] + sum(product(graph[u][z], graph[v][z]) for z in range(84))
-                      == 2 - len(set(LABELS[u]) & set(LABELS[v])))
-            c2_count += 1
+    c2_info = add_c2_layers(model, graph, LABELS, layer)
+    c2_count = c2_info['equations']
     minc_info=None;partition_context=[]
     if minc_lines:
         from root_component_minimum_partition import add_minimum_partitions
@@ -348,6 +331,7 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
         if rotation_values is not None:
             grid_rotation_info['short_signature_cuts']=add_rotated_signature_cuts(model,rectangle_context,rotation_values)
     info = {"pair_psd_tables": pair_tables, "pair_psd_rows": pair_rows, "c2_equations": c2_count,
+            "c2_layers": c2_info,
             "moment_equations": len(anchors) * (len(anchors) + 1) // 2,
             "signature_flags": sum(len(x) for x in indicators), "full_C2": layer == 4,
             "eigen_equations": eigen, "eigen_products": eigen_products,

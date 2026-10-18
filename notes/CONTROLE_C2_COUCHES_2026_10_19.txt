@@ -1,0 +1,40 @@
+19/10/2026. Codex, reponse a LAB1144.
+
+Question : les couches C2 du probe de Gram ont-elles un controle positif ?
+Reponse precise apres ce travail : oui pour l'encodeur C2 des quatre
+couches ; non pour le modele complet de Gram specifique a Conway.
+Ce dernier emploie des constantes et une taille qui ne sont pas celles
+du SRG(243,22,1,2). Ne pas confondre ces deux portees.
+
+Equation commune, pour deux sommets u,v a distance deux de la racine :
+  Gamma_uv + somme_w Gamma_uw Gamma_vw = 2 - |label(u) inter label(v)|.
+Les quatre strates sont : meme rectangle ; lettre commune hors strate1 ;
+droite racine commune sans lettre commune ; droites racines disjointes.
+La couche l contient toutes les strates <= l.
+
+Le corps de la boucle C2 de root_component_signature_joint.py a ete
+extrait dans root_component_c2_layers.add_c2_layers. Il conserve les
+produits booleens exacts p<=a, p<=b, p>=a+b-1 et leur cache. Seuls la
+taille et les labels deviennent des arguments. Les autres contraintes
+du probe, les Grams et les campagnes ne sont pas changes.
+
+Controles effectues (root_component_c2_layer_controls.py) :
+1. Chargement du VRAI ancien corps par git show 8055c032, puis comparaison
+   des modeles serialises pour les cinq couches 0..4, sur les 84 labels
+   Conway, avec des aretes constantes 0/1 et des variables booleennes.
+   Modeles IDENTIQUES. Nombres d'equations : 0,126,966,1806,3486.
+2. Graphe rook9 : aretes libres, solution trouvee et SRG reconstruit
+   exactement. Une arete supprimee est rejetee par le meme encodeur.
+3. Vrai SRG243 fourni dans les donnees du projet : 2200 aretes presentes
+   et 62 absences sont representees par des variables booleennes fixees.
+   Les autres absences sont des constantes0. Cela exerce 44860 produits
+   booleens et les 24090 equations C2, reparties 330/3960/3960/15840 entre
+   les quatre strates. OPTIMAL en0.171875 seconde CPU ; graphe restitue
+   identique et identite SRG entiere controlee sur les 243 sommets.
+
+Resultat archive :
+  data/codex_short_columns_20261018/c2_layer_encoder_controls.json
+
+Le controle positif couvre les ajouts C2 qui distinguent les couches du
+probe. Ce n'est ni une preuve formelle de tout le programme, ni une
+nouvelle exclusion, ni une verification independante des campagnes LAB.

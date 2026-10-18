@@ -16,18 +16,11 @@ from ortools.sat.python import cp_model
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_propagation import LABELS, PAIRS, RECTANGLES, constraints, propagate
+from root_component_c2_layers import label_pair_layer
 
 
 def pair_layer(a, b):
-    letters_a, letters_b = set(LABELS[a]), set(LABELS[b])
-    roots_a, roots_b = {v // 2 for v in letters_a}, {v // 2 for v in letters_b}
-    if roots_a == roots_b:
-        return 1
-    if letters_a & letters_b:
-        return 2
-    if roots_a & roots_b:
-        return 3
-    return 4
+    return label_pair_layer(LABELS[a], LABELS[b])
 
 
 def solve(template, layer, seconds, minimize_prisms=False, gram_cover=None):
