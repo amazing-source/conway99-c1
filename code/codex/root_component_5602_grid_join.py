@@ -146,7 +146,7 @@ def check_graph(g):
     return None
 
 
-def solve(core,boundary):
+def solve(core,boundary,all_witnesses=False,frontier=False):
     start=time.process_time();marginal=marginal_test(boundary)
     out={'method':'exhaustive integer grid join','is_complete_graph':False}
     if marginal['status']=='EXCLUDED_BOUNDARY':
@@ -161,18 +161,35 @@ def solve(core,boundary):
     pair12=pair_catalogue(cats[1],cats[2],target)
     out['pair_catalogue_sizes']=[sum(map(len,p.values())) for p in (pair03,pair12)]
     out['pair_margin_keys']=[len(p) for p in (pair03,pair12)]
-    counts=Counter();joins=0
+    counts=Counter();joins=0;witnesses=[];frontier_certificates=[];valid36=0
     for key,lefts in pair03.items():
         rem=tuple(a-b for a,b in zip(target,key))
         for a,b in product(lefts,pair12.get(rem,())):
             joins+=1;g=materialize(core,boundary,a,b);failure=check_graph(g)
             if failure:counts[failure]+=1;continue
+            valid36+=1
+            if frontier:
+                from root_component_5602_frontier import test as frontier_test
+                certificate=frontier_test(g)
+                if certificate['status'].startswith('EXCLUDED_'):
+                    frontier_certificates.append({'pair_witness':[a,b],'certificate':certificate})
+                    counts['frontier_obstruction']+=1
+                    continue
+            if all_witnesses:
+                witnesses.append({'pair_witness':[a,b],'adjacency':g})
+                continue
             out.update(status='FEASIBLE_PARTIAL_36',adjacency=g,labels=LABELS,
                        integer_witness_checked=True,pair_witness=[a,b],joined_candidates=joins,
                        rejected_joins=dict(counts),cpu_seconds=time.process_time()-start)
             return out
-    out.update(status='EXCLUDED_BY_EXHAUSTIVE_JOIN',joined_candidates=joins,
+    out.update(status='FEASIBLE_PARTIAL_36' if witnesses else 'EXCLUDED_BY_EXHAUSTIVE_JOIN',joined_candidates=joins,
                rejected_joins=dict(counts),cpu_seconds=time.process_time()-start)
+    if frontier:
+        out.update(valid_partial36_graphs=valid36,frontier_certificates=frontier_certificates,
+                   complete_frontier_enumeration=True)
+    if all_witnesses:
+        out.update(complete_36_vertex_enumeration=True,partial36_count=len(witnesses),
+                   witnesses=witnesses,labels=LABELS)
     return out
 
 
@@ -184,6 +201,8 @@ def main():
     p.add_argument('--previous',type=Path,help='Only UNKNOWN cases of a previous grid-core campaign.')
     p.add_argument('--stop-on-feasible',action='store_true')
     p.add_argument('--log-every',type=int,default=1)
+    p.add_argument('--all-witnesses',action='store_true')
+    p.add_argument('--frontier',action='store_true',help='Require every missing vertex to have an admissible known neighbourhood.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args();assert not args.output.exists();resources=limit_research_process(1)
     data=json.loads(args.cores.read_text(encoding='utf8'))
@@ -199,14 +218,14 @@ def main():
         for j,case in enumerate(orbit['boundaries']['cases']):
             if args.boundary_indices is not None and j not in args.boundary_indices:continue
             if selected is not None and (i,j) not in selected:continue
-            result=solve(orbit['representative'],case['core_neighbours_of_grid_vertices'])
+            result=solve(orbit['representative'],case['core_neighbours_of_grid_vertices'],args.all_witnesses,args.frontier)
             out['cases'].append({'orbit':i,'boundary_index':j,'mask':orbit['mask'],'result':result})
             atomic_json_write(args.output,out)
             if len(out['cases'])%args.log_every==0 or result['status']=='FEASIBLE_PARTIAL_36':
                 print(json.dumps({'orbit':i,'boundary_index':j,'processed':len(out['cases']),
                                   'counts':dict(Counter(c['result']['status'] for c in out['cases'])),
                                   **{k:v for k,v in result.items()
-                              if k not in ('adjacency','labels','marginal','pair_witness')}}),flush=True)
+                              if k not in ('adjacency','labels','marginal','pair_witness','witnesses','frontier_certificates')}}),flush=True)
             if args.stop_on_feasible and result['status']=='FEASIBLE_PARTIAL_36':return
     out['counts']=dict(Counter(c['result']['status'] for c in out['cases']))
     out['total_cpu_seconds']=sum(c['result']['cpu_seconds'] for c in out['cases'])
