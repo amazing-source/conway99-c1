@@ -213,6 +213,22 @@ hors du PC lorsque la garde de charge suspendait le calcul local.
 Precision : le titre du commit aa3e8a9e dit 'empty missing-vertex domains';
 le bilan exact est56 domaines vides PLUS2 defauts de capacite, pas58 vides.
 
+LECTURE MICROSCOPIQUE DU PREMIER TEMOIN36 DU BORD517.
+Le sommet manquant q=(0,12) doit choisir un coin du coeur, un coin dans
+Q13 (indices16..19), un dans Q23 (20..23), et un dans Q45 (24..27).
+Les coins24,25,27 ont deja deux voisins portant la lettre0. Ils ne peuvent
+donc pas accueillir q. Son voisin dans Q45 est force au coin26.
+Les deficits D imposent alors :
+  - D_(16,26)=D_(17,26)=D_(18,26)=0 : le voisin dans Q13 est19;
+  - dans Q23 seuls20 et23 sont compatibles avec26; mais D_(19,23)=0,
+    donc le voisin dans Q23 est20;
+  - les coins du coeur compatibles avec26 sont4,5,6,7;
+    ceux aussi compatibles avec19 sont6,7; D_(6,20)=0, donc reste7.
+Le coin7 a deja deux voisins portant la lettre12 (indices30 et34).
+Lui ajouter q en donnerait trois, alors que son quota est2. Contradiction.
+Cette cascade utilise seulement des zeros de deficits et des quotas
+satures; elle explique directement un domaine vide sans narrer512 cas.
+
 REGLE UNIVERSELLE EXTRAITE : C4 DISJOINT C3 FORCE K4 DISJOINT C3.
 Dans tout graphe de Conway, le graphe des grilles sur les sept racines
 ne peut contenir un cycle C4 sur X et un triangle C3 sur Y sans contenir
@@ -238,3 +254,47 @@ exactement les violations de cette regle dans un gabarit a statuts fixes.
 --component-energy l'utilise sous E3 dans les encodeurs de comptes/joint.
 La fermeture de5602 et cette regle ne sont PAS une exclusion globale
 de Conway : les configurations sans ce motif restent a traiter.
+
+ARTEFACT FINAL ET INTEGRATION DU19/10 VERS01h29.
+Production LAB integree depuis0b84af34 : les1328 jointures et les58
+frontieres sont dans code/lab_exploration_2026-10-16/gz5602_2026-10-19/.
+La frontiere des3bords a pris5.9s CPU. Le lecteur
+root_component_5602_certificate_manifest.py a controle que les1328
+cas de la couverture sont presents une seule fois, que les3seuls
+survivants sont exactement ceux traites par la frontiere, puis reconstruit
+les58 graphes36 et rejoue leurs56 domaines vides et2 capacites nulles.
+Resultat : data/codex_short_columns_20261018/gz5602_exclusion_manifest.json,
+avec empreintes SHA256 des trois fichiers d'entree, E3 explicite et
+whole_template_excluded=true, global_Conway_exclusion=false.
+Ce lecteur controle la couverture des fichiers et les certificats
+elementaires; l'exhaustivite des enumerateurs est justifiee plus haut
+et leur code est fourni, elle n'est pas un axiome cree par le lecteur.
+
+Commande de reproduction du manifeste (une ligne, chemins relatifs) :
+python code/codex/root_component_5602_certificate_manifest.py --cover data/codex_short_columns_20261018/gz5602_boundary20_cover.json --join code/lab_exploration_2026-10-16/gz5602_2026-10-19/gz5602_grid_join_lab.json --frontier code/lab_exploration_2026-10-16/gz5602_2026-10-19/gz5602_frontier_lab.json --output nouveau_manifeste.json
+
+Le detecteur de fermeture a passe six controles structurels : motif5602
+et une seule diagonale nongrille exclus; deux diagonales grilles, cycle
+incomplet, toutes grilles et aucune grille non exclus par CE detecteur.
+Le scan du registre fait par LAB supprime29 gabarits auparavant ouverts,
+portant le bilan c=3 a8865exclus et1187ouverts (messageLAB1173).
+
+PREMIER LEMME POUR GENERALISER AUX X PARTIELLEMENT GRILLES.
+Conserver H03=-H12 non nul et les trois Ygrilles, mais laisser les quatre
+Xrectangles 01,02,13,23 quelconques. Leurs colonnes H somment a0 par
+les identites universelles. Leur union S16 induit donc un graphe CUBIQUE,
+car la somme de leurs W vaut3 sur S16. Aucun sommet de S16 n'est adjacent
+au coeur Q03+Q12; chaque sommet Y a4voisins dans S16, chaque croise en a2.
+Le bloc36 se lit donc comme un coeur cubique8 et un bloc cubique16,
+raccordes aux trois grilles Y.
+
+Si exactement deux X sont nongrilles, leurs H sont opposes. S'ils sont
+disjoints : leur union est un second coeur cubique8 et les deux Xgrilles
+restantes forment le troisieme bloc cubique8, avec zero arete entre blocs.
+Si les Xnongrilles se touchent : leur union est2reguliere sur8sommets;
+chacun se raccorde par un couplage parfait a sa Xgrille disjointe. Ce
+sous-graphe entier16 est cubique, mais les croises peuvent avoir deux
+voisins dans l'union nongrille. Les egalites C2 fermees de5602 sur une
+paire opposee ne peuvent donc pas y etre recopiees sans modification.
+Cette structure est demontree; aucune fermeture supplementaire de la
+famille(2,3) n'est annoncee ici.
