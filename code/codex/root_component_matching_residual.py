@@ -17,7 +17,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from root_component_resources import atomic_json_write,limit_research_process
 
 
-def solve(model,seconds,log_search=False,linearization=0):
+def solve(model,seconds,log_search=False,linearization=0,solution_graph=None):
     from ortools.sat.python import cp_model
     assert not model.validate(),model.validate()
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
@@ -41,6 +41,12 @@ def solve(model,seconds,log_search=False,linearization=0):
     finally:done.set();timer.join()
     result={'status':solver.status_name(status),'cpu_seconds':time.process_time()-start,
             'branches':solver.num_branches,'conflicts':solver.num_conflicts}
+    if solution_graph is not None and status in (cp_model.OPTIMAL,cp_model.FEASIBLE):
+        from conway_global_cover import reconstruct_and_check
+        from root_component_propagation import LABELS
+        gamma=[[solver.value(x) for x in row] for row in solution_graph]
+        result['adjacency']=reconstruct_and_check(14,LABELS,gamma)
+        result['exact_all_pair_check']=True
     if conflict_indices:
         index=conflict_indices[-1]
         result['presolve_conflict_hint']={'index':index,'not_a_portable_certificate':True}

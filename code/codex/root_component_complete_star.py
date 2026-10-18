@@ -177,7 +177,7 @@ def add_universal_root_cuts(model, graph, template):
 
 
 def build_branch(template, root, matching, residual_eigen=2, transport=True, grid_corner_tables=False,
-                 minimum_prism_root=False):
+                 minimum_prism_root=False, global_min_components=None, minc_lines=0, minc_balance=False):
     from root_component_global import build
     from root_component_exact_triangles import add_exact_triangle_structure
     from root_component_matching_rotation import add_fixed_matching_rotation
@@ -190,6 +190,11 @@ def build_branch(template, root, matching, residual_eigen=2, transport=True, gri
         return model, graph, info
     info['universal_root_cuts'] = add_universal_root_cuts(model, graph, template)
     info['triangles'] = add_exact_triangle_structure(model, graph, template)
+    if minc_lines:
+        assert global_min_components in (3,4)
+        from root_component_minimum_partition import add_minimum_partitions
+        info['nonroot_partitions'] = add_minimum_partitions(model, graph, minc_lines,
+            balance=minc_balance, minimum_components=global_min_components, all_fixed_star_edges=True)
     if transport:
         fixed, rectangles, rotation = add_fixed_matching_rotation(model, graph, template, root)
         if len(rectangles) == 15:
@@ -273,6 +278,12 @@ def main():
     parser.add_argument('--grid-corner-tables', action='store_true', help='Necessary grid intersection and eight-label matching tables; valid for all component counts.')
     parser.add_argument('--minimum-prism-root', action='store_true',
                         help='Compare transported prism counts to a globally minimum-s root; scoped exclusions only.')
+    parser.add_argument('--global-min-components', type=int, choices=(3,4),
+                        help='Explicit additional GLOBAL assumption; do not merge with purely local template exclusions.')
+    parser.add_argument('--minc-lines', type=int, default=0,
+                        help='Number of fixed non-root lines on which to expose the global component minimum.')
+    parser.add_argument('--minc-balance', action='store_true',
+                        help='Also impose the necessary degree balance for unions of line components.')
     parser.add_argument('--log-search', action='store_true')
     parser.add_argument('--stop-after-unknown', action='store_true',
                         help='Pilot only: leave remaining matchings unprocessed after a timeout.')
@@ -281,6 +292,8 @@ def main():
     args = parser.parse_args()
     assert not (args.no_transport and args.grid_corner_tables)
     assert not args.all_matchings_variable or (args.no_transport and not args.mate_flip_orbits and args.matching_indices is None)
+    assert args.minc_lines >= 0 and (not args.minc_lines or args.global_min_components is not None)
+    assert not args.minc_balance or args.minc_lines
     resources = limit_research_process(1)
     if args.output.exists():
         raise FileExistsError('Use a fresh report, never overwrite a previous verdict.')
@@ -302,7 +315,9 @@ def main():
               'mate_flip_orbit_cover': orbit_cover,
               'matching_partition': 'all_in_one' if args.all_matchings_variable else 'mate_flip_orbits' if orbit_cover else 'labelled',
               'root_order': 'prisms' if args.minimum_prism_root else None,
-              'usable_in_arbitrary_low_budget_root_frontier': not args.minimum_prism_root,
+              'usable_in_arbitrary_low_budget_root_frontier': not args.minimum_prism_root and args.global_min_components is None,
+              'global_minimum_components': args.global_min_components,
+              'usable_under_local_component_assumption_only': args.global_min_components is None,
               'matching_branches': [], 'all_matching_branches_processed': False,
               'status': 'NOT_RUN', 'resources': resources, 'root_prism_budget': 51,
               'options': {'seconds_per_matching': args.seconds, 'residual_eigen': args.residual_eigen,
@@ -310,6 +325,8 @@ def main():
                           'grid_corner_tables': args.grid_corner_tables,
                           'all_matchings_variable': args.all_matchings_variable,
                           'minimum_prism_root': args.minimum_prism_root,
+                          'global_min_components': args.global_min_components,
+                          'minc_lines': args.minc_lines, 'minc_balance': args.minc_balance,
                           'mate_flip_orbits': args.mate_flip_orbits},
               'fixed_gram_witness': False, 'uses_minimum_four_tables': False,
               'fixed_opposite_matching': False, 'fixed_cross_permutation': False,
@@ -324,7 +341,8 @@ def main():
     for mi in selected:
         start_cpu = time.process_time(); start_wall = time.monotonic()
         model, graph, info = build_branch(template, root, None if mi is None else cover[mi], args.residual_eigen,
-                                         not args.no_transport, args.grid_corner_tables, args.minimum_prism_root)
+                                         not args.no_transport, args.grid_corner_tables, args.minimum_prism_root,
+                                         args.global_min_components, args.minc_lines, args.minc_balance)
         branch = {'matching_index': mi, 'model': info, 'build_cpu_seconds': time.process_time()-start_cpu,
                   'build_wall_seconds': time.monotonic()-start_wall,
                   'covered_matching_indices': covered[mi]}
