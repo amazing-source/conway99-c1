@@ -1512,3 +1512,22 @@ laissent442+448=890 Gram. Scope :c(line)>=4 global, racine<=51.
 Ne pas confondre cette branche avec une exclusion globale de Conway.
 Pilote19#560 en cours, versionplusfaible SANS rotations,30CPU/M0,
 pour comprendre si la seule separation parmatching suffit; pas de verdict.
+
+46. Famille7 fermee SANS choisir un Gram (18/10,04h25).
+root_component_matching_global.py utilise le modeleglobal99 exact
+(toutesC1/C2) avec Gram variable parmi les442possibilites du snapshot0421.
+Les tables de composantesE3 sont appliquees, avec SEULE normalisation
+par retournements globaux de mates (Gram inchange), deux partitions
+c>=4 hors racine, trianglesexacts, puis deux etoiles autour de la droite
+6prismes. Les30residus, Gram complets,2eigen/residu et907profils anciens
+sont imposes. Pas de directioncourte issue d'un Gramtemoin, pas deP/M fixe.
+Verdict INFEASIBLE22.5CPU,5069branches753conflits. Cela ferme tout7
+avec les exclusions du complement du couvrement. 14/15 initiaux fermes.
+
+Six cas19 :560/604/606/607/618/620 fermes via2groupesM0 chacun, typiquement
+2CPU par groupe. Le premier pilote faible sur560 donnait M0=1INF25.328
+et M0=3UNKNOWN30.078; la rotation donne INF2.125 et2.140625. Le transport
+apporte donc plus que la seule separation parM0 sur ce nouveau cas.
+ACTIF : modeleglobal19 a Gramvariable, couvrement448 du snapshot0421;
+root_component_projector_19_matching_global_pilot.json,session11603.
+La famille19 reste ouverte jusqu'a tous ses groupesM0 INF.
