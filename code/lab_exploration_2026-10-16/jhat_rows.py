@@ -118,6 +118,15 @@ def forced_grid_ilp(t, q, graph=None, seconds=10.0):
 
 
 def records(path):
+    if path.endswith(".keys.gz") or path.endswith(".sorted.gz"):
+        from jhat_fg_keys import decode          # S7 keys of compare_census_aws.py, one template per line
+        with gzip.open(path, "rt") as fh:
+            for line in fh:
+                if line.strip():
+                    t, _ = decode(line)
+                    t["key"] = line.strip()
+                    yield t
+        return
     if path.endswith(".jsonl.gz") or path.endswith(".jsonl"):
         op = gzip.open if path.endswith(".gz") else open
         with op(path, "rt") as fh:
