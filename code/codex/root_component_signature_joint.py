@@ -212,25 +212,8 @@ def build(template, matrix, layer=0, pair_psd=True, eigen=False, mate_normalize=
                 row_bounds.append((lo, hi))
             coordinates.append(row)
             intervals.append(row_bounds)
-        for u in range(84):
-            for i in range(len(anchors)):
-                terms = []
-                for v in range(84):
-                    edge, h = graph[u][v], coordinates[v][i]
-                    if isinstance(edge, int):
-                        if edge:
-                            terms.append(h)
-                    elif isinstance(h, int):
-                        if h:
-                            terms.append(h * edge)
-                    else:
-                        lo, hi = intervals[v][i]
-                        term = model.new_int_var(min(lo, 0), max(hi, 0), f"eh_{u}_{v}_{i}")
-                        model.add(term == h).only_enforce_if(edge)
-                        model.add(term == 0).only_enforce_if(edge.Not())
-                        terms.append(term)
-                        eigen_products += 1
-                model.add(sum(terms) == -4 * coordinates[u][i])
+        from root_component_eigen_equations import add_eigen_equations
+        eigen_products = add_eigen_equations(model, graph, coordinates, intervals)['boolean_integer_products']
     pair_tables, pair_rows = 0, 0
     upper_rows=None
     if upper_data is not None:
