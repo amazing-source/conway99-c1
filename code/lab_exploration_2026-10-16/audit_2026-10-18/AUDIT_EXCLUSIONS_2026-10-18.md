@@ -10,6 +10,13 @@ une fois exclu etc, que ça signifie bien qu'ils sont exclus ».
   - lemmes re-démontrés ci-dessous ;
   - filtres recoupés par une implémentation indépendante. Pour k ≥ 8 la vérification est complète, avec 0 faux rejet.
     Pour k ≤ 7, ce n'est qu'un échantillon : 290 093 gabarits étiquetés tirés au hasard par le relecteur, 0 faux rejet.
+  - **Complété le 18/10 vers 13 h 40, pour tout k = 0..21** : `cle_templates_la.cpp` est un second énumérateur écrit à
+    part (sa propre liste de graphes par minima d'orbites sous S7, son propre générateur de partitions vérifié sur
+    A000296, son élagage par algèbre linéaire exacte, sans union-find). Comparaison par `compare_enumerators.py`, avec
+    une forme canonique sous S7 propre au comparateur : survivants **identiques** à `cle_templates.cpp --la` pour
+    chaque k, soit 0 ; 33 ; 1 102 ; 18 816 ; 56 468 ; 60 886 ; 36 846 ; 15 567 ; 4 997 ; 1 426 ; 339 ; 93 ; 25 ; 11 ; 2 ;
+    3 ; 0 ; 1 ; 0 ; 0 ; 0 ; 1 (k = 0..21). Les deux enchaînements « union-find puis algèbre linéaire » et « algèbre
+    linéaire seule » rejettent donc exactement les mêmes gabarits : pas de faux rejet de l'union-find, pour aucun k.
   - verdicts Gram recoupés par un autre solveur et un autre codage : 0 désaccord sur 22 532 gabarits (k ≥ 8 complets
     plus des échantillons pour k = 3..7), et le relecteur a ajouté k = 1, 2 complets (2 612 gabarits). Cela couvre environ
     4 % des 500 874 exclusions ; les autres (k = 3..7) reposent sur CP-SAT seul. Coût d'une passe complète : environ

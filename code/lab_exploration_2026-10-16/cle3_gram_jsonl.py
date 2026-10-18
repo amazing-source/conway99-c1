@@ -5,7 +5,10 @@ import sys
 import time
 from collections import Counter
 
-import cle3_gram as GR
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))     # python -I does not add the script directory
+import cle3_gram as GR  # noqa: E402
 
 secs, out = float(sys.argv[1]), sys.argv[2]
 counts, recs, t0 = Counter(), [], time.time()

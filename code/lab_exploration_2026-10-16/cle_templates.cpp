@@ -218,9 +218,10 @@ int main(int argc, char** argv) {
     { int k = 0; for (int a = 0; a < 7; a++) for (int b = a + 1; b < 7; b++) { EDGES[k] = {a, b}; EIDX[a][b] = EIDX[b][a] = k; k++; } }
     if (argc < 4) { fprintf(stderr, "usage: cle_templates <c_min> <exact 0|1> <grids|-1> [--graph g] [--fix a[,b]] [--out f]\n"); return 2; }
     int kmin = atoi(argv[1]); bool exact = atoi(argv[2]) != 0; int grids = atoi(argv[3]);
-    int graph_only = -1; vector<int> fix; const char* outpath = nullptr; bool use_la = false;
+    int graph_only = -1; vector<int> fix; const char* outpath = nullptr; bool use_la = false, print_opts = false;
     for (int a = 4; a < argc; a++) {
         if (!strcmp(argv[a], "--la")) use_la = true;
+        else if (!strcmp(argv[a], "--print-opts")) print_opts = true;
         else if (!strcmp(argv[a], "--graph")) graph_only = atoi(argv[++a]);
         else if (!strcmp(argv[a], "--fix")) { string s = argv[++a]; size_t pos = 0; while (pos <= s.size()) { size_t q = s.find(',', pos); if (q == string::npos) q = s.size(); fix.push_back(atoi(s.substr(pos, q - pos).c_str())); pos = q + 1; } }
         else if (!strcmp(argv[a], "--out")) outpath = argv[++a];
@@ -245,6 +246,23 @@ int main(int argc, char** argv) {
         if (exact && !any_cmin) continue;
         array<int,7> order; for (int i = 0; i < 7; i++) order[i] = i;
         stable_sort(order.begin(), order.end(), [&](int x, int y) { return nb[x].size() > nb[y].size(); });
+        if (print_opts) {                      // option lists of the first two roots, for orbit-reduced splitting
+            printf("{\"graph\": %d, \"mask\": %u, \"order\": [", gnum, mask);
+            for (int d = 0; d < 7; d++) printf("%s%d", d ? ", " : "", order[d]);
+            printf("]");
+            for (int d = 0; d < 2; d++) {
+                printf(", \"opts%d\": [", d);
+                const vector<Option>& L = opts[order[d]];
+                for (size_t oi = 0; oi < L.size(); oi++) {
+                    printf("%s[", oi ? ", " : "");
+                    for (size_t bi = 0; bi < L[oi].parts.size(); bi++) { printf("%s[", bi ? ", " : ""); for (size_t x = 0; x < L[oi].parts[bi].size(); x++) printf("%s%d", x ? ", " : "", L[oi].parts[bi][x]); printf("]"); }
+                    printf("]");
+                }
+                printf("]");
+            }
+            printf("}\n");
+            continue;
+        }
         UF uf; uf.init(ne);
         const Partition* choice[7] = {nullptr};
         int choice_c[7];        // by depth
