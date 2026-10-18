@@ -23,6 +23,7 @@ def main():
     parser.add_argument('--gram-index',type=int,required=True)
     parser.add_argument('--seconds',type=float,default=300)
     parser.add_argument('--linearization',type=int,choices=(0,1,2),default=0)
+    parser.add_argument('--presolve-iterations',type=int,default=3)
     parser.add_argument('--low-budget-cover',type=Path)
     parser.add_argument('--residual-gram',choices=('incident','all'))
     parser.add_argument('--residual-eigen',type=int,default=0)
@@ -90,6 +91,7 @@ def main():
         result['options'].update(low_budget_cover=str(args.low_budget_cover),low_budget_cover_sha256_lf=digest(args.low_budget_cover))
     if args.residual_gram:result['options']['residual_gram']=args.residual_gram
     if args.residual_eigen:result['options']['residual_eigen']=args.residual_eigen
+    if args.presolve_iterations!=3:result['options']['presolve_iterations']=args.presolve_iterations
     if args.tight_residual_bounds:result['options']['tight_residual_bounds']=True
     if args.residual_gram_profiles:
         from root_component_low_budget_transport import digest
@@ -99,11 +101,12 @@ def main():
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
     solver.parameters.cp_model_probing_level=0;solver.parameters.symmetry_level=0
     solver.parameters.linearization_level=args.linearization
+    solver.parameters.max_presolve_iterations=args.presolve_iterations
     solver.parameters.max_time_in_seconds=max(600,100*args.seconds)
     started=time.process_time();done=threading.Event()
     def interrupt():
         while not done.wait(.05):
-            if time.process_time()-started>=args.seconds:solver.stop_search();return
+            if time.process_time()-started>=args.seconds:solver.stop_search()
     timer=threading.Thread(target=interrupt,daemon=True);timer.start()
     try:status=solver.solve(model)
     finally:done.set();timer.join()

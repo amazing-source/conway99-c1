@@ -1446,3 +1446,23 @@ epuisement du budget, plutot que d'envoyer un signal unique.
 ACTIF :9#193_propagated_tight_retry,session73140,180CPU,limit-new1,
 presolve1,propagation prealable,bornes serrees, sans produitsGram nouveaux.
 Les calculs utilisent toujours un coeur; aucune nouvelle instance AWS.
+
+43. Les trois blocages avant recherche sont fermes (18/10,03h59).
+Avec propagation du code AVANT construction des tables, bornes serrees
+des residus et presolve1, les trois UNKNOWN du premier lot sont INF :
+[2,3,14]37.78125CPU,[7,4,4]37.140625,[7,4,5]39.390625.
+On n'isole pas experimentalement l'effet d'une seule option. Le gain de
+la combinaison est observe sur trois codes distincts; il ne s'agit pas
+de repetitions de preuves deja acquises. Premier lot8/8 ferme;9#193
+compte10/31 codesINF. Le Gram et la famille9 restent ouverts.
+
+Reprisev2.1 type9 :50 lots,356 codes, meme couverture canonique, runtime
+7da4d54; options ajoutees --presolve-iterations1 --propagate-fixed-code
+--tight-residual-bounds. Les produitsGram/profils/eigen ne sont PAS actives
+dans ces50 lots. Archive aws_v21_type9_runtime_7da4d54.zip, avec le helper
+de reunion et la preuve du lotlocal fourni sous le prefixeaws_v21_local.
+Aucun calcul AWS lance ici. L'ancien paquet10c2e82 reste un etat distinct.
+
+ACTIF :7#1069_gram_profiles_pilot,session37983,180CPU,presolve1,sansfixerC18.
+Teste bornes serrees +tousproduitsGram +907profilsfiges +2eigenvecteurs
+complets parnouvelle racine. Aucun verdict au moment de cette ecriture.
