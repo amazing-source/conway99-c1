@@ -139,7 +139,7 @@ def add_universal_root_cuts(model, graph, template):
     return {'nongrid_E3_bounds': len(nongrid), 'connected_component_cuts': cuts}
 
 
-def build_branch(template, root, matching, residual_eigen=2, transport=True):
+def build_branch(template, root, matching, residual_eigen=2, transport=True, grid_corner_tables=False):
     from root_component_global import build
     from root_component_exact_triangles import add_exact_triangle_structure
     from root_component_matching_rotation import add_fixed_matching_rotation
@@ -154,6 +154,9 @@ def build_branch(template, root, matching, residual_eigen=2, transport=True):
     if transport:
         fixed, rectangles, rotation = add_fixed_matching_rotation(model, graph, template, root)
         if len(rectangles) == 15:
+            if grid_corner_tables:
+                from root_component_grid_intersections import add_grid_intersection_cuts
+                rotation['grid_intersections'] = add_grid_intersection_cuts(model, template, rectangles, True)
             rotation['residuals'] = add_rotated_residual_cuts(model, fixed, rectangles, tight_bounds=True)
             rotation['gram'] = add_gram_cuts(model, rectangles, 'all')
             rotation['gram_kernel'] = add_gram_kernel_cuts(model, rectangles)
@@ -221,12 +224,14 @@ def main():
     parser.add_argument('--seconds', type=float, default=30)
     parser.add_argument('--residual-eigen', type=int, default=2)
     parser.add_argument('--no-transport', action='store_true', help='Weaker model for a measured comparison.')
+    parser.add_argument('--grid-corner-tables', action='store_true', help='Necessary grid intersection and eight-label matching tables; valid for all component counts.')
     parser.add_argument('--log-search', action='store_true')
     parser.add_argument('--stop-after-unknown', action='store_true',
                         help='Pilot only: leave remaining matchings unprocessed after a timeout.')
     parser.add_argument('--plan-only', action='store_true')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
+    assert not (args.no_transport and args.grid_corner_tables)
     resources = limit_research_process(1)
     if args.output.exists():
         raise FileExistsError('Use a fresh report, never overwrite a previous verdict.')
@@ -242,7 +247,8 @@ def main():
               'matching_branches': [], 'all_matching_branches_processed': False,
               'status': 'NOT_RUN', 'resources': resources, 'root_prism_budget': 51,
               'options': {'seconds_per_matching': args.seconds, 'residual_eigen': args.residual_eigen,
-                          'transport': not args.no_transport, 'stop_after_unknown': args.stop_after_unknown},
+                          'transport': not args.no_transport, 'stop_after_unknown': args.stop_after_unknown,
+                          'grid_corner_tables': args.grid_corner_tables},
               'fixed_gram_witness': False, 'uses_minimum_four_tables': False,
               'fixed_opposite_matching': False, 'fixed_cross_permutation': False,
               'portable_unsat_proof': False, 'global_conway_exclusion': False}
@@ -254,7 +260,7 @@ def main():
         return
     for mi in selected:
         start_cpu = time.process_time(); start_wall = time.monotonic()
-        model, graph, info = build_branch(template, root, cover[mi], args.residual_eigen, not args.no_transport)
+        model, graph, info = build_branch(template, root, cover[mi], args.residual_eigen, not args.no_transport, args.grid_corner_tables)
         branch = {'matching_index': mi, 'model': info, 'build_cpu_seconds': time.process_time()-start_cpu,
                   'build_wall_seconds': time.monotonic()-start_wall}
         print(json.dumps({'phase': 'model_ready', 'matching_index': mi,

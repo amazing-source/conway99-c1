@@ -72,10 +72,12 @@ try { while ($true) {
         $taskPaused = $false
         $taskLastIncrease = $taskNow
     }
-    $taskProcesses = @(Get-CimInstance Win32_Process -Filter "name='python.exe'")
+    # Inventory all descendants too: native SAT solvers/proof checkers inherit
+    # the same budget and suspension policy as their research Python parent.
+    $taskProcesses = @(Get-CimInstance Win32_Process)
     $taskIds = [System.Collections.Generic.HashSet[int]]::new()
     foreach ($taskProcess in $taskProcesses) {
-        if ($taskProcess.CommandLine -match 'code[/\\]codex[/\\]root_component_') {
+        if ($taskProcess.Name -eq 'python.exe' -and $taskProcess.CommandLine -match 'code[/\\]codex[/\\]root_component_') {
             [void]$taskIds.Add([int]$taskProcess.ProcessId)
         }
     }
