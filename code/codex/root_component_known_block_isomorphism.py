@@ -55,7 +55,7 @@ def check(source,target,mapping):
     assert lp[2]%2==lp[4]%2, 'Preserve the sign in H01=-H02.'
     assert sorted(vp)==list(range(len(source['rows'])))
     assert len(source['rows'])==len(target['rows'])
-    assert all(sorted(lp[l] for l in q)==target['known_labels'][vp[i]] for i,q in enumerate(source['known_labels']))
+    assert all(tuple(sorted(lp[l] for l in q))==tuple(target['known_labels'][vp[i]]) for i,q in enumerate(source['known_labels']))
     assert transform(source['rows'],mapping)==tuple(target['rows'])
     assert {tuple(sorted(lp[l] for l in q)) for q in source['outside_labels']}=={tuple(q) for q in target['outside_labels']}
     return True

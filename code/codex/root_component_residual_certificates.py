@@ -77,7 +77,20 @@ def source_certificate(directory, index, case):
     assert hashlib.sha256(dimacs.encode('ascii')).hexdigest() == checked['artifacts'][native_cnf]['uncompressed_sha256']
     required = [input_path, learning_path, cnf_path, result_path,
                 Path(checked['log'])]
-    required += [directory/name for name in checked['artifacts']]
+    parts_path=prefix.with_suffix('.native_parts.json')
+    packed=json.loads(parts_path.read_text(encoding='utf-8'))['artifacts'] if parts_path.exists() else {}
+    for name,meta in checked['artifacts'].items():
+        if name in packed:
+            part_meta=packed[name]
+            assert meta['compressed_bytes']==part_meta['compressed_bytes']
+            if (directory/name).exists():assert sha256(directory/name)==part_meta['compressed_sha256']
+            meta.update(part_meta)
+            for part in part_meta['parts']:
+                path=directory/part['name']
+                assert path.stat().st_size==part['bytes'] and sha256(path)==part['sha256']
+                required.append(path)
+        else:required.append(directory/name)
+    if packed:required.append(parts_path)
     assert all(p.exists() for p in required)
     cert = {
         'scope': 'One attachment, all its profile choices; family completeness is supplied separately by LAB.',

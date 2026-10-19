@@ -36,6 +36,8 @@ def main():
                    help='Prefix of an unfinished run on exactly the same profile domains; replay its valid cuts.')
     p.add_argument('--canonical-2k2-profile', type=int,
                    help='Keep one representative of this profile under its fixed-block stabilizer.')
+    p.add_argument('--orbit-seed-cuts', action='store_true',
+                   help='Separate necessary cuts from stabilizer images of the resumed selections.')
     args = p.parse_args()
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
@@ -104,6 +106,35 @@ def main():
                     solver.add_clause(clause);allclauses.append(clause);learning['clauses_added']+=1
                 learning['rounds'].append({**previous_round,'seeded_from_previous_run':True})
             atomic_json_write(args.output.with_suffix('.row_cut_learning.json'),learning)
+        if args.orbit_seed_cuts:
+            assert args.resume_cuts_from and args.canonical_2k2_profile is not None
+            from root_component_2k2_profile_canonical import transform_selection
+            seen_clauses={tuple(sorted(c)) for c in allclauses}
+            seen_selections=set();derived=[]
+            for si,record in enumerate(list(learning['rounds'])):
+                selected=record.get('selected_indices')
+                if selected is None:continue
+                for gi,mapping in enumerate(learning['canonicalization']['group']):
+                    image=transform_selection(labels,outside,domains,selected,mapping)
+                    key=tuple(image)
+                    if key in seen_selections:continue
+                    seen_selections.add(key);newcuts=[]
+                    for cut in oracle.separate(image,max_cuts=256):
+                        assert oracle.check_cut(cut)
+                        guards=cut.get('guards',[(cut.get('outside_index'),cut.get('profile_index'))])
+                        clause=[-literals[y][pi] for y,pi in guards]
+                        clause += [literals[y][pi] for y,pi in cut['support_options']]
+                        ck=tuple(sorted(clause))
+                        if ck in seen_clauses:continue
+                        seen_clauses.add(ck);newcuts.append(cut)
+                        solver.add_clause(clause);allclauses.append(clause);learning['clauses_added']+=1
+                    if newcuts:
+                        derived.append({'answer':None,'origin':'stabilizer_image_of_previous_selection',
+                            'source_record':si,'group_index':gi,'selected_indices':image,'violated_cuts':newcuts})
+            learning['rounds'].extend(derived)
+            learning['orbit_seed_added_clauses']=sum(len(r['violated_cuts']) for r in derived)
+            atomic_json_write(args.output.with_suffix('.row_cut_learning.json'),learning)
+        out['clauses']=len(allclauses)
         if args.extend_rows:
             from root_component_profile_row_extension import extend_rows, controls
             learning['extension_controls'] = controls()

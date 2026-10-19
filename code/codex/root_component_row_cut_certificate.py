@@ -28,11 +28,12 @@ def sha256(path):
     return h.hexdigest()
 
 
-def check_saved(prefix, output, native_timeout=600):
+def check_saved(prefix, output, native_timeout=600, proof_override=None):
     resources = limit_research_process(1)
     paths = {name: prefix.with_suffix(suffix) for name, suffix in (
         ('input', '.row_cut_input.json'), ('learning', '.row_cut_learning.json'),
         ('cnf', '.row_cut_cnf.json.gz'), ('proof', '.row_cut_proof.rup.gz'))}
+    if proof_override is not None:paths['proof']=Path(proof_override)
     inp = json.loads(paths['input'].read_text(encoding='utf-8'))
     learning = json.loads(paths['learning'].read_text(encoding='utf-8'))
     cnf = json.loads(gzip.decompress(paths['cnf'].read_bytes()))
@@ -75,6 +76,7 @@ if __name__ == '__main__':
     p.add_argument('prefix', type=Path)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--native-timeout', type=float, default=600)
+    p.add_argument('--proof', type=Path, help='Use an archived native input proof after restoring its parts if needed.')
     a = p.parse_args()
     assert not a.output.exists(), 'Use a new certificate filename.'
-    check_saved(a.prefix, a.output, a.native_timeout)
+    check_saved(a.prefix, a.output, a.native_timeout,a.proof)

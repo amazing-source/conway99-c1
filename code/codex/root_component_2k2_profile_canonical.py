@@ -64,3 +64,15 @@ def check_cnf_position(inp, learning, cnf, learned_clause_count):
             'original_profiles':len(inp['domains'][canon['outside_index']]),
             'remaining_profiles':len(canon['allowed_profile_indices']),
             'completion_preserved_up_to_explicit_block_relabelling':True}
+
+
+def transform_selection(known, outside, domains, selected, mapping):
+    target={tuple(q):y for y,q in enumerate(outside)}
+    lookups=[{tuple(p):pi for pi,p in enumerate(d)} for d in domains]
+    result=[None]*len(outside)
+    for x,pi in enumerate(selected):
+        y=target[tuple(sorted(mapping['letter_permutation'][l] for l in outside[x]))]
+        p=tuple(sorted(mapping['known_vertex_permutation'][v] for v in domains[x][pi]))
+        result[y]=lookups[y][p]
+    assert all(pi is not None for pi in result)
+    return result
