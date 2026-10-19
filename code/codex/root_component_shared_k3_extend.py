@@ -21,6 +21,7 @@ from root_component_resources import atomic_json_write, limit_research_process
 from root_component_shared_core_colors import PAIRS, PAIR_ID, colourings
 from root_component_shared_k3_boundary import matching_catalogue
 from root_component_profile_inclusion import inclusion_filter
+from root_component_k3_triplets import from_block as triplet_projection
 
 P4 = tuple(permutations(range(4)))
 P4_ID = {p:i for i,p in enumerate(P4)}
@@ -239,19 +240,29 @@ def propagate_profiles(domains,deficits,letter_deficits):
         rounds.append(changes)
 
 
-def frontier(rows,keep_domains=False, pair_capacity=True, propagate=True):
+def frontier(rows,keep_domains=False, pair_capacity=True, propagate=True, project_triplets=True):
     deficits = [[7 if u==v else 2-((rows[u]>>v)&1)-SHARED[u][v]-(rows[u]&rows[v]).bit_count()
                  for v in range(24)] for u in range(24)]
     assert all(min(row)>=0 for row in deficits)
     letter_deficits = [[2-int(l in LABELS[u])-int((l^1) in LABELS[u])-
                        (rows[u]&LETTER_MASKS[l]).bit_count() for l in range(14)] for u in range(24)]
     assert all(min(row)>=0 for row in letter_deficits)
+    projection=None;allowed_triplets=None
+    if project_triplets:
+        projection,solutions=triplet_projection(rows,SHARED)
+        if projection['status'].startswith('EXCLUDED_'):
+            return projection
+        allowed_triplets=0
+        for mask in solutions:allowed_triplets|=mask
     domains = [];all_rejections = []
     for qi,q in enumerate(OUTSIDE):
         good = [];rejected = Counter()
         allowed = [all(letter_deficits[v][l]>0 for l in q) for v in range(24)]
         shared_mask = LETTER_MASKS[q[0]]|LETTER_MASKS[q[1]]
         for profile in profiles(q):
+            if (allowed_triplets is not None and len(profile)==4 and profile[-3]>=12 and
+                not allowed_triplets & (1 << (16*(profile[-3]-12)+4*(profile[-2]-16)+(profile[-1]-20)))):
+                rejected['triplet_projection']+=1;continue
             if any(not allowed[v] for v in profile):
                 rejected['known_vertex_letter_quota']+=1;continue
             if any(not deficits[u][v] for u,v in combinations(profile,2)):
@@ -304,6 +315,7 @@ def frontier(rows,keep_domains=False, pair_capacity=True, propagate=True):
     if propagation:result['propagation']=propagation
     if keep_domains:
         result.update(domains=domains,residual_gram=deficits,letter_deficits=letter_deficits)
+        if projection:result.update(triplet_projection=projection,allowed_triplets=hex(allowed_triplets))
     return result
 
 
@@ -355,6 +367,8 @@ def main():
          'program_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
          'inclusion_filter_sha256':hashlib.sha256(Path(__file__).with_name(
              'root_component_profile_inclusion.py').read_bytes()).hexdigest(),
+         'triplet_filter_sha256':hashlib.sha256(Path(__file__).with_name(
+             'root_component_k3_triplets.py').read_bytes()).hexdigest(),
          'profile_solver_sha256':hashlib.sha256(Path(__file__).with_name(
              'root_component_shared_k3_profile_sat.py').read_bytes()).hexdigest() if args.exact_profiles else None}
     for bi,hex_state in enumerate(source['boundaries_hex']):

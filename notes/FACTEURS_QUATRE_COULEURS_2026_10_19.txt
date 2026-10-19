@@ -179,3 +179,48 @@ recherche :4 directement par2>1,1 par domaine vide d'un sommet et1 par
 capacite de paire devenue nulle. CPU total0.1875 seconde pour ce test.
 Les certificats sont dans shared_k3_inclusion_six_resistant_blocks.json.
 La regle renforce les prochaines tranches; on ne refait pas les anciennes.
+
+PROJECTION EXACTE SUR LES TROIS GRILLES Y (03 h 12)
+
+Posons A=Q45, B=Q46, C=Q56. Parmi les60 sommets hors du bloc24,
+seuls ceux de Q03,Q13,Q23 peuvent voir deux grilles Y; ils les voient
+toutes les trois, exactement une fois chacune. Leurs12 triplets sont
+distincts, faute de quoi deux sommets auraient3 voisins communs.
+Ils different aussi des12 triplets deja determines par K et Q12.
+
+Les trois matrices de marges residuelles sont exactement
+  L_uv = 2 - |lettres(u) inter lettres(v)| - |N24(u) inter N24(v)|,
+pour u,v dans deux grilles Y differentes. Chaque matrice4x4 a sommes
+de lignes et colonnes3. Preuve de cette somme : sur les quatre coins
+de l'autre grille, les lettres communes contribuent2, les deux voisins
+de K contribuent2 et le voisin de Q12 contribue1; reste8-2-2-1=3.
+
+On cherche donc x_abc dans {0,1}, pour a,b,c dans {0,1,2,3}, avec
+les trois marges L. Pour chaque a, la tranche b,c est une matrice
+binaire4x4 de somme3 avec marges prescrites : au plus6 choix. Les quatre
+tranches se joignent exactement sur la marge B,C, donc au plus6^4
+combinaisons, traitees par deux jointures de deux tranches.
+
+Condition supplementaire necessaire : le graphe reliant deux triplets
+ayant deux coordonnees communes est biparti. Ces deux sommets ont deja
+deux voisins communs dans Y; ils doivent donc porter des lettres
+opposees de la racine3. Un cycle impair de telles obligations serait
+impossible. On ne pretend pas que cette condition suffise a affecter
+les douze etiquettes; c'est une relaxation exacte de la condition.
+
+root_component_k3_triplets.py fait cette enumeration sans solveur.
+Les triplets possibles sont ensuite restreints a l'union des solutions
+pour filtrer les profils complets. Sur200 blocs24 du coeur0,179 sont
+exclus par les seules marges et21 passent la projection;0.03125 CPU.
+Les temoins positifs sont reconstruits (12 triplets, toutes les marges,
+aucun triplet connu repete) et le test de cycle impair a un controle
+positif et negatif. Fichiers shared_k3_triplet_projection_pilot.json
+et shared_k3_triplet_controls.json. La production utilise maintenant
+ce filtre avant la frontiere complete; les anciennes tranches restent
+valides et ne sont pas recalculees.
+
+Le diagnostic du bloc100106 devient visible directement dans L :
+la paire (15,17) demande2 triplets; leurs seules troisiemes coordonnees
+possibles sont dans support L(15,C) inter support L(17,C) = {23}.
+Mais L(15,23)=1, et un triplet ne peut pas etre utilise deux fois.
+Cela redonne2>1 sans meme construire les domaines des60 sommets.
