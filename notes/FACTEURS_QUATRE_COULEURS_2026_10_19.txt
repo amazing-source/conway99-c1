@@ -505,3 +505,30 @@ Il ne modifie pas les parcours du LAB. Les controles locaux acceptent
 une etoile de deux voisins, rejettent deux voisins saturant ensemble
 un budget1, et rejettent deux profils alternatifs du meme sommet pris
 a tort pour deux voisins. Ces controles ne sont pas des graphes de Conway.
+
+Pilote sur les 24 blocs fournis au message LAB1216 (12 du coeur22/bord0,
+12 du coeur0/bord3001) :14 profils Q56 retires en0.140625 seconde CPU,
+aucun domaine entier vide. Le gain de ce seul filtre est donc modeste.
+Entrees archivees dans shared_p3_neighbor_support_inputs.json.gz;
+rapport shared_p3_neighbor_support_pilot.json. Aucun nouveau bord ferme.
+
+PROLONGEMENT D'UNE SELECTION DE PROFILS FIXEE
+
+root_component_profile_continuation.py prend les memes aretes connues,
+mais exactement un profil choisi pour chaque sommet exterieur. Il
+controle d'abord que les lignes connues sont bien completes au niveau
+des degres, des lettres et de leurs voisins communs. Puis il construit
+les aretes exterieures encore possibles avec le critere de saturation
+ci-dessus et impose, pour chaque sommet exterieur x :
+  somme_y A_xy = 12-|p_x|;
+  somme_{y portant l} A_xy = budget restant de la lettre l;
+  somme_{y avec u dans p_y} A_xy = s_p_x(u), pour chaque u connu.
+La meme variable A_xy est partagee par les deux lignes x et y.
+
+Ces egalites sont necessaires a toute completion du graphe. Un budget
+sature force ses variables restantes a0 ou a1; chaque consequence est
+enregistree avec l'egalite qui la force. Un deficit final donne une
+preuve que le lecteur rejoue sans recherche. Le passage de ces seules
+egalites ne suffit pas : les comptes entre deux sommets exterieurs
+comportent encore des produits d'aretes et ne sont pas tous imposes.
+Ce module ne depend ni de P3, ni de K3, ni d'une Gram particuliere.
