@@ -20,6 +20,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from root_component_resources import atomic_json_write, limit_research_process
 from root_component_shared_core_colors import PAIRS, PAIR_ID, colourings
 from root_component_shared_k3_boundary import matching_catalogue
+from root_component_profile_inclusion import inclusion_filter
 
 P4 = tuple(permutations(range(4)))
 P4_ID = {p:i for i,p in enumerate(P4)}
@@ -206,6 +207,16 @@ def propagate_profiles(domains,deficits,letter_deficits):
                 changes.append({'outside_index':vi,'removed':len(active[vi])-len(kept)})
                 active[vi]=kept
         if not changes:
+            # Scalar bounds miss the fact that two equal-total features
+            # with nested supports must have identical chosen supports.
+            inclusion,kept=inclusion_filter([[features[v][i] for i in ids]
+                                            for v,ids in enumerate(active)],demands)
+            if kept is None:
+                return {**inclusion,'rounds':rounds},None
+            if inclusion['removed_options']:
+                active=[[ids[j] for j in indices] for ids,indices in zip(active,kept)]
+                rounds.append({'feature_inclusions':inclusion['inclusions']})
+                continue
             # Two missing vertices cannot already have more common
             # known neighbours than mu minus their shared upper letters.
             for vi,vj in combinations(range(len(domains)),2):
@@ -342,6 +353,8 @@ def main():
          'exact_profiles':args.exact_profiles,
          'requested_start':args.start,'requested_max_boundaries':args.max_boundaries,
          'program_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+         'inclusion_filter_sha256':hashlib.sha256(Path(__file__).with_name(
+             'root_component_profile_inclusion.py').read_bytes()).hexdigest(),
          'profile_solver_sha256':hashlib.sha256(Path(__file__).with_name(
              'root_component_shared_k3_profile_sat.py').read_bytes()).hexdigest() if args.exact_profiles else None}
     for bi,hex_state in enumerate(source['boundaries_hex']):

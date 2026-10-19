@@ -153,3 +153,29 @@ Paquet reproductible et commandes : PRODUCTION_K3_UNIVERSELLE_2026_10_19.txt.
 Le manifeste distingue strictement couverture partielle et famille exclue.
 La couverture complete du coeur22 (12558 bords) est le prochain calcul;
 il est en cours sur un coeur CPU avec suspension si charge excessive.
+
+LEMME D'INCLUSION DES CONTRIBUTIONS (03 h 07)
+
+Soit une famille de variables choisissant chacune un profil admissible.
+Deux proprietes binaires e,f ont des nombres totaux imposes t_e,t_f.
+Si, dans TOUS les profils encore admissibles, e implique f, alors
+  somme e <= somme f, donc t_e <= t_f.
+Si t_e=t_f, tout profil contenant f sans e peut etre elimine : il
+contribuerait positivement a somme(f-e), qui doit etre nulle.
+C'est un comptage exact; il n'utilise aucun parametre SRG specifique.
+
+Application directe au bloc100106 apres les seuls quotas ordinaires :
+les profils contribuant a la paire (15,17) contribuent TOUS a (15,23).
+Les demandes residuelles sont respectivement2 et1 : contradiction2>1.
+Les profils concernes sont (10,15,17,23), (7,15,17,23), (0,15,17,23)
+et (1,15,17,23), sur les sommets manquants de Q03,Q13,Q23 precises
+dans shared_k3_core000_b100106_inclusion.json. On n'a plus besoin
+de la disjonction en deux profils fournie par la preuve SAT precedente.
+
+Le filtre generique root_component_profile_inclusion.py est applique
+aux proprietes de paires, lettres et regions, entre deux tours de
+propagation. Il ferme les6 blocs precedemment confies a SAT, tous sans
+recherche :4 directement par2>1,1 par domaine vide d'un sommet et1 par
+capacite de paire devenue nulle. CPU total0.1875 seconde pour ce test.
+Les certificats sont dans shared_k3_inclusion_six_resistant_blocks.json.
+La regle renforce les prochaines tranches; on ne refait pas les anciennes.

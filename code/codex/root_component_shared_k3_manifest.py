@@ -71,6 +71,7 @@ def assemble(cover_directory,results_directory,colours_path,orbits_path,allow_pa
             totals.update(r['counts']);seen[ci][bi]=1
         files.append({'path':str(path),'sha256':digest(path),'core':ci,'covered':len(data['cases']),
                       'program_sha256':data.get('program_sha256'),
+                      'inclusion_filter_sha256':data.get('inclusion_filter_sha256'),
                       'profile_solver_sha256':data.get('profile_solver_sha256')})
     covered=sum(sum(flags) for flags in seen.values());expected=sum(map(len,seen.values()))
     complete=not missing_covers and covered==expected

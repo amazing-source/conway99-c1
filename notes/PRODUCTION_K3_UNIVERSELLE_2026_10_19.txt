@@ -53,6 +53,8 @@ Une exclusion provient successivement de :
 - bornes C2 lors de l'ajout de Q12;
 - domaines exacts des60 profils manquants, capacites des paires;
 - egalites de quotas de lettres et comptes des regions N et Z;
+- inclusions entre contributions : e implique f force t_e<=t_f;
+  l'egalite interdit les profils contenant f sans e;
 - compatibilites C2 entre sommets manquants;
 - si necessaire, choix simultane des60 profils par une formule CNF.
 Dans le dernier cas, une preuve RUP est exportee ET controlee avant
@@ -101,6 +103,12 @@ Glucose3 trouve une preuve plus courte pour ce meme bloc : les unites
 Fichiers shared_k3_core000_b100106_short.drup/.json. Glucose3 est
 desormais le solveur par defaut; trois conflits,0.09375 CPU seconde.
 Ces deux interdictions ne sont valables que pour ce bloc24 fixe.
+
+Suite03h07 : le lemme d'inclusion remplace meme cette disjonction.
+Toute contribution a (15,17) contribue a (15,23), alors que les demandes
+sont2 et1. Les6 anciens blocs UNSAT sont tous fermes par le nouveau
+filtre sans SAT. Les anciennes tranches restent valables et ne sont pas
+recalculees. Les nouvelles enregistrent le hash du module d'inclusion.
 
 Correction d'export necessaire sur ce Windows : PySAT get_proof()
 lisait les seuls tampons C deja ecrits. Un fflush du runtime C avant
