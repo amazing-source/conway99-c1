@@ -65,8 +65,10 @@ def run(prefix, it, mark, hubs, signed, cpu_s):
     with prefix.with_suffix('.driver.log').open('wb') as log:
         r = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT,
                            creationflags=0x08000000 if sys.platform == 'win32' else 0)
-    assert r.returncode == 0, ('wrapper failed', str(prefix), r.returncode)
-    return time.time() - t, sha(cover)
+    # v2 (19/10 13:10 local): a failing wrapper run is an inconclusive attempt, never an exclusion (e.g. drat-trim
+    # exits 1 on a 'trivial UNSAT' formula although it prints 's VERIFIED'; Codex's checker then raises).  The ladder
+    # moves on to the next model.
+    return time.time() - t, sha(cover), r.returncode
 
 
 def check(prefix, it, mark, hubs, signed, cover_sha, ref):
@@ -133,7 +135,12 @@ for idx, it in enumerate(items):
             corners = [y for y, q in enumerate(outside) if {l // 2 for l in q} == set(mark)]
             hubs = [corners[c] for c in cids]
             ref['corner_ids'] = cids
-            wall, cover_sha = run(prefix, it, mark, hubs, signed, cpu_s)
+            wall, cover_sha, rc = run(prefix, it, mark, hubs, signed, cpu_s)
+            if rc != 0:
+                row['attempts'].append({'model': name, 'grid_row_corners': cids, 'signed_core': signed,
+                                        'status': 'WRAPPER_ERROR', 'returncode': rc, 'excluded': False,
+                                        'wall_seconds': round(wall, 2), 'prefix': str(prefix.relative_to(OUT))})
+                continue
             excluded, status, cpu, conflicts, clauses, proof = check(prefix, it, mark, hubs, signed, cover_sha, ref)
             prune(prefix, keep_input=first)
             first = False

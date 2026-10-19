@@ -215,6 +215,16 @@ if os.path.exists("p3nb_closed.json") and os.path.exists("p3nb_members.json"):
 if os.path.exists("k2bc_closed.json") and os.path.exists("k2bc_members.json"):
     for t in json.load(open("k2bc_members.json"))["members"]:
         methods[("gz", int(t))].add("K2BC")
+# Second-order count design (LAB 19/10, uniform_test_2026-10-19): exact Farkas certificate of the z2 LP, checked by the
+# independent standard-library verifier z2_verify.py (own state catalogue); under E3; adversarial review 19/10 sound.
+# Only the templates listed in z2_certified.json (certificate files and hashes) are counted.
+if os.path.exists("z2_certified.json"):
+    for t in json.load(open("z2_certified.json"))["templates"]:
+        methods[("gz", int(t["index"]))].add("Z2C")
+# Codex's certificates not captured by the zscan1 rule (codex_extra_closures.json, with references)
+if os.path.exists("codex_extra_closures.json"):
+    for t in json.load(open("codex_extra_closures.json"))["templates"]:
+        methods[("gz", int(t["index"]))].add("CXC")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")
