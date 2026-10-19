@@ -45,7 +45,7 @@ def assemble(cover_directory,results_directory,colours_path,orbits_path,allow_pa
             assert c['status']=='COMPLETE_20_VERTEX_COVER'
             assert len(c['boundaries_hex'])==c['boundary_count']
             covers[ci]=c;seen[ci]=bytearray(c['boundary_count'])
-    totals=Counter();verdicts=Counter();proofs=0;files=[]
+    totals=Counter();verdicts=Counter();proofs=0;pair_proofs=0;files=[]
     for path in sorted(results_directory.iterdir()):
         if not (path.name.endswith('.json') or path.name.endswith('.json.gz')):continue
         data=read(path);ci=data['core_index'];assert ci in covers
@@ -68,12 +68,16 @@ def assemble(cover_directory,results_directory,colours_path,orbits_path,allow_pa
                     assert certificate['proof_check']['empty_clause_verified']
                     assert 'rup_proof' in c
                     proofs+=1
+                if status=='EXCLUDED_T_PAIR_COVER':
+                    assert certificate['proof_check']['root_refuted'] and certificate['proof_dag']
+                    pair_proofs+=1
             totals.update(r['counts']);seen[ci][bi]=1
         files.append({'path':str(path),'sha256':digest(path),'core':ci,'covered':len(data['cases']),
                       'program_sha256':data.get('program_sha256'),
                       'inclusion_filter_sha256':data.get('inclusion_filter_sha256'),
                       'triplet_filter_sha256':data.get('triplet_filter_sha256'),
                       'matching_filter_sha256':data.get('matching_filter_sha256'),
+                      'pair_cover_sha256':data.get('pair_cover_sha256'),
                       'profile_solver_sha256':data.get('profile_solver_sha256')})
     covered=sum(sum(flags) for flags in seen.values());expected=sum(map(len,seen.values()))
     complete=not missing_covers and covered==expected
@@ -85,6 +89,7 @@ def assemble(cover_directory,results_directory,colours_path,orbits_path,allow_pa
             'missing_core_covers':missing_covers,'expected_from_available_covers':expected,
             'covered_borders':covered,'coverage_by_core':{str(ci):{'expected':len(f),'covered':sum(f)} for ci,f in seen.items()},
             'search_counts':dict(totals),'frontier_verdicts':dict(verdicts),'checked_rup_proofs':proofs,
+            'checked_pair_cover_proofs':pair_proofs,
             'source_sha256':{**sources,str(colours_path):digest(colours_path),str(orbits_path):digest(orbits_path)},
             'result_files':files,'family_excluded':complete,'global_Conway_exclusion':False}
 

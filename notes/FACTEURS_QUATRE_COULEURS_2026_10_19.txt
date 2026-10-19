@@ -231,7 +231,7 @@ Cette enumeration peut etre faite une seule fois, sans choisir K.
 X est l'ensemble des24 sommets des six rectangles sur {0,1,2,3}.
 Chaque sommet de X voit un coin de chacune des trois grilles Y,
 et deux sommets de X ne peuvent avoir le meme triplet (mu=2).
-Tous les autres sommets voient au plus une grille Y. Il en resulte
+Tous les autres sommets de Gamma voient au plus une grille Y. Il en resulte
 que les trois marges du sous-ensemble de24 triplets sont exactement
 M_uv=2-|lettres(u) inter lettres(v)| entre grilles differentes.
 
@@ -305,3 +305,85 @@ pas la famille universelle.
 
 Reproduction du catalogue816/34 :
 python -I code/codex/root_component_k3_triplets.py --output nouveau_fichier.json
+
+DIAGNOSTIC MICROSCOPIQUE DU BORD36848 DU COEUR27
+
+La selection des seuls12 profils de T, en imposant le couplage parfait,
+les marges Y et les plafonds des lettres, est deja impossible :1740
+variables et4786 clauses, preuveRUP. En supprimant les contraintesC2
+entre les nouveaux sommets, elle reste impossible; en supprimant les
+plafonds de lettres, elle devient satisfiable. Ce diagnostic localise
+le conflit dans le raccordement et les quotas, sans utiliser les48
+autres profils manquants. Fichiers shared_k3_core027_T_only.cnf/.json
+et shared_k3_core027_T_groups_flushed.json.
+
+On peut remplacer ce SAT par un calcul combinatoire encore plus petit.
+Pour chacune des six lettres l=0..5, regrouper les deux sommets (l,6)
+et (l,7). Ils doivent utiliser deux sommets distincts de S, deux triplets
+distincts, respecter le quota de la lettre l et ne pas avoir deux
+voisins connus communs (ils ont deja la lettre l en commun).
+En oubliant leur orientation6/7, chaque option couvre quatre objets :
+deux raccordements de S et deux triplets. Il faut choisir une option
+dans chacun des six groupes pour couvrir exactement les24 objets.
+
+Le bord36848 donne13,12,20,8,21,29 options par groupe. Le probleme de
+couverture est impossible; l'arbre complet comporte89 etats seulement.
+Le certificat est un DAG contenant toutes les branches possibles,
+avec des feuilles ou un objet est devenu inaccessible ou un groupe
+n'a plus d'option. Son lecteur verifie la couverture des branches et
+les deficits par comptage, sans refaire de recherche. Un controle
+supprimant volontairement une branche est bien rejete.
+
+Module reusable : root_component_k3_pair_cover.py. Le filtre s'applique
+lorsque la projectionY a un seul ensemble de12 triplets. Il conserve
+une limite de noeuds : l'atteindre donne UNKNOWN, jamais une exclusion.
+Certificat : shared_k3_core027_T_pair_checked.json. Une tentative de
+certificat lineaire dual n'a pas abouti; les equations modulo2 restent
+compatibles (rang27). La preuve retenue est la couverture finie89etats.
+
+Correction d'export diagnostique : il faut vider le tampon C des
+solveurs avec preuve MEME lorsqu'ils retournent SAT. Sinon une suite
+SAT/UNSAT dans le meme processus peut melanger des lignes de preuve
+apres reutilisation d'un descripteur. La sequence de quatre modeles
+reduits reproduit le probleme; en vidant chaque solveur avant fermeture,
+la preuve du modele final est identique a celle du calcul isole et tous
+les controlesRUP passent. Aucun verdict dont la preuve a ete refusee
+n'est utilise dans les certificats de production.
+
+CINQ COEURS FERMES ET FILTRES INTEGRES
+
+Coeur21 :67820 bords,106565 blocs24,186.8125 secondes CPU, aucun SAT;
+96503 margesY,6399 capacites,3237 domaines vides,337 propagations,
+56 obstructions de Hall et33 inclusions.
+Coeur25 :67820 bords,131443 blocs24,275.90625 secondes CPU, aucun SAT;
+112619 margesY,11992 capacites,6123 domaines vides,547 propagations,
+100 Hall et62 inclusions.
+
+Les cinq coeurs1,21,22,25,27 sont complets. Avec les9106 bords deja
+traites du coeur0,263008 positions sont exclues sur2742342. Le
+manifeste progress_five_complete_20261019 reste PARTIEL pour la famille.
+Les coeurs20/23 sont en outre exclus analytiquement avant ce catalogue.
+
+La couverture par six paires est maintenant integree avant le SAT
+global. Sur TOUS les raccordements du bord36848 du coeur27, elle ferme
+l'unique resistant, les trois autres raccordements echouant deja aux
+filtres; plus aucun SAT n'est necessaire pour ce bord. Les anciennes
+preuves restent valables et les anciennes tranches ne sont pas refaites.
+Le test positif construit une couverture de six paires disjointes et
+est accepte. Les preuves de branches sont signalees separement des RUP
+dans les nouveaux manifestes.
+
+L'export de preuve vide maintenant le tampon natif pour chaque statut,
+SAT et UNKNOWN compris, avant fermeture. Le controle repete la sequence
+SAT/UNSAT/SAT/UNSAT sans lire les preuves SAT : les deux preuves UNSAT
+sont controlees, la derniere est identique au calcul isole.
+shared_k3_native_flush_control.json. Le module SAT est charge au debut
+du parcours et son hash exact est conserve pour chaque tranche.
+
+Le garde CPU acceptait les scripts root_component mais pas les pilotes
+passes par stdin. Ceux-ci restaient limites a un coeur par leur propre
+limiteur. Le garde accepte maintenant AdditionalRootPids explicites;
+le lot21/25 a ete suivi ainsi (PID26488, garde4108), avec seuil70 et
+reprise60. Les futurs lots doivent de preference appeler un script
+root_component pour etre detectes automatiquement. Aucun programme
+de l'utilisateur n'a ete modifie.

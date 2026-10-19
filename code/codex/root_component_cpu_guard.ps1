@@ -4,7 +4,8 @@ param(
     [ValidateRange(1,70)][int]$ResumeBelow = 50,
     [ValidateRange(50,74)][int]$PauseAt = 65,
     [ValidateRange(1,60)][int]$MinimumPauseSeconds = 15,
-    [ValidateRange(0,62)][int]$CoreOffset = 0
+    [ValidateRange(0,62)][int]$CoreOffset = 0,
+    [int[]]$AdditionalRootPids = @()
 )
 # All campaign workers share one affinity mask. Only our research Python
 # process trees are changed; other applications are left to their owner.
@@ -83,7 +84,8 @@ try { while ($true) {
     $taskProcesses = @(Get-CimInstance Win32_Process)
     $taskIds = [System.Collections.Generic.HashSet[int]]::new()
     foreach ($taskProcess in $taskProcesses) {
-        if ($taskProcess.Name -eq 'python.exe' -and $taskProcess.CommandLine -match 'code[/\\]codex[/\\]root_component_') {
+        if (($taskProcess.Name -eq 'python.exe' -and $taskProcess.CommandLine -match 'code[/\\]codex[/\\]root_component_') -or
+            $AdditionalRootPids -contains [int]$taskProcess.ProcessId) {
             [void]$taskIds.Add([int]$taskProcess.ProcessId)
         }
     }

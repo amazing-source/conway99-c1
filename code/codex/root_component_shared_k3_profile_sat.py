@@ -20,6 +20,8 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from root_component_resources import atomic_json_write,limit_research_process
 from root_component_shared_k3_extend import OUTSIDE,frontier
 
+LOADED_SOURCE_SHA256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
 
 def encode(data):
     from pysat.formula import CNF,IDPool
@@ -110,18 +112,24 @@ def check_rup(cnf,proof):
     return {'checked_additions':checked,'empty_clause_verified':empty,'deletions_ignored':True}
 
 
-def finished_proof(solver):
-    """Flush the native writer before reading its proof on Windows.
+def flush_native_proof():
+    """Flush native proof streams before reading OR closing a solver.
 
     The installed PySAT reader sees only complete C stdio buffers while
     the solver is alive. Python file flush and the native destructor do
-    not flush that stream in this build; UCRT fflush does.
+    not flush that stream in this build; UCRT fflush does. A SAT solver
+    also emits learned clauses, whose pending buffer must not survive
+    closure and contaminate a later reused file descriptor.
     """
     import ctypes
     runtime=ctypes.CDLL('ucrtbase' if sys.platform=='win32' else None)
     runtime.fflush.argtypes=[ctypes.c_void_p]
     runtime.fflush.restype=ctypes.c_int
     assert runtime.fflush(None)==0
+
+
+def finished_proof(solver):
+    flush_native_proof()
     return solver.get_proof()
 
 
@@ -129,11 +137,12 @@ def select_profiles(data,conflicts=100000,solver_name='g3'):
     from pysat.solvers import Solver
     start=time.process_time();cnf,variables,kinds=encode(data)
     out={'variables':cnf.nv,'clauses':len(cnf.clauses),'clause_kinds':kinds,
-         'solver':solver_name,'is_complete_graph':False}
+         'solver':solver_name,'is_complete_graph':False,'profile_solver_sha256':LOADED_SOURCE_SHA256}
     proof=None
     with Solver(name=solver_name,bootstrap_with=cnf.clauses,with_proof=True) as solver:
         solver.conf_budget(conflicts)
         answer=solver.solve_limited()
+        flush_native_proof()
         out['solver_statistics']=solver.accum_stats()
         if answer is None:out['status']='UNKNOWN'
         elif answer:

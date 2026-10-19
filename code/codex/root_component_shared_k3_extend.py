@@ -23,6 +23,7 @@ from root_component_shared_k3_boundary import matching_catalogue
 from root_component_profile_inclusion import inclusion_filter
 from root_component_k3_triplets import from_block as triplet_projection
 from root_component_profile_matching import matching_support
+from root_component_k3_pair_cover import pair_cover
 
 # Freeze hashes when this implementation is loaded. Long-lived shard
 # workers may continue while another process updates the working tree.
@@ -32,6 +33,7 @@ LOADED_SOURCE_HASHES={key:hashlib.sha256(Path(__file__).with_name(name).read_byt
         ('inclusion_filter_sha256','root_component_profile_inclusion.py'),
         ('triplet_filter_sha256','root_component_k3_triplets.py'),
         ('matching_filter_sha256','root_component_profile_matching.py'),
+        ('pair_cover_sha256','root_component_k3_pair_cover.py'),
         ('profile_solver_sha256','root_component_shared_k3_profile_sat.py'))}
 
 P4 = tuple(permutations(range(4)))
@@ -348,14 +350,19 @@ def solve(core,boundary,attachments,exact_profiles=False):
     counts=Counter();certificates=[]
     for attached in attachments.for_boundary(boundary):
         rows=materialize(core,boundary,attached);counts['valid_partial24']+=1
-        certificate=frontier(rows)
+        certificate=frontier(rows,keep_domains=exact_profiles)
         if certificate['status'].startswith('EXCLUDED_'):
             counts['frontier_obstructions']+=1
             certificates.append({'attachments':attached,'certificate':certificate})
             continue
         if exact_profiles:
             from root_component_shared_k3_profile_sat import select_profiles
-            exact,cnf,proof=select_profiles(frontier(rows,True))
+            lifted=pair_cover(certificate)
+            if lifted['status']=='EXCLUDED_T_PAIR_COVER':
+                counts['pair_cover_obstructions']+=1
+                certificates.append({'attachments':attached,'certificate':lifted})
+                continue
+            exact,cnf,proof=select_profiles(certificate)
             counts['exact_profile_selections']+=1
             if exact['status']=='EXCLUDED_PROFILE_SELECTION_UNSAT':
                 counts['exact_profile_unsat']+=1
@@ -363,7 +370,7 @@ def solve(core,boundary,attachments,exact_profiles=False):
                 continue
             return {'status':exact['status'],'counts':dict(counts),
                     'witness':{'attachments':attached,'rows':rows,'selection':exact,
-                               'frontier':frontier(rows,True)},'is_complete_graph':False}
+                               'frontier':certificate},'is_complete_graph':False}
         return {'status':'FEASIBLE_PARTIAL24_FRONTIER','counts':dict(counts),
                 'witness':{'attachments':attached,'rows':rows,'frontier':frontier(rows,True)},
                 'is_complete_graph':False}
@@ -379,6 +386,12 @@ def main():
     parser.add_argument('--start',type=int,default=0)
     parser.add_argument('--exact-profiles',action='store_true')
     args=parser.parse_args();assert not args.output.exists()
+    source_hashes=dict(LOADED_SOURCE_HASHES)
+    if args.exact_profiles:
+        # Load the lazy SAT dependency before the campaign starts, and
+        # record its own import-time hash across successive shards.
+        from root_component_shared_k3_profile_sat import LOADED_SOURCE_SHA256
+        source_hashes['profile_solver_sha256']=LOADED_SOURCE_SHA256
     resources=limit_research_process(1);start=time.process_time()
     source=json.loads(gzip.decompress(args.boundaries.read_bytes()))
     assert source['status']=='COMPLETE_20_VERTEX_COVER'
@@ -389,7 +402,7 @@ def main():
          'total_boundaries':source['boundary_count'],'whole_family_excluded':False,
          'exact_profiles':args.exact_profiles,
          'requested_start':args.start,'requested_max_boundaries':args.max_boundaries,
-         **LOADED_SOURCE_HASHES}
+         **source_hashes}
     for bi,hex_state in enumerate(source['boundaries_hex']):
         if bi<args.start:continue
         if args.max_boundaries and len(out['cases'])>=args.max_boundaries:break

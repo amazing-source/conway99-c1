@@ -1,0 +1,1191 @@
+{
+  "source_boundary": 36848,
+  "result": {
+    "status": "EXCLUDED_BY_FACTOR_JOIN_AND_FRONTIER",
+    "counts": {
+      "valid_partial24": 4,
+      "pair_cover_obstructions": 1,
+      "frontier_obstructions": 3
+    },
+    "frontier_certificates": [
+      {
+        "attachments": [
+          [
+            0,
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            0,
+            2,
+            1
+          ]
+        ],
+        "certificate": {
+          "group_sizes": [
+            13,
+            12,
+            20,
+            8,
+            21,
+            29
+          ],
+          "option_masks": [
+            [
+              "0xa0500",
+              "0xa0600",
+              "0xa0900",
+              "0xa0a00",
+              "0x110300",
+              "0x110900",
+              "0x120300",
+              "0x120900",
+              "0x120a00",
+              "0x420300",
+              "0x480600",
+              "0x480a00",
+              "0x500a00"
+            ],
+            [
+              "0x3c00",
+              "0x9600",
+              "0xaa00",
+              "0x11500",
+              "0x41c00",
+              "0x42c00",
+              "0x48600",
+              "0x48a00",
+              "0x50500",
+              "0x50900",
+              "0x88600",
+              "0x88a00"
+            ],
+            [
+              "0x1800a",
+              "0x18022",
+              "0x18028",
+              "0x30012",
+              "0x30018",
+              "0x30030",
+              "0x88028",
+              "0xa0018",
+              "0x108028",
+              "0x11000a",
+              "0x110028",
+              "0x40800a",
+              "0x408022",
+              "0x420012",
+              "0x48000a",
+              "0x50000a",
+              "0x810022",
+              "0x810028",
+              "0x880028",
+              "0x900028"
+            ],
+            [
+              "0x9088",
+              "0xc088",
+              "0x21090",
+              "0x24090",
+              "0x41084",
+              "0x60014",
+              "0x20800a",
+              "0x220012"
+            ],
+            [
+              "0x9022",
+              "0x9060",
+              "0x90a0",
+              "0x11022",
+              "0x11042",
+              "0x11060",
+              "0x11082",
+              "0x110a0",
+              "0x41006",
+              "0x41044",
+              "0x41084",
+              "0x50006",
+              "0x50024",
+              "0x88021",
+              "0x88030",
+              "0x90003",
+              "0x90012",
+              "0x90021",
+              "0x90030",
+              "0xc0005",
+              "0xc0014"
+            ],
+            [
+              "0x3003",
+              "0x3006",
+              "0x300a",
+              "0x3041",
+              "0x3044",
+              "0x3048",
+              "0x5042",
+              "0x6041",
+              "0x6044",
+              "0x6048",
+              "0x202003",
+              "0x202006",
+              "0x20200a",
+              "0x202041",
+              "0x202044",
+              "0x202048",
+              "0x801003",
+              "0x801006",
+              "0x801041",
+              "0x801044",
+              "0x802005",
+              "0x802009",
+              "0x80200c",
+              "0x804041",
+              "0x804044",
+              "0xa00003",
+              "0xa00006",
+              "0xa00041",
+              "0xa00044"
+            ]
+          ],
+          "status": "EXCLUDED_T_PAIR_COVER",
+          "nodes": 89,
+          "proof_dag": {
+            "34/15bf88": {
+              "uncoverable_slots": "0x80020"
+            },
+            "34/16bf88": {
+              "uncoverable_slots": "0x400000"
+            },
+            "34/46bf88": {
+              "uncoverable_slots": "0x100000"
+            },
+            "35/4bc88": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "34/15bf88"
+                },
+                {
+                  "option": "0x120300",
+                  "child": "34/16bf88"
+                },
+                {
+                  "option": "0x420300",
+                  "child": "34/46bf88"
+                }
+              ]
+            },
+            "35/59588": {
+              "uncoverable_slots": "0x20"
+            },
+            "35/59988": {
+              "uncoverable_slots": "0x100020"
+            },
+            "37/9088": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x42c00",
+                  "child": "35/4bc88"
+                },
+                {
+                  "option": "0x50500",
+                  "child": "35/59588"
+                },
+                {
+                  "option": "0x50900",
+                  "child": "35/59988"
+                }
+              ]
+            },
+            "33/3c09a": {
+              "uncoverable_slots": "0x120"
+            },
+            "33/3c0b8": {
+              "uncoverable_slots": "0x100"
+            },
+            "32/53c39a": {
+              "uncoverable_slots": "0x20"
+            },
+            "32/53c99a": {
+              "uncoverable_slots": "0x620"
+            },
+            "33/42c09a": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "32/53c39a"
+                },
+                {
+                  "option": "0x110900",
+                  "child": "32/53c99a"
+                }
+              ]
+            },
+            "31/81fcaa": {
+              "uncoverable_slots": "0x200040"
+            },
+            "31/85dcaa": {
+              "uncoverable_slots": "0x80010"
+            },
+            "31/85ecaa": {
+              "uncoverable_slots": "0x281055"
+            },
+            "33/81c0aa": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x3c00",
+                  "child": "31/81fcaa"
+                },
+                {
+                  "option": "0x41c00",
+                  "child": "31/85dcaa"
+                },
+                {
+                  "option": "0x42c00",
+                  "child": "31/85ecaa"
+                }
+              ]
+            },
+            "37/c088": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x30012",
+                  "child": "33/3c09a"
+                },
+                {
+                  "option": "0x30030",
+                  "child": "33/3c0b8"
+                },
+                {
+                  "option": "0x420012",
+                  "child": "33/42c09a"
+                },
+                {
+                  "option": "0x810022",
+                  "child": "33/81c0aa"
+                }
+              ]
+            },
+            "24/1fbfb1": {
+              "uncoverable_slots": "0x400008"
+            },
+            "34/173f90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0x88021",
+                  "child": "24/1fbfb1"
+                }
+              ]
+            },
+            "36/131390": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x42c00",
+                  "child": "34/173f90"
+                }
+              ]
+            },
+            "34/179f90": {
+              "group": 4,
+              "children": []
+            },
+            "34/1b9f90": {
+              "uncoverable_slots": "0x440020"
+            },
+            "36/131990": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x48600",
+                  "child": "34/179f90"
+                },
+                {
+                  "option": "0x88600",
+                  "child": "34/1b9f90"
+                }
+              ]
+            },
+            "34/4f1f90": {
+              "group": 4,
+              "children": []
+            },
+            "36/4a1690": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x50900",
+                  "child": "34/4f1f90"
+                }
+              ]
+            },
+            "36/4a1a90": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x50500",
+                  "child": "34/4f1f90"
+                }
+              ]
+            },
+            "24/5f9fb1": {
+              "group": 2,
+              "children": []
+            },
+            "34/571f90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0x88021",
+                  "child": "24/5f9fb1"
+                }
+              ]
+            },
+            "36/521a90": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x50500",
+                  "child": "34/571f90"
+                }
+              ]
+            },
+            "37/21090": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "36/131390"
+                },
+                {
+                  "option": "0x110900",
+                  "child": "36/131990"
+                },
+                {
+                  "option": "0x480600",
+                  "child": "36/4a1690"
+                },
+                {
+                  "option": "0x480a00",
+                  "child": "36/4a1a90"
+                },
+                {
+                  "option": "0x500a00",
+                  "child": "36/521a90"
+                }
+              ]
+            },
+            "24/1bffb1": {
+              "uncoverable_slots": "0x440008"
+            },
+            "24/1f7f95": {
+              "uncoverable_slots": "0xa00040"
+            },
+            "34/137f90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0x88021",
+                  "child": "24/1bffb1"
+                },
+                {
+                  "option": "0xc0005",
+                  "child": "24/1f7f95"
+                }
+              ]
+            },
+            "24/1fdfb1": {
+              "uncoverable_slots": "0x400000"
+            },
+            "34/175f90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0x88021",
+                  "child": "24/1fdfb1"
+                }
+              ]
+            },
+            "24/17ffb2": {
+              "uncoverable_slots": "0x480008"
+            },
+            "20/5ffffa": {
+              "uncoverable_slots": "0xa00005"
+            },
+            "24/17fff0": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x48000a",
+                  "child": "20/5ffffa"
+                }
+              ]
+            },
+            "24/1fefb1": {
+              "uncoverable_slots": "0x400008"
+            },
+            "34/176f90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0x9022",
+                  "child": "24/17ffb2"
+                },
+                {
+                  "option": "0x9060",
+                  "child": "24/17fff0"
+                },
+                {
+                  "option": "0x88021",
+                  "child": "24/1fefb1"
+                }
+              ]
+            },
+            "36/134390": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x3c00",
+                  "child": "34/137f90"
+                },
+                {
+                  "option": "0x41c00",
+                  "child": "34/175f90"
+                },
+                {
+                  "option": "0x42c00",
+                  "child": "34/176f90"
+                }
+              ]
+            },
+            "24/1fdf95": {
+              "uncoverable_slots": "0xc00020"
+            },
+            "34/13df90": {
+              "group": 4,
+              "children": [
+                {
+                  "option": "0xc0005",
+                  "child": "24/1fdf95"
+                }
+              ]
+            },
+            "34/17cf90": {
+              "group": 4,
+              "children": []
+            },
+            "34/1bcf90": {
+              "uncoverable_slots": "0x400020"
+            },
+            "36/134990": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x9600",
+                  "child": "34/13df90"
+                },
+                {
+                  "option": "0x48600",
+                  "child": "34/17cf90"
+                },
+                {
+                  "option": "0x88600",
+                  "child": "34/1bcf90"
+                }
+              ]
+            },
+            "30/5fcfb8": {
+              "group": 4,
+              "children": []
+            },
+            "30/df4fb8": {
+              "uncoverable_slots": "0x8000"
+            },
+            "34/4f4f90": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x108028",
+                  "child": "30/5fcfb8"
+                },
+                {
+                  "option": "0x900028",
+                  "child": "30/df4fb8"
+                }
+              ]
+            },
+            "36/4a4690": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x50900",
+                  "child": "34/4f4f90"
+                }
+              ]
+            },
+            "34/4b5f90": {
+              "uncoverable_slots": "0x40000"
+            },
+            "36/4a4a90": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/4b5f90"
+                },
+                {
+                  "option": "0x50500",
+                  "child": "34/4f4f90"
+                }
+              ]
+            },
+            "30/5bdfb8": {
+              "uncoverable_slots": "0x40000"
+            },
+            "30/db5fb8": {
+              "uncoverable_slots": "0x48000"
+            },
+            "34/535f90": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x88028",
+                  "child": "30/5bdfb8"
+                },
+                {
+                  "option": "0x880028",
+                  "child": "30/db5fb8"
+                }
+              ]
+            },
+            "34/574f90": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x88028",
+                  "child": "30/5fcfb8"
+                },
+                {
+                  "option": "0x880028",
+                  "child": "30/df4fb8"
+                }
+              ]
+            },
+            "36/524a90": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/535f90"
+                },
+                {
+                  "option": "0x50500",
+                  "child": "34/574f90"
+                }
+              ]
+            },
+            "37/24090": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "36/134390"
+                },
+                {
+                  "option": "0x110900",
+                  "child": "36/134990"
+                },
+                {
+                  "option": "0x480600",
+                  "child": "36/4a4690"
+                },
+                {
+                  "option": "0x480a00",
+                  "child": "36/4a4a90"
+                },
+                {
+                  "option": "0x500a00",
+                  "child": "36/524a90"
+                }
+              ]
+            },
+            "34/ebf84": {
+              "uncoverable_slots": "0x10"
+            },
+            "35/4ba84": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0xa0500",
+                  "child": "34/ebf84"
+                }
+              ]
+            },
+            "35/c9684": {
+              "group": 4,
+              "children": []
+            },
+            "35/c9a84": {
+              "uncoverable_slots": "0x500"
+            },
+            "37/41084": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0xaa00",
+                  "child": "35/4ba84"
+                },
+                {
+                  "option": "0x88600",
+                  "child": "35/c9684"
+                },
+                {
+                  "option": "0x88a00",
+                  "child": "35/c9a84"
+                }
+              ]
+            },
+            "34/173f14": {
+              "uncoverable_slots": "0x80"
+            },
+            "36/170314": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x3c00",
+                  "child": "34/173f14"
+                }
+              ]
+            },
+            "34/179f14": {
+              "uncoverable_slots": "0x80"
+            },
+            "34/1f8f14": {
+              "uncoverable_slots": "0x4000a0"
+            },
+            "36/170914": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x9600",
+                  "child": "34/179f14"
+                },
+                {
+                  "option": "0x88600",
+                  "child": "34/1f8f14"
+                }
+              ]
+            },
+            "36/4e0614": {
+              "uncoverable_slots": "0x900"
+            },
+            "34/4f1f14": {
+              "uncoverable_slots": "0x80"
+            },
+            "36/4e0a14": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/4f1f14"
+                }
+              ]
+            },
+            "34/571f14": {
+              "uncoverable_slots": "0x80"
+            },
+            "36/560a14": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/571f14"
+                }
+              ]
+            },
+            "37/60014": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "36/170314"
+                },
+                {
+                  "option": "0x110900",
+                  "child": "36/170914"
+                },
+                {
+                  "option": "0x480600",
+                  "child": "36/4e0614"
+                },
+                {
+                  "option": "0x480a00",
+                  "child": "36/4e0a14"
+                },
+                {
+                  "option": "0x500a00",
+                  "child": "36/560a14"
+                }
+              ]
+            },
+            "33/23803a": {
+              "uncoverable_slots": "0x100"
+            },
+            "37/20800a": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x30030",
+                  "child": "33/23803a"
+                }
+              ]
+            },
+            "36/330312": {
+              "uncoverable_slots": "0x400000"
+            },
+            "36/330912": {
+              "uncoverable_slots": "0x400000"
+            },
+            "30/7f8f3a": {
+              "uncoverable_slots": "0x80"
+            },
+            "30/ff0f3a": {
+              "uncoverable_slots": "0x8080"
+            },
+            "34/6f0f12": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x108028",
+                  "child": "30/7f8f3a"
+                },
+                {
+                  "option": "0x900028",
+                  "child": "30/ff0f3a"
+                }
+              ]
+            },
+            "36/6a0612": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x50900",
+                  "child": "34/6f0f12"
+                }
+              ]
+            },
+            "34/6b1f12": {
+              "uncoverable_slots": "0x40080"
+            },
+            "36/6a0a12": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/6b1f12"
+                },
+                {
+                  "option": "0x50500",
+                  "child": "34/6f0f12"
+                }
+              ]
+            },
+            "34/731f12": {
+              "uncoverable_slots": "0x80"
+            },
+            "34/770f12": {
+              "group": 2,
+              "children": [
+                {
+                  "option": "0x88028",
+                  "child": "30/7f8f3a"
+                },
+                {
+                  "option": "0x880028",
+                  "child": "30/ff0f3a"
+                }
+              ]
+            },
+            "36/720a12": {
+              "group": 1,
+              "children": [
+                {
+                  "option": "0x11500",
+                  "child": "34/731f12"
+                },
+                {
+                  "option": "0x50500",
+                  "child": "34/770f12"
+                }
+              ]
+            },
+            "37/220012": {
+              "group": 0,
+              "children": [
+                {
+                  "option": "0x110300",
+                  "child": "36/330312"
+                },
+                {
+                  "option": "0x110900",
+                  "child": "36/330912"
+                },
+                {
+                  "option": "0x480600",
+                  "child": "36/6a0612"
+                },
+                {
+                  "option": "0x480a00",
+                  "child": "36/6a0a12"
+                },
+                {
+                  "option": "0x500a00",
+                  "child": "36/720a12"
+                }
+              ]
+            },
+            "3f/0": {
+              "group": 3,
+              "children": [
+                {
+                  "option": "0x9088",
+                  "child": "37/9088"
+                },
+                {
+                  "option": "0xc088",
+                  "child": "37/c088"
+                },
+                {
+                  "option": "0x21090",
+                  "child": "37/21090"
+                },
+                {
+                  "option": "0x24090",
+                  "child": "37/24090"
+                },
+                {
+                  "option": "0x41084",
+                  "child": "37/41084"
+                },
+                {
+                  "option": "0x60014",
+                  "child": "37/60014"
+                },
+                {
+                  "option": "0x20800a",
+                  "child": "37/20800a"
+                },
+                {
+                  "option": "0x220012",
+                  "child": "37/220012"
+                }
+              ]
+            }
+          },
+          "proof_check": {
+            "checked_states": 89,
+            "root_refuted": true
+          }
+        }
+      },
+      {
+        "attachments": [
+          [
+            2,
+            3,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            3,
+            2
+          ],
+          [
+            0,
+            3,
+            2,
+            1
+          ]
+        ],
+        "certificate": {
+          "status": "EXCLUDED_PROFILE_PROPAGATION",
+          "known_vertex": 18,
+          "upper_letter": 0,
+          "demand": 1,
+          "minimum": 2,
+          "maximum": 4,
+          "rounds": [],
+          "remaining_domain_sizes": [
+            12,
+            12,
+            12,
+            12,
+            5,
+            4,
+            4,
+            5,
+            6,
+            6,
+            6,
+            6,
+            14,
+            13,
+            13,
+            16,
+            10,
+            10,
+            11,
+            11,
+            12,
+            12,
+            12,
+            11,
+            12,
+            10,
+            8,
+            9,
+            12,
+            14,
+            14,
+            16,
+            16,
+            15,
+            12,
+            14,
+            2,
+            2,
+            4,
+            4,
+            12,
+            12,
+            7,
+            7,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            7,
+            9,
+            7,
+            9,
+            8,
+            9,
+            8,
+            9
+          ]
+        }
+      },
+      {
+        "attachments": [
+          [
+            1,
+            2,
+            0,
+            3
+          ],
+          [
+            2,
+            0,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            2,
+            1
+          ]
+        ],
+        "certificate": {
+          "status": "EXCLUDED_PROFILE_CAPACITY",
+          "known_vertices": [
+            1,
+            8
+          ],
+          "demand": 1,
+          "minimum": 0,
+          "maximum": 0,
+          "failed_pairs": 3,
+          "domain_sizes": [
+            12,
+            12,
+            12,
+            12,
+            4,
+            5,
+            5,
+            4,
+            7,
+            7,
+            6,
+            7,
+            14,
+            13,
+            13,
+            16,
+            10,
+            10,
+            15,
+            15,
+            15,
+            15,
+            12,
+            11,
+            15,
+            14,
+            11,
+            11,
+            12,
+            14,
+            10,
+            12,
+            13,
+            12,
+            11,
+            14,
+            3,
+            3,
+            3,
+            3,
+            13,
+            13,
+            5,
+            5,
+            4,
+            4,
+            13,
+            13,
+            7,
+            13,
+            7,
+            13,
+            6,
+            4,
+            6,
+            4,
+            15,
+            9,
+            15,
+            9
+          ]
+        }
+      },
+      {
+        "attachments": [
+          [
+            1,
+            2,
+            3,
+            0
+          ],
+          [
+            2,
+            0,
+            1,
+            3
+          ],
+          [
+            3,
+            0,
+            2,
+            1
+          ]
+        ],
+        "certificate": {
+          "status": "EXCLUDED_PROFILE_CAPACITY",
+          "known_vertices": [
+            1,
+            8
+          ],
+          "demand": 1,
+          "minimum": 0,
+          "maximum": 0,
+          "failed_pairs": 1,
+          "domain_sizes": [
+            12,
+            12,
+            12,
+            12,
+            4,
+            5,
+            5,
+            4,
+            6,
+            7,
+            7,
+            7,
+            14,
+            13,
+            13,
+            16,
+            10,
+            10,
+            15,
+            15,
+            15,
+            15,
+            12,
+            11,
+            15,
+            14,
+            11,
+            11,
+            15,
+            16,
+            10,
+            12,
+            9,
+            9,
+            11,
+            14,
+            6,
+            6,
+            8,
+            8,
+            9,
+            9,
+            7,
+            7,
+            9,
+            9,
+            12,
+            12,
+            6,
+            12,
+            6,
+            12,
+            11,
+            10,
+            11,
+            10,
+            15,
+            14,
+            15,
+            14
+          ]
+        }
+      }
+    ],
+    "is_complete_graph": false
+  }
+}
