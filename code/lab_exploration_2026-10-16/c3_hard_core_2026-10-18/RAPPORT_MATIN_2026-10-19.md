@@ -51,7 +51,7 @@
 - **Ensuite, la famille universelle P3** (deux grilles qui partagent une droite) : **821 gabarits ouverts**. Si elle tombe,
   c = 3 est presque vide.
 
-## État à 03 h UTC
+## État à 00 h 45 UTC (02 h 45 locale)
 
 - **Famille K3 universelle.**
   - Codex a ajouté deux contradictions à la main sur les cœurs : les orbites 20 et 23 tombent par le lemme des 4 facteurs
@@ -63,13 +63,46 @@
   - Les paires de grilles fermées donnent des égalités C2 exactes : 456 solutions par paire, 2 176 pour le triangle de 9302.
   - Pas encore de contradiction.
 
+## État à 03 h 10 UTC (05 h 10 locale) : K3 FERMÉE, P3 prêt pour AWS, 2K2 presque fermée
+
+- **K3 universelle : FERMÉE (261 gabarits ouverts retirés).** Statut : calcul exact, sous E3 (comme 5602 et T23).
+  - Les 2 742 342 bords sont couverts et tous exclus : `family_excluded = true`, 322 preuves RUP contrôlées.
+  - Manifeste : l'assembleur de Codex, sans `--allow-partial`.
+  - Calcul : 56 tranches de Codex, plus 504 tranches calculées en local cette nuit avec son code 587f1fdd inchangé.
+    Mes plages et les siennes forment une partition exacte, vérifiée avant le lancement.
+  - **Registre c = 3 : 1 163 → 902 ouverts** (règle K3U activée par `k3u_closed.json`).
+- **Nouvelle famille 2K2 (548 ouverts) : pas encore fermée, résidu très petit.**
+  - Définition : une paire partagée forcée H_ab = −H_ac, Q_bc grille, et deux grilles disjointes sur les quatre autres
+    droites.
+  - Fait utilisé : deux grilles disjointes sont reliées par un couplage parfait. Ce fait est déjà dans l'archive (commit
+    hc7 du 18/10) ; la nouveauté est son emploi ici. Le couplage crée un troisième voisin commun interdit pour des paires
+    (cœur, grille).
+  - **Étape 1, sans Q12 (complète).** Elle exclut 11 832 des 12 569 bords, sans SAT pour l'essentiel.
+  - **Étape 2, avec Q12 et SAT exact** (accélérée par un cache exact des raccordements en double).
+    - Pour l'instant, seulement 6 bords résiduels : 1 dans chacun des cœurs 6, 8, 75 et 88, et 2 dans le cœur 51.
+    - Le cœur 6, bord 547, a une sélection de profils satisfiable : la sélection seule ne suffit pas.
+    - Mais les **coupes de continuation de Codex** excluent ce raccordement pour tous ses profils (9 clauses, preuve RUP,
+      main d8ba1ce0).
+  - Suite : lister tous les raccordements non exclus de ces quelques bords, puis les coupes de Codex sur chacun. Si tout
+    tombe, 2K2 se ferme.
+- **P3 universelle (821 ouverts, dont les 261 K3).**
+  - Tous les bords échantillonnés sont exclus par une sélection exacte de profils (SAT avec preuve RUP vérifiée).
+  - Coût : environ 105 h CPU avec le cache. Le paquet AWS est prêt pour le réveil : 1 233 tâches, environ 1 h sur
+    128 vCPU.
+- **Effet attendu sur le registre c = 3.**
+  - 1 163 → 902 ouverts : fait (K3).
+  - → 342 si P3 se ferme (AWS). P3 est fermé à 100 % sur l'échantillon, mais 2K2 montre que de rares bords
+    satisfiables peuvent exister ; seule la production complète tranchera.
+  - Rien n'est compté avant les manifestes de couverture complète.
+- **Négatif, utile.** Sans Q12 grille (P3N), ou avec une seule grille Y (K2), la sélection de profils devient
+  satisfiable sur certains bords. Ces deux hypothèses sont donc nécessaires à la méthode.
+
 ## À faire au réveil
 
 - **Reconnexion AWS** (code du téléphone), puis `bash morning_sync.sh` dans le dossier aws_c1. Le script rapatrie les runs
   de la nuit et recalcule le registre.
-- **Lancer la production K3 de Codex en Spot** (paquet en préparation, quelques minutes de calcul). Si la couverture est
-  complète et le manifeste valide : créer `k3u_closed.json` (commit et manifeste) et relancer le registre, ce qui retire
-  261 ouverts.
-- Puis la famille P3 (821 ouverts) : les formes normales sont prêtes (`p3family_normal_forms.json`).
+- **K3** : la production n'a plus besoin d'AWS (calcul local en cours, puis manifeste de Codex).
+- **Lancer la production P3 en Spot** : paquet `p3prod` (1 233 tâches, environ 2 h sur 128 vCPU, quelques dollars), puis
+  `p3_manifest.py`.
 - **Coûts.** Octobre : 52 USD d'usage selon Cost Explorer, couverts par les crédits (avec un jour de retard).
   Consommation Spot de la nuit estimée entre 10 et 15 USD. Solde à vérifier dans la console.

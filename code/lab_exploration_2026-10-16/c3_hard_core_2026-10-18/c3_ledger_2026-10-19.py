@@ -189,6 +189,18 @@ if os.path.exists("t23_hits_all.json"):
 if os.path.exists("k3u_closed.json") and os.path.exists("k3universal_members.json"):
     for t in json.load(open("k3universal_members.json"))["k3"]:
         methods[("gz", int(t))].add("K3U")
+# P3-universal family (H_ab = -H_ac forced, Q_bc grid, two grids sharing a line off {a,b,c}; LAB exact profile SAT
+# with RUP-checked UNSAT, py_extend.py P3): ONLY counted once p3u_closed.json exists (complete p3_manifest.py coverage)
+if os.path.exists("p3u_closed.json") and os.path.exists("k3universal_members.json"):
+    for t in json.load(open("k3universal_members.json"))["p3"]:
+        methods[("gz", int(t))].add("P3U")
+# 2K2 family (LAB 19/10): H_ab = -H_ac forced (both non-grid), Q_bc grid, two DISJOINT grids off {a,b,c} (forced
+# perfect matching sigma between them); two-stage exact computation (2K2N without Q12 on all boundaries, then 2K2 with
+# the Q12 attachments on the survivors; RUP-checked UNSAT); ONLY counted once k2k2_closed.json exists (complete
+# twostage_manifest.py coverage); members from k2k2_members.py (exact rational kernel)
+if os.path.exists("k2k2_closed.json") and os.path.exists("k2k2_members.json"):
+    for t in json.load(open("k2k2_members.json"))["2k2"]:
+        methods[("gz", int(t))].add("2K2")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")
