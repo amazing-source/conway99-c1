@@ -591,3 +591,60 @@ en adaptant le nombre de racines a2. La completion plantee reste admise,
 et une fausse liaison au coin oppose est eliminee. Le filtre generique
 de capacites d'aretes, seul, ne supprime aucun profil des24 blocs P3 :
 ne pas le lancer en production pour un gain non observe.
+
+COUPES A DEUX LIGNES ET A HYPOTHESES PARTIELLES
+
+La seconde selection permet un autre relevement exact. Une demande1
+sur la ligne x force l'arete xv si tous les autres partenaires possibles
+sont absents. Le profil de x consomme alors toute la demande1 d'un
+type g sur la ligne v, sans contribuer a un type f dont la demande
+vaut au moins2. Tous les voisins f de v doivent donc eviter g. Si W
+est un ensemble d'au plus t_f-1 sommets, il faut un tel voisin hors W.
+La disjonction des alternatives a xv, et des alternatives f-sans-g
+hors W, est necessaire sous les DEUX profils de x,v. Les deux clauses
+du temoin suivant ont54 et55 litteraux; elles n'imposent aucune arete
+dans le SAT des profils. Le lecteur controle les listes completes de
+partenaires et les trois demandes1,1,>=2.
+
+Pour un conflit plus long, root_component_profile_guard_cut.py fixe
+seulement un sous-ensemble des profils de la selection. Pour un profil
+non fixe, les choix sont relaches independamment a chaque arete vers
+une ligne fixee. C'est une relaxation : une vraie completion utilise
+le meme profil partout et reste donc dans cet ensemble plus grand.
+
+Dans une ligne fixee, une arete contribue NECESSAIREMENT a un compte
+commun avec u si tous les profils compatibles de son autre extremite
+voient u; elle peut y contribuer si au moins un le voit. On impose
+  somme des contributions necessaires <= budget,
+  somme des contributions possibles >= budget.
+Les degres et lettres gardent leurs egalites. Une propagation de ces
+bornes contradictoire donne une clause interdisant uniquement les
+profils fixes. Son certificat est rejoue sur les domaines COMPLETS
+des autres sommets : aucun ancien choix cache n'est conserve.
+
+Le troisieme temoin P3N0/3001 est ainsi refute avec30 profils fixes,
+les38 autres libres, et24 etapes de preuve. La reduction des hypotheses
+prend0.671875 seconde CPU. Le controle sur la vraie grille3x3 conserve
+sa completion et refute un faux profil.
+
+PILOTE D'APPRENTISSAGE, VERDICT EXACT AU POINT D'ARRET
+
+Sur le bord P3N0/3001,14 selections successives ont ete refutees et22
+clauses necessaires ajoutees :12 inclusions de ligne,5 coupes d'arete
+forcee entre deux lignes,5 contradictions sous hypotheses partielles.
+Le dernier solveur atteint la limite de60 secondes CPU : UNKNOWN.
+Le bord et la famille restent OUVERTS. Rapport de synthese explicite :
+shared_p3n_core000_b3001_progress.json. Les clauses et certificats sont
+dans shared_p3n_core000_b3001_guard_learned.row_cut_learning.json.
+
+Attention au rapport brut du pilote LAB : son enveloppe nomme tout
+retour non exclu FEASIBLE_PARTIAL_FRONTIER, meme quand le statut interne
+est UNKNOWN_PROFILE_SAT. Ici le seul verdict final correct est UNKNOWN.
+Ni ce libelle externe, ni les anciens SAT de lignes, ne sont un graphe.
+
+Le pilote d'extension simultanee44/57 avec toutes les bornes partielles
+a ete interrompu sans verdict apres375.78125 secondes CPU. Il n'est
+utilise pour aucune exclusion. Les nouveaux pilotes d'apprentissage
+ont une interruption CPU effective dans le solveur, en plus de la borne
+de conflits; UNKNOWN n'est jamais transforme en UNSAT. Tous les calculs
+de ce point sont termines, limites a un coeur, sans travail local actif.

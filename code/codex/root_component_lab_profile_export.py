@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import threading
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_resources import limit_research_process, atomic_json_write
@@ -26,9 +27,14 @@ def main():
     p.add_argument('--row-cut-rounds', type=int, default=0)
     p.add_argument('--row-cut-cpu-seconds', type=float, default=60)
     p.add_argument('--extend-rows', type=int, nargs='*', default=[])
+    p.add_argument('--continuation-cuts', action='store_true')
     args = p.parse_args()
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
+    helper_hashes = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
+                     ('root_component_lab_profile_export.py','root_component_profile_row_cuts.py',
+                      'root_component_profile_guard_cut.py','root_component_profile_row_extension.py',
+                      'root_component_p3_neighbor_support.py')}
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
     assert source.count(marker) == 1, 'LAB source changed; inspect its SAT branch before updating the hook.'
@@ -43,7 +49,8 @@ def main():
         data = {'scope': 'A SAT selection completing the known rows only; outside edges remain unknown.',
                 'family': args.family, 'boundary_file': str(args.boundary), 'boundary_index': args.index,
                 'lab_source_sha256': hashlib.sha256(raw).hexdigest(), 'source_archive': str(archive),
-                'resources': resources, 'rows': rows, 'known_labels': labels, 'outside_labels': outside,
+                'resources': resources, 'helper_sha256': helper_hashes,
+                'rows': rows, 'known_labels': labels, 'outside_labels': outside,
                 'domains': domains, 'selected_indices': [ids[0] for ids in indices], 'profiles': selected}
         args.output.write_text(json.dumps(data, separators=(',', ':'))+'\n', encoding='utf-8')
         if 'extension' in learning:
@@ -53,7 +60,7 @@ def main():
             atomic_json_write(args.output.with_suffix('.extended.json'), extended)
 
     learning = {'scope': 'Necessary row-quota clauses added to this one boundary profile SAT.',
-                'rounds': [], 'clauses_added': 0}
+                'rounds': [], 'clauses_added': 0, 'helper_sha256': helper_hashes}
     def solve_with_cuts(solver, allclauses, rows, domains, literals, labels, outside, pool, exactly, out):
         from root_component_profile_row_cuts import RowCutOracle
         from root_component_shared_k3_profile_sat import flush_native_proof, finished_proof
@@ -72,7 +79,17 @@ def main():
         start = time.process_time()
         for ri in range(args.row_cut_rounds+1):
             solver.conf_budget(200000)
-            answer = solver.solve_limited(); flush_native_proof()
+            done = threading.Event()
+            def interrupt_on_budget():
+                while not done.wait(.05):
+                    if time.process_time()-start >= args.row_cut_cpu_seconds:
+                        solver.interrupt(); return
+            timer = threading.Thread(target=interrupt_on_budget, daemon=True); timer.start()
+            try:
+                answer = solver.solve_limited(expect_interrupt=True)
+            finally:
+                done.set(); timer.join(); solver.clear_interrupt()
+            flush_native_proof()
             entry = {'round': ri, 'answer': answer, 'cpu_seconds': time.process_time()-start,
                      'solver_stats': solver.accum_stats()}
             learning['rounds'].append(entry)
@@ -91,6 +108,12 @@ def main():
             assert all(len(ids) == 1 for ids in chosen)
             selected = [ids[0] for ids in chosen]
             cuts = oracle.separate(selected)
+            if not cuts and args.continuation_cuts:
+                from root_component_profile_guard_cut import GuardOracle
+                guard = GuardOracle(rows,labels,outside,domains,selected).minimize()
+                if guard is not None:
+                    assert oracle.check_cut(guard)
+                    cuts = [guard]
             entry['selected_indices'] = selected; entry['violated_cuts'] = cuts
             if not cuts or ri == args.row_cut_rounds or time.process_time()-start >= args.row_cut_cpu_seconds:
                 learning['terminal_status'] = 'NO_VIOLATED_ROW_INCLUSION' if not cuts else 'BUDGET_WITH_SAT_SELECTION'
@@ -98,10 +121,12 @@ def main():
                 return True
             for cut in cuts:
                 assert oracle.check_cut(cut)
-                clause = [-literals[cut['outside_index']][cut['profile_index']]]
+                guards = cut['guards'] if 'guards' in cut else [(cut['outside_index'], cut['profile_index'])]
+                clause = [-literals[y][pi] for y, pi in guards]
                 clause += [literals[y][pi] for y, pi in cut['support_options']]
                 assert not any(l in positive if l > 0 else -l not in positive for l in clause)
                 solver.add_clause(clause); allclauses.append(clause); learning['clauses_added'] += 1
+            out['clauses'] = len(allclauses)
             atomic_json_write(args.output.with_suffix('.row_cut_learning.json'), learning)
 
     replacement = marker + '\n            export_selection_hook(rows, LABELS, OUTSIDE, doms, rows_v, s.get_model())'

@@ -52,6 +52,24 @@ class RowCutOracle:
         return tuple(answer)
 
     def check_cut(self, cut):
+        if cut.get('kind') == 'continuation_guard':
+            from root_component_profile_guard_cut import check_guard_cut
+            return check_guard_cut(self.rows,self.known,self.outside,self.domains,cut,self.roots)
+        if cut.get('kind') == 'forced_edge_quota':
+            x, pi = cut['guards'][0]; v, pj = cut['guards'][1]
+            fx, f, g = cut['source_feature'], cut['feature'], cut['excluded_feature']
+            assert self.targets(x, pi)[fx] == 1
+            target = self.targets(v, pj)
+            assert target[g] == 1 and target[f] >= 2
+            assert self.features[x][pi] & (1 << g) and not self.features[x][pi] & (1 << f)
+            assert self.features[v][pj] & (1 << fx)
+            assert edge_failure(self.prepared[x][pi], self.prepared[v][pj]) is None
+            exceptions = set(cut['exempt_partner_vertices'])
+            assert len(exceptions) <= target[f]-1
+            alternatives = {(y, qi) for y, qi in self.support(x, pi, fx, 0) if y != v}
+            alternatives.update((y, qi) for y, qi in self.support(v, pj, f, g) if y not in exceptions)
+            assert tuple(map(tuple, cut['support_options'])) == tuple(sorted(alternatives))
+            return True
         x, pi, f, g = (cut[k] for k in ('outside_index', 'profile_index', 'feature', 'excluded_feature'))
         targets = self.targets(x, pi)
         assert targets[f] > targets[g]
@@ -61,7 +79,7 @@ class RowCutOracle:
 
     def separate(self, selected, max_cuts=64):
         assert len(selected) == len(self.domains)
-        cuts = []; seen = set()
+        cuts = []; seen = set(); selected_occurrences = []
         for x, pi in enumerate(selected):
             a = self.prepared[x][pi]; occurrence = [0] * len(self.names)
             for y, qi in enumerate(selected):
@@ -72,6 +90,7 @@ class RowCutOracle:
                     bit = features & -features; features ^= bit
                     occurrence[bit.bit_length()-1] |= 1 << y
             targets = self.targets(x, pi)
+            selected_occurrences.append(occurrence)
             for f in range(len(targets)):
                 for g in range(len(targets)):
                     if targets[f] <= targets[g] or occurrence[f] & ~occurrence[g]:
@@ -92,6 +111,44 @@ class RowCutOracle:
                     cuts.append(cut)
                     if len(cuts) >= max_cuts:
                         return cuts
+        # A singleton quota forces xv. If x consumes v's entire g quota
+        # without contributing to f, v must find t_f neighbours in f\g.
+        # At most t_f-1 can come from any fixed exception set. The
+        # alternatives to xv or to that exception set form a profile clause.
+        for x, pi in enumerate(selected):
+            for fx, demand in enumerate(self.targets(x, pi)):
+                neighbourhood = selected_occurrences[x][fx]
+                if demand != 1 or neighbourhood.bit_count() != 1:
+                    continue
+                v = neighbourhood.bit_length()-1; pj = selected[v]
+                targets = self.targets(v, pj); source_features = self.features[x][pi]
+                for g, tg in enumerate(targets):
+                    if tg != 1 or not source_features & (1 << g):
+                        continue
+                    for f, tf in enumerate(targets):
+                        if tf < 2 or source_features & (1 << f):
+                            continue
+                        remaining = selected_occurrences[v][f] & ~selected_occurrences[v][g]
+                        if remaining.bit_count() >= tf:
+                            continue
+                        exceptions = [y for y in range(len(selected)) if remaining & (1 << y)]
+                        alternatives = {(y, qi) for y, qi in self.support(x, pi, fx, 0) if y != v}
+                        alternatives.update((y, qi) for y, qi in self.support(v, pj, f, g) if y not in exceptions)
+                        support = tuple(sorted(alternatives)); guards = ((x, pi), (v, pj))
+                        key = (tuple(sorted(guards)), support)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        cut = {'kind': 'forced_edge_quota', 'guards': guards, 'source_feature': fx,
+                               'source_feature_name': self.names[fx], 'feature': f, 'excluded_feature': g,
+                               'feature_name': self.names[f], 'excluded_feature_name': self.names[g],
+                               'target_demands': [tf, tg], 'exempt_partner_vertices': exceptions,
+                               'support_options': support}
+                        assert self.check_cut(cut)
+                        assert not any(selected[y] == qi for y, qi in support)
+                        cuts.append(cut)
+                        if len(cuts) >= max_cuts:
+                            return cuts
         return cuts
 
 
