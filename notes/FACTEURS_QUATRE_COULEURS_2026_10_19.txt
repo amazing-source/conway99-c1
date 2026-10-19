@@ -387,3 +387,44 @@ le lot21/25 a ete suivi ainsi (PID26488, garde4108), avec seuil70 et
 reprise60. Les futurs lots doivent de preference appeler un script
 root_component pour etre detectes automatiquement. Aucun programme
 de l'utilisateur n'a ete modifie.
+
+TRANSPORT MATHEMATIQUE VERS P3 (reponse au LAB1207)
+
+Avec seulement Q45,Q46 grilles, les12 sommets T=Q03+Q13+Q23 ont
+des PAIRES Y, dont le multiensemble est entierement impose par la
+marge4x4 residuelle L. Une paire peut apparaitre deux fois, jamais plus.
+Ses deux porteurs doivent avoir des lettres3 opposees, des autres
+lettres distinctes et des premiers voisins S distincts, faute de quoi
+les deux voisins communs Y depasseraient deja mu=2. La couverture par
+six paires se transporte donc avec des demandes0/1/2 sur16 cases.
+
+Le couplage parfait S-T ne se transporte PAS sans adaptation. Poser
+t_x=deg_Q56(x) pour x dans X24. Les quotas des racines4,5,6 imposent
+respectivement2,3-t_x,3-t_x voisins croises. Ainsi deg_X(x)=2+t_x,
+et pour u dans S, deg_T(u)=deg_Q56(u), puisque deg_S(u)=2. Les quatre
+profils de Q56 imposent donc les capacites sur S, a realiser par les
+douze profils T. C'est l'analogue capacitaire du couplage de K3.
+
+Une consequence supplementaire relie les aretes internes de Q56 a T.
+Chaque x dans T a un voisin de S, donc deg_T(x)=1+t_x. Or les sommets
+portant la racine3 ont exactement deux voisins portant cette racine,
+un de chaque lettre. D'ou t_x dans {0,1} et deg_N(x)=1-t_x, avec
+N=Q34+Q35+Q36. Ainsi les voisins Q56 de T ne peuvent se concentrer
+plusieurs fois sur le meme sommet de T.
+
+Pour z dans Q56, poser d_z=deg_Q56(z). Il n'a aucun voisin dans les
+deux grilles Y. Les quotas de racines4,5,6 donnent4,2-d_z,2-d_z
+voisins croises, donc deg_X(z)=4+d_z. Puisqu'il voit deux sommets de K
+et un de Q12, deg_T(z)=1+d_z. En notant e le nombre d'aretes internes
+de Q56, il vient
+  |E(T,Q56)| = 4+2e,
+  nombre de sommets de degre1 dans T = 8-2e.
+
+T est donc reunion de cycles et de4-e chemins, sans sommet isole.
+Tout cycle est de longueur multiple de4 (alternance des aretes reliant
+des lettres3 egales puis opposees). Pour e=4 on retrouve exactement
+C12, C8+C4,3C4. Pour e=3, les seules formes non etiquetees possibles
+sont P12, P8+C4, P4+C8, P4+2C4 (Pk designe ici un chemin a k sommets).
+Cela fournit une stratification finie de l'extension P3; ce n'est pas
+encore une exclusion de ces formes. Derivation transmise au LAB qui
+travaille P3, sans dupliquer ses calculs.
