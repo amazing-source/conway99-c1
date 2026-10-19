@@ -1,0 +1,14 @@
+{
+ "family": "K2BC = GEN --yr=45 --extra=13,26 (H_ab = -H_ac forced, both non-grid; one Y-grid off {a,b,c}; a B-grid through b and a free line; a C-grid through c and the OTHER free line; Q_bc arbitrary)",
+ "status": "complete = true (LAB p3_manifest.py --family GEN --yr=45 --extra=13,26, pinned program f32837b9, Codex modules of k3prod_v4, cover symmetry 'flip stabiliser of the core x Y-group(((0, 1),), fixed [2])'): every boundary of the 28 flip-orbit cores covered once and excluded; every SAT call an RUP-checked UNSAT",
+ "borders": 1261,
+ "attachments": {"processed": 301936, "skipped_as_flip_images": 226452, "rup_checked_unsat": 37167, "propagation": 11877, "capacity": 16517, "empty_domain": 9839, "outside_c2": 84},
+ "shards": 77,
+ "program": "py_extend_gen.py frozen sha256 f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9 (lab_k2bc_20261019/code/py_extend_gen.py), covers py_boundary_gen.py --yr=45 --fixed-lines=6",
+ "lab_manifest": "code/lab_exploration_2026-10-16/gz5602_2026-10-19/lab_k2bc_20261019/k2bc_manifest_final.json",
+ "lab_manifest_sha256": "78707a18c4baa6be1b7ebb30d9d111535adec4963fb795eac8dd5c4bda116bb1",
+ "members": "k2bc_members.json (8088 gz templates, exact rational kernel, all 5040 line bijections; sha256 e3d8cad3e88fe374f8c5b882c7c4a6cb04693df3c27698ed5db6001f695ce423)",
+ "review": "third independent adversarial review (19/10, 39 min, scripts in gz5602_2026-10-19/review_k2bc_2026-10-19): no correctness gap. Forced blocks and degrees re-derived; own DFS = identical leaf sets on 31 boundaries (13268 leaves) and zero leaves on the 164 pruned boundaries; flip-orbit skipping checked (free order-4 action, 1480 leaves run without skipping all excluded); covers recomputed (1261 orbits, one cover boundary each); membership recomputed (8088); own CP-SAT adjacency model: 12/12 planted controls feasible, 182/182 sampled exclusions infeasible over all five routes. Its two optional manifest findings (configuration not recorded; covers, program and modules not pinned) are fixed in p3_manifest.py and this manifest uses the pins.",
+ "rests_on": "E3 (no rectangle with exactly 3 internal edges, recorded as proved by Codex), the lemma that a rectangle with 4 internal edges is a grid, the template catalogue semantics; counting-filter exclusions (about half of the leaves) have no proof object and were confirmed by sampling.",
+ "date_utc": "2026-10-19T07:33Z"
+}

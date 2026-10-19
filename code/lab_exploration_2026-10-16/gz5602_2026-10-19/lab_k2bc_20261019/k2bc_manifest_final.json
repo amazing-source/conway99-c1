@@ -1,0 +1,1823 @@
+{
+ "scope": "Assemble the P3 (or K3, same format) coverage of the LAB py_extend.py production (LAB 19/10/2026).\nNever certifies an omitted or non-excluded boundary.  Checks, for every orbit representative of the 114 shared-pair\ncores (paircore_orbits16.json):\n  * the boundary cover exists; a cover with status EXCLUDED_Q12_COLOUR_FACTORS must also be excluded in Codex's\n    colour-factor file (independent record, 'EXCLUDED_COLOUR_FACTORS' with no colouring);\n  * otherwise every boundary index 0..n-1 appears in exactly one shard case, with the cover's boundary_hex, from a shard\n    whose source_sha256 is the cover's sha256, whose status is EXCLUDED_*, and whose counts are consistent (every\n    attachment is refuted: valid_partial = sum of the EXCLUDED_* counts; sat_calls = number of RUP-checked UNSAT).\nIt does not repeat the search.\n  * optional --residual DIR: a border whose production record is not excluded (UNKNOWN at the conflict budget, or SAT)\n    is covered when a second-pass record (--all-attachments, larger budget) in DIR excludes it, with the same source\n    hash, border hex and consistent counts (no OPEN_* entry).\n  * (review 19/10 10:00 UTC) every cover's embedded core equals paircores8.json[ci]; optional pins: --program-sha=HEX\n    (every shard and second-pass record ran that program), --codex-dir=DIR (their Codex module hashes are those of the\n    files in DIR), --cover-symmetry=STRING (every cover was built under that group); the output records the enforced\n    configuration, the cover symmetries, the full flags of every shard and the Codex module hashes.\nusage: python p3_manifest.py <cover dir> <shard dir> <orbits json> <codex colour factors json> <out.json> [--residual DIR]\n       [--family P3|P3NB|GEN [--yr=.. --extra=..]] [--program-sha=HEX] [--codex-dir=DIR] [--cover-symmetry=STRING]\n       (P3NB / GEN: orbits json = <cover dir>/core_reps_flips.json)",
+ "complete": true,
+ "family_excluded": true,
+ "configuration": {
+  "family": "GEN",
+  "gen_configuration": [
+   "--extra=13,26",
+   "--yr=45"
+  ],
+  "pinned_program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+  "pinned_cover_symmetry": "flip stabiliser of the core x Y-group(((0, 1),), fixed [2])",
+  "codex_dir": "C:/home/researcher/AppData/Local/Temp/claude/C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30/cbac93e9-0e6a-4af7-8693-1962039bcf17/scratchpad/k3prod_v4/pkg/code/codex",
+  "codex_modules_sha256_checked": {
+   "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+   "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+   "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+  }
+ },
+ "cover_symmetries": [
+  "flip stabiliser of the core x Y-group(((0, 1),), fixed [2])"
+ ],
+ "missing_covers": [],
+ "covered_by_core": {
+  "0": 78,
+  "1": 45,
+  "6": 46,
+  "7": 46,
+  "8": 39,
+  "9": 52,
+  "10": 44,
+  "11": 44,
+  "20": 33,
+  "21": 31,
+  "22": 22,
+  "23": 37,
+  "25": 40,
+  "26": 58,
+  "27": 45,
+  "30": 38,
+  "44": 31,
+  "45": 48,
+  "46": 37,
+  "47": 43,
+  "48": 58,
+  "49": 38,
+  "50": 62,
+  "51": 70,
+  "52": 44,
+  "75": 43,
+  "76": 43,
+  "88": 46
+ },
+ "expected_by_core": {
+  "0": 78,
+  "1": 45,
+  "6": 46,
+  "7": 46,
+  "8": 39,
+  "9": 52,
+  "10": 44,
+  "11": 44,
+  "20": 33,
+  "21": 31,
+  "22": 22,
+  "23": 37,
+  "25": 40,
+  "26": 58,
+  "27": 45,
+  "30": 38,
+  "44": 31,
+  "45": 48,
+  "46": 37,
+  "47": 43,
+  "48": 58,
+  "49": 38,
+  "50": 62,
+  "51": 70,
+  "52": 44,
+  "75": 43,
+  "76": 43,
+  "88": 46
+ },
+ "colour_factor_cores": [],
+ "boundaries_total": 1261,
+ "boundaries_covered": 1261,
+ "attachment_totals": {
+  "valid_partial": 301936,
+  "sat_calls": 37167,
+  "rup_checked_additions": 10779503,
+  "EXCLUDED_PROFILE_SELECTION_UNSAT": 37167,
+  "EXCLUDED_SYMMETRIC_ATTACHMENT": 226452,
+  "EXCLUDED_PROFILE_PROPAGATION": 11877,
+  "EXCLUDED_PROFILE_CAPACITY": 16517,
+  "EXCLUDED_EMPTY_VERTEX_DOMAIN": 9839,
+  "EXCLUDED_OUTSIDE_PROFILE_C2": 84
+ },
+ "program_sha256_counts": {
+  "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9": 77
+ },
+ "second_pass_exclusions": 0,
+ "still_pending": [],
+ "covers": {
+  "0": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_000.json.gz",
+   "sha256": "6deaa5e631c0ff323c64c21386e14b9d2d173fe8dff971cfa4ff250ebf14eff8",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 78
+  },
+  "1": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_001.json.gz",
+   "sha256": "ab80c06a54a069601c16d3b75a42bddf6c67e4332d242a3eab3d12508e6bc64e",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 45
+  },
+  "6": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_006.json.gz",
+   "sha256": "203925ca16cd76dc6a243d012700e71e4195e58ea137f6923c00df3d19871876",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 46
+  },
+  "7": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_007.json.gz",
+   "sha256": "8e61723cb26c412d9cf4bb691eccd31b7503ac0113adc7d6e07ccae5eb2e0efc",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 46
+  },
+  "8": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_008.json.gz",
+   "sha256": "f7f2c2772b074526fd5a6a567a06040b09fa72e392461b25af68a6615d2f513b",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 39
+  },
+  "9": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_009.json.gz",
+   "sha256": "20293225a3ac00ed08ef70aeed88c0c8ca9a4c971c956af709064f4d3774227c",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 52
+  },
+  "10": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_010.json.gz",
+   "sha256": "36dfc8c244d768c60990999ebbd6df6b3ad98bc1be5c23fd0353045caf2d2e26",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 44
+  },
+  "11": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_011.json.gz",
+   "sha256": "c0e86eea748903011954307661414705178b93861c8cf368423d4a63bccc6166",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 44
+  },
+  "20": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_020.json.gz",
+   "sha256": "4d1fac39243dc7f8432b75ad3fea45899db0f5b4af0a2bc7bcf6b77ae04733da",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 33
+  },
+  "21": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_021.json.gz",
+   "sha256": "66a7129d085a88245fcc62d93477f0aeb15f8929cf01bd28b2164743909a2935",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 31
+  },
+  "22": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_022.json.gz",
+   "sha256": "5b76bf6cd9c7a610e4d5f0355394c39d753cd8ed7c6070d82c3fc5096b360537",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 22
+  },
+  "23": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_023.json.gz",
+   "sha256": "3ec37f9fe4800807487696a5b173c084559db1c4a53a59ec591861e76bfdf5a7",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 37
+  },
+  "25": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_025.json.gz",
+   "sha256": "3f28b6d730dfea8441e12458c573ceb44120a82346e0d5f092289cca8694e067",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 40
+  },
+  "26": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_026.json.gz",
+   "sha256": "eaba7fa29c39bf624de5f821987a42ead19c5195458b900d52da120f59cc4fab",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 58
+  },
+  "27": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_027.json.gz",
+   "sha256": "df2314d068db19a0ee8b2af48d15679e4a282c061c4a485be84186b20740b1a9",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 45
+  },
+  "30": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_030.json.gz",
+   "sha256": "4713a79cccc5dae733a359fc875e5d311e7231ae357e6e63230e652d37315b20",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 38
+  },
+  "44": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_044.json.gz",
+   "sha256": "1f693ccd34258c6b47e4ec54841995b0e722b22c52518f90daca68239bc0bc67",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 31
+  },
+  "45": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_045.json.gz",
+   "sha256": "e4714348f7ff2124eaa463be87b48f18a2c865b9eff2c30fe5885a6d9463ee95",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 48
+  },
+  "46": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_046.json.gz",
+   "sha256": "368d3e8a1881de142606a707eec9ba4ccea9a73ff8f2243a7e2077297d823284",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 37
+  },
+  "47": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_047.json.gz",
+   "sha256": "e4263c3a3c669bd43ead97f645f9ce3af0a41b0e7c32271980963524be4ba91f",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 43
+  },
+  "48": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_048.json.gz",
+   "sha256": "0e48a3831bf21d91118a2d2b9fa27e9d285a249b212b4d5cfe03cc078160230d",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 58
+  },
+  "49": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_049.json.gz",
+   "sha256": "e9bea5d666761b350bfb82ba2fe9fedf07eebb6151fb2b77001b8ff83b64ec49",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 38
+  },
+  "50": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_050.json.gz",
+   "sha256": "c05d791d75ea4bbd2387b75f0d4ce8fc869bb991865c0b5981994d42e07d6f2f",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 62
+  },
+  "51": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_051.json.gz",
+   "sha256": "91123c1c5c3cdf1ea61cdd8a58190ff25ef9f8488eecb9ba931f72425eac9886",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 70
+  },
+  "52": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_052.json.gz",
+   "sha256": "fb1b5f6c4d361fa5aeeaa2bec2dd469714bee3faa81f15da633e5ff89f13b6c3",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 44
+  },
+  "75": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_075.json.gz",
+   "sha256": "ee85994acb41d1b21016deb664a22e9ff18a85aca13e44411c49ca85112250e8",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 43
+  },
+  "76": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_076.json.gz",
+   "sha256": "940274ed03e18144e17671f780ad5ea23a93936d9511aaecf64b32aa08d7d699",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 43
+  },
+  "88": {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_088.json.gz",
+   "sha256": "76f60cea2fb8cd9976f0e7858065b204884387ac548a728b971bfc612a2c70e5",
+   "status": "COMPLETE_BOUNDARY_COVER",
+   "n": 46
+  }
+ },
+ "colour_factor_file": {
+  "path": "C:\\Users\\RESEARCHER\\Desktop\\Recherche_Conway\\c1-main-codex\\data\\codex_short_columns_20261018\\shared_core_Q12_colour_factors.json",
+  "sha256": "df274788f56bf0af41c4b9c492dde8ac1822170cf2ea6a5098f51978fec4bbf9"
+ },
+ "orbits_file": {
+  "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\pybd_k2bc_all\\core_reps_flips.json",
+  "sha256": "70520d4b42b9ba2e0d01b960d4f37a743bc8ca6e888f99fb0878a7fc88c3a13f"
+ },
+ "shards": [
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000000_000019.json.gz",
+   "sha256": "859b72ad1b0c9d933ed1859927816157f69e267a3ae54667e4db93ba39fab253",
+   "core": 0,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000020_000039.json.gz",
+   "sha256": "a6f6428691e96e64497fd858394e3fd9bbdb4e4f32fb91191702865c1185a618",
+   "core": 0,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000040_000059.json.gz",
+   "sha256": "cd63ce894d2756d4aafa4ce72ccf4ea7a2d3b798233b536df2209d88a0825114",
+   "core": 0,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000040_000059.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000060_000077.json.gz",
+   "sha256": "f1d10a3a00f467df04268b3c5a4d12e31aa92160392cbc513fb1ead2c36e8aad",
+   "core": 0,
+   "cases": 18,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core000_000060_000077.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000000_000019.json.gz",
+   "sha256": "23178469075c5de76a359f3cfc818601406af9f6592e07ebc6f8a6c2ae6df023",
+   "core": 1,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000020_000039.json.gz",
+   "sha256": "514038b090ca4354f60484447612f56da3a129020787d9e9d2fccbb731af1648",
+   "core": 1,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000040_000044.json.gz",
+   "sha256": "77ea85e84e1b63edb62faf07af29aca3b7121805c7e0869d24ece17790b9a7f2",
+   "core": 1,
+   "cases": 5,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core001_000040_000044.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000000_000019.json.gz",
+   "sha256": "b1ccd060706a9e6b329fc9e8e58e608881312a473868a639d04638ba2a77d167",
+   "core": 6,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000020_000039.json.gz",
+   "sha256": "c84cdae9ee7181b40c838a1f2f16cc858938ec72d5c2809dff96bbbb397cd6dc",
+   "core": 6,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000040_000045.json.gz",
+   "sha256": "29e3afc3078373930e21a045a520f102eee65e94dea80ae1f9880e2e7f9b5c7a",
+   "core": 6,
+   "cases": 6,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core006_000040_000045.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core007_000000_000019.json.gz",
+   "sha256": "9f2e4a0544721e64ed0a324bc616987fcb267af83c389353b65ef0aabe995531",
+   "core": 7,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core007_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core007_000020_000039.json.gz",
+   "sha256": "991eb8daf110202d6a881a2c159a577fded4c4f869b63b346b556df270056945",
+   "core": 7,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core007_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core007_000040_000045.json.gz",
+   "sha256": "88b1225618776df72afb51d19827bd82f12655489460b4def9c171f48733c990",
+   "core": 7,
+   "cases": 6,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core007_000040_000045.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core008_000000_000019.json.gz",
+   "sha256": "b44ab32e54ad37ee62336300227e4ebebe43eeaf27b7992303eb4e3fff84c46a",
+   "core": 8,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core008_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core008_000020_000038.json.gz",
+   "sha256": "56c75e4c17dcc81c0ae11848f7fdfc68237f599a121ca5a6caf8676c456121b7",
+   "core": 8,
+   "cases": 19,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core008_000020_000038.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core009_000000_000019.json.gz",
+   "sha256": "b5e2f56435a13581bccc725f63823d247c13ec7fd0410d97dcca81000413038f",
+   "core": 9,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core009_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core009_000020_000039.json.gz",
+   "sha256": "658a28cfa89eb01d82f923a48955977e8ec1f822ccc6a327d46c467a1b33071f",
+   "core": 9,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core009_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core009_000040_000051.json.gz",
+   "sha256": "c3ff19eafff2de3cbe0b4d6f042281d542751d30069024a6e41eba21936ecd86",
+   "core": 9,
+   "cases": 12,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core009_000040_000051.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core010_000000_000019.json.gz",
+   "sha256": "3963920f11509e53a9eec531f5a21f3ad02626983f53b511ccc8c5ed951d401c",
+   "core": 10,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core010_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core010_000020_000039.json.gz",
+   "sha256": "861f73b9d66b4bd711c2a728568f8cf2d16898a3a7f66db4a1e505e11c52e9e6",
+   "core": 10,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core010_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core010_000040_000043.json.gz",
+   "sha256": "7a4266788844467029060d2229a664fee7f2cb8379d89df55cd3ed0a14b72e4a",
+   "core": 10,
+   "cases": 4,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core010_000040_000043.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core011_000000_000019.json.gz",
+   "sha256": "d9ca6201efdad5f9c2c5ed758f1db69be04dffaf19336a55cbe68c86614aa77a",
+   "core": 11,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core011_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core011_000020_000039.json.gz",
+   "sha256": "9e2d3d70cc348781eb759f116e669b7005de5e6ae461688434fa0a1ee382ad12",
+   "core": 11,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core011_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core011_000040_000043.json.gz",
+   "sha256": "f63caedd2092df3e18c6bb0e993f4e52243d8980eadf4e0ab27237511c621e64",
+   "core": 11,
+   "cases": 4,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core011_000040_000043.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core020_000000_000019.json.gz",
+   "sha256": "68d4e2065fb44716e9af7ea14d3990080bb7cfdfcf973f10ae3c7336d58efc9e",
+   "core": 20,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core020_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core020_000020_000032.json.gz",
+   "sha256": "a7fe6ba121c646f5a13fed33920d530f4085aa02efbeb0d0be6704e54101c62b",
+   "core": 20,
+   "cases": 13,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core020_000020_000032.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core021_000000_000019.json.gz",
+   "sha256": "043f1b5996bc3c52fa3e94f7f9f976d16de43b65a337434dd2faac97026db427",
+   "core": 21,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core021_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core021_000020_000030.json.gz",
+   "sha256": "af4387a47b40578163045c587b4eac8b1e8c8613e4cb72f4a7642edb366be2ab",
+   "core": 21,
+   "cases": 11,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core021_000020_000030.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core022_000000_000019.json.gz",
+   "sha256": "a674f3bba8e5262a4968b19a119f58504e789bf86107a5302492e6b71364b042",
+   "core": 22,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core022_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core022_000020_000021.json.gz",
+   "sha256": "c90e3a2317be1e37ac4862b1d5f1f54aae95300c411db19991dec7b43527fcb3",
+   "core": 22,
+   "cases": 2,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core022_000020_000021.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core023_000000_000019.json.gz",
+   "sha256": "c96092afeeb987df47f17f2574a06571345e9ab1b139ba8bf2d23d423ff7aca4",
+   "core": 23,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core023_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core023_000020_000036.json.gz",
+   "sha256": "330f1c3f40ed0c952a95fd39e15bfbe9e7f0165b342337dd292ad60888ffed42",
+   "core": 23,
+   "cases": 17,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core023_000020_000036.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core025_000000_000019.json.gz",
+   "sha256": "704f45e47b6a15f7085494f3728af138c19a36769dec6e24e1aacc32c867ce6e",
+   "core": 25,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core025_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core025_000020_000039.json.gz",
+   "sha256": "6250395336e4fca77bf84d8ceddfc584f5a30f7e7f31d7d69abcec80a2d66650",
+   "core": 25,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core025_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core026_000000_000019.json.gz",
+   "sha256": "ecc9e9ef97fe57dd4716227982f458bcb16c4305ab80378b520e39dd35f54ba6",
+   "core": 26,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core026_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core026_000020_000039.json.gz",
+   "sha256": "5025f5a8b9e0a97aa8b0882e760e8dbc97318450dbd6db45ee21a115945aec4e",
+   "core": 26,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core026_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core026_000040_000057.json.gz",
+   "sha256": "9e76b4d35ce78c13edddddf6639cefb7f3763d612e05220615ed882e3b605096",
+   "core": 26,
+   "cases": 18,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core026_000040_000057.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core027_000000_000019.json.gz",
+   "sha256": "68fd2826d48a4b0be830567418cc8eb07b5b6730580174aec0cacec390d6a296",
+   "core": 27,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core027_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core027_000020_000039.json.gz",
+   "sha256": "099249e3215b9e92369d3eb40c29bafb0efe753cddc3d64812275ed07f28c822",
+   "core": 27,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core027_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core027_000040_000044.json.gz",
+   "sha256": "04d70c84dcdf3802df364930f5dc919abe104d8bfe41f0e5b9e70daf6c1d1d6e",
+   "core": 27,
+   "cases": 5,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core027_000040_000044.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core030_000000_000019.json.gz",
+   "sha256": "02c5049121baae2dc5e6861a553edb98326e7c4831930c56cd19b9c76bbb3b3f",
+   "core": 30,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core030_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core030_000020_000037.json.gz",
+   "sha256": "73a330cf673578465384bb9d60e9bd077d78a03909dfa3a29e898fccb1b408b2",
+   "core": 30,
+   "cases": 18,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core030_000020_000037.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core044_000000_000019.json.gz",
+   "sha256": "888074014df3ae7c7a35c4fd2b889baedbba0a38383614e590419284a7d3d38c",
+   "core": 44,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core044_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core044_000020_000030.json.gz",
+   "sha256": "7e84540a371817e308e7d6384c4cbd3da8b90dfb03f679fecf7e54438025c1df",
+   "core": 44,
+   "cases": 11,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core044_000020_000030.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core045_000000_000019.json.gz",
+   "sha256": "04f4f98da490c323fac66f34fc075b5fd967f0fadd63c94c84c7a01a22c5f164",
+   "core": 45,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core045_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core045_000020_000039.json.gz",
+   "sha256": "f64131ed329edb725546f2ee2d99791d4e32c78a32f831f77e22b1c39d001caa",
+   "core": 45,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core045_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core045_000040_000047.json.gz",
+   "sha256": "dce0293974566e2ce45c6bf0ba2f53cee6d6fd20fcffbed73775cf676500027f",
+   "core": 45,
+   "cases": 8,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core045_000040_000047.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core046_000000_000019.json.gz",
+   "sha256": "a22dbb7ef18844de8f422f2547744829107f46f7522179af35d43c8c14f2a91f",
+   "core": 46,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core046_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core046_000020_000036.json.gz",
+   "sha256": "2cae26207a5328659a82587428ac1c55ff0ddd3b343279c343560a41345f2c60",
+   "core": 46,
+   "cases": 17,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core046_000020_000036.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core047_000000_000019.json.gz",
+   "sha256": "59079ef892860815acb144c85b300f766f95e6ab67cc95ac5fbdeb26952544cb",
+   "core": 47,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core047_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core047_000020_000039.json.gz",
+   "sha256": "0bf4a0fc21135d9f065e986d1927b09055791b371480afe5bae83cda0483393a",
+   "core": 47,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core047_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core047_000040_000042.json.gz",
+   "sha256": "65f2be4cba8071544e1af498ba06b7b3c47c2c2efdaa3099b8a5820554302e61",
+   "core": 47,
+   "cases": 3,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core047_000040_000042.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core048_000000_000019.json.gz",
+   "sha256": "bc6c263d986cb63c62238abb9ce3a48a3c8ed3d0a4ac1ee395e1ed35b417fbc6",
+   "core": 48,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core048_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core048_000020_000039.json.gz",
+   "sha256": "b7c344caadee16b2e6dd410ba609152e5f701a2568177db3db73352c44ff3ceb",
+   "core": 48,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core048_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core048_000040_000057.json.gz",
+   "sha256": "ebdefe1186dbf4ba89901df5bc0c6e8c458bca138a5a65df406a4a5612aab456",
+   "core": 48,
+   "cases": 18,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core048_000040_000057.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core049_000000_000019.json.gz",
+   "sha256": "56a7fb96754351df36bace2f8151142b3d215288f5693788dee5f91c5a9f9939",
+   "core": 49,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core049_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core049_000020_000037.json.gz",
+   "sha256": "f0e770d17f0143976b3394277e86da2a9fdb8e889a1f844f5daf26beab3e0eb3",
+   "core": 49,
+   "cases": 18,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core049_000020_000037.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core050_000000_000019.json.gz",
+   "sha256": "03154669cda8e8e2bef57536f4bf4eb0d9ec750db1e2714da81534fa3fe71905",
+   "core": 50,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core050_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core050_000020_000039.json.gz",
+   "sha256": "e4a2572015442c37376831278ef7851f812296372a46d2dc90ab8bb65b53ba34",
+   "core": 50,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core050_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core050_000040_000059.json.gz",
+   "sha256": "55d2e3bd5e3828286290aa274cfdcfdbc3b904e3df3b3389354789fb80eb5053",
+   "core": 50,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core050_000040_000059.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core050_000060_000061.json.gz",
+   "sha256": "7822d986181b85d9d84a7f642a97fce0830017a4ef3ed7b6ec5bd4c2a50df8ad",
+   "core": 50,
+   "cases": 2,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core050_000060_000061.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core051_000000_000019.json.gz",
+   "sha256": "92e41ccf336bff2974fa83bab8f9e8fe5c950af9a86426ac6d2ad3bd66d86755",
+   "core": 51,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core051_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core051_000020_000039.json.gz",
+   "sha256": "891c8076be90ec3a9d3349fbf711bce5d49ef5b1db90eda7025258bfa999f4c8",
+   "core": 51,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core051_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core051_000040_000059.json.gz",
+   "sha256": "deba62f3f2d4bf1e15ddc1b3e4db7c48198ed9127cc4a63566542ae596c0d451",
+   "core": 51,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core051_000040_000059.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core051_000060_000069.json.gz",
+   "sha256": "61afd5818397e36cfcc1a84dc935ce49ca16b3dc15e8731d30a89aca7103b1c7",
+   "core": 51,
+   "cases": 10,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core051_000060_000069.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core052_000000_000019.json.gz",
+   "sha256": "62fb3cc6dd8c3378c10d2d3a3b284940cdaeb38370ef1e1b76cd5d7f2fa73281",
+   "core": 52,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core052_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core052_000020_000039.json.gz",
+   "sha256": "787961bf1d9ed59f8377707af1e43c422198a9dc480862978a2eb0934c64fed4",
+   "core": 52,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core052_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core052_000040_000043.json.gz",
+   "sha256": "534aba1af41faad27116cd10b7d4d74e5c6c707c52418dcb438bf4694aa13b89",
+   "core": 52,
+   "cases": 4,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core052_000040_000043.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core075_000000_000019.json.gz",
+   "sha256": "5bc6e6b70b7f50f6ab130786cba829ed62769a791634edfb6838a8700bdf3e5a",
+   "core": 75,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core075_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core075_000020_000039.json.gz",
+   "sha256": "83d78d85ae8c3514c4b5b7a334af5a32c74371ff295f9be75d89ecc8ab353cea",
+   "core": 75,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core075_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core075_000040_000042.json.gz",
+   "sha256": "4556ed5da13cad4682e36b32502264ec52176bf9b3ca64cd9d28ff38ca4afcd0",
+   "core": 75,
+   "cases": 3,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core075_000040_000042.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core076_000000_000019.json.gz",
+   "sha256": "23614334fe7612ea6f502ab6b5639de3baefed096c3878e0e76774d3fdf68f25",
+   "core": 76,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core076_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core076_000020_000039.json.gz",
+   "sha256": "9be7fc6ab085297bf7dd1b26d70535fb9c2c62200fc681aad879e5cd37647bc2",
+   "core": 76,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core076_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core076_000040_000042.json.gz",
+   "sha256": "beb4ac72671cea3830eb6f21b06d1f842ec069fb811f5a46a9774de6a7203427",
+   "core": 76,
+   "cases": 3,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core076_000040_000042.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core088_000000_000019.json.gz",
+   "sha256": "eeb3db1225cb49a8ef7257016bc7f7d7ed8df36cfed31222373e9beeefd4c6d2",
+   "core": 88,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core088_000000_000019.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core088_000020_000039.json.gz",
+   "sha256": "5719a8b9be79c93542160c548a603f2ea6e340656b63161b3010fca40da4c1e3",
+   "core": 88,
+   "cases": 20,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core088_000020_000039.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  },
+  {
+   "path": "C:\\Users\\RESEARCHER\\AppData\\Local\\Temp\\claude\\C--Users-RESEARCHER-Downloads-conway-c2-researcher2-start-2026-09-30-conway-c2-researcher2-start-2026-09-30\\cbac93e9-0e6a-4af7-8693-1962039bcf17\\scratchpad\\k2bcprod\\shards\\core088_000040_000045.json.gz",
+   "sha256": "b3f28c64c5331d7f7edbf3442054ecc92bcc513d22a63dbbd70689b1a79b02f7",
+   "core": 88,
+   "cases": 6,
+   "program_sha256": "f32837b9487c0f35a8d016044ace0635d302e964b79fcbc66a4d4f4ea2531ad9",
+   "flags": [
+    "--sat",
+    "--lean",
+    "--enc=seq",
+    "--yr=45",
+    "--extra=13,26",
+    "--out=data/k2bc_shards/core088_000040_000045.json.gz"
+   ],
+   "codex_modules_sha256": {
+    "root_component_shared_core_colors.py": "3f876ebd48e68cb31b7b736a42f0c8f0347c68d4fc93f005f86573c0c5afc562",
+    "root_component_shared_k3_boundary.py": "cfe6314de23b235811df7077c839e90337f46f0c1d4d6803f7567e833b6fb59e",
+    "root_component_shared_k3_profile_sat.py": "65e0efb43cdede01894b2cf7e6513a06f1958853716ce8909b0cbb92ba63a791"
+   }
+  }
+ ]
+}

@@ -207,6 +207,14 @@ if os.path.exists("k2k2_closed.json") and os.path.exists("k2k2_members.json"):
 if os.path.exists("p3nb_closed.json") and os.path.exists("p3nb_members.json"):
     for t in json.load(open("p3nb_members.json"))["p3nb"]:
         methods[("gz", int(t))].add("P3NB")
+# K2BC family (LAB 19/10): GEN --yr=45 --extra=13,26 = H_ab = -H_ac forced (both non-grid), one Y-grid off {a,b,c}, a
+# B-grid through b and a free line, a C-grid through c and the OTHER free line, Q_bc arbitrary; exact profile SAT with
+# RUP-checked UNSAT (py_extend_gen.py, covers py_boundary_gen.py); ONLY counted once k2bc_closed.json exists (complete
+# p3_manifest.py --family GEN coverage with pinned program, Codex modules and cover symmetry); members from
+# family_members.py 45,13,26 (exact rational kernel)
+if os.path.exists("k2bc_closed.json") and os.path.exists("k2bc_members.json"):
+    for t in json.load(open("k2bc_members.json"))["members"]:
+        methods[("gz", int(t))].add("K2BC")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")

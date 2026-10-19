@@ -10,8 +10,13 @@ It does not repeat the search.
   * optional --residual DIR: a border whose production record is not excluded (UNKNOWN at the conflict budget, or SAT)
     is covered when a second-pass record (--all-attachments, larger budget) in DIR excludes it, with the same source
     hash, border hex and consistent counts (no OPEN_* entry).
+  * (review 19/10, 07:30 UTC) every cover's embedded core equals paircores8.json[ci]; optional pins: --program-sha=HEX
+    (every shard and second-pass record ran that program), --codex-dir=DIR (their Codex module hashes are those of the
+    files in DIR), --cover-symmetry=STRING (every cover was built under that group); the output records the enforced
+    configuration, the cover symmetries, the full flags of every shard and the Codex module hashes.
 usage: python p3_manifest.py <cover dir> <shard dir> <orbits json> <codex colour factors json> <out.json> [--residual DIR]
-       [--family P3|P3NB]   (P3NB: orbits json = pybd_p3nb_all/core_reps_flips.json)"""
+       [--family P3|P3NB|GEN [--yr=.. --extra=..]] [--program-sha=HEX] [--codex-dir=DIR] [--cover-symmetry=STRING]
+       (P3NB / GEN: orbits json = <cover dir>/core_reps_flips.json)"""
 import gzip
 import hashlib
 import json
@@ -40,6 +45,25 @@ ALLOWED_EXCLUSIONS = {'EXCLUDED_NEGATIVE_KNOWN_DEFICIT', 'EXCLUDED_NEGATIVE_LETT
 
 
 GEN_CFG = [a for a in sys.argv if a.startswith(('--yr=', '--extra='))]
+_opt = lambda name: next((a.split('=', 1)[1] for a in sys.argv if a.startswith(name + '=')), None)
+PIN_PROGRAM = _opt('--program-sha')
+CODEX_DIR = _opt('--codex-dir')
+PIN_SYMMETRY = _opt('--cover-symmetry')
+CODEX_SHA = None
+if CODEX_DIR is not None:
+    CODEX_SHA = {}
+
+
+def check_provenance(d):
+    if PIN_PROGRAM is not None:
+        assert d['program_sha256'] == PIN_PROGRAM, ('program hash', d['program_sha256'])
+    if CODEX_DIR is not None:
+        mods = d['codex_modules_sha256']
+        assert mods, 'no Codex module hashes recorded'
+        for name, h in mods.items():
+            if name not in CODEX_SHA:
+                CODEX_SHA[name] = hashlib.sha256((Path(CODEX_DIR) / name).read_bytes()).hexdigest()
+            assert h == CODEX_SHA[name], ('Codex module hash', name)
 
 
 def check_flags(d, family):
@@ -73,13 +97,19 @@ if FAMILY != 'P3':
     assert len(_cores) == 114 and len(_orb) == len(reps), ('flip orbits', len(_orb), len(reps))
     assert sorted(min(_key(_cores[r], pm) for pm in _flips) for r in reps) == sorted(_orb), 'orbits file does not hit every flip orbit once'
 colour = {r['core_index']: r for r in read(colours)['results']}
-covers, seen, missing = {}, {}, []
+ALL_CORES = read(Path(__file__).with_name('paircores8.json'))
+covers, seen, missing, symmetries = {}, {}, [], set()
 for ci in reps:
     p = cover_dir / ('core_%03d.json.gz' % ci)
     if not p.exists():
         missing.append(ci); continue
     c = read(p)
     assert c['core_index'] == ci
+    if 'core' in c:
+        assert c['core'] == ALL_CORES[ci], ('cover core differs from paircores8.json', ci)
+    symmetries.add(c.get('symmetry'))
+    if PIN_SYMMETRY is not None and c['status'] == 'COMPLETE_BOUNDARY_COVER':
+        assert c.get('symmetry') == PIN_SYMMETRY, ('cover symmetry', ci, c.get('symmetry'))
     covers[ci] = {'path': str(p), 'sha256': digest(p), 'status': c['status'], 'n': c.get('boundary_count', 0),
                   'hex': c.get('boundaries_hex', [])}
     if c['status'] == 'EXCLUDED_Q12_COLOUR_FACTORS':
@@ -98,6 +128,7 @@ for p in sorted(shard_dir.glob('*.json.gz')):
     assert d['source_sha256'] == covers[ci]['sha256'], (p, 'source hash')
     assert d['total_boundaries'] == covers[ci]['n']
     check_flags(d, FAMILY)
+    check_provenance(d)
     programs[d['program_sha256']] += 1
     for rec in d['cases']:
         bi = rec['boundary_index']
@@ -114,7 +145,8 @@ for p in sorted(shard_dir.glob('*.json.gz')):
         seen[ci][bi] = 1
         totals.update({k: v for k, v in cnt.items() if k != 'max_conflicts'})
     files.append({'path': str(p), 'sha256': digest(p), 'core': ci, 'cases': len(d['cases']),
-                  'program_sha256': d['program_sha256'], 'flags': d['flags'][:3]})
+                  'program_sha256': d['program_sha256'], 'flags': d['flags'],
+                  'codex_modules_sha256': d.get('codex_modules_sha256')})
 second = 0
 if RESID is not None:
     for p in sorted(RESID.glob('*.json.gz')):
@@ -122,6 +154,7 @@ if RESID is not None:
         ci = d['core_index']
         assert d['source_sha256'] == covers[ci]['sha256'] and '--all-attachments' in d['flags'], p
         check_flags(d, FAMILY)
+        check_provenance(d)
         for rec in d['cases']:
             bi = rec['boundary_index']
             assert rec['boundary_hex'] == covers[ci]['hex'][bi]
@@ -137,6 +170,10 @@ if RESID is not None:
 covered = {ci: sum(1 for x in v if x == 1) for ci, v in seen.items()}
 complete = not missing and all(covered[ci] == covers[ci]['n'] for ci in seen)
 res = {'scope': __doc__, 'complete': complete, 'family_excluded': complete,
+       'configuration': {'family': FAMILY, 'gen_configuration': sorted(GEN_CFG), 'pinned_program_sha256': PIN_PROGRAM,
+                         'pinned_cover_symmetry': PIN_SYMMETRY, 'codex_dir': CODEX_DIR,
+                         'codex_modules_sha256_checked': CODEX_SHA},
+       'cover_symmetries': sorted(s for s in symmetries if s is not None),
        'missing_covers': missing, 'covered_by_core': covered,
        'expected_by_core': {ci: covers[ci]['n'] for ci in seen},
        'colour_factor_cores': [ci for ci in covers if covers[ci]['status'] == 'EXCLUDED_Q12_COLOUR_FACTORS'],
