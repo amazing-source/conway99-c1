@@ -1,0 +1,16 @@
+{
+ "family": "P3NB (H_ab = -H_ac forced, both non-grid; a Y-path of two grids off {a,b,c}; a B-grid through b (or c) and the free line; Q_bc arbitrary)",
+ "status": "complete = true (LAB p3_manifest.py --family P3NB: every boundary of the 28 flip-orbit cores covered once and excluded; every SAT call an RUP-checked UNSAT)",
+ "borders": 137454,
+ "attachments_refuted": 824450,
+ "rup_checked_unsat": 556152,
+ "shards": 471,
+ "program": "py_extend.py frozen sha256 3d31ec7daac70216f8a484c2126d3fb675f8bfbc54e712848028328826d75bcf (all 471 shards), covers py_boundary_p3nb.py",
+ "orbits_file_sha256": "70520d4b42b9ba2e0d01b960d4f37a743bc8ca6e888f99fb0878a7fc88c3a13f (recomputed independently by the assembler)",
+ "lab_manifest": "code/lab_exploration_2026-10-16/gz5602_2026-10-19/lab_p3nb_20261019/p3nb_manifest_final.json",
+ "lab_manifest_sha256": "ec02b1fbd7d2c1b723b4aca8e250643a59606b6c8e0f45c65925e8422c7c1151",
+ "members": "p3nb_members.json (8618 gz templates, exact rational kernel; sha256 f6301c62331982103ab0a1ccd7c88e3d8d926fcea1556f0fcbeeace4eafb029f)",
+ "compute": "local lab PC (shards 0..~110) + AWS Spot genprod (c7a.32xlarge, eu-north-1, 06:21-07:00 UTC 19/10); one shard per job, the slow core-88 job p3nb_088_005400 taken from AWS (a local split of the same range, same program, was only a cross-check: 159/159 of its borders excluded, not used)",
+ "caveat": "independent adversarial review of P3NB (19/10 morning): no correctness defect found (model, covers, attachments, members, positive controls). Status: exact finite computation under E3, like K3U and 2K2.",
+ "date_utc": "2026-10-19T07:10Z"
+}

@@ -32,14 +32,22 @@ def digest(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
-ALLOWED_FLAGS = {'--sat', '--lean', '--enc=seq', '--all-attachments'}
+ALLOWED_FLAGS = {'--sat', '--lean', '--enc=seq', '--all-attachments', '--verbose'}   # --verbose only logs
 ALLOWED_EXCLUSIONS = {'EXCLUDED_NEGATIVE_KNOWN_DEFICIT', 'EXCLUDED_NEGATIVE_LETTER_DEFICIT', 'EXCLUDED_EMPTY_VERTEX_DOMAIN',
                       'EXCLUDED_PROFILE_CAPACITY', 'EXCLUDED_PROFILE_PROPAGATION', 'EXCLUDED_INCLUSION',
-                      'EXCLUDED_OUTSIDE_PROFILE_C2', 'EXCLUDED_PROFILE_SELECTION_UNSAT', 'EXCLUDED_DUPLICATE_ROWS'}
+                      'EXCLUDED_OUTSIDE_PROFILE_C2', 'EXCLUDED_PROFILE_SELECTION_UNSAT', 'EXCLUDED_DUPLICATE_ROWS',
+                      'EXCLUDED_SYMMETRIC_ATTACHMENT'}
+
+
+GEN_CFG = [a for a in sys.argv if a.startswith(('--yr=', '--extra='))]
 
 
 def check_flags(d, family):
     fl = [f for f in d['flags'] if not f.startswith(('--indices=', '--out=', '--conflicts='))]
+    if family == 'GEN':                       # the configuration must be exactly the one being assembled
+        cfg = sorted(f for f in fl if f.startswith(('--yr=', '--extra=')))
+        assert cfg == sorted(GEN_CFG) and len(cfg) == 2, ('GEN configuration', cfg, GEN_CFG)
+        fl = [f for f in fl if not f.startswith(('--yr=', '--extra='))]
     assert set(fl) <= ALLOWED_FLAGS and '--sat' in fl and '--lean' in fl and '--enc=seq' in fl, ('flags', d['flags'])
     assert d['summary']['family'] == family, ('family', d['summary']['family'], family)
 
@@ -47,7 +55,7 @@ def check_flags(d, family):
 cover_dir, shard_dir, orbits, colours, out = map(Path, sys.argv[1:6])
 RESID = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--residual"), None)
 FAMILY = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--family"), "P3")
-assert FAMILY in ("P3", "P3NB"), FAMILY      # P3NB: covers under the core flip group (28 types), no colour-factor cores
+assert FAMILY in ("P3", "P3NB", "GEN"), FAMILY      # P3NB: covers under the core flip group (28 types), no colour-factor cores
 pending = {}
 reps = read(orbits)['representatives']
 if FAMILY != 'P3':
