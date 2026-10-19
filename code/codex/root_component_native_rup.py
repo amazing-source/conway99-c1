@@ -1,7 +1,7 @@
 """Check an own generated RUP proof with the repository's native checker.
 
-The '-U' flag forbids RAT additions; '-p' ignores deletion information,
-matching the existing Python RUP checker. Verification must explicitly
+The '-U' flag forbids RAT additions. Standard deletion steps are retained
+to avoid keeping every obsolete learned clause alive. Verification must explicitly
 finish with 's VERIFIED'. The checked input is retained as compressed
 DIMACS/proof artifacts, and the checker executable is hashed.
 """
@@ -25,12 +25,14 @@ def check_native_rup(clauses,proof,prefix,timeout=600):
     with cnf.open('w',encoding='ascii',newline='\n') as f:
         f.write('p cnf %d %d\n'%(variables,len(clauses)))
         for c in clauses:f.write(' '.join(map(str,c))+' 0\n')
-    count=0
+    count=0;deletions=0
     with rup.open('w',encoding='ascii',newline='\n') as f:
         for line in proof:
-            if not line.strip() or line.startswith('d '):continue
-            f.write(line.rstrip()+'\n');count+=1
-    command=[str(CHECKER),str(cnf),str(rup),'-U','-p','-l',str(trimmed),'-t',str(timeout)]
+            if not line.strip():continue
+            if line.startswith('d '):deletions+=1
+            else:count+=1
+            f.write(line.rstrip()+'\n')
+    command=[str(CHECKER),str(cnf),str(rup),'-U','-l',str(trimmed),'-t',str(timeout)]
     started=time.monotonic()
     with log.open('wb') as f:
         result=subprocess.run(command,stdout=f,stderr=subprocess.STDOUT,timeout=timeout+10,
@@ -48,6 +50,7 @@ def check_native_rup(clauses,proof,prefix,timeout=600):
         paths[target.name]={'uncompressed_sha256':h.hexdigest(),'compressed_bytes':target.stat().st_size}
         # These are our own temporary ASCII copies; the compressed data remain.
         path.unlink()
-    return {'empty_clause_verified':True,'checker':'drat-trim -U -p','rup_only':True,
-            'input_additions':count,'checker_sha256':hashlib.sha256(CHECKER.read_bytes()).hexdigest(),
+    return {'empty_clause_verified':True,'checker':'drat-trim -U','rup_only':True,
+            'input_additions':count,'input_deletions':deletions,'deletions_ignored':False,
+            'checker_sha256':hashlib.sha256(CHECKER.read_bytes()).hexdigest(),
             'wall_seconds':time.monotonic()-started,'log':str(log),'artifacts':paths}

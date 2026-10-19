@@ -141,6 +141,9 @@ def main():
         check_call = "            out['proof_check'] = check_rup(_L, proof)"
         assert source.count(check_call)==1
         source=source.replace(check_call,"            out['proof_check'] = export_proof_check_hook(_L.clauses, proof)")
+        proof_call = "            proof = [ln for ln in finished_proof(s) if not ln.startswith('d ')]"
+        assert source.count(proof_call)==1
+        source=source.replace(proof_call,"            proof = finished_proof(s)")
     if args.row_cut_rounds or args.extend_rows:
         call = '        ans = s.solve_limited()'
         assert source.count(call) == 1

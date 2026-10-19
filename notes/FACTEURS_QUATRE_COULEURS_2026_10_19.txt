@@ -748,3 +748,31 @@ et drat-trim -U -p natif; cas2 utilisait anciennes coupes (toujours valides).
 Nouveau batch corrige arret Windows par arbre; batch ACTIF a encore ancien
 arret launcher seul : surveiller si900wall/cas. Dernierlu1242/envoi1241.
 LAB prend P3 et assemble2K2 apres livraison7certificats avec transports.
+
+19/10 05h57 - Residuel core51/b702 certifie EXCLU.
+UNSAT du systeme original des profils, sans coupe ajoutee,52.515625CPU.
+RUP435146ajouts en entree, coeur283490lemmes,0RAT; drat-trim -U -p VERIFIED.
+Case003.certificate.json lie le CNF aux domaines, puis au DIMACS exact verifie.
+Batch passe a core75/b355; core51/b476 encore en verification native.
+Garde11164 active,core14 unique,pause70/reprise60,cpu_guard_2k2_certificates.log.
+
+Lemme de quota generalise (sans solveur et sans autres profils fixes).
+Pour un futur sommet x dont le profil p est fixe, soient F et G deux
+caracteristiques binaires des voisins (lettre, sommet connu, ou degre).
+Les nombres de futurs voisins portant F et G sont respectivement t_F,t_G.
+Alors |N(x) intersect (F sans G)| = t_F - |N(x) intersect F intersect G|
+>= t_F-t_G. Si d=t_F-t_G>0, pour TOUT ensemble FIXE W de moins de d
+sommets futurs, il existe un voisin F sans G hors W. Donc le profil p
+implique une disjonction des profils compatibles de tels sommets hors W.
+W peut etre choisi lors de la separation d'un modele : sa cardinalite
+suffit a prouver la clause sur tous les domaines, les autres profils libres.
+Anciennes inclusions = W vide. Nouvelle separation exploite aussi |W|>0.
+Les controles positifs sur le vrai rook3x3 et le rejet d'une selection
+impossible sont passes avant utilisation. Chaque clause est reconstruite
+exactement depuis le certificat pour comparaison au suffixe du CNF.
+
+Controle natif prochain : conserver les suppressions DRUP et utiliser -U,
+ce qui permet de retirer les anciens lemmes inutiles de la base du lecteur.
+Le -U maintient le controle RUP strict. Un petit certificat avec suppression
+est accepte et un faux certificat avec suppression rejete. Case003 a garde
+l'ancien mode sans suppressions; les drapeaux sont enregistres par certificat.
