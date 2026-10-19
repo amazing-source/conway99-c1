@@ -1,0 +1,27 @@
+{
+  "scope": "Per-attachment continuation only; completeness comes from the separate LAB census.",
+  "resources": {
+    "logical_cpu_budget": 1,
+    "shared_affinity_mask": 16384,
+    "priority": "below_normal"
+  },
+  "cpu_search_limit_per_case": 60.0,
+  "wall_limit_per_case_including_proof": 900.0,
+  "cases": [
+    {
+      "case_index": 0,
+      "core_index": 0,
+      "boundary_index": 10,
+      "attachment": [],
+      "sigma": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "status": "ERROR_NOT_A_TARGETED_ATTACHMENT_RESULT",
+      "pid": 19784,
+      "detail": "The 2K2N empty attachment was not routed to the targeted driver. The whole-border result remains open; no exclusion counted. Fixed in wrapper; keep original files."
+    }
+  ]
+}

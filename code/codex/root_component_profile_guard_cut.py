@@ -19,6 +19,19 @@ if not __debug__:
 def propagate(bounds, edge_count, proof=None):
     state = [-1]*edge_count; trace = []
     if proof is not None:
+        if proof.get('kind') == 'xor_exact_quotas':
+            left = 0; right = 0
+            assert proof['constraints'] and len(set(proof['constraints'])) == len(proof['constraints'])
+            for ci in proof['constraints']:
+                assert 0 <= ci < len(bounds)
+                c = bounds[ci]
+                assert c['lower'] == c['upper']
+                for e in c['edges']:
+                    assert 0 <= e < edge_count
+                    left ^= 1 << e
+                right ^= c['lower'] & 1
+            assert left == 0 and right == 1
+            return True
         for step in proof['trace']:
             c = bounds[step['constraint']]
             free = [e for e in c['edges'] if state[e] == -1]
@@ -49,6 +62,35 @@ def propagate(bounds, edge_count, proof=None):
             state[e] = value
             for cj in occurrence[e]:
                 if cj not in pending: pending.add(cj); queue.append(cj)
+    return None
+
+
+def xor_refutation(bounds, edge_count):
+    """XOR exact quota equalities; a saved subset must reduce to 0 = 1."""
+    basis = {}
+    for ci, c in enumerate(bounds):
+        if c['lower'] != c['upper']:
+            continue
+        left = 0
+        for e in c['edges']:
+            left ^= 1 << e
+        right = c['lower'] & 1; used = 1 << ci
+        while left:
+            pivot = left.bit_length()-1
+            if pivot not in basis:
+                basis[pivot] = (left, right, used)
+                break
+            a, b, combination = basis[pivot]
+            left ^= a; right ^= b; used ^= combination
+        else:
+            if right:
+                selected = []
+                while used:
+                    bit = used & -used; used ^= bit
+                    selected.append(bit.bit_length()-1)
+                result = {'kind': 'xor_exact_quotas', 'constraints': selected}
+                assert propagate(bounds, edge_count, result)
+                return result
     return None
 
 
@@ -105,7 +147,8 @@ class GuardOracle:
         return edges,bounds
 
     def refute(self,fixed):
-        edges,bounds=self.system(fixed);proof=propagate(bounds,len(edges))
+        edges,bounds=self.system(fixed)
+        proof=propagate(bounds,len(edges)) or xor_refutation(bounds,len(edges))
         return proof
 
     def minimize(self):
@@ -115,7 +158,9 @@ class GuardOracle:
         for x in sorted(fixed):
             trial=fixed-{x};trials+=1
             if self.refute(trial) is not None:fixed=trial
-        edges,bounds=self.system(fixed);proof=propagate(bounds,len(edges));assert proof is not None
+        edges,bounds=self.system(fixed)
+        proof=propagate(bounds,len(edges)) or xor_refutation(bounds,len(edges))
+        assert proof is not None
         return {'kind':'continuation_guard','guards':[(x,self.selected[x]) for x in sorted(fixed)],
                 'support_options':[],'proof':proof,'constraint_count':len(bounds),'edge_count':len(edges),
                 'minimization_trials':trials,'scope':'This guard subset has no completion; no global family exclusion.'}
@@ -135,4 +180,17 @@ def controls():
     o=GuardOracle([0],[(0,2)],[(0,3),(1,2),(1,3)],[[[0]],[[0]],[[],[0]]],[0,0,1],2)
     cut=o.minimize();assert cut is not None
     assert check_guard_cut(o.rows,o.known,o.outside,o.domains,cut,2)
-    return {'rook_completion_preserved':True,'false_profile_guard':cut}
+    odd = [{'edges': [0,1], 'lower':1, 'upper':1},
+           {'edges': [1,2], 'lower':1, 'upper':1},
+           {'edges': [0,2], 'lower':1, 'upper':1}]
+    assert propagate(odd,3) is None
+    parity=xor_refutation(odd,3);assert parity is not None
+    assert propagate(odd,3,parity)
+    feasible=[{**c,'upper':2} for c in odd]
+    assert xor_refutation(feasible,3) is None, 'Do not treat an interval as a parity equality.'
+    try:propagate(odd,3,{**parity,'constraints':parity['constraints'][:-1]})
+    except AssertionError:pass
+    else:raise AssertionError('A broken XOR certificate was accepted.')
+    return {'rook_completion_preserved':True,'false_profile_guard':cut,
+            'xor_not_seen_by_bounds':parity,'intervals_not_used_as_equalities':True,
+            'broken_xor_certificate_rejected':True}

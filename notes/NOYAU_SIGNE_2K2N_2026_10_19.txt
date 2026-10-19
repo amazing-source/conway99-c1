@@ -1,0 +1,212 @@
+19 octobre 2026 - Un noyau de20sommets pour coupler les lignes de2K2N
+
+1. IDENTITE GENERALE, SANS HYPOTHESE DE GRILLE
+
+Soit un srg(v,2r,1,2) enracine en o. On note Gamma les non-voisins de o,
+et on numerote les r aretes du couplage N(o) de0 a r-1. Chaque sommet
+u de Gamma porte deux lettres appartenant a deux racines distinctes.
+Pour un ensemble S de racines, repartissons TOUT Gamma en :
+  A : les sommets dont les deux racines appartiennent a S;
+  M : ceux qui en ont exactement une dans S;
+  B : ceux qui n'en ont aucune dans S.
+
+Pour chaque u de Gamma, avec c(u)=|racines(u) intersection S|,
+
+  n_B(u) - n_A(u) = 2r-2 - 4|S| + 2 c(u).                 (1)
+
+Preuve. Le degre de u dans Gamma est2r-2. Chaque lettre d'une racine de
+u apparait chez exactement un voisin de u dans Gamma; chaque lettre
+d'une autre racine apparait chez exactement deux. La somme des quotas
+des lettres de S est donc4|S|-2c(u). Un voisin dans A contribue2 a cette
+somme, un voisin dans M contribue1, un voisin dans B contribue0. Soustraire
+cette somme du degre donne (1). C'est une egalite exacte sur tout graphe
+eventuel, pas une observation numerique sur les exemples.
+
+Fixons ensuite un bloc connu K. Les sommets inconnus de M ont coefficient0
+dans (1). Pour imposer (1) aux sommets de
+  C=(A union B)\K,
+il suffit donc d'introduire les aretes INTERNES a C et les cellules deja
+decrites par les profils vers K. Aucune arete de C vers M\K n'est requise.
+Les contributions des voisins connus sont ajoutees avec leur signe +1/-1.
+
+2. SPECIALISATION2K2N
+
+On est ici dans Conway : r=7 et S={0,1,2}. La famille2K2N a la paire partagee
+H01=-H02 non nulle, les deux grilles Q34,Q56, et Q12 quelconque.
+Le bloc connu est
+  K=P union Y, P=Q01 union Q02, Y=Q34 union Q56,
+soit16sommets. Alors
+  C=A0 union B0,
+  A0=Q12 (4sommets), B0=Q35 union Q36 union Q45 union Q46 (16sommets).
+
+La reduction necessaire de la paire partagee et la domination des grilles,
+utilisees par le catalogue LAB, imposent deja les nombres suivants :
+                        voisins dans P     voisins dans Y
+  u dans A0                   0                  2
+  u dans B0                   2                  0
+Ces nombres sont ceux de profiles(q) dans le py_extend.py archive :
+base(q,01)+base(q,02), puis un voisin dans chaque grille disjointe des
+racines de q. Le nouveau lemme ne modifie pas ces hypotheses du catalogue.
+
+Le membre droit de (1) vaut4 sur A0 et0 sur B0. Les voisins connus donnent
+respectivement une contribution signee +2 et-2. Pour chaque u de C :
+
+  deg_{B0}(u) - deg_{A0}(u) = 2.                          (2)
+
+Le degre de u dans C vaut donc2+2deg_{A0}(u). Il est pair et au moins2.
+En posant e=E(A0), les sommes de (2) donnent
+
+  E(A0,B0) = 8+2e,
+  E(B0) = 20+e,
+  E(C) = 28+4e.                                          (3)
+
+Ces egalites sont imposees simultanement sur un bloc de20sommets,
+avec190variables d'aretes. Elles couplent vingt lignes tout en eliminant
+algebriquement les48autres sommets inconnus de M.
+
+3. UTILISER LA FERMETURE2K2 : e<=3
+
+Dans un rectangle Qij, une paire partageant une lettre ne peut appartenir
+a un triangle interne : elle aurait cette lettre et le troisieme sommet
+comme voisins communs, en contradiction avec lambda=1. Tout triple de
+sommets d'un rectangle contient une telle paire; le rectangle est donc
+sans triangle. Un graphe sans triangle sur4sommets a au plus4aretes; avec
+4aretes, c'est un cycle C4 (un sommet de degre3 interdirait toute arete
+entre les trois autres sommets).
+
+Dans ce C4, les paires opposees ont deja deux voisins communs internes.
+Elles ne peuvent partager une lettre, car mu=2. Les non-aretes sont donc
+exactement les deux paires de coins opposes du rectangle : c'est la grille
+Qij de la famille, avec l'etiquetage voulu.
+
+Si Q12 avait4aretes dans2K2N, on aurait les trois grilles Q12,Q34,Q56,
+c'est-a-dire la famille2K2 deja exclue. On peut donc ajouter e<=3, et (3)
+donne E(C) dans {28,32,36,40}. Cette derniere restriction DEPEND de la
+fermeture2K2; l'identite generale (1) et le noyau (2) n'en dependent pas.
+Reference locale de cette dependance :
+notes/FERMETURE_2K2_2026_10_19.txt et
+code/lab_exploration_2026-10-16/gz5602_2026-10-19/lab_2k2_20261019/k2k2_twostage_manifest_final.json.
+
+4. TRANSFERT AU CHEMIN Y, NOTAMMENT P3NB
+
+Pour les grilles Q45,Q46 et S={0,1,2}, on obtient plutot
+  C=Q12 union Q34 union Q35 union Q36 union Q56.
+Dans les memes hypotheses de paire partagee, le membre droit apres
+soustraction des voisins connus vaut2 sur Q12,Q34,Q56 et1 sur Q35,Q36.
+L'ajout d'une grille Q13, comme dans P3NB, ne change pas cette equation :
+Q13 est dans M et a coefficient0. Ce noyau a12degres pairs et8impairs,
+et son nombre d'aretes vaut24+4E(Q12).
+La fermeture2K2 n'autorise PAS ici a imposer E(Q12)<=3; cela demanderait
+la fermeture de la famille P3 appropriee, qui n'est pas supposee dans ce test.
+
+5. ENCODAGE ET CONTROLES
+
+root_component_signed_internal_core.py encode (1), puis toutes les bornes
+SRG visibles dans K union C :
+  * degres et quotas de lettres au plus leurs valeurs totales;
+  * pour u dans C, k dans K : adj(u,k)+communs dans K union C
+    au plus2-|lettres partagees|;
+  * pour u,v dans C : la meme borne.
+Tout voisin commun encore situe dans M ne peut qu'augmenter ces comptes.
+Ces bornes sont donc necessaires. Les produits de deux booleens sont
+definis par leurs trois clauses d'equivalence, et les cardinalites sont
+encodees par compteurs sequentiels. Les termes negatifs de (1) sont
+remplaces par des litteraux negatifs en ajustant le membre droit.
+
+Le controle positif emploie un vrai srg(243,22,1,2), r=11, avec les vrais
+profils et les vraies aretes du noyau fixes. Il applique l'identite GENERALE
+(1) avec sa constante propre, jamais la constante2 de (2), et ne lui impose
+pas l'exclusion2K2. Le meme encodeur est satisfaisable sur ce graphe.
+
+Le pilote2K2N coeur0/bord10/sigma[3,2,0,1] donne un noyau satisfaisable :
+Q12 independant,28aretes dans C,12degres2 et8degres4. Le noyau ajoute
+84502clauses; ce temoin n'est pas un graphe de Conway. Une passe avec
+apprentissage atteint encore sa limite60CPU avec une selection SAT,
+101coupes ajoutees, donc AUCUNE exclusion de ce raccordement.
+
+6. PASSAGE AUX EQUATIONS COMMUNES A TOUTES LES LIGNES
+
+Le mode --all-known-pair-rows ajoute toutes les aretes entre les68sommets
+inconnus, en gardant TOUS les choix de profils libres. Il impose exactement
+le degre, chaque quota de lettre, et chaque compte de voisins communs
+avec l'un des16sommets connus. Le filtre d'arete ajoute les implications
+necessaires selon les deux profils. Toutes les equations de voisins
+communs ENTRE sommets inconnus ne sont pas encore imposees dans ce mode.
+
+Les190variables du noyau sont identifiees aux variables correspondantes
+du modele de toutes les lignes, par des equivalences explicites. Deux
+affectations differentes de la meme arete ne sont donc pas permises.
+Ce modele traite les correlations entre lignes simultanement, au lieu de
+les decouvrir uniquement par des no-goods de selections successives.
+Un controle positif fixe les vraies aretes d'un SRG243 dans ce modele joint.
+
+Pilote coeur0/bord10 :258322variables,958058clauses,2278aretes inconnues,
+190identifications avec le noyau. Le controle positif SRG243 et celui du
+rook9 passent. A60.45secondes CPU et103272conflits, le solveur rend UNKNOWN.
+Il ne fournit ni exclusion ni matrice candidate sur ce pilote. Ce budget
+ne justifie donc aucune estimation de temps de fermeture de la famille.
+
+Si le solveur trouve une affectation, on materialise la matrice complete
+de Gamma et on teste exactement tous les degres, toutes les lettres et
+toutes les paires. Le fichier .extended.json distingue une vraie SRG d'une
+matrice candidate ayant des comptes de voisins communs incorrects. Un SAT
+de la relaxation n'est jamais annonce comme une construction de Conway.
+
+7. MESURES DE COUVERTURE ET DE PROPAGATION
+
+Le catalogue LAB0ef28bf2 fournit1006raccordements sur737bords2K2N, tous
+SAT au niveau des lignes connues. Le groupe de renommages Codex, qui
+utilise un sous-groupe conservateur de renommages, les reduit a823classes :
+656singletons,159paires,8classes de4. Chaque transport conserve toutes les
+lettres et aretes connues. Le LAB obtient816classes dans le groupe plus
+grand avec retournements independants des racines1 et2. Explication1261 :
+la relation H01=-H02 employee est une relation de COMPTAGE sur les
+rectangles z_w(01)+z_w(02)=base(w,01)+base(w,02), invariante sous ces
+retournements. Ce n'est pas une somme alternante selon les lettres.
+Les sept fusions supplementaires sont donc permises dans ce modele.
+Les calculs presents conservent leur couverture plus fine de823classes;
+le catalogue816du LAB peut servir pour les recherches suivantes sans
+repetition de sa reduction. La restriction de notre groupe n'etait pas
+necessaire, mais n'invalidait aucune exclusion ou couverture.
+
+Sur ces823classes, une propagation sans SAT supprime36profils mais ne vide
+aucun domaine :167.734375secondes CPU. Pour un profil p de x, on compare
+chaque difference de quotas t_F-t_G au nombre de sommets distincts ayant
+encore un profil compatible portant F sans G. Si ce nombre est trop petit,
+p est exclu. Chaque suppression est rejouee avec le predicat d'arete
+original et les supports complets; les supports encore presents ne sont
+jamais oublies. C'est le lemme de difference de quotas, applique en chaine
+avec les profils precedemment exclus. Ce test avant SAT est plus faible
+que les coupes apres une selection concrete; on ne confond pas leurs verdicts.
+
+Artefacts : data/codex_short_columns_20261018/shared_2k2n_residuals_20261019/
+  cases.json, isomorphisms.json, catalogue.json, lab_source.py.gz;
+  quota_stratified.json, quota_all.json et les entrees comprimees des
+  instances avec suppressions;
+  case000_signed_core.* et case000_signed_learned.*.
+Le premier essai case000.* a utilise l'ancien driver de bord au lieu de
+la cible a raccord vide; son statut est ERROR_NOT_A_TARGETED_ATTACHMENT_RESULT,
+aucune exclusion n'est comptee. Le wrapper corrige cible explicitement
+attachment=[] avec le sigma fourni pour2K2N.
+
+Ces travaux renforcent le modele et caracterisent l'obstacle. Ils ne
+ferment ni2K2N ni Conway global.
+
+8. PARITE DES QUOTAS SOUS HYPOTHESES DE PROFILS
+
+L'oracle de gardes essaie aussi les egalites exactes modulo2. Apres avoir
+fixe un sous-ensemble de profils, il reconstruit le meme systeme relache
+de variables d'aretes que dans PREUVE_COUPES_CONTINUATION. Seules les
+bornes avec lower=upper entrent dans l'elimination sur F2; une inegalite
+ou un intervalle non singleton n'est jamais traite comme une parite.
+Un certificat est la liste d'egalites dont le XOR annule chaque variable
+et donne un membre droit impair :0=1. Cette contradiction justifie le
+no-good sur les profils fixes. Le rejeu ne fait qu'additionner ces lignes.
+
+Controles : un cycle de trois equations x+y=1,y+z=1,z+x=1 est refute par
+XOR alors que la propagation des bornes ne le refute pas; des intervalles
+1<=x+y<=2 ne sont pas pris pour des parites; un certificat modifie est
+rejete; la vraie completion SRG243 est conservee.
+Sur trois gardes du pilote2K2N, ce renforcement n'a pas reduit les tailles
+14,41,28. Ces trois contradictions restent des propagations de bornes.
+Il n'y a donc pas de gain annonce sur2K2N pour cet essai de parite.

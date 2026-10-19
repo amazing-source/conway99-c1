@@ -7,11 +7,11 @@ relaxation of a full SRG completion, with no new symmetry assumption.
 """
 
 from itertools import combinations
-from root_component_p3_neighbor_support import prepare_profile
+from root_component_p3_neighbor_support import prepare_profile, edge_failure
 
 
 def extend_rows(rows, known_labels, outside_labels, domains, profile_literals,
-                hubs, pool, exactly, root_count=7):
+                hubs, pool, exactly, root_count=7, known_pairs_only=False):
     hubs = tuple(sorted(set(hubs)))
     assert all(0 <= h < len(domains) for h in hubs)
     clauses = []; cells = {}; edges = {}; products = {}
@@ -69,6 +69,25 @@ def extend_rows(rows, known_labels, outside_labels, domains, profile_literals,
             terms += [cell(h, v) for v in range(len(rows)) if row & (1 << v)]
             terms += [both(edge(h, y), cell(y, u)) for y in range(len(domains))]
             equal(terms, 2-len(set(q) & set(known_labels[u])))
+    if known_pairs_only:
+        assert hubs == tuple(range(len(domains)))
+        # Joint symmetric continuation of every profile, without the cubic
+        # expansion of all still unknown outside/outside common-neighbour counts.
+        partial_start = len(clauses)
+        prepared = [[prepare_profile(rows, known_labels, q, p, root_count) for p in domain]
+                    for q, domain in zip(outside_labels, domains)]
+        for x, y in combinations(hubs, 2):
+            variable = edge(x, y)
+            for pi, a in enumerate(prepared[x]):
+                for qi, b in enumerate(prepared[y]):
+                    if edge_failure(a, b) is not None:
+                        clauses.append([-profile_literals[x][pi], -profile_literals[y][qi], -variable])
+        return clauses, {'hubs': hubs, 'hub_labels': list(outside_labels),
+                         'edge_variables': [[x, y, v] for (x, y), v in edges.items()],
+                         'added_clauses': len(clauses), 'partial_srg_clauses': len(clauses)-partial_start,
+                         'known_edge_indicators': len(cells), 'common_neighbour_products': len(products),
+                         'mode': 'ALL_ROWS_KNOWN_PAIR_QUOTAS_ONLY',
+                         'all_outside_pair_equations_imposed': False}
     for h, k in combinations(hubs, 2):
         terms = [edge(h, k)] + [both(cell(h, u), cell(k, u)) for u in range(len(rows))]
         terms += [both(edge(h, y), edge(k, y)) for y in range(len(domains))]
@@ -136,7 +155,7 @@ def materialize_extension(rows, known_labels, outside_labels, profiles, extensio
             'promoted_outside_indices': list(hubs)}
 
 
-def controls():
+def controls(known_pairs_only=False):
     from pysat.card import CardEnc, EncType
     from pysat.solvers import Solver
     class Pool:
@@ -152,11 +171,16 @@ def controls():
         return cnf.clauses
     known = [(0, 2)]; outside = [(0, 3), (1, 2), (1, 3)]
     domains = [[[0]], [[0]], [[], [0]]]; literals = [[1], [2], [3, 4]]
-    clauses, extension = extend_rows([0], known, outside, domains, literals, [0, 2], Pool(), eq, 2)
+    hubs = [0, 1, 2] if known_pairs_only else [0, 2]
+    clauses, extension = extend_rows([0], known, outside, domains, literals, hubs, Pool(), eq, 2, known_pairs_only)
     with Solver(name='g3', bootstrap_with=clauses+[[1], [2], [3], [-4]]) as solver:
         assert solver.solve()
         actual = {v for v in solver.get_model() if v > 0}
         data = materialize_extension([0], known, outside, [[0], [0], []], extension, actual)
-        assert data['rows'] == [2, 5, 2]
-        assert data['profiles'] == [[0, 2]]
-    return {'actual_rook_completion_extended': True, 'known_rows': 3, 'remaining_vertices': 1}
+        if known_pairs_only:
+            assert data['rows'] == [6, 9, 9, 6] and data['profiles'] == []
+        else:
+            assert data['rows'] == [2, 5, 2]
+            assert data['profiles'] == [[0, 2]]
+    return {'actual_rook_completion_extended': True, 'known_rows': len(data['rows']),
+            'remaining_vertices': len(data['profiles']), 'known_pairs_only': known_pairs_only}

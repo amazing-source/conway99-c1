@@ -1,13 +1,20 @@
-"""Transport a 2K2 continuation obstruction by exact root/letter relabelling.
+"""Transport a 2K2/2K2N obstruction by exact root/letter relabelling.
 
 The permutation fixes the shared root 0, preserves {1,2}, and permutes
-the two grid root pairs {3,4},{5,6}. Flips at roots 1 and 2 must agree;
-the other letter-pair flips are free. Thus it preserves H01=-H02 and all three grid
-assumptions, as well as the complete set of 84 lower labels. A supplied
+the two grid root pairs {3,4},{5,6}. This conservative subgroup makes flips
+at roots 1 and 2 agree; the other letter-pair flips are free. It preserves
+the shared rectangle-count relation and all three grid
+assumptions for 2K2, or the two grids without assuming Q12 for 2K2N,
+as well as the complete set of 84 lower labels. A supplied
 isomorphism is checked directly on labels and every known adjacency.
+The counting relation also permits independent flips: the larger LAB
+group gives 816 rather than 823 classes for 2K2N (message1261). The
+smaller group here remains a valid, nonminimal cover; it is not needed
+to protect a sign of individual letters.
 """
 
 import argparse
+from collections import Counter
 import gzip
 import hashlib
 from itertools import permutations, product
@@ -52,7 +59,7 @@ def check(source,target,mapping):
     rp=tuple(mapping['root_permutation']);lp=mapping['letter_permutation'];vp=mapping['known_vertex_permutation']
     assert rp in tuple(root_permutations())
     assert sorted(lp)==list(range(14)) and all(lp[l]//2==rp[l//2] for l in range(14))
-    assert lp[2]%2==lp[4]%2, 'Preserve the sign in H01=-H02.'
+    assert lp[2]%2==lp[4]%2, 'This certificate uses the conservative equal-flip subgroup.'
     assert sorted(vp)==list(range(len(source['rows'])))
     assert len(source['rows'])==len(target['rows'])
     assert all(tuple(sorted(lp[l] for l in q))==tuple(target['known_labels'][vp[i]]) for i,q in enumerate(source['known_labels']))
@@ -81,11 +88,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('lab_source',type=Path);p.add_argument('catalogue',type=Path)
     p.add_argument('boundary_dir',type=Path);p.add_argument('--output-dir',type=Path,required=True)
+    p.add_argument('--family',choices=('2K2','2K2N'),default='2K2')
     a=p.parse_args();resources=limit_research_process(1)
     assert not a.output_dir.exists();a.output_dir.mkdir(parents=True)
     raw=a.lab_source.read_bytes();source=raw.decode('utf-8-sig');marker='\nOUT = next('
     assert source.count(marker)==1
-    before=sys.argv[:];sys.argv=[str(a.lab_source),str(Path(__file__).resolve().parent),'2K2','unused','0','0']
+    before=sys.argv[:];sys.argv=[str(a.lab_source),str(Path(__file__).resolve().parent),a.family,'unused','0','0']
     ns={'__name__':'lab_2k2_materialize','__file__':str(a.lab_source)}
     try:exec(compile(source.split(marker)[0],str(a.lab_source),'exec'),ns)
     finally:sys.argv=before
@@ -105,12 +113,13 @@ def main():
         blocks.append({**record,'rows':rows,'known_labels':[list(q) for q in ns['LABELS']],
                        'outside_labels':[list(q) for q in ns['OUTSIDE']]})
     groups=classes(blocks)
-    atomic_json_write(a.output_dir/'cases.json',{'source_sha256':hashlib.sha256(raw).hexdigest(),
+    atomic_json_write(a.output_dir/'cases.json',{'family':a.family,'source_sha256':hashlib.sha256(raw).hexdigest(),
                      'catalogue_sha256':hashlib.sha256(catalogue_raw).hexdigest(),'cases':blocks})
     atomic_json_write(a.output_dir/'isomorphisms.json',{'scope':'Family-preserving relabellings of known blocks; no new SAT search.',
                      'resources':resources,'permitted_root_permutations':len(list(root_permutations())),
                      'letter_flips_per_root_permutation':64,'classes':groups})
-    print(json.dumps({'cases':len(blocks),'classes':[[m['case_index'] for m in g['members']] for g in groups]}))
+    print(json.dumps({'family':a.family,'case_count':len(blocks),'class_count':len(groups),
+                      'class_size_histogram':dict(Counter(len(g['members']) for g in groups))}))
 
 
 if __name__=='__main__':main()

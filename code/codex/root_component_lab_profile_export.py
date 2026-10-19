@@ -27,6 +27,11 @@ def main():
     p.add_argument('--row-cut-rounds', type=int, default=0)
     p.add_argument('--row-cut-cpu-seconds', type=float, default=60)
     p.add_argument('--extend-rows', type=int, nargs='*', default=[])
+    p.add_argument('--all-known-pair-rows', action='store_true',
+                   help='Jointly choose every outside edge and impose all degree, letter and known-pair quotas.')
+    p.add_argument('--signed-root-core', type=int, nargs='+')
+    p.add_argument('--forbid-q12-grid', action='store_true',
+                   help='In 2K2N only, use the previously proved 2K2 exclusion to bound Q12 by three edges.')
     p.add_argument('--continuation-cuts', action='store_true')
     p.add_argument('--attachment', type=int, nargs=4, action='append',
                    help='Target one specified grid attachment, avoiding an already covered boundary scan.')
@@ -39,6 +44,11 @@ def main():
     p.add_argument('--orbit-seed-cuts', action='store_true',
                    help='Separate necessary cuts from stabilizer images of the resumed selections.')
     args = p.parse_args()
+    target_attachment = args.attachment
+    if target_attachment is None and args.family == '2K2N' and args.sigma is not None:
+        # No Q12 grid is attached in this family, but sigma still specifies
+        # ONE matching between the two Y grids. Do not scan the whole border.
+        target_attachment = []
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
     helper_hashes = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
@@ -46,6 +56,10 @@ def main():
                       'root_component_profile_guard_cut.py','root_component_profile_row_extension.py',
                       'root_component_p3_neighbor_support.py','root_component_native_rup.py',
                       'root_component_2k2_profile_canonical.py')}
+    if args.signed_root_core:
+        name='root_component_signed_internal_core.py'
+        helper_hashes[name]=hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+    assert not args.forbid_q12_grid or (args.family=='2K2N' and args.signed_root_core==[0,1,2])
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
     assert source.count(marker) == 1, 'LAB source changed; inspect its SAT branch before updating the hook.'
@@ -63,11 +77,22 @@ def main():
                 'resources': resources, 'helper_sha256': helper_hashes,
                 'rows': rows, 'known_labels': labels, 'outside_labels': outside,
                 'domains': domains, 'selected_indices': [ids[0] for ids in indices], 'profiles': selected}
+        if 'signed_internal_core' in learning:
+            info=learning['signed_internal_core']
+            data['signed_internal_core']={**info,'selected_edges':[[x,y] for x,y,v in info['edge_variables'] if v in positive]}
         args.output.write_text(json.dumps(data, separators=(',', ':'))+'\n', encoding='utf-8')
         if 'extension' in learning:
             from root_component_profile_row_extension import materialize_extension
             extended = materialize_extension(rows, labels, outside, selected, learning['extension'], positive)
             extended['scope'] = 'More completed rows; still no full graph.'
+            if args.all_known_pair_rows:
+                from root_component_profile_continuation import known_rows_check
+                checked=known_rows_check(extended['rows'],extended['known_labels'],extended['outside_labels'],extended['profiles'])
+                from collections import Counter
+                extended['scope']='Complete adjacency candidate; the full SRG test below decides validity.'
+                extended['full_srg_check']={'valid':checked['valid'],'violation_count':len(checked['violations']),
+                    'violation_types':dict(Counter(v['kind'] for v in checked['violations'])),
+                    'first_violations':checked['violations'][:10]}
             atomic_json_write(args.output.with_suffix('.extended.json'), extended)
 
     learning = {'scope': 'Necessary row-quota clauses added to this one boundary profile SAT.',
@@ -135,14 +160,36 @@ def main():
             learning['orbit_seed_added_clauses']=sum(len(r['violated_cuts']) for r in derived)
             atomic_json_write(args.output.with_suffix('.row_cut_learning.json'),learning)
         out['clauses']=len(allclauses)
-        if args.extend_rows:
+        if args.signed_root_core:
+            assert not args.resume_cuts_from and not args.extend_rows, 'Keep the core prefix separate from previous cut positions.'
+            from root_component_signed_internal_core import encode, controls
+            learning['signed_internal_core_controls']=controls(all_known_pair_rows=args.all_known_pair_rows)
+            extra, info=encode(rows,labels,outside,domains,literals,args.signed_root_core,
+                               pool,exactly,forbid_q12_grid=args.forbid_q12_grid)
+            solver.append_formula(extra);allclauses.extend(extra)
+            learning['signed_internal_core']=info
+            out['variables']=pool.top;out['clauses']=len(allclauses)
+        if args.extend_rows or args.all_known_pair_rows:
             from root_component_profile_row_extension import extend_rows, controls
-            learning['extension_controls'] = controls()
-            extra, extension = extend_rows(rows, labels, outside, domains, literals, args.extend_rows, pool, exactly)
+            assert not (args.extend_rows and args.all_known_pair_rows)
+            learning['extension_controls'] = controls(known_pairs_only=args.all_known_pair_rows)
+            hubs=range(len(domains)) if args.all_known_pair_rows else args.extend_rows
+            extra, extension = extend_rows(rows, labels, outside, domains, literals, hubs, pool, exactly,
+                                           known_pairs_only=args.all_known_pair_rows)
+            if 'signed_internal_core' in learning:
+                other={tuple(sorted((x,y))):v for x,y,v in extension['edge_variables']}
+                linked=[]
+                for x,y,v in learning['signed_internal_core']['edge_variables']:
+                    if (x,y) in other:
+                        w=other[x,y];extra.extend([[-v,w],[v,-w]]);linked.append([v,w])
+                extension['shared_core_edge_equalities']=linked
             solver.append_formula(extra); allclauses.extend(extra)
             learning['extension'] = extension
             out['variables'] = pool.top; out['clauses'] = len(allclauses)
-            out['additional_completed_rows'] = len(extension['hubs'])
+            if args.all_known_pair_rows:
+                out['outside_rows_with_exact_known_pair_quotas']=len(extension['hubs'])
+            else:
+                out['additional_completed_rows'] = len(extension['hubs'])
         start = time.process_time()
         for ri in range(args.row_cut_rounds+1):
             solver.conf_budget(200000)
@@ -207,7 +254,7 @@ def main():
         proof_call = "            proof = [ln for ln in finished_proof(s) if not ln.startswith('d ')]"
         assert source.count(proof_call)==1
         source=source.replace(proof_call,"            proof = finished_proof(s)")
-    if args.row_cut_rounds or args.extend_rows:
+    if args.row_cut_rounds or args.extend_rows or args.signed_root_core or args.all_known_pair_rows:
         call = '        ans = s.solve_limited()'
         assert source.count(call) == 1
         source = source.replace(call, '        ans = profile_cut_solve_hook(s, allcl, rows, doms, rows_v, LABELS, OUTSIDE, pool, exactly, out)')
@@ -219,24 +266,27 @@ def main():
         ns = {'__name__': '__main__', '__file__': str(args.lab_source), 'export_selection_hook': save_selection,
               'profile_cut_solve_hook': solve_with_cuts,
               'export_proof_check_hook':lambda clauses,proof:check_native_rup(clauses,proof,args.output)}
-        if args.attachment:
+        if target_attachment is not None:
             marker = '\nOUT = next('
             assert source.count(marker)==1, 'Inspect the changed LAB driver.'
             exec(compile(source.split(marker)[0],str(args.lab_source),'exec'),ns)
-            assert len(args.attachment)==ns['NG'] and ns['Q12K']
-            assert all(sorted(a)==list(range(4)) for a in args.attachment)
+            if ns['Q12K']:
+                assert len(target_attachment)==ns['NG']
+            else:
+                assert target_attachment==[] and args.family=='2K2N'
+            assert all(sorted(a)==list(range(4)) for a in target_attachment)
             assert (args.sigma is not None)==ns['YY']
             if args.sigma is not None:
                 assert sorted(args.sigma)==list(range(4))
             boundary_raw=args.boundary.read_bytes(); boundary_data=json.loads(gzip.decompress(boundary_raw))
             assert boundary_data['status']=='COMPLETE_BOUNDARY_COVER'
             boundary=tuple(bytes.fromhex(boundary_data['boundaries_hex'][args.index]))
-            rows=ns['materialize'](boundary_data['core'],boundary,args.attachment,args.sigma)
+            rows=ns['materialize'](boundary_data['core'],boundary,target_attachment,args.sigma)
             result=ns['frontier'](rows,True)
             record={'scope':'One specified attachment only; not a boundary or family verdict.',
                     'boundary_index':args.index,'boundary_hex':boundary_data['boundaries_hex'][args.index],
                     'boundary_source_sha256':hashlib.sha256(boundary_raw).hexdigest(),
-                    'attachments':args.attachment,'sigma':args.sigma,'frontier':result}
+                    'attachments':target_attachment,'sigma':args.sigma,'frontier':result}
             args.output.with_suffix('.lab_result.json.gz').write_bytes(
                 gzip.compress(json.dumps(record,separators=(',',':')).encode(),mtime=0))
             print(json.dumps({'target_attachment_status':result['status']}))

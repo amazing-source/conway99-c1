@@ -29,6 +29,8 @@ def digest(path):
 def run(directory,indices,cpu_seconds,wall_seconds):
     resources=limit_research_process(1)
     data=json.loads((directory/'cases.json').read_text(encoding='utf-8'))
+    family=data.get('family','2K2')
+    assert family in ('2K2','2K2N')
     source=directory/'lab_source.py'
     raw=gzip.decompress((directory/'lab_source.py.gz').read_bytes())
     if source.exists():assert source.read_bytes()==raw
@@ -45,7 +47,7 @@ def run(directory,indices,cpu_seconds,wall_seconds):
         assert not prefix.with_suffix('.lab_result.json.gz').exists()
         cover=directory/('core_%03d.json.gz'%case['core_index'])
         command=[sys.executable,'-I','-u','-X','utf8',str(wrapper),str(source),str(cover),
-                 '--index',str(case['boundary_index']),'--family','2K2']
+                 '--index',str(case['boundary_index']),'--family',family]
         for attachment in case['attachment']:
             command+=['--attachment',*map(str,attachment)]
         command+=['--sigma',*map(str,case['sigma']),'--row-cut-rounds','128',
@@ -80,6 +82,12 @@ def run(directory,indices,cpu_seconds,wall_seconds):
         elif process.returncode!=0:record['status']='ERROR'
         elif result_path.exists():
             result=json.loads(gzip.decompress(result_path.read_bytes()))
+            if 'attachments' not in result:
+                record['status']='ERROR_NOT_A_TARGETED_ATTACHMENT_RESULT'
+                record['detail']='The wrapper returned a whole-boundary driver result; no exclusion is counted.'
+                atomic_json_write(report_path,report)
+                print(json.dumps({'finished':record}),flush=True)
+                continue
             assert result['attachments']==case['attachment'] and result['sigma']==case['sigma']
             assert result['boundary_hex']==case['boundary_hex']
             frontier=result['frontier'];status=frontier['status'];record['raw_status']=status
