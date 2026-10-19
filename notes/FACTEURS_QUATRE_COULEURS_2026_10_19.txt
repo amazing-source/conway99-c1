@@ -428,3 +428,80 @@ sont P12, P8+C4, P4+C8, P4+2C4 (Pk designe ici un chemin a k sommets).
 Cela fournit une stratification finie de l'extension P3; ce n'est pas
 encore une exclusion de ces formes. Derivation transmise au LAB qui
 travaille P3, sans dupliquer ses calculs.
+
+PRECISION E3 ET DEFAUT DES DEUX COTES
+
+Le cas e=3 ci-dessus est CONDITIONNEL : E3 exclut deja universellement
+un rectangle a trois aretes, par le vecteur entier de norme14 et ses
+deux coins de meme signe portant une meme lettre. Ne pas le compter
+comme branche ouverte ni comme exclusion nouvelle. Les cas nongrille
+reellement a traiter sont e=0,1,2. Cette precision a ete envoyee au LAB.
+
+Le graphe induit par tous les sommets portant la racine3, soit T+N,
+est 2-regulier; chaque sommet a un voisin de chaque lettre3. Ses cycles
+ont des longueurs multiples de4. Comme la coupure T-N a 8-2e aretes,
+N contient aussi exactement 4-e composantes chemins (un sommet isole
+compte comme un chemin) et des cycles multiples de4. Les aretes T-N
+relient les extremites de ces chemins. T n'a pas de sommet isole.
+
+Pour e=2, T a dix formes possibles sans etiquettes :
+  P2+P10; P3+P9; P4+P8; P5+P7; 2P6;
+  C4+P2+P6; C4+P3+P5; C4+2P4;
+  C8+2P2; 2C4+2P2.
+Pour e=1, T a neuf formes : les partitions de12 en trois tailles de
+chemins au moins2 (sept), ou C4 plus P2+P2+P4 ou P2+P3+P3.
+Pour e=0, T a six formes : les partitions de12 en quatre tailles au
+moins2 (cinq), ou C4+4P2. Ce sont des conditions necessaires.
+
+Si deux des rectangles03,13,23 sont des grilles et56 ne l'est pas,
+ils forment deux C4 isoles dans T. Les quatre autres sommets doivent
+donc former deux P2 : e56=2. Chacun des quatre sommets de56 voit un
+sommet dans chaque grille, donc deg_T(z)=2 et son degre interne vaut1.
+Les deux rectangles nongrilles sont alors des couplages de deux aretes.
+
+COUPE DE PROFILS P3 ET P3N, SANS ARETES EXTERIEURES
+
+Pour P3, chaque z de Q56 a 1+d_z voisins dans T; il en a au moins un.
+Pour P3N, on retire l'hypothese Q12 grille et on pose
+U=Q12+Q03+Q13+Q23 (16 sommets). Les deux grilles45/46 imposent toujours
+deg_X(z)=4+d_z. L'identite H01=-H02 donne exactement deux voisins
+dans K, donc deg_U(z)=2+d_z : au moins deux. Cette derniere borne ne
+suppose ni Q12 grille, ni E3, ni Gram fixe.
+
+Soit B le bloc connu (20 sommets pour P3,16 pour P3N), A_B ses aretes,
+L(v) les deux lettres du sommet v et p son profil de voisins dans B.
+Pour chaque sommet connu u, le budget restant de voisins communs vaut
+  s_p(u)=2-[u dans p]-|L(v) inter L(u)|-|p inter N_B(u)|.
+Pour une lettre l, le budget restant vaut 1 si sa racine est portee
+par v, sinon2, moins le nombre de voisins connus de v portant l.
+
+Deux sommets exterieurs x,z de profils p,q ne peuvent etre adjacents
+que si les trois conditions suivantes sont satisfaites :
+  |p inter q|+|L(x) inter L(z)| <= 1;
+  q ne rencontre aucun u avec s_p(u)=0, et reciproquement;
+  chaque lettre de z garde une place dans le budget de x, et vice versa.
+La preuve est directe : ajouter xz ajoute un voisin commun a chaque
+paire (x,u) avec u dans q, et a chaque paire (z,u) avec u dans p.
+
+En P3, tout profil de z sans partenaire possible dans les douze
+domaines T est donc impossible. En P3N, il faut DEUX partenaires x,y
+provenant de deux sommets distincts de U. De plus :
+  |p_x inter p_y|+|L(x) inter L(y)| <=1, car z sera un voisin commun;
+  aucun sommet connu de budget1 pour z n'est dans les deux profils;
+  aucune lettre de budget1 pour z n'est portee par les deux partenaires.
+L'absence de cette petite etoile de deux voisins elimine le profil q.
+On n'affirme pas que les etoiles survivantes sont completables.
+
+Ces coupes ne portent que sur les choix de profils. Dans le SAT on
+peut en outre imposer : choix(q) implique somme des choix de profils
+partenaires individuellement compatibles >=1 (P3) ou >=2 (P3N).
+Les choix alternatifs d'un meme sommet ne comptent jamais deux fois,
+puisque le modele selectionne exactement un profil par sommet.
+
+Module : root_component_p3_neighbor_support.py. Entree explicite
+rows, known_labels, outside_labels, domains; sorties domaines epures,
+indices d'origine, motifs de rejet et coupes conditionnelles optionnelles.
+Il ne modifie pas les parcours du LAB. Les controles locaux acceptent
+une etoile de deux voisins, rejettent deux voisins saturant ensemble
+un budget1, et rejettent deux profils alternatifs du meme sommet pris
+a tort pour deux voisins. Ces controles ne sont pas des graphes de Conway.
