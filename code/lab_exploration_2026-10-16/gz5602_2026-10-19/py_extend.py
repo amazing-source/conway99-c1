@@ -593,15 +593,20 @@ def dissect(groups, vp, targets, feat, doms):
 def solve(core, boundary, att, propagate):
     cnt = Counter(); cnt['max_conflicts'] = 0
     opened = []
+    open_keys = set()
     seen = set()       # known matrices already refuted: different colour factors can give the SAME attachment
     for attached, sigma in ((a, sg) for a in (att.for_boundary(boundary) if Q12K else [()])
                             for sg in (P4 if YY else [None])):
         rows = materialize(core, boundary, attached, sigma); cnt['valid_partial'] += 1
         key = tuple(rows)
         if key in seen:
-            # identical known rows => identical frontier input and verdict (the first occurrence was excluded:
-            # a non-excluded one returns at once below)
-            cnt['EXCLUDED_DUPLICATE_ROWS'] += 1
+            # identical known rows => identical frontier input and verdict.  Outside --all-attachments the first
+            # occurrence was excluded (a non-excluded one returns at once below); with --all-attachments a duplicate of
+            # an OPEN matrix is counted as open.
+            if key in open_keys:
+                cnt['OPEN_DUPLICATE_ROWS'] += 1
+            else:
+                cnt['EXCLUDED_DUPLICATE_ROWS'] += 1
             continue
         seen.add(key)
         cert = frontier(rows, propagate)
@@ -617,6 +622,7 @@ def solve(core, boundary, att, propagate):
             cnt[cert['status']] += 1
             continue
         if ALLATT:              # residual mapping: keep going and list every non-excluded (attachment, sigma)
+            open_keys.add(key)
             cnt['OPEN_' + cert['status']] += 1
             opened.append({'attachment': attached, 'sigma': sigma, 'status': cert['status'],
                            'selected_profiles': cert.get('selected_profiles')})
