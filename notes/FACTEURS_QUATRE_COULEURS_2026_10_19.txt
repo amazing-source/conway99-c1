@@ -1,0 +1,90 @@
+19 octobre 2026 - Coeur partage et grille complementaire
+
+HYPOTHESES EXACTES
+
+On suppose H01 = -H02 != 0 et Q12 grille, sous E3 pour le catalogue
+des coeurs. Aucun statut n'est impose aux rectangles sur D={3,4,5,6},
+ni aux autres rectangles. Aucune Gram ou symetrie n'est fixee.
+Le coeur K=Q01+Q02 est 2-regulier, parmi les 114 etiquetages du LAB.
+
+LEMME DES QUATRE FACTEURS SIMPLES
+
+T_uv = 2 - K_uv - (K^2)_uv - |lettres(u) inter lettres(v)| compte
+exactement les voisins communs de u,v dans les 24 sommets des six
+rectangles sur D. En effet l'identite H01+H02=0 impose les nombres
+de voisins dans K suivants pour un sommet hors K :
+  0 sur Q12 et sur Q0d;
+  1 sur Q1d et Q2d;
+  2 sur Qde, avec d,e dans D.
+Seuls les derniers peuvent donc completer une paire de K.
+
+Chaque sommet sur D a exactement un voisin dans la grille Q12.
+Colorons sa paire de voisins dans K par ce coin de Q12, j=(s1,s2).
+Deux sommets de D ne peuvent avoir la meme paire ET la meme couleur :
+ils auraient trois voisins communs (les deux de K et le coin Q12).
+Chaque couleur definit donc un graphe SIMPLE F_j sur les huit
+sommets de K, et les quatre graphes ont pour somme le multigraphe T.
+
+Les voisins communs entre u dans K et j dans Q12 viennent tous de D :
+Q12 n'a pas de voisins sur Q1d,Q2d, et K n'en a pas sur Q0d.
+Par consequent
+  deg_Fj(u) = 2 - |lettres(u) inter lettres(j)|.
+La somme de ces huit degres vaut 12 : chaque F_j a six aretes.
+
+Etiquetage : sommets 0..3 de Q01 aux coins (s0,s1), puis 4..7 de Q02
+aux coins (s0,s2), dans l'ordre lexicographique des deux bits.
+Couleurs 0,1,2,3 = (00),(01),(10),(11) sur les lettres des racines 1,2.
+Ainsi deg_Fj(v)=2-[v%2 == (j//2 si v<4, sinon j%2)].
+
+DEUX CONTRADICTIONS MANUELLES
+
+Representant 20 du catalogue LAB : le support de T est biparti entre
+{0,2,4,6} et {1,3,5,7}. Dans F_00 les degres exiges valent 1 sur les
+pairs et 2 sur les impairs. Les sommes des degres des deux parties
+seraient 4 et 8, alors qu'elles doivent etre egales. Impossible.
+
+Representant 23 : T_47=1. Pour F_10, prendre
+  y=(1,-1,1,-1,0,-1,-1,1).
+Le produit y.deg_F10 vaut 1. Sur le support de T, toutes les sommes
+y_u+y_v sont <=0, sauf pour l'arete 47 ou elles valent 1. L'identite
+y.deg = sum_{uv} (y_u+y_v) x_uv impose donc x_47 >=1.
+Pour F_11, le meme argument avec
+  y=(1,-1,1,-1,1,-1,-1,0)
+impose aussi x_47 >=1. Les deux facteurs consomment au moins deux
+copies de l'arete 47, contrairement a T_47=1. Impossible.
+
+Ces deux orbites representent six coeurs etiquetes parmi les 114 :
+{20,34} et {23,33,46,55}. L'argument n'utilise aucune grille sur D.
+Ce n'est pas encore une exclusion de gabarit : les autres coeurs
+peuvent toujours etre choisis.
+
+ENUMERATION EXACTE ET SUITE
+
+root_component_shared_core_colors.py enumere les facteurs simples
+de degres prescrits puis joint les couleurs par sommes entieres.
+Donnees : shared_core_Q12_colour_factors.json, avec les certificats
+lineaires ci-dessus. Sur les 23 orbites, les 21 autres gardent des
+decompositions. C'est une condition necessaire, pas une construction
+du graphe. Aucun resultat de non-existence globale n'est annonce.
+
+Pour la famille universelle K3, on ajoute uniquement les grilles
+Q45,Q46,Q56. Le LAB y recense 261 gabarits encore ouverts (message1190).
+Les rectangles Q34,Q35,Q36 RESTENT LIBRES. Le code
+root_component_shared_k3_boundary.py enumere sans solveur les trois
+couplages du coeur, leurs coins et leur quotient explicite. Le premier
+coeur 0 donne 255318 bords20, apres 509616 etats normalises; 8.1875 CPU.
+Ce catalogue seul ne ferme rien et ne contient pas encore Q12.
+
+Apres ajout de Q12, le bloc connu a 24 sommets et est 5-regulier.
+Les 60 sommets manquants ont un nombre de voisins connus force :
+  q=0y (y dans {4,5,6}) : un dans Q12 et un dans la grille Y disjointe
+    (16 profils);
+  q=1y ou 2y : un dans K et un dans cette grille Y (32 profils);
+  q=03 : un dans Q12 et un dans chacune des trois grilles Y (256);
+  q=13 ou 23 : un dans K et un dans chaque grille Y (512);
+  q=3y : deux dans K, un dans Q12 et un dans la grille Y disjointe
+    (448 profils).
+Les quotas de lettres et les bornes de voisins communs filtreront ces
+profils exactement, comme dans les deux familles deja fermees.
+La repartition en quatre facteurs sert a eviter les 24^3 essais
+aveugles d'attachement de Q12 a chaque bord20.
