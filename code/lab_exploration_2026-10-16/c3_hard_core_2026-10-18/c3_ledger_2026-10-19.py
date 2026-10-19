@@ -183,6 +183,12 @@ for t in (5128, 4192):
 if os.path.exists("t23_hits_all.json"):
     for t in json.load(open("t23_hits_all.json")):
         methods[("gz", int(t))].add("T23")
+# K3-universal family (H_ab = -H_ac forced, Q_bc grid, a triangle of grids off {a,b,c}; Codex's exact enumeration,
+# 19/10): ONLY counted once the closure is final, i.e. when the marker file k3u_closed.json exists (it must hold
+# the commit and manifest of the complete coverage); members from k3universal_scan.py (exact rational kernel)
+if os.path.exists("k3u_closed.json") and os.path.exists("k3universal_members.json"):
+    for t in json.load(open("k3universal_members.json"))["k3"]:
+        methods[("gz", int(t))].add("K3U")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")

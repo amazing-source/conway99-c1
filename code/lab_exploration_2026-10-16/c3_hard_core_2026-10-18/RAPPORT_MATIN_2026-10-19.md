@@ -51,9 +51,25 @@
 - **Ensuite, la famille universelle P3** (deux grilles qui partagent une droite) : **821 gabarits ouverts**. Si elle tombe,
   c = 3 est presque vide.
 
+## État à 03 h UTC
+
+- **Famille K3 universelle.**
+  - Codex a ajouté deux contradictions à la main sur les cœurs : les orbites 20 et 23 tombent par le lemme des 4 facteurs
+    de Q12. J'ai vérifié ce lemme de mon côté, de façon indépendante.
+  - L'énumération exacte à 24 sommets exclut tous les bords testés : les 2 000 premiers du cœur 0.
+  - Le goulot est le temps CPU : 255 318 bords pour le seul cœur 0, sur un PC chargé par VALORANT et Medal laissés ouverts.
+    La production complète demande plusieurs heures en local, mais quelques minutes sur AWS.
+- **Front LAB des 17 gabarits sans paire.**
+  - Les paires de grilles fermées donnent des égalités C2 exactes : 456 solutions par paire, 2 176 pour le triangle de 9302.
+  - Pas encore de contradiction.
+
 ## À faire au réveil
 
 - **Reconnexion AWS** (code du téléphone), puis `bash morning_sync.sh` dans le dossier aws_c1. Le script rapatrie les runs
   de la nuit et recalcule le registre.
+- **Lancer la production K3 de Codex en Spot** (paquet en préparation, quelques minutes de calcul). Si la couverture est
+  complète et le manifeste valide : créer `k3u_closed.json` (commit et manifeste) et relancer le registre, ce qui retire
+  261 ouverts.
+- Puis la famille P3 (821 ouverts) : les formes normales sont prêtes (`p3family_normal_forms.json`).
 - **Coûts.** Octobre : 52 USD d'usage selon Cost Explorer, couverts par les crédits (avec un jour de retard).
   Consommation Spot de la nuit estimée entre 10 et 15 USD. Solde à vérifier dans la console.
