@@ -18,6 +18,7 @@ from root_component_resources import limit_research_process, atomic_json_write
 from root_component_profile_row_cuts import RowCutOracle
 from root_component_known_block_isomorphism import check as check_mapping
 from root_component_row_cut_certificate import sha256
+from root_component_2k2_profile_canonical import check_cnf_position
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -27,7 +28,10 @@ def relative(path):
 
 
 def source_certificate(directory, index, case):
-    prefix = directory / ('case%03d.json' % index)
+    overrides_path=directory/'preferred_runs.json'
+    overrides=json.loads(overrides_path.read_text(encoding='utf-8')) if overrides_path.exists() else {}
+    prefix = directory / overrides.get(str(index), 'case%03d.json' % index)
+    assert prefix.resolve().parent == directory.resolve()
     input_path = prefix.with_suffix('.row_cut_input.json')
     learning_path = prefix.with_suffix('.row_cut_learning.json')
     cnf_path = prefix.with_suffix('.row_cut_cnf.json.gz')
@@ -64,6 +68,7 @@ def source_certificate(directory, index, case):
             kinds[cut.get('kind', 'row_quota')] += 1
     assert len(suffix) == learning['clauses_added']
     assert not suffix or clauses[-len(suffix):] == suffix
+    canonical=check_cnf_position(inp,learning,clauses,len(suffix))
     # Bind the verified DIMACS exactly to the mathematical clauses above.
     nv = max((abs(v) for c in clauses for v in c), default=0)
     dimacs = 'p cnf %d %d\n' % (nv, len(clauses))
@@ -84,6 +89,7 @@ def source_certificate(directory, index, case):
         'sat_selections_refuted': sum(r['answer'] is True for r in learning['rounds']),
         'solve_learning_cpu_seconds': learning['rounds'][-1]['cpu_seconds'],
         'exact_augmented_cnf_matches_checked_dimacs': True,
+        'canonical_profile_reduction': canonical,
         'files': {relative(p): sha256(p) for p in required},
     }
     out = prefix.with_suffix('.certificate.json'); atomic_json_write(out, cert)

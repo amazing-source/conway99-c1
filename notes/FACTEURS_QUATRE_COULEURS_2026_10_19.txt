@@ -776,3 +776,38 @@ ce qui permet de retirer les anciens lemmes inutiles de la base du lecteur.
 Le -U maintient le controle RUP strict. Un petit certificat avec suppression
 est accepte et un faux certificat avec suppression rejete. Case003 a garde
 l'ancien mode sans suppressions; les drapeaux sont enregistres par certificat.
+19/10 06h12 - 2K2 : SIX SUR SEPT RESIDUELS MATHEMATIQUEMENT EXCLUS.
+Certificats finalises :0,1 par source b547+transport;3 (core51/b702) natif;
+5,6 (core88/b618) natif+transport. Cas2(core51/b476) : drat-trim -U VERIFIED,
+391902lemmes du coeur,0RAT; archive encore en compression(exec90731).
+Ancien lecteur Python arrete; premier drat -U -p TIMEOUT600 consigne.
+Le lecteur avec suppressions valide la MEME preuve, aucun SAT relance.
+Dernier cas4(core75/b355) : premier run UNKNOWN120CPU,53coupes. Reprise
+exec78646/PID17292 reutilise53coupes controlees,300CPU;67coupes a06h10,
+PAS encore de contradiction. preferred_runs.json pointe case004_retry1.
+Nouveau lemme PRET si besoin : stabilisateur4 du bloc fixe conserve(6,11),
+30profils se reduisent a9representants; pas symetrie du graphe supposee.
+Module2k2_profile_canonical et option --canonical-2k2-profile49; controle
+couverture des30profils et rejet d'un faux catalogue. Pas encore utilise.
+Tous transports employes respectent explicitement flips(r1)=flips(r2),
+pour preserver H01=-H02. Ancien scan128flips etait surensemble; les cartes
+retenues sont valides, aucun resultat retire. Nouveau scan64flips.
+Garde29796 cpu_guard_2k2_final.log,uncoeur14,pause74/reprise68 pour plafond80.
+Batch40631 termine; reste reprise4 et compression2. Dernierlu1242/envoi1243.
+Manifeste7certificats a livrer auLAB apres fermeture4; globalConway ouvert.
+
+Reduction de profil par renommage (preuve).
+Soit G un groupe de renommages qui fixe la matrice connue, preserve les
+hypotheses de famille et fixe le sommet futur x. Si une completion existe,
+son orbite sous G est finie et contient une completion dont le profil en x
+est minimal. Imposer ce profil minimal preserve donc l'EXISTENCE d'une
+completion, meme si le graphe complet est asymetrique. Les coupes de quotas
+necessaires sont satisfaites par chaque completion renommee.
+Pour core75/b355,x=(6,11), le groupe explicite d'ordre4 agit sur30profils
+avec9orbites. Les21profils non minimaux peuvent etre retires simultanement
+pour CE sommet. Ne pas appliquer independamment ce choix a plusieurs sommets.
+Le certificat donne les4permutations de lettres et de sommets connus, leurs
+30images de profils; le controle exige fermeture du groupe, tous les
+renommages du bloc et un representant autorise dans l'orbite de chaque profil.
+Ces unites de normalisation sont distinguees des coupes necessaires dans
+les metadonnees; leur position dans le CNF est controlee separement.

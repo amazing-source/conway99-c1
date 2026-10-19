@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from root_component_resources import limit_research_process, atomic_json_write
 from root_component_profile_row_cuts import RowCutOracle
 from root_component_native_rup import check_native_rup
+from root_component_2k2_profile_canonical import check_cnf_position
 
 
 def sha256(path):
@@ -48,6 +49,7 @@ def check_saved(prefix, output, native_timeout=600):
             appended.append(clause); kinds[cut.get('kind', 'row_quota')] += 1
     assert len(appended) == learning['clauses_added']
     assert not appended or cnf[-len(appended):] == appended
+    canonical=check_cnf_position(inp,learning,cnf,len(appended))
     print(json.dumps({'necessary_clauses_checked': len(appended), 'kinds': kinds}), flush=True)
     with gzip.open(paths['proof'], 'rt', encoding='ascii') as proof:
         checked = check_native_rup(cnf, proof, output, native_timeout)
@@ -60,6 +62,7 @@ def check_saved(prefix, output, native_timeout=600):
         'solve_learning_cpu_seconds': learning['rounds'][-1]['cpu_seconds'],
         'learned_clauses_checked_against_full_domains': True,
         'exact_appended_clauses_match': True,
+        'canonical_profile_reduction': canonical,
         'files': {str(p): sha256(p) for p in paths.values()},
     }
     atomic_json_write(output, report)

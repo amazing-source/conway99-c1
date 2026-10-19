@@ -1,8 +1,8 @@
 """Transport a 2K2 continuation obstruction by exact root/letter relabelling.
 
 The permutation fixes the shared root 0, preserves {1,2}, and permutes
-the two grid root pairs {3,4},{5,6}. Arbitrary flips within each upper
-letter pair are allowed. Thus it preserves H01=-H02 and all three grid
+the two grid root pairs {3,4},{5,6}. Flips at roots 1 and 2 must agree;
+the other letter-pair flips are free. Thus it preserves H01=-H02 and all three grid
 assumptions, as well as the complete set of 84 lower labels. A supplied
 isomorphism is checked directly on labels and every known adjacency.
 """
@@ -32,6 +32,7 @@ def mappings(labels):
     target={tuple(q):i for i,q in enumerate(labels)}
     for rp in root_permutations():
         for flips in product(range(2),repeat=7):
+            if flips[1]!=flips[2]:continue
             lp=[2*rp[l//2]+((l%2)^flips[l//2]) for l in range(14)]
             known=[target[tuple(sorted(lp[l] for l in q))] for q in labels]
             yield {'root_permutation':rp,'letter_permutation':lp,'known_vertex_permutation':known}
@@ -51,6 +52,7 @@ def check(source,target,mapping):
     rp=tuple(mapping['root_permutation']);lp=mapping['letter_permutation'];vp=mapping['known_vertex_permutation']
     assert rp in tuple(root_permutations())
     assert sorted(lp)==list(range(14)) and all(lp[l]//2==rp[l//2] for l in range(14))
+    assert lp[2]%2==lp[4]%2, 'Preserve the sign in H01=-H02.'
     assert sorted(vp)==list(range(len(source['rows'])))
     assert len(source['rows'])==len(target['rows'])
     assert all(sorted(lp[l] for l in q)==target['known_labels'][vp[i]] for i,q in enumerate(source['known_labels']))
@@ -107,7 +109,7 @@ def main():
                      'catalogue_sha256':hashlib.sha256(catalogue_raw).hexdigest(),'cases':blocks})
     atomic_json_write(a.output_dir/'isomorphisms.json',{'scope':'Family-preserving relabellings of known blocks; no new SAT search.',
                      'resources':resources,'permitted_root_permutations':len(list(root_permutations())),
-                     'letter_flips_per_root_permutation':128,'classes':groups})
+                     'letter_flips_per_root_permutation':64,'classes':groups})
     print(json.dumps({'cases':len(blocks),'classes':[[m['case_index'] for m in g['members']] for g in groups]}))
 
 

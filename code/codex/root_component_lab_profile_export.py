@@ -32,13 +32,18 @@ def main():
                    help='Target one specified grid attachment, avoiding an already covered boundary scan.')
     p.add_argument('--sigma', type=int, nargs=4)
     p.add_argument('--proof-checker', choices=('auto','python','native'),default='auto')
+    p.add_argument('--resume-cuts-from', type=Path,
+                   help='Prefix of an unfinished run on exactly the same profile domains; replay its valid cuts.')
+    p.add_argument('--canonical-2k2-profile', type=int,
+                   help='Keep one representative of this profile under its fixed-block stabilizer.')
     args = p.parse_args()
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
     helper_hashes = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
                      ('root_component_lab_profile_export.py','root_component_profile_row_cuts.py',
                       'root_component_profile_guard_cut.py','root_component_profile_row_extension.py',
-                      'root_component_p3_neighbor_support.py','root_component_native_rup.py')}
+                      'root_component_p3_neighbor_support.py','root_component_native_rup.py',
+                      'root_component_2k2_profile_canonical.py')}
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
     assert source.count(marker) == 1, 'LAB source changed; inspect its SAT branch before updating the hook.'
@@ -72,6 +77,33 @@ def main():
         initial = {'rows': rows, 'known_labels': labels, 'outside_labels': outside, 'domains': domains,
                    'profile_literals': literals, 'lab_source_sha256': hashlib.sha256(raw).hexdigest()}
         atomic_json_write(args.output.with_suffix('.row_cut_input.json'), initial)
+        if args.canonical_2k2_profile is not None:
+            assert args.family=='2K2' and not args.extend_rows
+            from root_component_2k2_profile_canonical import certificate
+            canon=certificate(rows,labels,outside,domains,args.canonical_2k2_profile)
+            units=[[-literals[canon['outside_index']][pi]] for pi in canon['forbidden_profile_indices']]
+            solver.append_formula(units);allclauses.extend(units)
+            learning['canonicalization']=canon
+        if args.resume_cuts_from:
+            old_input_path=args.resume_cuts_from.with_suffix('.row_cut_input.json')
+            old_learning_path=args.resume_cuts_from.with_suffix('.row_cut_learning.json')
+            old_input=json.loads(old_input_path.read_text(encoding='utf-8'))
+            assert old_input==json.loads(json.dumps(initial)), 'Do not transfer clauses across different inputs or profile encodings.'
+            previous_learning=json.loads(old_learning_path.read_text(encoding='utf-8'))
+            assert previous_learning.get('terminal_status')!='UNSAT_WITH_NECESSARY_ROW_CUTS', 'Verify its saved proof instead of repeating a completed search.'
+            learning['resumed_from']={'input':str(old_input_path),'learning':str(old_learning_path),
+                'learning_sha256':hashlib.sha256(old_learning_path.read_bytes()).hexdigest()}
+            for previous_round in previous_learning['rounds']:
+                cuts=previous_round.get('violated_cuts',[])
+                if not cuts:continue
+                for cut in cuts:
+                    assert oracle.check_cut(cut)
+                    guards=cut.get('guards',[(cut.get('outside_index'),cut.get('profile_index'))])
+                    clause=[-literals[y][pi] for y,pi in guards]
+                    clause += [literals[y][pi] for y,pi in cut['support_options']]
+                    solver.add_clause(clause);allclauses.append(clause);learning['clauses_added']+=1
+                learning['rounds'].append({**previous_round,'seeded_from_previous_run':True})
+            atomic_json_write(args.output.with_suffix('.row_cut_learning.json'),learning)
         if args.extend_rows:
             from root_component_profile_row_extension import extend_rows, controls
             learning['extension_controls'] = controls()
