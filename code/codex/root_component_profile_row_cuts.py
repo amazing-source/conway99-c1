@@ -18,6 +18,9 @@ from functools import lru_cache
 
 from root_component_p3_neighbor_support import prepare_profile, edge_failure
 
+if not __debug__:
+    raise RuntimeError('Row-cut certificates require assertions; do not use python -O.')
+
 
 class RowCutOracle:
     def __init__(self, rows, known_labels, outside_labels, domains, root_count=7):
@@ -54,11 +57,14 @@ class RowCutOracle:
         return tuple(answer)
 
     def check_cut(self, cut):
+        assert cut.get('kind', 'row_quota') in ('row_quota', 'forced_edge_quota', 'continuation_guard')
         if cut.get('kind') == 'continuation_guard':
             from root_component_profile_guard_cut import check_guard_cut
             return check_guard_cut(self.rows,self.known,self.outside,self.domains,cut,self.roots)
         if cut.get('kind') == 'forced_edge_quota':
+            assert len(cut['guards']) == 2
             x, pi = cut['guards'][0]; v, pj = cut['guards'][1]
+            assert x != v
             fx, f, g = cut['source_feature'], cut['feature'], cut['excluded_feature']
             assert self.targets(x, pi)[fx] == 1
             target = self.targets(v, pj)

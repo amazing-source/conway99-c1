@@ -20,8 +20,11 @@ Manifeste :
 code/lab_exploration_2026-10-16/gz5602_2026-10-19/lab_2k2_20261019/k2k2_twostage_manifest_final.json
 SHA256 ec522f4e7c9dda2b7e211e83936470b17a268608a97c9eaadb95e88260059d7f.
 Registre c3 mis a jour :902 ->537 ouverts, soit365gabarits retires.
-Le LAB signale une relecture du generateur encore en cours, sans anomalie
-signalee dans ce retour. Aucun recensement ni audit du LAB n'a ete redouble.
+Retour LAB1251, commit a87aed06 : sa relecture de py_extend.py et py_boundary.py
+est terminee et ne signale aucun defaut. Il demandait une preuve detaillee
+des coupes Codex. Celle-ci est maintenant dans la note autonome
+PREUVE_COUPES_CONTINUATION_2026_10_19.txt, avec controles positifs reproductibles.
+Aucun recensement ni audit du LAB n'a ete redouble par Codex.
 
 LES SEPT RACCORDS ET LEUR REFUTATION
 
@@ -53,6 +56,19 @@ La disjonction des profils capables de le fournir est donc une clause
 necessaire, conditionnee seulement par le profil de la ligne concernee.
 Une seconde forme de coupe exprime l'effet d'une arete forcee sur les quotas
 d'une autre ligne. Tous les autres profils restent libres dans ces preuves.
+
+Les deux implications sont demontrees integralement aux sections3 et4 de
+PREUVE_COUPES_CONTINUATION_2026_10_19.txt, apres derivation des quotas et du
+filtre d'arete depuis les axiomes SRG. Les certificats utilisent exactement
+99coupes du premier type et73du second. Aucune coupe continuation_guard
+par propagation sous hypotheses n'est utilisee dans cette fermeture.
+
+Controle positif du19/10 : quatre blocs de deux vrais srg(243,22,1,2),
+avec20 ou180sommets connus. Les33920quotas et7592aretes dirigees futures
+concordent avec les graphes. Les1024clauses instanciees et4409clauses
+generees sur des profils perturbes preservent toutes la vraie completion.
+Sorties : row_cut_positive_controls_20261019.json et
+row_cut_soundness_inventory_20261019.json dans data/codex_short_columns_20261018.
 
 Chaque coupe est reconstruite sur les domaines complets. Ses litteraux sont
 compares exactement au suffixe du CNF. Le certificat RUP refute ensuite ce

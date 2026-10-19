@@ -12,6 +12,9 @@ from collections import deque
 from itertools import combinations
 from root_component_p3_neighbor_support import prepare_profile, edge_failure
 
+if not __debug__:
+    raise RuntimeError('Guard-cut certificates require assertions; do not use python -O.')
+
 
 def propagate(bounds, edge_count, proof=None):
     state = [-1]*edge_count; trace = []

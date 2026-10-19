@@ -1,0 +1,258 @@
+19 octobre 2026 - Justification des coupes de continuation
+
+Objet : fournir la derivation mathematique des contraintes ajoutees par
+Codex aux CNF de profils. Une refutation RUP du CNF augmente ne remplace
+pas cette derivation. Aucun argument ci-dessous ne suppose un automorphisme,
+une Gram fixee, ni la realisabilite d'une selection provisoire du solveur.
+
+1. CADRE ET QUOTAS EXACTS
+
+Soit G un srg(v,2r,1,2), o un sommet, et Gamma le sous-graphe induit par
+les sommets distincts de o qui ne sont pas adjacents a o. Le voisinage
+N(o) est un couplage de r aretes : chaque voisin de o a exactement un
+voisin dans N(o), puisque lambda=1. On appelle lettres les 2r sommets
+de N(o), etiquetes 2i et 2i+1 sur la i-eme arete.
+
+Chaque x de Gamma a exactement deux voisins dans N(o), puisque mu=2.
+Ils appartiennent a deux aretes differentes du couplage, sinon leur arete
+aurait deux voisins communs, o et x. Leur ensemble est l'etiquette L(x).
+Le degre de x dans Gamma est 2r-2. Pour les controles positifs sur 243
+sommets, r=11; pour Conway, r=7. On ne transporte donc pas le degre12
+de Conway vers les controles de degre20.
+
+Fixons un ensemble K de sommets connus de Gamma, dont toutes les aretes
+internes sont fixees, et U=V(Gamma)\K. Le profil p_x de x dans U est
+N(x) intersection K. Un domaine D_x est une liste de profils possibles.
+Hypothese de couverture : toute completion que l'on veut conserver doit
+avoir p_x dans D_x pour chaque x. Dans les certificats2K2, les D_x sont
+ceux du fichier .row_cut_input.json, provenant du modele necessaire du LAB.
+Ils restent entiers pendant la justification d'une coupe : la selection
+provisoire du solveur ne restreint pas les autres D_y.
+
+Pour un profil p de x, les futurs voisins N_U(x) ont les quotas suivants.
+On note R_u=N(u) intersection K pour un sommet connu u.
+
+  degre : t_x(degre) = 2r-2-|p|.
+
+  sommet connu u :
+    t_x(u) = 2 - 1_{u dans p} - |L(x) intersection L(u)|
+                 - |p intersection R_u|.
+
+  lettre l, sur l'arete i du couplage :
+    t_x(l) = (1 si i rencontre L(x), sinon 2)
+                 - #{u dans p : l dans L(u)}.
+
+Preuve du quota connu : x et u ont 1 ou 2 voisins communs, selon leur
+adjacence. Parmi ces voisins communs, ceux dans N(o) sont les lettres
+partagees; ceux dans K sont p intersection R_u. Tous les autres sont dans
+U et doivent etre adjacents a x et a u. Le sommet o n'est adjacent ni a
+x ni a u. Cela donne exactement la formule, sans estimation.
+
+Preuve du quota lettre : si l appartient a L(x), x et l ont lambda=1
+voisin commun, et aucun dans N(o). Si le partenaire de l appartient a
+L(x), ils ont mu=2 voisins communs dont exactement ce partenaire dans
+N(o). Si ni l ni son partenaire n'appartiennent a L(x), ils ont mu=2
+voisins communs, tous dans Gamma. Dans les deux premiers cas, il reste
+donc un voisin dans Gamma portant l; dans le dernier, deux. On soustrait
+ensuite les contributions connues de p.
+
+Ces quotas sont codees dans RowCutOracle.targets et prepare_profile.
+Pour chaque profil q de y, ses caracteristiques binaires sont :
+  - zero : toujours0; son quota est0;
+  - degre : toujours1;
+  - connu u : 1 exactement lorsque u appartient a q;
+  - lettre l : 1 exactement lorsque l appartient a L(y).
+Les caracteristiques d'un sommet y sont donc determinees par q et L(y),
+sans connaitre ses aretes vers les autres sommets de U.
+
+2. POURQUOI LE FILTRE D'ARETE NE RETIRE PAS UNE VRAIE ARETE
+
+Le predicat edge_failure(p_x,p_y) n'autorise qu'un surensemble des aretes
+realisables. Une valeur None signifie seulement « pas encore interdite ».
+Il rejette une arete xy pour l'une des raisons suivantes :
+
+  a) Un quota du profil est negatif. Le profil lui-meme est impossible.
+  b) L'un des deux degres restants est nul. Il ne peut recevoir xy.
+  c) |p_x intersection p_y|+|L(x) intersection L(y)|>1. Ce sont deja des
+     voisins communs de x et y; leur adjacence imposerait lambda=1.
+  d) Un quota connu t_x(u)=0 alors que u appartient a p_y, ou la condition
+     symetrique. L'arete xy apporterait le voisin commun y au couple x,u,
+     au-dela du quota restant0.
+  e) Un quota lettre t_x(l)=0 alors que l appartient a L(y), ou la condition
+     symetrique. L'arete xy apporterait une contribution interdite au quota.
+
+Ainsi, dans toute completion, une arete xy implique que le couple de ses
+profils passe ce filtre. Les coupes ci-dessous utilisent exclusivement
+cette implication necessaire, jamais sa reciproque.
+
+3. LEMME DE DIFFERENCE DE QUOTAS, AVEC ENSEMBLE D'EXCEPTIONS
+
+Fixons x,p et deux caracteristiques F,G, avec d=t_x(F)-t_x(G)>0.
+Parmi les voisins effectifs de x dans U, notons A ceux portant F, et B
+ceux portant G. Alors
+
+  |A\B| = |A|-|A intersection B| >= t_x(F)-t_x(G) = d.
+
+Il s'agit de sommets DISTINCTS, pas de profils alternatifs d'un sommet.
+Pour n'importe quel ensemble fixe W de sommets de U avec |W|<d, il existe
+donc un y dans N_U(x) hors W portant F sans G.
+
+Notons P_{x,p} le booleen « x choisit le profil p ». Construisons S comme
+l'ensemble de TOUS les couples (y,q) tels que : y != x, y hors W, q dans
+D_y, q porte F sans G, et le filtre d'arete autorise (x,p),(y,q).
+Le lemme et la necessite du filtre donnent la clause
+
+  non P_{x,p} OU la disjonction des P_{y,q} pour (y,q) dans S.
+
+Si S est vide, c'est une exclusion du seul profil p de x. Si W est vide,
+on retrouve la coupe d'inclusion initiale. Pour produire une coupe violee,
+le separateur choisit W parmi les seuls sommets encore capables de fournir
+F sans G dans la selection provisoire. Cela sert a choisir W, pas a
+restreindre les domaines dans la preuve : S est reconstruit sur tous les
+D_y. La validite vaut pour tout W de la taille requise.
+
+Implementation : RowCutOracle.support, check_cut (branche row_quota),
+et premiere partie de separate. Les support_options sont compares a
+l'ensemble complet reconstruit, pas seulement a un sous-ensemble.
+
+4. LEMME A DEUX LIGNES VIA UNE ARETE FORCEE
+
+Fixons deux sommets DISTINCTS x,v et leurs profils p,q. Supposons :
+
+  - t_x(H)=1 pour une caracteristique H;
+  - v, avec q, porte H;
+  - le couple (x,p),(v,q) passe le filtre d'arete;
+  - pour v, t_v(G)=1 et t_v(F)=m>=2;
+  - x, avec p, porte G sans F.
+
+Fixons W avec |W|<=m-1. Soit S1 l'ensemble de tous les profils compatibles
+avec (x,p), portant H, aux sommets y autres que x,v. Soit S2 l'ensemble
+de tous les profils compatibles avec (v,q), portant F sans G, aux sommets
+y autres que v et hors W. La clause ajoutee est
+
+  non P_{x,p} OU non P_{v,q} OU disjonction(S1 union S2).
+
+Preuve par contradiction : supposons les deux profils choisis et tous les
+litteraux de S1 et S2 faux. Le quota H=1 de x exige un voisin portant H.
+Tout tel voisin effectif fournit un profil compatible; puisque S1 est
+faux, ce voisin est necessairement v. L'arete xv est donc forcee.
+Or x porte G et le quota G de v vaut1 : aucun autre voisin effectif de v
+ne peut porter G. Comme x ne porte pas F, les m voisins de v portant F
+sont tous differents de x et portent F sans G. Au plus |W|<=m-1 d'entre
+eux appartiennent a W; l'un fournit donc un litteral vrai de S2.
+Contradiction.
+
+Ce raisonnement justifie exactement les deux gardes negatives et les deux
+familles de litteraux positifs. Il n'impose PAS xv sans condition : les
+alternatives a xv sont explicitement les litteraux S1. Il ne fige aucun
+troisieme profil. W peut inclure x, v, ou aucun d'eux; la borne de taille
+suffit et le graphe est simple.
+
+Implementation : deuxieme partie de RowCutOracle.separate et branche
+forced_edge_quota de check_cut. Les hypotheses numeriques, les incidences
+F/G/H, la distinction x!=v, la taille de W et l'egalite exacte des supports
+sont controlees. Le champ target_demands est descriptif; les vrais quotas
+sont toujours recalcules depuis le bloc et les profils.
+
+5. NO-GOODS SOUS UN ENSEMBLE DE PROFILS FIXES
+
+Ce lemme concerne GuardOracle. Il N'EST PAS une dependance des sept
+certificats residuels2K2 : aucun continuation_guard n'y est present.
+
+Fixons un ensemble X de sommets de U et un profil pour chaque x dans X.
+Pour une arete candidate xy incidente a X :
+  - si x,y sont fixes, on conserve xy seulement si leurs profils passent
+    le filtre; leurs contributions aux quotas connus sont alors exactes;
+  - si seul x est fixe, on conserve xy s'il existe au moins un profil de
+    D_y compatible avec celui de x. Pour chaque connu u, la contribution
+    de y est obligatoire si TOUS ces profils contiennent u, et possible
+    si AU MOINS UN le contient.
+
+Introduisons un booleen e_xy pour chaque arete conservee. Pour chaque x
+fixe, le degre et les lettres donnent les egalites de quotas deja prouvees.
+Pour un quota connu t_x(u), les contributions obligatoires M et possibles
+P donnent les contraintes necessaires
+
+  somme_{e dans M} e <= t_x(u) <= somme_{e dans P} e.
+
+Toute vraie completion sous les profils fixes satisfait ces contraintes.
+Autoriser un sommet non fixe a employer des profils differents selon
+l'arete ne fait que relacher le probleme; on n'exclut pas sa vraie valeur.
+
+La propagation traite des contraintes L <= somme e <= B. Si le nombre
+de1 deja fixes atteint B, tous les termes libres valent0. Si le nombre
+de1 plus le nombre de termes libres atteint L, tous les libres valent1.
+Un nombre de1>B ou un maximum encore possible<L est une contradiction.
+Une trace finie de ces operations prouve donc que les profils fixes ne
+peuvent pas tous etre choisis; la disjonction de leurs negations est valide.
+La minimisation retire des gardes seulement si le systeme RELAXE est de
+nouveau contradictoire. La trace est reconstruite sur les domaines entiers
+par check_guard_cut, puis rejouee sans solveur.
+
+6. DEPENDANCES EFFECTIVES DE LA FERMETURE2K2
+
+Les fichiers .row_cut_learning.json donnent exactement :
+
+  coeur/bord       difference de quotas   deux lignes   gardes-propagation
+  6/547                         2                 7                 0
+  51/476                       50                39                 0
+  51/702                        0                 0                 0
+  75/355 (reprise)              43                24                 0
+  88/618                        4                 3                 0
+  TOTAL                        99                73                 0
+
+Les deux autres raccordements sont couverts par les transports exacts
+deja livres. La normalisation par orbites et ses coupes ne sont pas utilisees.
+
+Dans chaque refutation, le CNF de base vient du modele de profils du LAB.
+Chaque clause ajoutee est l'instance d'un des lemmes3/4, reconstruite sur
+le fichier d'entree entier. Son encodage litteral est exactement
+  [-litteral des gardes] + [litteral de chaque support].
+La liste ainsi reconstruite est egale au suffixe ajoute au CNF archive.
+Le certificat RUP, deja controle, refute CE CNF augmente. C'est la
+combinaison de la couverture initiale, des lemmes, de l'egalite des clauses
+et de RUP qui constitue l'exclusion, et non RUP seul.
+
+Les deux modules d'oracles refusent maintenant explicitement python -O,
+car leurs controles reposent sur assert. Un type de coupe inconnu est
+rejete. Ce durcissement ne modifie aucune des172clauses deja utilisees.
+
+7. CONTROLES POSITIFS REPRODUCTIBLES
+
+code/codex/root_component_row_cut_positive_controls.py charge deux graphes
+explicites, BVLS243 et twin243_switched, et controle directement leurs
+degres et nombres de voisins communs. Pour chacun, deux blocs enracines
+sont extraits (20 ou180sommets connus). Les profils reels sont conserves
+dans tous les domaines, avec des alternatives perturbees.
+
+Le controle compare chaque quota a sa valeur dans la vraie completion et
+verifie que chaque vraie arete future passe le filtre. La vraie selection
+ne doit produire aucune coupe. Des clauses des deux lemmes sont instanciees
+avec des ensembles W, y compris non vides; elles doivent toutes etre vraies
+sur le graphe reel. Les coupes separees sur des selections perturbees sont
+verifiees puis evaluees sur la vraie selection, qui doit toutes les satisfaire.
+Le systeme relaxe des gardes doit aussi contenir les vraies aretes pour
+plusieurs ensembles de profils fixes. Le controle positif rook9 et son
+profil impossible sont conserves pour les deux oracles.
+
+Commande (depuis la racine du depot; un seul coeur, priorite basse) :
+python code/codex/root_component_row_cut_positive_controls.py --output data/codex_short_columns_20261018/row_cut_positive_controls_20261019.json
+
+Resultat execute le19/10 : les quatre blocs passent;33920quotas exacts,
+7592aretes dirigees futures autorisees,1024clauses instanciees directement
+(512de chaque type) et4409clauses generees sur selections perturbees
+(3527de quotas,882a deux lignes), toutes satisfaites par le graphe reel.
+Les56570bornes de gardes sont satisfaites par les vraies aretes. Les
+controles tournent sur un coeur,32.16secondes CPU au total pour les243.
+
+Rejeu leger des seules172clauses2K2, sans relancer SAT ou les gros RUP :
+python code/codex/root_component_row_cut_positive_controls.py --inventory-only --output data/codex_short_columns_20261018/row_cut_soundness_inventory_20261019.json
+
+Ce rejeu passe :99+73instances valides, suffixes CNF identiques, type de
+coupe inconnu rejete et import des deux oracles sous python -O refuse.
+Les empreintes des entrees, journaux de coupes et CNF sont dans cette sortie.
+
+Ces controles exercent l'implementation sur des graphes effectivement
+realisables. Ils ne remplacent pas les preuves des lemmes3/4, ne font pas
+un nouveau recensement du LAB et n'affirment rien sur l'existence globale
+du graphe de Conway.
