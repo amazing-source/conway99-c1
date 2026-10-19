@@ -132,7 +132,45 @@ def encode(rows, known, outside, domains, profile_literals, selected_roots,
                      'scope': 'Necessary signed internal-core equations and partial SRG upper bounds.'}
 
 
-def controls(all_known_pair_rows=False):
+def encode_many(rows, known, outside, domains, profile_literals, root_subsets,
+                pool, exactly, root_count=7, forbid_q12_grid=False):
+    """Couple several necessary cores through identical physical edges.
+
+    Profile literals are already shared. Every duplicate edge variable is
+    equated to its first representative; independent edge assignments on
+    overlapping cores would only give a weaker relaxation.
+    """
+    subsets = [sorted(set(s)) for s in root_subsets]
+    assert subsets and len({tuple(s) for s in subsets}) == len(subsets)
+    if len(subsets) == 1:
+        return encode(rows, known, outside, domains, profile_literals, subsets[0],
+                      pool, exactly, root_count, forbid_q12_grid)
+    assert not forbid_q12_grid, 'The Q12 exclusion is currently exposed only for a single 2K2N core.'
+    clauses, components, representatives, links = [], [], {}, []
+    for roots in subsets:
+        extra, info = encode(rows, known, outside, domains, profile_literals,
+                             roots, pool, exactly, root_count)
+        clauses.extend(extra)
+        components.append(info)
+        for x, y, v in info['edge_variables']:
+            key = (x, y)
+            if key in representatives:
+                w = representatives[key]
+                clauses.extend([[-v, w], [v, -w]])
+                links.append([v, w])
+            else:
+                representatives[key] = v
+    return clauses, {
+        'root_subsets': subsets, 'components': components,
+        'core_indices': sorted({x for c in components for x in c['core_indices']}),
+        'edge_variables': [[x, y, v] for (x, y), v in sorted(representatives.items())],
+        'shared_edge_equalities': links, 'added_clauses': len(clauses),
+        'products': sum(c['products'] for c in components),
+        'forbid_q12_grid': False,
+        'scope': 'Necessary signed cores with common profile literals and identified shared edges.'}
+
+
+def controls(all_known_pair_rows=False, root_subsets=None):
     from pathlib import Path
     from pysat.card import CardEnc, EncType
     from pysat.solvers import Solver
@@ -153,7 +191,8 @@ def controls(all_known_pair_rows=False):
         cnf = CardEnc.equals(lits, bound=target, top_id=pool.top, encoding=EncType.seqcounter)
         pool.top = max(pool.top, cnf.nv)
         return cnf.clauses
-    cnf, info = encode(rows, known, outside, domains, literals, [0, 1, 2], pool, exactly, root_count=11)
+    cnf, info = encode_many(rows, known, outside, domains, literals,
+                            root_subsets or [[0, 1, 2]], pool, exactly, root_count=11)
     all_info = None
     if all_known_pair_rows:
         from root_component_profile_row_extension import extend_rows
@@ -169,6 +208,17 @@ def controls(all_known_pair_rows=False):
         units += [[v if y in future[x] else -v] for x, y, v in all_info['edge_variables']]
     with Solver(name='g3', bootstrap_with=cnf+units) as solver:
         assert solver.solve(), 'The actual SRG243 and its edges must satisfy the same encoder.'
+    # Aliases must equal the representatives even when profiles are held fixed.
+    # This tests the coupling, rather than merely checking two separate cores.
+    alias_control = None
+    if info.get('shared_edge_equalities'):
+        v, w = info['shared_edge_equalities'][0]
+        with Solver(name='g3', bootstrap_with=cnf+units+[[v, w], [-v, -w]]) as solver:
+            assert not solver.solve(), 'One physical edge cannot take two values.'
+        alias_control = True
     return {'actual_srg243_with_fixed_real_edges_passes': True, 'root_count': 11,
             'core_vertices': len(info['core_indices']), 'core_edges': len(info['edge_variables']),
-            'clauses': len(cnf), 'q12_family_exclusion_applied_to_243': False}
+            'clauses': len(cnf), 'q12_family_exclusion_applied_to_243': False,
+            'component_count': len(info.get('components', [info])),
+            'shared_edge_equalities': len(info.get('shared_edge_equalities', [])),
+            'opposite_alias_values_rejected': alias_control}

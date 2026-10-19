@@ -1,0 +1,188 @@
+19 octobre 2026 - Quatre noyaux de 20 sommets pour K2BC
+
+Cadre et portee
+--------------
+
+K2BC impose la paire partagee H01 = -H02 et les grilles Q45, Q13, Q26.
+Le bloc connu K = Q01 + Q02 + Q45 + Q13 + Q26 a 20 sommets; 64 sommets
+de Gamma restent exterieurs. Aucune symetrie du graphe n'est supposee.
+On ne refait ici ni le recensement des bords ni les calculs SAT du LAB.
+
+On utilise l'identite generale deja demontree dans
+NOYAU_SIGNE_2K2N_2026_10_19.txt. Pour S ensemble de racines, A, M, B
+designent respectivement les sommets portant deux, une, zero racines de S.
+Pour tout sommet u de Gamma :
+
+  n_B(u) - n_A(u) = 12 - 4|S| + 2|racines(u) intersection S|.       (1)
+
+Le noyau est C = (A union B) prive de K. Les voisins dans M ne contribuent
+pas. On soustrait les contributions connues pour obtenir une equation
+sur les seules aretes internes de C et les profils vers K.
+
+Les hypotheses de K2BC donnent, pour un sommet exterieur de rectangle q :
+  n_Q01(u) + n_Q02(u) = base(q,01) + base(q,02),
+  n_F(u) = base(q,F) pour F parmi les trois grilles connues,
+ou base(q,F) vaut 0 si q et F partagent une racine, 1 sinon.
+Le cas q=F n'apparait pas pour un sommet exterieur.
+Ces equations sont deja necessaires dans les domaines de profils du LAB.
+
+1. Le choix S=012 donne 24 sommets, pas 20
+-----------------------------------------
+
+  A0 = Q12;
+  B0 = Q34 + Q35 + Q36 + Q46 + Q56;
+  C = A0 + B0.
+
+Posons delta(u) = deg_B0(u) - deg_A0(u). L'equation (1) donne :
+  delta = 3 sur Q12;
+  delta = 1 sur Q36;
+  delta = 2 sur Q34, Q35, Q46, Q56.
+
+En effet, pour Q12 le membre droit vaut 4, et Q45 apporte un voisin connu
+de signe positif. Pour B0 le membre droit vaut 0, la paire partagee apporte
+deux voisins de signe negatif, et Q45 apporte un voisin positif exactement
+sur Q36. Les grilles Q13 et Q26 sont mixtes : leur coefficient est zero.
+
+Chaque degre dans C vaut delta(u) + 2 deg_A0(u). Il y a donc 8 degres
+impairs et 16 pairs. Si e = E(Q12), les sommes des equations donnent :
+
+  E(A0,B0) = 12 + 2e;
+  E(B0) = 24 + e;
+  E(C) = 36 + 4e.
+
+On ne peut PAS importer ici la borne e<=3 provenant de la fermeture 2K2 :
+K2BC n'a pas les deux grilles Y disjointes de cette famille. La borne
+universelle e<=4 reste valide pour un rectangle. Ce noyau a 276 aretes
+possibles; l'encodeur general existant le traite sans modification.
+
+2. Deux noyaux plus petits, avec equations constantes
+-----------------------------------------------------
+
+Avec S=345 :
+  A_L = Q34 + Q35 (8 sommets);
+  B_L = Q06 + Q12 + Q16 (12 sommets);
+  C_L = A_L + B_L (20 sommets).
+
+Les contributions connues dans (1) donnent :
+  deg_B_L - deg_A_L = 1 sur Q34, Q35, Q06, Q12;
+  deg_B_L - deg_A_L = 0 sur Q16.                              (2)
+
+Avec S=456 :
+  A_R = Q46 + Q56;
+  B_R = Q03 + Q12 + Q23;
+  C_R = A_R + B_R;
+  deg_B_R - deg_A_R = 1 sur Q46, Q56, Q03, Q12;
+  deg_B_R - deg_A_R = 0 sur Q23.                              (3)
+
+Par exemple, pour S=345, Q01,Q02,Q26 ont le signe positif, Q45 le signe
+negatif, Q13 le coefficient zero. Sur Q34 et Q35, les voisins connus
+apportent 2+1=3, a soustraire du membre droit 4. Sur Q06 et Q12, seul
+Q45 contribue, avec signe -1. Sur Q16, le voisin dans la paire partagee
+et celui dans Q45 se compensent. Cela prouve toutes les valeurs de (2).
+La meme substitution donne (3).
+
+Dans chacun de ces deux noyaux, 16 degres sont impairs et 4 sont pairs.
+En posant f = E(A_L), ou respectivement E(A_R), on obtient :
+
+  E(A,B) = 8 + 2f;
+  E(B) = 8 + f;
+  E(C) = 16 + 4f.                                           (4)
+
+Chaque sommet de A porte la meme racine (3 ou 6). Les deux quotas de
+lettres de cette racine valent 1 chacun, donc deg_A<=2 et 0<=f<=8.
+Ainsi E(C) appartient a {16,20,24,28,32,36,40,44,48}. Les sommets de A
+ont un degre 1, 3 ou 5 dans C. Ce sont des contraintes necessaires,
+pas une enumeration des noyaux realisables.
+
+Les deux noyaux se rencontrent exactement sur Q12 : quatre sommets et
+six aretes possibles. Leur encodage simultane traite 36 sommets et
+374 aretes physiques distinctes. Six egalites identifient les variables
+dupliquees. Tous les profils vers K restent libres et communs aux noyaux.
+
+3. Deux autres noyaux de 20 sommets
+-----------------------------------
+
+S=013 donne A=Q03 et B=Q24+Q25+Q46+Q56.
+  deg_B - deg_A = 2 sur Q03;
+  deg_B - deg_A = 1 + a(u) sur B,
+ou a(u) = n_Q01(u), une fonction du profil connu, pas une constante choisie.
+Pour Q03, n_Q01+n_Q02=0, donc a=0. Sur les quatre rectangles B,
+la grille Q13 contribue -1 et les deux autres grilles ne contribuent pas;
+la contribution de Q01 est -a. Cela donne les equations annoncees.
+
+Si e01=E(Q01) dans le coeur connu, et e03=E(Q03), alors :
+  E(A,B) = 8 + 2e03;
+  somme_{u dans B} a(u) = 8 + 2e01;
+  E(B) = 16 + e01 + e03;
+  E(C) = 24 + e01 + 4e03.                                  (5)
+
+Pour la deuxieme egalite, appliquer (1) aux quatre sommets connus de Q01.
+Ils ont deux voisins connus positifs (un dans Q26 et un dans Q45), leurs
+voisins internes a Q01 ont signe negatif, et ils n'ont aucun voisin dans
+Q03. Leur nombre de voisins dans B vaut donc 2+deg_Q01. Sommer et compter
+les aretes entre Q01 et B des deux cotes donne la formule.
+
+S=026 donne symetriquement A=Q06, B=Q14+Q15+Q34+Q35 et
+  E(C) = 24 + E(Q02) + 4E(Q06).
+Le coeur Q01+Q02 est 2-regulier, donc E(Q01)=E(Q02); aucune valeur
+particuliere de ces nombres n'est supposee.
+
+Les quatre noyaux reunis concernent 52 sommets et 622 aretes distinctes.
+Ce modele reste une relaxation des equations de tout Gamma.
+
+4. Optimalite de la taille parmi les noyaux issus d'un ensemble S
+-----------------------------------------------------------------
+
+Le graphe des CINQ rectangles connus, sur les sept racines, est
+le chemin 3-1-0-2-6 et l'arete isolee 4-5. Pour s=|S|, le nombre de
+rectangles non mixtes avant retrait de K vaut binom(s,2)+binom(7-s,2).
+On peut remplacer S par son complement sans changer C.
+
+Pour s=1, cette quantite vaut 15, donc au moins 40 sommets restent apres
+retrait des cinq rectangles connus. Pour s=2, elle vaut 11, donc au moins
+24 sommets restent. Pour s=3, elle vaut 9. Il est impossible de rendre
+les cinq aretes connues non mixtes : S devrait etre une union des deux
+composantes, de tailles 5 et 2, et ne pourrait avoir taille 3.
+Au moins cinq rectangles, donc 20 sommets, restent inconnus non mixtes.
+
+L'egalite correspond a une seule arete connue traversant la coupure.
+Les quatre coupures possibles du chemin donnent exactement
+  S = 013, 026, 345, 456.
+Ceci prouve l'optimalite dans cette famille precise de noyaux. Ce n'est
+pas une borne sur toute reduction lineaire ou toute formulation possible.
+
+5. Livraison informatique et limites
+------------------------------------
+
+root_component_signed_internal_core.encode_many applique l'identite
+generale aux ensembles S fournis. Les produits de cellules et les bornes
+partielles SRG restent ceux de l'encodeur precedent. Toutes les copies
+d'une arete physique sont reliees par deux clauses d'equivalence.
+Les comptes de voisins communs entre tous les sommets inconnus de Gamma
+ne sont pas encore tous imposes par ce filtre.
+
+Le wrapper accepte maintenant GEN, les parametres --yr / --extra et
+plusieurs occurrences de --signed-root-core. Pour un raccordement K2BC
+fourni par le LAB, utiliser notamment :
+
+  --family GEN --yr 45 --extra 13,26
+  --signed-root-core 3 4 5 --signed-root-core 4 5 6
+
+Il faut fournir les cinq permutations --attachment, dans l'ordre
+MATCH_BLOCKS du py_extend_gen.py. Le wrapper refuse une recherche GEN
+sans raccordement explicite, pour ne pas repeter son recensement.
+Ne pas utiliser --forbid-q12-grid pour K2BC.
+
+Le programme root_component_k2bc_signed_layouts.py enumere uniquement
+les 63 sous-ensembles de racines a complementation pres, enregistre les
+equations et recouvrements, et controle les deux/quatre noyaux couples
+sur les vraies aretes d'un SRG(243,22,1,2), avec r=11. Il n'applique aucune
+hypothese K2BC a ce graphe positif. Des valeurs opposees sur deux copies
+d'une meme arete sont rejetees. Les definitions du GEN sont chargees pour
+controler l'interface (20 sommets connus, 64 exterieurs, cinq couplages),
+sans enumeration des raccordements et sans appel a son solveur.
+
+Mesure : k2bc_signed_layouts_20261019.json, 5.4375 secondes CPU sur le
+coeur logique 14. Les controles positifs passent. Aucun residuel K2BC
+n'a encore ete teste avec ce filtre; aucune exclusion supplementaire
+n'est revendiquee.

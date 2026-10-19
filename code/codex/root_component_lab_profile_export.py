@@ -22,14 +22,17 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('lab_source', type=Path); p.add_argument('boundary', type=Path)
     p.add_argument('--index', type=int, required=True)
-    p.add_argument('--family', choices=('P3N', '2K2N', 'P3', '2K2'), default='P3N')
+    p.add_argument('--family', choices=('P3N', '2K2N', 'P3', '2K2', 'P3NB', 'GEN'), default='P3N')
+    p.add_argument('--yr', help='For LAB GEN only: Y-grid root pairs, e.g. 45 or 45,46.')
+    p.add_argument('--extra', help='For LAB GEN only: additional B/C grids, e.g. 13,26.')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--row-cut-rounds', type=int, default=0)
     p.add_argument('--row-cut-cpu-seconds', type=float, default=60)
     p.add_argument('--extend-rows', type=int, nargs='*', default=[])
     p.add_argument('--all-known-pair-rows', action='store_true',
                    help='Jointly choose every outside edge and impose all degree, letter and known-pair quotas.')
-    p.add_argument('--signed-root-core', type=int, nargs='+')
+    p.add_argument('--signed-root-core', type=int, nargs='+', action='append',
+                   help='Root subset for a signed core; repeat to couple several overlapping cores.')
     p.add_argument('--forbid-q12-grid', action='store_true',
                    help='In 2K2N only, use the previously proved 2K2 exclusion to bound Q12 by three edges.')
     p.add_argument('--continuation-cuts', action='store_true')
@@ -44,6 +47,11 @@ def main():
     p.add_argument('--orbit-seed-cuts', action='store_true',
                    help='Separate necessary cuts from stabilizer images of the resumed selections.')
     args = p.parse_args()
+    if args.family == 'GEN':
+        assert args.yr, 'GEN needs the explicit Y grids.'
+        assert args.attachment is not None, 'Target one explicit GEN attachment; do not repeat the LAB boundary census.'
+    else:
+        assert args.yr is None and args.extra is None, 'Grid arguments are for GEN only.'
     target_attachment = args.attachment
     if target_attachment is None and args.family == '2K2N' and args.sigma is not None:
         # No Q12 grid is attached in this family, but sigma still specifies
@@ -59,7 +67,7 @@ def main():
     if args.signed_root_core:
         name='root_component_signed_internal_core.py'
         helper_hashes[name]=hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-    assert not args.forbid_q12_grid or (args.family=='2K2N' and args.signed_root_core==[0,1,2])
+    assert not args.forbid_q12_grid or (args.family=='2K2N' and args.signed_root_core==[[0,1,2]])
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
     assert source.count(marker) == 1, 'LAB source changed; inspect its SAT branch before updating the hook.'
@@ -77,6 +85,8 @@ def main():
                 'resources': resources, 'helper_sha256': helper_hashes,
                 'rows': rows, 'known_labels': labels, 'outside_labels': outside,
                 'domains': domains, 'selected_indices': [ids[0] for ids in indices], 'profiles': selected}
+        if args.family == 'GEN':
+            data['family_parameters'] = {'yr': args.yr, 'extra': args.extra or ''}
         if 'signed_internal_core' in learning:
             info=learning['signed_internal_core']
             data['signed_internal_core']={**info,'selected_edges':[[x,y] for x,y,v in info['edge_variables'] if v in positive]}
@@ -162,10 +172,11 @@ def main():
         out['clauses']=len(allclauses)
         if args.signed_root_core:
             assert not args.resume_cuts_from and not args.extend_rows, 'Keep the core prefix separate from previous cut positions.'
-            from root_component_signed_internal_core import encode, controls
-            learning['signed_internal_core_controls']=controls(all_known_pair_rows=args.all_known_pair_rows)
-            extra, info=encode(rows,labels,outside,domains,literals,args.signed_root_core,
-                               pool,exactly,forbid_q12_grid=args.forbid_q12_grid)
+            from root_component_signed_internal_core import encode_many, controls
+            learning['signed_internal_core_controls']=controls(
+                all_known_pair_rows=args.all_known_pair_rows, root_subsets=args.signed_root_core)
+            extra, info=encode_many(rows,labels,outside,domains,literals,args.signed_root_core,
+                                    pool,exactly,forbid_q12_grid=args.forbid_q12_grid)
             solver.append_formula(extra);allclauses.extend(extra)
             learning['signed_internal_core']=info
             out['variables']=pool.top;out['clauses']=len(allclauses)
@@ -262,6 +273,8 @@ def main():
     sys.argv = [str(args.lab_source), str(Path(__file__).resolve().parent), args.family,
                 str(args.boundary), str(args.index), '1', '--sat', '--lean',
                 '--out='+str(args.output.with_suffix('.lab_result.json.gz'))]
+    if args.family == 'GEN':
+        sys.argv += ['--yr='+args.yr, '--extra='+(args.extra or '')]
     try:
         ns = {'__name__': '__main__', '__file__': str(args.lab_source), 'export_selection_hook': save_selection,
               'profile_cut_solve_hook': solve_with_cuts,
@@ -270,7 +283,11 @@ def main():
             marker = '\nOUT = next('
             assert source.count(marker)==1, 'Inspect the changed LAB driver.'
             exec(compile(source.split(marker)[0],str(args.lab_source),'exec'),ns)
-            if ns['Q12K']:
+            if args.family == 'GEN':
+                assert len(target_attachment) == len(ns['MATCH_BLOCKS'])
+            elif args.family == 'P3NB':
+                assert len(target_attachment) == 3
+            elif ns['Q12K']:
                 assert len(target_attachment)==ns['NG']
             else:
                 assert target_attachment==[] and args.family=='2K2N'
