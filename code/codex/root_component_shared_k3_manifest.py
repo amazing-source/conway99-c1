@@ -73,6 +73,7 @@ def assemble(cover_directory,results_directory,colours_path,orbits_path,allow_pa
                       'program_sha256':data.get('program_sha256'),
                       'inclusion_filter_sha256':data.get('inclusion_filter_sha256'),
                       'triplet_filter_sha256':data.get('triplet_filter_sha256'),
+                      'matching_filter_sha256':data.get('matching_filter_sha256'),
                       'profile_solver_sha256':data.get('profile_solver_sha256')})
     covered=sum(sum(flags) for flags in seen.values());expected=sum(map(len,seen.values()))
     complete=not missing_covers and covered==expected

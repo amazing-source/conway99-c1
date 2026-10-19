@@ -224,3 +224,84 @@ la paire (15,17) demande2 triplets; leurs seules troisiemes coordonnees
 possibles sont dans support L(15,C) inter support L(17,C) = {23}.
 Mais L(15,23)=1, et un triplet ne peut pas etre utilise deux fois.
 Cela redonne2>1 sans meme construire les domaines des60 sommets.
+
+CATALOGUE UNIVERSEL DES INCIDENCES X24-Y12 (03 h 21)
+
+Cette enumeration peut etre faite une seule fois, sans choisir K.
+X est l'ensemble des24 sommets des six rectangles sur {0,1,2,3}.
+Chaque sommet de X voit un coin de chacune des trois grilles Y,
+et deux sommets de X ne peuvent avoir le meme triplet (mu=2).
+Tous les autres sommets voient au plus une grille Y. Il en resulte
+que les trois marges du sous-ensemble de24 triplets sont exactement
+M_uv=2-|lettres(u) inter lettres(v)| entre grilles differentes.
+
+Chaque marge a des lignes de type (1,1,2,2), de somme6. Chaque tranche
+binaire4x4 a maintenant34 possibilites; la jointure des quatre tranches
+donne EXACTEMENT816 ensembles de24 triplets. Le groupe S3 des racines
+4,5,6 et les8 echanges de lettres les repartissent en34 orbites.
+Ce sont des incidences avec X non etiquete, PAS816 graphes de Conway.
+Aucune symetrie de leur eventuelle extension n'est supposee.
+
+Un bord connu fournit12 triplets. Un index de64 bitsets indique quels
+ensembles universels les contiennent. Le complement dans chaque
+ensemble est exactement une solution des marges residuelles. Ce
+remplacement reproduit les solutions de la jointure directe sur les
+200 blocs pilotes, et evite de la refaire a chaque raccordement.
+Donnees shared_k3_universal_triplet_designs.json et *_orbits.json;
+fonction universal_designs() dans root_component_k3_triplets.py.
+
+DEUX COEURS COMPLETEMENT FERMES
+
+Coeur22 :12558/12558 bords,22326 blocs24, dont306 selections UNSAT
+avec preuves RUP.359.828125 secondes CPU, ancien filtre.
+Coeur1 :52852/52852 bords,74415 blocs24, tous exclus sans SAT :
+68219 par marges des triplets,4306 par capacite,1519 par domaine vide,
+310 par propagation,61 par inclusion.149.9375 secondes CPU.
+Avec les4106 bords du coeur0 :69516 positions fermees sur2742342.
+Manifeste shared_k3_progress_two_complete_20261019.json. Les autres
+coeurs restent a traiter; aucune fermeture K3 universelle annoncee.
+
+CUBICITE ET COUPLAGE PARFAIT FORCES
+
+Pour x dans X24 et chaque racine j dans {4,5,6}, x a4 voisins portant
+une des deux lettres de j. Ses trois voisins dans Y en fournissent2.
+Il reste donc2 voisins dans les rectangles croises pour chaque j,
+soit6 voisins croises en tout. Comme son degre dans Gamma est12,
+son degre interne a X vaut12-3-6=3 : X24 est cubique.
+
+Dans notre configuration, S=K+Q12 (12 sommets) est2-regulier. Chaque
+sommet de T=Q03+Q13+Q23 voit exactement un sommet de S : Q03 voit
+un coin de Q12 et aucun de K; Q13/Q23 voient un sommet de K et aucun
+de Q12. La cubicite impose donc un COUPLAGE PARFAIT entre S et T.
+Les profils de T doivent permettre ce couplage; un ensemble de sommets
+de T ayant moins de voisins possibles dans S donne une obstruction
+de Hall, et toute arete n'appartenant a aucun couplage peut etre retiree.
+
+T est lui aussi2-regulier. Ses sommets portent tous la racine3, et
+chacun a au total un voisin de chaque lettre de cette racine. Ses deux
+voisins internes consomment ces deux places : aucune arete T-N, et
+chaque sommet a un voisin de meme lettre3 et un de lettre opposee.
+Les cycles alternent ces deux sortes d'aretes et leur longueur est
+multiple de4. Ainsi T est C12, C8+C4 ou3C4. Comme S n'a pas de triangle
+et que S-T est un couplage, X24 entier est un graphe cubique sans triangle.
+Ces contraintes sont necessaires; elles n'affectent pas les statuts
+des rectangles Q03,Q13,Q23, qui restent libres.
+
+Le filtre de Hall est branche dans la propagation, avec un certificat
+explicite S,N(S) pour tout deficit. Les aretes permises sont exactement
+les aretes du couplage trouve et celles appartenant a un cycle alterne.
+Controles dans shared_k3_matching_controls.json. Les hashes des modules
+sont maintenant figes a leur chargement, pour les processus parcourant
+plusieurs tranches pendant une mise a jour du depot.
+
+Troisieme coeur termine :27,52852 bords,54864 blocs24,104.28125 CPU.
+Un seul bloc necessite encore SAT (bord36848,26 conflits,25 ajoutsRUP).
+Il passe aussi Hall; un seul ensemble de12 triplets lui reste. Le
+temoin et les domaines sont conserves dans shared_k3_core027_resistant.json.
+Avec5000 nouveaux bords du coeur0, le total monte a127368 exclusions,
+trois coeurs complets1/22/27 et deux coeurs analytiques20/23.
+Le manifeste progress_three_complete contient313preuvesRUP et ne ferme
+pas la famille universelle.
+
+Reproduction du catalogue816/34 :
+python -I code/codex/root_component_k3_triplets.py --output nouveau_fichier.json

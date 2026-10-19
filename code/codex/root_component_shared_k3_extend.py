@@ -22,6 +22,17 @@ from root_component_shared_core_colors import PAIRS, PAIR_ID, colourings
 from root_component_shared_k3_boundary import matching_catalogue
 from root_component_profile_inclusion import inclusion_filter
 from root_component_k3_triplets import from_block as triplet_projection
+from root_component_profile_matching import matching_support
+
+# Freeze hashes when this implementation is loaded. Long-lived shard
+# workers may continue while another process updates the working tree.
+LOADED_SOURCE_HASHES={key:hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+    for key,name in (
+        ('program_sha256',Path(__file__).name),
+        ('inclusion_filter_sha256','root_component_profile_inclusion.py'),
+        ('triplet_filter_sha256','root_component_k3_triplets.py'),
+        ('matching_filter_sha256','root_component_profile_matching.py'),
+        ('profile_solver_sha256','root_component_shared_k3_profile_sat.py'))}
 
 P4 = tuple(permutations(range(4)))
 P4_ID = {p:i for i,p in enumerate(P4)}
@@ -208,6 +219,20 @@ def propagate_profiles(domains,deficits,letter_deficits):
                 changes.append({'outside_index':vi,'removed':len(active[vi])-len(kept)})
                 active[vi]=kept
         if not changes:
+            # X24 is cubic; its two halves S=K+Q12 and
+            # T=Q03+Q13+Q23 are joined by a perfect matching.
+            matching,supported=matching_support([
+                [domains[v][i][0] for i in active[v]] for v in range(36,48)])
+            if supported is None:
+                return {**matching,'outside_indices':[36+i for i in matching['left_set']],
+                        'rounds':rounds},None
+            if matching['removed_edges']:
+                removed=0
+                for v,allowed in zip(range(36,48),supported):
+                    kept=[i for i in active[v] if domains[v][i][0] in allowed]
+                    removed+=len(active[v])-len(kept);active[v]=kept
+                rounds.append({'T_perfect_matching':matching,'removed_profiles':removed})
+                continue
             # Scalar bounds miss the fact that two equal-total features
             # with nested supports must have identical chosen supports.
             inclusion,kept=inclusion_filter([[features[v][i] for i in ids]
@@ -364,13 +389,7 @@ def main():
          'total_boundaries':source['boundary_count'],'whole_family_excluded':False,
          'exact_profiles':args.exact_profiles,
          'requested_start':args.start,'requested_max_boundaries':args.max_boundaries,
-         'program_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-         'inclusion_filter_sha256':hashlib.sha256(Path(__file__).with_name(
-             'root_component_profile_inclusion.py').read_bytes()).hexdigest(),
-         'triplet_filter_sha256':hashlib.sha256(Path(__file__).with_name(
-             'root_component_k3_triplets.py').read_bytes()).hexdigest(),
-         'profile_solver_sha256':hashlib.sha256(Path(__file__).with_name(
-             'root_component_shared_k3_profile_sat.py').read_bytes()).hexdigest() if args.exact_profiles else None}
+         **LOADED_SOURCE_HASHES}
     for bi,hex_state in enumerate(source['boundaries_hex']):
         if bi<args.start:continue
         if args.max_boundaries and len(out['cases'])>=args.max_boundaries:break
