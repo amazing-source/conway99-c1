@@ -270,6 +270,107 @@ def skeletons(core):
     yield from rec(0, rows)
 
 
+def check_new(rows, new_edges):
+    """incremental version of check(): only the vertices and pairs whose degree, letter count, common-neighbour count or
+    bound can have changed when the edges new_edges were added (exactly the same verdict as check() on a state that
+    passed check() before the addition)"""
+    touched = set()
+    for x, y in new_edges:
+        touched.add(x); touched.add(y)
+    for z in touched:
+        rz = rows[z]
+        if rz.bit_count() > 12:
+            return False
+        for l in range(14):
+            if (rz & LM[l]).bit_count() > QUOTA[z][l]:
+                return False
+    for x, y in new_edges:
+        rx, ry = rows[x], rows[y]
+        if (rx & ry).bit_count() > 1 - SHK[x][y]:
+            return False
+        for w in bits(rx):                     # x is a new common neighbour of y and w
+            if w != y and (ry & rows[w]).bit_count() > 2 - ((ry >> w) & 1) - SHK[y][w]:
+                return False
+        for w in bits(ry):
+            if w != x and (rx & rows[w]).bit_count() > 2 - ((rx >> w) & 1) - SHK[x][w]:
+                return False
+    return True
+
+
+def skeletons_mrv(core, stats):
+    """same skeleton set as skeletons(core), explored most-constrained-step first with forward checking"""
+    rows = [0] * NK
+
+    def edge(r, u, v):
+        r[u] |= 1 << v; r[v] |= 1 << u
+    for u, v in core["edges"]:
+        edge(rows, u, v)
+    for g, F in enumerate(KR):
+        if g >= 2:
+            off = 4 * g
+            for i, j in combinations(range(4), 2):
+                if i ^ j != 3:
+                    edge(rows, off + i, off + j)
+    if not check(rows):
+        return
+    steps = []
+    cat = matching_catalogue(core)
+    for g, F in enumerate(KR):
+        k = kind(F)
+        if k == "Y":
+            steps.append(("Y", g))
+        elif k == "B":
+            steps.append(("M", g, 1))
+        elif k == "C":
+            steps.append(("M", g, 0))
+    for g, h in combinations(range(2, len(KR)), 2):
+        if not set(KR[g]) & set(KR[h]):
+            steps.append(("M", g, h))
+    P4 = list(permutations(range(4)))
+    ylays = [(tuple(lay)) for entry in cat for lay in entry["layouts"]]
+
+    def options(st, rows):
+        out = []
+        if st[0] == "Y":
+            off = 4 * st[1]
+            for lay in ylays:
+                r = rows[:]; ne = []
+                for c, mask in enumerate(lay):
+                    for u in bits(mask):
+                        edge(r, off + c, u); ne.append((off + c, u))
+                if check_new(r, ne):
+                    out.append(r)
+        else:
+            _, g, h = st
+            for p in P4:
+                r = rows[:]; ne = []
+                for c in range(4):
+                    edge(r, 4 * g + c, 4 * h + p[c]); ne.append((4 * g + c, 4 * h + p[c]))
+                if check_new(r, ne):
+                    out.append(r)
+        return out
+
+    def rec(rem, rows):
+        stats["nodes"] += 1
+        if not rem:
+            yield rows
+            return
+        best = None
+        for st in rem:
+            o = options(st, rows)
+            if not o:
+                stats["dead_ends"] += 1
+                return
+            if best is None or len(o) < len(best[1]):
+                best = (st, o)
+                if len(o) == 1:
+                    break
+        nxt = [x for x in rem if x != best[0]]
+        for r in best[1]:
+            yield from rec(nxt, r)
+    yield from rec(steps, rows)
+
+
 # ---------- exact SAT on the known-outside adjacency ----------
 def sat_leaf(rows):
     from pysat.card import CardEnc, EncType
@@ -435,9 +536,17 @@ if CSEL is not None:                     # explicit labelled cores (controls onl
     summary["cores_restricted"] = reps
 summary["core_types"] = len(reps)
 stat = Counter(); leaves = 0; open_leaf = None
+MRV = "--mrv" in sys.argv
+COUNT_ONLY = "--count-only" in sys.argv
+STATS = Counter()
 for ci in reps:
-    for rows in skeletons(CORES[ci]):
+    for rows in (skeletons_mrv(CORES[ci], STATS) if MRV else skeletons(CORES[ci])):
         leaves += 1
+        if COUNT_ONLY:
+            stat["SKELETON"] += 1
+            if leaves >= LIMIT:
+                break
+            continue
         r = sat_leaf(rows)
         stat[r["status"]] += 1
         if VERBOSE and (leaves % 200 == 1 or not r["status"].startswith("EXCLUDED")):
@@ -449,7 +558,7 @@ for ci in reps:
             break
     if open_leaf or leaves >= LIMIT:
         break
-summary.update(leaves=leaves, statuses=dict(stat), cpu=round(time.process_time() - t0, 1),
+summary.update(leaves=leaves, statuses=dict(stat), cpu=round(time.process_time() - t0, 1), dfs=dict(STATS),
                verdict=("EXCLUDED_TEMPLATE" if not open_leaf and leaves < LIMIT else
                         ("OPEN_LEAF" if open_leaf else "LIMIT_REACHED")))
 if open_leaf:

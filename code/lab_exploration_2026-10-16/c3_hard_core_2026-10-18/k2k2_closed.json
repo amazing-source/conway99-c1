@@ -10,7 +10,7 @@
  "lab_manifest_sha256": "ec522f4e7c9dda2b7e211e83936470b17a268608a97c9eaadb95e88260059d7f",
  "codex_certificates": "data/codex_short_columns_20261018/shared_2k2_residuals_20261019/certificates_for_lab.json @ 44a95e8a",
  "codex_certificates_sha256": "83f27e0c266fa3121901bc53e7ba5cf73493bca7b57ec51d3cc986e439260469",
- "caveat": "independent adversarial review (19/10 05:00 UTC): no soundness bug in py_extend.py / py_boundary.py, every LAB exclusion reproduced with independent code and CryptoMiniSat, the two transports and core51/b702 confirmed; the four Codex continuation certificates (cases 0, 2, 4, 5) rest on Codex's continuation model (RUP / drat-trim verified proofs of its CNFs), which that review did not cover",
- "date_utc": "2026-10-19T05:05Z",
+ "caveat": "independent adversarial review (19/10 05:00 UTC): no soundness bug in py_extend.py / py_boundary.py, every LAB exclusion reproduced with independent code and CryptoMiniSat, the two transports and core51/b702 confirmed. The four Codex continuation certificates use only two cut lemmas (99 row-quota-difference cuts, 73 two-row forced-edge cuts); Codex's written proof from the srg axioms: notes/PREUVE_COUPES_CONTINUATION_2026_10_19.txt (main 798c7e20), positive control on 4 blocks of BvLS243/twin243 (all cuts preserve the true completion: row_cut_positive_controls_20261019.json). That written proof has not yet been read by an independent reviewer.",
+ "date_utc": "2026-10-19T05:25Z",
  "hardening": "family, flags and exclusion kinds checked for every shard; every Codex certificate file opened and hash-checked against the bytes of commit 44a95e8a"
 }

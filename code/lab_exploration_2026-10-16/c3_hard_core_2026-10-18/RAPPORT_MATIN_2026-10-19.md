@@ -16,9 +16,12 @@
    - **Relecture indépendante (agent adversarial, terminée) : aucun défaut de correction.**
      - Toutes mes exclusions sont refaites avec un code et un solveur différents (CryptoMiniSat), avec les mêmes résultats.
      - Les deux transports de Codex et le bord core51/b702 sont confirmés.
-   - **Réserve qui subsiste.** 4 raccordements reposent sur le modèle de continuation de Codex. Ses preuves RUP et
-     drat-trim sont vérifiées et les fichiers sont contrôlés par hachage. Mais le modèle lui-même n'a pas été relu par
-     cet agent.
+   - **Les coupes de Codex sont maintenant justifiées.** Les 4 raccordements concernés n'utilisent que deux lemmes de
+     coupe.
+     - Codex a écrit leur preuve complète à partir des axiomes SRG (`notes/PREUVE_COUPES_CONTINUATION_2026_10_19.txt`,
+       main 798c7e20).
+     - Contrôle positif sur 4 blocs de vrais srg(243) : les coupes préservent toujours la vraie complétion.
+     - Il reste à faire relire cette preuve par un regard indépendant.
 3. **Famille P3 (560 ouverts après K3) : production en cours.**
    - En local depuis 03 h 40 UTC : environ 180 tâches sur 1 233 sont faites (7 083 bords couverts sur 68 649), tout est
      exclu.
@@ -27,6 +30,11 @@
    - Le reste part sur AWS dès ta reconnexion : environ 1 h sur 128 vCPU, quelques dollars.
    - Les vrais résidus éventuels (SAT ou UNKNOWN) iront aux coupes de Codex, comme pour 2K2.
 4. **Si P3 tombe aussi, il reste 250 ouverts en c = 3.**
+   - Piste suivante, déjà préparée : la famille 2K2N (même structure que 2K2, mais Q_bc quelconque). Elle couvre 92 de ces
+     250.
+   - Ses 737 bords survivants ont exactement 1 006 raccordements ouverts, tous des sélections SAT. Ce sont les cibles des
+     coupes de Codex (commit 0ef28bf2). Coût probable : quelques heures à 1 jour CPU, moins avec ses réductions par
+     symétrie.
    - Remarque de Codex : une fois K3 et 2K2 fermées, avec H01 = −H02 et Q12 grille, les grilles sur les quatre autres
      droites forment une étoile. P3 couvre l'étoile à au moins deux branches.
 5. **Plus tôt dans la nuit :** gz 5602 exclu, lemme C4 + C3 (29 ouverts), famille (2, 3) (24 ouverts).
