@@ -1,6 +1,37 @@
-# Rapport du matin, 19/10/2026 (LAB et Codex) — brouillon mis à jour au fil de la nuit
+# Rapport du matin, 19/10/2026 (LAB et Codex)
 
-## Faits vérifiés
+## En bref (04 h 35 UTC)
+
+1. **La famille K3 universelle est FERMÉE.**
+   - Les 2 742 342 bords sont exclus et 322 preuves RUP sont contrôlées. Statut : calcul exact, sous E3.
+   - **Registre c = 3 : 1 163 → 902 ouverts** (sur 10 052). Commit main 404dc96b :
+     https://github.com/amazing-source/conway99-c1/commit/404dc96b71f8bbc0f6fd92d4a305e3b6f89f3590
+2. **La nouvelle famille 2K2 est FERMÉE** (365 ouverts après K3). Statut : calcul exact.
+   - Étape 1 (sans Q12) et étape 2 (avec Q12, SAT exact) laissent 7 raccordements sur 5 bords, sur 12 569 bords.
+   - Codex les réfute tous par ses coupes de continuation, avec preuves RUP vérifiées. Le dernier est contrôlé par
+     drat-trim (s VERIFIED, aucun RAT). Commit Codex 44a95e8a.
+   - Mon assembleur (`twostage_manifest.py`) donne `complete = true`.
+   - **Registre c = 3 : 902 → 537 ouverts.**
+   - Réserve : la relecture indépendante de mon modèle (agent adversarial) est encore en cours.
+3. **Famille P3 (560 ouverts après K3) : 100 % exclue sur l'échantillon.**
+   - La production complète est prête pour AWS : environ 1 h sur 128 vCPU, quelques dollars.
+   - Il faut ta reconnexion AWS (code du téléphone).
+4. **Si P3 tombe aussi, il reste 250 ouverts en c = 3.**
+   - Remarque de Codex : une fois K3 et 2K2 fermées, avec H01 = −H02 et Q12 grille, les grilles sur les quatre autres
+     droites forment une étoile. P3 couvre l'étoile à au moins deux branches.
+5. **Plus tôt dans la nuit :** gz 5602 exclu, lemme C4 + C3 (29 ouverts), famille (2, 3) (24 ouverts).
+6. **Rien n'est encore acquis sur c ≤ 2.**
+
+## Ce qu'il faut de toi
+
+- **Le code AWS du compte « frere »** : je lance `aws_login_remote_frere.py`, tu colles le code reçu sur le téléphone.
+  Ensuite :
+  - P3 tourne déjà **en local** depuis 03 h 40 UTC (6 processus à basse priorité). J'arrête ces runs et j'envoie le reste
+    en Spot : `remaining_manifest.py`, paquet `p3prod` (tar d350262e), puis `launch_spot_region.sh`.
+  - Puis `morning_sync.sh`, qui rapatrie les runs AWS de la nuit et recalcule le registre.
+- **Rien d'autre.**
+
+## Faits vérifiés (début de nuit)
 
 1. **gz 5602, dimension 7, exclu par un calcul fini exact**, sans Gram, sans solveur SAT, sous E3. Statut : calcul exact.
    - Preuve de Codex (main cebb050b, `notes/COEUR_HUIT_SOMMETS_5602_2026_10_19.txt`).
@@ -44,14 +75,7 @@
   - Le cœur est alors la partie étiquettes d'une composante de taille 2 de G_{l_a}.
   - Catalogue LAB de ces cœurs : 114 cœurs étiquetés, 23 orbites.
 
-## En cours
-
-- **Famille universelle K3** (Codex) : paire partagée forcée, Q_bc grille, triangle de grilles. Elle contient **261 gabarits
-  ouverts**, dont 74 durs.
-- **Ensuite, la famille universelle P3** (deux grilles qui partagent une droite) : **821 gabarits ouverts**. Si elle tombe,
-  c = 3 est presque vide.
-
-## État à 00 h 45 UTC (02 h 45 locale)
+## Historique : état à 00 h 45 UTC (02 h 45 locale)
 
 - **Famille K3 universelle.**
   - Codex a ajouté deux contradictions à la main sur les cœurs : les orbites 20 et 23 tombent par le lemme des 4 facteurs
@@ -63,7 +87,7 @@
   - Les paires de grilles fermées donnent des égalités C2 exactes : 456 solutions par paire, 2 176 pour le triangle de 9302.
   - Pas encore de contradiction.
 
-## État à 03 h 10 UTC (05 h 10 locale) : K3 FERMÉE, P3 prêt pour AWS, 2K2 presque fermée
+## Détail à 03 h 45 UTC (05 h 45 locale) : K3 fermée, P3 prêt pour AWS, 2K2 presque fermée
 
 - **K3 universelle : FERMÉE (261 gabarits ouverts retirés).** Statut : calcul exact, sous E3 (comme 5602 et T23).
   - Les 2 742 342 bords sont couverts et tous exclus : `family_excluded = true`, 322 preuves RUP contrôlées.
@@ -71,7 +95,7 @@
   - Calcul : 56 tranches de Codex, plus 504 tranches calculées en local cette nuit avec son code 587f1fdd inchangé.
     Mes plages et les siennes forment une partition exacte, vérifiée avant le lancement.
   - **Registre c = 3 : 1 163 → 902 ouverts** (règle K3U activée par `k3u_closed.json`).
-- **Nouvelle famille 2K2 (548 ouverts) : pas encore fermée, résidu très petit.**
+- **Nouvelle famille 2K2 (548 ouverts, dont 365 hors K3) : pas encore fermée, résidu très petit.**
   - Définition : une paire partagée forcée H_ab = −H_ac, Q_bc grille, et deux grilles disjointes sur les quatre autres
     droites.
   - Fait utilisé : deux grilles disjointes sont reliées par un couplage parfait. Ce fait est déjà dans l'archive (commit
@@ -79,12 +103,13 @@
     (cœur, grille).
   - **Étape 1, sans Q12 (complète).** Elle exclut 11 832 des 12 569 bords, sans SAT pour l'essentiel.
   - **Étape 2, avec Q12 et SAT exact** (accélérée par un cache exact des raccordements en double).
-    - Pour l'instant, seulement 6 bords résiduels : 1 dans chacun des cœurs 6, 8, 75 et 88, et 2 dans le cœur 51.
+    - Résidu final : 5 bords et 7 raccordements (core6 b547 : 2 ; core51 b476 : 1, b702 : 1 en UNKNOWN ; core75 b355 : 1 ;
+      core88 b618 : 2). Core8 b235 est exclu à la relance complète.
     - Le cœur 6, bord 547, a une sélection de profils satisfiable : la sélection seule ne suffit pas.
     - Mais les **coupes de continuation de Codex** excluent ce raccordement pour tous ses profils (9 clauses, preuve RUP,
       main d8ba1ce0).
-  - Suite : lister tous les raccordements non exclus de ces quelques bords, puis les coupes de Codex sur chacun. Si tout
-    tombe, 2K2 se ferme.
+  - Suite : Codex applique ses coupes aux 6 raccordements restants. L'assembleur (`twostage_manifest.py --residual
+    --certificates`) ne ferme un bord que si chaque raccordement ouvert a un certificat exact.
 - **P3 universelle (821 ouverts, dont les 261 K3).**
   - Tous les bords échantillonnés sont exclus par une sélection exacte de profils (SAT avec preuve RUP vérifiée).
   - Coût : environ 105 h CPU avec le cache. Le paquet AWS est prêt pour le réveil : 1 233 tâches, environ 1 h sur
@@ -101,8 +126,8 @@
 
 - **Reconnexion AWS** (code du téléphone), puis `bash morning_sync.sh` dans le dossier aws_c1. Le script rapatrie les runs
   de la nuit et recalcule le registre.
-- **K3** : la production n'a plus besoin d'AWS (calcul local en cours, puis manifeste de Codex).
-- **Lancer la production P3 en Spot** : paquet `p3prod` (1 233 tâches, environ 2 h sur 128 vCPU, quelques dollars), puis
-  `p3_manifest.py`.
+- **Lancer la production P3 en Spot** : paquet `p3prod` (1 233 tâches, environ 1 h sur 128 vCPU, quelques dollars), puis
+  `p3_manifest.py` et la règle P3U du registre.
+- **Assembler 2K2** quand les certificats de Codex arrivent, puis la règle 2K2 du registre.
 - **Coûts.** Octobre : 52 USD d'usage selon Cost Explorer, couverts par les crédits (avec un jour de retard).
   Consommation Spot de la nuit estimée entre 10 et 15 USD. Solde à vérifier dans la console.

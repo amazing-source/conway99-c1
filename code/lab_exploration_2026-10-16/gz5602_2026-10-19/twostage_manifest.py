@@ -7,7 +7,12 @@ For every orbit representative of the 114 shared-pair cores:
     family (Q_bc grid) by the factor lemma, whatever stage 1 says;
   * otherwise every boundary 0..n-1 of the cover must have an EXCLUDED record in the stage-1 shard or in the stage-2
     shard, both shards citing the cover's sha256, with consistent counts (all attachments refuted).
-usage: python twostage_manifest.py <cover dir> <stage1 dir> <stage2 dir> <orbits16.json> <colour factors json> <out.json>"""
+  * optional third source (--residual DIR --certificates JSON): a border whose --all-attachments record (residual
+    shard) lists open attachments is excluded iff that record accounts for every attachment (valid_partial = EXCLUDED_*
+    + OPEN_*) and EVERY listed open (attachment, sigma) has an external certificate with status EXCLUDED_* and a
+    verified empty clause (Codex's continuation cuts), matched on core, border hex, attachment and sigma.
+usage: python twostage_manifest.py <cover dir> <stage1 dir> <stage2 dir> <orbits16.json> <colour factors json> <out.json>
+                                   [--residual DIR --certificates FILE.json]"""
 import gzip
 import hashlib
 import json
@@ -26,6 +31,13 @@ def digest(p):
 
 
 cover_dir, st1, st2, orbits, colours, out = map(Path, sys.argv[1:7])
+RESID = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--residual"), None)
+CERTF = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--certificates"), None)
+CERTS = {}
+if CERTF is not None:
+    for c in read(CERTF)["certificates"]:
+        if c["status"].startswith("EXCLUDED") and c.get("empty_clause_verified") is True:
+            CERTS[(c["core_index"], c["boundary_hex"], json.dumps(c["attachment"]), json.dumps(c["sigma"]))] = c
 reps = read(orbits)['representatives']
 colour = {r['core_index']: r for r in read(colours)['results']}
 res_cores = {}; totals = Counter(); files = []; programs = Counter(); complete = True
@@ -65,6 +77,25 @@ for ci in reps:
                 if check_case(rec, cover):
                     if not done[rec['boundary_index']]:
                         done[rec['boundary_index']] = 1; by[stage] += 1
+    if RESID is not None:
+        for p in sorted(RESID.glob('core%03d_*.json.gz' % ci)):
+            d = read(p)
+            assert d['core_index'] == ci and d['source_sha256'] == h and '--all-attachments' in d['flags'], p
+            files.append({'path': str(p), 'sha256': digest(p), 'stage': 'residual', 'cases': len(d['cases'])})
+            for rec in d['cases']:
+                bi = rec['boundary_index']
+                assert rec['boundary_hex'] == cover['boundaries_hex'][bi]
+                if done[bi]:
+                    continue
+                if check_case(rec, cover):
+                    done[bi] = 1; by['residual'] += 1; continue
+                cnt = rec['counts']
+                tot = sum(v for k, v in cnt.items() if k.startswith(('EXCLUDED_', 'OPEN_')))
+                opens = rec.get('witness', {}).get('open_attachments', [])
+                if cnt.get('valid_partial') != tot or not opens:
+                    continue
+                if all((ci, rec['boundary_hex'], json.dumps(a['attachment']), json.dumps(a['sigma'])) in CERTS for a in opens):
+                    done[bi] = 1; by['residual+certificates'] += 1
     ok = sum(done) == n
     complete &= ok
     res_cores[ci] = {'status': 'EXCLUDED_ALL_BOUNDARIES' if ok else 'INCOMPLETE', 'boundaries': n,
