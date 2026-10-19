@@ -37,6 +37,8 @@
      symétrie.
    - Remarque de Codex : une fois K3 et 2K2 fermées, avec H01 = −H02 et Q12 grille, les grilles sur les quatre autres
      droites forment une étoile. P3 couvre l'étoile à au moins deux branches.
+   - Plan pour ces 250 : `PLAN_250_2026-10-19.md`. Presque tous ont 3 à 5 grilles B/C (couplées parfaitement à une
+     moitié du cœur) ; c'est le levier à exploiter.
 5. **Plus tôt dans la nuit :** gz 5602 exclu, lemme C4 + C3 (29 ouverts), famille (2, 3) (24 ouverts).
 6. **Rien n'est encore acquis sur c ≤ 2.**
 
