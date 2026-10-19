@@ -1,6 +1,13 @@
 # Rapport du matin, 19/10/2026 (LAB et Codex)
 
-## En bref (05 h 05 UTC)
+## Mise à jour 06 h 25 UTC (après ta reconnexion AWS)
+
+- **Registre c = 3 : 537 → 435 ouverts**, grâce aux runs AWS de la nuit (c3l2, c3p5, P4E partiel, z_joint), rapatriés
+  par `morning_sync.sh`.
+- **P3 relancé sur AWS Spot** : une c7a.32xlarge, 1 022 tâches restantes, environ 30 min de calcul.
+- **Projection :** si P3NB et K2BC tombent, il reste 40 ouverts ; avec P3, 32 ; avec 2K2N, 30.
+
+## En bref (06 h 10 UTC)
 
 1. **La famille K3 universelle est FERMÉE.**
    - Les 2 742 342 bords sont exclus et 322 preuves RUP sont contrôlées. Statut : calcul exact, sous E3.
@@ -35,7 +42,12 @@
    - Échantillon : 84 bords sur 84 exclus, environ 0,3 s par bord, soit environ 2 h sur 7 processus pour les 137 454
      bords.
    - Elle couvre **427 des 537 ouverts**, dont 160 hors de P3. Si P3NB tombe : 110 ouverts ; avec P3 et 2K2N : 64.
-5. **Si P3 tombe aussi, il reste 250 ouverts en c = 3** (sans compter P3NB).
+   - Seconde relecture indépendante, sur P3NB : aucun défaut.
+5. **Famille K2BC (généralisation), la plus large.**
+   - Définition : une grille Y, une grille B et une grille C sur deux droites libres différentes.
+   - Elle couvre **461 des 537 ouverts**, pour environ 5 h CPU.
+   - Pilote : 3 bords sur 3 exclus ; l'échantillon sur les 28 types de cœurs est en cours.
+   - **Si P3NB et K2BC tombent, il reste 45 ouverts ; avec P3 et 2K2N, 32.**
    - Piste suivante, déjà préparée : la famille 2K2N (même structure que 2K2, mais Q_bc quelconque). Elle couvre 92 de ces
      250.
    - Ses 737 bords survivants ont exactement 1 006 raccordements ouverts, tous des sélections SAT. Ce sont les cibles des
