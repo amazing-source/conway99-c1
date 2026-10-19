@@ -50,6 +50,20 @@ FAMILY = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--family
 assert FAMILY in ("P3", "P3NB"), FAMILY      # P3NB: covers under the core flip group (28 types), no colour-factor cores
 pending = {}
 reps = read(orbits)['representatives']
+if FAMILY != 'P3':
+    # recompute the flip orbits of the 114 labelled cores independently (letter flips of lines 0, 1, 2; no swap) and
+    # require the orbits file to list exactly one representative per orbit (review 19/10: do not trust the cover writer)
+    from itertools import product as _prod
+    _cores = read(Path(__file__).with_name('paircores8.json'))
+    _CL = [(2 * i + s_, 2 * j + t_) for (i, j) in ((0, 1), (0, 2)) for s_, t_ in _prod(range(2), repeat=2)]
+    _LK = {q: k for k, q in enumerate(_CL)}
+    _flips = [[_LK[tuple(sorted(x ^ f[x // 2] for x in q))] for q in _CL] for f in _prod(range(2), repeat=3)]
+    _key = lambda c, pm: tuple(sorted(tuple(sorted((pm[u], pm[v]))) for u, v in c['edges']))
+    _orb = {}
+    for ci_, c_ in enumerate(_cores):
+        _orb.setdefault(min(_key(c_, pm) for pm in _flips), []).append(ci_)
+    assert len(_cores) == 114 and len(_orb) == len(reps), ('flip orbits', len(_orb), len(reps))
+    assert sorted(min(_key(_cores[r], pm) for pm in _flips) for r in reps) == sorted(_orb), 'orbits file does not hit every flip orbit once'
 colour = {r['core_index']: r for r in read(colours)['results']}
 covers, seen, missing = {}, {}, []
 for ci in reps:
