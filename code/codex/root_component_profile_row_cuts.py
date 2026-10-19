@@ -2,10 +2,12 @@
 
 Fix a profile p of x. Future neighbours have features: known vertices
 they meet, upper letters they carry, and degree. Their exact feature
-totals are t_f. If t_f>t_g, at least one future neighbour carries f but
-not g. It must select a profile allowing adjacency to x. Consequently
+totals are t_f. If t_f>t_g, at least t_f-t_g DISTINCT future neighbours
+carry f but not g. For any fixed set W of fewer than t_f-t_g vertices,
+at least one such neighbour lies outside W and must choose a compatible
+profile. Consequently (the original inclusion cut is the case W empty)
 
-  not choose(x,p) OR any choose(y,q) with xy locally possible and f without g.
+  not choose(x,p) OR any choose(y,q), y outside W, with xy possible and f without g.
 
 These clauses concern ONLY the original profile choices. Their validity
 does not require fixing the other profiles. They can be learned from a
@@ -73,7 +75,9 @@ class RowCutOracle:
         x, pi, f, g = (cut[k] for k in ('outside_index', 'profile_index', 'feature', 'excluded_feature'))
         targets = self.targets(x, pi)
         assert targets[f] > targets[g]
-        assert tuple(map(tuple, cut['support_options'])) == self.support(x, pi, f, g)
+        exceptions = set(cut.get('exempt_partner_vertices', []))
+        assert len(exceptions) < targets[f]-targets[g]
+        assert tuple(map(tuple, cut['support_options'])) == tuple((y,qi) for y,qi in self.support(x,pi,f,g) if y not in exceptions)
         assert cut['demands'] == [targets[f], targets[g]]
         return True
 
@@ -93,9 +97,11 @@ class RowCutOracle:
             selected_occurrences.append(occurrence)
             for f in range(len(targets)):
                 for g in range(len(targets)):
-                    if targets[f] <= targets[g] or occurrence[f] & ~occurrence[g]:
+                    remaining = occurrence[f] & ~occurrence[g]
+                    if targets[f] <= targets[g] or remaining.bit_count() >= targets[f]-targets[g]:
                         continue
-                    support = self.support(x, pi, f, g)
+                    exceptions = [y for y in range(len(selected)) if remaining & (1 << y)]
+                    support = tuple((y,qi) for y,qi in self.support(x,pi,f,g) if y not in exceptions)
                     key = (x, pi, support)
                     if key in seen:
                         continue
@@ -105,6 +111,7 @@ class RowCutOracle:
                            'feature': f, 'excluded_feature': g,
                            'feature_name': self.names[f], 'excluded_feature_name': self.names[g],
                            'demands': [targets[f], targets[g]], 'support_options': support,
+                           'exempt_partner_vertices': exceptions,
                            'currently_possible_feature_vertices': [y for y in range(len(selected)) if occurrence[f] & (1 << y)],
                            'currently_possible_excluded_feature_vertices': [y for y in range(len(selected)) if occurrence[g] & (1 << y)]}
                     assert self.check_cut(cut)

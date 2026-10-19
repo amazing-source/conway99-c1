@@ -31,13 +31,14 @@ def main():
     p.add_argument('--attachment', type=int, nargs=4, action='append',
                    help='Target one specified grid attachment, avoiding an already covered boundary scan.')
     p.add_argument('--sigma', type=int, nargs=4)
+    p.add_argument('--proof-checker', choices=('auto','python','native'),default='auto')
     args = p.parse_args()
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
     helper_hashes = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in
                      ('root_component_lab_profile_export.py','root_component_profile_row_cuts.py',
                       'root_component_profile_guard_cut.py','root_component_profile_row_extension.py',
-                      'root_component_p3_neighbor_support.py')}
+                      'root_component_p3_neighbor_support.py','root_component_native_rup.py')}
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
     assert source.count(marker) == 1, 'LAB source changed; inspect its SAT branch before updating the hook.'
@@ -134,6 +135,12 @@ def main():
 
     replacement = marker + '\n            export_selection_hook(rows, LABELS, OUTSIDE, doms, rows_v, s.get_model())'
     source = source.replace(marker, replacement)
+    from root_component_native_rup import CHECKER, check_native_rup
+    use_native = args.proof_checker=='native' or (args.proof_checker=='auto' and sys.platform=='win32' and CHECKER.exists())
+    if use_native:
+        check_call = "            out['proof_check'] = check_rup(_L, proof)"
+        assert source.count(check_call)==1
+        source=source.replace(check_call,"            out['proof_check'] = export_proof_check_hook(_L.clauses, proof)")
     if args.row_cut_rounds or args.extend_rows:
         call = '        ans = s.solve_limited()'
         assert source.count(call) == 1
@@ -144,7 +151,8 @@ def main():
                 '--out='+str(args.output.with_suffix('.lab_result.json.gz'))]
     try:
         ns = {'__name__': '__main__', '__file__': str(args.lab_source), 'export_selection_hook': save_selection,
-              'profile_cut_solve_hook': solve_with_cuts}
+              'profile_cut_solve_hook': solve_with_cuts,
+              'export_proof_check_hook':lambda clauses,proof:check_native_rup(clauses,proof,args.output)}
         if args.attachment:
             marker = '\nOUT = next('
             assert source.count(marker)==1, 'Inspect the changed LAB driver.'
