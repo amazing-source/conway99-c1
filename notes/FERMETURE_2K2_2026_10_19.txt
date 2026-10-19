@@ -1,0 +1,90 @@
+19 octobre 2026 - Fermeture des sept raccordements residuels de 2K2
+
+PORTEE MATHEMATIQUE
+
+On utilise les notations du catalogue des composantes de racine :
+H01 = -H02 est non nul, et Q12, Q34, Q56 sont des grilles.
+Les autres rectangles sont libres. Aucune Gram particuliere et aucun
+automorphisme du graphe complet ne sont imposes. Le catalogue emploie la
+condition necessaire E3, comme la fermeture K3 precedente.
+
+Le recensement exhaustif appartient au LAB. Ses deux etapes, puis sa liste
+residuelle exhaustive, ne laissent que sept raccordements sur cinq bords.
+Les sept sont maintenant refutes par les certificats ci-dessous. Le manifeste
+du LAB assemble leur couverture avec celle de tous les autres bords.
+Ce resultat exclut cette famille; il n'exclut pas encore tout Conway.
+
+LES SEPT RACCORDS ET LEUR REFUTATION
+
+Coeur/bord       Raccords    Refutation
+6 / 547          2           9 coupes, RUP verifie, puis renommage exact
+51 / 476         1           89 coupes, RUP natif verifie
+51 / 702         1           CNF des profils directement UNSAT, RUP verifie
+75 / 355         1           67 coupes, RUP natif verifie
+88 / 618         2           7 coupes, RUP natif verifie, puis renommage exact
+
+Les raccordements, permutations sigma, hexadecimaux des bords et cartes de
+transport sont explicites dans :
+data/codex_short_columns_20261018/shared_2k2_residuals_20261019/certificates_for_lab.json
+
+Les deux transports preservent la racine partagee, les paires de grilles,
+les lettres et toutes les adjacences connues. Les retournements des racines
+1 et 2 coincident, ce qui conserve le signe dans H01=-H02. Il s'agit de
+renommer un graphe eventuel, pas de lui supposer une symetrie.
+
+POURQUOI LES COUPES SONT NECESSAIRES
+
+Les vingt sommets connus appartiennent au bloc Gamma de 84 sommets.
+Chaque sommet manquant choisit un profil : ses voisins parmi ces vingt.
+Les equations de degres, lettres et voisins communs donnent des quotas
+exacts pour ses futurs voisins. Pour deux caracteristiques F,G, leurs quotas
+t_F,t_G imposent au moins t_F-t_G voisins DISTINCTS portant F sans G.
+Si W contient moins de t_F-t_G sommets, un tel voisin doit exister hors W.
+La disjonction des profils capables de le fournir est donc une clause
+necessaire, conditionnee seulement par le profil de la ligne concernee.
+Une seconde forme de coupe exprime l'effet d'une arete forcee sur les quotas
+d'une autre ligne. Tous les autres profils restent libres dans ces preuves.
+
+Chaque coupe est reconstruite sur les domaines complets. Ses litteraux sont
+compares exactement au suffixe du CNF. Le certificat RUP refute ensuite ce
+CNF augmente; pour les controles natifs, -U interdit les ajouts RAT.
+
+Le dernier cas75/b355 avait atteint UNKNOWN a120CPU, avec53coupes. Une reprise
+conservant ces coupes a trouve trois selections supplementaires, puis UNSAT
+a210.375CPU de la reprise et67coupes au total. Son RUP a ete valide :
+850152lemmes retenus dans le coeur,0RAT. Le delai de verification constate
+etait509.777secondes sous la regulation de charge de cette machine.
+
+La reduction supplementaire des30profils du sommet(6,11) a9orbites sous un
+stabilisateur d'ordre4 a ete preparee et controlee, mais N'A PAS ETE UTILISEE
+dans cette refutation. Les coupes obtenues depuis les images de selections
+sont egalement un outil prepare, pas une dependance de cette fermeture.
+
+TRANSPORT ET RELECTURE DU GROS CERTIFICAT
+
+Le dernier fichier de preuve comprime depasse200Mo. Il est conserve localement
+et transporte en morceaux de32MiB. Le manifeste native_parts donne taille
+et SHA256 de chaque morceau et du fichier comprime reconstitue. Le contenu
+de la preuve n'est pas modifie. Depuis la racine du depot :
+
+python code/codex/root_component_proof_parts.py restore data/codex_short_columns_20261018/shared_2k2_residuals_20261019/case004_retry1.native_parts.json
+
+Pour rejouer ses coupes et son RUP avec le verificateur natif fourni :
+
+python code/codex/root_component_row_cut_certificate.py data/codex_short_columns_20261018/shared_2k2_residuals_20261019/case004_retry1.json --proof data/codex_short_columns_20261018/shared_2k2_residuals_20261019/case004_retry1.native.input.rup.gz --output data/codex_short_columns_20261018/shared_2k2_residuals_20261019/replay_case004.json --native-timeout 2400
+
+Le fichier de sortie doit etre nouveau. Les anciens essais ayant atteint
+une limite sont conserves avec leur statut; ils ne comptent jamais comme
+exclusions. Le manifeste final utilise la reprise effectivement certifiee.
+
+CONSEQUENCE STRUCTURELLE AVEC K3
+
+Sous les hypotheses H01=-H02 non nul et Q12 grille, dessinons une arete entre
+deux des quatre autres racines exactement lorsque leur rectangle est une
+grille. La fermeture2K2 interdit deux aretes disjointes. La fermetureK3
+interdit un triangle. Toutes les aretes doivent donc partager un centre :
+deux aretes ab,ac obligent toute autre arete a contenir a, car la seule
+alternative intersectant les deux serait bc, qui formerait un triangle.
+Ce graphe de grilles est donc une etoile, eventuellement vide ou reduite
+a une arete. La campagne P3 du LAB porte sur une etoile ayant au moins
+deux aretes; sa fermeture reste une etape distincte.
