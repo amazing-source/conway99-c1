@@ -144,6 +144,13 @@ def continue_profiles(rows, known_labels, outside_labels, profiles):
     validity = known_rows_check(rows, known_labels, outside_labels, profiles)
     if not validity['valid']:
         return {'status': 'INVALID_COMPLETE_KNOWN_ROWS', 'known_rows_check': validity}
+    masks = [mask(p) for p in profiles]
+    for x, y in combinations(range(len(profiles)), 2):
+        common = (masks[x] & masks[y]).bit_count() + len(set(outside_labels[x]) & set(outside_labels[y]))
+        if common > 2:
+            return {'status': 'EXCLUDED_KNOWN_COMMON_NEIGHBOUR_OVERFLOW', 'known_rows_check': validity,
+                    'outside_vertices': [x, y], 'outside_labels': [outside_labels[x], outside_labels[y]],
+                    'already_common': common, 'maximum': 2}
     system = linear_system(rows, known_labels, outside_labels, profiles)
     if 'invalid_profiles' in system:
         return {'status': 'INVALID_SINGLE_PROFILE', **system, 'known_rows_check': validity}

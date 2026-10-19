@@ -30,24 +30,24 @@ def mask(vertices):
     return sum(1 << v for v in vertices)
 
 
-def prepare_profile(rows, known_labels, outside_label, profile):
+def prepare_profile(rows, known_labels, outside_label, profile, root_count=7):
     p = mask(profile)
     letters = mask(outside_label)
     shared = [len(set(outside_label) & set(q)) for q in known_labels]
     slacks = [2 - int(bool(p & (1 << v))) - shared[v] - (p & row).bit_count()
               for v, row in enumerate(rows)]
     roots = {l // 2 for l in outside_label}
-    upper = [1 if l // 2 in roots else 2 for l in range(14)]
+    upper = [1 if l // 2 in roots else 2 for l in range(2*root_count)]
     for v in profile:
         for l in known_labels[v]:
             upper[l] -= 1
     return {
-        'mask': p, 'letters': letters, 'degree_remaining': 12 - len(profile),
+        'mask': p, 'letters': letters, 'degree_remaining': 2*root_count-2-len(profile),
         'zero': mask(v for v, s in enumerate(slacks) if s == 0),
         'one': mask(v for v, s in enumerate(slacks) if s == 1),
         'upper_zero': mask(l for l, s in enumerate(upper) if s == 0),
         'upper_one': mask(l for l, s in enumerate(upper) if s == 1),
-        'valid': min(slacks + upper + [12 - len(profile)]) >= 0,
+        'valid': min(slacks + upper + [2*root_count-2-len(profile)]) >= 0,
     }
 
 

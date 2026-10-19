@@ -532,3 +532,62 @@ preuve que le lecteur rejoue sans recherche. Le passage de ces seules
 egalites ne suffit pas : les comptes entre deux sommets exterieurs
 comportent encore des produits d'aretes et ne sont pas tous imposes.
 Ce module ne depend ni de P3, ni de K3, ni d'une Gram particuliere.
+
+UNE OBSTRUCTION EXPLICITE DU TEMOIN P3N0/3001
+
+Le SAT du LAB ne conservait pas son modele. Une copie en memoire du
+programme, sans modifier ses fichiers, a extrait une selection pour
+le coeur0/bord3001 :16 lignes connues completes,68 profils choisis.
+L'archive shared_p3n_core000_b3001_selected.json contient ce temoin,
+ses domaines et le hash du code LAB archive a cote. Ce n'est pas un SRG.
+
+Les16 lignes satisfont les degres, lettres et comptes de voisins
+communs. Il reste1498 aretes exterieures individuellement possibles.
+La propagation des2108 egalites de continuation refute la selection
+en6 etapes (10 variables fixees), en0.015625 seconde CPU. Le lecteur
+rejoue la preuve. Les filtres de capacites pris separement passaient.
+
+La contradiction est plus simple encore. Le sommet x de lettres(4,7),
+indice exterieur37, a le profil(7,11,14). Il lui faut deux voisins de
+lettre2. Seuls les sommets(2,6) et(2,13) sont encore compatibles avec
+ce profil et les autres profils choisis. Leurs profils sont(5,8,15)
+et(5,9) : tous deux voient le sommet connu u5, de lettres(0,5).
+Or x et u5 n'ont plus qu'un voisin commun a recevoir. Donc2 <=1.
+
+Cette preuve se releve en une CLAUSE VALABLE AVANT la selection des
+autres profils. Si le profil de x est retenu, au moins un voisin de
+lettre2 doit choisir un profil compatible avec x NE CONTENANT PAS u5.
+Parcours de tous les domaines :22 options peuvent satisfaire cette
+necessite. La clause comporte le negatif du profil de x et ces22
+options positives. Elle ne fixe aucun des68 profils du temoin refute.
+
+Forme generale : pour un profil p de x, deux types de contributions
+f,g ont des demandes t_f>t_g. Au moins un voisin futur doit contribuer
+a f sans contribuer a g. On enumere tous les profils permettant une
+arete avec x et ce type de contribution. Leur disjonction est necessaire
+conditionnellement au choix de p. Une liste vide interdit p. Module
+root_component_profile_row_cuts.py; les inclusions se lisent dans les
+budgets d'une FUTURE ligne, contrairement aux anciennes inclusions qui
+portaient sur les totaux des lignes deja connues.
+
+La clause23 littéraux est reinjectee. Le solveur choisit d'autres
+profils : toujours SAT pour les16 lignes, mais cette seconde selection
+est aussi non prolongeable (18 propagations,49 variables fixees).
+Cette fois deux lignes interviennent. Ce n'est donc pas une exclusion
+du bord : tous ses choix restent a traiter ensemble.
+
+Le module root_component_profile_row_extension.py ajoute les aretes
+de lignes exterieures choisies, en laissant TOUS les profils variables.
+Il impose leurs degres, lettres, comptes communs avec les anciennes
+lignes et entre elles. Il impose aussi les bornes partielles SRG sur
+les autres sommets apres ces ajouts : paires, lettres et adjacences.
+Un premier essai sans ces dernieres bornes passait le SAT, mais donnait
+des profils impossibles apres promotion; il est conserve comme
+relaxation diagnostique, jamais comme temoin partiel valide. Les bornes
+ont ete ajoutees avant le pilote final sur les deux lignes44 et57.
+
+Les modules sont controles sur le vrai graphe de grille3x3, srg(9,4,1,2),
+en adaptant le nombre de racines a2. La completion plantee reste admise,
+et une fausse liaison au coin oppose est eliminee. Le filtre generique
+de capacites d'aretes, seul, ne supprime aucun profil des24 blocs P3 :
+ne pas le lancer en production pour un gain non observe.
