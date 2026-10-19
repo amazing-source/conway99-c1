@@ -33,6 +33,21 @@ ROOT3 = tuple(tuple(sorted((3,a))) for a in (0,1,2,4,5,6))
 OUTSIDE = tuple((2*a+s,2*b+t) for a,b in CROSS+ROOT3 for s,t in product(range(2),repeat=2))
 
 
+def write_result(path,value):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    if path.suffix!='.gz':
+        atomic_json_write(path,value)
+        return
+    temporary=path.with_name(path.name+'.tmp')
+    temporary.write_bytes(gzip.compress((json.dumps(value,separators=(',',':'))+'\n').encode('utf8'),mtime=0))
+    for attempt in range(200):
+        try:
+            temporary.replace(path);return
+        except PermissionError:
+            if attempt==199:raise
+            time.sleep(.05)
+
+
 @lru_cache(None)
 def rainbow(allowed):
     return tuple(pi for pi,p in enumerate(P4)
@@ -140,15 +155,25 @@ def propagate_profiles(domains,deficits,letter_deficits):
     """
     demands={24*u+v:deficits[u][v] for u in range(24) for v in range(u,24)}
     demands.update({576+14*u+l:letter_deficits[u][l] for u in range(24) for l in range(14)})
+    # N=Q34+Q35+Q36 and Z=Q03+Q04+Q05+Q06. The identities
+    # H(K)=H(Q12)=H(Y)=0 force these counts separately.
+    demands.update({912+u:3 if u<12 else 1 for u in range(24)})
+    demands.update({936+u:0 if u<8 else (4 if u<12 else 2) for u in range(24)})
     features=[]
+    profile_masks=[]
     for q,domain in zip(OUTSIDE,domains):
-        features.append([profile_features(p) | sum(1<<(576+14*u+l) for u in p for l in q)
+        roots={l//2 for l in q}
+        region=912 if 3 in roots and roots&{4,5,6} else (
+            936 if 0 in roots and roots&{3,4,5,6} else None)
+        features.append([profile_features(p) | sum(1<<(576+14*u+l) for u in p for l in q) |
+                         (sum(1<<(region+u) for u in p) if region is not None else 0)
                          for p in domain])
+        profile_masks.append([sum(1<<u for u in p) for p in domain])
     active=[list(range(len(d))) for d in domains];rounds=[]
     while True:
-        lower=[0]*912;upper=[0]*912;bounds=[]
+        lower=[0]*960;upper=[0]*960;bounds=[]
         for vi,indices in enumerate(active):
-            union=0;intersection=(1<<912)-1
+            union=0;intersection=(1<<960)-1
             for i in indices:
                 f=features[vi][i];union|=f;intersection&=f
             bounds.append((union,intersection))
@@ -158,7 +183,8 @@ def propagate_profiles(domains,deficits,letter_deficits):
         for k,target in demands.items():
             if not lower[k]<=target<=upper[k]:
                 meaning=({'known_vertices':divmod(k,24)} if k<576 else
-                         {'known_vertex':(k-576)//14,'upper_letter':(k-576)%14})
+                         {'known_vertex':(k-576)//14,'upper_letter':(k-576)%14} if k<912 else
+                         {'known_vertex':k%24,'outside_region':'N' if k<936 else 'Z'})
                 return {'status':'EXCLUDED_PROFILE_PROPAGATION',**meaning,
                         'demand':target,'minimum':lower[k],'maximum':upper[k],
                         'rounds':rounds,'remaining_domain_sizes':list(map(len,active))},None
@@ -180,6 +206,23 @@ def propagate_profiles(domains,deficits,letter_deficits):
                 changes.append({'outside_index':vi,'removed':len(active[vi])-len(kept)})
                 active[vi]=kept
         if not changes:
+            # Two missing vertices cannot already have more common
+            # known neighbours than mu minus their shared upper letters.
+            for vi,vj in combinations(range(len(domains)),2):
+                cap=2-len(set(OUTSIDE[vi])&set(OUTSIDE[vj]))
+                for a,b in ((vi,vj),(vj,vi)):
+                    kept=[i for i in active[a] if any(
+                        (profile_masks[a][i]&profile_masks[b][j]).bit_count()<=cap for j in active[b])]
+                    if not kept:
+                        return {'status':'EXCLUDED_OUTSIDE_PROFILE_C2','outside_vertices':[a,b],
+                                'common_known_bound':cap,'rounds':rounds},None
+                    if len(kept)<len(active[a]):
+                        changes.append({'outside_index':a,'incompatible_with':b,
+                                        'removed':len(active[a])-len(kept)})
+                        active[a]=kept
+            if changes:
+                rounds.append(changes)
+                continue
             return {'status':'PASSES_PROFILE_PROPAGATION','rounds':rounds},[
                 [domain[i] for i in indices] for domain,indices in zip(domains,active)]
         rounds.append(changes)
@@ -253,7 +296,7 @@ def frontier(rows,keep_domains=False, pair_capacity=True, propagate=True):
     return result
 
 
-def solve(core,boundary,attachments):
+def solve(core,boundary,attachments,exact_profiles=False):
     counts=Counter();certificates=[]
     for attached in attachments.for_boundary(boundary):
         rows=materialize(core,boundary,attached);counts['valid_partial24']+=1
@@ -262,6 +305,17 @@ def solve(core,boundary,attachments):
             counts['frontier_obstructions']+=1
             certificates.append({'attachments':attached,'certificate':certificate})
             continue
+        if exact_profiles:
+            from root_component_shared_k3_profile_sat import select_profiles
+            exact,cnf,proof=select_profiles(frontier(rows,True))
+            counts['exact_profile_selections']+=1
+            if exact['status']=='EXCLUDED_PROFILE_SELECTION_UNSAT':
+                counts['exact_profile_unsat']+=1
+                certificates.append({'attachments':attached,'certificate':exact,'rup_proof':proof})
+                continue
+            return {'status':exact['status'],'counts':dict(counts),
+                    'witness':{'attachments':attached,'rows':rows,'selection':exact,
+                               'frontier':frontier(rows,True)},'is_complete_graph':False}
         return {'status':'FEASIBLE_PARTIAL24_FRONTIER','counts':dict(counts),
                 'witness':{'attachments':attached,'rows':rows,'frontier':frontier(rows,True)},
                 'is_complete_graph':False}
@@ -275,6 +329,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--max-boundaries',type=int,default=0)
     parser.add_argument('--start',type=int,default=0)
+    parser.add_argument('--exact-profiles',action='store_true')
     args=parser.parse_args();assert not args.output.exists()
     resources=limit_research_process(1);start=time.process_time()
     source=json.loads(gzip.decompress(args.boundaries.read_bytes()))
@@ -283,22 +338,28 @@ def main():
     out={'scope':__doc__,'source':str(args.boundaries),
          'source_sha256':hashlib.sha256(args.boundaries.read_bytes()).hexdigest(),
          'core_index':source['core_index'],'resources':resources,'cases':[],
-         'total_boundaries':source['boundary_count'],'whole_family_excluded':False}
+         'total_boundaries':source['boundary_count'],'whole_family_excluded':False,
+         'exact_profiles':args.exact_profiles,
+         'requested_start':args.start,'requested_max_boundaries':args.max_boundaries,
+         'program_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+         'profile_solver_sha256':hashlib.sha256(Path(__file__).with_name(
+             'root_component_shared_k3_profile_sat.py').read_bytes()).hexdigest() if args.exact_profiles else None}
     for bi,hex_state in enumerate(source['boundaries_hex']):
         if bi<args.start:continue
         if args.max_boundaries and len(out['cases'])>=args.max_boundaries:break
         boundary=tuple(bytes.fromhex(hex_state))
-        result=solve(core,boundary,attachments)
+        result=solve(core,boundary,attachments,exact_profiles=args.exact_profiles)
         out['cases'].append({'boundary_index':bi,'boundary_hex':hex_state,'result':result})
-        if len(out['cases'])%100==0 or result['status']=='FEASIBLE_PARTIAL24_FRONTIER':
+        excluded=result['status'].startswith('EXCLUDED_')
+        if len(out['cases'])%100==0 or not excluded:
             out['cpu_seconds']=time.process_time()-start
-            atomic_json_write(args.output,out)
+            write_result(args.output,out)
             print(json.dumps({'core':source['core_index'],'processed':len(out['cases']),
                 'boundary_index':bi,'status':result['status'],'cpu_seconds':out['cpu_seconds']}),flush=True)
-        if result['status']=='FEASIBLE_PARTIAL24_FRONTIER':break
+        if not excluded:break
     out['cpu_seconds']=time.process_time()-start
     out['full_core_coverage']=args.start==0 and len(out['cases'])==source['boundary_count']
-    atomic_json_write(args.output,out)
+    write_result(args.output,out)
     print(json.dumps({'processed':len(out['cases']),'statuses':dict(Counter(r['result']['status'] for r in out['cases'])),
                       'cpu_seconds':out['cpu_seconds'],'full_core_coverage':out['full_core_coverage']}))
 

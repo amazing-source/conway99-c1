@@ -1,0 +1,36 @@
+{
+  "scope": "Exact joint selection of all sixty outside profiles of a K3 block24.\n\nThe Boolean model contains profile choices, all residual known-pair\nequalities, known-letter equalities, N/Z counts, and outside-pair C2\nbounds. It contains no unknown outside-outside adjacency variables.\nSAT means 24 complete rows, not a Conway graph. UNSAT proofs are saved\nand checked by reverse unit propagation, ignoring proof deletions.\n",
+  "source": "data\\codex_short_columns_20261018\\shared_k3_core000_propagation_mid.json",
+  "boundary_index": 100106,
+  "variables": 25875,
+  "clauses": 55709,
+  "clause_kinds": {
+    "one_profile": 1200,
+    "known_pair": 34658,
+    "known_letter": 12940,
+    "region": 4417,
+    "outside_C2": 2494
+  },
+  "cnf_sha256": "6dfbf1ef0b575a4a2ba760ddb6b726dda12c71169969094077a2a60831d1ff97",
+  "resources": {
+    "logical_cpu_budget": 1,
+    "shared_affinity_mask": 1,
+    "priority": "below_normal"
+  },
+  "is_complete_graph": false,
+  "solver_statistics": {
+    "restarts": 1,
+    "conflicts": 14,
+    "decisions": 34,
+    "propagations": 16599
+  },
+  "status": "EXCLUDED_PROFILE_SELECTION_UNSAT",
+  "proof_sha256": "a5906e3130f2bdde86c6d8661f8875a327965de8cb0d227f84f5e68024f96eca",
+  "proof_check": {
+    "checked_additions": 681,
+    "empty_clause_verified": true,
+    "terminal_root_conflict": true,
+    "deletions_ignored": true
+  },
+  "cpu_seconds": 0.265625
+}

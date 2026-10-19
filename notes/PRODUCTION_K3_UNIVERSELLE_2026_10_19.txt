@@ -1,0 +1,110 @@
+Production finie K3 universelle - 19 octobre 2026
+
+Hypotheses : H01=-H02!=0, grilles Q12,45,46,56, E3 pour les coeurs.
+Les autres rectangles sont libres. Aucune Gram ni symetrie fixee.
+Le LAB recense 261 gabarits encore ouverts couverts par cette structure.
+Cette famille N'EST PAS encore exclue. Un modele SAT de la couche
+profils n'est PAS un graphe de Conway.
+
+Toutes les commandes sont executees a la racine du depot. Un seul
+coeur par processus. Sur AWS, si plusieurs processus sont lances,
+leur donner des affinites distinctes avec taskset avant de lancer
+Python; sinon le limiteur choisira le meme premier coeur autorise.
+La session AWS est actuellement expiree. Le LAB prepare le paquet
+pour la reconnexion; ces commandes n'ouvrent aucune machine distante.
+
+1. COUVERTURE DES BORDS20 (REPRENABLE PAR COEUR)
+
+python -I -u -X utf8 code/codex/root_component_shared_k3_boundary.py
+ --pair-cores code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircores8.json
+ --core-orbits code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircore_orbits16.json
+ --output-directory data/codex_short_columns_20261018/shared_k3_boundaries
+
+Les fichiers termines core_NNN.json.gz sont reconnus et sautes.
+--cores 0,1,6 permet de repartir les representants entre machines.
+Les coeurs20 et23 sont exclus analytiquement, les21 autres ont un
+catalogue fini. Le graphe Q12 n'est pas encore attache dans les
+bords20. Le quotient par relabelage est explicite dans le code.
+Les23 fichiers sont maintenant termines : 2742342 bords au total.
+
+2. UNE TRANCHE D'EXTENSION (EXEMPLE COEUR0, BORDS2000..6999)
+
+python -I -u -X utf8 code/codex/root_component_shared_k3_extend.py
+ --boundaries data/codex_short_columns_20261018/shared_k3_boundaries/core_000.json.gz
+ --start 2000 --max-boundaries 5000 --exact-profiles
+ --output data/codex_short_columns_20261018/shared_k3_shards/core000_002000_006999.json.gz
+
+Les repertoires de sortie sont crees. Le fichier est ecrit atomiquement
+toutes les100 positions et a la fin; le suffixe.gz active la compression.
+Un fichier deja existant est refuse. Pour reprendre apres interruption,
+conserver son prefixe complet et lancer le premier indice encore absent
+dans un NOUVEAU fichier. Ne pas traiter deux fois le meme indice dans
+le repertoire destine au manifeste.
+
+Le programme s'arrete au premier SAT_24_COMPLETE_ROWS ou UNKNOWN.
+SAT fournit un choix de profils qui complete les24 lignes connues,
+sans choisir les aretes entre les60 sommets restants. Ce n'est pas
+une construction99. UNKNOWN est une limite de conflits, jamais une
+exclusion. Dans ces deux cas le fichier contient un temoin a examiner,
+et le manifeste refusera de certifier la famille.
+
+Une exclusion provient successivement de :
+- jointure des trois couplages aux quatre facteurs simples de T;
+- bornes C2 lors de l'ajout de Q12;
+- domaines exacts des60 profils manquants, capacites des paires;
+- egalites de quotas de lettres et comptes des regions N et Z;
+- compatibilites C2 entre sommets manquants;
+- si necessaire, choix simultane des60 profils par une formule CNF.
+Dans le dernier cas, une preuve RUP est exportee ET controlee avant
+l'inscription d'une exclusion. Chaque preuve est conservee dans le
+certificat du raccordement concerne. Aucun UNKNOWN n'est assimile a UNSAT.
+
+3. MANIFESTE FINAL
+
+python -I -u -X utf8 code/codex/root_component_shared_k3_manifest.py
+ --cover-directory data/codex_short_columns_20261018/shared_k3_boundaries
+ --results-directory data/codex_short_columns_20261018/shared_k3_shards
+ --colour-factors data/codex_short_columns_20261018/shared_core_Q12_colour_factors.json
+ --core-orbits code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircore_orbits16.json
+ --output data/codex_short_columns_20261018/shared_k3_exclusion_manifest.json
+
+Il faut toutes les couvertures des23 coeurs, les deux exclusions
+analytiques, et chaque indice de chaque catalogue survivant exactement
+une fois. Le manifeste controle les hashes des entrees, les verdicts,
+le nombre de blocs24 et les preuves RUP annoncees. Il ne repete pas
+la recherche et ne remplace pas la preuve mathematique de couverture.
+Avec --allow-partial et un autre nom de sortie, on obtient seulement
+un point d'avancement; family_excluded reste faux tant qu'il manque
+une position. Aucun manifeste K3 ne conclut a Conway global.
+
+4. PILOTES ET DIAGNOSTIC DU PREMIER BLOC RESISTANT
+
+Coeur0 : les positions0..1999 sont exclues par les filtres entiers;
+100000..100105 aussi. La tranche100106..101105 est exclue, avec le
+choix global des profils quand necessaire. La tranche101106..102105
+est aussi exclue. Total4106 bords distincts et2880 blocs24 :
+733 domaines vides,2127 capacites impossibles,14 propagations,
+6 selections globales UNSAT avec preuves RUP controlees.
+Ce sont des pilotes partiels, pas toute la couverture du coeur0.
+
+Le bloc100106 passait les filtres precedents. Le choix global exige
+25875 variables CNF et55709 clauses; CaDiCaL l'exclut en14 conflits.
+681 ajouts de preuve sont controles jusqu'a la contradiction. Fichiers
+shared_k3_core000_b100106_profile_exact.cnf/.drup/.json. Le resultat
+global a ensuite ete integre au parcours de TOUS les raccordements
+du bord, et non seulement a ce premier temoin.
+
+Glucose3 trouve une preuve plus courte pour ce meme bloc : les unites
+-553 et-810 puis la clause vide. Les deux ajouts sont controles RUP.
+553 designe le profil (10,15,17,23) du sommet de lettres (0,7),
+810 le profil (1,3,9,13) du sommet de lettres (6,12).
+Fichiers shared_k3_core000_b100106_short.drup/.json. Glucose3 est
+desormais le solveur par defaut; trois conflits,0.09375 CPU seconde.
+Ces deux interdictions ne sont valables que pour ce bloc24 fixe.
+
+Correction d'export necessaire sur ce Windows : PySAT get_proof()
+lisait les seuls tampons C deja ecrits. Un fflush du runtime C avant
+lecture donne la preuve complete. Le lecteur refuse les preuves
+tronquees/non justifiees. Ses controles positifs et negatifs sont
+dans shared_k3_rup_reader_controls.json. C'est une correction de
+l'export de preuve, pas une modification des verdicts du solveur.
