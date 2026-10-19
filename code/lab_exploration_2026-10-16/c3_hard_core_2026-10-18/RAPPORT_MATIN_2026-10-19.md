@@ -1,6 +1,6 @@
 # Rapport du matin, 19/10/2026 (LAB et Codex)
 
-## En bref (04 h 35 UTC)
+## En bref (05 h 05 UTC)
 
 1. **La famille K3 universelle est FERMÉE.**
    - Les 2 742 342 bords sont exclus et 322 preuves RUP sont contrôlées. Statut : calcul exact, sous E3.
@@ -11,11 +11,21 @@
    - Codex les réfute tous par ses coupes de continuation, avec preuves RUP vérifiées. Le dernier est contrôlé par
      drat-trim (s VERIFIED, aucun RAT). Commit Codex 44a95e8a.
    - Mon assembleur (`twostage_manifest.py`) donne `complete = true`.
-   - **Registre c = 3 : 902 → 537 ouverts.**
-   - Réserve : la relecture indépendante de mon modèle (agent adversarial) est encore en cours.
-3. **Famille P3 (560 ouverts après K3) : 100 % exclue sur l'échantillon.**
-   - La production complète est prête pour AWS : environ 1 h sur 128 vCPU, quelques dollars.
-   - Il faut ta reconnexion AWS (code du téléphone).
+   - **Registre c = 3 : 902 → 537 ouverts.** Commit main eb32ad91 :
+     https://github.com/amazing-source/conway99-c1/commit/eb32ad9110db9deaadc6fa9675e8872562d75f90
+   - **Relecture indépendante (agent adversarial, terminée) : aucun défaut de correction.**
+     - Toutes mes exclusions sont refaites avec un code et un solveur différents (CryptoMiniSat), avec les mêmes résultats.
+     - Les deux transports de Codex et le bord core51/b702 sont confirmés.
+   - **Réserve qui subsiste.** 4 raccordements reposent sur le modèle de continuation de Codex. Ses preuves RUP et
+     drat-trim sont vérifiées et les fichiers sont contrôlés par hachage. Mais le modèle lui-même n'a pas été relu par
+     cet agent.
+3. **Famille P3 (560 ouverts après K3) : production en cours.**
+   - En local depuis 03 h 40 UTC : environ 180 tâches sur 1 233 sont faites (7 083 bords couverts sur 68 649), tout est
+     exclu.
+   - 3 bords étaient restés UNKNOWN au budget de 200 000 conflits (core0 b2373 et b2430, core1 b1161). Tous sont exclus
+     par une seconde passe automatique à 3 millions de conflits.
+   - Le reste part sur AWS dès ta reconnexion : environ 1 h sur 128 vCPU, quelques dollars.
+   - Les vrais résidus éventuels (SAT ou UNKNOWN) iront aux coupes de Codex, comme pour 2K2.
 4. **Si P3 tombe aussi, il reste 250 ouverts en c = 3.**
    - Remarque de Codex : une fois K3 et 2K2 fermées, avec H01 = −H02 et Q12 grille, les grilles sur les quatre autres
      droites forment une étoile. P3 couvre l'étoile à au moins deux branches.

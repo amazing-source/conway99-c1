@@ -20,6 +20,9 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+if sys.flags.optimize:
+    raise SystemExit('refusing to run with python -O: the checks are assert statements')
+
 
 def read(p):
     raw = Path(p).read_bytes()
@@ -30,13 +33,36 @@ def digest(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
+ALLOWED_FLAGS = {'--sat', '--lean', '--enc=seq', '--all-attachments'}
+ALLOWED_EXCLUSIONS = {'EXCLUDED_NEGATIVE_KNOWN_DEFICIT', 'EXCLUDED_NEGATIVE_LETTER_DEFICIT', 'EXCLUDED_EMPTY_VERTEX_DOMAIN',
+                      'EXCLUDED_PROFILE_CAPACITY', 'EXCLUDED_PROFILE_PROPAGATION', 'EXCLUDED_INCLUSION',
+                      'EXCLUDED_OUTSIDE_PROFILE_C2', 'EXCLUDED_PROFILE_SELECTION_UNSAT', 'EXCLUDED_DUPLICATE_ROWS'}
+
+
+def check_flags(d, family):
+    fl = [f for f in d['flags'] if not f.startswith(('--indices=', '--out=', '--conflicts='))]
+    assert set(fl) <= ALLOWED_FLAGS and '--sat' in fl and '--lean' in fl and '--enc=seq' in fl, ('flags', d['flags'])
+    assert d['summary']['family'] == family, ('family', d['summary']['family'], family)
+
+
 cover_dir, st1, st2, orbits, colours, out = map(Path, sys.argv[1:7])
 RESID = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--residual"), None)
 CERTF = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--certificates"), None)
 CERTS = {}
+CERTROOT = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--certificate-root"), None)
 if CERTF is not None:
     for c in read(CERTF)["certificates"]:
         if c["status"].startswith("EXCLUDED") and c.get("empty_clause_verified") is True:
+            if CERTROOT is not None:             # open every referenced certificate file and check its sha256
+                for k in ("certificate", "certificate_path", "path"):
+                    if k in c and isinstance(c[k], str):
+                        f = CERTROOT / c[k]
+                        assert f.exists(), ("missing certificate file", c[k])
+                        want = c.get("certificate_sha256") or c.get("sha256")
+                        assert want and digest(f) == want, ("certificate hash", c[k])
+                        break
+                else:
+                    raise SystemExit("certificate entry without a file reference: %r" % (c,))
             CERTS[(c["core_index"], c["boundary_hex"], json.dumps(c["attachment"]), json.dumps(c["sigma"]))] = c
 reps = read(orbits)['representatives']
 colour = {r['core_index']: r for r in read(colours)['results']}
@@ -49,6 +75,7 @@ def check_case(rec, cover):
     if rec['status'] != 'EXCLUDED_BY_FACTOR_JOIN_AND_FRONTIER':
         return False
     cnt = rec['counts']
+    assert all(k in ALLOWED_EXCLUSIONS for k in cnt if k.startswith('EXCLUDED_')), ('unexpected exclusion kind', cnt)
     exc = sum(v for k, v in cnt.items() if k.startswith('EXCLUDED_'))
     assert cnt.get('valid_partial', 0) == exc, (bi, cnt)
     assert cnt.get('sat_calls', 0) == cnt.get('EXCLUDED_PROFILE_SELECTION_UNSAT', 0), (bi, cnt)
@@ -64,12 +91,14 @@ for ci in reps:
         continue
     cover = read(cp); h = digest(cp)
     assert cover['core_index'] == ci and cover['status'] == 'COMPLETE_BOUNDARY_COVER'
+    assert cover.get('family') in ('2K2N', '2K2'), ('cover family', cover.get('family'))
     n = cover['boundary_count']; assert len(cover['boundaries_hex']) == n
     done = bytearray(n); by = Counter()
     for stage, d_ in (('stage1', st1), ('stage2', st2)):
         for p in sorted(d_.glob('core%03d_*.json.gz' % ci)):
             d = read(p)
             assert d['core_index'] == ci and d['source_sha256'] == h and d['total_boundaries'] == n, p
+            check_flags(d, '2K2N' if stage == 'stage1' else '2K2')
             programs[(stage, d['program_sha256'], tuple(d['flags'][:1]))] += 1
             files.append({'path': str(p), 'sha256': digest(p), 'stage': stage, 'cases': len(d['cases']),
                           'program_sha256': d['program_sha256']})
@@ -81,6 +110,7 @@ for ci in reps:
         for p in sorted(RESID.glob('core%03d_*.json.gz' % ci)):
             d = read(p)
             assert d['core_index'] == ci and d['source_sha256'] == h and '--all-attachments' in d['flags'], p
+            check_flags(d, '2K2')
             files.append({'path': str(p), 'sha256': digest(p), 'stage': 'residual', 'cases': len(d['cases'])})
             for rec in d['cases']:
                 bi = rec['boundary_index']

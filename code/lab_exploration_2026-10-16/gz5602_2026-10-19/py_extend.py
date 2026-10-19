@@ -23,6 +23,8 @@ from functools import lru_cache
 from itertools import combinations, permutations, product
 
 codex, FAMILY, bpath, START, COUNT = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4]), int(sys.argv[5])
+if sys.flags.optimize:
+    raise SystemExit("refusing to run with python -O: proof checks (check_rup, verdict checks) are assert statements")
 PROPAGATE = "--no-propagate" not in sys.argv
 sys.path.insert(0, codex)
 
