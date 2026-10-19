@@ -88,3 +88,39 @@ Les quotas de lettres et les bornes de voisins communs filtreront ces
 profils exactement, comme dans les deux familles deja fermees.
 La repartition en quatre facteurs sert a eviter les 24^3 essais
 aveugles d'attachement de Q12 a chaque bord20.
+
+PREMIER PILOTE D'EXTENSION EXACTE (02 h 35)
+
+root_component_shared_k3_extend.py joint les couplages aux quatre
+facteurs, controle les voisins communs au niveau 24, puis enumere les
+profils des 60 sommets manquants. Il calcule leurs capacites de paires
+et propage les egalites de voisins communs et de quotas de lettres.
+Toute la procedure est entiere et sans solveur.
+
+Les 2000 premiers bords du coeur 0 sont exclus (13.125 secondes CPU).
+Ils donnent 1213 blocs24 : 327 ont un domaine vide, 881 une capacite
+de paire insuffisante ou excessive, et 5 echouent aux quotas globaux.
+Ces nombres sont des constructions etiquetees, pas des graphes non
+isomorphes. Le coeur 0 possede 255318 bords; cette tranche est PARTIELLE.
+Les autres coeurs ne sont pas traites par ce pilote.
+
+Les premieres tentatives laissees ouvertes ont ete poursuivies :
+- Bord 15 : les domaines individuels sont tous non vides, mais la
+  paire de sommets connus (0,11) exige un voisin commun supplementaire.
+  Aucun des 60 sommets manquants ne peut fournir ce voisin : capacite 0.
+- Bord 230 : un raccordement passe meme toutes les capacites de
+  paires. Le sommet connu 14 (coin de Q45) n'a pourtant plus qu'une
+  place pour un voisin portant la lettre 0. Chacun des deux sommets
+  manquants de lettres (0,6) et (0,7) doit le voir dans TOUS ses profils.
+  Il faudrait donc au moins deux places, contradiction 2>1.
+
+Fichiers du pilote : shared_k3_core000_propagation_pilot.json et les
+deux temoins diagnostiques frontier_pilot/capacity_pilot. Les regles
+rapides sur les profils de taille2 sont comparees aux inegalites SRG
+explicites sur les 120 domaines de ces deux temoins; toutes concordent
+(shared_k3_frontier_rule_controls.json). Pas de nouvelle exclusion de
+gabarit annoncee sur la base de ce pilote.
+
+En cours : tranche 100000..101999 du meme coeur pour examiner un autre
+secteur du catalogue. Le calcul respecte la pause CPU du PC; ce n'est
+pas une limite mathematique ni un verdict UNKNOWN du solveur.
