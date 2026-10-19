@@ -132,6 +132,8 @@ for key, gs in p4.items():
 # complete cover is INFEASIBLE under the probe (P4O); Gram-free whole-template model of Codex (jhat_zjoint.py, ZJ).
 for of in glob.glob("orbits_*.json"):
     o = json.load(open(of))
+    if "templates" in o:          # multi-template orbit files are handled by the PORB rule below
+        continue
     key = ("gz", int(o["index"]))
     inf = set()
     for f in glob.glob(os.path.join("collect_c3eig2", "files", "out", "or_gz_%05d_*.json" % o["index"])):
@@ -175,6 +177,12 @@ for t in (5128, 4192):
 # C4+C3 grid closure (Codex aa3e8a9e+, 19/10): universal relations give H_d1 = -H_d2 for the diagonals of a grid C4
 # whose complement is a grid C3; the exact enumeration 8 -> 20 -> 36 -> frontier (5602) uses only the core and
 # these 7 grids, so a non-grid diagonal is impossible (exact finite computation; c4c3_closure_scan.py lists them)
+# (2,3) touching family (Codex main 7d95ad5e, touching23_exclusion_manifest.json: 5312 positions, 1748 margins +
+# 3564 joins, 18 partial-36 graphs all with an empty frontier domain; exact, no Gram, under E3); family detector
+# t23_family_scan.py (exact rational kernel), 403 gz templates, 24 of them open on 19/10 01:30 UTC
+if os.path.exists("t23_hits_all.json"):
+    for t in json.load(open("t23_hits_all.json")):
+        methods[("gz", int(t))].add("T23")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")
