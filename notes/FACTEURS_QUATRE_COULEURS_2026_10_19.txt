@@ -648,3 +648,74 @@ utilise pour aucune exclusion. Les nouveaux pilotes d'apprentissage
 ont une interruption CPU effective dans le solveur, en plus de la borne
 de conflits; UNKNOWN n'est jamais transforme en UNSAT. Tous les calculs
 de ce point sont termines, limites a un coeur, sans travail local actif.
+
+19/10/2026, vers 05h - Etoiles fractionnaires et coupes de profils sur 2K2.
+
+Le LAB signale le cout de 2K2 core6/b24. Extraction de tous les raccordements
+sans refaire ses SAT : 6336, dont 6296 exclus par deficit connu et 40 passent.
+Ces 40 sont seulement deux matrices connues DISTINCTES, chacune repetee 20 fois;
+les domaines de profils sont identiques a l'interieur de chaque classe.
+Le cache exact par tuple(rows) a ete transmis puis branche par LAB (message1230).
+C'est un gain sur le nombre de calculs; aucune nouvelle exclusion mathematique.
+
+Pour une ligne manquante x de profil p fixe, z[y,q] indique que y est voisin de x
+avec profil connu q. On relaxe z>=0, somme_q z[y,q]<=1. Les quotas exacts sont
+le degre restant, les voisins portant chaque lettre, et les voisins communs
+avec chaque sommet connu. En plus : deux voisins de x ne peuvent pas partager
+deux autres voisins. Donc au plus un voisin futur porte une paire de connus,
+ou un connu et une lettre donnes. Ces inegalites sont necessaires sans symetrie.
+
+root_component_profile_star_lp construit cette relaxation. Le solveur GLOP ne
+sert qu'a decouvrir une combinaison : on reconstruit des poids ENTIERS w.
+Poids des majorations <=0, somme des coefficients de chaque variable <=0,
+mais somme des seconds membres >0. Verification entiere de cette contradiction.
+Aucune infeasibilite numerique seule ne peut produire une exclusion.
+
+Sur le premier bloc de b24, 744 profils testes en3.109375CPU; deux refutes.
+Un profil est x=(8,12), voisins connus [0,4,8]. En notant I_u l'incidence au
+connu u et L_l le port d'une lettre l, chaque option de voisin admissible obeit a
+ I_11 + L_3 + L_5 <= I_1 + I_5 + I_6 I_11 + I_3 L_5 + I_7 L_3.
+La somme sur les futurs voisins aurait membre gauche 2+2+2=6, tandis que le
+membre droit est au plus1+1+1+1+1=5. Ceci exclut le profil, pas tout le bloc.
+Les huit contraintes et leur combinaison exacte sont dans star_sparse.json.
+
+root_component_profile_assignment_lp ajoute aussi au modele de profils connus
+les cliques : au plus un dehors voit trois connus fixes; au plus un dehors
+portant une lettre l voit deux connus fixes. Une hypothese x[p]=1 est testee
+par LP; sa negation n'est ajoutee qu'apres un certificat entier rejoue. Ces
+negations binaires peuvent servir aux suivantes. Les deux blocs de b24 perdent
+respectivement130 et144 profils avec ces preuves, en34.46875 et33.46875CPU.
+La relaxation finale reste faisable : PAS d'exclusion par cette methode.
+Controle positif sur la vraie grille SRG(9,4,1,2), et tous les certificats
+propres sont relus sans LP. Ne pas activer ce filtre couteux partout sans gain.
+
+Donnees : shared_2k2_core006_b24_inputs.json.gz (source LAB archivee),
+shared_2k2_core006_b24_star_pilot.json, shared_2k2_core006_b24_star_sparse.json,
+shared_2k2_core006_b24_assignment_lp.json et shared_2k2_core006_b24_summary.json.
+
+Nouveau cas utile du LAB1230 : core6/b547, bord0628904109608214, selection SAT
+des20lignes connues, avec attachments[[1,2,0,3],[2,0,1,3]],sigma[1,2,0,3].
+Cette selection ne ferme PAS2K2. Le wrapper peut maintenant cibler directement
+un raccordement (--attachment deux fois et --sigma), sans balayer le bord.
+19/10 05h03 - Le raccordement SAT de 2K2 core6/b547 est maintenant EXCLU.
+Le mode direct du wrapper donne deux selections SAT successives, puis UNSAT
+apres9clauses necessaires :2 inclusions de quotas et7 coupes a deux lignes.
+Temps solve/apprentissage18.75CPU; total97.531CPU avec verification RUP.
+219175ajouts verifies, clause vide valide. Les9clauses sont justifiees sur
+les domaines complets (aucun autre profil fixe implicitement), et leurs
+litteraux coincident exactement avec les neuf dernieres clauses du CNF.
+
+Obstruction microscopique de la premiere selection : x=(5,11) demande encore
+un voisin commun avec le connu0=(0,2), mais aucun partenaire futur ne peut
+fournir ce voisin. La clause laisse libres tous les autres profils : elle
+impose soit de changer le profil de x, soit de choisir une des41options
+alternatives capables de fournir le voisin manquant. La seconde selection
+a le meme defaut pour x=(2,9) et le connu7=(1,5). Les autres coupes portent
+sur une arete forcee qui consommerait un quota indispensable a une autre ligne.
+
+PORTee : tous les profils du raccordement indique sont exclus. Ce n'est PAS
+encore la fermeture de tous les raccordements du bord547, ni de la famille2K2.
+Le LAB poursuit leur recensement; message1233 transmet le resultat.
+Fichiers shared_2k2_core006_b547_continuation.row_cut_* (input,apprentissage,
+CNF et preuveRUP comprimee), source LAB archivee, resultat LAB et synthese
+shared_2k2_core006_b547_attachment_summary.json. Aucun calcul local restant.

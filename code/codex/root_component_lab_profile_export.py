@@ -28,6 +28,9 @@ def main():
     p.add_argument('--row-cut-cpu-seconds', type=float, default=60)
     p.add_argument('--extend-rows', type=int, nargs='*', default=[])
     p.add_argument('--continuation-cuts', action='store_true')
+    p.add_argument('--attachment', type=int, nargs=4, action='append',
+                   help='Target one specified grid attachment, avoiding an already covered boundary scan.')
+    p.add_argument('--sigma', type=int, nargs=4)
     args = p.parse_args()
     assert not args.output.exists(), 'Use a new output name.'
     resources = limit_research_process(1)
@@ -140,9 +143,31 @@ def main():
                 str(args.boundary), str(args.index), '1', '--sat', '--lean',
                 '--out='+str(args.output.with_suffix('.lab_result.json.gz'))]
     try:
-        exec(compile(source, str(args.lab_source), 'exec'),
-             {'__name__': '__main__', '__file__': str(args.lab_source), 'export_selection_hook': save_selection,
-              'profile_cut_solve_hook': solve_with_cuts})
+        ns = {'__name__': '__main__', '__file__': str(args.lab_source), 'export_selection_hook': save_selection,
+              'profile_cut_solve_hook': solve_with_cuts}
+        if args.attachment:
+            marker = '\nOUT = next('
+            assert source.count(marker)==1, 'Inspect the changed LAB driver.'
+            exec(compile(source.split(marker)[0],str(args.lab_source),'exec'),ns)
+            assert len(args.attachment)==ns['NG'] and ns['Q12K']
+            assert all(sorted(a)==list(range(4)) for a in args.attachment)
+            assert (args.sigma is not None)==ns['YY']
+            if args.sigma is not None:
+                assert sorted(args.sigma)==list(range(4))
+            boundary_raw=args.boundary.read_bytes(); boundary_data=json.loads(gzip.decompress(boundary_raw))
+            assert boundary_data['status']=='COMPLETE_BOUNDARY_COVER'
+            boundary=tuple(bytes.fromhex(boundary_data['boundaries_hex'][args.index]))
+            rows=ns['materialize'](boundary_data['core'],boundary,args.attachment,args.sigma)
+            result=ns['frontier'](rows,True)
+            record={'scope':'One specified attachment only; not a boundary or family verdict.',
+                    'boundary_index':args.index,'boundary_hex':boundary_data['boundaries_hex'][args.index],
+                    'boundary_source_sha256':hashlib.sha256(boundary_raw).hexdigest(),
+                    'attachments':args.attachment,'sigma':args.sigma,'frontier':result}
+            args.output.with_suffix('.lab_result.json.gz').write_bytes(
+                gzip.compress(json.dumps(record,separators=(',',':')).encode(),mtime=0))
+            print(json.dumps({'target_attachment_status':result['status']}))
+        else:
+            exec(compile(source, str(args.lab_source), 'exec'), ns)
     finally:
         sys.argv = previous
     print(json.dumps({'witness_exported': args.output.exists(), 'output': str(args.output)}))
