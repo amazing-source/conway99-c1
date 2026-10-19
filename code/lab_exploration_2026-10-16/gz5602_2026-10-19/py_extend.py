@@ -36,12 +36,16 @@ if sys.platform == "win32":
 from root_component_shared_core_colors import PAIRS, PAIR_ID, colourings          # noqa: E402
 from root_component_shared_k3_boundary import matching_catalogue                  # noqa: E402
 
-YR = {"K3": ((4, 5), (4, 6), (5, 6)), "P3": ((4, 5), (4, 6)), "P3N": ((4, 5), (4, 6)), "K2": ((4, 5),), "2K2": ((3, 4), (5, 6)), "2K2N": ((3, 4), (5, 6))}[FAMILY]
+YR = {"K3": ((4, 5), (4, 6), (5, 6)), "P3": ((4, 5), (4, 6)), "P3N": ((4, 5), (4, 6)), "K2": ((4, 5),), "2K2": ((3, 4), (5, 6)), "2K2N": ((3, 4), (5, 6)), "P3NB": ((4, 5), (4, 6))}[FAMILY]
 YY = FAMILY in ("2K2", "2K2N")       # two DISJOINT Y-grids: a perfect matching between them (each dominates the other)
-Q12K = FAMILY not in ("P3N", "2K2N")          # P3N: Q12 NOT assumed to be a grid (it is an outside rectangle), no attachments
+Q12K = FAMILY not in ("P3N", "2K2N", "P3NB")          # P3N: Q12 NOT assumed to be a grid (it is an outside rectangle), no attachments
 YOFF = 12 if Q12K else 8
 NG = len(YR)
-RECT = (((0, 1), (0, 2), (1, 2)) if Q12K else ((0, 1), (0, 2))) + YR
+# P3NB: an extra known B-grid Q13 (through b = 1 and the free line 3): perfect matching with the core half Q02
+# (base(01,13) = 0, base(02,13) = 1) and with both Y-grids (disjoint): attachments (beta, s1, s2) in S4^3
+BG = (1, 3) if FAMILY == "P3NB" else None
+RECT = (((0, 1), (0, 2), (1, 2)) if Q12K else ((0, 1), (0, 2))) + YR + ((BG,) if BG else ())
+BOFF = YOFF + 4 * len(YR)
 LABELS = tuple((2 * a + s, 2 * b + t) for a, b in RECT for s, t in product(range(2), repeat=2))
 NK = len(LABELS)
 SHARED = tuple(tuple(len(set(a) & set(b)) for b in LABELS) for a in LABELS)
@@ -68,6 +72,8 @@ def profiles(q):
     for g, r in enumerate(YR):
         if not (lines & set(r)):
             ys.append([YOFF + 4 * g + c for c in range(4)])
+    if BG is not None and not (lines & set(BG)):
+        ys.append([BOFF + c for c in range(4)])
     out = []
     for cc in core_choices:
         for qq in q12:
@@ -126,7 +132,7 @@ def materialize(core, boundary, attached, sigma=None):
         rows[u] |= 1 << v; rows[v] |= 1 << u
     for u, v in core['edges']:
         edge(u, v)
-    for off in ([8] if Q12K else []) + [YOFF + 4 * g for g in range(NG)]:
+    for off in ([8] if Q12K else []) + [YOFF + 4 * g for g in range(NG)] + ([BOFF] if BG else []):
         for i, j in combinations(range(4), 2):
             if i ^ j != 3:
                 edge(off + i, off + j)
@@ -140,8 +146,15 @@ def materialize(core, boundary, attached, sigma=None):
     if sigma is not None:
         for c in range(4):
             edge(YOFF + c, YOFF + 4 + sigma[c])
+    if BG is not None:
+        beta, s1, s2 = attached
+        for c in range(4):
+            edge(BOFF + c, 4 + beta[c]); edge(BOFF + c, YOFF + s1[c]); edge(BOFF + c, YOFF + 4 + s2[c])
     for u in range(NK):
-        expect = ((2 + NG) if u < 12 else 5 + int(YY)) if Q12K else ((2 + NG) if u < 8 else 4 + int(YY))
+        if BG is not None:
+            expect = 4 if u < 4 else 5          # Q01: 2 core + 2 Y; Q02: + 1 B; Y: 2 + 2 core + 1 B; B: 2 + 1 core + 2 Y
+        else:
+            expect = ((2 + NG) if u < 12 else 5 + int(YY)) if Q12K else ((2 + NG) if u < 8 else 4 + int(YY))
         assert rows[u].bit_count() == expect, (u, rows[u].bit_count(), expect)
     return rows
 
@@ -363,7 +376,7 @@ REGIONS = {'Z': ((0, 3), (0, 4), (0, 5), (0, 6)),
                  "K2": ((3, 4), (3, 5), (3, 6), (4, 6), (5, 6)),
                  # 2K2 (Q12, Q34, Q56 grids): bipartition gives H03+H13+H23 = H45+H46, root 3 (H34 = 0) gives
                  # H35+H36+H45+H46 = 0
-                 "2K2": ((3, 5), (3, 6), (4, 5), (4, 6)), "2K2N": ()}[FAMILY]}
+                 "2K2": ((3, 5), (3, 6), (4, 5), (4, 6)), "2K2N": (), "P3NB": ()}[FAMILY]}
 if not Q12K:
     del REGIONS['N']          # no 0/1 region relation without H12 = 0          # P3N: H34+H35+H36+H56 = H12 (not a 0/1 region relation); Z still holds
 for _R in REGIONS.values():
@@ -592,13 +605,81 @@ def dissect(groups, vp, targets, feat, doms):
     return {'mus': desc, 'mus_size': len(desc)}
 
 
+def partial_ok(rows, new_edges):
+    """C2 / letter / degree upper bounds for the vertices and pairs affected by new_edges (exact necessary conditions:
+    common known neighbours <= 2 - adj - shared letters, known letter counts <= quota, degree <= 12)"""
+    touched = set()
+    for x, y in new_edges:
+        touched.add(x); touched.add(y)
+    for z in touched:
+        rz = rows[z]
+        if rz.bit_count() > 12:
+            return False
+        for l in range(14):
+            if (rz & LETTER_MASKS[l]).bit_count() > 2 - int(l in LABELS[z]) - int((l ^ 1) in LABELS[z]):
+                return False
+    for x, y in new_edges:
+        rx, ry = rows[x], rows[y]
+        if (rx & ry).bit_count() > 1 - SHARED[x][y]:
+            return False
+        m = rx
+        while m:
+            w = (m & -m).bit_length() - 1; m &= m - 1
+            if w != y and (ry & rows[w]).bit_count() > 2 - ((ry >> w) & 1) - SHARED[y][w]:
+                return False
+        m = ry
+        while m:
+            w = (m & -m).bit_length() - 1; m &= m - 1
+            if w != x and (rx & rows[w]).bit_count() > 2 - ((rx >> w) & 1) - SHARED[x][w]:
+                return False
+    return True
+
+
+def p3nb_attachments(core, boundary):
+    """all (beta, s1, s2) in S4^3 whose partial known graph passes the C2 / letter / degree bounds after each layer
+    (the final graph is re-checked exactly by frontier())"""
+    base_rows = [0] * NK
+
+    def edge(r, u, v):
+        r[u] |= 1 << v; r[v] |= 1 << u
+    for u, v in core['edges']:
+        edge(base_rows, u, v)
+    for off in [YOFF + 4 * g for g in range(NG)] + [BOFF]:
+        for i, j in combinations(range(4), 2):
+            if i ^ j != 3:
+                edge(base_rows, off + i, off + j)
+    for k, mask in enumerate(boundary):
+        for u in range(8):
+            if mask & (1 << u):
+                edge(base_rows, u, YOFF + k)
+    for beta in P4:
+        r1 = base_rows[:]; e1 = [(BOFF + c, 4 + beta[c]) for c in range(4)]
+        for x, y in e1:
+            edge(r1, x, y)
+        if not partial_ok(r1, e1):
+            continue
+        for s1 in P4:
+            r2 = r1[:]; e2 = [(BOFF + c, YOFF + s1[c]) for c in range(4)]
+            for x, y in e2:
+                edge(r2, x, y)
+            if not partial_ok(r2, e2):
+                continue
+            for s2 in P4:
+                r3 = r2[:]; e3 = [(BOFF + c, YOFF + 4 + s2[c]) for c in range(4)]
+                for x, y in e3:
+                    edge(r3, x, y)
+                if partial_ok(r3, e3):
+                    yield (beta, s1, s2), None
+
+
 def solve(core, boundary, att, propagate):
     cnt = Counter(); cnt['max_conflicts'] = 0
     opened = []
     open_keys = set()
     seen = set()       # known matrices already refuted: different colour factors can give the SAME attachment
-    for attached, sigma in ((a, sg) for a in (att.for_boundary(boundary) if Q12K else [()])
-                            for sg in (P4 if YY else [None])):
+    gen = (p3nb_attachments(core, boundary) if BG is not None else
+           ((a, sg) for a in (att.for_boundary(boundary) if Q12K else [()]) for sg in (P4 if YY else [None])))
+    for attached, sigma in gen:
         rows = materialize(core, boundary, attached, sigma); cnt['valid_partial'] += 1
         key = tuple(rows)
         if key in seen:

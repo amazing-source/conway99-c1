@@ -10,7 +10,8 @@ It does not repeat the search.
   * optional --residual DIR: a border whose production record is not excluded (UNKNOWN at the conflict budget, or SAT)
     is covered when a second-pass record (--all-attachments, larger budget) in DIR excludes it, with the same source
     hash, border hex and consistent counts (no OPEN_* entry).
-usage: python p3_manifest.py <cover dir> <shard dir> <orbits16.json> <codex colour factors json> <out.json> [--residual DIR]"""
+usage: python p3_manifest.py <cover dir> <shard dir> <orbits json> <codex colour factors json> <out.json> [--residual DIR]
+       [--family P3|P3NB]   (P3NB: orbits json = pybd_p3nb_all/core_reps_flips.json)"""
 import gzip
 import hashlib
 import json
@@ -45,6 +46,8 @@ def check_flags(d, family):
 
 cover_dir, shard_dir, orbits, colours, out = map(Path, sys.argv[1:6])
 RESID = next((Path(sys.argv[i + 1]) for i, a in enumerate(sys.argv) if a == "--residual"), None)
+FAMILY = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--family"), "P3")
+assert FAMILY in ("P3", "P3NB"), FAMILY      # P3NB: covers under the core flip group (28 types), no colour-factor cores
 pending = {}
 reps = read(orbits)['representatives']
 colour = {r['core_index']: r for r in read(colours)['results']}
@@ -58,11 +61,12 @@ for ci in reps:
     covers[ci] = {'path': str(p), 'sha256': digest(p), 'status': c['status'], 'n': c.get('boundary_count', 0),
                   'hex': c.get('boundaries_hex', [])}
     if c['status'] == 'EXCLUDED_Q12_COLOUR_FACTORS':
+        assert FAMILY == 'P3', 'colour-factor exclusion needs Q12 to be a grid'
         r = colour[ci]
         assert r['status'] == 'EXCLUDED_COLOUR_FACTORS' and not r['colourings'], ci
     else:
         assert c['status'] == 'COMPLETE_BOUNDARY_COVER' and len(c['boundaries_hex']) == c['boundary_count']
-        assert c.get('family') == 'P3', ('cover family', c.get('family'))
+        assert c.get('family') == FAMILY, ('cover family', c.get('family'))
         seen[ci] = bytearray(c['boundary_count'])
 files, programs, totals = [], Counter(), Counter()
 for p in sorted(shard_dir.glob('*.json.gz')):
@@ -71,7 +75,7 @@ for p in sorted(shard_dir.glob('*.json.gz')):
     assert ci in seen, (p, ci)
     assert d['source_sha256'] == covers[ci]['sha256'], (p, 'source hash')
     assert d['total_boundaries'] == covers[ci]['n']
-    check_flags(d, 'P3')
+    check_flags(d, FAMILY)
     programs[d['program_sha256']] += 1
     for rec in d['cases']:
         bi = rec['boundary_index']
@@ -95,7 +99,7 @@ if RESID is not None:
         d = read(p)
         ci = d['core_index']
         assert d['source_sha256'] == covers[ci]['sha256'] and '--all-attachments' in d['flags'], p
-        check_flags(d, 'P3')
+        check_flags(d, FAMILY)
         for rec in d['cases']:
             bi = rec['boundary_index']
             assert rec['boundary_hex'] == covers[ci]['hex'][bi]

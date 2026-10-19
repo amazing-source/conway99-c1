@@ -201,6 +201,12 @@ if os.path.exists("p3u_closed.json") and os.path.exists("k3universal_members.jso
 if os.path.exists("k2k2_closed.json") and os.path.exists("k2k2_members.json"):
     for t in json.load(open("k2k2_members.json"))["2k2"]:
         methods[("gz", int(t))].add("2K2")
+# P3NB family (LAB 19/10): H_ab = -H_ac forced (both non-grid), a Y-path of two grids off {a,b,c} and a B-grid through
+# b (or c) and the free line; Q_bc arbitrary; exact profile SAT with RUP-checked UNSAT (py_extend.py P3NB, covers
+# py_boundary_p3nb.py); ONLY counted once p3nb_closed.json exists (complete p3_manifest.py --family P3NB coverage)
+if os.path.exists("p3nb_closed.json") and os.path.exists("p3nb_members.json"):
+    for t in json.load(open("p3nb_members.json"))["p3nb"]:
+        methods[("gz", int(t))].add("P3NB")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")

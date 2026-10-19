@@ -29,7 +29,13 @@
      par une seconde passe automatique à 3 millions de conflits.
    - Le reste part sur AWS dès ta reconnexion : environ 1 h sur 128 vCPU, quelques dollars.
    - Les vrais résidus éventuels (SAT ou UNKNOWN) iront aux coupes de Codex, comme pour 2K2.
-4. **Si P3 tombe aussi, il reste 250 ouverts en c = 3.**
+4. **Nouvelle famille P3NB, en production locale depuis 05 h 50 UTC.**
+   - Définition : paire partagée forcée, chemin de grilles Y, et une grille « B » par b et la droite libre ; Q_bc
+     quelconque. La grille B est couplée parfaitement à une moitié du cœur et aux deux grilles Y.
+   - Échantillon : 84 bords sur 84 exclus, environ 0,3 s par bord, soit environ 2 h sur 7 processus pour les 137 454
+     bords.
+   - Elle couvre **427 des 537 ouverts**, dont 160 hors de P3. Si P3NB tombe : 110 ouverts ; avec P3 et 2K2N : 64.
+5. **Si P3 tombe aussi, il reste 250 ouverts en c = 3** (sans compter P3NB).
    - Piste suivante, déjà préparée : la famille 2K2N (même structure que 2K2, mais Q_bc quelconque). Elle couvre 92 de ces
      250.
    - Ses 737 bords survivants ont exactement 1 006 raccordements ouverts, tous des sélections SAT. Ce sont les cibles des
@@ -39,8 +45,8 @@
      droites forment une étoile. P3 couvre l'étoile à au moins deux branches.
    - Plan pour ces 250 : `PLAN_250_2026-10-19.md`. Presque tous ont 3 à 5 grilles B/C (couplées parfaitement à une
      moitié du cœur) ; c'est le levier à exploiter.
-5. **Plus tôt dans la nuit :** gz 5602 exclu, lemme C4 + C3 (29 ouverts), famille (2, 3) (24 ouverts).
-6. **Rien n'est encore acquis sur c ≤ 2.**
+6. **Plus tôt dans la nuit :** gz 5602 exclu, lemme C4 + C3 (29 ouverts), famille (2, 3) (24 ouverts).
+7. **Rien n'est encore acquis sur c ≤ 2.**
 
 ## Ce qu'il faut de toi
 
