@@ -1,0 +1,159 @@
+19 octobre 2026 - Ajouter des grilles B/C sans fixer leurs raccordements
+
+But
+---
+
+Le premier noyau signe de 2K2N est satisfaisable. Supposer en plus une
+grille B/C, par exemple Q13, ne change pas ce noyau pour S=012 : cette
+grille est dans la partie mixte. En revanche, ses quatre profils vers
+le bloc connu doivent respecter des contraintes de repartition exactes.
+On les ajoute sans enumerer ni fixer leurs couplages.
+
+Le module root_component_outside_grid_profiles.py et l'option repetable
+--outside-grid i j du wrapper imposent ces conditions necessaires.
+Ce filtre n'acheve pas les quatre nouvelles lignes et ne remplace pas
+une enumeration complete des raccordements avec leurs extensions.
+
+1. Pourquoi la domination est exacte pour Conway
+------------------------------------------------
+
+Voici une preuve qui distingue bien Conway des controles sur 243 sommets.
+Soit un SRG(v,2r,1,2) enracine en o. B est l'adjacence de Gamma, et U la
+matrice d'incidence entre les 2r lettres de N(o) et les sommets de Gamma.
+Les equations SRG et les quotas de lettres donnent :
+
+  B^2 + B = (2r-2)I + 2J - U^t U;
+  B s_i = 4*1 - 2 s_i,
+
+ou s_i indique les sommets portant une lettre de la racine i.
+
+Supposons Qij une grille (un cycle de quatre sommets). Soit g son vecteur
+indicateur. Alors g^t B g = 8, g^t g=4, 1^t g=4 et ||Ug||^2=16. Ainsi
+
+  ||Bg||^2 = 8r.
+
+De plus s_i^t Bg = (B s_i)^t g = 8. Les quatre sommets de la grille
+contribuent deja 8 a cette somme. Par positivite, tout autre sommet dont
+le rectangle touche i a ZERO voisin dans la grille. Idem pour j.
+
+Les sommets disjoints de i,j, au nombre de 2(r-2)(r-3), ont des nombres
+entiers m_x>=0 de voisins dans la grille. Les sommes precedentes donnent
+
+  somme m_x = 4(2r-2)-8 = 8(r-2);
+  somme m_x^2 = 8r-16 = 8(r-2).
+
+Donc somme m_x(m_x-1)=0. Chaque terme est un entier non negatif :
+  m_x appartient a {0,1}.
+
+Pour Conway, r=7 : il y a exactement 40 sommets disjoints et la somme
+vaut 40. CHACUN a donc exactement un voisin dans la grille.
+Pour le SRG243, r=11 : il y en a 144 et la somme vaut 72. Seuls 72 sont
+domines. Imposer la domination exacte de Conway au controle243 serait
+une erreur. Le nouvel encodeur distingue explicitement ces deux cas.
+
+2. Contraintes sur les profils
+-------------------------------
+
+Soient K le bloc connu, et x_0,...,x_3 les quatre coins de la grille
+supplementaire, tous encore exterieurs. Un profil P_x indique les voisins
+de x dans K. Pour tout u connu, avec l'indicatrice c(x,u)=[u dans P_x] :
+
+  somme_{x dans Qij} c(x,u) = 0 si les racines de u rencontrent {i,j};
+  somme_{x dans Qij} c(x,u) = 1 sinon, pour r=7.
+
+Pour les controles en parametres generaux, la seconde ligne devient <=1.
+Ces equations laissent le choix du coin libre. Lorsque u parcourt une
+grille connue disjointe de Qij, elles participent au couplage entre les
+deux grilles; aucune permutation particuliere n'est imposee.
+
+Les deux voisins internes fixes de chaque coin x sont aussi pris en compte :
+  |P_x| <= 2r-4;
+  quotas de lettres sur K et ces deux voisins <= leurs valeurs totales;
+  pour tout u connu,
+    c(x,u) + somme_{v voisin de u dans K} c(x,v)
+      + somme_{y voisin de x dans la grille} c(y,u)
+    <= 2 - |lettres(x) intersection lettres(u)|.
+
+La derniere inegalite est exactement adj(x,u)+nombre de voisins communs
+deja visibles <=2-partage de lettres. Les voisins communs encore inconnus
+ne peuvent qu'augmenter ce nombre. Elle est donc necessaire.
+
+Toutes les cellules c sont reliees aux memes variables de choix de profils
+que dans le SAT initial. Si une arete interne a la grille possede deja
+une variable dans un noyau signe ou une extension de lignes, sa valeur
+C4 est imposee a cette variable. Les quatre aretes et les deux non-aretes
+ne sont pas laisses a des choix independants dans les deux parties.
+
+3. Utilisation et portee
+------------------------
+
+Sur un raccord 2K2N existant, on peut ajouter par exemple :
+
+  --signed-root-core 0 1 2 --forbid-q12-grid --outside-grid 1 3
+
+et ajouter d'autres --outside-grid si le gabarit les impose. Q12 n'est pas
+suppose grille. Les choix de profils vers K restent tous libres.
+
+Un UNSAT certifie de ce modele exclurait le raccordement AVEC les grilles
+supplementaires indiquees. Il n'exclurait pas a lui seul 2K2N entiere.
+Lors d'un transport par isomorphisme d'un raccordement, les racines des
+grilles supplementaires doivent etre transportees avec lui. La couverture
+823/816 des seuls blocs connus ne suffit pas a ignorer ces marques.
+
+4. Controles
+-------------
+
+Le controle positif utilise la grille Q01 d'un vrai BVLS243, avec ses
+216 autres sommets de Gamma comme bloc connu. Il conserve les quatre
+profils reels, et ajoute une alternative interdite a l'un d'eux.
+La vraie completion doit passer; le profil qui touche une racine de la
+grille doit etre rejete. Les 72 sommets disjoints non domines sont comptes
+explicitement pour eviter d'introduire la specialisation r=7 sur ce temoin.
+
+Ce document prouve les clauses ajoutees. Les resultats de controles et
+les eventuels essais sur des raccordements sont consignes separement;
+ni la preuve de ces clauses ni un SAT partiel ne ferme une famille.
+
+5. Premier raccordement : huit positions exclues, puis une seule ligne suffit
+-----------------------------------------------------------------------------
+
+Cas fixe : core_000, bord 10, sigma=[3,2,0,1]. Les profils vers les seize
+sommets connus sont tous libres pendant chaque recherche.
+
+Les huit hypotheses de grille Q13,Q14,Q15,Q16,Q23,Q24,Q25,Q26 sont toutes
+exclues apres ajout du noyau signe et completion des quatre lignes de la
+grille. Chaque UNSAT a un certificat RUP valide par drat-trim -U. Le rapport
+case000_all_bc_grids.json contient la couverture des huit positions.
+Donc CE raccordement ne peut appartenir a un graphe possedant au moins
+une grille B/C. Le raccordement sans cette hypothese reste ouvert.
+
+Pour Q13, on a ensuite reduit le modele, en gardant les choix de profils
+libres et en ajoutant les lignes suivantes (indices exterieurs du modele) :
+
+  aucune ligne de plus, noyau signe : SAT de la relaxation;
+  ligne 20, etiquette (2,6), noyau signe : SAT de la relaxation;
+  lignes 20 et 21, noyau signe : UNSAT certifie;
+  ligne 21 seule, etiquette (2,7), noyau signe : UNSAT certifie;
+  ligne 21 seule, SANS noyau signe : UNSAT certifie.
+
+Le dernier modele n'utilise ni le noyau signe ni l'exclusion precedente de
+2K2 (pas de borne E(Q12)<=3). Il comporte 52244 clauses, contre 833367
+pour le premier modele a quatre lignes. Recherche : 0.03125 seconde CPU,
+688 conflits; total du traitement : 1.094 seconde CPU. Les clauses de
+projection de la grille et les equations d'une seule nouvelle ligne
+suffisent donc sur ce cas. Ce n'est pas encore une contradiction manuscrite
+isolee de quelques equations : le certificat porte sur tout ce modele.
+
+Artefacts sous data/codex_short_columns_20261018/shared_2k2n_residuals_20261019 :
+  case000_all_bc_grids.json;
+  case000_grid_microscopic_summary.json;
+  case000_grid13_other_row_nocore.*;
+  case000_grid13_rows.* jusqu'a case000_grid26_rows.* pour les huit preuves.
+Les entrees, les CNF, les preuves et les journaux du controle natif sont gardes.
+
+Le pilote reproductible root_component_2k2n_marked_grid_probe.py peut commencer
+par un petit modele avec --no-signed-core --grid-row-corners 1, ou utiliser
+les quatre coins par defaut. --grid 1 3 limite l'essai a une marque; seul
+un rapport couvrant toutes les huit marques peut annoncer cette couverture.
+Les temps mesures sur ce premier raccordement ne prejugent pas de ceux des
+815/822 autres classes. Aucun nouveau gabarit c3 n'est retire du registre ici.

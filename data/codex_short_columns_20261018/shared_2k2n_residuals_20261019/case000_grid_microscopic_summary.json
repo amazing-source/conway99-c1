@@ -1,0 +1,88 @@
+{
+  "scope": "Microscopic comparison on one fixed attachment, not all 2K2N.",
+  "core_index": 0,
+  "boundary_index": 10,
+  "sigma": [
+    3,
+    2,
+    0,
+    1
+  ],
+  "bc_grid_assumption": [
+    1,
+    3
+  ],
+  "comparisons": [
+    {
+      "prefix": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_grid13_signed",
+      "status": "SAT_KNOWN_ROWS_COMPLETE",
+      "verified": false,
+      "search_cpu": 0.078125,
+      "total_cpu": 1.594,
+      "clauses": 110660,
+      "hubs": [],
+      "uses_signed_core": true,
+      "forbid_q12_grid": true,
+      "conflicts": 1276
+    },
+    {
+      "prefix": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_grid13_one_row",
+      "status": "SAT_KNOWN_ROWS_COMPLETE",
+      "verified": false,
+      "search_cpu": 0.109375,
+      "total_cpu": 1.812,
+      "clauses": 136750,
+      "hubs": [
+        20
+      ],
+      "uses_signed_core": true,
+      "forbid_q12_grid": true,
+      "conflicts": 1766
+    },
+    {
+      "prefix": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_grid13_other_row",
+      "status": "EXCLUDED_PROFILE_SELECTION_UNSAT",
+      "verified": true,
+      "search_cpu": 0.03125,
+      "total_cpu": 3.141,
+      "clauses": 136746,
+      "hubs": [
+        21
+      ],
+      "uses_signed_core": true,
+      "forbid_q12_grid": true,
+      "conflicts": 470
+    },
+    {
+      "prefix": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_grid13_two_rows",
+      "status": "EXCLUDED_PROFILE_SELECTION_UNSAT",
+      "verified": true,
+      "search_cpu": 0.046875,
+      "total_cpu": 4.781,
+      "clauses": 211662,
+      "hubs": [
+        20,
+        21
+      ],
+      "uses_signed_core": true,
+      "forbid_q12_grid": true,
+      "conflicts": 524
+    },
+    {
+      "prefix": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_grid13_other_row_nocore",
+      "status": "EXCLUDED_PROFILE_SELECTION_UNSAT",
+      "verified": true,
+      "search_cpu": 0.03125,
+      "total_cpu": 1.094,
+      "clauses": 52244,
+      "hubs": [
+        21
+      ],
+      "uses_signed_core": false,
+      "forbid_q12_grid": false,
+      "conflicts": 688
+    }
+  ],
+  "all_eight_grid_marks_verified": true,
+  "eight_grid_report": "data\\codex_short_columns_20261018\\shared_2k2n_residuals_20261019\\case000_all_bc_grids.json"
+}

@@ -33,6 +33,8 @@ def main():
                    help='Jointly choose every outside edge and impose all degree, letter and known-pair quotas.')
     p.add_argument('--signed-root-core', type=int, nargs='+', action='append',
                    help='Root subset for a signed core; repeat to couple several overlapping cores.')
+    p.add_argument('--outside-grid', type=int, nargs=2, action='append',
+                   help='Assume this outside rectangle is a grid; constrain its profiles without fixing matchings.')
     p.add_argument('--forbid-q12-grid', action='store_true',
                    help='In 2K2N only, use the previously proved 2K2 exclusion to bound Q12 by three edges.')
     p.add_argument('--continuation-cuts', action='store_true')
@@ -67,6 +69,10 @@ def main():
     if args.signed_root_core:
         name='root_component_signed_internal_core.py'
         helper_hashes[name]=hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+    if args.outside_grid:
+        name='root_component_outside_grid_profiles.py'
+        helper_hashes[name]=hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+        assert not args.resume_cuts_from, 'Keep the grid-constraint prefix separate from previous cut positions.'
     assert not args.forbid_q12_grid or (args.family=='2K2N' and args.signed_root_core==[[0,1,2]])
     raw = args.lab_source.read_bytes(); source = raw.decode('utf-8-sig')
     marker = "            out['status'] = 'SAT_KNOWN_ROWS_COMPLETE'"
@@ -90,6 +96,8 @@ def main():
         if 'signed_internal_core' in learning:
             info=learning['signed_internal_core']
             data['signed_internal_core']={**info,'selected_edges':[[x,y] for x,y,v in info['edge_variables'] if v in positive]}
+        if 'outside_grid_constraints' in learning:
+            data['outside_grid_constraints'] = learning['outside_grid_constraints']
         args.output.write_text(json.dumps(data, separators=(',', ':'))+'\n', encoding='utf-8')
         if 'extension' in learning:
             from root_component_profile_row_extension import materialize_extension
@@ -171,7 +179,7 @@ def main():
             atomic_json_write(args.output.with_suffix('.row_cut_learning.json'),learning)
         out['clauses']=len(allclauses)
         if args.signed_root_core:
-            assert not args.resume_cuts_from and not args.extend_rows, 'Keep the core prefix separate from previous cut positions.'
+            assert not args.resume_cuts_from, 'Keep the core prefix separate from previous cut positions.'
             from root_component_signed_internal_core import encode_many, controls
             learning['signed_internal_core_controls']=controls(
                 all_known_pair_rows=args.all_known_pair_rows, root_subsets=args.signed_root_core)
@@ -179,6 +187,16 @@ def main():
                                     pool,exactly,forbid_q12_grid=args.forbid_q12_grid)
             solver.append_formula(extra);allclauses.extend(extra)
             learning['signed_internal_core']=info
+            out['variables']=pool.top;out['clauses']=len(allclauses)
+        if args.outside_grid:
+            from root_component_outside_grid_profiles import encode as encode_grids, controls as grid_controls
+            learning['outside_grid_controls'] = grid_controls(
+                complete_grid_rows=bool(args.extend_rows or args.all_known_pair_rows))
+            physical = learning.get('signed_internal_core', {}).get('edge_variables', [])
+            extra, grid_info = encode_grids(rows, labels, outside, domains, literals, args.outside_grid,
+                                            pool, exactly, physical_edges=physical)
+            solver.append_formula(extra); allclauses.extend(extra)
+            learning['outside_grid_constraints'] = grid_info
             out['variables']=pool.top;out['clauses']=len(allclauses)
         if args.extend_rows or args.all_known_pair_rows:
             from root_component_profile_row_extension import extend_rows, controls
@@ -194,6 +212,11 @@ def main():
                     if (x,y) in other:
                         w=other[x,y];extra.extend([[-v,w],[v,-w]]);linked.append([v,w])
                 extension['shared_core_edge_equalities']=linked
+            if 'outside_grid_constraints' in learning:
+                fixed={(x,y):value for x,y,value in learning['outside_grid_constraints']['forced_edges']}
+                for x,y,v in extension['edge_variables']:
+                    if (x,y) in fixed:
+                        extra.append([v if fixed[x,y] else -v])
             solver.append_formula(extra); allclauses.extend(extra)
             learning['extension'] = extension
             out['variables'] = pool.top; out['clauses'] = len(allclauses)
@@ -265,7 +288,7 @@ def main():
         proof_call = "            proof = [ln for ln in finished_proof(s) if not ln.startswith('d ')]"
         assert source.count(proof_call)==1
         source=source.replace(proof_call,"            proof = finished_proof(s)")
-    if args.row_cut_rounds or args.extend_rows or args.signed_root_core or args.all_known_pair_rows:
+    if args.row_cut_rounds or args.extend_rows or args.signed_root_core or args.all_known_pair_rows or args.outside_grid:
         call = '        ans = s.solve_limited()'
         assert source.count(call) == 1
         source = source.replace(call, '        ans = profile_cut_solve_hook(s, allcl, rows, doms, rows_v, LABELS, OUTSIDE, pool, exactly, out)')
