@@ -1,0 +1,49 @@
+{
+  "scope": "Assemble complete coverage of the 1328 x 4 touching-grid positions.\n\nChecks coverage, source hashes and terminal statuses. This is a proof\nmanifest, not an independent re-enumeration of the mathematical search.\nIt refuses partial files, missing positions and UNKNOWN verdicts.\n",
+  "source_sha256": {
+    "data\\codex_short_columns_20261018\\gz5602_boundary20_cover.json": "74e660cdbb45648b8cb3309ed26b9266d11238b371f4b35370c442d1f6bc1bbd",
+    "code\\lab_exploration_2026-10-16\\gz5602_2026-10-19\\paircores8.json": "0cb6bad0e9c08e3e5214af90528553f4e7ace8c9d19079d81b8d1acce2cc6108",
+    "data\\codex_short_columns_20261018\\touching23_complete.json": "04a6862b63ef35f2fa4b605a74fb76f161e80d5efe2280a00abb89a76d40cb9a"
+  },
+  "expected_positions": 5312,
+  "covered_positions": 5312,
+  "positions_by_core_orbit": {
+    "1": 1440,
+    "2": 608,
+    "5": 848,
+    "6": 2416
+  },
+  "verdicts": {
+    "EXCLUDED_BY_EXHAUSTIVE_JOIN": 3564,
+    "EXCLUDED_BY_INTEGER_MARGINS": 1748
+  },
+  "search_counts": {
+    "grid_pairs": 30083751,
+    "grid_pairs_with_row_domains": 76048,
+    "nodes": 352742,
+    "complete_row_assignments": 427,
+    "valid_partial36": 18,
+    "frontier_obstruction": 18
+  },
+  "cpu_seconds": 379.8125,
+  "uses_E3": true,
+  "fixed_Gram_required": false,
+  "symmetry_of_sought_graph_required": false,
+  "family_excluded": true,
+  "global_Conway_exclusion": false,
+  "family": "Nonzero opposite disjoint columns, three complementary grids, two adjacent X grids and two nongrid X rectangles.",
+  "program_versions": [
+    {
+      "source_sha256": "d7b605233fb2180b4d1a28a140097f41ba98707b433f69e51dc69253cfce5398",
+      "resumed_after_cases": 1823,
+      "node_limit": 0,
+      "frontier_enabled": true,
+      "uses_27_opposition_profiles": true
+    }
+  ],
+  "prefix_provenance": {
+    "cases": 1823,
+    "commit": "5f60e37d",
+    "note": "Production checkpoint resumed with the necessary 27-opposition-profile cut; no position omitted."
+  }
+}

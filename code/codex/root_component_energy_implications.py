@@ -84,8 +84,10 @@ def add_energy_implications(model, counts, rectangles, template, *, e3=False):
     if e3:
         from root_component_opposite_core import add_opposite_count_cuts
         result['opposite_column_cuts'] = add_opposite_count_cuts(model,counts,rectangles,template)
-        from root_component_grid_closure import grid_closure_violations
+        from root_component_grid_closure import grid_closure_violations, touching_grid_closure_violations
         result['grid_closure_violations'] = grid_closure_violations(template)
-        if result['grid_closure_violations']:
+        result['touching_grid_closure_violations'] = touching_grid_closure_violations(
+            template, result['opposite_column_cuts']['pairs'])
+        if result['grid_closure_violations'] or result['touching_grid_closure_violations']:
             model.add(False)
     return result

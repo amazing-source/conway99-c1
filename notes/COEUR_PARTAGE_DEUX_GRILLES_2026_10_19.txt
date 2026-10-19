@@ -11,9 +11,11 @@ ouverts ayant cette structure (message1178), en dimensions4 ou5.
 Aucune Gram particuliere ni automorphisme du graphe n'est impose.
 E3, l'exclusion des rectangles non grilles a trois aretes, est utilise.
 
-Cette note decrit une enumeration finie. A son premier commit, le
-pilote passe mais le parcours integral de5312 positions est EN COURS.
-Il ne faut pas confondre ces exclusions locales avec celle de Conway.
+FERMETURE TERMINEE le 19/10 vers 02 h 03 : les 5312 positions sont
+exclues, sans UNKNOWN ni limite de noeuds. Le manifeste de couverture
+est touching23_exclusion_manifest.json. La famille entiere est exclue
+sous E3, pour toute Gram, sans hypothese d'automorphisme. Elle couvre
+24 gabarits dans le registre courant. Conway entier reste ouvert.
 
 1. LE BLOC DE SEIZE EST CUBIQUE
 
@@ -129,7 +131,7 @@ prefixe provient de5f60e37d; les positions deja traitees ne sont
 pas recalculees. Le controle positif des12 anciens graphes36
 repasse avec cette regle (touching23_e4_positive_controls.json).
 
-4ter. EXPLICATION MICROSOPIQUE DU BORD517, CENTRE0
+4ter. EXPLICATION MICROSCOPIQUE DU BORD517, CENTRE0
 
 Pour ce bord de l'orbite6,54 affectations des huit mots survivent
 aux marges et aux bornes C2 du coeur; elles representent160 couples
@@ -199,6 +201,61 @@ python -I -u -X utf8 code/codex/root_component_touching_grid_join.py
  --frontier --log-every 100
  --output data/codex_short_columns_20261018/touching23_complete.json
 
-Le fichier de production est ecrit progressivement. Tant qu'il ne
-couvre pas exactement5312 positions avec des verdicts d'exclusion,
-il ne ferme pas la famille. Aucun total partiel ne suffit.
+7. RESULTAT COMPLET ET CONSEQUENCE POUR LE SOLVEUR
+
+Le manifeste controle les 5312 triplets (orbite, bord, centre), sans
+doublon ni omission, les empreintes des entrees et tous les verdicts.
+Il ne recommence pas l'enumeration des coeurs fournie par le LAB.
+
+1748 positions sont exclues par leurs marges entieres. Les 3564 autres
+sont exclues par la jointure exhaustive puis la frontiere. La recherche
+a examine 30083751 couples de grilles, 76048 couples avec domaines
+non vides, 352742 noeuds et 427 affectations completes des huit mots.
+Le total de production est 379.8125 secondes CPU, sur un seul coeur.
+Le comptage des noeuds depend du filtrage active apres le checkpoint;
+la couverture de positions est identique avant et apres ce changement.
+
+Exactement 18 graphes partiels de 36 sommets passent les raccordements :
+  orbite 6, bord 135 : 2 (centres 0 et 1);
+  orbite 6, bord 524 : 8 (2 pour chacun des quatre centres);
+  orbite 6, bord 583 : 8 (2 pour chacun des quatre centres).
+Ce sont 18 constructions etiquetees, sans affirmation de non-isomorphie.
+Toutes les 18 ont le domaine vide d'un sommet manquant. Aucun recours
+a une borne de capacite de paire ou a un solveur flottant n'est requis.
+Le fichier de production conserve les mots, coeurs, bijections et le
+sommet precis qui bloque pour chacun de ces 18 temoins.
+
+Exemple du bord 135, centre 0 : le sommet de lettres (0,13) doit avoir
+un voisin dans le coeur initial, un dans la grille Y disjointe, et un
+dans chacune des deux grilles X. Il a 512 profils avant contraintes.
+494 rencontrent une paire de sommets connus ayant deja leur nombre
+maximum de voisins communs; les 18 restants depassent un quota de
+lettre d'un sommet connu. Aucun des 512 profils ne reste possible.
+
+Integration : touching_grid_closure_violations, dans
+root_component_grid_closure.py, reconnait les hypotheses combinatoires
+et l'identite de colonnes opposees. --component-energy l'utilise dans
+root_component_energy_implications.py UNIQUEMENT lorsque E3 est actif.
+Cela coupe toutes les Gram du gabarit concerne avant leur recherche.
+
+Le controle propre de cette integration passe : 5040 relabelages des
+sept racines, retrait d'une grille Y necessaire, ancien cas a quatre
+grilles X hors de cette nouvelle regle, et absence/presence de la
+clause fausse selon E3=False/True. Les donnees sont dans
+touching23_solver_cut_controls.json; le script reproductible est
+root_component_touching_cut_check.py. Les 24 identifiants touches
+dans l'instantane de 1187 gabarits ouverts sont :
+3922,3927,6334,6340,6341,6345,6347,6435,6444,7044,8400,8428,
+8460,9029,9032,9213,9490,9491,9493,9565,9610,9688,9896,9928.
+
+Commande du manifeste (refuse un fichier incomplet) :
+python -I -u -X utf8 code/codex/root_component_touching_manifest.py
+ --cover data/codex_short_columns_20261018/gz5602_boundary20_cover.json
+ --pair-cores code/lab_exploration_2026-10-16/gz5602_2026-10-19/paircores8.json
+ --results data/codex_short_columns_20261018/touching23_complete.json
+ --output data/codex_short_columns_20261018/touching23_exclusion_manifest.json
+
+Suite partagee avec le LAB : famille de 31 gabarits (dimension 6,
+trois grilles Y en triangle, Q_bc grille) autour d'un coeur partage
+Q_ab+Q_ac. Le LAB prepare la couverture du coeur avec Y; Codex ajoute
+Q_bc et les contraintes de frontiere. Cette suite n'est pas exclue.
