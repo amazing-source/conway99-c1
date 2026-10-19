@@ -1,0 +1,32 @@
+{
+ "scope": "Assemble the 2K2N B/C-mark production (LAB 19/10/2026).  Never certifies an omitted class or mark.\nChecks, for every class of k2k2n_residual_classes.json (the 816 exact classes of the 1006 residual 2K2N attachments of\nstage 1, i.e. every 2K2N attachment not excluded by the stage-1 model of the 2K2 two-stage manifest):\n  * its report classNNNN.json exists, names the same core, border and representative sigma, and has the 8 marks\n    Q13 Q14 Q15 Q16 Q23 Q24 Q25 Q26, each EXCLUDED by an attempt whose frontier was EXCLUDED_PROFILE_SELECTION_UNSAT\n    with a drat-trim -U 's VERIFIED' proof (proof_check recorded), or, for the attempts listed in TRIVIAL (where\n    Codex's checker raised because drat-trim exits 1 on a 'trivial UNSAT' formula), by an independent unit-propagation\n    conflict on the saved native CNF (re-run here);\n  * the LAB source and wrapper hashes are the same in every report.\nScope: an exclusion of (class, mark) excludes every member (B, sigma') of the class with the transported mark; the\nstabiliser of a border maps the eight B/C rectangles onto themselves, so a 2K2N template whose normal form (witness)\nhas at least one B/C grid is excluded (all its stage-1 survivors die with any B/C mark).\nusage: python lab_2k2n_bc_manifest.py <classes json> <production dir> <out.json>",
+ "complete": true,
+ "classes": 816,
+ "missing": [],
+ "not_excluded": [],
+ "trivial_unsat_marks_checked_by_unit_propagation": [
+  [
+   399,
+   [
+    2,
+    3
+   ],
+   "m23_row1.native.cnf"
+  ],
+  [
+   399,
+   [
+    2,
+    4
+   ],
+   "m24_row1.native.cnf"
+  ]
+ ],
+ "source_and_wrapper_hashes": [
+  [
+   "c140d0e9f1d0ffdc6b6d6e63ad91f36147e18c9b0a12d0297c2548b0eea5673e",
+   "a5d85e75717c9502bce41770f14c92ab4da62feedacfeb13767d05f391848ab6"
+  ]
+ ],
+ "classes_file_sha256": "3fd7c889982f3a6f99107801448252cd9a84db9dd42aca13328b5c6db5adaf36"
+}

@@ -225,6 +225,11 @@ if os.path.exists("z2_certified.json"):
 if os.path.exists("codex_extra_closures.json"):
     for t in json.load(open("codex_extra_closures.json"))["templates"]:
         methods[("gz", int(t["index"]))].add("CXC")
+# 2K2N with a B/C grid (LAB 19/10): every stage-1 2K2N residual class excluded with each of the 8 B/C marks (Codex's
+# outside-grid profiles + one or four completed grid rows, RUP-checked); counted once k2k2n_bc_closed.json exists
+if os.path.exists("k2k2n_bc_closed.json") and os.path.exists("k2k2n_bc_members.json"):
+    for t in json.load(open("k2k2n_bc_members.json"))["members"]:
+        methods[("gz", int(t))].add("2K2NBC")
 if os.path.exists("c4c3_hits_all.json"):
     for t in json.load(open("c4c3_hits_all.json")):
         methods[("gz", int(t))].add("C4C3")
