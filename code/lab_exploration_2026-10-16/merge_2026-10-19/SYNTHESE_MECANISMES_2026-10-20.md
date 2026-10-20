@@ -73,7 +73,7 @@ pas seul) :
 
 | route | énoncé | rangs | état | coût |
 |---|---|---|---|---|
-| **A : R8** | une instance SAT (52 labels, 1 326 arêtes autour d'un sommet), UNSAT ⇒ pas de Conway | **tous** | indécidée (timeouts à 2 h) | jamais estimé (agent en cours) |
+| **A : R8 (+ CEGAR)** | une instance SAT (52 labels, 1 326 arêtes autour d'un sommet), UNSAT ⇒ pas de Conway (modèle audité, sain) | **tous** | indécidée | R8 seul : 5·10⁷ à 10¹² heures-cœur, pas réaliste ; variante CEGAR à piloter localement |
 | **B : droites au rang 37** | théorème de réduction (seule entrée : P ≤ 852) : toute droite à t ≤ 7 doit passer le test d'étoile | 37 | moteur validé, 100 % des droites testées meurent (33 754/33 754) | environ 6,5·10⁴ heures-cœur avec `line37_fast` |
 | **C : dichotomie c** | m = 3 (registre), branche (II) (≥ 33 droites c ≤ 2) | tous | 35 + 14 gabarits ouverts, (II) sans méthode | — |
 | **D : lois locales avec pont prouvé** | (N9-NG)/NG5, (T8)/(T15), (H-MATCH) ⇒ pas de Conway | tous | lois ouvertes | — |
@@ -391,7 +391,25 @@ Il y en a deux.
      symétrie.
   3. **Une estimation de Knuth de l'arbre**, jamais faite.
   4. Un cube-and-conquer avec preuves DRAT/LRAT.
-- **Coût** : inconnu. Un agent mesure en ce moment ; le résultat sera dans r8_route/NOTE_R8_ROUTE.md.
+- **Résultat de l'audit** (r8_route/NOTE_R8_ROUTE.md, agent, 20/10).
+  - **Le modèle est sain** : chaque contrainte est prouvée nécessaire. Un encodeur et un vérificateur indépendants
+    concordent avec la CNF de l'archive sur 4 610 affectations. « R8 UNSAT ⇒ pas de Conway » tient donc à tous les
+    rangs.
+  - Le contrôle positif sur srg(243,22,1,2) passe : 108 structures locales réelles acceptées, et l'analogue de R8
+    est SAT en environ 6 s.
+  - Deux lemmes de comptage prouvés et encodés accélèrent d'un facteur 10 ou plus.
+  - **Coût de R8 seul : pas réaliste.** L'extrapolation (balayage par libération, arbres de lookahead) va de 5·10⁷
+    à 10¹² heures-cœur, ou de 2·10⁴ à 4·10⁸ avec un cassage de symétrie idéal. L'incertitude couvre 8 ordres de
+    grandeur.
+  - La variante CEGAR (A′) est le meilleur pari, mais une seule itération a tourné : 5 coupes exactes sur la base à
+    quatre étoiles.
+  - **Recommandation : un pilote local CEGAR de 1 à 2 jours**, en tranches de 5 min :
+    1. contrôle k = 22 ;
+    2. convergence à quatre étoiles ;
+    3. quatre étoiles + k labels {4,t}, pour k = 1 à 8 ;
+    4. R8.
+  - Le pipeline de preuve est décrit : deux encodeurs, LRAT vérifié par cake_lpr, coupes vérifiées en entiers.
+  - Réserve : rang₇ ≤ 28 dépend de la fenêtre r ≤ 43 (audit IA seulement).
 - **Variante A′ : un sommet, tous les rangs, avec contraintes réelles** (recommandation de NOTE_BORNE_RANG).
   - Les témoins SAT de R7 violent massivement des conditions vraies à tout rang. Sur leurs 51 labels, le bloc réel
     7P_v a le rang 47 au lieu de 30 au plus, 8 valeurs propres négatives, et un 7-rang de 47 au lieu de 28 au plus.
