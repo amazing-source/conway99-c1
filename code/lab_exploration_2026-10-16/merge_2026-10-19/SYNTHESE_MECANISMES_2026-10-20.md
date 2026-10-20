@@ -438,9 +438,17 @@ Il y en a deux.
   - **Avec `line37_fast`** (10 fois plus rapide, résultats identiques) : environ 6,5·10⁴ heures-cœur pour c = 1,
     soit environ 3 jours sur 1 000 cœurs. Il reste à porter en C++ la préparation des droites à torsion (11,5 % des
     tirages).
+- **Énumération exacte : faite** (NOTE_ENUM37.md, agent, 20/10).
+  - **187 381 435 694 classes**, par deux formules de Burnside indépendantes. 147 579 095 390 sont admissibles
+    (K ≥ 0), et 147 577 214 193 à la fois admissibles et à t ≤ 7.
+  - Énumérateur `enum37` par type cyclique de σ, avec tranches, validé par force brute sur les petites tailles et par
+    Burnside.
+  - Critère d'admissibilité prouvé sur couplages partiels.
+  - Pilote exhaustif sur 3 types cycliques : 76 418 droites testées, toutes UNSAT.
+  - Coût : environ 5 à 6,5·10⁴ heures-cœur avec `line37_fast`, plus 50 à 160 heures-cœur d'énumération.
 - **Ce qui manque.**
-  - L'énumération exacte des classes (agent : type cyclique de σ = s₂₀s₁₂s₀₁, couplages modulo un petit groupe, comptage
-    de Burnside).
+  - Les moteurs pour les droites à torsion (environ 2,3·10¹⁰) et non connexes (7,5·10⁷) en production.
+  - Les types (1,4), (2,4) et d ≥ 5.
   - La certification des UNSAT, par réimplantation indépendante ou certificats.
   - Le cas des rangs 39 à 43.
 
