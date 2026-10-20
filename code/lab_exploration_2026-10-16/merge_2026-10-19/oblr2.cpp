@@ -84,41 +84,42 @@ static void set_target(int p, int a) {
 // all checks of candidate a for p-pair p against the current partial assignment (used before committing a and,
 // after every commitment, to filter every open domain: forward checking with the full set of exact conditions)
 static int g_nbq[64], g_nnb, g_addER[36], g_cfa[64];
+static bool ABL_M = false, ABL_L = false, ABL_A = false, ABL_D = false, ABL_E = false, ABL_C = false, ABL_Q = false;
 static bool admissible(int p, int a) {
-    if (!margins_ok(p, a)) return false;
+    if (!ABL_M && !margins_ok(p, a)) return false;
     const Tri& ta = T(p, a);
     g_nnb = 0;
     for (int q = 0; q < m; q++) if (assigned[q]) {
         int b = choice[q];
         const Tri& tb = T(q, b);
-        if (tb.qi == ta.qi || tb.si == ta.si) return false;
+        if (!ABL_Q && (tb.qi == ta.qi || tb.si == ta.si)) return false;
         int s = share(p, a, q, b);
-        if (s > 2) return false;
+        if (!ABL_L && s > 2) return false;
         int v = val(p, a, q, b);
         if (v > 1) return false;
         if (v == 1) {
-            if (s > 1) return false;
-            if (nadj[q] + 1 > 8) return false;
+            if (!ABL_A && s > 1) return false;
+            if (!ABL_D && nadj[q] + 1 > 8) return false;
             g_nbq[g_nnb++] = q;
         }
     }
-    if (g_nnb > 8) return false;
+    if (!ABL_D && g_nnb > 8) return false;
     set_target(p, a);
     for (int x = 0; x < NN; x++) g_addER[x] = 0;
     for (int i = 0; i < g_nnb; i++) {
         int q = g_nbq[i];
         const Tri& tq = T(q, choice[q]);
-        for (int k = 0; k < 6; k++) if (cntER[q][ta.names[k]] + 1 > target[q][ta.names[k]]) return false;
+        if (!ABL_E) for (int k = 0; k < 6; k++) if (cntER[q][ta.names[k]] + 1 > target[q][ta.names[k]]) return false;
         for (int k = 0; k < 6; k++) g_addER[tq.names[k]]++;
     }
-    for (int x = 0; x < NN; x++) if (g_addER[x] > target[p][x]) return false;
-    for (int i = 0; i < g_nnb; i++) for (int j = i + 1; j < g_nnb; j++) {
+    if (!ABL_E) for (int x = 0; x < NN; x++) if (g_addER[x] > target[p][x]) return false;
+    if (!ABL_C) for (int i = 0; i < g_nnb; i++) for (int j = i + 1; j < g_nnb; j++) {
         int q1 = g_nbq[i], q2 = g_nbq[j];
         if (cf[q1][q2] + 1 > (adjv[q1][q2] ? 1 : 2) - sharev[q1][q2]) return false;
     }
     for (int q = 0; q < m; q++) g_cfa[q] = 0;
     for (int i = 0; i < g_nnb; i++) { int q1 = g_nbq[i]; for (int q = 0; q < m; q++) if (assigned[q] && q != q1 && adjv[q][q1]) g_cfa[q]++; }
-    for (int q = 0; q < m; q++) if (assigned[q]) {
+    if (!ABL_C) for (int q = 0; q < m; q++) if (assigned[q]) {
         int b = choice[q];
         int v = val(p, a, q, b);
         int s = share(p, a, q, b);
@@ -135,11 +136,11 @@ static bool rec(vector<vector<int>>& dom, int depth) {
     }
     if (depth > maxdepth) maxdepth = depth;
     if (nassigned == m) {
-        for (int p = 0; p < m; p++) if (nadj[p] != 8) return false;
-        for (int x = 0; x < NN; x++) for (int y = 0; y < NN; y++)
+        if (!ABL_D) for (int p = 0; p < m; p++) if (nadj[p] != 8) return false;
+        if (!ABL_M) for (int x = 0; x < NN; x++) for (int y = 0; y < NN; y++)
             if (x / n != y / n && marg[x][y] != K[x][y]) return false;
-        for (int p = 0; p < m; p++) for (int x = 0; x < NN; x++) if (cntER[p][x] != target[p][x]) return false;
-        for (int p = 0; p < m; p++) for (int q = p + 1; q < m; q++)
+        if (!ABL_E) for (int p = 0; p < m; p++) for (int x = 0; x < NN; x++) if (cntER[p][x] != target[p][x]) return false;
+        if (!ABL_C) for (int p = 0; p < m; p++) for (int q = p + 1; q < m; q++)
             if (cf[p][q] != (adjv[p][q] ? 1 : 2) - sharev[p][q]) return false;
         return true;
     }
@@ -180,11 +181,11 @@ static bool rec(vector<vector<int>>& dom, int depth) {
             nd[q].reserve(dom[q].size());
             for (int b : dom[q]) {
                 const Tri& tb = T(q, b);                      // cheap pairwise test against a first
-                if (tb.qi == ta.qi || tb.si == ta.si) continue;
+                if (!ABL_Q && (tb.qi == ta.qi || tb.si == ta.si)) continue;
                 int s = share(p, a, q, b);
-                if (s > 2) continue;
+                if (!ABL_L && s > 2) continue;
                 int v = val(p, a, q, b);
-                if (v > 1 || (v == 1 && s > 1)) continue;
+                if (v > 1 || (!ABL_A && v == 1 && s > 1)) continue;
                 if (admissible(q, b)) nd[q].push_back(b);
             }
             if (nd[q].empty()) dead = true;
@@ -211,6 +212,10 @@ static bool rec(vector<vector<int>>& dom, int depth) {
 
 int main(int argc, char** argv) {
     FILE* f = fopen(argv[1], "rb"); limit_s = atof(argv[2]);
+    if (const char* ab = getenv("OBLR_ABL")) for (const char* c = ab; *c; c++) {
+        if (*c == 'm') ABL_M = true; if (*c == 'l') ABL_L = true; if (*c == 'a') ABL_A = true;
+        if (*c == 'd') ABL_D = true; if (*c == 'e') ABL_E = true; if (*c == 'c') ABL_C = true;
+        if (*c == 'q') ABL_Q = true; }
     int hdr[5]; fread(hdr, 4, 5, f); n = hdr[0]; m = hdr[1]; rho = hdr[2]; delta_ = hdr[3]; gorder = hdr[4];
     NN = 3 * n;
     vector<int> nb(NN * 3); fread(nb.data(), 4, NN * 3, f);
@@ -245,8 +250,8 @@ int main(int argc, char** argv) {
     t0 = chrono::steady_clock::now();
     bool found = rec(dom, 0);
     double el = chrono::duration<double>(chrono::steady_clock::now() - t0).count();
-    printf("{\"status\": \"%s\", \"rho\": %d, \"delta\": %d, \"candidates\": %zu, \"nodes\": %lld, \"max_depth\": %d, \"seconds\": %.2f",
-           found ? "FOUND" : (tflag ? "TIMEOUT" : "REFUTED"), rho, delta_, totc, nodes, maxdepth, el);
+    printf("{\"ablated\": \"%s\", \"status\": \"%s\", \"rho\": %d, \"delta\": %d, \"candidates\": %zu, \"nodes\": %lld, \"max_depth\": %d, \"seconds\": %.2f",
+           getenv("OBLR_ABL") ? getenv("OBLR_ABL") : "", found ? "FOUND" : (tflag ? "TIMEOUT" : "REFUTED"), rho, delta_, totc, nodes, maxdepth, el);
     if (found) { printf(", \"choice\": ["); for (int p = 0; p < m; p++) printf("%s%d", p ? "," : "", choice[p]); printf("]"); }
     printf("}\n");
     return 0;

@@ -34,6 +34,7 @@ from ll_test import block_gt, components, gt_matrix, k_matrix, pairs_of, random_
 from rank7_line import ginv_mod, kernel_mod, rank_mod  # noqa: E402
 
 P7 = 7
+NO_L2 = os.environ.get("OBLR_NO_L2") == "1"     # ablation: skip the L2 candidate filter
 
 
 def near_block(n, G):
@@ -104,9 +105,14 @@ def main():
     spec, seed, inst, rho, delta, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), \
         int(sys.argv[5]), sys.argv[6]
     rng = random.Random(seed)
+    s01, s12, s20, G, nc, comp, d = make_gt(spec, rng, inst, 12)
+    build(spec, s01, s12, s20, G, nc, comp, d, rho, delta, out, seed, inst)
+
+
+def build(spec, s01, s12, s20, G, nc, comp, d, rho, delta, out, seed=None, inst=None):
+    """write the binary instance of oblr*.cpp for the given G_T (see the module docstring)"""
     n = 12
     N = 3 * n
-    s01, s12, s20, G, nc, comp, d = make_gt(spec, rng, inst, n)
     MNN = near_block(n, G)
     rk = rank_mod(MNN, P7)
     assert rk == 38 - d, (rk, d)
@@ -143,15 +149,16 @@ def main():
             for si, ss in enumerate(P):
                 names = [pp[0], pp[1], n + qq[0], n + qq[1], 2 * n + ss[0], 2 * n + ss[1]]
                 nm = set(names)
-                if any(len(nb[x] & nm) > 1 for x in names):
-                    continue
-                cnt = {}
-                for y in names:
-                    for x in nb[y]:
-                        if x not in nm:
-                            cnt[x] = cnt.get(x, 0) + 1
-                if any(v > 2 for v in cnt.values()):
-                    continue
+                if not NO_L2:
+                    if any(len(nb[x] & nm) > 1 for x in names):
+                        continue
+                    cnt = {}
+                    for y in names:
+                        for x in nb[y]:
+                            if x not in nm:
+                                cnt[x] = cnt.get(x, 0) + 1
+                    if any(v > 2 for v in cnt.values()):
+                        continue
                 if nc > 1:                                       # L4: |K|/6 names in every component K
                     per = {}
                     for x in names:

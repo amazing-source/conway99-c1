@@ -319,6 +319,81 @@ restent ouvertes (A).
 
 ---
 
+## 6 bis. Étape 2 (20/10, après l'arrêt d'AWS) : pourquoi les droites meurent (ablation, E)
+
+**Instances.** Droites c = 1 génériques, graines 1, 2, 4 et 5. Ce sont les seules des cinq qui vérifient (τ|7) = −1, la
+condition L23 de Codex pour le rang 37. La graine 3 est déjà exclue par L23 seul (`tau_legendre.py`).
+
+**Méthode.** Moteur `oblr2` au rang 37 (ρ = 0). On coupe une famille de contraintes à la fois avec la variable
+d'environnement OBLR_ABL :
+- m : marges L1 ;
+- l : L3 ;
+- a : λ pour deux lointains adjacents ;
+- d : degré 8 ;
+- e : comptes proche–lointain ;
+- c : voisins lointains communs ;
+- q : bijections des paires q et s.
+
+Journal : `ablation_r37.jsonl`, `ablation_r37_pure.jsonl`.
+
+**Résultats.**
+
+| contraintes coupées | verdict | nœuds | profondeur |
+|---|---|---|---|
+| aucune | 4/4 réfutées | 3 868 à 7 560 | 2 |
+| m seule, ou e seule | 4/4 réfutées | 7 191 à 13 387 | 2 à 3 |
+| l, a, d ou c seule | 4/4 réfutées | inchangé | 2 |
+| **m, l, a, d, e et c ensemble** | **4/4 réfutées** | 435 598 à 452 710 | 4 (76 à 84 s) |
+| les mêmes et q (graine 1) | réfutée | 532 841 | 4 (118 s) |
+| les mêmes, q, et sans le filtre L2 (graine 1) | TIMEOUT à 280 s | 1 155 584 | 4 |
+
+**Lecture.** L'obstruction est **arithmétique**. Aucune contrainte de comptage n'est nécessaire : il suffit des valeurs
+de Green mod 7 et du filtre L2.
+
+**Le noyau de l'énoncé (a′) au rang 37, sous sa forme la plus pure.**
+- Statut E. Graine 1 : réfutée avec L2 seul. Graines 1, 2, 4 et 5 : réfutées avec L2 et les bijections.
+- Données : Ω = (3I − G_T + J)⁻¹ mod 7.
+- Pour chaque paire non partenaire p de C₀, on choisit un triplet de noms (p, q, s) qui vérifie L2 et e_pᵀΩe_p = 0.
+- Énoncé : on ne peut jamais obtenir e_pᵀΩe_p' ∈ {3, 4} pour toutes les paires p ≠ p'.
+- C'est un problème de « clique transversale » dans le graphe de compatibilité de Green :
+  - environ 360 candidats par paire p ;
+  - une densité d'environ 2/7.
+
+  Il meurt à la profondeur 4, ce qu'on attend d'un graphe pseudo-aléatoire de cette densité : sur 56 domaines, l'un se
+  vide avec une probabilité proche de 1.
+
+**Recherche adverse** (`adversarial.py`). Recuit simulé sur G_T par échanges dans les bijections. La condition L23 est
+imposée, et le score est le nombre de nœuds de réfutation.
+- 143 pas, tous réfutés. Le score passe d'environ 5 000 nœuds au départ à 10 514 au maximum.
+- Aucune droite qui résiste.
+
+**Les G_T les plus symétriques** (`sym_gt.py`, `sym_why.py`, `sym_pure_r37.jsonl`).
+- Construction : un groupe H d'ordre 12, à involution centrale, agit régulièrement sur chaque classe. Le graphe ne dépend
+  alors que de t = abc (P).
+- Groupes : Z12, Z6×Z2 (trois involutions), D12, Dic3. Cela fait 72 graphes.
+
+| type | nombre | verdict au rang 37 |
+|---|---|---|
+| c = 1 compatible L23 | 12 | 12/12 réfutées, en au plus 92 nœuds |
+| c = 1 exclue par L23 | 4 | exclues par L23 seul (cas Z12) |
+| c = 2 (18+18), deux formes | 24 graphes, 48 runs | 48/48 réfutées, en au plus 13 855 nœuds |
+| c ≥ 3 | 26 | relèvent du registre c3 |
+| K < 0 | 6 | invalides |
+
+**Mais leur mort rapide vient de L1, pas de l'arithmétique.**
+- Leurs 4-cycles (arêtes partenaires et arêtes croisées) créent des paires de multiplicité K = 0.
+- Au test de Green pur, aucun des 319 candidats racine n'est éliminé.
+- Sur Z6×Z2, t = (1,1) :
+  - le système complet meurt en 92 nœuds ;
+  - sans les marges, en 11 266 ;
+  - le système de Green pur meurt en 452 291 nœuds, à la profondeur 4, en 106 s : le même profil que les droites
+    aléatoires (435 000 à 533 000 nœuds).
+- La structure ne change donc pas l'obstruction arithmétique. La taille de sa réfutation est remarquablement constante
+  d'un G_T à l'autre. C'est la signature d'un phénomène de comptage générique (environ 360 candidats et une densité de
+  2/7), pas d'une structure particulière à chaque G_T.
+
+---
+
 ## 7. Fichiers et reproduction
 
     py oblr_prep.py <c1|c1t|blocks:k1,k2|blockst:k1,k2> <graine> <instance> <rho|-1> <delta> <out.bin>
