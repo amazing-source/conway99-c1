@@ -392,6 +392,14 @@ Il y en a deux.
   3. **Une estimation de Knuth de l'arbre**, jamais faite.
   4. Un cube-and-conquer avec preuves DRAT/LRAT.
 - **Coût** : inconnu. Un agent mesure en ce moment ; le résultat sera dans r8_route/NOTE_R8_ROUTE.md.
+- **Variante A′ : un sommet, tous les rangs, avec contraintes réelles** (recommandation de NOTE_BORNE_RANG).
+  - Les témoins SAT de R7 violent massivement des conditions vraies à tout rang. Sur leurs 51 labels, le bloc réel
+    7P_v a le rang 47 au lieu de 30 au plus, 8 valeurs propres négatives, et un 7-rang de 47 au lieu de 28 au plus.
+    Le modèle purement combinatoire est donc très faible.
+  - L'instance finie naturelle est « R7/R8 + coupes de positivité + rang ≤ 30 + 7-rang ≤ 28 + DISC », par une boucle
+    CEGAR : SAT, puis contrôle spectral, puis coupe.
+  - Les 645 germes à quatre étoiles réellement cohérents de l'archive échouent tous à DISC, et aucun n'accepte un
+    label extérieur. **Ce qui manque, c'est l'exhaustivité**, et c'est exactement ce que donne la boucle CEGAR.
 - **Ordres de grandeur.** Les problèmes de ce type résolus en grand :
   - triplets de Pythagore : environ 35 000 heures-CPU ;
   - Keller en dimension 7 ;
@@ -420,8 +428,18 @@ Il y en a deux.
 
 ### Les rangs 39 à 43 : ce qui pourrait les rendre finis (3 agents en cours)
 
-1. **Un théorème r = 37**, ou au moins r ≤ 39. La route B fermerait alors tout. C'est la pièce la plus précieuse. La
-   couche thêta s'arrête à 37 ; il faut un ingrédient nouveau (NOTE_BORNE_RANG.md).
+1. **Un théorème r = 37 : hors de portée des outils actuels** (NOTE_BORNE_RANG.md, agent, 20/10).
+   - Toutes les conséquences linéaires des équations srg ne bornent r que par en bas. Cela vaut sur une droite, un
+     sommet, quatre étoiles, les réseaux de droite et le genre.
+   - Une borne par en haut exige des vecteurs propres entiers −4 de Gram inversible mod 7, et rien de local ne les
+     force.
+   - Un modèle en position générale reproduit toutes les dimensions forcées à tous les rangs. Le comptage de
+     dimensions ne peut donc exclure aucun rang : l'obstruction doit venir de la combinatoire 0/1.
+   - L'heuristique de Cohen–Lenstra de Codex attend même r = 43.
+   - Résultats prouvés au passage (P) :
+     - dim C(T) = ρ(T) + r(T) pour les mots du code portés par le lointain ;
+     - scindage orthogonal 7-adique Λ₋(T) ⊥ complément, à tout rang ;
+     - dim D_v = r − 15 en chaque sommet.
 2. **La globalité du type de résidu et les droites latérales.** Si la classe de la forme résiduelle est la même pour
    toutes les droites, on obtient des contraintes entre T et T_x, que la double étoile détermine (NOTE_RESIDU_GLOBAL.md).
 3. **Des conditions 7-adiques d'ordre 2 locales.** H² = 7H donne déjà UᵀU ≡ 0 (mod 7), mais c'est global sur la droite.
