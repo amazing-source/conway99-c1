@@ -41,6 +41,12 @@ for x in xs:
         subprocess.run([os.path.join(MERGE, "star39.exe"), b, limit], stdout=fo, stderr=fe)
     te = time.time() - t
     res = open(os.path.join(outdir, tag + ".out")).read().strip()
+    if rho == 0 and "--keep" not in sys.argv:            # rank-37 inputs are ~1 MB each and cheap to rebuild
+        for ext in (".bin", ".out", ".err"):
+            try:
+                os.remove(os.path.join(outdir, tag + ext))
+            except OSError:
+                pass
     try:
         res = json.loads(res)
     except Exception:

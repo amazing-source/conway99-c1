@@ -39,7 +39,8 @@ d'années-CPU », environ 1 s par droite c = 1 et 4 à 100 s par droite c = 2. E
 
 **Ce qui est nouveau ici.**
 1. Une unité dix fois plus petite suffit : l'étoile d'un seul sommet proche, soit 10 lointains au lieu de 60.
-2. Le coût par droite baisse d'un facteur 100 à 200 : environ 5 ms pour c = 1, au lieu d'environ 1 s.
+2. Le coût par droite baisse d'un facteur 25 environ : 40 ms mesurés en C++ pour c = 1, au lieu d'environ 1 s, et
+   davantage après optimisation.
 3. **Les droites c = 3 meurent aussi au rang 37**, en 1 à 2 minutes. C'est un maillon nouveau. Avec m = 4 exclu
    (A), il remplace le registre m ≥ 3 au rang 37 (§7).
 
@@ -47,14 +48,17 @@ d'années-CPU », environ 1 s par droite c = 1 et 4 à 100 s par droite c = 2. E
 - Le type de forme δ du résidu n'est fixé par aucune règle prouvée pour ces types de droites. On teste donc les deux,
   et la droite ne meurt que si les deux meurent. C'est le cas partout.
 
-### 0.2 Au rang 39, l'étoile tue aussi la première droite testée, mais en 2 h (E)
+### 0.2 Au rang 39, l'étoile tue aussi les droites testées, en 40 min à 2 h chacune (E)
 
 - **Graine 1** ((τ|7) = −1, x = 0, δ = 3) : UNSAT.
   - δ = 3 est la forme qu'impose la règle de NOTE_RESEAUX_DE_DROITE §2, dérivée à la main et non relue.
   - 254 614 885 nœuds, aucune feuille, 1,28·10¹⁰ coupes réelles, 6 919 s.
   - La même droite meurt au rang 37 en 2 511 nœuds.
   - Le run avec l'autre forme (δ = 1), qui rend le verdict indépendant de la règle, est en cours.
-- **Graines 2 à 7** : en cours (§5).
+- **Graines 3 et 4** : UNSAT, en 44 et 40 min.
+  - La graine 3 est dans le cas anisotrope ((τ|7) = +1, δ = 1).
+  - La graine 4 est hyperbolique, avec la forme imposée par la règle.
+- **Graines 2, 5, 6 et 7**, ainsi que les formes hors règle des graines 1 et 4 : en cours (§5).
 - **Lecture.**
   - L'heuristique de NOTE_OBSTRUCTION §3.2 prévoyait environ 10⁵ solutions de l'étoile au rang 39 avec les seules
     conditions mod 7.
@@ -69,7 +73,9 @@ d'années-CPU », environ 1 s par droite c = 1 et 4 à 100 s par droite c = 2. E
 - **Au rang 37**, une preuve par ordinateur prend la forme suivante, sans le registre m = 3 :
   - (a) le test d'étoile, droite par droite, sur **tous** les graphes de droite c ≤ 3 ;
   - (b) l'exclusion de m = 4 (A ; verdicts CP-SAT à certifier).
-  - Coût estimé : environ 1,4·10⁵ heures-cœur (§7), au lieu de « milliers d'années-CPU ».
+  - Coût mesuré : environ 7 à 9·10⁵ heures-cœur avec le moteur actuel (§7). Une optimisation d'un facteur 5 à 10
+    est en cours, ce qui viserait environ 10⁵ heures-cœur. NOTE_FUSION parlait de « milliers d'années-CPU »,
+    soit au moins 10⁷.
   - Il faut aussi écrire un générateur ordonné, porter la préparation en C++ et certifier les verdicts.
 - **Aux rangs 39 à 43**, le test d'étoile ne passe pas à l'échelle. Il faut une idée nouvelle.
 - **Correction** de mon estimation précédente sur la route c (§6) :
@@ -88,7 +94,15 @@ transversal.
 - Temps du moteur `star39.exe` : 0,03 à 0,08 s, démarrage du processus compris.
 - La préparation en Python prend environ 1 s. En C++, ce serait de l'ordre de la milliseconde : 10 × 3 600 triplets,
   avec des opérations de dimension 36.
-- **Coût par droite estimé à environ 5 ms en C++**, contre les 10 à 50 ms que j'annonçais sans mesure.
+- **Correction après mesure.** J'avais estimé environ 5 ms par droite en C++. Le temps du moteur mesuré ci-dessus
+  inclut le démarrage du processus, et l'estimation était fausse.
+- **Mesure réelle** avec `line37.cpp`, test complet en C++, de G_T jusqu'au verdict, validé sur 40 droites (mêmes
+  statuts, x, candidats et nœuds que la chaîne Python) :
+  - médiane 38 à 42 ms par droite testée : construction 0,04 ms, préparation 3 ms, recherche 35 à 42 ms ;
+  - 99ᵉ percentile 103 ms, maximum 385 ms ;
+  - sur 3 000 tirages uniformes : 21 % K < 0, 35 % exclus par L23, 12 % à 7-torsion (test séparé), 31 % testés
+    (932/932 UNSAT) ;
+  - soit environ 14 ms par graphe tiré.
 
 ## 2. Une étoile pour tout type de droite : `star_prep_gen.py`
 
@@ -175,7 +189,15 @@ Fichiers `boost_logs/gen37_c2.jsonl`, `gen37_c2t.jsonl`, `gen37_c3_*.jsonl` et `
 | graine | (τ\|7) | δ | candidats | branches de profondeur 1 | verdict | nœuds | temps |
 |---|---|---|---:|---:|---|---:|---:|
 | 1 | −1 | 3 (règle) | 153 268 | 18 188 | **UNSAT**, aucune feuille | 254 614 885 | 6 919 s |
-| 1 | −1 | 1 (hors règle) | | | en cours | | |
+| 1 | −1 | 1 (hors règle) | | 18 436 | en cours | | |
+| 3 | +1 | 1 (règle, plan anisotrope) | 114 505 | 14 736 | **UNSAT**, aucune feuille | 102 079 170 | 2 628 s |
+| 4 | −1 | 3 (règle) | 117 942 | 12 647 | **UNSAT**, aucune feuille | 93 242 509 | 2 409 s |
+| 4 | −1 | 1 (hors règle) | | | interrompu (libéré pour les agents), à relancer | | |
+| 6 | −1 | 3 (règle) | 129 241 | 16 354 | **UNSAT**, aucune feuille | 129 035 234 | 3 420 s |
+| 2 | −1 | 3 (règle) | 121 735 | 14 124 | **UNSAT**, aucune feuille | 141 014 038 | 3 712 s |
+
+- La graine 3 a (τ|7) = +1. Elle est donc exclue au rang 37 par le seul L23. Au rang 39, elle est permise avec le
+  plan anisotrope, et c'est l'étoile qui la tue.
 
 ## 6. Correction de mes estimations sur la route c
 
@@ -222,12 +244,15 @@ suffit d'énumérer les graphes de droite.
   - parmi les connexes : d = 1 pour 85,6 %, d = 2 pour 14,1 %, d = 3 pour 0,35 % ;
   - pour d = 1, (τ|7) = +1 et −1 sont à parts égales (6 800 contre 6 750).
 - **c = 1 au rang 37.** Ceux qui ont (τ|7) = +1 sont exclus d'emblée par L23. Il reste environ 6,3·10¹⁰ génériques et
-  2,2·10¹⁰ à torsion, soit environ 8,5·10¹⁰ droites. À environ 5 ms chacune, cela fait environ 1,2·10⁵ heures-cœur.
+  2,2·10¹⁰ à torsion, soit environ 8,5·10¹⁰ droites.
+  - Mesure `line37` : environ 14 ms par classe tirée, tri compris, soit 1,9·10¹¹ × 14 ms ≈ 7·10⁵ heures-cœur ;
+  - les droites à torsion se testent en quelques ms ;
+  - avec le moteur optimisé, attendu à 5 à 10 fois plus rapide : environ 10⁵ heures-cœur.
 - **c = 2.** Environ 7·10⁷ droites, à 1 à 6 s chacune, soit environ 2·10⁴ à 10⁵ heures-cœur.
 - **c = 3.** Par composantes, environ 2·10⁵ droites (6 + 6 + 24 domine), à 1 à 3 min chacune, soit environ
   5·10³ heures-cœur.
-- **Total : environ 1,4 à 2,3·10⁵ heures-cœur.** Cela représente environ 6 à 10 jours sur 1 000 cœurs, et pas le PC
-  du labo (environ 13 fils, donc plus d'un an).
+- **Total : environ 8·10⁵ heures-cœur aujourd'hui**, et 1,5 à 2·10⁵ après optimisation. Cela représente environ 1 mois
+  sur 1 000 cœurs aujourd'hui, ou 1 semaine après optimisation. Ce n'est pas faisable sur le PC du labo.
 - **À écrire** :
   - un générateur ordonné (augmentation canonique sur les trois bijections) ;
   - la préparation en C++ ;

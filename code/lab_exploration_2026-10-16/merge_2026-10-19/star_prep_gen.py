@@ -90,21 +90,39 @@ def directions(basis):
     return out
 
 
+def witt_reps(rho, D):
+    """canonical representative of every u under O(D) by Witt's theorem: O(D) is transitive on the nonzero vectors
+    with a given value of u^T D u (non-degenerate form, odd characteristic), so rep(u) = least such vector"""
+    import itertools
+    best = {}
+    for u in itertools.product(range(P), repeat=rho):
+        if any(u):
+            t = sum(D[i] * u[i] * u[i] for i in range(rho)) % P
+            if t not in best or u < best[t]:
+                best[t] = u
+    rep = {}
+    for u in itertools.product(range(P), repeat=rho):
+        rep[u] = best[sum(D[i] * u[i] * u[i] for i in range(rho)) % P] if any(u) else u
+    return rep
+
+
 def main():
     spec, seed, inst, x, r, delta, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), \
         int(sys.argv[5]), int(sys.argv[6]), sys.argv[7]
     unbal = "--unbal" in sys.argv
+    fmt3 = "--fmt3" in sys.argv                          # three-component format of star3.cpp (needed for rho = 3)
     kidx = int(sys.argv[sys.argv.index("--kappa") + 1]) if "--kappa" in sys.argv else None
     n_kappa = None
     s01, s12, s20, G, nc, comp, d = get_gt(spec, seed, inst)
     torsion = spec in ("c1t", "c1tt") or spec.startswith("blockst")
-    rho = r - 38 + d
+    rho = r - 38 + d                                     # = number of components of u in both encodings
+    rres = None
     if unbal:
-        if not torsion or r - 38 + d - 2 != 0:
-            raise SystemExit("unbalanced encoding needs a torsion spec and r = 40 - d")
-        rho = 2
-    if not 0 <= rho <= 2:
-        raise SystemExit("rho = %d not supported" % rho)
+        rres = rho - 2                                   # residue left after the b c^T + c b^T part (r(T) = 1)
+        if not torsion or rres < 0:
+            raise SystemExit("unbalanced encoding needs a torsion spec and r >= 40 - d")
+    if not 0 <= rho <= (3 if fmt3 else 2):
+        raise SystemExit("rho = %d not supported%s" % (rho, "" if fmt3 else " (rho = 3 needs --fmt3)"))
     MNN = near_block(n, G)
     rk = rank_mod(MNN, P)
     assert rk == 38 - d, (rk, d)
@@ -113,10 +131,15 @@ def main():
     assert ((MNN @ X % P) @ MNN % P == MNN).all() and (X == X.T).all()
     ker = kernel_mod(MNN, P)
     if unbal:
-        D, lsets, rep, gorder = [4, 3], None, None, 1
+        # u = (b + c, b - c, v) with D = diag(4, 3) + D_res: 4 s s' + 3 t t' = b c' + c b', v in F_7^rres; no symmetry
+        Dres, lres = level_sets(rres, delta)
+        D, lsets, rep, gorder = [4, 3] + Dres, None, None, 1
     else:
         D, lsets = level_sets(rho, delta)
-        rep, gorder = orbit_reps(rho, D) if rho > 0 else ({(): ()}, 1)
+        if rho == 3:
+            rep, gorder = witt_reps(rho, D), None
+        else:
+            rep, gorder = orbit_reps(rho, D) if rho > 0 else ({(): ()}, 1)
     kappa = None
     K = k_matrix(n, G)
     nb = [set(int(z) for z in np.nonzero(G[v])[0]) for v in range(N)]
@@ -136,7 +159,8 @@ def main():
     ys = [y for y in range(n) if y not in (x, xb)]
     P1 = [(n + a, n + b) for a, b in pairs_of(n)]
     P2 = [(2 * n + a, 2 * n + b) for a, b in pairs_of(n)]
-    Dq = (D + [0, 0])[:2] if rho > 0 else [0, 0]
+    nd = 3 if fmt3 else 2
+    Dq = (D + [0] * 3)[:nd]
 
     def comb_ok(W):
         Ws = set(W)
@@ -190,7 +214,7 @@ def main():
         f.write(struct.pack("<6i", rho, delta, x, b1, b2, len(ys)))
         f.write(struct.pack("<%di" % (N * 3), *[z for v in range(N) for z in sorted(nb[v])]))
         f.write(struct.pack("<%di" % N, *[int(K[x, v]) for v in range(N)]))
-        f.write(struct.pack("<2i", *Dq))
+        f.write(struct.pack("<%di" % nd, *Dq))
         for y in ys:
             tris, cands = [], []
             for qi, q in enumerate(P1):
@@ -238,8 +262,14 @@ def main():
                     Xe = (X @ e) % P
                     t = (-3 - int(e @ Xe)) % P
                     if unbal:
-                        cs = [(t * pow(2 * bw, P - 2, P)) % P] if bw else (list(range(P)) if t == 0 else [])
-                        us = [((bw + c) % P, (bw - c) % P) for c in cs]
+                        us = []                                      # 2 b c + v^T D_res v = t
+                        for qv, vs in lres.items():
+                            for v in vs:
+                                if bw:
+                                    cs = [((t - qv) * pow(2 * bw, P - 2, P)) % P]
+                                else:
+                                    cs = list(range(P)) if (t - qv) % P == 0 else []
+                                us += [((bw + c) % P, (bw - c) % P) + tuple(v) for c in cs]
                     else:
                         us = lsets[t] if rho > 0 else ([()] if t == 0 else [])
                     if not us:
@@ -261,8 +291,8 @@ def main():
                 f.write(struct.pack("<%dd" % N, *[float(v) for v in zq]))
                 f.write(struct.pack("<d", dd))
             for (ti, canon, u) in cands:
-                uu = list(u) + [0] * (2 - len(u))
-                f.write(struct.pack("<4i", ti, canon, uu[0], uu[1]))
+                uu = list(u) + [0] * (nd - len(u))
+                f.write(struct.pack("<%di" % (2 + nd), ti, canon, *uu))
             stats.append((len(tris), len(cands)))
     print(json.dumps({"spec": spec, "seed": seed, "inst": inst, "x": x, "b1": b1, "b2": b2, "c": nc, "d": d, "r": r,
                       "rho": rho, "delta": delta, "O(D)": gorder, "triples": [s[0] for s in stats],
