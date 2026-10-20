@@ -74,7 +74,7 @@ pas seul) :
 | route | énoncé | rangs | état | coût |
 |---|---|---|---|---|
 | **A : R8** | une instance SAT (52 labels, 1 326 arêtes autour d'un sommet), UNSAT ⇒ pas de Conway | **tous** | indécidée (timeouts à 2 h) | jamais estimé (agent en cours) |
-| **B : droites au rang 37** | toutes les droites c ≤ 3 meurent au test d'étoile, + m = 4 exclu | 37 | moteur validé, 100 % des droites testées meurent | environ 7–9·10⁵ heures-cœur aujourd'hui, environ 10⁵ visé |
+| **B : droites au rang 37** | théorème de réduction (seule entrée : P ≤ 852) : toute droite à t ≤ 7 doit passer le test d'étoile | 37 | moteur validé, 100 % des droites testées meurent (33 754/33 754) | environ 6,5·10⁴ heures-cœur avec `line37_fast` |
 | **C : dichotomie c** | m = 3 (registre), branche (II) (≥ 33 droites c ≤ 2) | tous | 35 + 14 gabarits ouverts, (II) sans méthode | — |
 | **D : lois locales avec pont prouvé** | (N9-NG)/NG5, (T8)/(T15), (H-MATCH) ⇒ pas de Conway | tous | lois ouvertes | — |
 | **Rangs 39 à 43** | aucune route finie faisable | 39–43 | il faut un théorème | 3 agents en cours |
@@ -185,10 +185,12 @@ Le résidu ajoute à chaque lointain un vecteur caché u ∈ F₇^ρ. La conditi
 
 - **Rang 37, droites c ≤ 3 de tous types**, torsions comprises, découpées en équilibré, déséquilibré et 8 directions : 122
   droites et plus de 280 runs, tous UNSAT, sans aucune feuille.
-- **Rang 37, droites c = 1 tirées uniformément** : 932 sur 932 UNSAT avec `line37`, le test complet en C++, validé ligne
-  à ligne contre Python. Le tirage de 100 000 est en cours.
+- **Rang 37, droites c = 1 tirées uniformément** : avec `line37`, le test complet en C++ validé ligne à ligne contre
+  Python, **33 754 droites testées sur 100 000 tirages, toutes UNSAT**. À 95 % de confiance, la proportion de
+  survivantes est inférieure à 9·10⁻⁵.
 - **Coût mesuré** : 38 à 42 ms par droite testée, et environ 14 ms par graphe tiré.
-- **Rang 39** : 5 droites sur 5 meurent, à 40 min à 2 h par droite.
+- **Rang 39** : 5 droites sur 5 meurent, à 40 min à 2 h par droite. La graine 4 meurt aussi avec l'autre forme du
+  résidu (δ = 1, hors règle), donc sans dépendre de la règle non relue.
 
 ### 3.7 Pourquoi il n'y a pas de lemme court
 
@@ -399,14 +401,17 @@ Il y en a deux.
 
 ### Route B : le rang 37 droite par droite, entièrement finie et chiffrée
 
-- **Énoncé.** Si tous les graphes de droite c ≤ 3, dans toutes leurs variantes, meurent au test d'étoile de rang 37,
-  alors, puisque m ≤ 4 (P) et m = 4 exclu (S), aucun graphe n'a r = 37.
-  - Avec c ≤ 4, on n'a même plus besoin des verdicts CP-SAT de m = 4 (test c = 4 en cours).
-  - Le théorème est en rédaction : THEOREME_REDUCTION_R37.md (agent).
+- **Énoncé (THEOREME_REDUCTION_R37.md, Théorème 6.1, P relu par un agent adverse).** Supposons que tout graphe de
+  droite admissible à t ≤ 7 triangles transversaux ait un sommet x hors triangle dont l'étoile est insatisfaisable
+  dans toutes les variantes du rang 37. Alors aucun graphe n'a r = 37.
+  - La seule entrée est P ≤ 852, d'où au moins 18 droites avec t ≤ 7. t ≤ 7 entraîne c ≤ 4.
+  - Il n'utilise ni CP-SAT, ni le registre m = 3, ni L23, ni la règle sur δ.
 - **Coût.**
   - Mesure aujourd'hui : environ 7 à 9·10⁵ heures-cœur pour environ 1,9·10¹¹ classes de c = 1, plus environ 7·10⁷ de
     c = 2 et environ 2·10⁵ de c = 3.
-  - Visé : environ 10⁵ heures-cœur avec le moteur accéléré (agent).
+  - **Avec `line37_fast`** (10 fois plus rapide, résultats identiques) : environ 6,5·10⁴ heures-cœur pour c = 1,
+    soit environ 3 jours sur 1 000 cœurs. Il reste à porter en C++ la préparation des droites à torsion (11,5 % des
+    tirages).
 - **Ce qui manque.**
   - L'énumération exacte des classes (agent : type cyclique de σ = s₂₀s₁₂s₀₁, couplages modulo un petit groupe, comptage
     de Burnside).

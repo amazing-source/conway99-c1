@@ -1,0 +1,297 @@
+{
+ "lines40_official_line37_vs_fast": {
+  "lines": 40,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "UNSAT": 40
+  },
+  "nodes_sum_ref": 93390,
+  "nodes_sum_fast": 93390
+ },
+ "lines40_official_line37_vs_fast_scalar": {
+  "lines": 40,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "UNSAT": 40
+  },
+  "nodes_sum_ref": 93390,
+  "nodes_sum_fast": 93390
+ },
+ "rand3000_s20261020_per_line_official_vs_fast": {
+  "lines": 3000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "7-torsion": 362,
+   "L23": 1064,
+   "UNSAT": 932,
+   "K<0": 640,
+   "disconnected": 2
+  },
+  "nodes_sum_ref": 2360821,
+  "nodes_sum_fast": 2360821
+ },
+ "rand3000_s20261020_per_line_with_candidate_hash_refv_vs_fast": {
+  "lines": 3000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes",
+   "chash"
+  ],
+  "status_counts": {
+   "7-torsion": 362,
+   "L23": 1064,
+   "UNSAT": 932,
+   "K<0": 640,
+   "disconnected": 2
+  },
+  "nodes_sum_ref": 2360821,
+  "nodes_sum_fast": 2360821
+ },
+ "rand3000_s20261020_per_line_with_candidate_hash_refv_vs_fast_scalar": {
+  "lines": 3000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes",
+   "chash"
+  ],
+  "status_counts": {
+   "7-torsion": 362,
+   "L23": 1064,
+   "UNSAT": 932,
+   "K<0": 640,
+   "disconnected": 2
+  },
+  "nodes_sum_ref": 2360821,
+  "nodes_sum_fast": 2360821
+ },
+ "rand3000_s20261020_refv_vs_official": {
+  "lines": 3000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "7-torsion": 362,
+   "L23": 1064,
+   "UNSAT": 932,
+   "K<0": 640,
+   "disconnected": 2
+  },
+  "nodes_sum_ref": 2360821,
+  "nodes_sum_fast": 2360821
+ },
+ "rand20000_s20261021_per_line_official_vs_fast": {
+  "lines": 20000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "7-torsion": 2316,
+   "L23": 6786,
+   "K<0": 4256,
+   "UNSAT": 6636,
+   "disconnected": 6
+  },
+  "nodes_sum_ref": 16555862,
+  "nodes_sum_fast": 16555862
+ },
+ "rand20000_s20261021_per_line_official_vs_fast_prepcheck_build": {
+  "lines": 20000,
+  "field_diffs": 0,
+  "fields": [
+   "line",
+   "status",
+   "x",
+   "candidates",
+   "nodes"
+  ],
+  "status_counts": {
+   "7-torsion": 2316,
+   "L23": 6786,
+   "K<0": 4256,
+   "UNSAT": 6636,
+   "disconnected": 6
+  },
+  "nodes_sum_ref": 16555862,
+  "nodes_sum_fast": 16555862
+ },
+ "rand_mode_summaries": {
+  "line37.exe rand 3000 20261020 60 (15:39)": {
+   "count": 3000,
+   "seed": 20261020,
+   "K<0": 640,
+   "disconnected": 2,
+   "7-torsion": 362,
+   "L23": 1064,
+   "no-x": 0,
+   "UNSAT": 932,
+   "SAT": 0,
+   "TIMEOUT": 0,
+   "tested": 932,
+   "build_ms_per_line": 0.0247,
+   "prep_ms_per_tested": 2.4072,
+   "search_ms_per_tested": 35.7982,
+   "tested_ms_median": 37.0776,
+   "tested_ms_p99": 70.9349,
+   "tested_ms_max": 91.202,
+   "nodes_max": 6484,
+   "wall_s": 35.69,
+   "ms_per_sample": 11.8951
+  },
+  "line37.exe rand 3000 20261020 60 (16:04, back to back)": {
+   "count": 3000,
+   "seed": 20261020,
+   "K<0": 640,
+   "disconnected": 2,
+   "7-torsion": 362,
+   "L23": 1064,
+   "no-x": 0,
+   "UNSAT": 932,
+   "SAT": 0,
+   "TIMEOUT": 0,
+   "tested": 932,
+   "build_ms_per_line": 0.0237,
+   "prep_ms_per_tested": 2.2761,
+   "search_ms_per_tested": 33.9879,
+   "tested_ms_median": 34.9601,
+   "tested_ms_p99": 67.833,
+   "tested_ms_max": 75.3339,
+   "nodes_max": 6484,
+   "wall_s": 33.87,
+   "ms_per_sample": 11.2908
+  },
+  "line37_fast rand 3000 20261020 60 (16:04, before)": {
+   "count": 3000,
+   "seed": 20261020,
+   "K<0": 640,
+   "disconnected": 2,
+   "7-torsion": 362,
+   "L23": 1064,
+   "no-x": 0,
+   "UNSAT": 932,
+   "SAT": 0,
+   "TIMEOUT": 0,
+   "tested": 932,
+   "build_ms_per_line": 0.0212,
+   "prep_ms_per_tested": 0.1554,
+   "search_ms_per_tested": 3.332,
+   "tested_ms_median": 3.4108,
+   "tested_ms_p99": 7.2995,
+   "tested_ms_max": 10.9774,
+   "nodes_max": 6484,
+   "wall_s": 3.31,
+   "ms_per_sample": 1.1049
+  },
+  "line37_fast rand 3000 20261020 60 (16:05, after)": {
+   "count": 3000,
+   "seed": 20261020,
+   "K<0": 640,
+   "disconnected": 2,
+   "7-torsion": 362,
+   "L23": 1064,
+   "no-x": 0,
+   "UNSAT": 932,
+   "SAT": 0,
+   "TIMEOUT": 0,
+   "tested": 932,
+   "build_ms_per_line": 0.0208,
+   "prep_ms_per_tested": 0.1513,
+   "search_ms_per_tested": 3.1923,
+   "tested_ms_median": 3.2024,
+   "tested_ms_p99": 6.952,
+   "tested_ms_max": 8.7007,
+   "nodes_max": 6484,
+   "wall_s": 3.18,
+   "ms_per_sample": 1.0598
+  },
+  "line37_fast rand 20000 20261021 120": {
+   "count": 20000,
+   "seed": 20261021,
+   "K<0": 4256,
+   "disconnected": 6,
+   "7-torsion": 2316,
+   "L23": 6786,
+   "no-x": 0,
+   "UNSAT": 6636,
+   "SAT": 0,
+   "TIMEOUT": 0,
+   "tested": 6636,
+   "build_ms_per_line": 0.0226,
+   "prep_ms_per_tested": 0.1667,
+   "search_ms_per_tested": 3.5864,
+   "tested_ms_median": 3.6195,
+   "tested_ms_p99": 7.8748,
+   "tested_ms_max": 13.1296,
+   "nodes_max": 7061,
+   "wall_s": 25.36,
+   "ms_per_sample": 1.2682
+  }
+ },
+ "prep_cross_check_triples": {
+  "rand3000": 30959000,
+  "rand20000": 220107000
+ },
+ "binaries": {
+  "reference": "merge_2026-10-19/line37.exe (code identical to g++ 16.1 -O3 -march=native -std=c++17 line37.cpp)",
+  "fast": "merge_2026-10-19/line37_fast.exe (same flags; code identical to the binary used for every run above)",
+  "fast_scalar": "same source with -DL37_SCALAR",
+  "fast_prepcheck": "same source with -DL37_CHECK_PREP"
+ },
+ "pair_test_R_h_bitwise": {
+  "what": "Rval and hval of line37 vs Rval_f/hval_f of line37_fast on pseudo-random pairs of candidates of distinct far vertices (any orientation, compatible or not), bits of h compared",
+  "set": "rand3000 seed 20261020 (932 tested lines)",
+  "pairs": 1677608,
+  "pairs_with_R_in_01": 478686,
+  "diffs": 0
+ },
+ "coverage_over_23040_lines": {
+  "tested_lines": 7608,
+  "nodes": 19010073,
+  "leaves": 0,
+  "timeouts": 0,
+  "degenerate_block_events": 10,
+  "commits_with_partners": 2265785,
+  "r1_candidates_kept": 191726851,
+  "nf_second_half_rejections": 53389518,
+  "partner_exclusions": 132836,
+  "roots_without_b1mode": 0
+ }
+}

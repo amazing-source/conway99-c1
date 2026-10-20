@@ -106,7 +106,11 @@ transversal.
   - 99ᵉ percentile 103 ms, maximum 385 ms ;
   - sur 3 000 tirages uniformes : 21 % K < 0, 35 % exclus par L23, 12 % à 7-torsion (test séparé), 31 % testés
     (932/932 UNSAT) ;
-  - soit environ 14 ms par graphe tiré.
+  - soit environ 14 ms par graphe tiré ;
+  - **100 000 tirages** (graine 777001, `boost_logs/line37_rand100k_seed777001.json`) : **33 754 droites testées, toutes
+    UNSAT**, aucun SAT, aucun TIMEOUT. Médiane 35,8 ms, 99ᵉ percentile 70 ms, maximum 327 ms, 7 353 nœuds au plus,
+    12,4 ms par tirage. À 95 % de confiance, la proportion de droites qui survivent est inférieure à 3/33 754, soit
+    environ 9·10⁻⁵.
 
 ## 2. Une étoile pour tout type de droite : `star_prep_gen.py`
 
@@ -196,7 +200,7 @@ Fichiers `boost_logs/gen37_c2.jsonl`, `gen37_c2t.jsonl`, `gen37_c3_*.jsonl` et `
 | 1 | −1 | 1 (hors règle) | | 18 436 | en cours | | |
 | 3 | +1 | 1 (règle, plan anisotrope) | 114 505 | 14 736 | **UNSAT**, aucune feuille | 102 079 170 | 2 628 s |
 | 4 | −1 | 3 (règle) | 117 942 | 12 647 | **UNSAT**, aucune feuille | 93 242 509 | 2 409 s |
-| 4 | −1 | 1 (hors règle) | | | interrompu (libéré pour les agents), à relancer | | |
+| 4 | −1 | 1 (hors règle) | 119 820 | 12 959 | **UNSAT**, aucune feuille : la droite meurt avec les deux formes, sans dépendre de la règle | 85 040 317 | 2 166 s |
 | 6 | −1 | 3 (règle) | 129 241 | 16 354 | **UNSAT**, aucune feuille | 129 035 234 | 3 420 s |
 | 2 | −1 | 3 (règle) | 121 735 | 14 124 | **UNSAT**, aucune feuille | 141 014 038 | 3 712 s |
 
@@ -225,6 +229,14 @@ suffit d'énumérer les graphes de droite.
 
 ## 7. Plan au rang 37 et son coût
 
+> **Remplacé par THEOREME_REDUCTION_R37.md (Théorème 6.1).** La réduction n'utilise que P ≤ 852 :
+> - au moins 18 droites ont t ≤ 7 ;
+> - t ≤ 7 entraîne c ≤ 4 et l'existence d'un x hors des triangles transversaux.
+>
+> Elle ne passe ni par les verdicts CP-SAT de m = 4, ni par le registre, ni par L23, ni par la règle sur δ. La
+> formulation « c ≤ 3 + m = 4 exclu » ci-dessous avait aussi un trou : une droite à c ≤ 3 peut avoir t = 12, et
+> alors aucun x n'est utilisable. Les comptes de coût restent valables.
+
 **Énoncé de réduction (P, immédiat).**
 - m ≤ 4 est prouvé (A, P ≤ 852) et m = 4 est exclu (A, verdicts CP-SAT sans certificat portable). Un graphe de Conway
   a donc une droite T avec c(T) ≤ 3.
@@ -251,7 +263,10 @@ suffit d'énumérer les graphes de droite.
   2,2·10¹⁰ à torsion, soit environ 8,5·10¹⁰ droites.
   - Mesure `line37` : environ 14 ms par classe tirée, tri compris, soit 1,9·10¹¹ × 14 ms ≈ 7·10⁵ heures-cœur ;
   - les droites à torsion se testent en quelques ms ;
-  - avec le moteur optimisé, attendu à 5 à 10 fois plus rapide : environ 10⁵ heures-cœur.
+  - **moteur optimisé `line37_fast`** (NOTE_LINE37_FAST.md) : 3,4 à 3,6 ms par droite testée, soit environ 10 fois
+    plus vite, avec des résultats identiques (0 écart sur 40 + 3 000 + 20 000 tirages ; mêmes nœuds ; candidats et
+    valeurs R et h identiques au bit près). On passe à environ 1,2 ms par classe tirée, soit environ 6,5·10⁴
+    heures-cœur pour c = 1.
 - **c = 2.** Environ 7·10⁷ droites, à 1 à 6 s chacune, soit environ 2·10⁴ à 10⁵ heures-cœur.
 - **c = 3.** Par composantes, environ 2·10⁵ droites (6 + 6 + 24 domine), à 1 à 3 min chacune, soit environ
   5·10³ heures-cœur.
