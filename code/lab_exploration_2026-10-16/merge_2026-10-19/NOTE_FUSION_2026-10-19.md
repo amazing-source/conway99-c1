@@ -364,7 +364,7 @@ de Green mod 7 et du filtre L2.
 
 **Recherche adverse** (`adversarial.py`). Recuit simulé sur G_T par échanges dans les bijections. La condition L23 est
 imposée, et le score est le nombre de nœuds de réfutation.
-- 143 pas, tous réfutés. Le score passe d'environ 5 000 nœuds au départ à 10 514 au maximum.
+- 146 pas évalués (run terminé), tous réfutés. Le score passe d'environ 5 000 nœuds au départ à 10 514 au maximum.
 - Aucune droite qui résiste.
 
 **Les G_T les plus symétriques** (`sym_gt.py`, `sym_why.py`, `sym_pure_r37.jsonl`).
