@@ -45,8 +45,14 @@ d'années-CPU », environ 1 s par droite c = 1 et 4 à 100 s par droite c = 2. E
    (A), il remplace le registre m ≥ 3 au rang 37 (§7).
 
 - Aucune feuille n'est jamais atteinte : chaque étoile meurt avant d'avoir placé ses 10 sommets lointains.
-- Le type de forme δ du résidu n'est fixé par aucune règle prouvée pour ces types de droites. On teste donc les deux,
-  et la droite ne meurt que si les deux meurent. C'est le cas partout.
+- On a testé les deux formes δ du résidu, et les deux meurent partout.
+  - **Correction (NOTE_RESIDU_GLOBAL.md).** J'écrivais qu'aucune règle prouvée ne fixait δ pour ces types. C'est
+    faux : la forme est fixée pour toute droite équilibrée,
+    χ(det D_δ) = (−1)^((r+1)/2)·χ(disc_nd M_NN).
+  - Cette règle est déjà dans l'archive (TL 17.80, corollaire B ; règle B′), et elle est reprouvée aujourd'hui de
+    deux autres façons.
+  - Une seule forme par droite suffit donc. Les runs « hors règle » sont redondants, mais restent valables comme
+    contrôles.
 
 ### 0.2 Au rang 39, l'étoile tue aussi les droites testées, en 40 min à 2 h chacune (E)
 

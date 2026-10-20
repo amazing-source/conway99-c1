@@ -458,8 +458,16 @@ Il y en a deux.
      - dim C(T) = ρ(T) + r(T) pour les mots du code portés par le lointain ;
      - scindage orthogonal 7-adique Λ₋(T) ⊥ complément, à tout rang ;
      - dim D_v = r − 15 en chaque sommet.
-2. **La globalité du type de résidu et les droites latérales.** Si la classe de la forme résiduelle est la même pour
-   toutes les droites, on obtient des contraintes entre T et T_x, que la double étoile détermine (NOTE_RESIDU_GLOBAL.md).
+2. **La globalité du type de résidu et les droites latérales : écartées** (NOTE_RESIDU_GLOBAL.md, agent, 20/10).
+   - La règle de classe est prouvée de trois façons pour toute droite équilibrée, d'où une seule forme δ par droite.
+   - Mais la classe n'est pas globale : elle vaut (τ(T)|7).
+   - Théorème B (P) : sur tout ensemble U ⊇ N[T], tout le contenu mod 7 se réduit à « rang₇ M_UU ≤ r, avec la classe
+     fixée en cas d'égalité ». Il ne dépend pas de la droite de base.
+   - Conséquences : les droites latérales n'ajoutent rien, et le « filtre gratuit ÷ 2 » de NOTE_OBSTRUCTION §4.2 est
+     vide.
+   - **Aucune condition reliant les résidus de différentes droites ne peut exclure 39, 41 ou 43.** Il faut la
+     structure 0/1 et la positivité.
+   - Un test au rang 43 est une relaxation valable pour les quatre rangs.
 3. **Des conditions 7-adiques d'ordre 2 locales.** H² = 7H donne déjà UᵀU ≡ 0 (mod 7), mais c'est global sur la droite.
    Une version restreinte à l'étoile ferait bouger les rangs 41 et 43 (NOTE_ORDRE2_7ADIQUE.md).
 4. **Ce qui est hors de portée.**
