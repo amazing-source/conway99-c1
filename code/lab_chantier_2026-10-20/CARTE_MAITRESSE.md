@@ -128,7 +128,9 @@ Les dérivations de cette section sont courtes ; elles sont refaites ici pour qu
 | Pas d'automorphisme d'ordre 3 (C3) | P + Lean complet (C) ; §1-3 relus par Cesarz–Woldar (exposition à refondre) | L04 |
 | Pas d'automorphisme d'ordre 7 (C7) | P + Lean | L01, conway-C7 |
 | Pas d'automorphisme d'ordre 11 | littérature (Behbahani–Lam ; Wilbrink 1984, Thm 5 ; calcul externe) | L03b, R3-06 |
-| Pas d'automorphisme d'ordre 2 (C2) | **S avec une composante ouverte** : Théorème R (P, relu par Codex), T16/T18/T20 (P, relus par des IA), 25,8 M paires exclues sans certificat, recertification de la règle jumelle (≤ 2,48 M paires) mise de côté le 07/10 | L02 §8-9, L01-85, L09-055 (E) |
+| Pas d'automorphisme d'ordre 2 (C2) | **S** : Théorème R (P, relu par Codex), T16/T18/T20 (P, relus par des IA), 25,8 M paires exclues sans certificat. La règle de transfert jumeau est prouvée par récurrence sur le nombre de racines (Codex) ; sa recertification exacte (≤ 2,48 M paires, contre le risque d'implémentation : rang flottant, statuts lus dans un instantané) est une **précaution**. Le README public du 11/10 la déclare faite ; ses enregistrements restent à localiser dans l'inventaire | L02 §8-9, L01-85, L09-055 (E) ; `strongly-regular-graphs-research` README |
+| Publié (Zenodo 10.5281/zenodo.23305123, 11/10) | note d'asymétrie, C2, C3, C7, jumeau de BvLS, Γ3, Γ4, condition 2-adique, 7-rang (r ≥ 25) | dépôt public `amazing-source/strongly-regular-graphs-research` |
+| Non publié | fenêtre r ≥ 37 (thêta), P ≤ 852, 3P + 4G ≤ 2772, Γ5 à Γ8 et la classification des Z3-revêtements, réduction du rang 37 | §6, L06 |
 | Donc : un Conway éventuel est **asymétrique (C1)** | conditionnel aux lignes précédentes | L01, L06-139 |
 | Fenêtre de rang r = rang_7(A − 3I) ∈ {37, 39, 41, 43} | C (thêta de niveau 7, audité par Codex) | L06-023, -024 ; L11b |
 | P ≤ 852 prismes | C sur un recensement E (deux implantations) ; seconde preuve : 3P + 4G ≤ 2772 (C) et P − 3G ≤ 693 (main + N9) | §8.1 ; VERIF_R1-19 |
@@ -310,6 +312,15 @@ satisfiable par les paramètres de Conway.
 - Coupe sûre à ajouter : l'équilibre |N(w) ∩ C| = |C|/6, absent de l'encodeur (R3-29).
 
 **6.3 Route c.**
+- **Mise à jour du 20/10 au soir, par Codex, non relue.** Les gabarits **9912 et 9966 sont entièrement exclus**
+  (`c1-main-codex/notes/COEUR_SIGNE_DEUX_GRILLES_2026_10_20.txt` §26, commits 19f19996 à b44d407f).
+  - Partie à la main : un théorème de réduction « cœur signé à deux grilles », avec ternarité de h prouvée.
+  - Partie finie : 468 états sur 468, soit 1 440 représentants. Chacun meurt par capacité, par propagation exacte ou
+    par une preuve RUP vérifiée.
+  - Règle « dix grilles en forcent douze » : elle contredit 26 gabarits du catalogue de 10 027, à confronter au
+    registre.
+  - 9179 est en cours, pas encore exclu.
+  - Si tout cela tient, il reste 33 gabarits ouverts.
 - **Registre c = 3 : 35 gabarits ouverts au 19/10.**
   - Le lemme « aucune droite dans six grilles » en fermerait 9, ce qui en laisserait 26. Le lemme est ouvert et revient
     à un sous-cas entier : il faut d'abord un pilote de mesure (VERIF_R3-21).
