@@ -1,0 +1,48 @@
+# Verbatim outputs, LAB 20/10/2026 evening (NOTE_ORDRE2_7ADIQUE).  One process at a time, <= 5 min each.
+# Inputs: scratchpad boost/runs/star37_s*_x0.bin, star39_s*_x0.bin, real/star39_s1x0_d3.bin (star39_prep.py format).
+
+## 1. Validation of star39o2 (default options) against the original star39.exe: identical nodes and real cuts
+== star37_s1_x0.bin
+star39.exe : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "status": "UNSAT", "candidates": 3070, "nodes": 2511, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "min_lam2": -1.000e+00, "real_cuts": 70539, "depth1": "356/356", "seconds": 0.0}
+star39o2   : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 1, "R9": 0, "status": "UNSAT", "candidates": 3070, "unary_p3_cut": 0, "nodes": 2511, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 70539, "h_cuts": 70539, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "356/356", "seconds": 0.0, "dump8": 0, "by_depth": [1, 354, 2156, 0, 0, 0, 0, 0, 0, 0, 0]}
+== star37_s10_x0.bin
+star39.exe : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "status": "UNSAT", "candidates": 2908, "nodes": 2745, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "min_lam2": -1.000e+00, "real_cuts": 63248, "depth1": "374/374", "seconds": 0.0}
+star39o2   : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 1, "R9": 0, "status": "UNSAT", "candidates": 2908, "unary_p3_cut": 0, "nodes": 2745, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 63248, "h_cuts": 63248, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "374/374", "seconds": 0.0, "dump8": 0, "by_depth": [1, 371, 2373, 0, 0, 0, 0, 0, 0, 0, 0]}
+== star37_s12_x0.bin
+star39.exe : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "status": "UNSAT", "candidates": 3138, "nodes": 2930, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "min_lam2": -1.000e+00, "real_cuts": 75055, "depth1": "359/359", "seconds": 0.0}
+star39o2   : {"rho": 0, "delta": 0, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 1, "R9": 0, "status": "UNSAT", "candidates": 3138, "unary_p3_cut": 0, "nodes": 2930, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 75055, "h_cuts": 75055, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "359/359", "seconds": 0.0, "dump8": 0, "by_depth": [1, 356, 2572, 1, 0, 0, 0, 0, 0, 0, 0]}
+
+## 2. Rank 39, seed 4 (star39_s4_x0.bin, delta 3), 90 s
+{"rho": 2, "delta": 3, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 1, "R9": 0, "status": "TIMEOUT", "candidates": 117942, "unary_p3_cut": 0, "nodes": 3689472, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 155779340, "h_cuts": 155779340, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "689/12647", "seconds": 90.0, "dump8": 0, "by_depth": [1, 113, 64651, 3319474, 305231, 2, 0, 0, 0, 0, 0]}
+
+## 3. Rank 39, seed 4, the same first 400 depth-1 branches (STAR_D1MAX=400), four variants
+[default]           {"rho": 2, "delta": 3, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 1, "R9": 0, "status": "PREFIX", "candidates": 117942, "unary_p3_cut": 0, "nodes": 2060617, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 85677732, "h_cuts": 85677732, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "400/12647", "seconds": 50.3, "dump8": 0, "by_depth": [1, 66, 36630, 1861389, 162529, 2, 0, 0, 0, 0, 0]}
+[STAR_NO7=1]        {"rho": 2, "delta": 3, "x": 0, "real": 1, "rank_test": 1, "P3": 0, "use7": 0, "R9": 0, "status": "PREFIX", "candidates": 117942, "unary_p3_cut": 0, "nodes": 2060617, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 85677732, "h_cuts": 85677732, "h7_cuts": 0, "p3_cuts": 0, "r9_cuts": 0, "depth1": "400/12647", "seconds": 49.3, "dump8": 0, "by_depth": [1, 66, 36630, 1861389, 162529, 2, 0, 0, 0, 0, 0]}
+[STAR_P3=1]         {"rho": 2, "delta": 3, "x": 0, "real": 1, "rank_test": 1, "P3": 1, "use7": 1, "R9": 0, "status": "PREFIX", "candidates": 117942, "unary_p3_cut": 0, "nodes": 2060411, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 85676238, "h_cuts": 85676238, "h7_cuts": 0, "p3_cuts": 5229, "r9_cuts": 0, "depth1": "400/12647", "seconds": 52.3, "dump8": 0, "by_depth": [1, 66, 36630, 1861387, 162325, 2, 0, 0, 0, 0, 0]}
+[STAR_P3=1 NO7=1]   {"rho": 2, "delta": 3, "x": 0, "real": 1, "rank_test": 1, "P3": 1, "use7": 0, "R9": 0, "status": "PREFIX", "candidates": 117942, "unary_p3_cut": 0, "nodes": 2060411, "leaves": 0, "match_rejects": 0, "psd_leaf_rejects": 0, "rank_rejects": 0, "real_cuts": 85676238, "h_cuts": 85676238, "h7_cuts": 0, "p3_cuts": 5229, "r9_cuts": 0, "depth1": "400/12647", "seconds": 53.9, "dump8": 0, "by_depth": [1, 66, 36630, 1861387, 162325, 2, 0, 0, 0, 0, 0]}
+
+## 4. Rank 39, other seeds, 60 s each: hist39_*.json (by_depth = nodes by number of placed far vertices)
+
+## 5. o2_p3stats.py 1 0 1500 (seed 1, x = 0), 95 s
+{"seed": 1, "x": 0, "tau_leg": -1, "identity_maxerr": 7.105427357601002e-15, "unary_candidates": 25581, "unary_cut_by_H<0": 3618, "unary_cut_by_H>7": 0, "unary_cut_by_H3<0": 0, "unary_cut_by_H_or_H3": 3618, "rank37_level(g=0,H>=0)": 3070, "rank37_level_cut_by_H3": 0, "blocks(PSD fraction; H3 sampled only among unary-H3-passing candidates)": {"2": {"H": 0.658, "H_7mH": 0.658, "H_H3": 0.658, "n": 1500}, "3": {"H": 0.3293333333333333, "H_7mH": 0.3293333333333333, "H_H3": 0.3293333333333333, "n": 1500}, "4": {"H": 0.11133333333333334, "H_7mH": 0.11133333333333334, "H_H3": 0.11133333333333334, "n": 1500}, "5": {"H": 0.018666666666666668, "H_7mH": 0.018666666666666668, "H_H3": 0.018, "n": 1500}, "6": {"H": 0.002, "H_7mH": 0.002, "H_H3": 0.0013333333333333333, "n": 1500}, "7": {"H": 0.0, "H_7mH": 0.0, "H_H3": 0.0, "n": 1500}, "8": {"H": 0.0, "H_7mH": 0.0, "H_H3": 0.0, "n": 1140}}}
+
+## 6. o2_srg243_control.py (positive control on real srg(243,22,1,2) graphs of the archive)
+{'graph': 'bvls243.edges', 'k': 22, 'r': 4, 's': -5, 'line': [0, 1, 2], 'c(G_T)': 10, 'far': 180, 'max|local-true| r': 2.6645352591003757e-15, 'max|local-true| s': 9.325873406851315e-15, 'rank Pi^(r)': 72, 'rank Pi^(s)': 50, 'eig Pi^(r) in {0,1}': True, 'eig Pi^(s) in {0,1}': True, 'star size': 18, 'star block r min eig': -9.01714006197249e-16, 'star block s min eig': 2.654388227908743e-15, '|blk_r 1|': 1.9984014443252818e-15, '|blk_s 1|': 4.010680676458378e-15}
+{'graph': 'new243_trade_aut162.edges', 'k': 22, 'r': 4, 's': -5, 'line': [0, 43, 77], 'c(G_T)': 5, 'far': 180, 'max|local-true| r': 3.1086244689504383e-15, 'max|local-true| s': 4.440892098500626e-15, 'rank Pi^(r)': 72, 'rank Pi^(s)': 50, 'eig Pi^(r) in {0,1}': True, 'eig Pi^(s) in {0,1}': True, 'star size': 18, 'star block r min eig': -5.740270670315802e-21, 'star block s min eig': -3.3809924240144328e-15, '|blk_r 1|': 1.7763568394002505e-15, '|blk_s 1|': 6.661338147750939e-15}
+(The first attempt of 6 used numpy pinv with its default cutoff on the singular near block: error 1e-3, eigenvalues not in {0,1}.  A numerical artefact of the "truth" side; fixed with rcond = 1e-9, hermitian = True.)
+
+## 7. o2_hasse7.py: the first version of the depth-7 rule at p != 7 used the unit part of det Pi_XX and held only
+655/1260, 641/1245, 621/1221 (random): that statement was WRONG.  Corrected (rank-6 discriminant d0): 3726/3726.
+The first version is still printed by the script as "first version (u = det/p) holds".
+
+## 8. Self-correction on the theorem, case (iv), before publication of the note.
+A first draft said that at ranks 39 and 41 degenerate order-2 conditions need s = 0 on >= 2 or 3 dimensions
+(probability <= 7^-3).  WRONG: the corank-1 case at 7 far vertices (probability ~1/6) gives a condition whenever the
+complementary plane C is anisotropic (rule (iii) of the note; (C43) is its rank-43 case).  Checked with o2_corank.py
+(seeds 11, 12, 13; rho = 2, 4, 6): with C anisotropic, v7(det) - (6 - rho) in {3, 5} only (16/16, 6/6, 26/26); with
+C hyperbolic, even values occur (180 + 8 + 1 of 232; 194 + 18 of 255).  See corank_*.json.
+
+## 9. Last runs before the stop (16:33, user back on the PC; no computation afterwards)
+- o2_corank0.py 21 2000 and 22 2000 -1: corank-1 rule at rho = 0 confirmed (corank0_s21.json, corank0_s22.json).
+- o2_c43_rate.py 5 0 / 6 0 / 1 2 with 300000 samples: c43_s5_x0_more.json, c43_s6_x0_more.json, c43_s1_x2_more.json.
+- The adversarial review agent launched at 16:25 was asked to stop; no review result was received before the note was finished.

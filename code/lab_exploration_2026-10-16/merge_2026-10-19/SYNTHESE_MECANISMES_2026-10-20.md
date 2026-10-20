@@ -476,8 +476,17 @@ Il y en a deux.
    - **Aucune condition reliant les résidus de différentes droites ne peut exclure 39, 41 ou 43.** Il faut la
      structure 0/1 et la positivité.
    - Un test au rang 43 est une relaxation valable pour les quatre rangs.
-3. **Des conditions 7-adiques d'ordre 2 locales.** H² = 7H donne déjà UᵀU ≡ 0 (mod 7), mais c'est global sur la droite.
-   Une version restreinte à l'étoile ferait bouger les rangs 41 et 43 (NOTE_ORDRE2_7ADIQUE.md).
+3. **Des conditions 7-adiques d'ordre 2 locales : rien de fort** (NOTE_ORDRE2_7ADIQUE.md, agent + relecteur, 20/10).
+   - UᵀU ≡ 0 est vrai, mais du premier ordre. Le système mod 49 n'ajoute rien à la décomposition connue du réseau
+     lointain.
+   - Sur tout ensemble de lointains, chaque ordre 7-adique se réduit à une condition de représentabilité. Dans les
+     cas génériques, rien n'agit avant 7 lointains.
+   - À 7 lointains :
+     - une règle de corang 1 retire environ 7 % aux rangs 37 à 41 ;
+     - (C43), au rang 43 : si rang₇ H₇₇ = 6, alors v₇(det H₇₇) est impair, ce qui retire 11 à 14 % des
+       configurations.
+   - Gain sur les tests existants : nul, car les étoiles meurent avant 7 lointains.
+   - Un nouveau projecteur réel Π⁽³⁾ rend redondant le test 7I − H ⪰ 0.
 4. **Ce qui est hors de portée.**
    - Le test par droite au rang 39 : environ 1 h × 10¹¹ droites.
    - Au rang 41 : environ 10¹⁵ nœuds par droite, car les 5 premiers lointains n'ont aucune contrainte mod 7.
