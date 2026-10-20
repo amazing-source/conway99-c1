@@ -51,7 +51,8 @@ Le nombre de contraintes croît comme le **carré** de la taille de la configura
 liberté, elle, ne croît que **linéairement**. Au-delà d'un seuil, plus rien ne survit. Prise seule, chaque famille est
 toujours satisfaisable (§7.2).
 
-Le seuil dépend de la **quantité d'information 7-adique** :
+Le seuil dépend de la **quantité d'information 7-adique** (le filtre réel ne dépend pas du rang, mais il ne suffit
+pas seul) :
 - elle est maximale au rang 37, où le graphe lointain d'une droite est une *fonction* du graphe proche mod 7 ;
 - elle décroît aux rangs 39 à 43, où des vecteurs résiduels cachés absorbent les contraintes.
 
@@ -176,7 +177,7 @@ Le résidu ajoute à chaque lointain un vecteur caché u ∈ F₇^ρ. La conditi
 | rang | ρ | codimension mod 7 | espérance mod 7 seul (heuristique) | avec le filtre réel | observé |
 |---|---|---|---|---|---|
 | 37 | 0 | 55 conditions (épinglées) | environ 3·10⁻⁹ | encore moins | **toutes les droites testées meurent** (E) |
-| 39 | 2 | 36 | environ 0,1 à 1 | environ 10⁻¹¹ | **5 étoiles sur 5 meurent**, graines 1, 2, 3, 4, 6, dans les deux types de forme ; 1·10⁸ à 2,5·10⁸ nœuds, 40 min à 2 h ; c'est le filtre réel qui tue (12,8·10⁹ coupes réelles) |
+| 39 | 2 | 36 | environ 0,1 à 1 | environ 10⁻¹¹ | **5 étoiles sur 5 meurent**, graines 1, 2, 3, 4, 6, dans les deux types de forme ; 1·10⁸ à 2,5·10⁸ nœuds, 40 min à 2 h ; le filtre réel coupe énormément (12,8·10⁹ coupes) et accélère d'un facteur d'environ 8. Sans lui, la graine 4 n'a aucune feuille sur les 4,5 % de l'arbre explorés en 15 min. Sa nécessité n'est pas établie |
 | 41 | 4 | 21 | environ 10¹⁰ | environ 0,1 à 1 | à la limite ; recherche impossible (environ 10¹⁵ nœuds par droite, §8) |
 | 43 | 6 | 10 | environ 10¹⁹ | environ 10⁸ | l'étoile survit ; il faut la double étoile, sur-déterminée mais impossible à parcourir |
 
@@ -344,7 +345,7 @@ Le résidu ajoute à chaque lointain un vecteur caché u ∈ F₇^ρ. La conditi
 | mort observée | ingrédients nécessaires |
 |---|---|
 | étoile au rang 37 | Green (mod 7) × couplage λ = 1 (sans l'un ou l'autre, pas de conclusion) |
-| étoile au rang 39 | résidu (mod 7) × positivité réelle |
+| étoile au rang 39 | résidu (mod 7) × couplage. La positivité réelle accélère d'un facteur d'environ 8 ; on ne sait pas encore si elle est nécessaire |
 | germes de rang 30 | DISC (arithmétique) × extension (combinatoire) |
 | cinquième étoile | C1/C2 (comptages λ, μ) × capacité serrée (comptage propre à k = 14) |
 

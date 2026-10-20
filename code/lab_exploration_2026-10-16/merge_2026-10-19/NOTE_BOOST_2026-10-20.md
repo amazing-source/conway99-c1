@@ -62,8 +62,12 @@ d'années-CPU », environ 1 s par droite c = 1 et 4 à 100 s par droite c = 2. E
 - **Lecture.**
   - L'heuristique de NOTE_OBSTRUCTION §3.2 prévoyait environ 10⁵ solutions de l'étoile au rang 39 avec les seules
     conditions mod 7.
-  - Le filtre réel (projecteur lointain, valable à tout rang) est ce qui la tue : aucune configuration n'atteint
-    10 lointains.
+  - Le filtre réel (projecteur lointain, valable à tout rang) coupe énormément : 1,28·10¹⁰ coupes pour la
+    graine 1. Aucune configuration n'atteint 10 lointains.
+  - **Contrôle sans le filtre réel** (graine 4, STAR_NOREAL=1) : TIMEOUT à 900 s, 98,9 M nœuds, 573 branches de
+    profondeur 1 sur 12 647, aucune feuille. Le filtre accélère donc la recherche d'un facteur d'environ 8. Sa
+    nécessité n'est pas établie : mod 7 et couplage pourraient suffire, puisque l'heuristique donne une espérance
+    d'environ 0,1 à 1 solution sans le filtre.
   - C'est, à ma connaissance, le premier verdict complet par droite au rang 39 : recherche faite dans work/ et dans
     le dépôt. Le moteur de droite complète (oblr2, oblr3) donnait TIMEOUT au rang 39 (NOTE_FUSION R4,
     NOTE_CHATGPT_CORE37_VERIF).
