@@ -2,8 +2,9 @@
 
 Agent R1. Matériau : `assemblage/MATERIAUX_BRUTS_partiel.md` (lots L01 à L08 et L10) et `assemblage/MATERIAUX_BRUTS_L09.md`
 (lot L09), lus en entier, avec les fiches `fiches/*.jsonl` et `assemblage/INDEX_RESULTATS.tsv`. Les lots L11a à L11f (pont)
-n'ont pas été traités : voir §7. Les combinaisons sont dans `R1_conditionnels_x_faits.jsonl` (R1-01 à R1-30). La table complète
-des 858 conditionnels est en annexe A.
+sont traités en seconde passe (§9, annexe B). Les combinaisons sont dans `R1_conditionnels_x_faits.jsonl` (R1-01 à R1-30 en
+première passe, R1-31 à R1-42 en seconde passe). La table complète des 858 conditionnels de la première passe est en annexe A ;
+celle des 129 conditionnels L11, en annexe B.
 
 ## 0. Résumé
 
@@ -30,7 +31,9 @@ des 858 conditionnels est en annexe A.
    - (H₃₇), pour le seul rang 37.
 6. **Fait nouveau, borne contre borne (R1-19).** P ≤ 693 + 3G (note 08 de C2, avec Lou–Murin) et 3P + 4G ≤ 2772 redonnent
    exactement P ≤ 852 = ⌊11088/13⌋. L'agent R2 l'a trouvé indépendamment (R2-01, §8).
-7. **Incohérences relevées** (§6) : classes DISC, compte des 174 noyaux, « rang 42 » externe, statuts de F2-SRG, statut de
+7. **Seconde passe (§9)** : pas d'exclusion nouvelle ; les cinq pistes du coordinateur sont déjà connues ou dominées ; une
+   correction de cette première passe (R1-40) ; deux combinaisons nouvelles sans exclusion (R1-36, R1-37).
+8. **Incohérences relevées** (§6) : classes DISC, compte des 174 noyaux, « rang 42 » externe, statuts de F2-SRG, statut de
    « rang 37 ⇒ P > 285 », borne b₂ ≥ 968 au rang 43 (signalée aussi par R2). S'y ajoutent huit redécouvertes datées.
 
 ## 1. Méthode et conventions
@@ -122,10 +125,10 @@ prouver.
 | rang | chaîne | ampleur | hypothèses ouvertes (minimal) | maillons établis (statut) | données, écart |
 |---|---|---|---|---|---|
 | 1 | **(T15) + P ≤ 852** (R1-06) | graphe | (T15) : tout bloc PSD de nullité ≥ 14 a t(l) + t(m) ≥ 15. Une forme affaiblie suffit : **vrai pour tous les blocs sauf au plus 34** | 36P = Σ_blocs (t(l) + t(m)) (P) ; P ≤ 852 (C) | 558 structures ν = 14, toutes avec t(l) + t(m) ≥ 16 (familles h et G1, biais reconnu). **Écart 866,25 contre 852**. Variante (T8) ⇒ P ≥ 924 |
-| 2 | **(N9-NG) ⇒ (NG5) ⇒ (NG7) + P ≤ 852** (R1-07) | graphe | une seule parmi N9-NG ⟺ rang(F) ≥ 12, NG5, NG7 ou NG14. Sous-routes : ODDCONST + EVEN′ ; SYM + QUOT ; ODD-PURE + rang Z ≥ c − 1 ; SYM6 + D9 ; rang S ≥ 9..12 | NG5 ⇒ c(l) ≥ 5, g ≥ 4, t ≥ 8 ⇒ P ≥ 924 (P, vérifié par Codex) ; ≥ 254 blocs non grille à min t ≤ 7 (P) | 97 structures non grille conformes, **56 à l'égalité**. Le cas c(l) = 4 à nullité 13 est atteint (marge nulle). N9 (avec grilles) est réfuté |
-| 3 | **(H-MATCH) + L8** (R1-08) | graphe | (H-MATCH), ou (H-INV), ou (S1) + (S2) | H-MATCH ⇒ point de Hamming (P, relu par un agent) ; L8 (P, preuve à la main notes/105) ou Makhnev 1988 (cité) ou ρ ≤ 191 (P) | 416 classes de noyaux ; ≈ 853 000 structures (copie git b0cc3de) ou ≈ 1,14 M (addendum), aucune structure cassée de nullité ≥ 14 (fiche L07-276, S) ; route locale déclarée épuisée le 16/10 (fiche L07) |
+| 2 | **(N9-NG) ⇒ (NG5) ⇒ (NG7) + P ≤ 852** (R1-07) | graphe | une seule parmi N9-NG ⟺ rang(F) ≥ 12, NG5, NG7 ou NG14. Sous-routes : ODDCONST + EVEN′ ; SYM + QUOT ; ODD-PURE + rang Z ≥ c − 1 ; SYM6 + D9 ; rang S ≥ 9..12 | NG5 ⇒ c(l) ≥ 5, g ≥ 4, t ≥ 8 ⇒ P ≥ 924 (P, vérifié par Codex) ; ≥ 254 blocs non grille à min t ≤ 7 (P) | 97 structures non grille conformes, **56 à l'égalité**. Le cas c(l) = 4 à nullité 13 est atteint (marge nulle). N9 (avec grilles) est réfuté. *Seconde passe* : ces structures sont impossibles dans Conway, ce ne sont pas des indices (R1-40) |
+| 3 | **(H-MATCH) + L8** (R1-08) | graphe | (H-MATCH), ou (H-INV), ou (S1) + (S2) | H-MATCH ⇒ point de Hamming (P, relu par un agent) ; L8 (P, preuve à la main notes/105) ou Makhnev 1988 (cité) ou ρ ≤ 191 (P) | 416 classes de noyaux ; ≈ 853 000 structures (copie git b0cc3de) ou ≈ 1,14 M (addendum), aucune structure cassée de nullité ≥ 14 (fiche L07-276, S) ; route locale déclarée épuisée le 16/10 (fiche L07). *Seconde passe* : données hors de Conway (R1-40) |
 | 4 | **R8 UNSAT** (R1-09) | graphe, tout rang | R8 (calcul fini) | R8 relâche la 5ᵉ étoile (P, audit du modèle du 20/10) | coût 5·10⁷ à 10¹² h-cœur (2·10⁴ à 4·10⁸ avec un cassage idéal) ; aucun germe de rang 30 ne reçoit de colonne |
-| 5 | **(R7-NG) + L22** (R1-10) | graphe | R7-NG : bloc PSD sans grille ⇒ rang_F7(8T_S) ≥ 29 | 7-rang ≤ r − 15 ≤ 28 (P) ; ≥ 396 blocs non grille (P) | 6 122 blocs non grille, 7-rang ≥ 30 observé ; jugé « non crédible » (marge 1) ; R7 sans « NG » réfuté (E7) |
+| 5 | **(R7-NG) + L22** (R1-10) | graphe | R7-NG : bloc PSD sans grille ⇒ rang_F7(8T_S) ≥ 29 | 7-rang ≤ r − 15 ≤ 28 (P) ; ≥ 396 blocs non grille (P) | 6 122 blocs non grille, 7-rang ≥ 30 observé ; jugé « non crédible » (marge 1) ; R7 sans « NG » réfuté (E7). *Seconde passe* : blocs impossibles dans Conway (R1-40) |
 | 6 | **Route c** (R1-14) | graphe | registre c = 3 (35 gabarits) ; branche c ≤ 2 (≈ 10⁷ gabarits) | c ≥ 4 exclu (S, sans certificat portable) ; « une droite à c ≤ 4 » déjà P par P ≤ 852 | variante : (B′) + [m ≥ 2 exclu] |
 | 7 | **Q7 + P ≤ 852** | graphe | Q7 (⟸ ODDCONST + SYM6) | réduction de résonance (P) | — |
 | 8 | **174 noyaux** (K01) | graphe | aucun des 174 noyaux de 14 sommets ne se prolonge | motif obligatoire de Makhnev (cité) ; 373 → 310 → 174 (C) | pilotes sans gain |
@@ -136,8 +139,10 @@ prouver.
 | 13 | **(H₃₇)** (R1-11) | rang 37 | test d'étoile sur toutes les classes à t ≤ 7 (calcul fini) | Théorème 6.1 (P, non relu par un tiers) ; P ≤ 852 (C) | 1,87·10¹¹ classes, environ 6·10⁴ h-cœur ; 33 754 droites tirées, toutes UNSAT (E) |
 | 14 | **(K22)**, ou « 7-rang ≥ 25 » | rang 37 (et 39) | K22 (sur les blocs non grille, cela suffit) | 7-rang ≤ r − 15 (P) | 331 objets de 7-rang 25, 29 ou 30 |
 | 15 | **Mondes au rang 37** (R1-12) | rang 37 | N16, N18, c₂₀ ≤ 4 (trois) | identité 17.100 (C/E) ; b₃ ≥ 45 898 (C) ; N14 (E) | sans N18 la route échoue : 560 560 > 447 412 |
-| 16 | **Monde P = S = 0 au rang 37** (R1-15) | cas | NT et (a′) uniforme | maille ≥ 5 ⇒ connexe au rang 37 (E) | — |
+| 16 | **Monde P = S = 0 au rang 37** (R1-15, R1-36) | cas | *seconde passe* : (B″) seule ; en première passe : NT et (a′) uniforme | maille ≥ 5 ⇒ connexe au rang 37 (E) ; le monde est contenu dans ¬(B) | — |
 | 17 | **S0 au rang 43** (R1-25) | cas | borne ≤ 2288 | il en faut ≥ 2289 + 15g (P) | — |
+| 18 | **Monde ¬(B)** (R1-36, seconde passe) | cas | (B″) : aucun bloc PSD de nullité ≥ 14 à deux droites c = 1 (découle de (B′), NG5, N9-NG ou ODD-PURE) | grille ⇒ droite spéciale (P) ; P ≥ 694 ⇒ grille (P) | dans ce monde ρ = 0 et P ≤ 693 |
+| 19 | **Coin sans grille du rang 37** (R1-37, seconde passe) | cas | K24 (τ ≤ P/2) et canaux hors C6 < 6,04 M (PL flottant) | τ ≤ P ≤ 693 (P) | masses 7 à 9 : bornes certifiées de 20 à 35 fois la marge ; optimum du PL (P = 780) hors du domaine prouvé |
 
 *Lecture.* Les rangs 1 à 3 sont trois formes d'un même manque : un **plafond local** sur les blocs à quatre étoiles de
 nullité ≥ 14. Il porte sur les transversales (T15), sur la résonance (N9-NG) ou sur les couplages (H-MATCH). Le rang 1 est le
@@ -211,8 +216,8 @@ Ordre de priorité : d'abord ce qui affirme un fait, ensuite ce qui affine un ou
 
 ## 7. Ce qui n'a pas été examiné
 
-- **Les lots L11a à L11f** (messages du pont LAB ↔ Codex), annoncés pour une seconde passe. Les copies de `pont_codex/` n'ont été
-  ouvertes que pour un grep ponctuel (classe DISC 14), sans lecture des lots.
+- **Les lots L11a à L11f** (messages du pont LAB ↔ Codex) : traités en seconde passe, à partir des fiches et du matériau
+  extrait (§9). Les copies de `pont_codex/` n'ont été ouvertes que pour un grep ponctuel (classe DISC 14).
 - **Le croisement bornes × bornes systématique.** Il relève d'un autre agent. Je n'ai traité que les bornes qui touchent un
   conditionnel (R1-05, R1-06, R1-13, R1-19).
 - **Les chaînes internes à C2.** Je ne les ai pas recroisées. C2 est clos par la route C : 156/156, avec la réserve des
@@ -236,6 +241,111 @@ Lecture limitée à un grep sur les chiffres clés ; je n'ai pas vérifié leurs
 | R1-19 (P ≤ 693 + 3G et 3P + 4G ≤ 2772 ⇒ P ≤ 852) | R2-01 (« P ≤ 852 par deux facettes ») ; R3 cite aussi l'inégalité de la note 08 | même conclusion, trouvée indépendamment |
 | R1-20 (filtre des retournements, sans C2) | R2-13 (orbites de taille ≥ 16 sous les 2⁷ retournements) | compatible ; R2 va plus loin |
 | R1-28 (b₂ au rang 43) | R2-03, R2-21 (b₂ ≥ 1000, ≥ 1264 avec racine) | R2 corrige la borne 968 ; voir I10 |
+
+## 9. Seconde passe : lots L11a à L11f (pont LAB ↔ Codex)
+
+Matériau : `assemblage/MATERIAUX_BRUTS_L11.md`, dont j'ai extrait les 129 conditionnels des tables « conditionnels » des six
+blocs, et les fiches `fiches/L11a_pont` à `L11f_pont`. J'ai croisé les conditionnels L11 avec les faits L01 à L11, puis les
+conditionnels L01 à L10 avec les faits nouveaux de L11. Pour ce second sens, j'ai parcouru les 57 faits L11 de statut P ou C
+marqués « ABSENT DES NOTES ». Nouvelles entrées : R1-31 à R1-42. Les 129 conditionnels sont en annexe B.
+
+### 9.1 Ce qui change par rapport à la première passe
+
+1. **Toujours aucune exclusion** du graphe, de C1 ou d'un rang. Aucune hypothèse d'un conditionnel L11 n'est prouvée ailleurs
+   au point de fermer une chaîne.
+2. **Hypothèses prouvées, dominées ou réfutées par un fait établi** (aucune ne change une conclusion) :
+   - « tout automorphisme non trivial déplace ≥ 13 sommets » (L11d-102) est dominé par Wilbrink 1984, Thm 1 : au moins 81
+     sommets déplacés (R1-34) ;
+   - au rang 43, la réserve « a₈ < 1316 » du conditionnel C2 de L11d est levée par L05-224 (déjà dans R1-13) ;
+   - « chaque droite dans ≥ 5 grilles » (L11c K2) est dominé : 4 grilles par droite donnent déjà ρ ≥ 154 > 126 (R1-42) ;
+   - réfutées à la source : L11b K11 et K12 (plancher certifié 16 496 > 13 900), H3 (L11d C8), (A) donc C9 et la forme
+     locale de C10, MIX ≤ 2 ou 3, « aucun bloc à 4 relations mixtes », (A4), ODD9, (R7) sans « NG ».
+3. **Correction de ma première passe (R1-40).** Les « données » citées dans R1-07, R1-08 et R1-10 sont des blocs impossibles
+   dans Conway (L08-166 : rang Res ≥ 8 > r − 37). Je les retire comme indices.
+4. **Deux combinaisons nouvelles, sans exclusion :**
+   - R1-36 : (B) découle de P ≥ 694 (grille ⇒ droite spéciale). Dans le monde ¬(B), on a ρ = 0 et P ≤ 693. Une seule
+     hypothèse, (B″), plus faible que (B′), viderait ce monde. Au rang 37, ce monde contient celui de P = S = 0 (R1-15).
+     R1-15 n'a donc plus besoin de (NT) + (a′).
+   - R1-37 : coin sans grille du rang 37. On a τ ≤ P ≤ 693, contre le seuil 535 ; R3-12 l'a vu d'abord. Avec K24 (ouvert),
+     τ ≤ 346. L'optimum du PL de comptage (P = 780) sort du domaine prouvé P ≤ 693.
+5. **Les cinq pistes signalées par le coordinateur.**
+   - (1) DÉJÀ CONNUE (L08-033, -049, -168 ; R1-31). Même prouvée, (B′) ne donne pas d'exclusion seule : il faut [m ≥ 2 exclu].
+   - (2) DÉJÀ CONNUE (R1-07 ; R1-32). La marge d'ODD-PURE n'est pas uniforme (L11e-130) ; les ≈ 7 444 côtés ne sont pas des
+     indices.
+   - (3) DÉJÀ CONNUE : session externe du 27/07 et Codex du 12/10. C'est un découpage complet, donc l'hypothèse équivaut au
+     problème. Le dictionnaire « part 1 ⟺ barreau de prisme » est dérivé ici (R1-33).
+   - (4) DOMINÉE par Wilbrink (R1-34).
+   - (5) DÉJÀ CONNUE : fiche L11a et L06 BORNE-05 (R1-35).
+
+### 9.2 Chaînes mises à jour
+
+Les lignes 2, 3, 5 et 16 du tableau du §3 sont annotées. Deux lignes nouvelles, de portée « cas », y sont ajoutées
+(18 et 19). L'ordre des lignes 1 à 17 ne change pas.
+
+| chaîne | changement |
+|---|---|
+| (N9-NG) ⇒ (NG5) ⇒ (NG7) (R1-07, R1-32) | données retirées comme indices (R1-40) ; ODD-PURE : il faut un argument exact (L11e-130) |
+| (H-MATCH) + L8 (R1-08) | données retirées comme indices ; au rang 37, NOTE_FUSION §4.2 la juge inutile si les droites c ≤ 2 meurent (E sur échantillons) |
+| (R7-NG) (R1-10) | données retirées comme indices ; (K22) ⟸ (a′) aux paires c = 1 génériques |
+| monde P = S = 0 au rang 37 (R1-15) | hypothèses ouvertes : (B″) seule, au lieu de (NT) et (a′) (R1-36) |
+| nouveau : monde ¬(B) (R1-36) | (B″) ; ρ = 0 et P ≤ 693 dans ce monde |
+| nouveau : coin sans grille du rang 37 (R1-37) | K24 et canaux hors C6 < 6,04 M, dans un PL flottant |
+
+### 9.3 Quasi-ratés nouveaux
+
+| objets | ce qui est prouvé | ce qu'il faudrait | écart |
+|---|---|---|---|
+| paires jumelles τ, rang 37, ρ = 0 | τ ≤ P ≤ 693 (P : note 249, note 08) | τ_n < 535 (seuil de LAB, H) | 158, soit 30 % (R3-12) ; 346 < 535 si K24 |
+| budget 17,1 M (L11b-86, H) | — | canaux hors C6 < 6,04 M, sous K24 | masses 7 à 9 : bornes certifiées de 20 à 35 fois la marge (NOTE 17.89) |
+| PL de comptage à ρ = 0 (NOTE 17.45) | optimum à P = 780, τ = 780 | P ≤ 693 + 3ρ (P) | optimum hors du domaine prouvé ; non recalculé |
+| collisions, P = 0, rang 37 | 185,2 M (certifié) | < 3,84 M | facteur 34,6 (R1-38) |
+| grilles par droite | ρ ≤ 126 (C) | q = 3 grilles partout exige ρ ≥ 116 | compatible ; q = 4 exclu (R1-42) |
+
+### 9.4 Incohérences et pièges nouveaux
+
+- **Statut de P ≤ 852** (R1-39). Le pont le donne C : certificat exact, identité revérifiée le 18/10. L08-067 le donne A + E.
+  Ma lecture : C relatif au recensement d'ordre 9, le recensement étant A + E. La vérification est laissée à V1/V2.
+- **Données des lois à quatre étoiles** : R1-40 (correction de ma première passe).
+- **Retraits de LAB à ne pas réutiliser** (L11c-134) :
+  - « au rang 37 le PL sans grille est au seuil » (16,06 M contre 15,98 M), calculé sur deux collections différentes ;
+  - « 20,2 M avec classes jumelles de taille ≤ 2 ».
+- **(A) = H3″ local** est réfutée par 52 contre-exemples exacts. Les conditionnels C9 et C10 de L11d qui en partent sont
+  morts ; (B) et (C) restent ouverts.
+- **Vocabulaire.** Dans la session externe, « r7 » (L03b-130) est le rang du projecteur 231 × 231 du graphe des triangles. Ce
+  n'est pas r (complément de R1-30).
+- **L11d-102** n'est qu'esquissé dans le pont. Il est de toute façon dominé (R1-34).
+
+### 9.5 Recoupements avec R2 et R3 (seconde passe)
+
+| R1 | R2 / R3 | accord |
+|---|---|---|
+| R1-37 (τ ≤ P ≤ 693 au coin sans grille) | R3-12 (« quasi-raté : … τ ≤ P ≤ 693 … écart de 158, soit 30 % ») | R3 l'a trouvé d'abord ; R1 ajoute K24 et le reste du budget |
+| R1-36 (¬(B) ⇒ ρ = 0 ⇒ P ≤ 693) | R2 §2.2 (« rang 37 et tout G(T) connexe ⇒ ρ = 0 (donc P ≤ 693 …) ») | même implication, chez R2 au seul rang 37 |
+| R1-34 (Wilbrink) | R3-06, R3-43 | Wilbrink est cité par R3 pour l'ordre 11 |
+| R1-37 (seuils 25 201 ; 27 142 ; 33 780) | R2 l. 162 et l. 315 (R2-07) | mêmes chiffres |
+
+### 9.6 Sources primaires ouvertes en seconde passe
+
+- `work/exploration_2026-10-16/merge_2026-10-19/NOTE_FUSION_2026-10-19.md:100-260` (§1.3, 1.4, 3, 4.1 à 4.3) ;
+- `work/c1_theta_lp_2026-10-07/NOTE.md:3440-3475` (17.88, 17.89) et `:3820-3850` (17.96) ;
+- `Desktop/Recherche_Conway/c1-asymmetry-audit/notes/NOTE_COEXISTENCE_DEFAUTS_COCLIQUES_2026_10_12.md:3360-3400` (§75) ;
+- `conway99-c1:main:notes/94_NUIT_LITTERATURE.md:95-135` (Wilbrink, Cesarz–Woldar) ;
+- fiches L11a (§ recombinaison 3), L11b (§ 8.2.4) et L11d (§ 5, K1 à K8) ;
+- `assemblage/R2_bornes_x_bornes.md:85-120` et `assemblage/R3_lemmes_analogies.md:120-132`.
+
+### 9.7 Ce qui n'a pas été examiné (seconde passe)
+
+- **Les textes des messages du pont** (`pont_codex/lots/L11x_pont.md`). Seuls les fiches et `MATERIAUX_BRUTS_L11.md` ont été
+  lus ; les mentions « ABSENT DES NOTES » n'ont pas été recontrôlées sur les messages.
+- **Le croisement exhaustif des 789 résultats L11 avec les 858 conditionnels de la première passe.** Seuls les 57 faits P ou C
+  « ABSENT DES NOTES » ont été parcourus ; aucun ne prouve une hypothèse ouverte de l'annexe A.
+- **Les vérifications confiées à d'autres agents**, non refaites :
+  - fermeture c ≥ 4 face au bogue OR-Tools (V3) ;
+  - décomposition de P ≤ 852, forme affaiblie de T15 et « aucune droite dans six grilles » (V1, V2) ;
+  - DISC, R3-02 et R2-03.
+- **Aucun calcul.** Le PL de R1-37 n'a pas été relancé. C'est un PL flottant (HiGHS), de durée non mesurée ici, à refaire avec
+  `lp_family.py` et les facettes P ≤ 693 + 3ρ et τ ≤ P.
+
 
 ## Annexe A. Table de tous les conditionnels (858), par lot
 
@@ -1230,3 +1340,184 @@ Répartition : ouverte 29 ; fait 8 ; caduque 5 ; chaîne 2 ; réfutée 2 ; crit�
 | COND-L10-47 | MB:2656 | [COND-L10-47] SI tous les D-carrés sont « sibling », ALORS contradiction (théorème D, C2) ¦ P (vérifié par Astra) ¦ MEMB/conway99-research-state.md:48… | caduque |  | C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
 | COND-L10-48 | MB:2657 | [COND-L10-48] SI 3 ∈ spec(Γ_S) (cas des objets de rang 30), ALORS la formule de la résolvante ne s'applique pas telle quelle ¦ constat ¦ SP/codex_tran… | fait |  | constat |
 | COND-L10-49 | MB:2658 | [COND-L10-49] À quatre étoiles, srg(v,k,1,2) force 5k − 16 − g relations au-delà des étoiles : 10 pour Conway, aucune pour les autres paramètres λ = 1… | fait |  | P |
+
+## Annexe B. Table des 129 conditionnels du matériau L11 (seconde passe), par bloc
+
+Colonnes :
+- **réf.** : bloc et identifiant du conditionnel dans `MATERIAUX_BRUTS_L11.md` (K… ou C…), sinon « l.N » ;
+- **ligne du matériau** : « MB11:N » renvoie à `assemblage/MATERIAUX_BRUTS_L11.md` ;
+- **énoncé** : verbatim tronqué à 150 caractères, avec « ¦ » à la place des séparateurs de colonnes d'origine ;
+- **état de X**, **lien R1**, **note**, avec les mêmes états que l'annexe A.
+
+Répartition totale : ouverte 74 ; fait 24 ; caduque 11 ; réfutée 9 ; critère 6 ; chaîne 3 ; prouvée 1 ; hors cible 1.
+
+### B.1 L11a (pont, C2 puis rangs de L1, 26/09-07/10) — 26 conditionnels
+
+Répartition : ouverte 13 ; caduque 9 ; prouvée 1 ; critère 1 ; hors cible 1 ; fait 1.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11a K1 | MB11:15 | T20 (+ T16, T18, Théorème R, complétude du producteur et des recherches) ¦ T20 : P + deux programmes, « accepté » par l'utilisateur pour des sessions … | prouvée |  | T20 : P (IA) + deux programmes ; « accepté » pour des sessions IA seules ; C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
+| L11a K2 | MB11:16 | T18 et T20 ; une racine r de U avec (r,y1) = ±2 ¦ P / C ¦ ce y1 ne porte aucun repère, quel que soit y2 (Corollaire Y1) ¦ pont:#62–#64 (L11a-27) | caduque |  | C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
+| L11a K3 | MB11:17 | « aucune fonction propre entière (σ-impaire) de norme 22 » (T22) ¦ O (non revendiqué, L02_C2_aws-167) ¦ les paires de 003 d'énergie minimale 11 tomber… | caduque |  | C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
+| L11a K4 | MB11:18 | un vrai repère n'a pas de h de norme 4 d'empreinte nulle ¦ O (prouvé pour 129 réseaux, audit E pour 25) ¦ noyau rigide complet par preuve ¦ pont:#52 (… | caduque |  | C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
+| L11a K5 | MB11:19 | le jumeau a strictement plus de racines ¦ P (induction, accepté par Codex) ¦ transfert « twin with strictly more roots » sûr sans identifier le jumeau… | caduque |  | C2 clos par la route C (156/156 ; statut mixte P-IA/C/E/S) |
+| L11a K6 | MB11:20 | une configuration de Fano existe (min L = 14) ¦ ouvert par rang ; exclue à r = 37 par N14 (L06-092, E) ¦ rang_7(A − 3I) = 33 + rang(S ¦ ker D_2) ≥ 33 … | ouverte | R1-35 | Fano exclu à r = 37 par N14 (E) ; à r ∈ {39,41,43} rang(S ¦ ker D₂) = r − 33 ∈ {6,8,10} : déjà dans la fiche L11a (§ recombinaison 3) |
+| L11a K7 | MB11:21 | deux configurations de Fano distinctes forcent rang_7 ≥ 35 ¦ O (non établi, pont:#149) ¦ r = 33 exclu sans extension (sans objet ensuite) ¦ pont:#145 … | caduque |  | r = 33 hors de la fenêtre r ∈ {37,39,41,43} |
+| L11a K8 | MB11:22 | au plus 13 (puis 10, puis 4) vecteurs de norme 16 par graine ¦ P ¦ r = 33 force un Fano, puis a_7 ≥ 14 / 42 / 94 / 66 (cert.) ¦ pont:#143–#150 (L11a-6… | caduque |  | r = 33 hors de la fenêtre r ∈ {37,39,41,43} |
+| L11a K9 | MB11:23 | a_9 ≤ 497 122 ; ou ≤ 53 vecteurs de norme 18 par graine indépendante ¦ O (sans objet) ¦ r = 33 exclu ¦ pont:#147, #149 (L11a-68) | caduque |  | r = 33 hors de la fenêtre r ∈ {37,39,41,43} |
+| L11a K10 | MB11:24 | un cœur de norme 16 engendre k classes indépendantes de Q_r ¦ O ¦ r ≤ 45 − k dès qu'un tel vecteur existe (k = 4 ⇒ r ≤ 41) ¦ pont:#155 (L11a-74) | ouverte | R1-12 | critère de rang par cœur de norme 16 ; N16 au rang 37 ouvert |
+| L11a K11 | MB11:25 | une famille de k vecteurs courts de L1 a un Gram de rang > 45 − r mod 7 ¦ P (critère) ¦ la famille est impossible au rang r ¦ pont:#159 (L11a-74) | critère |  | critère de Gram mod 7 (P) |
+| L11a K12 | MB11:26 | 16a_9 + a_13 < 329(7^m + 1) − 2a_8, m = (45 − r)/2 ¦ C (identité) ; X ouvert ¦ le rang r est exclu ¦ pont:#178 (L11a-87) | ouverte | R1-13 | identité C ; aucun majorant de a₉ (norme 18) ni de a₁₃ (norme 26) |
+| L11a K13 | MB11:27 | r = 35 : a_9 ≤ 10^6 et a_13 < 4 837 873 ¦ E (PL) ; X ouvert ¦ r = 35 exclu (remplacé : r = 35 exclu plus tard, L05-017) ¦ pont:#178 (L11a-88) | caduque |  | r = 35 hors de la fenêtre r ∈ {37,39,41,43} (L05-017) |
+| L11a K14 | MB11:28 | r = 37 : a_9 ≤ 10^4 et a_13 < 757 806 (ou a_10 + a_11 + a_12 < 13 521) ¦ E ; X ouvert ¦ r = 37 exclu ¦ pont:#178 (L11a-88) | ouverte | R1-13 | aucun majorant de a₉ ni de a₁₃ dans le matériau |
+| L11a K15 | MB11:29 | r = 39 : a_9 ≤ 1 000 et a_13 < 83 316 ¦ E ; X ouvert ¦ r = 39 exclu ¦ pont:#178 (L11a-88) | ouverte | R1-13 | aucun majorant de a₉ ni de a₁₃ dans le matériau |
+| L11a K16 | MB11:30 | r = 41 : a_9 = 0 et a_13 < 11 686 ¦ E ; X ouvert ¦ r = 41 exclu ¦ pont:#178 (L11a-88) | ouverte | R1-13 | aucun majorant de a₉ ni de a₁₃ dans le matériau |
+| L11a K17 | MB11:31 | r = 43 : a_9 = 0 et a_13 < 1 870 ¦ E ; X ouvert ¦ r = 43 exclu ¦ pont:#178 (L11a-88) | ouverte | R1-13 | aucun majorant de a₉ ni de a₁₃ dans le matériau |
+| L11a K18 | MB11:32 | norme 18 seule à r = 37 : moins de 49 392 vecteurs ; à r = 39 : moins de 7 074 ¦ E ; X ouvert ¦ scénario « norme 18 seule » exclu ; il faut alors ≥ 1 … | ouverte | R1-13 | aucun majorant de a₉ ni de a₁₃ dans le matériau |
+| L11a K19 | MB11:33 | vecteur de norme 18 unique par graine indépendante (a_9 ≤ 9 240) ¦ O ¦ r = 37, 39 reportés sur les autres normes ; r = 43 intact ¦ pont:#171 (L11a-82) | ouverte | R1-12 | lemme par graine (a₉ ≤ 9240κ₁₈) ouvert ; repris en L11b K6 |
+| L11a K20 | MB11:34 | chaque couche a_8..a_13 < 4,8 M ¦ O ¦ r = 35 exclu (remplacé) ¦ pont:#171 (L11a-82) | caduque |  | r = 35 hors de la fenêtre r ∈ {37,39,41,43} (L05-017) |
+| L11a K21 | MB11:35 | b_1 = 0, b_2 ≤ 3 234, b_3 ≤ 32 340 ¦ H, retiré (pont:#142) ¦ r = 39, 41, 43 exclus ¦ pont:#135 (L11a-65) | ouverte | R1-28 | affirmation retirée (pont:#142) ; b₁ = 0 n'est acquis qu'au rang 37 (N14, E) ; aucun majorant de b₂, b₃ |
+| L11a K22 | MB11:36 | borne prouvée sur les vecteurs de norme 6 de M (< 10^6 ; < 80 000) ¦ H, retiré ¦ r = 41, 43 (resp. 39) exclus ¦ pont:#136 (L11a-65) | ouverte |  | borne retirée (pont:#136) ; aucune borne prouvée sur la norme 6 de M |
+| L11a K23 | MB11:37 | tout cœur de norme ≤ échelle(r) a un seuil de rang > r, pour chaque r impair de la fenêtre ¦ O (seuils norme 16 : 17/15/19/17/15, insuffisants) ¦ C1 e… | ouverte |  | seuils obtenus en norme 16 (17/15/19/17/15) très inférieurs à r : méthode insuffisante |
+| L11a K24 | MB11:38 | configuration biplan minimale dans un srg(243) réel ¦ E : absente des deux connus ¦ (si présente) aucun argument uniforme de famille ne tuerait la nor… | hors cible |  | contrôle srg(243) ; X faux sur les deux 243 connus (E) |
+| L11a K25 | MB11:39 | un vecteur de norme 22 de L1 \ L avec 33 triangles d'une partition commune ¦ H ¦ coordonnée ternaire, élément de ker(Nᵀ mod 3) ; 198 transversaux ⇒ ve… | ouverte |  | H |
+| L11a K26 | MB11:40 | r = 45 ¦ P ¦ impossible (pas de réseau pair unimodulaire de rang 44) ; r impair (Milgram) ¦ pont:#130 (L11a-56) | fait |  | r = 45 impossible (pas de réseau pair unimodulaire de rang 44) ; r impair (Milgram) |
+
+### B.2 L11b (pont, arithmétique de rang, 07-08/10) — 18 conditionnels
+
+Répartition : ouverte 13 ; réfutée 2 ; caduque 1 ; chaîne 1 ; critère 1.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11b K1 | MB11:141 | une exclusion du rang 43 n'utilisant que des entrées monotones (min 14, caps a_7, a_8, minorations b_n, racines orthogonales) ¦ exclusion de TOUS les … | ouverte | R1-28 | aucune exclusion monotone du rang 43 connue |
+| L11b K2 | MB11:142 | 2a_8 + 16a_9 + a_13 < 2632, ou b_2 < 914 (seuil relevé à 922 puis 968), ou b_3 < 6 696 790 ¦ rang 43 exclu ¦ O (aucun majorant connu) ¦ E (LAP), formu… | ouverte | R1-28 | reformulation : b₂ est minoré au-dessus du seuil (≥ 968, ou ≥ 1000 selon R2-03, vérif. V1/V2) ; aucun majorant de a₉, a₁₃, b₃ |
+| L11b K3 | MB11:143 | b_4 > plafond (15 972 863 ; 15 196 716 à ρ = 126 ; 15 197 980 via Fano à ρ = 126) ou b_4 + (651/34)b_3 > 16 851 675 ¦ rang 37 exclu ¦ O : minoration c… | ouverte | R1-12 | minoration certifiée b₄ ≥ 3 371 634 seulement |
+| L11b K4 | MB11:144 | b_4 ≥ 18 M seul ; ou b_3 ≥ 150k et b_4 ≥ 15 M ; 300k et 12 M ; 600k et 6 M ; ou b_3 ≥ 900k ¦ rang 37 exclu (anciens plafonds) ¦ O ¦ E (frontier37) ; c… | caduque |  | anciens plafonds, recoupés exactement par Codex (remplacé par K3) |
+| L11b K5 | MB11:145 | a_9 ≤ 20000, a_8 ≤ 866, et un cap ~6·10^5 sur a_13 ¦ rang 37 exclu ¦ O ¦ E (needs37, « et si ») ¦ L11b-13 | ouverte | R1-13 | a₈ ≤ 6930 (note 173) seulement, pas ≤ 866 ; aucun cap sur a₁₃ |
+| L11b K6 | MB11:146 | 3 320 240κ_18 + 2 716 560κ_20 + 740 880κ_22 + 226 380κ_24 (+ types sans graine) < 15 241 977, avec les comptes de graines corrigés (a_9 ≤ 9240κ_18, a_… | ouverte | R1-12 | lemmes par graine ouverts |
+| L11b K7 | MB11:147 | pas de 22-coclique (ou au plus une) ¦ a_7 = 0 à tout rang, plus de profil C ; au rang 37, plafonds 14 444 540,6 / 15 409 176,2 ¦ O ¦ P (note 165 ; LAP… | ouverte | R1-35 | au rang 37 a₇ = 0 est déjà donné par N14 (E) ; la suite « rang 37 exclu » est invalidée (pont:#257) |
+| L11b K8 | MB11:148 | g(l) ≤ 3 pour toute droite (τ_g ≤ 6ρ) ¦ τ_g ≤ 693, ρ ≤ 115 ; budget doublé (~30 300) ; limite sans marge contre 27 818 ¦ O ¦ H (flottant) ¦ L11b-60, L… | ouverte | R1-37 | « aucune droite dans 4 ou 6 grilles » ; au rang 37 K5 de L11c donnerait mieux (ρ = 0) |
+| L11b K9 | MB11:149 | 27 828τ_g + 31 976τ_n + (canaux hors C6) < 17,1 M (τ_g < 614 sans hors-grille ; τ_n < 535 sans grille) ¦ rang 37 exclu ¦ O ¦ H (flottant, collection d… | ouverte | R1-37 | H ; sans grille : τ ≤ P ≤ 693 (prouvé) contre τ_n < 535 ; τ ≤ 346 sous K24 (O) |
+| L11b K10 | MB11:150 | ρ ≲ 58 sans paire hors grille (via τ_g(ρ) : ρ ≤ 50 → τ_g ≤ 515 ; ρ ≤ 30 → 308) ¦ rang 37 exclu (comptabilité) ¦ O ¦ H ¦ L11b-87 | ouverte | R1-37 | H ; aucune borne ρ ≤ 50 justifiée (L11b-87) |
+| L11b K11 | MB11:151 | au rang 37, au plus 10 relations mod 7 indépendantes au-delà des faisceaux ¦ rang 37 exclu ¦ **R** (cible fausse) ¦ — ¦ L11b-88 | réfutée |  | cible fausse (L11b-88) |
+| L11b K12 | MB11:152 | sur la collection de Codex, constante totale par paire jumelle < ~13 900 (k = 2) ¦ point de grilles exclu ¦ impossible : plancher certifié 16 496 ¦ H … | réfutée |  | impossible : plancher certifié 16 496 > 13 900 |
+| L11b K13 | MB11:153 | un mineur non nul d'ordre 19 (ou 20 augmenté) sur « droite centrale + 18 droites latérales » à P = 0, pour toutes les données d'intersection ¦ contrad… | ouverte | R1-15 | monde P = 0 du rang 37 |
+| L11b K14 | MB11:154 | (a') uniforme + NT ¦ à P = S = 0 et k = 22 : toutes les droites (6,6) (note 126 §3 ter) ¦ O, O ¦ P sous hypothèses (Codex) ¦ L11b-96 | chaîne | R1-15 | (a′) uniforme et NT ouverts ; au rang 37, (NT) n'est plus utile pour d = 2 (NOTE_FUSION §4.4) |
+| L11b K15 | MB11:155 | un Gram de vecteurs du noyau de rang > 56 − r mod 7, ou de rang 19 à déterminant principal carré au rang 37 ¦ contradiction ¦ — (critère) ¦ P / C ¦ L1… | critère |  | critère de Gram (P/C) |
+| L11b K16 | MB11:156 | un majorant de a_13 (norme 26 de L1) de quelques 10^5 ¦ plafond b_4 ≤ 11,0 M ; forcerait C_total ≥ 42,6 M au point de grilles ¦ O ¦ E (sensibilités de… | ouverte | R1-13 | aucun majorant de a₁₃ ; sensibilités à recalculer sur la bonne collection |
+| L11b K17 | MB11:157 | un majorant de b_2 au rang 37 (par exemple b_2 ≤ 1000) ¦ plafond coupé via l'identité de LAP ¦ O (Codex : aucun) ¦ C (identité) ¦ L11b-67 | ouverte | R1-28 | aucun majorant de b₂ (Codex) |
+| L11b K18 | MB11:158 | « (6,6) partout » et des relations entre h_T engendrées localement à 14 près ¦ contradiction ¦ équivaut à la non-existence (LAB) ¦ — ¦ L11b-96 | ouverte |  | ⟺ but (LAB, pont:#357) |
+
+### B.3 L11c (pont, rang 37, S0, droites génériques, 08-09/10) — 24 conditionnels
+
+Répartition : ouverte 22 ; fait 2.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11c K1 | MB11:290 | aucun des 174 noyaux de Makhnev ne se prolonge en srg(99,14,1,2) ¦ C1 exclu, tous rangs, sans généricité, sans P = 0, sans involution ¦ O (couverture … | ouverte | R1-22 | 174 noyaux (Makhnev) ; prolongement ouvert (L05-098) ; ⟺ but par cas |
+| L11c K2 | MB11:291 | chaque droite est dans ≥ 5 grilles ¦ contradiction (0 type) ; pour q = 1, 2, 3, 4 il reste 115, 52, 11, 2 types ¦ conditionnel prouvé (C) ; X non étab… | ouverte | R1-43 | dominé : « 4 grilles par droite » donne déjà ρ ≥ 154 > 126 (L11e K15, C) |
+| L11c K3 | MB11:292 | (rang 37, droite connexe sans torsion) toute sélection binaire de 60 ombres compatibles de moments K a e(F) ≥ 247 ¦ aucune telle droite ; déjà vrai pa… | ouverte |  | fermé par L23 si τ est un carré non nul ; ouvert pour τ ≡ 3, 5, 6 mod 7 |
+| L11c K4 | MB11:293 | (rang 37) toute droite a G(T) connexe ¦ aucune grille au rang 37 ¦ O (maille ≥ 5 ⇒ connexe : E ; énoncé B incomplet) ¦ L11c-054 ; pont:#422 | ouverte | R1-36 | maille ≥ 5 ⇒ connexe (E) ; énoncé général ouvert |
+| L11c K5 | MB11:294 | (rang 37) tout profil à composante prisme autre que (1^6) est exclu ¦ g ∈ {0, 6} sur toute droite ; g = 6 force ρ = 231 > 126 ; donc aucune grille ¦ i… | ouverte | R1-37 | masse 1,4e8 boules ; même prouvé, ρ = 0 ne conclut pas seul (NOTE 17.89) |
+| L11c K6 | MB11:295 | (rang 37, P = 0, sous-collection z) nombre total de paires en collision des masses 7, 8, 9 < 3,84 M ¦ rang 37 exclu à P = 0, donc « rang 37 ⇒ P > 0 » … | ouverte | R1-38 | certifié 185,2 M, soit 34,6 fois le seuil |
+| L11c K7 | MB11:296 | (rang 37, collection x63, k = 2) 27 828 τ_g + 31 976 τ_n + (hors C6) < 17,1 M ; à ρ = 0, coût d'une paire jumelle hors grille < 25 201 ¦ rang 37 exclu… | ouverte | R1-37 | H ; seuil 25 201 (27 142 avec N14) contre 31 976 |
+| L11c K8 | MB11:297 | (rang 43, S0) borne < 4979 sur les vecteurs de classe 2, norme 40/9, non arêtes ¦ S0 exclu, puis toute la branche « sans 16..24 » (avec L11c-115) ¦ O … | ouverte | R1-25 | S0 (rang 43) |
+| L11c K9 | MB11:298 | (S0) borne uniforme ≤ 2288 sur les configurations P7 indépendant / Q29 ¦ S0 exclu ¦ O ¦ L11c-119 ; pont:#495 | ouverte | R1-25 | S0 (rang 43) |
+| L11c K10 | MB11:299 | (S0 sans fantôme) borne < 2001 sur les configurations (P7, N29) ¦ S0 sans fantôme exclu ¦ O ¦ L11c-118 ; pont:#493 | ouverte | R1-25 | S0 (rang 43) |
+| L11c K11 | MB11:300 | (S0) la configuration P3/N25 est exclue (n ≥ 11 forcé) ¦ S0 exclu ¦ O : 3271 supports ouverts ¦ L11c-120, L11c-124, L11c-126, L11c-144 | ouverte | R1-25 | S0 (rang 43) |
+| L11c K12 | MB11:301 | (rang 43, sans 16..24) une relation force l'isotropie du second moment de la couche 26 ¦ contradiction (169N/11) ¦ O ; non forcée au degré 2 ¦ L11c-11… | ouverte |  | relation non forcée |
+| L11c K13 | MB11:302 | les sommes cubiques par classe s'annulent ¦ la branche meurt mod 49 ¦ O ; non forcées ¦ L11c-114 | ouverte |  | relation non forcée |
+| L11c K14 | MB11:303 | (rang 43) 10a₈ + 2a₉ + 5a₁₀ + 2a₁₁ + a₁₂ < 328 ¦ aucune racine ¦ P ¦ L11c-115 | ouverte |  | implication P ; X non établi |
+| L11c K15 | MB11:304 | (rang 43) aucun objet bas (κ, g_v, u, g_l, c₁, w, s₄₄) ¦ aucun vecteur de norme 14 ou 16, au plus une paire de norme 18 ou 20 ; S0 en possède toujours… | fait |  | E |
+| L11c K16 | MB11:305 | (rang 37 ou 39 générique, bloc proche inversible) les données (boule, 60 ombres) ont un automorphisme non trivial ¦ Γ a un automorphisme ; à croiser a… | ouverte | R1-41 | rigidité P (L11c-088 à -090) ; en C1, les données (boule, ombres) d'une droite générique de rang 37 ou 39 sont donc asymétriques |
+| L11c K17 | MB11:306 | (rang 37 générique) « la symétrie de (boule, ombres) est forcée » ou « ces données n'existent pas » ¦ droites génériques exclues ¦ O ¦ L11c-093 | ouverte | R1-41 | « symétrie forcée » : aucun mécanisme |
+| L11c K18 | MB11:307 | (rang 37, z = 0) les motifs A et B sont interdits au niveau d'une étoile complète ¦ aucune étoile générique à z = 0 ¦ O ¦ L11c-033, L11c-037 | ouverte |  |  |
+| L11c K19 | MB11:308 | (rang 37) minoration de j, l'indice de saturation ¦ le filtre de Hermite τ ≥ ⌈51 883 209 j²/4⌉ retire des boules ; il faut j ≳ 230 à 440 pour les τ ob… | ouverte |  |  |
+| L11c K20 | MB11:309 | le triangle des centres alternés est exclu ¦ toute réparation d'un ruban six injectif contient deux cordes disjointes ¦ O ¦ L11c-104 | ouverte |  |  |
+| L11c K21 | MB11:310 | (rang 37) les mondes des normes 16, 18 et 20 meurent ¦ rang 37 exclu : il force une norme 14, 16, 18 ou 20, et la norme 14 est exclue le 10/10 (L06-09… | ouverte | R1-12 | mondes N16, N18, N20 du rang 37 |
+| L11c K22 | MB11:311 | (P = 0) aucun vecteur φ = (2, 1^16) du noyau ¦ le canal moulin-cubique de C8 disparaît ¦ O (359 types) ¦ L11c-068 | ouverte |  | 359 types |
+| L11c K23 | MB11:312 | un sommet extérieur a ≥ 3 voisins dans un cubique U ¦ U n'a aucun partenaire moulin ¦ P ¦ L11c-071 | fait |  | P |
+| L11c K24 | MB11:313 | (sans grille) un prisme a au plus un jumeau ¦ τ ≤ P/2 (le « 20,2 M » de LAB, calculé sur une mauvaise collection, est retiré) ¦ O ¦ L11c-134, L11c-135 | ouverte | R1-37 | K24 : τ ≤ P/2 ; prouvé seulement τ ≤ P (note 249) |
+
+### B.4 L11d (pont, normes, cocliques, symétrie forcée, 10-14/10) — 19 conditionnels
+
+Répartition : ouverte 6 ; fait 5 ; réfutée 3 ; critère 3 ; chaîne 2.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11d C1 | MB11:492 | Si N16 et N18 sont exclus au rang 37 ET si c_20 ≤ 4 (au plus 4 vecteurs orientés de norme 20 par graine indépendante ; c_20 ≤ 6 avec supports indépend… | chaîne | R1-12 | N16@37, N18@37 et c₂₀ ≤ 4 ouverts ; N14 E non audité |
+| L11d C2 | MB11:493 | Si aucun vecteur propre entier −4 de norme 18 ni 26 n'existe, les rangs 37, 39, 41 sont exclus ; au rang 43 il faut en plus a_8 < 1316. ¦ Échelle : P … | ouverte | R1-13 | réserve « a₈ < 1316 » levée par L05-224 (P, Codex) ; normes 18 et 26 ouvertes |
+| L11d C3 | MB11:494 | Si le monde de norme 20 meurt par la borne de rang réel (25 doubles toujours dépendants, 15 relations exigées sur D + Z), alors a_10 = 0 à tout rang. … | ouverte |  | jamais testé |
+| L11d C4 | MB11:495 | Si le plafond 31 976 (paire jumelle non grille, collection (9,0)) baisse de 14 % (≤ 27 684), le coin sans grille du LP de comptage se ferme. ¦ H (LP f… | ouverte | R1-37 | H |
+| L11d C5 | MB11:496 | Si les bords de Hoffman (22) ET les sept profils de cocliques de 21 maximales sont exclus, ET si α ≥ 21, alors pas de Conway ; sans α ≥ 21, seulement … | chaîne | R1-17 | α ≥ 21 ouvert ; (0,2) ouvert ; E = P3 ouvert |
+| L11d C6 | MB11:497 | Si les onze répartitions de cycles autour d'une arête quelconque (bord de 27 sommets, 72 restants) sont toutes exclues avec attaches générales, alors … | ouverte | R1-33 | ≈ but (découpe par cas d'une arête) ; déjà dans la session externe (L03b-130, -133) |
+| L11d C7 | MB11:498 | Fermer (0,2) ferme un des sept profils numériques d'une coclique maximale de 21 (pas C1, ni α = 22, ni α ≤ 20). ¦ Portée (P) ¦ L11d-069 | fait | R1-17 | portée |
+| L11d C8 | MB11:499 | H3 + L8 ⇒ pas de Conway. ¦ H3 RÉFUTÉE (L11d-172) ; de plus insuffisant (rang 30 − δ', L07_C1_asym_local-063) ¦ L11d-168 | réfutée |  | H3 réfutée (L11d-172) |
+| L11d C9 | MB11:500 | (A) + (C) ⇒ pas de Conway ; (A) ⇒ toutes les droites spéciales ⇒ (B) ; (B) ⇒ route finie (racine en droite spéciale, bases décomposables, filtre de co… | réfutée | R1-36 | (A) réfutée (52 contre-exemples exacts, L07_C1_asym_local-065) ; (B), (C) ouverts |
+| L11d C10 | MB11:501 | H3'' (toute relation à trois étoiles est portée par les deux étoiles mates) ⇒ chaque drapeau (v,l) a Q(v,l) non connexe (squelette décomposable partou… | réfutée | R1-36 | forme locale (A) réfutée ; forme propre à Conway sans route |
+| L11d C11 | MB11:502 | Si l'instance ENTIÈRE préserve deux flips individuels (poids < ⌈t/2⌉) et si le nombre de complétions est ≤ 2 (régime V15), la branche est exclue pour … | critère | R1-20 | aucune branche exhibée |
+| L11d C12 | MB11:503 | Dans un C1, le nombre de complétions de toute pièce H est un multiple de ¦Aut(H)¦ ; une pièce FORCÉE avec plus de symétries que de complétions exclut … | critère | R1-16 | pièce forcée symétrique : O |
+| L11d C13 | MB11:504 | L'asymétrie ne devient une exclusion qu'avec une borne SUPÉRIEURE de complétions d'un hôte symétrique inférieure à l'ordre de son groupe. ¦ H (program… | critère | R1-16 | pièce forcée symétrique : O |
+| L11d C14 | MB11:505 | Sur un bord 43 positif, ≥ 3 composantes de signes forcés ⇒ un co-Heawood disjoint du bord ⇒ deux cocliques de 22 se coupant en 15. ¦ P ¦ L11d-103 | fait | R1-42 | P (V14/V15, non relus par LAB) |
+| L11d C15 | MB11:506 | Si h = dim ker[D;1ᵗ] ≤ 2, toutes les complétions d'un même facteur sont isomorphes par un échange ; si D a ses colonnes distinctes (ou m ≤ 25), la com… | fait | R1-42 | P (V14/V15, non relus par LAB) |
+| L11d C16 | MB11:507 | Si un Conway contient une grille 3 × 3 (composante μ = 1 de H_l), alors (B) (droite spéciale). ¦ Implication : P ; existence d'une grille : O ¦ L11d-1… | ouverte | R1-36 | existence d'une grille ouverte ; elle découle de P ≥ 694 (note 08) |
+| L11d C17 | MB11:508 | Une relation z = 2q + u avec u à 4 ou 6 entrées impaires (8 sur trois étoiles) n'existe dans aucune complétion Conway. ¦ P ¦ L11d-184 | fait |  | P |
+| L11d C18 | MB11:509 | Un monde de norme 16 de rang 33 ayant une cellule morte est exclu au rang 37 ; N16 au rang 37 = catalogue × (0,3 s à 1 min par monde). ¦ E ; catalogue… | ouverte | R1-12 | catalogue N16 incomplet |
+| L11d C19 | MB11:510 | Exclure la branche co-Heawood sans hypothèse de rang ne ferme aucun rang. ¦ P/H ¦ L11d-046, L11d-048 | fait |  | portée |
+
+### B.5 L11e (pont, lois à quatre étoiles, 14-17/10) — 23 conditionnels
+
+Répartition : ouverte 17 ; réfutée 4 ; critère 1 ; fait 1.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11e K1 | MB11:584 | (H-MATCH) : tout bloc à 4 étoiles admissible, T, U >= 0, nullité >= 14 a M_1 = h(M_0) et M_3 = h(M_2) ¦ pas de Conway (21 grilles en un sommet : point… | ouverte | R1-08 ; R1-40 | H-MATCH ; données issues de structures impossibles (L08-166) |
+| L11e K2 | MB11:585 | (N9-NG) : bloc PSD sans grille ⇒ nullité <= 9 + min(c(l), c(m)) ; ou seulement NG5 (non-grille et ν >= 14 ⇒ c >= 5 des deux côtés) ¦ t(l) >= 8 pour to… | ouverte | R1-07 | N9-NG / NG5 / NG7 |
+| L11e K3 | MB11:586 | (NG7) : aucun bloc non-grille avec min(t(l), t(m)) <= 7 ne passe T/U PSD, ν >= 14, F7, DISC, extension ¦ pas de Conway (il en existe >= 254) ¦ P ¦ O ¦… | ouverte | R1-07 | N9-NG / NG5 / NG7 |
+| L11e K4 | MB11:587 | rang F >= 12 pour tout bloc sans grille, orienté sur la droite de c minimum (⇔ N9-NG ⇔ corank(Q) <= 7) ¦ contradiction avec rang F <= 7 + c_min <= 11 … | ouverte | R1-32 ; R1-40 | ⟺ N9-NG ; ≈ 7 444 côtés issus de structures impossibles (L08-166) |
+| L11e K5 | MB11:588 | ODDCONST et SYM6 sur tous les côtés sans grille (Q7) ¦ pas de Conway (avec P <= 852) ¦ P ¦ O ¦ pont:#928, L11e-127 | ouverte | R1-07 | ODDCONST prouvé si ιx ∈ ker T_S (L08-026) ; cas couplé et SYM6 ouverts |
+| L11e K6 | MB11:589 | ODD-PURE (rang D = 9) et rang Z >= 1, >= 2, >= 3 respectivement à c_min = 2, 3, 4 (c_min = 1 est déjà impossible sous ODD-PURE) ¦ pas de Conway ¦ P ¦ … | ouverte | R1-32 | marge d'ODD-PURE non uniforme (L11e-130) : il faut un argument exact |
+| L11e K7 | MB11:590 | (R7-NG) : tout bloc PSD sans grille a rang_F7(8T_S) >= 29 ¦ pas de Conway (avec L4/L22 et N2) ¦ P ¦ O (données : >= 30 sur 3722 blocs, mais 93 % ont (… | ouverte | R1-10 ; R1-40 | R7-NG ; données impossibles (L08-166) |
+| L11e K8 | MB11:591 | (R7) : PSD ⇒ rang_7 >= 29 ; (K22) : PSD et ν >= 14 ⇒ rang_7 >= 23 ¦ Conway exclu ; k = 22 (r = 37) exclu ¦ P ¦ (R7) R (grilles à 25) ; (K22) O ¦ pont:… | réfutée | R1-10 ; R1-40 | (R7) réfutée (grilles à 25) ; (K22) ouverte, ⟸ (a′) aux paires c = 1 génériques (L08-166) |
+| L11e K9 | MB11:592 | positivité à 4 étoiles incompatible avec 8 - δ chutes 7-adiques (au rang 37) ¦ r = 37 exclu ¦ proposition (non rédigée) ¦ O ¦ pont:#784, L11e-044 | ouverte |  | proposition non rédigée |
+| L11e K10 | MB11:593 | il n'existe aucune structure admissible à cinq étoiles (52 labels) ¦ pas de Conway ¦ P (relaxation) ¦ O (18/34 cas en TIMEOUT 90 min) ¦ pont:#890, #90… | ouverte | R1-09 | 18/34 cas en TIMEOUT |
+| L11e K11 | MB11:594 | R8 (4 étoiles exactes + les 8 labels {4,t}) UNSAT ¦ pas de Conway ¦ P (relaxation de la 5e étoile) ¦ O ¦ pont:#918, L11e-123 | ouverte | R1-09 | R8 |
+| L11e K12 | MB11:595 | H46-c1 : c(l) = 1 ⇒ λ_2(A_H) < 3 sur H = N(l) ∪ (N(x) privé de N[l]) ¦ aucune droite c = 1 (l'entrelacement impose λ_2 = 3) ¦ P ¦ O (données : 3480/34… | ouverte | R1-31 | H46-c1 ⟸ ODDCONST (L08-033) |
+| L11e K13 | MB11:596 | « toute droite est dans une grille » ¦ c = 1 impossible ¦ P (immédiat) ¦ O (aucun mécanisme, pont:#956) ¦ pont:#954, L11e-139 | ouverte | R1-31 | aucun mécanisme |
+| L11e K14 | MB11:597 | (B') : aucun bloc PSD de ν >= 14 n'a de droite c = 1 ¦ toute droite de Conway spéciale (pas une exclusion seule) ¦ P ¦ O ¦ pont:#843, #961, L11e-140 | ouverte | R1-31 | (B′) ; avec [m ≥ 2 exclu] seulement (L08-168) |
+| L11e K15 | MB11:598 | t(l), t(m) >= 8 ou t(l) + t(m) >= 15 sous la condition à 4 étoiles ; 4 grilles par droite ¦ P >= 924 / 867 > 852 ; ρ >= 154 > 126 ¦ P ¦ O ¦ pont:#762,… | ouverte | R1-06 | T8/T15 |
+| L11e K16 | MB11:599 | MIX <= 2 ; MIX <= 3 (borne universelle des relations mixtes) ¦ ρ >= 198 > 191 ; ρ >= 154 > 126 ¦ P (réduction non re-vérifiée par Codex) ¦ R (#782) ¦ … | réfutée |  | R (pont:#782) |
+| L11e K17 | MB11:600 | aucun bloc PSD ne porte >= 4 relations mixtes ¦ pas de Conway (avec le budget >= 336 drapeaux) ¦ P ¦ R (c31_mix4, c21_mix4, c11_mix6) ¦ pont:#781, #78… | réfutée |  | R (pont:#782) |
+| L11e K18 | MB11:601 | (A4) ; (A) ; ODD9 ; H4' ¦ toutes les droites spéciales, ou au plus une non spéciale par sommet ¦ P ¦ (A4), (A), ODD9 : R ; H4' : O ¦ pont:#741, #746, … | réfutée |  | (A4), (A), ODD9 réfutées ; H4′ ouverte |
+| L11e K19 | MB11:602 | moyenne de ‖E_vlm‖_F² sur les 2079 triplets > ~1190 ¦ P < 0, contradiction ¦ P ¦ inutilisable seul : 504 est atteignable dans la relaxation (#770) ¦ p… | ouverte |  | inutilisable seul : 504 atteint dans la relaxation |
+| L11e K20 | MB11:603 | KER-SYM (noyau de grande nullité invariant par une h·p) ¦ H-MATCH se réduit à un nombre fini de types de p ¦ indicatif ¦ universelle : R ; ν >= 14 : O… | ouverte | R1-08 | KER-SYM universelle réfutée ; ν ≥ 14 ouverte |
+| L11e K21 | MB11:604 | une borne strictement positive d'un défaut pour tous les candidats binaires (selon #910 ; formulation à clarifier) ¦ contradiction globale ¦ annoncée … | ouverte |  | annoncé sans preuve |
+| L11e K22 | MB11:605 | nombre de complétions étiquetées d'un bord H < ordre de Aut(H) ¦ pas de complétion asymétrique de H ¦ P (critère) ¦ application aux bords 43/44 : O ¦ … | critère | R1-16 | application aux bords 43/44 ouverte |
+| L11e K23 | MB11:606 | branche « minimum GLOBAL c >= 4 » entièrement fermée ¦ tout Conway a une droite c <= 3 ¦ P ¦ S (76/79 au 17/10 ; 79/79 au 18/10 par CP-SAT, hors lot) … | fait | R1-14 | S (CP-SAT) ; vérification adverse en cours (V3) |
+
+### B.6 L11f (pont, route c, gabarits, 17-20/10) — 19 conditionnels
+
+Répartition : fait 15 ; ouverte 3 ; caduque 1.
+
+| réf. | ligne du matériau | énoncé (abrégé) | état de X | lien R1 | note |
+|---|---|---|---|---|---|
+| L11f l.714 | MB11:714 | min global c(L) ≥ 4 ¦ contradiction (tout Conway a une droite c ≤ 3) ¦ S (CP-SAT, sans certificat portable) ¦ — ¦ pont:#1050 (L11f-054) | fait | R1-14 | S ; vérification V3 en cours |
+| L11f l.715 | MB11:715 | plafond P ≤ 791 (racine de s minimal, branche c ≥ 4) ¦ gabarit 7 fermé comme racine minimale ; P ≤ 593 ferme aussi 9 ¦ P (arithmétique) ¦ O ; le plafo… | caduque | R1-14 | branche c ≥ 4 close (S) ; P ≤ 791 non établi (plafond prouvé 852) |
+| L11f l.716 | MB11:716 | la racine x minimise 9s + 8g et g(x) = 12, s(x) ≥ 48 ¦ impossible (score ≥ 528 > 504) : 7 exclu ¦ C ¦ — ¦ pont:#1018 (L11f-035) | fait |  | C |
+| L11f l.717 | MB11:717 | carré de blocs-paires, exactement 2 grilles parmi les 3 rectangles de T, et H_F = H_D (D disjoint) forcée par C h = 0 ¦ gabarit exclu (e_F ≥ 4 contre … | fait |  | P (preuve manuscrite non relue) |
+| L11f l.718 | MB11:718 | aucune marche fermée de Ĵ à signes alternés ne passe par la non-grille q ¦ contradiction (e(q) = 4) ¦ P ¦ testé par BFS : 51,1 % des classes c = 1 ¦ p… | ouverte |  | X vérifié par BFS sur 51,1 % des classes c = 1 seulement |
+| L11f l.719 | MB11:719 | le graphe des grilles à une racine contient C4 ⊔ C3 ¦ les deux diagonales du C4 sont des grilles (K4 ⊔ C3) ¦ E (dépend de E3 et du calcul de 5602) ¦ —… | fait |  | E |
+| L11f l.720 | MB11:720 | le graphe des grilles contient K4 sur X et deux arêtes du triangle complémentaire ¦ la troisième est une grille ¦ P (LAB, non relu) ¦ — ¦ pont:#1181 (… | fait |  | P (LAB, non relu) |
+| L11f l.721 | MB11:721 | familles K3 et 2K2 fermées, H01 = −H02 ≠ 0, Q12 grille ¦ les grilles sur les 4 autres racines forment une étoile ¦ P ¦ K3 : E ; 2K2 : E (RUP/DRAT sur … | fait |  | familles K3 et 2K2 : E |
+| L11f l.722 | MB11:722 | famille P3 fermée ¦ K3 fermée, et 821 ouverts retirés au 19/10 00:19 ¦ P (inclusion des hypothèses) ¦ O (production inachevée) ¦ pont:#1190, #1207 (L1… | ouverte | R1-14 | production P3 inachevée |
+| L11f l.723 | MB11:723 | K3 et 2K2 fermées ¦ registre 1 163 → 537 ; avec P3 : 250 ¦ H (projection) ¦ réalisé pour K3 et 2K2 ¦ pont:#1224 | fait | R1-14 | projections H réalisées (E) |
+| L11f l.724 | MB11:724 | P3NB et K2BC tombent ¦ 45 ouverts ; avec P3 et 2K2N : 32 ; plus tard 40 / 32 / 30 ¦ H (projection) ¦ P3NB : E ; K2BC : E (relecture en cours) ¦ pont:#… | fait | R1-14 | projections H réalisées (E) |
+| L11f l.725 | MB11:725 | H_A = −H_B pour deux rectangles disjoints (les 3 racines restantes deux à deux en grilles), sous E3 ¦ e(A) = e(B) = 2, R_AA = R_BB = 4, R_AB = −4 ¦ P … | fait |  | lemme P (ou P/E), propre au gabarit |
+| L11f l.726 | MB11:726 | H_P = H_Q pour deux rectangles disjoints non-grilles, sous E3 ¦ deux couplages parfaits sans arête entre eux (4K2) ; h ternaire ou un seul −2 ¦ P ¦ si… | fait |  | lemme P (ou P/E), propre au gabarit |
+| L11f l.727 | MB11:727 | 2K2N, S = {0,1,2}, et E(Q12) ≤ 3 (fermeture 2K2) ¦ E(C) ∈ {28, 32, 36, 40} pour C = Q12 + Q35 + Q36 + Q45 + Q46 ¦ P ¦ E(Q12) ≤ 3 : conséquence de la f… | fait |  | lemme P (ou P/E), propre au gabarit |
+| L11f l.728 | MB11:728 | 5602 : R25,25 = 8 et R04,25 + R16,25 ≤ −1 ¦ vᵀRv ≥ 104 pour v = 11(e04 + e16) + e25 + 7e35 ¦ P (spécifique au gabarit) ¦ — ¦ pont:#1155 (L11f-093) | fait |  | lemme P (ou P/E), propre au gabarit |
+| L11f l.729 | MB11:729 | 5602 : le bloc principal S 6 × 6 de (04,06,14,16,25,36) est la sous-matrice de R ¦ aucune complétion (interdit) ¦ P / E ¦ — ¦ pont:#1152 (L11f-093) | fait |  | lemme P (ou P/E), propre au gabarit |
+| L11f l.730 | MB11:730 | sous c ≥ 3 GLOBAL ¦ N(L) en 3 bins non vides de tailles 6h (h = 1..4), équilibrés, sans arêtes entre bins ¦ P ¦ branche (A) jamais exploitée dans le p… | fait | R1-14 | c ≥ 3 global : 3 bins, jamais exploité |
+| L11f l.731 | MB11:731 | L est dans 6 grilles ¦ Spec B = {8, 3^18, (−2)^6, (−1)^10, 1^12, (−4)^13} et 13 vecteurs propres −4 de Conway portés par D_L ¦ P (redécouverte) ¦ — ¦ … | fait |  | P (redécouverte) |
+| L11f l.732 | MB11:732 | « aucune droite dans six grilles » démontré ¦ 7 des 19 sans paire tomberaient (d'après L08-126, hors de ce lot) ¦ — ¦ O ¦ L08-126, L08-138, L08-141 | ouverte |  | « aucune droite dans six grilles » (vérification V1/V2 en cours) |

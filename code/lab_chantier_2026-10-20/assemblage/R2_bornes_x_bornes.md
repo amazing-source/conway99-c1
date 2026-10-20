@@ -1,8 +1,19 @@
 # R2 — Bornes × bornes (phase de recombinaison, 20/10/2026)
 
 Agent R2. Matériau lu en entier : `assemblage/MATERIAUX_BRUTS_partiel.md` (L01 à L08, L10) et
-`assemblage/MATERIAUX_BRUTS_L09.md` (L09, 210 bornes). Les lots L11a à L11f (pont) ne sont pas lus : seconde passe.
-Sorties : ce fichier et `assemblage/R2_bornes_x_bornes.jsonl` (23 lignes, R2-01 à R2-23).
+`assemblage/MATERIAUX_BRUTS_L09.md` (L09, 210 bornes) ; en seconde passe, `assemblage/MATERIAUX_BRUTS_L11.md` (pont,
+L11a à L11f), voir §10.
+Sorties : ce fichier et `assemblage/R2_bornes_x_bornes.jsonl` (33 lignes : R2-01 à R2-23, puis R2-24 à R2-33 pour la
+seconde passe).
+
+**Seconde passe, en bref (§10).**
+- Toujours aucune contradiction.
+- Nouveau croisement : la facette des coins P ≤ 693 + 3G n'est pas dans le recensement. Elle exclut l'optimum du coin
+  sans grille du comptage du rang 37 (P = τ = 780). Le seuil estimé avec N14 passe de 27 142 à environ 30 550, contre
+  un plafond de 31 976 (R2-30, H, à recalculer).
+- Au rang 37 après N14, le seuil c₂₀ dépend de P : ≤ 4 en général, ≤ 6 si ρ = 0, ≤ 10 si P = 0 (R2-29).
+- Le chemin critique « norme 18 ou 26 » vaut aussi au rang 43 au niveau E (caps18, R2-25).
+- Les pistes (2), (3), (4) et (6) du coordinateur sont closes sans gain (R2-26, R2-27, R2-28, R2-31).
 Statuts recopiés des sources, jamais rehaussés. « Vu par R2 » signale une remarque de cet agent, non relue.
 
 ---
@@ -47,10 +58,10 @@ Statuts recopiés des sources, jamais rehaussés. « Vu par R2 » signale une re
 | potentiel | entrées | ce qui manque |
 |---|---|---|
 | EXCLUSION_GRAPHE | R2-06 ((T15) ou (T8) contre P ≤ 852) | une hypothèse ouverte et fragile |
-| EXCLUSION_RANG | R2-05 (rang 37 : N16, N18 et c₂₀ ≤ 4) | trois énoncés ouverts |
+| EXCLUSION_RANG | R2-05 (rang 37 : N16, N18 et c₂₀ ≤ 4) ; R2-29 (même cible, seuil c₂₀ relâché quand P baisse) | trois énoncés ouverts |
 | EXCLUSION_CAS | R2-02 (q = 4 vide), R2-08 (P = 0 : E ≤ 8), R2-15 (a₉ = a₁₃ = 0, connu) | R2-02 acquis ; R2-08 est ouvert |
-| REDUCTION | R2-01 (P ≤ 852 par deux facettes), R2-03 (b₂ ≥ 1000 au rang 43), R2-09 (n3 ≥ 1602), R2-10 (conversion externe), R2-13 (filtre de flips) | — |
-| AUCUN | R2-04, R2-07, R2-11, R2-12, R2-14, R2-16, R2-17, et les incohérences R2-18 à R2-23 | — |
+| REDUCTION | R2-01 et R2-32 (P ≤ 852 par deux facettes ; la facette des coins est extérieure au recensement), R2-03 (b₂ ≥ 1000 au rang 43), R2-09 (n3 ≥ 1602), R2-10 (conversion externe), R2-13 (filtre de flips), R2-25 (chemin critique au rang 43), R2-28 (racines au rang 43), R2-30 (coin sans grille du rang 37) | R2-30 doit être recalculé (H) |
+| AUCUN | R2-04, R2-07, R2-11, R2-12, R2-14, R2-16, R2-17, R2-24, R2-26, R2-27, R2-31, et les incohérences R2-18 à R2-23 et R2-33 | — |
 
 ---
 
@@ -462,3 +473,129 @@ Greps de redécouverte :
 - **Tables internes de l'extrémité n3 = 708** (det(B), tr) : caduques par R2-09, donc non lues.
 - `assemblage/DOUBLONS_PROBABLES.tsv` et `INDEX_RESULTATS.tsv` : non utilisés systématiquement.
 - **Sens de « ρ ≤ 1330 / ~1500 »** (L02 partie A, H:1645, 1670-1671) : non vérifié.
+
+---
+
+## 10. Seconde passe (lots L11a à L11f, pont LAB <-> Codex)
+
+Matériau lu en entier : `assemblage/MATERIAUX_BRUTS_L11.md` (794 lignes). Sources vérifiées :
+- messages du pont #178, #489, #507 et #1126 ;
+- `work/c1_theta_lp_2026-10-07/` : `OUTPUT_caps18_N84.txt`, `OUTPUT_lp_family_rho.txt`, `lp_family.py` (lignes 1-60) et
+  `NOTE.md` (lignes 815-832, 1236-1244, 1647-1672) ;
+- fiches L11a-66 à -88, L11b-58 à -91 et L05.
+
+Entrées JSONL : R2-24 à R2-33. Les vérifications déjà confiées à V1-V3 n'ont pas été refaites.
+
+### 10.1 Bornes ajoutées au registre (par objet)
+
+| objet | borne nouvelle ou précisée | portée | statut | source |
+|---|---|---|---|---|
+| a₉, a₁₃ | seuils de caps18 : r = 37 : a₉ ≤ 10⁴ ⇒ a₁₃ ≥ 757 806 (a₉ = 0 : ≥ 991 139) ; r = 39 : a₉ ≤ 1000 ⇒ a₁₃ ≥ 83 316 ; r = 41 : a₉ = 0 ⇒ a₁₃ ≥ 11 686 ; **r = 43 : a₉ = 0 ⇒ a₁₃ ≥ 13088/7 ≈ 1869,7** ; maxima du PL sur a₁₃ : 27,8 M / 8,8 M / 2,2-2,4 M / 259 018-295 235 | rangs | E | L11a-88 ; OUTPUT_caps18_N84.txt |
+| a₈..a₁₃ | minimum total, PL à travers les rangs : 49 391 (r = 37), 7 074 (39), 1 028 (41), 164,5 (43) ; « sans norme 18 » : 1 063 860 / 106 246 / 14 068 / 2 251 ; « norme 26 seule » : infaisable / 126 988 / 18 082 / 2632 | rangs | E | L11a-82 |
+| a₉ (type (2,1,1), e = 0) | ≤ 2 par (graine, c manquant), donc ≤ 12 par graine, ≤ 73 920 au total | général | P | L11a-85 ; R2-26 |
+| a₉, a₁₃ au rang 43 (racine, seule norme 18) | 164 ≤ a₉ ≤ 164 + 4⌊7k/4⌋, k ∈ {1, 2} ; a₁₃ ≤ 8 + 112k − 8n₁₃(r) | rang 43 | P | note 242 ; L11c |
+| b₂ au rang 43 | 914 ≤ b₂ ≤ 376 369 (LAP) ; avec R2-03 : [1000 ; 376 369] | rang 43 | E / P | L11b-42 |
+| b₃ au rang 43 | 6 696 790 ≤ b₃ ≤ 31 723 013 (LAP) | rang 43 | E | L11b-42 |
+| b₃ en fonction de P, ρ | ≥ 70 224 − (61/3)P − 74ρ ; = 73 920 à P = 0 (non exploités au rang 37 avant R2-29) | général | C | L11b-30 (note 186) |
+| b₄, plancher | 5 939 010 + 66P + 14H − 13 572ρ − 480τ − 98Ω ; **≥ 5 764 374 si P = 0** | général | C | L11b (b₄) |
+| b₄ au rang 37, P = 0, N14 | plafond 15 457 549 − (651/34)·73 920 ≈ 14 042 198 ; fenêtre [5 764 374 ; 14 042 198], rapport 2,44 | rang 37, P = 0 | C/E | R2 (calcul) |
+| g(v) | \|{v : g(v) = 17}\| ≤ 50 ; \|{v : g(v) ≥ 14}\| ≤ 73 | général | P ; C | L11b-64, -66 |
+| n₃ (sommets sur 3 droites dans six grilles) | ≤ 39 (r ≥ 37) ; ≤ 24 (r ≥ 39) | rangs | C | L11b-85, -90 |
+| sommets déplacés par un automorphisme | ≥ 13 pour tout automorphisme non trivial | général | P (non relu) | L11d-102 |
+| \|Aut\| des gabarits c3 ouverts | 1 (931), 2 (287), 4 (90), 8 (31), quelques 24-240 ; 10006 : 72 | C1 | E | pont:#1126 |
+| 22-cocliques au rang 37 | ≤ 93 696 | rang 37 | E | L11c-106 |
+| cubique induit à s sommets | s ≤ 38 | général | P | L11c-078 |
+| seuils par paire jumelle (rang 37) | 87 431 (P ≤ 100), 45 402 (P ≤ 200), 30 697 (P ≤ 300), contre plafonds 31 976 (hors grille) et 27 828 (grille) | rang 37 | H | L11c-042, -056 |
+
+### 10.2 Les six pistes du coordinateur
+
+1. **Seuils K13-K17 contre toutes les bornes sur a₉, a₁₃ (R2-24).**
+   - Aucune contradiction.
+   - Rang 43 : S₀ a a₉ = 0 et a₁₃ = 2632 exactement, soit 762 au-dessus du seuil 1870 de K17, qui ne le touche donc pas.
+   - Aux rangs 37 à 41 : aucun majorant de a₁₃ n'existe, sauf les maxima du PL lui-même.
+   - Au rang 37 avec N14, a₁₂ ≥ 0 et b₂ ≥ 462 éliminent b₃ :
+     a₁₃ ≥ 1 120 499⅓ − (56/3)a₈ − (70/3)a₉ + (5/3)a₁₀.
+     - Avec a₈ ≤ 6930, on a a₁₃ ≥ 991 139⅓ − (70/3)a₉.
+     - Au coin a₉ = 10⁴, on retrouve exactement le seuil 757 806 de K14 (vérifié par script).
+     - Un plancher de b₃ n'y entre pas. Il faut à la fois un majorant de a₁₃ et une borne par graine en norme 18 : par
+       exemple, κ₁₈ ≤ 4 forcerait a₁₃ ≥ 128 740.
+     - Correction interne : une première version disait à tort qu'un plancher b₃ ≥ 91 447 suffirait.
+   - **Effet de bord (R2-25)** : caps18 exclut « a₉ = a₁₃ = 0 » au rang 43 aussi (E). Le chemin critique devient
+     « norme 18 ou 26 » aux quatre rangs, alors que L06-103, L11d-046 et L07 R27 gardent l'échappatoire a₈ ≥ 1316.
+2. **Norme 18, type (2,1,1), au plus 2 par (graine, c manquant) (R2-26).**
+   - Cela donne au plus 12 par graine, donc a₉ ≤ 73 920 pour ce type seulement.
+   - C'est au-dessus de tous les seuils (10⁴ pour K14 ; 49 392 pour le scénario « norme 18 seule » du rang 37).
+   - Il faudrait au plus 8 par graine, et pour tous les types.
+3. **« Au plus 50 sommets à g(v) = 17 » dans le PL de la note 204 (R2-27).** Effet nul sur τ ≤ 1354. Le maximum est atteint
+   à s = 22, et pour s ≤ 50 la contrainte est automatique.
+4. **Rang 43, budget (#507) et racines (#489) (R2-28).**
+   - Les conventions diffèrent : a₁₁ et a₁₂ entiers, f₁₁ d'un seul signe en #507 ; couches pleines de L1 en #489.
+   - La formule de la fiche, B + a₁₀ + 3f₁₁ + a₁₂^frac ≥ 318 + 17a₇ + 2a₉, est juste.
+   - Avec une racine, le second membre vaut au moins 352 + 2a₉.
+   - Pas de majorant de B hors de S₀ : pas de contradiction.
+5. **c₂₀ ≤ 4 avec N16 et N18 au rang 37 (R2-29).**
+   - Aucune borne par graine en norme 20 dans L05, L06, L11a-f.
+   - **Nouveau** : le seuil dépend de P par les planchers de b₃. c₂₀ ≤ 4 suffit en général ; ≤ 5 si P ≤ 500 ; ≤ 6 si
+     ρ = 0 ; ≤ 7 si P ≤ 300 ; ≤ 10 si P = 0.
+6. **Gabarit 10006, |Aut| = 72 (R2-31).**
+   - Le groupe est formé de permutations des droites, sans flips : le filtre de flips ne s'applique pas.
+   - En C1, les complétions forment des orbites libres de taille 72, mais aucun majorant (459 orbites UNKNOWN).
+   - Rapprochement (vu par R2) avec L11d-102 : toute symétrie d'instance de support au plus 12 agit librement sur les
+     complétions de tout Conway. Cela généralise le filtre de flips, sans exclusion.
+
+### 10.3 Croisement nouveau : la facette des coins dans les PL fondés sur le recensement (R2-30, R2-32)
+
+- La facette **P ≤ 693 + 3G** se déduit de l'identité des coins et de Lou–Murin (c ≠ 3). Elle **n'est pas impliquée
+  par le recensement d'ordre 10** : `lp_family.py` charge tout le recensement et atteint pourtant (P, G) = (780, 0).
+- Conséquence 1 (R2-32). La décomposition de R2-01 est une **dérivation indépendante** de P ≤ 852, et non une
+  facette du recensement. Quand G est petit, la facette coupe le recensement : à G = 0, P ≤ 693 au lieu d'au moins 780 ;
+  à G ≤ 20, P ≤ 753 au lieu de 807.
+- Conséquence 2 (R2-30). Dans le **coin sans grille du comptage du rang 37**, l'optimum archivé (P = τ = 780) est
+  exclu. On a τ ≤ P ≤ 693, et le seuil de rentabilité ne peut que monter :
+  - estimation haute : environ 28 400 (sans N14) au lieu de 25 201 ;
+  - environ 30 550 avec N14 au lieu de 27 142, à environ 4,5 % du plafond certifié 31 976 au lieu de 15,1 %.
+  - Le calcul exact est à faire : `PCAP=693`, scénario `m5s9k2x63r0`, environ 265 s par scénario. Il n'a pas été lancé
+    ici.
+  - Même franchi, ce ne serait pas une exclusion : les masses 7 à 9 ne sont pas payées et le coin avec grilles reste
+    court d'un facteur 2.
+
+### 10.4 Quasi-ratés nouveaux ou précisés (seconde passe), triés par écart relatif
+
+| rang | objet | requis | établi | écart | portée | statut | réf. |
+|---|---|---|---|---|---|---|---|
+| 1 | plafond par paire jumelle non-grille | ≤ seuil ≈ 30 550 (estimé) | 31 976 | ≈ 4,5 % (contre 15,1 % avant la facette) | rang 37, ρ = 0, N14 | H | R2-30 |
+| 2 | seuil par paire jumelle si P ≤ 300 | plafond ≤ 30 697 | 31 976 | 4,2 % | rang 37, P ≤ 300 | H, déjà connu (pont) | L11c-042 |
+| 3 | a₁₃ au rang 43 dans S₀ | < 1870 (K17) | = 2632 | 41 % au-dessus (S₀ hors d'atteinte de K17) | rang 43, S₀ | E | R2-24 |
+| 4 | vecteurs de norme 18 par graine | ≤ 8 | ≤ 12 (type (2,1,1), e = 0 seulement) | facteur 1,5 et deux types non bornés | rang 37, « norme 18 seule » | P/E | R2-26 |
+| 5 | c₂₀ (avec N16, N18) | ≤ 4 (général) … ≤ 10 (P = 0) | aucune borne | — (cible) | rang 37 | O | R2-29 |
+
+### 10.5 Symétrie forcée (mise à jour)
+
+État inchangé : **croisement vide**. Les apports du pont sont les suivants :
+- le critère « complétions multiples de |Aut(H)| en C1 » (L11d C12) ;
+- l'action libre des flips et des symétries de petit support pour tout Conway (L11d C11, L11d-102) ;
+- la répartition des |Aut| des gabarits ouverts, jusqu'à 240, et le cas 10006 (72) ;
+- l'énoncé « aucune pièce (bord 43 positif, D) d'un C1 n'a de symétrie d'ordre ≥ 3 » (L11d §5 K1).
+
+Il manque toujours un majorant de complétions pour une pièce symétrique inévitable.
+
+### 10.6 Incohérences nouvelles
+
+| # | désaccord | lecture | réf. |
+|---|---|---|---|
+| 1 | Rang 43 : « norme 18, 26, ou ≥ 1316 de norme 16 » (L06-103, L11d-046, L07 R27) contre « a₉ = 0 ⇒ a₁₃ ≥ 1870 » (caps18, 08/10) | énoncé E plus fort, non propagé | R2-25 |
+| 2 | Conventions des a_j au rang 43 : entiers (#507) contre couches pleines (#489) | à préciser dans toute combinaison ; la formule de L11c est juste | R2-28 |
+| 3 | Seuil d'exclusion du rang 35 sur b₄ : > 14,2 M (nuit du 14/10) contre ≥ 4 011 587 (08/10) | programmes de contraintes différents ; sans objet | R2-33 |
+| 4 | « P ≤ 852 = facette du recensement » (lecture possible de R2-01) | faux : la facette des coins est extérieure au recensement | R2-32 |
+| 5 | Seuils caps18 calculés avec b₁ ≤ 88, sans N14 ni b₃ ≥ 45 964 | une réexécution ne peut que les renforcer | R2-24 |
+
+### 10.7 Non examiné dans la seconde passe
+
+- **PL non relancés** : réexécution de `lp_family.py` avec `PCAP=693` (R2-30), et de `caps18.py` avec b₁ ≤ 44,
+  a₇ = b₁ (rang 43) et N14 (rang 37). Coût archivé : environ 265 s par scénario, un processus.
+- **PL exact** confirmant que (P, G) = (780, 0) est un point du recensement (R2-32).
+- **Facette des coins dans les autres PL** fondés sur le recensement (plafonds `ceiling37`, budgets de second moment,
+  `lp_budget3`) : effet attendu seulement pour ρ < 53, non évalué.
+- **Côté +3** (réseau E de rang 60, A₅ = 1040 + 52G) : toujours non comparé aux comptes de L₃.
+- **Messages du pont** cités seulement à travers les fiches : #489, #507 et #1126 ont été lus en texte intégral ;
+  les autres non.

@@ -1,7 +1,7 @@
 # Carte maîtresse du travail sur le graphe de Conway srg(99,14,1,2), du 21/09 au 20/10/2026
 
-**État : ÉBAUCHE en cours d'assemblage (20/10 au soir).** Les sections marquées « à remplir » attendent les lots L09
-et L11 (messages du pont), la recombinaison (R1 à R3) et sa vérification adverse.
+**État : assemblée le 20/10 au soir.** Elle couvre les 12 lots et les 1 277 messages du pont, soit 3 516 résultats
+fichés. La recombinaison s'est faite en deux passes, suivie d'une vérification adverse.
 
 Chaque affirmation renvoie à une fiche (`fiches/<lot>.jsonl`, identifiant `Lxx-NN`) ou à une source. Les fiches renvoient
 elles-mêmes aux sources d'origine. Les statuts suivent `CONSIGNES_AGENTS.md` :
@@ -18,7 +18,31 @@ elles-mêmes aux sources d'origine. Les statuts suivent `CONSIGNES_AGENTS.md` :
 
 ---
 
-## 0. Démarrer ici (à remplir en dernier)
+## 0. Démarrer ici
+
+1. **Le problème** : existence de srg(99,14,1,2), le graphe de Conway. Les conventions et les faits de base, avec leurs
+   preuves courtes, sont au §1.
+2. **Acquis.**
+   - Pas d'ordre 3 ni d'ordre 7 (Lean).
+   - Pas d'ordre 2 (S, avec une composante ouverte). Un Conway serait donc asymétrique (C1).
+   - Fenêtre de rang r ∈ {37, …, 43} ; P ≤ 852 ; 3P + 4G ≤ 2772.
+   - Le rang 37 se réduit à un calcul fini.
+   - Le détail est au §2.
+3. **Non acquis.** Aucune exclusion de C1, ni d'un rang. Le chantier du 20/10 a montré qu'**aucune combinaison de nos
+   notes ne la donne** (§7).
+4. **Ce qui reste** : l'arbre est au §3, les questions classées au §5, les dossiers chiffrés au §6.
+5. **Ne pas refaire** : §4. Une méthode qui n'utilise pas à la fois une donnée arithmétique globale, la positivité ou
+   le rang, et l'intégralité, sur un objet de classification finie, est presque sûrement morte (méta-leçon du §4).
+6. **Statuts litigieux** : §8. **Règles de l'utilisateur** : §10, et L10 §8.
+7. **Fiches détaillées** : `fiches/` (une par lot). **Recombinaison et vérifications** : `assemblage/`. **Messages du
+   pont** : `pont_codex/`.
+8. **Résultats publiables** (avis du 20/10, nouveauté à confirmer par la bibliographie) :
+   - (a) les 7 nouveaux srg(243,22,1,2) : le jumeau de BvLS (07/10), Γ3 et Γ4 (Z3-revêtements), Γ5 à Γ8 (sans spread
+     régulier) ;
+   - (b) les contraintes arithmétiques sur Conway : fenêtre de rang, P ≤ 852, réduction du rang 37 ;
+   - (c) « un Conway serait asymétrique », après certification de C2.
+   - Le srg(378,52,1,8) avec |Aut| = 6 n'est pas nouveau : il figure dans la classification de Bamberg–Giudici–Royle
+     (2010).
 
 ---
 
@@ -95,9 +119,57 @@ Les dérivations de cette section sont courtes ; elles sont refaites ici pour qu
 
 ---
 
-## 2. État au 20/10 (à remplir après L09/L11)
+## 2. État au 20/10
 
-## 3. Arbre de ce qui reste à prouver (à remplir)
+**2.1 Ce qui est acquis** (statuts des sources ; aucune relecture humaine sauf mention).
+
+| résultat | statut | où |
+|---|---|---|
+| Pas d'automorphisme d'ordre 3 (C3) | P + Lean complet (C) ; §1-3 relus par Cesarz–Woldar (exposition à refondre) | L04 |
+| Pas d'automorphisme d'ordre 7 (C7) | P + Lean | L01, conway-C7 |
+| Pas d'automorphisme d'ordre 11 | littérature (Behbahani–Lam ; Wilbrink 1984, Thm 5 ; calcul externe) | L03b, R3-06 |
+| Pas d'automorphisme d'ordre 2 (C2) | **S avec une composante ouverte** : Théorème R (P, relu par Codex), T16/T18/T20 (P, relus par des IA), 25,8 M paires exclues sans certificat, recertification de la règle jumelle (≤ 2,48 M paires) mise de côté le 07/10 | L02 §8-9, L01-85, L09-055 (E) |
+| Donc : un Conway éventuel est **asymétrique (C1)** | conditionnel aux lignes précédentes | L01, L06-139 |
+| Fenêtre de rang r = rang_7(A − 3I) ∈ {37, 39, 41, 43} | C (thêta de niveau 7, audité par Codex) | L06-023, -024 ; L11b |
+| P ≤ 852 prismes | C sur un recensement E (deux implantations) ; seconde preuve : 3P + 4G ≤ 2772 (C) et P − 3G ≤ 693 (main + N9) | §8.1 ; VERIF_R1-19 |
+| 3P + 4G ≤ 2772 | C (certificat entier de Codex, vérifié par LAB) | L05-181 |
+| Au moins 18 droites ont t ≤ 7 ; t ≤ 7 ⇒ c ≤ 4 | P (sous P ≤ 852) | L08-187 (Lemme 2.3) |
+| **Théorème 6.1** : si toute droite admissible à t ≤ 7 échoue au test d'étoile du rang 37, alors r ≠ 37 | P, relu par un agent, non par un humain | L08-187 |
+| Tout Conway a une droite avec c(L) ≤ 3 | **S** (CP-SAT, sans certificat portable) ; **saine** face au bug OR-Tools (archéologie git du 20/10) | L05-178 ; VERIF_C4_FERMETURE |
+| Au rang 43 : b₂ ≥ 1000, et b₂ ≥ 1264 s'il existe une racine | P (preuves d'IA), recalculé exactement le 20/10 | R2-03 ; VERIF_R2-03 |
+| Au rang 37 : pas de vecteur propre −4 de norme 14 (N14) | **E, jamais audité** (certification ≈ 6 h) | L06-092 |
+| V15 : bord positif de 43 sommets ⇒ au plus 2 complétions ; 44 sommets ⇒ unique | P (Codex, autocontrôles) | L05-108, L11d-100 |
+
+**2.2 Ce qui n'est PAS acquis.** Aucune exclusion de C1, ni du graphe, ni d'un des rangs 37 à 43. Sur 3 516 résultats
+fichés, la recombinaison (R1 à R3, avec vérification adverse) n'a trouvé aucune combinaison qui ferme un cas.
+
+## 3. Arbre de ce qui reste à prouver
+
+Exclure C1, donc le graphe (sous C2/C3/C7/C11), revient à fermer **l'une** des routes suivantes en entier :
+
+- **Route A, rang par rang.** Il faut exclure les quatre rangs 37, 39, 41 et 43.
+  - r = 37 : (H₃₇) sur environ 1,47·10¹¹ classes admissibles de graphes de droite à t ≤ 7. C'est fini et chiffré (§6.1).
+  - r = 39 : l'étoile meurt 5 fois sur 5 (E). Il n'y a ni théorème de réduction ni coût global, et chaque droite coûte
+    40 min à 2 h.
+  - r = 41 et 43 : l'étoile seule ne suffit pas (heuristique). Aucune méthode.
+  - Seuils explicites, qui tueraient un rang s'ils étaient prouvés : par exemple r = 43 tombe si a₉ = 0 et a₁₃ < 1 870,
+    et r = 39 si a₉ ≤ 1 000 et a₁₃ < 83 316 (L11a-88).
+- **Route B, par c(L).**
+  - c_min ≤ 3 est acquis (S).
+  - c_min = 3 : registre de 35 gabarits ouverts, et 23 exclusions ne reposent que sur un seul solveur (L08-099, L08-125).
+  - c_min ≤ 2 : dichotomie (I)/(II) (L08-057). La branche (II), avec au moins 33 droites à c ≤ 2, **n'a aucune méthode
+    finie** (L08-233) ; c'est le trou de cette route.
+- **Route C, R8.** R8 UNSAT suffirait à exclure Conway à tout rang (modèle audité le 20/10). Le coût en CDCL pur va de
+  5·10⁷ à 10¹² heures-cœur. Le pilote CEGAR n'a fait qu'une itération (L08-210, -213, -214).
+- **Route D, une loi locale prouvée.**
+  - (T15) : tout bloc de nullité ≥ 14 a t(l) + t(m) ≥ 15. La forme utile est la contraposée : tout Conway a au moins 35
+    blocs avec t(l) + t(m) ≤ 14. Quasi-raté : P ≥ 866,25 contre 852.
+  - (T8), (N9-NG) ⇔ rang F ≥ 12 hors grille, NG5, NG7.
+  - (H-MATCH).
+  - Toutes sont ouvertes. Les données qui les soutiennent sont biaisées par famille (L07 §4.13).
+- **Route E, l'asymétrie.** La symétrie forcée exigerait une borne supérieure du nombre de complétions d'une pièce
+  symétrique inévitable. Aucune n'est en vue, et il y a une raison structurelle : un bord positif ne contient aucune
+  pièce symétrique (R2-12).
 
 ## 4. Routes fermées : ne pas refaire
 
@@ -198,11 +270,97 @@ congruentes), C2 (classification de Borcherds + calcul fini), le test d'étoile 
 positivité sur une liste finie de droites). Chaque méthode qui n'utilise qu'un ou deux de ces ingrédients s'est révélée
 satisfiable par les paramètres de Conway.
 
-## 5. Questions ouvertes classées par levier et par coût (à remplir)
+## 5. Questions ouvertes classées par levier et par coût
 
-## 6. Les dossiers finis et chiffrés (à remplir)
+| # | question | ce qu'elle donnerait | coût et état | source |
+|---|---|---|---|---|
+| 1 | (H₃₇) sur les droites à t ≤ 7 | r ≠ 37 | ≈ 5 à 6,5·10⁴ heures-cœur ; moteurs à compléter ; certificats | §6.1 |
+| 2 | Certifier N14 ; catalogues des normes 16 et 18 au rang 37 ; c₂₀ ≤ 4 | seconde route vers r ≠ 37 (écart actuel 8,6 %) | N14 ≈ 6 h ; normes 16 et 18 hors de portée exhaustive en l'état | R2 §10, L06-168 |
+| 3 | Rangs 39, 41 et 43 : un théorème de réduction analogue à 6.1 | exclusion d'un rang | rang 39 : l'étoile meurt 5/5, mais 40 min à 2 h par droite ; 41-43 : aucune méthode | L08 §1.8 |
+| 4 | Registre c = 3 : 35 gabarits ouverts | fermeture de c_min = 3 | borne de dimension ≥ 6 (14 gabarits), lemme des six grilles (9), 13 sans outil | R3-52 |
+| 5 | Branche c ≤ 2 (II) : au moins 33 droites à c ≤ 2 | route c complète | aucune méthode finie | L08-233 |
+| 6 | (T15) : au moins 35 blocs avec t(l) + t(m) ≤ 14 ; (T8) ; N9-NG ; NG5 ; NG7 ; H-MATCH ; ODD-PURE | pas de Conway (T15, N9-NG, H-MATCH) ; c_min ≠ 1 (ODD-PURE) | ouvertes ; données biaisées et retirées comme indices | R1 |
+| 7 | R8 par CEGAR | pas de Conway, à tout rang | CDCL pur hors de portée ; pilote d'une seule itération | §6.2 |
+| 8 | Asymétrie : un morceau forcé avec plus de symétries que de complétions | exclusion de C1 | aucun candidat. À 243, les graphes connus sont symétriques via un spread ou un Hamming plié, et Conway n'a pas de spread régulier | §4.H ; R2-12 ; L06-129, L06-132 |
+| 9 | Dettes de certification | statuts plus forts | C2 : règle jumelle (≤ 2,48 M paires) ; N14 ; dérivation lisible du recensement de P ≤ 852 ; certificat portable de c ≥ 4 ; relecture humaine du Théorème 6.1, de T16/T18/T20 et de C3 §4 | §8, L02 §9 |
 
-## 7. Recombinaison : résultats (à remplir après R1 à R3 et la vérification adverse)
+## 6. Les dossiers finis et chiffrés
+
+**6.1 Rang 37 : le plus avancé.**
+- **Théorème 6.1** (P, relu par un agent) : sa seule entrée est P ≤ 852.
+  - Source : `work/exploration_2026-10-16/merge_2026-10-19/THEOREME_REDUCTION_R37.md`.
+- **Énumération exacte.** Les classes se classent par type de cycle λ de σ = s20·s12·s01 :
+  - 187 381 435 694 classes, dont 147 579 095 390 admissibles ;
+  - énumérateur validé (`NOTE_ENUM37.md`).
+- **Moteur.** `line37_fast` prend 3,5 ms par droite. Environ 1,1·10⁵ droites ont été testées, toutes UNSAT.
+  - Le pilote de 76 418 droites est hors de la cible t ≤ 7 (L08-222).
+- **Coût :** environ 5 à 6,5·10⁴ heures-cœur.
+- **Ce qui manque :**
+  - des moteurs pour les types d ≥ 5, (1,4) et (2,4) ;
+  - une passe exacte en remplacement du filtre réel en flottant ;
+  - des certificats d'UNSAT ;
+  - une chaîne de production écrite (THM §5.9) ;
+  - une relecture humaine du Théorème 6.1.
+- **Ce que donnerait la route :** l'exclusion de r = 37 seulement. Il reste ensuite 39, 41 et 43.
+
+**6.2 R8, modèle à 52 étiquettes et 1 326 arêtes.**
+- UNSAT exclurait Conway à tout rang. Le modèle est sain (`r8_route/NOTE_R8_ROUTE.md`).
+- CDCL pur : 5·10⁷ à 10¹² heures-cœur, ce qui est hors de portée.
+- Recommandation : un pilote CEGAR (SAT avec coupes spectrales et de rang).
+- Coupe sûre à ajouter : l'équilibre |N(w) ∩ C| = |C|/6, absent de l'encodeur (R3-29).
+
+**6.3 Route c.**
+- **Registre c = 3 : 35 gabarits ouverts au 19/10.**
+  - Le lemme « aucune droite dans six grilles » en fermerait 9, ce qui en laisserait 26. Le lemme est ouvert et revient
+    à un sous-cas entier : il faut d'abord un pilote de mesure (VERIF_R3-21).
+  - Fermeture c ≥ 4 : S, saine. Un recalcul ciblé sans AWS v1 coûterait 1 à 5 heures-cœur, un recalcul complet 15 à 30
+    (VERIF_C4_FERMETURE).
+- **Branche c ≤ 2 (II) :** aucune méthode finie.
+
+## 7. Recombinaison : résultats
+
+Fichiers : `assemblage/R1_*`, `R2_*`, `R3_*` (candidats) et `assemblage/VERIF_*.md` (verdicts adverses).
+
+**Première passe** (lots L01 à L10, 858 conditionnels, toutes les bornes, tous les lemmes ouverts) : **aucune
+exclusion**.
+
+| candidat | verdict adverse | ce qui en reste |
+|---|---|---|
+| R1-19 / R2-01 : P ≤ 852 = 4·(P − 3G ≤ 693) + 3·(3P + 4G ≤ 2772), et P = 852 ⇒ G ∈ {53, 54} | TIENT AVEC RÉSERVES (la facette exige c ≠ 3, prouvé par N9) ; la preuve « par les C4 » de R3-12 est CASSÉE | une seconde preuve de P ≤ 852, plus lisible que le certificat à 16 poids |
+| R2-03 : rang 43, b₂ ≥ 1000 (≥ 1264 s'il existe une racine) | TIENT (P, IA) | corrige la borne 968 du registre |
+| R3-02 : V15 × N14 au rang 37 | TIENT AVEC RÉSERVES (N14 de statut E ; gain mince) | au rang 37, au plus 2 choix de signes par facteur |
+| R3-21 : « aucune droite dans six grilles » | DÉJÀ CONNUE ; lemme ouvert ; compte corrigé : 9 gabarits sur 35, pas 7 | une cible, mais pas une affaire de quelques heures |
+| R1-06 : (T15) « sauf 34 blocs » | DÉJÀ CONNUE ; ce n'est pas un affaiblissement mais la contraposée | forme utile : tout Conway a au moins 35 blocs avec t(l) + t(m) ≤ 14 |
+| R1-01 / R3-01 : DISC, classe 14 impossible par L4 | DÉJÀ CONNUE ; effet nul (DISC ne sert dans aucun cas ouvert) | — |
+| R1-05, R1-21, R2-02 | DÉJÀ CONNUES (14-15/10) | fenêtre P ∈ [726, 762] si chaque triangle est dans au moins 3 grilles |
+| Doute : fermeture c ≥ 4 face au bug OR-Tools | **SAINE** (archéologie git) | statut S inchangé |
+
+**Seconde passe** (avec les 1 277 messages du pont, lots L11a à L11f) : **aucune exclusion, aucune contradiction**.
+- **Dominé par la littérature.** « Tout automorphisme non trivial déplace au moins 13 sommets » (L11d-102) est dominé
+  par Wilbrink 1984, Thm 1, qui donne au moins 81 sommets (R1-34).
+- **Monde sans droite spéciale.** (B) « tout Conway a une droite spéciale » découle de P ≥ 694. Un Conway sans droite
+  spéciale a donc ρ = 0 et P ≤ 693. Ce monde ne tombe que sous une hypothèse plus faible que (B′) : aucun bloc de
+  nullité ≥ 14 n'a ses deux droites à c = 1 (R1-36).
+- **Rang 37 sans grille.** On a τ ≤ P ≤ 693 contre le seuil 535. Avec K24 (« un prisme a au plus un jumeau », ouvert),
+  on aurait τ ≤ 346 (R1-37, R3-12).
+- **Coin sans grille du rang 37.** La facette P ≤ 693 + 3G manque au PL d'ordre 10, dont l'optimum est P = 780. En
+  l'injectant, l'écart estimé passerait de 15,1 % à environ 4,5 % (H, à recalculer en 265 s ; ce ne serait pas une
+  exclusion) (R2-30, R2-32).
+- **Rang 43, nouveau, dérivations de R3 non relues.**
+  - L'hôte de Codex est forcé, c'est M lui-même, d'où a₈ ≤ 1168 au lieu de 6930 (R3-58).
+  - b₁ ≤ 24 à tout rang (E) (R3-61).
+- **Norme 18 ou 26 forcée aux quatre rangs** : caps18 exclut aussi « a₉ = a₁₃ = 0 » au rang 43 (E, R2-25).
+- **Lemme A de LAP en norme 18.** Trois des quatre sous-cas sont fermés ailleurs (pont #174, note 176 de Codex,
+  lemme 17.98) ; seul le type (1,1,1,1) reste ouvert. Potentiel nul (R3-49).
+- **Registre c = 3, 35 ouverts.**
+  - Une borne de dimension ≥ 6 en couvrirait 14, le lemme des six grilles 9, et les deux ensemble 22.
+  - **13 gabarits restent sans aucun outil** (R3-52).
+  - ODD-PURE seul exclurait c_min = 1 (pont #931). Il n'est prouvé nulle part (R3-50).
+- **Indices retirés.** Les données citées pour N9-NG, H-MATCH et R7-NG viennent de blocs impossibles dans Conway
+  (R1-40).
+
+**Conclusion de la recombinaison.** L'exclusion n'était pas cachée dans les notes. Tout ce qui reste demande soit une
+idée nouvelle, soit un calcul de taille cluster (§3, §6).
 
 ## 8. Incohérences de statut à trancher
 
@@ -346,9 +504,15 @@ dans le pont (lots L11). Ajouts et corrections du 20/10 :
 | L06 | arithmétique C1 (LAB) | 182 | 79 | 25 | 34 | 7 | 17 | 7 | 6 | 7 |
 | L07 | C1, asymétrie, lois locales | 484 | 253 | 32 | 82 | 35 | 30 | 25 | 19 | 8 |
 | L08 | C1, branche exploratoire | 235 | 91 | 10 | 63 | 21 | 16 | 22 | 4 | 8 |
-| L09 | structures, Astra, coordination | à venir | | | | | | | | |
+| L09 | structures, Astra, coordination | 508 | 262 | 28 | 73 | 17 | 78 | 28 | 10 | 12 |
 | L10 | sessions et mémoires | 127 | 44 | 21 | 26 | 13 | 8 | 6 | 7 | 2 |
-| L11a-f | messages du pont (1 277) | à venir | | | | | | | | |
+| L11a | pont #1-178 (06-08/10) | 93 | 44 | 12 | 23 | 2 | 5 | 4 | 1 | 2 |
+| L11b | pont #179-358 (08/10) | 97 | 35 | 32 | 10 | 1 | 14 | 1 | 2 | 2 |
+| L11c | pont #359-533 (08-09/10) | 146 | 63 | 25 | 29 | 3 | 12 | 2 | 3 | 9 |
+| L11d | pont #534-732 (09-14/10) | 186 | 100 | 20 | 34 | 8 | 8 | 6 | 4 | 6 |
+| L11e | pont #733-966 (14-17/10) | 140 | 73 | 12 | 16 | 11 | 7 | 8 | 10 | 3 |
+| L11f | pont #967-1277 (17-19/10) | 127 | 44 | 10 | 28 | 20 | 8 | 11 | 1 | 5 |
+| **total** | | **3 516** | | | | | | | | |
 
 Outils : `tools/` (inventaire, triage, lots, export du pont, extraction, fusion). Inventaire : `inventory/` (6 320
 contenus distincts). Sauvegarde du scratchpad : `work/scratchpad_LAB_2026-09-30/` (MANIFEST.csv, 32 archives).
