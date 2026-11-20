@@ -41,9 +41,20 @@ Q(x) = 2n et B(x, y) = r.
 |---|---|---|---|---|---|---|
 | 20 | aucune | réalisable | réalisable | réalisable | réalisable | [0, 1386] |
 | 20 | seuls les triangles en norme 4 | réalisable | réalisable | réalisable | réalisable | [0, 1386] |
-| 32, 40 | seuls les triangles en norme 4 | en cours | | | | |
+| 32 (441 contraintes) | seuls les triangles en norme 4 | réalisable | non calculé | non calculé | réalisable | [0, 1386] |
+| 40 (598 contraintes) | seuls les triangles en norme 4 | réalisable | non calculé | non calculé | réalisable | [0, 1386] |
 
 **Lecture.** Ce coefficient contient déjà la série thêta harmonique quartique, que l'équipe avait trouvée réalisable.
-L'apport nouveau est la positivité de chaque c(n, r) et le couplage avec P. À N = 20, il ne contraint rien.
+L'apport nouveau est la positivité de chaque c(n, r) et le couplage avec P. **Jusqu'à N = 40, il ne contraint
+rien** : aucun rang exclu, et P entièrement libre, même sous l'hypothèse la plus forte (les triangles sont les seuls
+vecteurs de norme 4). Ce morceau du genre 2 est donc mort à ces troncatures.
+
+Pour aller plus loin, il faudrait :
+- des coefficients de Fourier–Jacobi d'indice plus grand, qui fixent des vecteurs y de norme 6 ou 8 et voient des
+  configurations plus riches ;
+- ou la forme de Siegel de genre 2 entière, qui corrèle toutes les paires (espace de dimension de l'ordre de 500,
+  hors de portée sans logiciel spécialisé).
+
+Rien n'indique que l'un ou l'autre mordrait mieux.
 
 Usage : `python3 jacobi_exact_lp.py N [d …] [only_triangles] [Pmax=…]` ; `python3 jacobi_exact_lp.py N sanity`.
